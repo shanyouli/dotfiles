@@ -45,11 +45,11 @@ font:
   size: 9
 
   normal:
-    family: MesloLGS NF
+    family: Cascadia Code
     style: Regular
 
   bold:
-    family: MesloLGS NF
+    family: Cascadia Code
 
   italic:
-    family: MesloLGS NF
+    family: Cascadia Code
