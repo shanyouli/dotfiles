@@ -22,8 +22,8 @@
 (defun my/font-installed-p (font-name)
   "Check if font with FONT-NAME is available."
   (if (find-font (font-spec :name font-name)) t nil))
-(cl-loop for font in '("JetBrains Mono" "Fantasque Sans Mono" "Source Code Pro"
-                       "Menlo" "DejaVu Sans Mono" "monospace")
+(cl-loop for font in '("Cascadia Code" "JetBrains Mono" "Fantasque Sans Mono"
+                       "Source Code Pro" "Menlo" "DejaVu Sans Mono" "monospace")
          when (my/font-installed-p font)
          return (setq doom-font (font-spec :family font :size 12)))
 ;; use emoji color font
