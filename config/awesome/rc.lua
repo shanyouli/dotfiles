@@ -454,7 +454,7 @@ awful.rules.rules = {
                      buttons = clientbuttons,
                      screen = awful.screen.preferred,
                      placement = awful.placement.no_overlap+awful.placement.no_offscreen
-     }
+      },
     },
 
     -- Floating clients.
@@ -486,18 +486,30 @@ awful.rules.rules = {
           "ConfigManager",  -- Thunderbird's about:config.
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
         }
-      }, properties = { floating = true }},
+    }, properties = { floating = true }
+    },
 
     -- Add titlebars to normal clients and dialogs
     { rule_any = {type = { "normal", "dialog" }
       }, properties = { titlebars_enabled = true }
     },
-
+    { rule = { class = "firefox" },
+      -- callback = function(c)
+          -- print("There is an 'e' in here:", c)
+          -- if string.match(c.name, "DownThem") then
+              -- naughty.notify{ title="new window", text = c.name }
+          -- else
+              -- naughty.notify{ title="new window", text = c.class }
+          -- end
+      -- end,
+      properties = { tag = "3", titlebars_enabled = false }
+    },
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { screen = 1, tag = "2" } },
 }
 -- }}}
+-- naughty.notify({ title = "Achtung!", message = "You're idling", timeout = 0 })
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
@@ -555,9 +567,9 @@ client.connect_signal("request::titlebars", function(c)
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-    c:emit_signal("request::activate", "mouse_enter", {raise = false})
-end)
+-- client.connect_signal("mouse::enter", function(c)
+    -- c:emit_signal("request::activate", "mouse_enter", {raise = false})
+-- end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)

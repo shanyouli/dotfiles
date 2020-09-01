@@ -319,15 +319,21 @@ Notice that this function assume you have graphics display"
 
 
 (use-package! org-roam-server
-  :hook (org-roam-mode  . org-roam-server-mode)
-  :init
+  :after org-roam
+  ;; :hook (org-roam-mode  . org-roam-server-mode)
+  :config
   (setq org-roam-server-host "127.0.0.1"
-      org-roam-server-port 9091
-      org-roam-server-export-inline-images t
-      org-roam-server-authenticate nil
-      org-roam-server-network-label-truncate t
-      org-roam-server-network-label-truncate-length 60
-      org-roam-server-network-label-wrap-length 20))
+        org-roam-server-port 9091
+        org-roam-server-export-inline-images t
+        org-roam-server-authenticate nil
+        org-roam-server-network-label-truncate t
+        org-roam-server-network-label-truncate-length 60
+        org-roam-server-network-label-wrap-length 20)
+  (defun org-roam-server-open ()
+    "Ensure the server is active, then open the roam graph."
+    (interactive)
+    (org-roam-server-mode 1)
+    (browse-url-xdg-open (format "http://localhost:%d" org-roam-server-port))))
 
 ;;; Key
 (map! :leader

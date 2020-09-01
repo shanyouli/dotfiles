@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+_tmux_config() {
+    for dir in "$TMUX_HOME" "$XDG_CONFIG_HOME/tmux" "$HOME/.config/tmux" ; do
+        [[ -f "$dir/tmux.conf" ]] && {
+            echo "$dir/tmux.conf"
+            break
+        }
+    done
+}
+
+
+if command -v tmux >/dev/null ; then
+    if tmux ls | grep -qEv 'attached|scratch'; then
+        alacritty -t tmux -e tmux at
+    else
+        tmux_config=$(_tmux_config)
+        if [[ -n $tmux_config ]]; then
+            alacritty -t tmux -e tmux -f $tmux_config
+        else
+            alacritty -t tmux -e tmux
+        fi
+    fi
+    unset tmux_config
+else
+    alacritty -t tmux
+fi
