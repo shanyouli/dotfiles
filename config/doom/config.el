@@ -67,6 +67,15 @@ Notice that this function assume you have graphics display"
                                      "~/Documents/Org"
                                      )))))
 
+
+(defun my/find-file-in-dotfiles ()
+  "Browse your `DOTFILES'."
+  (interactive)
+  (let* ((dotfiles (or (getenv "DOTFILES")
+                       (expand-file-name "~/.dotfiles"))))
+    (unless (file-directory-p dotfiles)
+      (make-directory dotfiles t))
+    (doom-project-find-file dotfiles)))
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
