@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+source $HOME/.profile
+if [[ -d "${XDG_CONFIG_HOME=$HOME/.config}"/X11 ]]; then
+    user_xinitrc=${XDG_CONFIG_HOME}/X11/xinitrc
+else
+    user_xinitrc=${HOME}/.xinitrc
+fi
+if [[ -x "$user_xinitrc" ]] && [[ ! -d "$user_xinitrc" ]]; then
+
+    ${SHELL} --login -i "${user_xinitrc}"
+fi
