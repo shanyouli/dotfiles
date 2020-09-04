@@ -259,31 +259,30 @@ Notice that this function assume you have graphics display"
              insert-translated-name-insert-with-camel
              insert-translated-name-insert)
   :config
-  (when (find-library-name "evil")
-    (defvar int--evil-last-status-is-insert-p nil
-      "Last evil-mode status is inserted?"))
-  (when (find-library-name "sis")
-    (defvar int--sis-default-input-thmod nil
-      "Staging the default input method."))
+  (defvar int--evil-last-status-is-insert-p nil
+      "Last evil-mode status is inserted?")
+  (defvar int--sis-default-input-thmod nil
+      "Staging the default input method.")
   (defun int/active-a (&rest _)
-    (when (boundp 'int--evil-last-status-is-insert-p)
-      (setq int--evil-last-status-is-insert-p (not (evil-insert-state-p)))
-      (when int--evil-last-status-is-insert-p
-        (evil-insert-state)))
+    (when (and (fboundp 'evil-insert-state-p) (evil-insert-state-p))
+      (setq int--evil-last-status-is-insert-p t))
+    (unless int--evil-last-status-is-insert-p
+      (evil-insert-state))
     (when (boundp 'int--sis-default-input-thmod)
       (setq int--sis-default-input-thmod default-input-method)
       (setq-local default-input-method nil)
       (sis-set-other)))
 
   (defun int/inactive-a (&rest _)
-    (unless (bound-and-true-p int--evil-last-status-is-insert-p)
-      (evil-normal-state))
+    (unless int--evil-last-status-is-insert-p
+      (evil-normal-state)
+      (setq int--evil-last-status-is-insert-p nil))
     (when (bound-and-true-p int--sis-default-input-thmod)
       (sis-set-english)
       (setq-local default-input-method int--sis-default-input-thmod)
       (setq int--sis-default-input-thmod nil)))
   (advice-add #'insert-translated-name-active :before 'int/active-a)
-  (advice-add #'insert-translated-name-inactive :before 'int/inactive-a))
+  (advice-add #'insert-translated-name-inactive :after 'int/inactive-a))
 
 (use-package! rainbow-mode
   :hook (prog-mode . rainbow-mode))
@@ -344,6 +343,9 @@ Notice that this function assume you have graphics display"
     (org-roam-server-mode 1)
     (browse-url-xdg-open (format "http://localhost:%d" org-roam-server-port))))
 
+(after! org
+  ;; Automatic folding open code block
+  (setq org-hide-block-startup t ))
 ;;; Key
 (map! :leader
       (:prefix-map ("e" . "eaf")
