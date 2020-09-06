@@ -118,6 +118,14 @@ Notice that this function assume you have graphics display"
                    (file-in-directory-p file persp-save-dir))
               (and (bound-and-true-p desktop-dirname)
                    (file-in-directory-p file desktop-dirname))))))
+(after! org-roam
+  (add-to-list 'org-roam-capture-ref-templates
+               '("a" "Annotation" plain (function org-roam-capture--get-point)
+                 "%U ${body}\n"
+                 :file-name "${slug}"
+                 :head "#+title: ${title}\n#+roam_key: ${ref}\n#+roam_alias:\n"
+                 :immediate-finish t
+                 :unnarrowed t)))
 
 (after! recentf
   (push (expand-file-name recentf-save-file) recentf-exclude))
@@ -343,9 +351,6 @@ Notice that this function assume you have graphics display"
     (org-roam-server-mode 1)
     (browse-url-xdg-open (format "http://localhost:%d" org-roam-server-port))))
 
-(after! org
-  ;; Automatic folding open code block
-  (setq org-hide-block-startup t ))
 ;;; Key
 (map! :leader
       (:prefix-map ("e" . "eaf")

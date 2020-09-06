@@ -494,22 +494,17 @@ awful.rules.rules = {
       }, properties = { titlebars_enabled = true }
     },
     { rule = { class = "firefox" },
-      -- callback = function(c)
-          -- print("There is an 'e' in here:", c)
-          -- if string.match(c.name, "DownThem") then
-              -- naughty.notify{ title="new window", text = c.name }
-          -- else
-              -- naughty.notify{ title="new window", text = c.class }
-          -- end
-      -- end,
       properties = { tag = "3", titlebars_enabled = false }
     },
     { rule = { name = "tmux" },
       properties = { tag = "2", titlebars_enabled = false, fullscreen = true }
+    },
+    {
+        rule = { name = "scratch" },
+        properties = { tag = "1", titlebars_enabled = false, fullscreen = true }
     }
 }
 -- }}}
--- naughty.notify({ title = "Achtung!", message = "You're idling", timeout = 0 })
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
