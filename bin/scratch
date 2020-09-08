@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+is_running() { pgrep -x $1 >/dev/null || return 1 ; }
+is_callabled() { command -v $1 >/dev/null || return 1; }
+
+emacs_cleanup() {
+    emacsclient --eval '(let (kill-emacs-hook) (kill-emacs))'
+}
+emacs_server_p() {
+    if ! emacsclient --supress-output --eval nil; then
+        emacs --daemon
+        trap cleanup EXIT INT TERM
+    fi
+    true
+}
+# 输入法是否在运行
+im_is_run() {
+    local im=$INPUT_METHOD
+    [[ -n $im ]] && {
+        is_running $im || {
+            $im >/dev/null & disown && sleep 1 ;
+        }
+    }
+}
+
+# Fix incompatible terminals that cause odd 'not a valid terminal' errors
+[[ $TERM = "alacritty" ]] && export TERM=xterm-256color
+
+im_is_run
+if emacs_server_p ; then
+    emacsclient -a "" -c -F '((name . "scratch"))'
+fi

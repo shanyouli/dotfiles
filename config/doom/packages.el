@@ -96,6 +96,7 @@
 (package! iedit)
 
 (package! all-the-icons-ivy-rich)
+
 (if (and (or (executable-find "scrot")
              (executable-find "screencapture"))
          (executable-find "convert") ;; imagemagick
@@ -107,9 +108,9 @@
 ;;     (xdg-user-dir "VIDEOS")
 ;;     (expand-file-name "Videos/emacs/" "~"))
 
-(unpin! doom-modeline)
 (package! org-roam-server)
 (unless (executable-find "nixos-install")
   (disable-packages! company-nixos-options))
 
-(disable-packages! pyim pangu-spaceing fcitx )
+(unpin! doom-modeline)
+(disable-packages! pyim pangu-spaceing fcitx)

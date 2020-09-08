@@ -22,10 +22,11 @@
 (defun my/font-installed-p (font-name)
   "Check if font with FONT-NAME is available."
   (if (find-font (font-spec :name font-name)) t nil))
-(cl-loop for font in '("Cascadia Code" "JetBrains Mono" "Fantasque Sans Mono"
-                       "Source Code Pro" "Menlo" "DejaVu Sans Mono" "monospace")
-         when (my/font-installed-p font)
-         return (setq doom-font (font-spec :family font :size 12)))
+;; (cl-loop for font in '("Cascadia Code" "JetBrains Mono" "Fantasque Sans Mono"
+;;                        "Source Code Pro" "Menlo" "DejaVu Sans Mono" "monospace")
+;;          when (my/font-installed-p font)
+;;          return (setq doom-font (font-spec :family font :size 12)))
+(setq doom-font (font-spec :family "Cascadia Code" :size 12))
 ;; use emoji color font
 ;; see @https://emacs-china.org/t/emacs-cairo/9437/13
 (defun my/walle-ui-display-color-emoji? ()
@@ -40,7 +41,7 @@ Notice that this function assume you have graphics display"
                        (memq 'ftcrhb frame-font-backend))
                t)))
       (featurep 'cocoa)))
-(defadvice! my/use-color-emoji-a ()
+(defadvice! my/use-color-emoji-a (&rest _)
   :after #'doom-init-extra-fonts-h
   (when (my/walle-ui-display-color-emoji?)
     (cond (IS-MAC
@@ -127,6 +128,20 @@ Notice that this function assume you have graphics display"
                  :immediate-finish t
                  :unnarrowed t)))
 
+(after! org-superstar
+  (setq org-superstar-headline-bullets-list '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
+        ;; org-superstar-headline-bullets-list '("Ⅰ" "Ⅱ" "Ⅲ" "Ⅳ" "Ⅴ" "Ⅵ" "Ⅶ" "Ⅷ" "Ⅸ" "Ⅹ")
+        org-superstar-prettify-item-bullets t ))
+(after! org
+  (setq org-ellipsis "▼"
+        org-priority-highest ?A
+        org-priority-lowest ?E
+        org-priority-faces
+        '((?A . 'all-the-icons-red)
+          (?B . 'all-the-icons-orange)
+          (?C . 'all-the-icons-yellow)
+          (?D . 'all-the-icons-green)
+          (?E . 'all-the-icons-blue))))
 (after! recentf
   (push (expand-file-name recentf-save-file) recentf-exclude))
 
@@ -325,14 +340,6 @@ Notice that this function assume you have graphics display"
   :commands gif-screencast-start-or-stop
   :config
   (setq gif-screencast-output-directory (expand-file-name "~/Videos/Gif")))
-
-;; emacs so-long-mode
-(use-package! so-long
-  :ensure nil
-  :if EMACS27+
-  :hook (after-init . global-so-long-mode)
-  :config (setq so-long-threshold 400))
-
 
 (use-package! org-roam-server
   :after org-roam

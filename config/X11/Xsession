@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-source $HOME/.profile
+[[ -f $HOME/.profile ]] && source $HOME/.profile
 if [[ -d "${XDG_CONFIG_HOME=$HOME/.config}"/X11 ]]; then
     user_xinitrc=${XDG_CONFIG_HOME}/X11/xinitrc
 else
