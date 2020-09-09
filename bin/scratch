@@ -1,32 +1,28 @@
 #!/usr/bin/env bash
 
+set -e
 is_running() { pgrep -x $1 >/dev/null || return 1 ; }
 is_callabled() { command -v $1 >/dev/null || return 1; }
 
-emacs_cleanup() {
-    emacsclient --eval '(let (kill-emacs-hook) (kill-emacs))'
-}
-emacs_server_p() {
-    if ! emacsclient --supress-output --eval nil; then
-        emacs --daemon
-        trap cleanup EXIT INT TERM
-    fi
-    true
-}
-# 输入法是否在运行
-im_is_run() {
-    local im=$INPUT_METHOD
-    [[ -n $im ]] && {
-        is_running $im || {
-            $im >/dev/null & disown && sleep 1 ;
-        }
-    }
-}
+# emacs_cleanup() {
+#     emacsclient --eval '(let (kill-emacs-hook) (kill-emacs))'
+# }
 
 # Fix incompatible terminals that cause odd 'not a valid terminal' errors
 [[ $TERM = "alacritty" ]] && export TERM=xterm-256color
 
-im_is_run
-if emacs_server_p ; then
+# 输入法是否在运行
+[[ -n $INPUT_METHOD ]] && {
+    is_running $INPUT_METHOD || {
+        $INPUT_METHOD >/dev/null & disown && sleep 1
+    }
+}
+if emacsclient --suppress-output --eval nil ; then
     emacsclient -a "" -c -F '((name . "scratch"))'
+else
+    if ( is_callabled dbus-launch && is_running dbus-launch ); then
+        dbus-launch emacs -T 'scratch'
+    else
+        LC_CTYPE="zh_CN.UTF-8" emacs -T 'scratch'
+    fi
 fi

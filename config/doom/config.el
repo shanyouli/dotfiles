@@ -22,11 +22,11 @@
 (defun my/font-installed-p (font-name)
   "Check if font with FONT-NAME is available."
   (if (find-font (font-spec :name font-name)) t nil))
-;; (cl-loop for font in '("Cascadia Code" "JetBrains Mono" "Fantasque Sans Mono"
-;;                        "Source Code Pro" "Menlo" "DejaVu Sans Mono" "monospace")
-;;          when (my/font-installed-p font)
-;;          return (setq doom-font (font-spec :family font :size 12)))
-(setq doom-font (font-spec :family "Cascadia Code" :size 12))
+(cl-loop for font in '("Cascadia Code" "JetBrains Mono" "Fantasque Sans Mono"
+                       "Source Code Pro" "Menlo" "DejaVu Sans Mono" "monospace")
+         when (my/font-installed-p font)
+         return (setq doom-font (font-spec :family font :size 12)))
+;; (setq doom-font (font-spec :family "Cascadia Code" :size 12))
 ;; use emoji color font
 ;; see @https://emacs-china.org/t/emacs-cairo/9437/13
 (defun my/walle-ui-display-color-emoji? ()
@@ -151,8 +151,8 @@ Notice that this function assume you have graphics display"
         all-the-icons-icon-alist))
 
 (use-package! all-the-icons-ivy-rich
-  :if (and (display-graphic-p)
-           (require 'all-the-icons nil t))
+  :if (featurep! +icons)
+
   :hook (ivy-mode . all-the-icons-ivy-rich-mode))
 
 (use-package! eaf
