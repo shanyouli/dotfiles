@@ -151,8 +151,7 @@ Notice that this function assume you have graphics display"
         all-the-icons-icon-alist))
 
 (use-package! all-the-icons-ivy-rich
-  :if (featurep! +icons)
-
+  :if (and (featurep! :completion ivy) (featurep! :emacs dired +icons))
   :hook (ivy-mode . all-the-icons-ivy-rich-mode))
 
 (use-package! eaf

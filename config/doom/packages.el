@@ -94,7 +94,7 @@
 (package! hungry-delete)
 
 (package! iedit)
-(when (featurep! +icons)
+(when (featurep! :emacs dired +icons)
   (package! all-the-icons-ivy-rich))
 (if (and (or (executable-find "scrot")
              (executable-find "screencapture"))

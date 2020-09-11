@@ -35,23 +35,23 @@ fi
 export __INIT_X11=1
 
 session=${1:-awesome}
-
+cmd="dbus-launch --sh-syntax --exit-with-session"
 case $session in
-	awesome 		  ) exec dbus-launch --sh-syntax --exit-with-session awesome;;
-	jwm 			  ) exec dbus-launch --sh-syntax --exit-with-session jwm;;
-	deepin 			  ) exec dbus-launch --sh-syntax --exit-with-session startdde;;
-	enlightenment 	  ) exec dbus-launch --sh-syntax --exit-with-session enlightenment_start;;
-	gnome 			  ) exec dbus-launch --sh-syntax --exit-with-session gnome-session;;
-	bspwm 			  ) exec dbus-launch --sh-syntax --exit-with-session bspwm-session;;
-    lxde 	          ) exec dbus-launch --sh-syntax --exit-with-session startlxde;;
-    lxqt         	  ) exec dbus-launch --sh-syntax --exit-with-session lxqt-session;;
-    i3|i3wm           ) exec dbus-launch --sh-syntax --exit-with-session i3;;
-    kde               ) exec dbus-launch --sh-syntax --exit-with-session startkde;;
-    cinnamon          ) exec dbus-launch --sh-syntax --exit-with-session cinnamon-session;;
-    budgie            ) exec dbus-launch --sh-syntax --exit-with-session budgie-desktop;;
-    mate              ) exec dbus-launch --sh-syntax --exit-with-session mate-session;;
-    openbox           ) exec dbus-launch --sh-syntax --exit-with-session openbox-session;;
-    xfce|xfce4        ) exec dbus-launch --sh-syntax --exit-with-session startxfce4;;
+	awesome         ) exec $cmd awesome;;
+	jwm             ) exec $cmd jwm;;
+	deepin          ) exec $cmd startdde;;
+	enlightenment   ) exec $cmd enlightenment_start;;
+	gnome           ) exec $cmd gnome-session;;
+	bspwm           ) exec $cmd bspwm-session;;
+    lxde            ) exec $cmd startlxde;;
+    lxqt            ) exec $cmd lxqt-session;;
+    i3|i3wm         ) exec $cmd i3;;
+    kde             ) exec $cmd startkde;;
+    cinnamon        ) exec $cmd cinnamon-session;;
+    budgie          ) exec $cmd budgie-desktop;;
+    mate            ) exec $cmd mate-session;;
+    openbox         ) exec $cmd openbox-session;;
+    xfce|xfce4      ) exec $cmd startxfce4;;
     # No known session, try to run it as command
-    *                 ) exec dbus-launch --sh-syntax --exit-with-session "$1";;
+    *               ) exec $cmd "$1";;
 esac
