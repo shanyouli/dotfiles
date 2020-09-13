@@ -96,6 +96,7 @@
 (package! iedit)
 (when (featurep! :emacs dired +icons)
   (package! all-the-icons-ivy-rich))
+
 (if (and (or (executable-find "scrot")
              (executable-find "screencapture"))
          (executable-find "convert") ;; imagemagick
