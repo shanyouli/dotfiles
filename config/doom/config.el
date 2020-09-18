@@ -328,9 +328,7 @@ Notice that this function assume you have graphics display"
 
 (use-package! valign
   :commands valign-mode
-  :hook ((org-mode markdown-mode)  . valign-mode)
-  :init
-  (setq valign-fancy-bar t))
+  :hook ((org-mode markdown-mode)  . valign-mode))
 
 (use-package! sh-script
   :mode (("/.bashrc\\'" . sh-mode)))
@@ -342,7 +340,6 @@ Notice that this function assume you have graphics display"
 
 (use-package! org-roam-server
   :after org-roam
-  ;; :hook (org-roam-mode  . org-roam-server-mode)
   :config
   (setq org-roam-server-host "127.0.0.1"
         org-roam-server-port 9091

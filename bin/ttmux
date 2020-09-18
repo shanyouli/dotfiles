@@ -9,19 +9,29 @@ _tmux_config() {
     done
 }
 
-
+case $TERMINAL in
+    *st|*alacritty) termcmd="$TERMINAL -t tmux" ;;
+    *) for cmd in "alacritty" "st" "xst" ; do
+           command -v $cmd >/dev/null && terminal=$cmd
+           break
+       done
+       if [[ ! $terminal ]] ; then
+           echo "Please install xst or st or alacritty..."
+           exit 1
+       else
+           termcmd="$terminal -t tmux"
+       fi
+       ;;
+esac
 if command -v tmux >/dev/null ; then
+    term_args="-e tmux"
     if tmux ls | grep -qEv 'attached|scratch'; then
-        alacritty -t tmux -e tmux at
+        term_args="$term_args at"
     else
         tmux_config=$(_tmux_config)
-        if [[ -n $tmux_config ]]; then
-            alacritty -t tmux -e tmux -f $tmux_config
-        else
-            alacritty -t tmux -e tmux
-        fi
+        [[ -n $tmux_config ]] && term_args="$term_args -f $tmux_config"
     fi
-    unset tmux_config
-else
-    alacritty -t tmux
+    termcmd="$termcmd $term_args"
 fi
+$termcmd
+unset tmux_config term_args termcmd
