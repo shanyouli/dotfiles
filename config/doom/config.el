@@ -43,13 +43,19 @@ Notice that this function assume you have graphics display"
       (featurep 'cocoa)))
 (defadvice! my/use-color-emoji-a (&rest _)
   :after #'doom-init-extra-fonts-h
-  (when (my/walle-ui-display-color-emoji?)
-    (cond (IS-MAC
-           (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji")
-                             nil 'prepend))
-          (IS-LINUX
-           (set-fontset-font t 'symbol (font-spec :family "Noto Color Emoji")
-                             nil 'prepend)))))
+  (progn
+    (when (my/walle-ui-display-color-emoji?)
+      (cond (IS-MAC
+             (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji")
+                               nil 'prepend))
+            (IS-LINUX
+             (set-fontset-font t 'symbol (font-spec :family "Noto Color Emoji")
+                               nil 'prepend))))
+    (cl-loop for font in '("zhHei" "Adobe Heiti Std" "STXihei"
+                           "WenQuanYi Micro Hei Mono")
+             when (my/font-installed-p font)
+             return (set-fontset-font t '(#x4e00 . #x9fff)
+                               (font-spec :family font)))))
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
