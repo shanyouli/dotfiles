@@ -59,7 +59,7 @@ Notice that this function assume you have graphics display"
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-moonlight)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -334,7 +334,11 @@ Notice that this function assume you have graphics display"
 
 (use-package! valign
   :commands valign-mode
-  :hook ((org-mode markdown-mode)  . valign-mode))
+  :hook ((org-mode markdown-mode)  . valign-mode)
+  ;; :init
+  ;; (setq valign-fancy-bar nil
+  ;;       valign-separator-row-style 'multi-column)
+  )
 
 (use-package! sh-script
   :mode (("/.bashrc\\'" . sh-mode)))
