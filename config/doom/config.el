@@ -108,6 +108,10 @@ Notice that this function assume you have graphics display"
 
 ;; Additional recentf package configuration
 
+(add-hook! doom-after-init-modules
+  (let ((title (assoc 'title default-frame-alist)))
+    (delq! title default-frame-alist)))
+
 (setq recentf-max-saved-items 300
       recentf-exclude
       '("\\.?cache" ".cask" "url" "COMMIT_EDITMSG\\'" "bookmars"
