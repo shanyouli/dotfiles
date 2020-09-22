@@ -176,3 +176,6 @@
        ;; (default +bindings +smartparens)
        (default +bindings)
        )
+
+(setq custom-file (expand-file-name "custom.el" doom-local-dir))
+(load custom-file 'no-error 'no-message)

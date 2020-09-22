@@ -109,8 +109,6 @@
 ;;     (expand-file-name "Videos/emacs/" "~"))
 
 (package! org-roam-server)
-(unless (executable-find "nixos-install")
-  (disable-packages! company-nixos-options))
 
 (unpin! doom-modeline)
 (disable-packages! pyim pangu-spaceing fcitx)

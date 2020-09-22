@@ -170,7 +170,7 @@ Notice that this function assume you have graphics display"
   (setq eaf-config-location (concat doom-local-dir "eaf/"))
   (setq eaf-proxy-type "http"
         eaf-proxy-host "127.0.0.1"
-        eaf-proxy-port "1081")
+        eaf-proxy-port "7890")
   (setq eaf-find-alternate-file-in-dired t)
   :hook (eaf-mode . evil-emacs-state)
   :config
@@ -341,7 +341,7 @@ Notice that this function assume you have graphics display"
   :hook ((org-mode markdown-mode)  . valign-mode)
   ;; :init
   ;; (setq valign-fancy-bar nil
-  ;;       valign-separator-row-style 'multi-column)
+        ;; valign-separator-row-style 'multi-column)
   )
 
 (use-package! sh-script

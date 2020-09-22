@@ -20,9 +20,11 @@ is_callabled() { command -v $1 >/dev/null || return 1; }
 if emacsclient --suppress-output --eval nil ; then
     emacsclient -a "" -c -F '((name . "scratch"))'
 else
-    if ( is_callabled dbus-launch && is_running dbus-launch ); then
-        dbus-launch emacs -T 'scratch'
-    else
-        LC_CTYPE="zh_CN.UTF-8" emacs -T 'scratch'
-    fi
+    # 如果使用 dbus-launch 启动，会导致 sis 插件不生效
+    # 如果对输入法使用了 dbus-launch 可以不使用 LC_CTYPE
+    # dbus-launch emacs -T 'scratch'
+    # 如果在启动 X 服务时，加载了 /etc/X11/xinit/xinitrc.d/* 中有关 dbus 的配置
+    # 可以不修改 LC_CTYPE, 只需安装一些必须的字体包.
+    # LC_CTYPE="zh_CN.UTF-8" emacs -T 'scratch'
+    emacs -T 'scratch'
 fi
