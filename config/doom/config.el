@@ -22,11 +22,11 @@
 (defun my/font-installed-p (font-name)
   "Check if font with FONT-NAME is available."
   (if (find-font (font-spec :name font-name)) t nil))
+;; (setq doom-unicode-font nil)
 (cl-loop for font in '("Cascadia Code" "JetBrains Mono" "Fantasque Sans Mono"
                        "Source Code Pro" "Menlo" "DejaVu Sans Mono" "monospace")
          when (my/font-installed-p font)
          return (setq doom-font (font-spec :family font :size 12)))
-;; (setq doom-font (font-spec :family "Cascadia Code" :size 12))
 ;; use emoji color font
 ;; see @https://emacs-china.org/t/emacs-cairo/9437/13
 (defun my/walle-ui-display-color-emoji? ()
@@ -41,21 +41,22 @@ Notice that this function assume you have graphics display"
                        (memq 'ftcrhb frame-font-backend))
                t)))
       (featurep 'cocoa)))
+
 (defadvice! my/use-color-emoji-a (&rest _)
-  :after #'doom-init-extra-fonts-h
+  :before #'doom-init-extra-fonts-h
   (progn
-    (when (my/walle-ui-display-color-emoji?)
-      (cond (IS-MAC
-             (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji")
-                               nil 'prepend))
-            (IS-LINUX
-             (set-fontset-font t 'symbol (font-spec :family "Noto Color Emoji")
-                               nil 'prepend))))
-    (cl-loop for font in '("zhHei" "Adobe Heiti Std" "STXihei"
-                           "WenQuanYi Micro Hei Mono")
-             when (my/font-installed-p font)
-             return (set-fontset-font t '(#x4e00 . #x9fff)
-                               (font-spec :family font)))))
+    (when (and (my/walle-ui-display-color-emoji?) IS-LINUX)
+      (setq doom-unicode-font "Noto Color Emoji"))
+    (advice-remove #'doom-init-extra-fonts-h 'my/use-color-emoji-a)))
+
+(defadvice! my/use-chinese-font-a (&rest _)
+  :after #'doom-init-extra-fonts-h
+  (cl-loop for font in '("zhHei" "Adobe Heiti Std" "STXihei"
+                         "WenQuanYi Micro Hei Mono")
+           when (my/font-installed-p font)
+           return (set-fontset-font t '(#x4e00 . #x9fff)
+                                    (font-spec :family font))))
+
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
