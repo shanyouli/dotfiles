@@ -369,6 +369,76 @@ Notice that this function assume you have graphics display"
     (org-roam-server-mode 1)
     (browse-url-xdg-open (format "http://localhost:%d" org-roam-server-port))))
 
+;;; Window-select
+(use-package! ace-window
+  :bind ([remap other-window] . ace-window)
+  :hook (emacs-startup . ace-window-display-mode)
+  :config
+  ;; Select window via 'C-w 1' ... `C-w 9'
+  (defun aw--select-window (number)
+    "Slecet the specified window."
+    (when (numberp number)
+      (let ((found nil))
+        (dolist (win (aw-window-list))
+          (when (and (window-live-p win)
+                     (eq number (string-to-number (window-parameter win 'ace-window-path))))
+            (setq found t)
+            (aw-switch-to-window win)))
+        (unless found
+          (message "No specified window: %d" number)))))
+  (defun aw--select-window-1 ()
+    (interactive )
+    (aw--select-window 1))
+  (defun aw--select-window-2 ()
+    (interactive )
+    (aw--select-window 2))
+  (defun aw--select-window-3 ()
+    (interactive )
+    (aw--select-window 3))
+  (defun aw--select-window-4 ()
+    (interactive )
+    (aw--select-window 4))
+  (defun aw--select-window-5 ()
+    (interactive )
+    (aw--select-window 5))
+  (defun aw--select-window-6 ()
+    (interactive )
+    (aw--select-window 6))
+  (defun aw--select-window-7 ()
+    (interactive )
+    (aw--select-window 7))
+  (defun aw--select-window-8 ()
+    (interactive )
+    (aw--select-window 8))
+  (defun aw--select-window-9 ()
+    (interactive )
+    (aw--select-window 9))
+  ;; (dotimes (n 9)
+  ;;   (bind-key (format "M-%d" (1+ n))
+  ;;             (lambda ()
+  ;;               (interactive)
+  ;;               (aw--select-window (1+ n))))
+  (map! :map evil-window-map
+        "1" #'aw--select-window-1
+        "2" #'aw--select-window-2
+        "3" #'aw--select-window-3
+        "4" #'aw--select-window-4
+        "5" #'aw--select-window-5
+        "6" #'aw--select-window-6
+        "7" #'aw--select-window-7
+        "8" #'aw--select-window-8
+        "9" #'aw--select-window-9)
+  (map! "M-1" #'aw--select-window-1
+        "M-2" #'aw--select-window-2
+        "M-3" #'aw--select-window-3
+        "M-4" #'aw--select-window-4
+        "M-5" #'aw--select-window-5
+        "M-6" #'aw--select-window-6
+        "M-7" #'aw--select-window-7
+        "M-8" #'aw--select-window-8
+        "M-9" #'aw--select-window-9))
+
+
 ;;; Key
 (map! :leader
       (:prefix-map ("e" . "eaf")
