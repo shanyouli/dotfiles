@@ -23,10 +23,17 @@
   "Check if font with FONT-NAME is available."
   (if (find-font (font-spec :name font-name)) t nil))
 ;; (setq doom-unicode-font nil)
-(cl-loop for font in '("Cascadia Code" "JetBrains Mono" "Fantasque Sans Mono"
-                       "Source Code Pro" "Menlo" "DejaVu Sans Mono" "monospace")
-         when (my/font-installed-p font)
-         return (setq doom-font (font-spec :family font :size 12)))
+(defadvice! my/use-default-font-a (&rest _)
+  "Set `doom-font'!"
+  :before #'doom-init-fonts-h
+  (progn
+    (cl-loop for font in '("Cascadia Code" "JetBrains Mono"
+                           "Fantasque Sans Mono" "Source Code Pro" "Menlo"
+                           "DejaVu Sans Mono" "monospace")
+             when (my/font-installed-p font)
+             return (setq doom-font (font-spec :family font :size 12)))
+    (advice-remove #'doom-init-fonts-h #'my/use-default-font-a)))
+
 ;; use emoji color font
 ;; see @https://emacs-china.org/t/emacs-cairo/9437/13
 (defun my/walle-ui-display-color-emoji? ()
@@ -43,6 +50,7 @@ Notice that this function assume you have graphics display"
       (featurep 'cocoa)))
 
 (defadvice! my/use-color-emoji-a (&rest _)
+  "If you can use a color Emoji, it will be used."
   :before #'doom-init-extra-fonts-h
   (progn
     (when (and (my/walle-ui-display-color-emoji?) IS-LINUX)
@@ -50,6 +58,7 @@ Notice that this function assume you have graphics display"
     (advice-remove #'doom-init-extra-fonts-h 'my/use-color-emoji-a)))
 
 (defadvice! my/use-chinese-font-a (&rest _)
+  "Set Chinese fonts."
   :after #'doom-init-extra-fonts-h
   (cl-loop for font in '("zhHei" "Adobe Heiti Std" "STXihei"
                          "WenQuanYi Micro Hei Mono")
@@ -64,16 +73,17 @@ Notice that this function assume you have graphics display"
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory (cond (IS-LINUX
-                           (cl-some (lambda (dir)
-                                      (if (file-directory-p dir)
-                                          dir))
-                                    (list
-                                     "/data/Documents/Org"
-                                     "~/Org"
-                                     "~/org"
-                                     "~/Documents/Org"
-                                     )))))
+(setq org-directory
+      (cond (IS-LINUX
+             (cl-some (lambda (dir)
+                        (if (file-directory-p dir)
+                            dir))
+                      (list
+                       "/data/Documents/Org"
+                       "~/Org"
+                       "~/org"
+                       "~/Documents/Org"
+                       )))))
 
 
 (defun my/find-file-in-dotfiles ()

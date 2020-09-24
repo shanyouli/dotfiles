@@ -93,7 +93,6 @@
 
 (package! hungry-delete)
 
-(package! iedit)
 (when (featurep! :emacs dired +icons)
   (package! all-the-icons-ivy-rich))
 
