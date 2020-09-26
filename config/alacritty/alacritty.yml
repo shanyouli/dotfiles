@@ -45,11 +45,14 @@ font:
   size: 9
 
   normal:
+    # family: monospace
     family: Cascadia Code
     style: Regular
 
   bold:
+    # family: monospace
     family: Cascadia Code
 
   italic:
+    # family: monospace
     family: Cascadia Code

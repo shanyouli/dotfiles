@@ -27,8 +27,8 @@
   "Set `doom-font'!"
   :before #'doom-init-fonts-h
   (progn
-    (cl-loop for font in '("JetBrains Mono" "Cascadia Code"
-                           "Fantasque Sans Mono" "Source Code Pro" "Menlo"
+    (cl-loop for font in '("JetBrains Mono" "Fantasque Sans Mono"
+                           "Cascadia Code" "Source Code Pro" "Menlo"
                            "DejaVu Sans Mono" "monospace")
              when (my/font-installed-p font)
              return (setq doom-font (font-spec :family font :size 12)))
