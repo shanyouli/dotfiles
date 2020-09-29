@@ -98,6 +98,7 @@ Notice that this function assume you have graphics display"
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
+(setq word-wrap-by-category t) ;; Chinese Wrap
 ;; kill emacs, not prompt
 (setq confirm-kill-emacs nil)
 ;; Here are some additional functions/macros that could help you configure Doom:

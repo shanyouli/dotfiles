@@ -111,4 +111,4 @@
 
 (package! ace-window)
 (unpin! doom-modeline)
-(disable-packages! pyim pangu-spaceing fcitx)
+(disable-packages! pyim pangu-spacing fcitx)
