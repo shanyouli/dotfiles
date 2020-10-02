@@ -120,6 +120,7 @@ Notice that this function assume you have graphics display"
 
 ;; Additional recentf package configuration
 
+;; When using the parameter -t emacs start, remove the default title
 (add-hook! doom-after-init-modules
   (let ((title (assoc 'title default-frame-alist)))
     (delq! title default-frame-alist)))
@@ -188,7 +189,6 @@ Notice that this function assume you have graphics display"
   :config
   ;; (eaf-setq eaf-browse-blank-page-url "https://duckduckgo.com")
   (setq eaf-browser-default-search-engine "duckduckgo"))
-
 
 (when (featurep! :checkers syntax)
   (remove-hook 'doom-first-buffer-hook 'global-flycheck-mode)
@@ -349,12 +349,8 @@ Notice that this function assume you have graphics display"
           (apply orign args)))
 
 (use-package! valign
-  :commands valign-mode
-  :hook ((org-mode markdown-mode)  . valign-mode)
-  ;; :init
-  ;; (setq valign-fancy-bar nil
-        ;; valign-separator-row-style 'multi-column)
-  )
+  ;; :commands valign-mode
+  :hook ((org-mode markdown-mode)  . valign-mode))
 
 (use-package! sh-script
   :mode (("/.bashrc\\'" . sh-mode)))
@@ -449,7 +445,12 @@ Notice that this function assume you have graphics display"
         "M-8" #'aw--select-window-8
         "M-9" #'aw--select-window-9))
 
-
+(use-package! org-cliplink
+  :after org
+  :config
+  (map! :map org-mode-map
+        :localleader
+        "l h" #'org-cliplink))
 ;;; Key
 (map! :leader
       (:prefix-map ("e" . "eaf")

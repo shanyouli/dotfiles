@@ -109,6 +109,10 @@
 
 (package! org-roam-server)
 
+(package! org-cliplink)
+
 (package! ace-window)
 (unpin! doom-modeline)
-(disable-packages! pyim pangu-spacing fcitx)
+
+(disable-packages! pyim fcitx)
+;; (disable-packages! pyim pangu-spacing fcitx)
