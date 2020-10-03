@@ -42,17 +42,14 @@ colors:
     white: '#FFFFFF'
 # 字体设置为等宽字体，可以用命令 fc-list 查看你系统的字体
 font:
-  size: 9
+  size: 10
 
   normal:
-    # family: monospace
-    family: Cascadia Code
+    family: Monospace
     style: Regular
 
   bold:
-    # family: monospace
-    family: Cascadia Code
+    family: Monospace
 
   italic:
-    # family: monospace
-    family: Cascadia Code
+    family: Monospace

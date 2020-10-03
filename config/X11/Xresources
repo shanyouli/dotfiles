@@ -55,19 +55,20 @@
 *.color241:          #b3b1ad
 
 !! General
-st*font:			    Cascadia Code:pixelsize=12
+st*font:			Monospace:size=10
 !!st*font1:			MesloLGM NF:pixelsize=10
 !1st*font2:      	  	WenQuanYi Micro Hei Mono:pixelsize=14
 !!st*font2:		  	PowerlineSymbola
-emacs*font:		  	Cascadia Code:pixelsize=12
-XTerm.vt100.faceName:   Cascadia Code:pixelsize=12
+! emacs*font:		  	Monospace:pixelsize=12
+emacs*font:		  	Monospace:size=12
+XTerm.vt100.faceName:   Monospace:size=10
 !! Urxvt
 URxvt*depth:			32
 URxvt*.background:      black
 URxvt*.borderless:      1
 URxvt*.buffered:        true
 URxvt*.cursorBlink:     true
-URxvt.font:             xft:Cascadia Code:pixelsize=12
+URxvt.font:             xft:Monospace:pixelsize=12
 				! xft:icons-in-terminal, \
 				! xft:MesloLGM NF:pixelsize=12
 URxvt*.internalBorder:  													       10
