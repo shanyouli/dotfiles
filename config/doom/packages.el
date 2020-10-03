@@ -54,8 +54,6 @@
                              :repo "manateelazycat/emacs-application-framework"
                              :files ("app" "core" "*.el" "*.py")
                              :no-byte-compile t))
-;; chinese input-method
-(package! rime)
 (package! rainbow-mode)
 (package! ebuild-mode :ignore (not (executable-find "emerge")))
 
@@ -87,9 +85,13 @@
                                    :host github
                                    :repo "loyalpartner/english-teacher.el"
                                    :no-byte-compile t))
+;; chinese input-method
+(package! rime)
 (package! sis :recipe (:type git
                         :host github
                         :repo "laishulu/emacs-smart-input-source"))
+(package! pangu-spacing)
+(package! ace-pinyin)
 
 (package! hungry-delete)
 

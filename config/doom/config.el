@@ -9,6 +9,7 @@
 (setq user-full-name "Shanyou Li"
       user-mail-address "shanyouli6@gmail.com")
 
+;;; font
 ;; Doom exposes five (optional) variables or controlling fonts in Doom. Here
 ;; are the three important ones:
 ;;
@@ -51,11 +52,9 @@ Notice that this function assume you have graphics display"
 
 (defadvice! my/use-color-emoji-a (&rest _)
   "If you can use a color Emoji, it will be used."
-  :before #'doom-init-extra-fonts-h
-  (progn
-    (when (and (my/walle-ui-display-color-emoji?) IS-LINUX)
-      (setq doom-unicode-font "Noto Color Emoji"))
-    (advice-remove #'doom-init-extra-fonts-h 'my/use-color-emoji-a)))
+  :after-until #'doom-init-extra-fonts-h
+  (when (and (my/walle-ui-display-color-emoji?) IS-LINUX)
+    (set-fontset-font t 'symbol "Noto Color Emoji")))
 
 (defadvice! my/use-chinese-font-a (&rest _)
   "Set Chinese fonts."
@@ -220,21 +219,44 @@ Notice that this function assume you have graphics display"
     (setq rime-posfrmae-style 'horizontal)))
 
 (use-package! sis
-  ;; :after evil
-  :hook (after-init . (lambda ()
-                        ;; enable the /cursor color/ mode
-                        (sis-global-cursor-color-mode t)
-                        ;; enable the /respect/ mode
-                        (sis-global-respect-mode t)
-                        ;; enable the /follow context/ mode for all buffers
-                        (sis-global-follow-context-mode t)
-                        ;; enable the /inline english/ mode for all buffers
-                        (sis-global-inline-mode t)))
+  :after evil
   :config
   (push "M-<SPC>" sis-prefix-override-keys)
   (sis-ism-lazyman-config "1" "2"
                           (cond ((executable-find"fcitx5") 'fcitx5)
-                                ((executable-find "fcitx") 'fcitx))))
+                                ((executable-find "fcitx") 'fcitx)))
+  ;; enable the /cursor color/ mode
+  (sis-global-cursor-color-mode t)
+  ;; enable the /respect/ mode
+  (sis-global-respect-mode t)
+  ;; enable the /follow context/ mode for all buffers
+  (sis-global-follow-context-mode t)
+  ;; enable the /inline english/ mode for all buffers
+  (sis-global-inline-mode t))
+
+(use-package! pangu-spacing
+  :hook (text-mode . pangu-spacing-mode)
+  :config
+  ;; Always insert `real' space in org-mode.
+  (setq-hook! 'org-mode-hook pangu-spacing-real-insert-separtor t))
+
+(use-package! ace-pinyin
+  :after avy
+  :init (setq ace-pinyin-use-avy t)
+  :config (ace-pinyin-global-mode 1))
+
+(defadvice! +chinese--org-html-paragraph-a (args)
+  "Join consecutive Chinese lines into a single long line without unwanted space
+when exporting org-mode to html."
+  :filter-args #'org-html-paragraph
+  (cl-destructuring-bind (paragraph contents info) args
+    (let* ((fix-regexp "[[:multibyte:]]")
+           (fixed-contents
+            (replace-regexp-in-string
+             (concat "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)")
+             "\\1\\2"
+             contents)))
+      (list paragraph fixed-contents info))))
 
 (use-package! sdcv
   :commands lye-dict-search-at-point
