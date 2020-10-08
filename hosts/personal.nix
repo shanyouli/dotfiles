@@ -10,10 +10,10 @@
   ];
 
   # Nothing in /tmp should survive a reboot
-  boot.tmpOnTmpfs = true;
+  #boot.tmpOnTmpfs = true;
   # Use simple bootloader; I prefer the on-demand BIOs boot menu
   boot.loader = {
-    timeout = 1;
+    timeout = 3;
     efi.canTouchEfiVariables = true;
     systemd-boot = {
       enable = true;
@@ -27,13 +27,13 @@
 
   ### Universal defaults
   networking.firewall.enable = true;
-  networking.hosts = {
-    "192.168.1.2"  = [ "ao" ];
-    "192.168.1.3"  = [ "aka" ];
-    "192.168.1.10" = [ "kuro" ];
-    "192.168.1.11" = [ "shiro" ];
-    "192.168.1.12" = [ "midori" ];
-  };
+#  networking.hosts = {
+#    "192.168.1.2"  = [ "ao" ];
+#    "192.168.1.3"  = [ "aka" ];
+#    "192.168.1.10" = [ "kuro" ];
+#    "192.168.1.11" = [ "shiro" ];
+#    "192.168.1.12" = [ "midori" ];
+#  };
 
 
   ### A tidy $HOME is a tidy mind

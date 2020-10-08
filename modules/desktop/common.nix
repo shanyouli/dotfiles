@@ -4,7 +4,9 @@
     # I often need a thumbnail browser to show off, peruse or organize photos,
     # design work, or digital art.
     xfce.thunar
+    xfce.thunar-dropbox-plugin
     xfce.tumbler # for thumbnails
+    dropbox
 
     calibre   # managing my ebooks
     evince    # pdf reader
@@ -55,6 +57,9 @@
   } else if config.time.timeZone == "Europe/Copenhagen" then {
     latitude = 55.88;
     longitude = 12.5;
+  } else if config.time.timeZone == "Asia/Shanghai" then {
+    latitude = 30.938744;
+    longitude = 113.9076;
   } else {});
 
   services.xserver = {
@@ -100,4 +105,9 @@
     source "$XDG_CONFIG_HOME"/xsession/*.sh
     xrdb -merge "$XDG_CONFIG_HOME"/xtheme/*
   '';
+  services.gvfs = {
+    enable = true;
+    package = lib.mkForce pkgs.gnome3.gvfs;
+  };
+
 }

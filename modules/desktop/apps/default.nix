@@ -9,5 +9,6 @@
     ./rofi.nix
     ./skype.nix
     ./vm.nix
+    ./fcitx.nix
   ];
 }

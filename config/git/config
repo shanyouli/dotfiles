@@ -1,13 +1,13 @@
 [user]
-	name = Henrik Lissner
-	email = henrik@lissner.net
-	signingkey = 5F6C0EA160557395
+	name = shanyou Li
+	email = shanyouli6@gmail.com
+	# signingkey = 5F6C0EA160557395
 [commit]
-	gpgsign = true
+	# gpgsign = true
 [core]
 	whitespace = trailing-space
 [github]
-	user = hlissner
+	user = shanyouli
 [rebase]
 	autosquash = true
 [push]

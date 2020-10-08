@@ -25,8 +25,8 @@ stdenv.mkDerivation rec {
 
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
-  outputHash = "1ns00y1haxm20jak26gjv53yisaw9vsr2dbsgj10zz65rglr1h18";
-
+  #outputHash = "1ns00y1haxm20jak26gjv53yisaw9vsr2dbsgj10zz65rglr1h18";
+  outputHash = "0lgjkfzl42q07m3d7wjvcjvnx4w76vyx0ckdbygblsw1qr7zqv7p";
   meta = with stdenv.lib; {
     description = "A flat and light theme with a modern look";
     homepage = https://github.com/EliverLara/Ant-Dracula;

@@ -50,7 +50,7 @@ let cfg = config.modules; in
       '';
     };
 
-    fonts.fonts = [ pkgs.nerdfonts ];
+    #fonts.fonts = [ pkgs.nerdfonts ];
     my.packages = with pkgs; [
       my.ant-dracula
       paper-icon-theme # for rofi

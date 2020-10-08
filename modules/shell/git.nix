@@ -14,6 +14,7 @@ with lib;
       packages = with pkgs; [
         gitAndTools.hub
         gitAndTools.diff-so-fancy
+        git-lfs
       ];
       zsh.rc = lib.readFile <config/git/aliases.zsh>;
       # Do recursively, in case git stores files in this folder
