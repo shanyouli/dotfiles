@@ -39,9 +39,9 @@
       fira-code-symbols
       symbola
       noto-fonts
-      noto-fonts-cjk
       font-awesome-ttf
       siji
+      unifont
     ];
     fontconfig.defaultFonts = {
       sansSerif = ["Ubuntu"];
