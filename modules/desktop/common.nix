@@ -33,8 +33,10 @@
     enableFontDir = true;
     enableGhostscriptFonts = true;
     fonts = with pkgs; [
-      ubuntu_font_family
       dejavu_fonts
+      (unstable.nerdfonts.override {
+        fonts = [ "FantasqueSansMono"  "JetBrainsMono" ];
+      })
       fira-code
       fira-code-symbols
       symbola
@@ -44,8 +46,8 @@
       unifont
     ];
     fontconfig.defaultFonts = {
-      sansSerif = ["Ubuntu"];
-      monospace = ["Fira Code"];
+      sansSerif = [ "Noto Sans" ];
+      monospace = [ "FantasqueSansMono Nerd Font Mono" ];
     };
   };
 

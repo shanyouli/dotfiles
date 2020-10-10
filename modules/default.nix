@@ -19,8 +19,8 @@ in {
   options = {
     my = {
       ## Personal details
-      username = mkOptionStr "hlissner";
-      email = mkOptionStr "henrik@lissner.net";
+      username = mkOptionStr "shanyouli";
+      email = mkOptionStr "shanyouli6@gmail.com";
 
       ## Convenience aliases
       home = mkOption { type = options.home-manager.users.type.functor.wrapped; };
