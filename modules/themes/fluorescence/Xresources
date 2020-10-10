@@ -50,11 +50,11 @@
 
 
 !! general
-scratch.font: Fira Code:pixelsize=16
+scratch.font: monospace:pixelsize=16
 
 
 !! xst
-st.font: Fira Code:pixelsize=12
+st.font: monospace:pixelsize=14
 
 
 !! urxvt
@@ -63,7 +63,7 @@ URxvt*.background:             blk
 URxvt*.borderless:             1
 URxvt*.buffered:               true
 URxvt*.cursorBlink:            true
-URxvt*.font:                   xft:Fira Code:pixelsize=12
+URxvt*.font:                   xft:monospace:pixelsize=14
 URxvt*.internalBorder:         10
 URxvt*.letterSpace:            0
 URxvt*.lineSpace:              0

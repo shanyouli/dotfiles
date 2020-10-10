@@ -38,11 +38,12 @@
         fonts = [ "FantasqueSansMono"  "JetBrainsMono" ];
       })
       fira-code
+      noto-fonts
       fira-code-symbols
       symbola
-      noto-fonts
       font-awesome-ttf
       siji
+      wqy-microhei
       unifont
     ];
     fontconfig.defaultFonts = {
