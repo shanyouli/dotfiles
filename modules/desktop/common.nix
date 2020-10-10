@@ -43,7 +43,7 @@
       symbola
       font-awesome-ttf
       siji
-      wqy-microhei
+      wqy_microhei
       unifont
     ];
     fontconfig.defaultFonts = {
