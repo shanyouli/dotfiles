@@ -53,6 +53,17 @@ with lib;
         # :lang rust
         rustfmt
         rls
+        # :lang sh
+        shellcheck
+        # :lang org +roam
+        graphviz
+        # :lang json
+        jq
+        # :lang markdown
+        multimarkdown
+        # :lang nix
+        nixfmt
+        # :lang python
       ];
 
       env.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];
