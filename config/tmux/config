@@ -4,8 +4,9 @@
 ########################################
 
 set  -g default-terminal "xterm-256color"
-
-new-session     # spawn session if attaching when none are running
+# Using True Color
+set-option -sa terminal-overrides ",*256col*:Tc,xterm-termite:Tc"
+#new-session     # spawn session if attaching when none are running
 
 setw -g automatic-rename on      # rename window after current program
 set  -g renumber-windows on      # renumber windows when one is closed
