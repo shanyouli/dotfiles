@@ -23,6 +23,9 @@
       categories = "Development";
     })
   ];
+  # move $HOME/.compose-cache to $XDG_CACHE_HOME
+  my.env.XCOMPOSECACHE = "$XDG_CACHE_HOME/X11/compose";
+  my.env.XCOMPOSEFILE = "$XDG_CONFIG_HOME/X11/compose";
 
   ## Sound
   sound.enable = true;
@@ -107,6 +110,7 @@
     export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
     source "$XDG_CONFIG_HOME"/xsession/*.sh
     xrdb -merge "$XDG_CONFIG_HOME"/xtheme/*
+    [[ -d $HOME/.compose-cache ]] && rm -rf $HOME/.compose-cache
   '';
   services.gvfs = {
     enable = true;

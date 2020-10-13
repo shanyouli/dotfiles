@@ -5,6 +5,7 @@
 
 set  -g default-terminal "xterm-256color"
 # Using True Color
+# @see https://github.com/tmux/tmux/issues/1246
 set-option -sa terminal-overrides ",*256col*:Tc,xterm-termite:Tc"
 #new-session     # spawn session if attaching when none are running
 
