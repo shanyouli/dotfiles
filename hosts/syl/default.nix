@@ -14,12 +14,12 @@
       bspwm.enable = true;
       apps.rofi.enable = true;
       apps.fcitx.enable = true;
+      apps.vm.enable = true;
       term.default = "xst";
       term.st.enable = true;
 
       browsers.default = "firefox";
       browsers.firefox.enable = true;
-
     };
 
     editors = {
@@ -35,6 +35,7 @@
       git.enable = true;
       tmux.enable = true;
       zsh.enable = true;
+      gnupg.enable = true;
     };
     themes.fluorescence.enable = true;
   };

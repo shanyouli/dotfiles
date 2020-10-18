@@ -1,0 +1,1 @@
+/config/clash/** filter=git-crypt diff=git-crypt
