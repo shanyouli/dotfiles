@@ -14,5 +14,6 @@
     ./syncthing.nix
     # ./transmission.nix
     ./clash.nix
+    ./dropbox.nix
   ];
 }

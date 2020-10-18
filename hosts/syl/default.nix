@@ -29,6 +29,7 @@
     };
     services = {
       clash.enable = true;
+      dropbox.enable = true;
     };
     shell = {
       direnv.enable = true;
