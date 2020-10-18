@@ -26,7 +26,7 @@ in {
       home = mkOption { type = options.home-manager.users.type.functor.wrapped; };
       user = mkOption { type = types.submodule; };
       packages = mkOption { type = with types; listOf package; };
-
+      services = mkOption { type = types.submodule; };
       ## Environment
       env = mkOption {
         type = with types; attrsOf (either (either str path) (listOf (either str path)));
@@ -64,6 +64,7 @@ in {
     ## Convenience aliases
     home-manager.users.${config.my.username} = mkAliasDefinitions options.my.home;
     users.users.${config.my.username} = mkAliasDefinitions options.my.user;
+    systemd.user.services = mkAliasDefinitions options.my.services;
     my.user.packages = config.my.packages;
 
     ## PATH should always start with its old value
