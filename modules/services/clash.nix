@@ -27,15 +27,18 @@ in
       home.xdg.configFile."clash/config.yaml".source = <config/clash/config.yaml>;
     };
     systemd.user.services.clash = {
-      Unit = {
-        After = [ "network.target" ];
-        Description = "Clash Proxy Daemon";
-      };
-      Install = { WantedBy = [ "default.target" ]; };
+      after = [ "network.target" ];
+      description = "Clash Proxy Daemon";
+      wantedBy = [ "default.target" ];
       # TODO: 使 my 可以在 右端使用。
-      Service = {
+      serviceConfig = {
         #Environment = "XDG_CONFIG_HOME=${config.my.home.xdg.configHome}";
-        ExecStart = "${pkgs.unstable.clash}/bin/clash";
+        ExecStart = "${pkgs.unstable.clash.out}/bin/clash";
+        ExecReload = "${pkgs.coreutils.out}/bin/kill -HUP $MAINPID";
+        KillMode = "control-group";
+        Restart = "on-failure";
+        # PrivateTmp = true;
+        # Nice = 10;
       };
     };
   };

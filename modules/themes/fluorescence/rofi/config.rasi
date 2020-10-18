@@ -39,8 +39,9 @@ configuration {
 
 /**** Layout ****/
 window {
-  width:    1000px;
-  y-offset: -50px;
+  width:    61.8%;
+  height:   61.8%;
+  y-offset:  -30.2%;
   anchor:   north;
   location: center;
   border: 1px;
@@ -50,12 +51,12 @@ window {
 }
 
 listview {
-  lines: 12;
+  /*lines: 12;*/
   fixed-height: false;
   /* reverse: true; */
   columns: 2;
   scrollbar: true;
-  spacing: 1px;
+  spacing: 5px;
   /* Remove strange gap between listview and inputbar */
   margin: -2px 0 0;
 }
