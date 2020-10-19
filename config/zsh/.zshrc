@@ -24,9 +24,8 @@ zinit light zsh-users/zsh-history-substring-search
 zinit ice depth"1" wait"1" silent
 zinit light zdharma/history-search-multi-word
 
-zinit ice depth"1"  wait"1" as"completions" blockf atpull'zinit creinstall -q .'
+zinit ice lucid depth"1"  wait"1" as"completion" blockf atpull'zinit creinstall -q .'
 zinit light zsh-users/zsh-completions
-
 
 #zinit pack for fzf
 if command -v fzf >/dev/null ; then
@@ -65,12 +64,10 @@ if command -v "ruby" >/dev/null; then
   zinit light zinit-zsh/z-a-man
 fi
 # # fast syntax highlight
-[[ -z $SSH_CONNECTION ]] && {
-  # see@https://github.com/zdharma/fast-syntax-highlighting#features
-  zinit ice depth"1" wait"1" lucid \
-    atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay"
-  zinit light zdharma/fast-syntax-highlighting
-}
+# see@https://github.com/zdharma/fast-syntax-highlighting#features
+zinit ice lucid depth"1" wait"1" if'[[ -z $SSH_CONNECTION ]]'
+zinit light zdharma/fast-syntax-highlighting
+
 autoload -Uz compinit && compinit -u -d $ZSH_CACHE/zcompdump
 source $ZDOTDIR/config.zsh
 if [[ $TERM != dumb ]]; then
