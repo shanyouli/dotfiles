@@ -23,6 +23,7 @@
     };
     dev = {
       lua.enable = true;
+      ruby.enable = true;
     };
     editors = {
       default = "nvim";

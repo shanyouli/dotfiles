@@ -22,8 +22,10 @@ with lib;
         luaPackages.moonscript
         luarocks
       ];
-
-      zsh.rc = ''eval "$(luarocks path --bin)"'';
+      env.LUAROCKS_HOME = "$XDG_DATA_HOME/luarocks";
+      env.PATH = [ "$XDG_DATA_HOME/luarocks/bin" ];
+      alias.luarocks = "luarocks --tree $LUAROCKS_HOME";
+      zsh.rc = ''eval "$(luarocks path --no-bin --tree $LUAROCKS_HOME)"'';
     };
   };
 }

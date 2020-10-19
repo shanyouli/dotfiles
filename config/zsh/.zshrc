@@ -24,7 +24,7 @@ zinit light zsh-users/zsh-history-substring-search
 zinit ice depth"1" wait"1" silent
 zinit light zdharma/history-search-multi-word
 
-zinit ice depth"1" blockf atpull'zinit creinstall -q .'
+zinit ice depth"1"  wait"1" as"completions" blockf atpull'zinit creinstall -q .'
 zinit light zsh-users/zsh-completions
 
 
@@ -50,9 +50,20 @@ else
 fi
 
 # 快速目录跳转
-zinit ice lucid wait='1' depth="1"
-zinit light skywind3000/z.lua
+if command -v "lua">/dev/null ; then
+  zinit ice lucid wait='1' depth="1"
+  zinit light skywind3000/z.lua
+  export _ZL_DATA=$XDG_CACHE_HOME/zlua
+else
+  zinit ice lucid wait='1' depth='1'
+  zinit light agkozak/zsh-z
+  export ZSHZ_DATA=$XDG_CACHE_HOME/z
+fi
 
+# 为安装插件提供man 帮助
+if command -v "ruby" >/dev/null; then
+  zinit light zinit-zsh/z-a-man
+fi
 # # fast syntax highlight
 [[ -z $SSH_CONNECTION ]] && {
   # see@https://github.com/zdharma/fast-syntax-highlighting#features
