@@ -22,9 +22,10 @@ with lib;
       env.TMUX_HOME = "$XDG_CONFIG_HOME/tmux";
       env.TMUXIFIER = "$XDG_DATA_HOME/tmuxifier";
       env.TMUXIFIER_LAYOUT_PATH = "$XDG_DATA_HOME/tmuxifier";
-      env.PATH = [ "$TMUXIFIER/bin" ];
+      env.PATH = [ "$XDG_DATA_HOME/tmuxifier/bin" ];
 
       zsh.rc = ''
+        [[ -d $TMUXIFIER ]] || git clone --depth 1 https://github.com/jimeh/tmuxifier $TMUXIFIER
         _cache tmuxifier init -
         ${lib.readFile <config/tmux/aliases.zsh>}
       '';
