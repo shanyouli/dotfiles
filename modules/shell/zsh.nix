@@ -17,7 +17,7 @@ with lib;
         nix-zsh-completions
         bat
         exa
-        fasd
+        #fasd
         fd
         # fzf
         file

@@ -21,7 +21,9 @@
       browsers.default = "firefox";
       browsers.firefox.enable = true;
     };
-
+    dev = {
+      lua.enable = true;
+    };
     editors = {
       default = "nvim";
       vim.enable = true;
