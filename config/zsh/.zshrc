@@ -61,12 +61,19 @@ fi
 
 # 为安装插件提供man 帮助
 if command -v "ruby" >/dev/null; then
+  zinit ice lucid depth"1" wait"1"
   zinit light zinit-zsh/z-a-man
 fi
 # # fast syntax highlight
 # see@https://github.com/zdharma/fast-syntax-highlighting#features
 zinit ice lucid depth"1" wait"1" if'[[ -z $SSH_CONNECTION ]]'
 zinit light zdharma/fast-syntax-highlighting
+
+# fast alias-tips
+zinit ice from'gh-r' as'program'
+zinit light sei40kr/fast-alias-tips-bin
+zinit ice lucid depth"1" wait"1"
+zinit light sei40kr/zsh-fast-alias-tips
 
 autoload -Uz compinit && compinit -u -d $ZSH_CACHE/zcompdump
 source $ZDOTDIR/config.zsh

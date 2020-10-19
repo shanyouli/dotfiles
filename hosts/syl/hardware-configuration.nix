@@ -6,8 +6,8 @@
 {
   imports =
     [
-      # <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
-      "${modulesPath}/installer/scan/not-detected.nix"
+      <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
+      # "${modulesPath}/installer/scan/not-detected.nix"
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
@@ -33,6 +33,11 @@
   services.xserver.videoDrivers = [ "intel" ];
   hardware.opengl.enable = true;
 
+  # The touchpad fix errors
+  services.xserver.synaptics.enable = false;
+  services.xserver.libinput.naturalScrolling = true;
+  services.xserver.libinput.accelProfile = "flat";
+  services.xserver.libinput.enable = true;
   # Power management
   environment.systemPackages = [ pkgs.acpi ];
   powerManagement.powertop.enable = true;
