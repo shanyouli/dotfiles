@@ -19,7 +19,8 @@ with lib;
         exa
         fasd
         fd
-        fzf
+        # fzf
+        file
         htop
         tldr
         tree
