@@ -43,7 +43,7 @@
       Identifier "Enable libinput for TrackPoint"
       MatchIsPointer "on"
       Driver "libinput"
-      Option "Accel Speed" "-0.4"
+      Option "Accel Speed" "0.1"
     ''
   ];
   # Power management
