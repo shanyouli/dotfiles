@@ -53,6 +53,7 @@ if command -v "lua">/dev/null ; then
   zinit ice lucid wait='1' depth="1"
   zinit light skywind3000/z.lua
   export _ZL_DATA=$XDG_CACHE_HOME/zlua
+  export _ZL_ADD_ONCE=1 # 仅当更改路径时，更新数据库
 else
   zinit ice lucid wait='1' depth='1'
   zinit light agkozak/zsh-z
