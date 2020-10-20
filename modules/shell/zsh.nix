@@ -17,9 +17,8 @@ with lib;
         nix-zsh-completions
         bat
         exa
-        #fasd
         fd
-        # fzf
+        fzf
         file
         htop
         tldr
