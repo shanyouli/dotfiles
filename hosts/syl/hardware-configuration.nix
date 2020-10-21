@@ -19,7 +19,7 @@
 
   ## CPU
   nix.maxJobs = lib.mkDefault 3;
-  powerManagement.cpuFreqGovernor = "performance";
+  powerManagement.cpuFreqGovernor = "powersae";
   hardware.cpu.intel.updateMicrocode = true;
 
   ## SSDs

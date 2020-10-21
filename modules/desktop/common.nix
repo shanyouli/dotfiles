@@ -46,6 +46,7 @@
       symbola
       font-awesome-ttf
       siji
+      hanazono
       wqy_microhei
       unifont
     ];

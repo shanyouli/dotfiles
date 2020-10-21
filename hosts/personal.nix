@@ -77,6 +77,9 @@
     pushd /home/${config.my.username}
     rm -rf .compose-cache .nv .pki .dbus .fehbg
     [ -s .xsession-errors ] || rm -f .xsession-errors*
+    if [[ -n $WGETRC ]] && [[ ! -f $WGETRC ]]; then
+      tee $WGETRC <<< "hsts-file = $XDG_CACHE_HOME/wget-hsts"
+    fi
     popd
   '';
 }

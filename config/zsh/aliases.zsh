@@ -33,3 +33,13 @@ r() {
   local time=$1; shift
   sched "$time" "notify-send --urgency=critical 'Reminder' '$@'; ding";
 }; compdef r=sched
+
+unproxy() {  unset https_proxy http_proxy all_proxy rsync_proxy ftp_proxy ; }
+sproxy() {
+  local _proxy=http://127.0.0.1:${1:-7890}
+  export http_proxy=${_proxy}
+  export https_proxy=${_proxy}
+  export all_proxy=${_proxy}
+  export ftp_proxy=${_proxy}
+  export rsync_proxy=${_proxy}
+}

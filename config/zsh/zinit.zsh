@@ -17,6 +17,8 @@ source "${ZINIT[BIN_DIR]}/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
+[[ -d "${ZINIT[COMPLETIONS_DIR]}" ]] || mkdir -p ${ZINIT[COMPLETIONS_DIR]}
+
 # Common ICE modifiers
 zt() { zinit depth"1" lucid  ${1/#[0-9][a-c]/wait"$1"} "${@:2}" ; }
 # zice() { zinit ice lucid depth'1' "$@" ; }
