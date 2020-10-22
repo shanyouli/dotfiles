@@ -13,11 +13,9 @@ typeset -gA ZINIT=(
     git clone --depth 1 https://github.com/zdharma/zinit "${ZINIT[BIN_DIR]}"
 }
 source "${ZINIT[BIN_DIR]}/zinit.zsh"
-
+[[ -d "${ZINIT[COMPLETIONS_DIR]}" ]] || mkdir -p ${ZINIT[COMPLETIONS_DIR]}
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
-
-[[ -d "${ZINIT[COMPLETIONS_DIR]}" ]] || mkdir -p ${ZINIT[COMPLETIONS_DIR]}
 
 # Common ICE modifiers
 zt() { zinit depth"1" lucid  ${1/#[0-9][a-c]/wait"$1"} "${@:2}" ; }
@@ -34,6 +32,12 @@ zice() {
     zinit ice lucid depth'1' $_wait ${_all:0:-1}
     zinit light $_package
 }
+
+zice romkatv/powerlevel10k
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+[[ -r "$ZDOTDIR"/p10k.zsh ]] && source "$ZDOTDIR"/p10k.zsh
 zt 0a light-mode for \
     blockf \
         zsh-users/zsh-completions \

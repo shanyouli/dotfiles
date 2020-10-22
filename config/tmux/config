@@ -122,6 +122,7 @@ bind -T copy-mode-vi L send-keys -X end-of-line
 set -g @open-editor 'C-e'
 set -g @open-S 'https://www.duckduckgo.com/'
 
-source $TMUX_HOME/plugins
+# FIXME: Plug the order of execution problems.
 if '[ -f $TMUX_HOME/theme ]' 'source $TMUX_HOME/theme'
 if '[ -f ~/.tmux.conf ]' 'source ~/.tmux.conf'
+source $TMUX_HOME/plugins

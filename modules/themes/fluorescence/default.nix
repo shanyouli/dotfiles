@@ -55,7 +55,7 @@ let cfg = config.modules; in
       my.ant-dracula
       paper-icon-theme # for rofi
     ];
-    my.zsh.rc = lib.readFile ./zsh/prompt.zsh;
+   # my.zsh.rc = lib.readFile ./zsh/prompt.zsh;
 
     my.home = {
       home.file = mkMerge [
