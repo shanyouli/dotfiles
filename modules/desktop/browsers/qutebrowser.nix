@@ -21,7 +21,7 @@ with lib;
         desktopName = "Qutebrowser (Private)";
         genericName = "Open a private Qutebrowser window";
         icon = "qutebrowser";
-        exec = "${qutebrowser}/bin/qutebrowser ':open -p'";
+        exec = ''${qutebrowser}/bin/qutebrowser ":open -p"'';
         categories = "Network";
       })
     ];

@@ -24,9 +24,10 @@ in {
 
       ## Convenience aliases
       home = mkOption { type = options.home-manager.users.type.functor.wrapped; };
-      user = mkOption { type = types.submodule; };
+      # user = mkOption { type = types.submodule; };
+      user = mkOption { type = options.users.users.type.functor.wrapped; };
       packages = mkOption { type = with types; listOf package; };
-      services = mkOption { type = types.submodule; };
+      services = mkOption { type = options.systemd.user.services.type.functor.wrapped; };
       ## Environment
       env = mkOption {
         type = with types; attrsOf (either (either str path) (listOf (either str path)));
