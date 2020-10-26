@@ -125,7 +125,7 @@ c.content.host_blocking.lists = [
 c.content.host_blocking.whitelist = []
 
 c.downloads.position = 'bottom'
-c.downloads.location.directory = os.path.expanduser("~/share/dl")
+c.downloads.location.directory = os.path.expanduser("~/.local/share/dl")
 c.downloads.location.prompt = False
 # c.downloads.location.remember = True
 # c.downloads.location.suggestion = 'path'
@@ -142,7 +142,7 @@ c.fonts.keyhint = '8pt monospace'
 c.fonts.messages.error = '8pt monospace'
 c.fonts.messages.info = '8pt monospace'
 c.fonts.messages.warning = '8pt monospace'
-c.fonts.monospace = '"xos4 Terminus", Terminus, Monospace, "DejaVu Sans Mono", Monaco, "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", Courier, "Liberation Mono", monospace, Fixed, Consolas, Terminal'
+c.fonts.default_family = [ "xos4 Terminus", "Terminus", "Monospace", "DejaVu Sans Mono", "Monaco", "Bitstream Vera Sans Mono", "Andale Mono", "Courier New", "Courier", "Liberation Mono", "monospace", "Fixed", "Consolas", "Terminal"]
 c.fonts.prompts = '8pt sans-serif'
 c.fonts.statusbar = '8pt monospace'
 c.fonts.tabs = '8pt monospace'

@@ -46,6 +46,9 @@
       Option "Accel Speed" "0.1"
     ''
   ];
+
+  # Set DPI
+  services.xserver.dpi = 96;
   # Power management
   environment.systemPackages = [ pkgs.acpi ];
   powerManagement.powertop.enable = true;

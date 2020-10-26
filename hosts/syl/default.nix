@@ -20,10 +20,12 @@
 
       browsers.default = "firefox";
       browsers.firefox.enable = true;
+      browsers.qutebrowser.enable = true;
     };
     dev = {
       lua.enable = true;
       ruby.enable = true;
+      adb.enable = true;
     };
     editors = {
       default = "nvim";

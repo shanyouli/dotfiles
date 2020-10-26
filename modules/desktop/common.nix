@@ -23,9 +23,6 @@
       categories = "Development";
     })
   ];
-  # move $HOME/.compose-cache to $XDG_CACHE_HOME
-  my.env.XCOMPOSECACHE = "$XDG_CACHE_HOME/X11/compose";
-  my.env.XCOMPOSEFILE = "$XDG_CONFIG_HOME/X11/compose";
 
   ## Sound
   sound.enable = true;
@@ -36,23 +33,25 @@
     enableFontDir = true;
     enableGhostscriptFonts = true;
     fonts = with pkgs; [
-      dejavu_fonts
       (unstable.nerdfonts.override {
-        fonts = [ "FantasqueSansMono"  "JetBrainsMono" ];
+        fonts = [ "AnonymousPro" "FantasqueSansMono"  "JetBrainsMono" ];
       })
-      fira-code
       noto-fonts
-      fira-code-symbols
       symbola
       font-awesome-ttf
+      noto-fonts-emoji
       siji
       hanazono
       wqy_microhei
       unifont
     ];
     fontconfig.defaultFonts = {
-      sansSerif = [ "Noto Sans" ];
-      monospace = [ "FantasqueSansMono Nerd Font Mono" ];
+      # sansSerif = [ "Noto Sans" ];
+      # monospace = [ "FantasqueSansMono Nerd Font Mono" ];
+      serif     = [];
+      monospace = [];
+      sansSerif = [];
+      emoji     = [];
     };
   };
 

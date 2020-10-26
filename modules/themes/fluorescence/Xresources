@@ -54,9 +54,8 @@ scratch.font: monospace:pixelsize=16
 
 
 !! xst
-st.font: monospace:pixelsize=14
-
-
+st.font: Monospace:size=10
+!st.font:  Liberation Mono:size=9
 !! urxvt
 URxvt*depth:                   32
 URxvt*.background:             blk
@@ -77,3 +76,12 @@ URxvt.clipboard.autocopy:      true
 URxvt.iso14755:                false
 URxvt.iso14755_52:             false
 URxvt.perl-ext-common:         default,matcher
+
+!! font set
+xft.autohint:                 0
+xft.lcdfilter:                lcddefault
+xft.hintstyle:                hintfull
+xft.hinting:                  1
+xft.antialias:                1
+xft.rgba:                     rgb
+xft.dpi: 96

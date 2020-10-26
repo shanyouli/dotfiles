@@ -3,6 +3,7 @@
 { pkgs, ... }:
 {
   imports = [
+    ./adb.nix
     ./cc.nix
     ./clojure.nix
     ./common-lisp.nix
