@@ -28,7 +28,7 @@ in
       allowedUDPPorts = [ 7890 7891 9090 ];
     };
     my = {
-      packages = with pkgs.unstable; [ clash ];
+      packages = [ pkgs.unstable.clash ];
       home.xdg.configFile."clash/config.yaml".source = <config/clash/config.yaml>;
       services.clash = {
         after = [ "network.target" ];
