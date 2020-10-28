@@ -34,7 +34,7 @@
     enableGhostscriptFonts = true;
     fonts = with pkgs; [
       (unstable.nerdfonts.override {
-        fonts = [ "AnonymousPro" "FantasqueSansMono"  "JetBrainsMono" ];
+        fonts = [ "FantasqueSansMono" ];
       })
       noto-fonts
       symbola

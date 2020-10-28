@@ -7,7 +7,7 @@
     ./hardware-configuration.nix
   ];
   nix.binaryCaches = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
-  networking.proxy.default = "http://127.0.0.1:7890";
+  networking.proxy.default = "socks5://127.0.0.1:7891";
   networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   modules = {
     desktop = {

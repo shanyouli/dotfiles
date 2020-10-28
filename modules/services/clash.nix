@@ -22,6 +22,10 @@ in
   };
 
   config = mkIf cfg.enable {
+    networking.firewall = {
+      allowedTCPPorts = [ 7890 7891 9090 ];
+      allowedUDPPorts = [ 7890 7891 9090 ];
+    };
     my = {
       packages = with pkgs.unstable; [ clash ];
       home.xdg.configFile."clash/config.yaml".source = <config/clash/config.yaml>;

@@ -54,15 +54,14 @@ scratch.font: monospace:pixelsize=16
 
 
 !! xst
-st.font: Monospace:size=10
-!st.font:  Liberation Mono:size=9
+st.font: monospace:pixelsize=12
 !! urxvt
 URxvt*depth:                   32
 URxvt*.background:             blk
 URxvt*.borderless:             1
 URxvt*.buffered:               true
 URxvt*.cursorBlink:            true
-URxvt*.font:                   xft:monospace:pixelsize=14
+URxvt*.font:                   xft:monospace:pixelsize=12
 URxvt*.internalBorder:         10
 URxvt*.letterSpace:            0
 URxvt*.lineSpace:              0

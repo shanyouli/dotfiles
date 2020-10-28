@@ -19,6 +19,9 @@ in {
     my = {
       packages = [ pkgs.dropbox-cli ];
       services.dropbox = {
+        after = (if config.modules.services.clash.enable then [
+          "clash.services"
+        ] else []);
         description = "Dropbox";
         wantedBy = [ "graphical-session.target" ];
         environment = {
