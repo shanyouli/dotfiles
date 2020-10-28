@@ -1,5 +1,8 @@
 { config, lib, pkgs, ... }:
-{
+
+let
+  cfgf = config.modules.desktop.font;
+in {
   my.packages = with pkgs; [
     # I often need a thumbnail browser to show off, peruse or organize photos,
     # design work, or digital art.
@@ -29,31 +32,51 @@
   hardware.pulseaudio.enable = true;
 
   ## Fonts
-  fonts = {
-    enableFontDir = true;
-    enableGhostscriptFonts = true;
-    fonts = with pkgs; [
-      (unstable.nerdfonts.override {
-        fonts = [ "FantasqueSansMono" ];
-      })
-      noto-fonts
-      symbola
-      font-awesome-ttf
-      noto-fonts-emoji
-      siji
-      hanazono
-      wqy_microhei
-      unifont
-    ];
-    fontconfig.defaultFonts = {
-      # sansSerif = [ "Noto Sans" ];
-      # monospace = [ "FantasqueSansMono Nerd Font Mono" ];
-      serif     = [];
-      monospace = [];
-      sansSerif = [];
-      emoji     = [];
-    };
-  };
+  fonts = (lib.mkMerge [
+    {
+      enableFontDir = true;
+      enableGhostscriptFonts = true;
+    }
+    (lib.mkIf (! cfgf.enable) {
+      enableDefaultFonts = true;
+      fontconfig.includeUserConf = false;
+    })
+    {
+      fonts = with pkgs; [
+        symbola
+        font-awesome-ttf
+        siji
+        hanazono
+        wqy_microhei
+        fira-code-symbols
+      ] ++ (if cfgf.enable then [] else [
+        (unstable.nerdfonts.override {
+          fonts = [ "FiraCode"];
+        })
+        fira-code
+        fira
+        noto-fonts
+        source-han-mono
+        source-han-serif
+        source-han-sans
+        noto-fonts-emoji
+      ]);
+      fontconfig.defaultFonts = {
+        monospace = (if cfgf.enable then [] else [
+          "Fira Code" "Source Han Mono SC"
+        ]);
+        sansSerif = (if cfgf.enable then [] else [
+          "Fira Sans" "Source Han Sans SC"
+        ]);
+        serif     = (if cfgf.enable then [] else [
+          "Noto Serif" "Source Han Serif SC"
+        ]);
+        emoji     = (if cfgf.enable then [] else [
+          "Noto Color Emoji"
+        ]);
+      };
+    }
+  ]);
 
   ## Apps/Services
   # For redshift
@@ -116,5 +139,4 @@
     enable = true;
     package = lib.mkForce pkgs.gnome3.gvfs;
   };
-
 }

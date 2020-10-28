@@ -9,5 +9,6 @@
     ./term
     ./browsers
     ./gaming
+    ./font.nix
   ];
 }
