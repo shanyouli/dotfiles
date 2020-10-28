@@ -39,7 +39,10 @@ in {
     }
     (lib.mkIf (! cfgf.enable) {
       enableDefaultFonts = true;
-      fontconfig.includeUserConf = false;
+      fontconfig = {
+        includeUserConf = false;
+        localConf = lib.readFile <config/fontconfig/local.conf> ;
+      };
     })
     {
       fonts = with pkgs; [
@@ -51,7 +54,7 @@ in {
         fira-code-symbols
       ] ++ (if cfgf.enable then [] else [
         (unstable.nerdfonts.override {
-          fonts = [ "FiraCode"];
+          fonts = [ "FiraCode" ];
         })
         fira-code
         fira
@@ -63,13 +66,13 @@ in {
       ]);
       fontconfig.defaultFonts = {
         monospace = (if cfgf.enable then [] else [
-          "Fira Code" "Source Han Mono SC"
+          "FiraCode Nerd Font Mono"
         ]);
         sansSerif = (if cfgf.enable then [] else [
-          "Fira Sans" "Source Han Sans SC"
+          "Fira Sans"
         ]);
         serif     = (if cfgf.enable then [] else [
-          "Noto Serif" "Source Han Serif SC"
+          "Noto Serif"
         ]);
         emoji     = (if cfgf.enable then [] else [
           "Noto Color Emoji"
