@@ -72,5 +72,8 @@ in {
     my.home.xdg.configFile = {
       "fontconfig/fonts.conf".source = <config/fontconfig/fonts.conf> ;
     };
+    system.userActivationScripts.updateFontconfig = ''
+       ${pkgs.fontconfig}/bin/fc-cache -f
+    '';
   };
 }

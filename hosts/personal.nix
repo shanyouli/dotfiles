@@ -73,13 +73,19 @@
         "${paConfigFile}/default.pa";
 
   # Clean up leftovers, as much as we can
-  system.userActivationScripts.cleanupHome = ''
-    pushd /home/${config.my.username}
-    rm -rf .compose-cache .nv .pki .dbus .fehbg
-    [ -s .xsession-errors ] || rm -f .xsession-errors*
-    if [[ -n $WGETRC ]] && [[ ! -f $WGETRC ]]; then
-      tee $WGETRC <<< "hsts-file = $XDG_CACHE_HOME/wget-hsts"
-    fi
-    popd
-  '';
+  system.userActivationScripts = {
+    cleanupHome = ''
+      pushd /home/${config.my.username}
+      rm -rf .compose-cache .nv .pki .dbus .fehbg
+      [ -s .xsession-errors ] || rm -f .xsession-errors*
+      popd
+    '';
+    setWETRC = ''
+      [[ -n XDG_CACHE_HOME ]] || source ${config.system.build.setEnvironment}
+      if [[ ! -f $WGETRC ]]; then
+        tee $WGETRC <<< "hsts-file = $XDG_CACHE_HOME/wget-hsts"
+      fi
+    '';
+
+  };
 }

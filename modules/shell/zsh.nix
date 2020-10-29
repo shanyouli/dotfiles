@@ -51,6 +51,9 @@ with lib;
       promptInit = "";
     };
 
-    system.userActivationScripts.cleanupZgen = "rm -fv $XDG_CACHE_HOME/zsh/*";
+    system.userActivationScripts.cleanupZgen = ''
+      [[ -n $XDG_CACHE_HOME ]] || source ${config.system.build.setEnvironment}
+      rm -rf $XDG_CACHE_HOME/zsh/*
+    '';
   };
 }
