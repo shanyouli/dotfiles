@@ -31,56 +31,6 @@ in {
   sound.enable = true;
   hardware.pulseaudio.enable = true;
 
-  ## Fonts
-  fonts = (lib.mkMerge [
-    {
-      enableFontDir = true;
-      enableGhostscriptFonts = true;
-    }
-    (lib.mkIf (! cfgf.enable) {
-      enableDefaultFonts = true;
-      fontconfig = {
-        includeUserConf = false;
-        localConf = lib.readFile <config/fontconfig/local.conf> ;
-      };
-    })
-    {
-      fonts = with pkgs; [
-        symbola
-        font-awesome-ttf
-        siji
-        hanazono
-        wqy_microhei
-        fira-code-symbols
-      ] ++ (if cfgf.enable then [] else [
-        (unstable.nerdfonts.override {
-          fonts = [ "FiraCode" "FantasqueSansMono" ];
-        })
-        fira-code
-        fira
-        noto-fonts
-        source-han-mono
-        source-han-serif
-        source-han-sans
-        noto-fonts-emoji
-      ]);
-      fontconfig.defaultFonts = {
-        monospace = (if cfgf.enable then [] else [
-          "Fira Code"
-        ]);
-        sansSerif = (if cfgf.enable then [] else [
-          "Fira Sans"
-        ]);
-        serif     = (if cfgf.enable then [] else [
-          "Noto Serif"
-        ]);
-        emoji     = (if cfgf.enable then [] else [
-          "Noto Color Emoji"
-        ]);
-      };
-    }
-  ]);
-
   ## Apps/Services
   # For redshift
   location = (if config.time.timeZone == "America/Toronto" then {
