@@ -14,7 +14,8 @@ in {
         (unstable.nerdfonts.override {
           fonts = [ "FantasqueSansMono" ];
         })
-        ibm-plex
+        fira
+        source-serif-pro
         joyixels
         unifont
 
