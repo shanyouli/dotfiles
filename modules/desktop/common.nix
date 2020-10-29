@@ -54,7 +54,7 @@ in {
         fira-code-symbols
       ] ++ (if cfgf.enable then [] else [
         (unstable.nerdfonts.override {
-          fonts = [ "FiraCode" ];
+          fonts = [ "FiraCode" "FantasqueSansMono" ];
         })
         fira-code
         fira
@@ -66,7 +66,7 @@ in {
       ]);
       fontconfig.defaultFonts = {
         monospace = (if cfgf.enable then [] else [
-          "FiraCode Nerd Font Mono"
+          "Fira Code"
         ]);
         sansSerif = (if cfgf.enable then [] else [
           "Fira Sans"
