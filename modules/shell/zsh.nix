@@ -32,6 +32,7 @@ with lib;
       alias.ll  = "exa -lg";
       alias.la  = "LC_COLLATE=C exa -la";
       alias.sc = "systemctl";
+      alias.usc = "systemctl --user";
       alias.ssc = "sudo systemctl";
 
       # Write it recursively so other modules can write files to it
