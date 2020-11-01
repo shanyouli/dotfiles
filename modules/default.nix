@@ -36,7 +36,10 @@ in {
                  then concatMapStringsSep ":" (x: toString x) v
                  else (toString v));
       };
-
+      unset = mkOption {
+        type = types.listOf types.str;
+        default = [];
+      };
       alias = mkOption {
         type = with types; nullOr (attrsOf (nullOr (either str path)));
       };
@@ -71,12 +74,18 @@ in {
     ## PATH should always start with its old value
     my.env.PATH = [ <bin> "$PATH" ];
     environment.extraInit =
-      let exportLines = mapAttrsToList (n: v: "export ${n}=\"${v}\"") config.my.env;
+      let
+        exportLines = mapAttrsToList (n: v: "export ${n}=\"${v}\"") config.my.env;
+        unsetVar    = map (str: "unset ${str}") config.my.unset;
       in ''
         export XAUTHORITY=/tmp/Xauthority
         [ -e ~/.Xauthority ] && mv -f ~/.Xauthority "$XAUTHORITY"
 
         ${concatStringsSep "\n" exportLines}
+
+        # No longer use certain environment variables
+        # unset ${toString config.my.unset}
+        ${concatStringsSep "\n" unsetVar}
       '';
 
     # I avoid programs.zsh.*Init variables because they initialize too soon. My

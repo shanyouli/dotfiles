@@ -14,7 +14,6 @@ in {
           symbola
           font-awesome-ttf
           siji
-          hanazono
           wqy_microhei
           fira-code-symbols
           fira
@@ -40,6 +39,7 @@ in {
           source-han-serif
           source-han-sans
           noto-fonts-emoji
+          hanazono
         ]);
         enableFontDir = true;
         enableGhostscriptFonts = true;
