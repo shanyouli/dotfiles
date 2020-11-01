@@ -47,8 +47,5 @@
   };
   networking.networkmanager.enable = true;
   time.timeZone = "Asia/Shanghai";
-  # environment.extraInit = ''
-  #   unset https_proxy http_proxy all_proxy rsync_proxy ftp_proxy
-  # '';
   my.unset = [ "https_proxy" "http_proxy" "all_proxy" "rsync_proxy" "ftp_proxy" ];
  }
