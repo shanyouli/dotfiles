@@ -7,7 +7,7 @@ in {
   options.modules.desktop.font = {
     enable = mkOption { type = types.bool; default = false; };
   };
-  config = {
+  config = mkIf config.services.xserver.enable {
     fonts = (mkMerge [
       {
         fonts = with pkgs; [
@@ -69,7 +69,7 @@ in {
         };
       })
     ]);
-    my.home.xdg.configFile = {
+    my.home.xdg.configFile = mkIf cfg.enable {
       "fontconfig/fonts.conf".source = <config/fontconfig/fonts.conf> ;
     };
     system.userActivationScripts.updateFontconfig = ''

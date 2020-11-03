@@ -1,6 +1,13 @@
 { config, options, pkgs, lib, ... }:
 with lib;
-{
+let cfg = config.modules.shell.tmux ;
+    # The developer of tmux chooses not to add XDG support for religious
+    # reasons (see tmux/tmux#142). Fortunately, nix makes this easy:
+    tmux = (pkgs.writeScriptBin "tmux" ''
+         #!${pkgs.stdenv.shell}
+         exec ${pkgs.tmux}/bin/tmux -f "$TMUX_HOME/config" "$@"
+         '');
+in {
   options.modules.shell.tmux = {
     enable = mkOption {
       type = types.bool;
@@ -8,16 +15,9 @@ with lib;
     };
   };
 
-  config = mkIf config.modules.shell.tmux.enable {
+  config = mkIf cfg.enable {
     my = {
-      packages = with pkgs; [
-        # The developer of tmux chooses not to add XDG support for religious
-        # reasons (see tmux/tmux#142). Fortunately, nix makes this easy:
-        (writeScriptBin "tmux" ''
-          #!${stdenv.shell}
-          exec ${tmux}/bin/tmux -f "$TMUX_HOME/config" "$@"
-          '')
-      ];
+      packages = [ tmux ];
 
       env.TMUX_HOME = "$XDG_CONFIG_HOME/tmux";
       env.TMUXIFIER = "$XDG_DATA_HOME/tmuxifier";
