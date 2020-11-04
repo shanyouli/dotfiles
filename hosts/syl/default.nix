@@ -11,6 +11,7 @@
   networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   modules = {
     desktop = {
+      font.enable = true;
       bspwm.enable = true;
       apps.rofi.enable = true;
       apps.fcitx.enable = true;

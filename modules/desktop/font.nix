@@ -24,7 +24,7 @@ in {
           })
         ] ++ (if cfg.enable then [
           source-serif-pro
-          joyixels
+          joypixels
           unifont
           # xorg 必须字体
           xorg.fontbhlucidatypewriter100dpi

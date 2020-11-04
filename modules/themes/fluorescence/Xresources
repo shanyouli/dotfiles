@@ -54,9 +54,9 @@ scratch.font: monospace:pixelsize=16
 
 
 !! xst
-!!st.font: monospace:pixelsize=12
+st.font: monospace:pixelsize=12
 !!
-st.font: FiraCode Nerd Font:pixelsize=12
+!!st.font: FiraCode Nerd Font:pixelsize=12
 !! urxvt
 URxvt*depth:                   32
 URxvt*.background:             blk
