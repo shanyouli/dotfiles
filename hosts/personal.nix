@@ -81,7 +81,7 @@
       popd
     '';
     setWETRC = ''
-      [[ -n XDG_CACHE_HOME ]] || source ${config.system.build.setEnvironment}
+      [[ -n $XDG_CACHE_HOME ]] || source ${config.system.build.setEnvironment}
       if [[ ! -f $WGETRC ]]; then
         tee $WGETRC <<< "hsts-file = $XDG_CACHE_HOME/wget-hsts"
       fi

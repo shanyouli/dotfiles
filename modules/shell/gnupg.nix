@@ -26,5 +26,12 @@ in {
     };
 
     programs.gnupg.agent.enable = true;
+
+    # FIXME: "gpg WARNING: unsafe permissions on homedir"
+    system.userActivationScripts.changeGnupg = ''
+      [[ -n $XDG_CACHE_HOME ]] || source ${config.system.build.setEnvironment}
+      [[ -d ${homedir} ]] || mkdir -p ${homedir}
+      chmod 700 ${homedir}
+    '';
   };
 }
