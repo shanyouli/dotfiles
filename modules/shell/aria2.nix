@@ -39,9 +39,8 @@ in {
         '';
       };
     };
-    services.xserver.displayManager.sessionCommands = mkIf config.services.xserver.enable
-      ''
-        ${pkgs.aria2}/bin/aria2c  --config-path=${aria2Home}/aria2.conf --daemon
+    services.xserver.displayManager.sessionCommands = ''
+        ${pkgs.aria2}/bin/aria2c  --conf-path=${aria2Home}/aria2.conf --daemon
       '';
   };
 }

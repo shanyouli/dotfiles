@@ -81,9 +81,9 @@ in {
         homedir = "/home/${config.my.username}" ;
       in {
         home      = "${homedir}";
-        xdgConfig = "${homedir}/.config/";
+        xdgConfig = "${homedir}/.config";
         xdgData   = "${homedir}/.local/share";
-        xdgCache  = "${homedir}/.cache/";
+        xdgCache  = "${homedir}/.cache";
       };
     ## PATH should always start with its old value
     my.env.PATH = [ <bin> "$PATH" ];
