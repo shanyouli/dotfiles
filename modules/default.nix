@@ -28,6 +28,12 @@ in {
       user = mkOption { type = options.users.users.type.functor.wrapped; };
       packages = mkOption { type = with types; listOf package; };
       services = mkOption { type = options.systemd.user.services.type.functor.wrapped; };
+      path = {
+        home = mkOptionStr "";
+        xdgConfig = mkOptionStr "";
+        xdgData   = mkOptionStr "";
+        xdgCache = mkOptionStr "";
+      };
       ## Environment
       env = mkOption {
         type = with types; attrsOf (either (either str path) (listOf (either str path)));
@@ -70,7 +76,15 @@ in {
     users.users.${config.my.username} = mkAliasDefinitions options.my.user;
     systemd.user.services = mkAliasDefinitions options.my.services;
     my.user.packages = config.my.packages;
-
+    my.path =
+      let
+        homedir = "/home/${config.my.username}" ;
+      in {
+        home      = "${homedir}";
+        xdgConfig = "${homedir}/.config/";
+        xdgData   = "${homedir}/.local/share";
+        xdgCache  = "${homedir}/.cache/";
+      };
     ## PATH should always start with its old value
     my.env.PATH = [ <bin> "$PATH" ];
     environment.extraInit =

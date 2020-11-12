@@ -38,6 +38,7 @@
       dropbox.enable = true;
     };
     shell = {
+      aria2.enable = true;
       direnv.enable = true;
       git.enable = true;
       tmux.enable = true;

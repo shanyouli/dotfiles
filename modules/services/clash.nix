@@ -3,7 +3,7 @@ with lib;
 let
   name = "clash";
   cfg = config.modules.services.clash;
-  xdg_conf_home = "/home/${config.my.username}/.config";
+  path = config.my.path;
 in
 {
   options.modules.services.clash = {
@@ -13,9 +13,7 @@ in
     };
     confDir = mkOption {
       type = types.str;
-      default = "${xdg_conf_home}/${name}";
-      defaultText = "$XDG_CONFIG_HOME/clash";
-      apply = toString;
+      default = "${path.xdgConfig}/clash";
       description = ''
         The directory where clash configuration from.
       '';
@@ -37,7 +35,7 @@ in
         # TODO: 使 my 可以在 右端使用。
         serviceConfig = {
           # Environment = "XDG_CONFIG_HOME=${xdg_config_home}";
-          ExecStart = "${pkgs.unstable.clash.out}/bin/clash -d ${cfg.confDir}";
+          ExecStart = "${pkgs.unstable.clash.out}/bin/clash -d ${config.my.path.xdgConfig}/clash";
           ExecReload = "${pkgs.coreutils.out}/bin/kill -HUP $MAINPID";
           KillMode = "control-group";
           Restart = "on-failure";

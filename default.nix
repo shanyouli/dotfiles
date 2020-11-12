@@ -13,7 +13,6 @@ device: username:
 {
   networking.hostName = lib.mkDefault device;
   my.username = username;
-
   imports = [
     ./modules
     "${./hosts}/${device}"
