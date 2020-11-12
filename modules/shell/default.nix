@@ -11,5 +11,6 @@
     ./tmux.nix
     ./weechat.nix
     ./zsh.nix
+    ./trash.nix
   ];
 }

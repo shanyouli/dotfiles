@@ -8,6 +8,10 @@ with lib;
       type = types.bool;
       default = false;
     };
+    fzf = mkOption {
+      type = types.bool;
+      default = true;
+    };
   };
 
   config = mkIf config.modules.shell.zsh.enable {
@@ -18,12 +22,10 @@ with lib;
         bat
         exa
         fd
-        fzf
-        file
         htop
         tldr
         tree
-      ];
+      ] ++ (if config.modules.shell.zsh.fzf then [ fzf ] else [ file ]);
       env.ZDOTDIR   = "$XDG_CONFIG_HOME/zsh";
       env.ZSH_CACHE = "$XDG_CACHE_HOME/zsh";
 

@@ -43,6 +43,7 @@
       tmux.enable = true;
       zsh.enable = true;
       gnupg.enable = true;
+      trash.enable = true;
     };
     themes.fluorescence.enable = true;
   };

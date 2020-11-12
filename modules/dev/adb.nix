@@ -19,7 +19,7 @@ in {
       env.ANDROID_SDK_HOME      = "$XDG_CONFIG_HOME/android" ;
       env.ANDROID_AVD_HOME      = "$XDG_DATA_HOME/android/" ;
       env.ANDROID_EMULATOR_HOME = "$XDG_DATA_HOME/android/" ;
-      env.ADB_VENDOR_KEY        = "$XDG_CONFIG_HOME/android" ;
+      env.ADB_VENDOR_KEYS        = "$XDG_CONFIG_HOME/android" ;
       user.extraGroups          = [ "adbusers" ];
     };
   };
