@@ -42,10 +42,10 @@
   environment.variables = {
     # These are the defaults, but some applications are buggy when these lack
     # explicit values.
-    XDG_CONFIG_HOME = "${my.path.xdgConfig}";
-    XDG_CACHE_HOME  = "${my.path.xdgCache}";
-    XDG_DATA_HOME   = "${my.path.xdgData}";
-    XDG_BIN_HOME    = "${my.path.xdgBin}";
+    XDG_CONFIG_HOME = "${config.my.path.xdgConfig}";
+    XDG_CACHE_HOME  = "${config.my.path.xdgCache}";
+    XDG_DATA_HOME   = "${config.my.path.xdgData}";
+    XDG_BIN_HOME    = "${config.my.path.xdgBin}";
   };
 
   # Conform more programs to XDG conventions. The rest are handled by their
