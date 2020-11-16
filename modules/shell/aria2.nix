@@ -28,7 +28,13 @@ in {
 
   config = mkIf cfg.enable {
     my = {
-      packages = [ pkgs.aria2 ];
+      packages = with pkgs; [
+        aria2
+        (writeScriptBin "aria2c" ''
+          #!${stdenv.shell}
+          ${aria2}/bin/aria2c --no-conf true "$@"
+        '')
+      ];
       home.xdg.configFile = {
         "aria2/aria2.conf".text = ''
           dir=${cfg.downloadDir}
