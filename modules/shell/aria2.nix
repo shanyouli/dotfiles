@@ -3,6 +3,7 @@ with lib;
 let
   cfg = config.modules.shell.aria2 ;
   aria2Home = "${config.my.path.xdgConfig}/aria2";
+  proxyPort = "7890";
 in {
   options.modules.shell.aria2 = {
     enable = mkOption {
@@ -40,7 +41,8 @@ in {
       };
     };
     services.xserver.displayManager.sessionCommands = ''
-        ${pkgs.aria2}/bin/aria2c  --conf-path=${aria2Home}/aria2.conf --daemon
+        ${pkgs.aria2}/bin/aria2c --all-proxy="127.0.0.1:${proxyPort}"  \
+                                 --conf-path=${aria2Home}/aria2.conf --daemon
       '';
   };
 }
