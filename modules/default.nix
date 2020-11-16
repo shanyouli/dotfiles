@@ -37,7 +37,7 @@ in {
           xdgConfig = mkOptionStr "${homedir}/.config";
           xdgData   = mkOptionStr "${homedir}/.local/share";
           xdgCache  = mkOptionStr "${homedir}/.cache";
-          xdgBin    = mkOptionStr "${homedir}/.local/bin"
+          xdgBin    = mkOptionStr "${homedir}/.local/bin";
         };
       ## Environment
       env = mkOption {
