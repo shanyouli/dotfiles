@@ -10,6 +10,7 @@ with lib.my;
       file       = mkOpt' attrs {} "Files to place directly in $HOME";
       configFile = mkOpt' attrs {} "Files to place in $XDG_CONFIG_HOME";
       dataFile   = mkOpt' attrs {} "Files to place in $XDG_DATA_HOME";
+      services   = mkOpt' attrs {} "User system service";
     };
 
     env = mkOption {
@@ -58,6 +59,7 @@ with lib.my;
           configFile = mkAliasDefinitions options.home.configFile;
           dataFile   = mkAliasDefinitions options.home.dataFile;
         };
+        systemd.user.services = mkAliasDefinitions options.home.services;
       };
     };
 
