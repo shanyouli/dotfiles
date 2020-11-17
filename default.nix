@@ -21,13 +21,25 @@ device: username:
   ] else []);
 
   ### NixOS
-  nix.autoOptimiseStore = true;
-  nix.nixPath = options.nix.nixPath.default ++ [
-    # So we can use absolute import paths
-    "bin=/etc/dotfiles/bin"
-    "config=/etc/dotfiles/config"
-  ];
-
+  nix = (lib.mkMerge [
+    {
+      autoOptimiseStore = true;
+      nixPath = options.nix.nixPath.default ++ [
+        # So we can use absolute import paths
+        "bin=/etc/dotfiles/bin"
+        "config=/etc/dotfiles/config"
+      ];
+    }
+    (lib.mkIf (! builtins.pathExists(/etc/nixos/cachix.nix)) {
+      binaryCaches = [
+        "https://cache.nixos.org/"
+        "https://nix-community.cachix.org"
+      ];
+      binaryCachePublicKeys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
+    })
+  ]);
   # Add custom packages & unstable channel, so they can be accessed via pkgs.*
   nixpkgs.overlays = import ./packages;
   nixpkgs.config.allowUnfree = true;  # forgive me Stallman senpai
@@ -48,7 +60,14 @@ device: username:
     cachix                # less time buildin' mo time nixin'
     (writeScriptBin "nix-shell" ''
       #!${stdenv.shell}
-      NIX_PATH="nixpkgs-overlays=/etc/dotfiles/packages/default.nix:$NIX_PATH" ${nix}/bin/nix-shell "$@"
+      NIX_PATH="nixpkgs-overlays=/etc/dotfiles/packages/default.nix:$NIX_PATH"
+      ${nix}/bin/nix-shell "$@"
+    '')
+    (writeScriptBin "nix-envi" ''
+      #!${stdenv.shell}
+      NIX_PATH="nixpkgs-overlays=/etc/dotfiles/packages/default.nix:$NIX_PATH"
+      NIXPKGS_ALLOW_UNFREE=1
+      ${nix}/bin/nix-env "$@"
     '')
   ];
   environment.shellAliases = {
