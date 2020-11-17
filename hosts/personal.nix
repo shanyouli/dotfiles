@@ -24,5 +24,8 @@ with lib;
   } else if config.time.timeZone == "Europe/Copenhagen" then {
     latitude = 55.88;
     longitude = 12.5;
+  } else if config.time.timeZone == "Asia/Shanghai" then {
+    latitude = 30.939;
+    longitude = 113.908;
   } else {});
 }

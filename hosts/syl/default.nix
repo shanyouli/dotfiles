@@ -70,5 +70,4 @@
     unset https_proxy http_proxy all_proxy rsync_proxy ftp_proxy
   '';
   networking.useDHCP = false;
-  boot.loader.systemd-boot.enable = true;
  }
