@@ -44,7 +44,7 @@ device: username:
     sshfs
 
     gnumake               # for our own makefile
-    my.cached-nix-shell   # for instant nix-shell scripts
+    cached-nix-shell   # for instant nix-shell scripts
     cachix                # less time buildin' mo time nixin'
     (writeScriptBin "nix-shell" ''
       #!${stdenv.shell}

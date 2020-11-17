@@ -52,7 +52,8 @@ let cfg = config.modules; in
 
     #fonts.fonts = [ pkgs.nerdfonts ];
     my.packages = with pkgs; [
-      my.ant-dracula
+      # my.ant-dracula
+      unstable.dracula-theme
       paper-icon-theme # for rofi
     ];
    # my.zsh.rc = lib.readFile ./zsh/prompt.zsh;

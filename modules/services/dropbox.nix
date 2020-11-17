@@ -19,8 +19,8 @@ in {
     my = {
       packages = [ pkgs.dropbox-cli ];
       services.dropbox = {
-        after = (if config.modules.services.clash.enable then [
-          "clash.services"
+        after = (if config.modules.proxy.default != null then [
+          "proxy.services"
         ] else []);
         description = "Dropbox";
         wantedBy = [ "graphical-session.target" ];
