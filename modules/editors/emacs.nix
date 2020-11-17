@@ -17,11 +17,12 @@ in {
   };
 
   config = mkIf cfg.enable {
-    nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
+#    nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
 
     user.packages = with pkgs; [
       ## Doom dependencies
-      emacsUnstable       # 27.1
+ #     emacsUnstable       # 27.1
+      emacs
       git
       (ripgrep.override {withPCRE2 = true;})
       gnutls              # for TLS connectivity
