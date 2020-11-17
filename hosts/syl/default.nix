@@ -7,8 +7,6 @@
     ./hardware-configuration.nix
   ];
   nix.binaryCaches = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
-  networking.proxy.default = "socks5://127.0.0.1:7891";
-  networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   modules = {
     desktop = {
       font.enable = true;
@@ -33,8 +31,11 @@
       vim.enable = true;
       emacs.enable = true;
     };
-    services = {
+    proxy = {
+      default = "clash";
       clash.enable = true;
+    };
+    services = {
       dropbox.enable = true;
     };
     shell = {
@@ -50,5 +51,4 @@
   };
   networking.networkmanager.enable = true;
   time.timeZone = "Asia/Shanghai";
-  my.unset = [ "https_proxy" "http_proxy" "all_proxy" "rsync_proxy" "ftp_proxy" ];
  }

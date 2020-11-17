@@ -4,6 +4,10 @@ let
   cfg = config.modules.shell.aria2 ;
   aria2Home = "${config.my.path.xdgConfig}/aria2";
   proxyPort = "7890";
+  aria2     = (pkgs.writeScriptBin "aria2c" ''
+            #!${pkgs.stdenv.shell}
+            exec ${pkgs.aria2}/bin/aria2c --no-conf true "$@"
+            '');
 in {
   options.modules.shell.aria2 = {
     enable = mkOption {
@@ -28,13 +32,7 @@ in {
 
   config = mkIf cfg.enable {
     my = {
-      packages = with pkgs; [
-        aria2
-        (writeScriptBin "aria2c" ''
-          #!${stdenv.shell}
-          ${aria2}/bin/aria2c --no-conf true "$@"
-        '')
-      ];
+      packages = [ aria2 ];
       home.xdg.configFile = {
         "aria2/aria2.conf".text = ''
           dir=${cfg.downloadDir}

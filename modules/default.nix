@@ -12,6 +12,7 @@ in {
     ./dev
     ./editors
     ./media
+    ./proxy
     ./services
     ./shell
     ./themes
