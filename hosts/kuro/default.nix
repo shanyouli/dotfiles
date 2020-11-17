@@ -1,6 +1,9 @@
 { ... }:
 {
-  imports = [ ./hardware-configuration.nix ];
+ imports = [
+    ../personal.nix
+    ./hardware-configuration.nix
+  ];
 
   ## Modules
   modules = {
@@ -62,8 +65,10 @@
     };
     services = {
       ssh.enable = true;
+     # Needed occasionally to help the parental units with PC problems
+      # teamviewer.enable = true;
     };
-    themes.fluorescence.enable = true;
+    theme.active = "alucard";
   };
 
 
@@ -71,8 +76,7 @@
   programs.ssh.startAgent = true;
   services.openssh.startWhenNeeded = true;
 
-  boot.loader.systemd-boot.enable = true;
-  networking.networkmanager.enable = true;
+ networking.networkmanager.enable = true;
   # The global useDHCP flag is deprecated, therefore explicitly set to false
   # here. Per-interface useDHCP will be mandatory in the future, so this
   # generated config replicates the default behaviour.

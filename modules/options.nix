@@ -3,18 +3,17 @@
 with lib;
 with lib.my;
 {
-  options = {
-    user = mkOpt types.attrs {};
+  options = with types; {
+    user = mkOpt attrs {};
 
-    home = with types; {
+    home = {
       file       = mkOpt' attrs {} "Files to place directly in $HOME";
       configFile = mkOpt' attrs {} "Files to place in $XDG_CONFIG_HOME";
       dataFile   = mkOpt' attrs {} "Files to place in $XDG_DATA_HOME";
-      services   = mkOpt' attrs {} "User system service";
     };
 
     env = mkOption {
-      type = with types; attrsOf (oneOf [ str path (listOf (either str path)) ]);
+      type = attrsOf (oneOf [ str path (listOf (either str path)) ]);
       apply = mapAttrs
         (n: v: if isList v
                then concatMapStringsSep ":" (x: toString x) v
@@ -59,7 +58,6 @@ with lib.my;
           configFile = mkAliasDefinitions options.home.configFile;
           dataFile   = mkAliasDefinitions options.home.dataFile;
         };
-        systemd.user.services = mkAliasDefinitions options.home.services;
       };
     };
 
@@ -72,7 +70,7 @@ with lib.my;
 
     # must already begin with pre-existing PATH. Also, can't use binDir here,
     # because it contains a nix store path.
-    env.PATH = [ binDir "$PATH" ];
+    env.PATH = [ "$XDG_CONFIG_HOME/dotfiles/bin" "$PATH" ];
 
     environment.extraInit =
       concatStringsSep "\n"

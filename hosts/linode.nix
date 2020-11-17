@@ -27,9 +27,7 @@
 
 { config, lib, pkgs, ... }:
 
-let
-  inherit (lib) filter pathExists;
-in
+with lib;
 {
   imports = filter pathExists ["/etc/nixos/configuration.nix"];
 
@@ -37,12 +35,12 @@ in
     with pkgs; [ inetutils mtr sysstat git ];
 
   modules = {
-    # editors = {
-    #   default = "nvim";
-    #   vim.enable = true;
-    # };
+   editors = {
+      default = "nvim";
+      vim.enable = true;
+    };
     shell = {
-      # git.enable = true;
+      git.enable = true;
       zsh.enable = true;
     };
     services.ssh.enable = true;

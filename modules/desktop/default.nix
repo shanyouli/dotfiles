@@ -27,7 +27,6 @@ in {
       feh       # image viewer
       xclip
       xdotool
-
       libqalculate  # calculator cli w/ currency conversion
       (makeDesktopItem {
         name = "scratch-calc";
@@ -39,26 +38,15 @@ in {
     ];
 
     fonts = {
-      enableFontDir = true;
+      fontDir.enable = true;
       enableGhostscriptFonts = true;
       fonts = with pkgs; [
+        ubuntu_font_family
         dejavu_fonts
-        (nerdfonts.override {
-          fonts = [ "FantasqueSansMono"  "JetBrainsMono" ];
-        })
-        fira-code
-        fira-code-symbols
         symbola
-        ibm-plex
-        font-awesome-ttf
-        siji
-        wqy_microhei
-        unifont
+        noto-fonts
+        noto-fonts-cjk
       ];
-      fontconfig.defaultFonts = {
-        sansSerif = ["IBM PLEX Sans"];
-        monospace = ["Fira Code"];
-      };
     };
 
     ## Apps/Services
@@ -117,22 +105,10 @@ in {
     env.GTK_DATA_PREFIX = [ "${config.system.path}" ];
     env.QT_QPA_PLATFORMTHEME = "gtk2";
     qt5 = { style = "gtk2"; platformTheme = "gtk2"; };
-    # Also, read xresources files in ~/.config/xtheme/* and init scripts in
-    # ~/.config/xsessions/*, so I can centralize my theme config files.
-    # After the start of change to a crosshair cursor, using xsetroot changing.
-    services.xserver.displayManager.sessionCommands =
-      let cfg = config.services.xserver.desktopManager.wallpaper; in ''
-        export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
-        source "$XDG_CONFIG_HOME"/xsession/*.sh
-        xrdb -merge "$XDG_CONFIG_HOME"/xtheme/*
-        xsetroot -cursor_name left_ptr
-        if [ -e "$XDG_DATA_HOME/wallpaper" ]; then
-          ${pkgs.feh}/bin/feh --bg-${cfg.mode} \
-            ${optionalString cfg.combineScreens "--no-xinerama"} \
-            --no-fehbg \
-            $XDG_DATA_HOME/wallpaper
-        fi
-      '';
+    services.xserver.displayManager.sessionCommands = ''
+      # GTK2_RC_FILES must be available to the display manager.
+      export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+    '';
 
     # Clean up leftovers, as much as we can
     system.userActivationScripts.cleanupHome = ''

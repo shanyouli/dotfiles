@@ -2,7 +2,7 @@
 # https://github.com/hlissner/doom-emacs. This module sets it up to meet my
 # particular Doomy needs.
 
-{ config, options, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 with lib;
 with lib.my;
@@ -17,12 +17,14 @@ in {
   };
 
   config = mkIf cfg.enable {
-#    nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
+    nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
 
     user.packages = with pkgs; [
-      ## Doom dependencies
- #     emacsUnstable       # 27.1
+      ## Emacs itself
+      ##binutils       # native-comp needs 'as', provided by this
+      ##emacsGcc       # 28 + native-comp
       emacs
+      ## Doom dependencies
       git
       (ripgrep.override {withPCRE2 = true;})
       gnutls              # for TLS connectivity

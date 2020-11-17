@@ -1,5 +1,5 @@
 <div align="center">
-   
+
 [![Made with Doom Emacs](https://img.shields.io/badge/Made_with-Doom_Emacs-blueviolet.svg?style=flat-square&logo=GNU%20Emacs&logoColor=white)](https://github.com/hlissner/doom-emacs)
 [![NixOS 20.09](https://img.shields.io/badge/NixOS-v20.09-blue.svg?style=flat-square&logo=NixOS&logoColor=white)](https://nixos.org)
 
@@ -7,12 +7,12 @@
 
 **Hey,** you. You're finally awake. You were trying to configure your OS declaratively, right? Walked right into that NixOS ambush, same as us, and those dotfiles over there.
 
-<img src="/../screenshots/fluorescence/fakebusy.png" width="100%" />
+<img src="/../screenshots/alucard/fakebusy.png" width="100%" />
 
 <p align="center">
-<span><img src="/../screenshots/fluorescence/desktop.png" height="178" /></span>
-<span><img src="/../screenshots/fluorescence/rofi.png" height="178" /></span>
-<span><img src="/../screenshots/fluorescence/tiling.png" height="178" /></span>
+<span><img src="/../screenshots/alucard/desktop.png" height="178" /></span>
+<span><img src="/../screenshots/alucard/rofi.png" height="178" /></span>
+<span><img src="/../screenshots/alucard/tiling.png" height="178" /></span>
 </p>
 
 ------
@@ -62,7 +62,7 @@ And I say, `bin/hey`. [What's going on?](http://hemansings.com/)
 
   Because declarative, generational, and immutable configuration is a godsend
   when you have a fleet of computers to manage.
-  
+
 + **How do I change the default username?**
 
   1. Set `USER` the first time you run `nixos-install`: `USER=myusername
@@ -73,7 +73,7 @@ And I say, `bin/hey`. [What's going on?](http://hemansings.com/)
 
   My main host [has a README](hosts/kuro/README.org) you can use as a reference.
   I set up an EFI+GPT system and partitions with `parted` and `zfs`.
-  
+
 + **How 2 flakes?**
 
   It wouldn't be the NixOS experience if I gave you all the answers in one,

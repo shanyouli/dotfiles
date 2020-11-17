@@ -15,13 +15,12 @@ with lib.my;
     # services.gitea.enable = true;
     # services.syncthing.enable = true;
 
-    themes.fluorescence.enable = true;
+    theme.active = "alucard";
   };
 
 
   ## Local config
-  boot.loader.systemd-boot.enable = true;
-  networking.networkmanager.enable = true;
+ networking.networkmanager.enable = true;
 
   # nginx hosts
   services.nginx = {
