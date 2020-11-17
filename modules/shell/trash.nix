@@ -1,25 +1,18 @@
-# modules/shell/trash.nix --- ...
-{ config, lib, options,  pkgs, ... }:
-
+{ config, lib, options, pkgs, ... }:
 with lib;
-
+with lib.my;
 let cfg = config.modules.shell.trash;
 in {
   options.modules.shell.trash = {
-    enable = mkOption {
-      type = types.bool;
-      default = false;
-    };
+    enable = mkBoolOpt false;
   };
-
   config = mkIf cfg.enable {
-    my = {
-      packages = [ pkgs.trash-cli ];
-      alias.rm  = "trash-put";
-      alias.ri  = "command rm -i";
-      alias.rmt = "trash-empty";
-      alias.rmr = "trash-restore";
+    user.packages = [ pkgs.trash-cli ];
+    #modules.shell.zsh.rcFiles = [ "${configDir}/trash/aliases.zsh" ];
+    modules.shell.zsh.aliases = mkIf config.modules.shell.zsh.enable {
+      "rm" = "trash-put";
+      "ri" = "command rm -i";
+      "rmt" = "trash-empty";
     };
   };
-
 }

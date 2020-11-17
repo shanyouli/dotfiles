@@ -1,54 +1,74 @@
 # Syl -- My desktop
-{ pkgs, options, config, ... }:
+{ ... }:
 
 {
-  imports = [
-    ../personal.nix # common settings
-    ./hardware-configuration.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
   nix.binaryCaches = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
+  networking.proxy.default = "http://127.0.0.1:7890";
+  networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   modules = {
     desktop = {
-      font.enable = true;
+      apps = {
+        fcitx = {
+          enable = true;
+          rime.enable = true;
+        };
+        keepassxc.enable = true;
+        rofi.enable = true;
+        thunar = {
+          enable = true;
+          gvfs.enable = true;
+        };
+      };
       bspwm.enable = true;
-      apps.rofi.enable = true;
-      apps.fcitx.enable = true;
-      apps.vm.enable = true;
-      term.default = "xst";
-      term.st.enable = true;
-
-      browsers.default = "firefox";
-      browsers.firefox.enable = true;
-      browsers.qutebrowser.enable = true;
-    };
-    dev = {
-      lua.enable = true;
-      ruby.enable = true;
-      adb.enable = true;
+      browsers = {
+        default = "firefox";
+        firefox.enable = true;
+      };
+      media.mpv.enable = true;
+      term = {
+        default = "xst";
+        st.enable = true;
+      };
+      vm.virtualbox.enable = true;
     };
     editors = {
-      default = "nvim";
-      vim.enable = true;
+      default = "emacs -nw";
       emacs.enable = true;
+      vim.enable = true;
     };
-    proxy = {
-      default = "clash";
-      clash.enable = true;
+    dev = {
+      cc.enable = true;
     };
     services = {
-      dropbox.enable = true;
+      clash.enable = true;
+      docker.enable = true;
     };
     shell = {
-      aria2.enable = true;
       direnv.enable = true;
       git.enable = true;
+      gnupg.enable = true;
       tmux.enable = true;
       zsh.enable = true;
-      gnupg.enable = true;
+      htop.enable = true;
       trash.enable = true;
     };
     themes.fluorescence.enable = true;
+    hardware = {
+      sensors.enable = true;
+      audio.enable = true;
+      fs.enable = true;
+      fs.ssd.enable = true;
+      bluetooth.enable = true;
+      bluetooth.audio.enable = true;
+      light.enable = true;
+    };
   };
   networking.networkmanager.enable = true;
   time.timeZone = "Asia/Shanghai";
+  environment.extraInit = ''
+    unset https_proxy http_proxy all_proxy rsync_proxy ftp_proxy
+  '';
+  networking.useDHCP = false;
+  boot.loader.systemd-boot.enable = true;
  }

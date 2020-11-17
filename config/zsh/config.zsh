@@ -7,8 +7,8 @@ if [[ $TERM == dumb || -n $INSIDE_EMACS ]]; then
 fi
 
 ## General
-#export _FASD_DATA="$XDG_CACHE_HOME/fasd"
-#export _FASD_VIMINFO="$XDG_CACHE_HOME/viminfo"
+export _FASD_DATA="$XDG_CACHE_HOME/fasd"
+export _FASD_VIMINFO="$XDG_CACHE_HOME/viminfo"
 
 # Treat these characters as part of a word.
 WORDCHARS='_-*?[]~&.;!#$%^(){}<>'
@@ -32,9 +32,9 @@ unsetopt HUP              # Don't kill jobs on shell exit.
 unsetopt CHECK_JOBS       # Don't report on jobs when shell exit.
 
 ## History
-HISTFILE="$HOME/.cache/zhistory"
-HISTSIZE=10000                    # Max events to store in internal history.
-SAVEHIST=10000                    # Max events to store in history file.
+HISTFILE="$XDG_CACHE_HOME/zhistory"
+HISTSIZE=1000                    # Max events to store in internal history.
+SAVEHIST=1000                    # Max events to store in history file.
 
 setopt BANG_HIST                 # Don't treat '!' specially during expansion.
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.

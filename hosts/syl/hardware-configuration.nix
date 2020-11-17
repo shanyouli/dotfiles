@@ -6,8 +6,8 @@
 {
   imports =
     [
-      <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
-      # "${modulesPath}/installer/scan/not-detected.nix"
+      # <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
+      "${modulesPath}/installer/scan/not-detected.nix"
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
@@ -19,7 +19,7 @@
 
   ## CPU
   nix.maxJobs = lib.mkDefault 3;
-  powerManagement.cpuFreqGovernor = "powersae";
+  powerManagement.cpuFreqGovernor = "performance";
   hardware.cpu.intel.updateMicrocode = true;
 
   ## SSDs
@@ -33,22 +33,6 @@
   services.xserver.videoDrivers = [ "intel" ];
   hardware.opengl.enable = true;
 
-  # The touchpad fix errors
-  services.xserver.synaptics.enable = false;
-  services.xserver.libinput.naturalScrolling = false;
-  services.xserver.libinput.accelProfile = "flat";
-  services.xserver.libinput.enable = true;
-  services.xserver.inputClassSections = [
-    ''
-      Identifier "Enable libinput for TrackPoint"
-      MatchIsPointer "on"
-      Driver "libinput"
-      Option "Accel Speed" "0.1"
-    ''
-  ];
-
-  # Set DPI
-  services.xserver.dpi = 96;
   # Power management
   environment.systemPackages = [ pkgs.acpi ];
   powerManagement.powertop.enable = true;

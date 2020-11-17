@@ -1,13 +1,12 @@
 #!/usr/bin/env zsh
 
 g() { [[ $# = 0 ]] && git status --short . || git $*; }
-compdef g=hub
 
-alias git='noglob hub'
+alias git='noglob git'
 alias ga='git add'
 alias gap='git add --patch'
-alias gb='git branch'
-alias gbr='git browse'
+alias gb='git branch -av'
+alias gop='git open'
 alias gbl='git blame'
 alias gc='git commit'
 alias gcm='git commit -m'

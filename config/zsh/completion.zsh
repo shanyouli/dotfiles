@@ -1,3 +1,5 @@
+fpath+=( $ZDOTDIR/completions )
+
 ## Options
 setopt COMPLETE_IN_WORD    # Complete from both ends of a word.
 setopt PATH_DIRS           # Perform path search even on command names with slashes.
@@ -119,11 +121,11 @@ zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<-
 # fzf
 if command -v fzf >/dev/null; then
   # fuzzy completion with 'z' when called without args
-  # unalias z 2> /dev/null
-  # z() {
-  #   [ $# -gt 0 ] && _z "$*" && return
-  #   cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
-  # }
+  unalias z 2> /dev/null
+  z() {
+    [ $# -gt 0 ] && _z "$*" && return
+    cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+  }
 
   __git_log () {
     # format str implies:

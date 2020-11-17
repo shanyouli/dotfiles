@@ -4,10 +4,8 @@
 ########################################
 
 set  -g default-terminal "xterm-256color"
-# Using True Color
-# @see https://github.com/tmux/tmux/issues/1246
-set-option -sa terminal-overrides ",*256col*:Tc,xterm-termite:Tc"
-#new-session     # spawn session if attaching when none are running
+
+new-session     # spawn session if attaching when none are running
 
 setw -g automatic-rename on      # rename window after current program
 set  -g renumber-windows on      # renumber windows when one is closed
@@ -94,7 +92,7 @@ bind - break-pane
 bind _ join-pane
 
 # reload config without killing server
-bind r source-file ~/.dotfiles/config/tmux/config \; display-message "  Config reloaded..".
+bind r source-file $DOTFILES/config/tmux/config \; display-message "  Config reloaded..".
 bind ^r refresh-client
 
 
@@ -122,7 +120,6 @@ bind -T copy-mode-vi L send-keys -X end-of-line
 set -g @open-editor 'C-e'
 set -g @open-S 'https://www.duckduckgo.com/'
 
-# FIXME: Plug the order of execution problems.
+source $TMUX_HOME/plugins
 if '[ -f $TMUX_HOME/theme ]' 'source $TMUX_HOME/theme'
 if '[ -f ~/.tmux.conf ]' 'source ~/.tmux.conf'
-source $TMUX_HOME/plugins
