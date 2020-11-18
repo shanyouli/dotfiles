@@ -36,20 +36,6 @@ in {
         categories = "Development";
       })
     ];
-
-    fonts = {
-      enableFontDir  = true;
-      #fontDir.enable = true;
-      enableGhostscriptFonts = true;
-      fonts = with pkgs; [
-        ubuntu_font_family
-        dejavu_fonts
-        symbola
-        noto-fonts
-        noto-fonts-cjk
-      ];
-    };
-
     ## Apps/Services
     services.xserver.displayManager.lightdm.greeters.mini.user = config.user.name;
 
