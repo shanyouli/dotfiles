@@ -2,8 +2,13 @@
 { ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
-  nix.binaryCaches = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
+  imports = [
+    ../personal.nix
+    ./hardware-configuration.nix ];
+  nix.binaryCaches = [
+    "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+    "https://mirrors.ustc.edu.cn/nix-channels/store"
+  ];
   networking.proxy.default = "http://127.0.0.1:7890";
   networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   modules = {
@@ -53,7 +58,7 @@
       htop.enable = true;
       trash.enable = true;
     };
-    themes.fluorescence.enable = true;
+    theme.active = "alucard";
     hardware = {
       sensors.enable = true;
       audio.enable = true;

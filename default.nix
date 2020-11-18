@@ -49,7 +49,7 @@ with inputs;
   fileSystems."/".device = "/dev/disk/by-label/nixos";
 
   # Use the latest kernel
-  boot.kernelPackages = pkgs.linuxPackages_5_9;
+  # boot.kernelPackages = pkgs.linuxPackages_5_9;
 
   boot.loader = {
     efi.canTouchEfiVariables = true;
