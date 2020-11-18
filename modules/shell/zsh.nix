@@ -6,7 +6,7 @@ let cfg = config.modules.shell.zsh;
 in {
   options.modules.shell.zsh = with types; {
     enable = mkBoolOpt false;
-
+    fzf    = mkBoolOpt true;
     aliases = mkOpt (attrsOf (either str path)) {};
 
     rcInit = mkOpt' lines "" ''
@@ -42,15 +42,14 @@ in {
       exa
       fasd
       fd
-      fzf
+      htop
       tldr
-    ];
+      tree
+    ] ++ (if cfg.fzf then [ fzf ] else [ file ]);
 
     env = {
       ZDOTDIR     = "$XDG_CONFIG_HOME/zsh";
       ZSH_CACHE   = "$XDG_CACHE_HOME/zsh";
-      ZGEN_DIR    = "$XDG_DATA_HOME/zsh";
-      ZGEN_SOURCE = "$ZGEN_DIR/zgen.zsh";
     };
 
     home.configFile = {
