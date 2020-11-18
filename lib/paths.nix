@@ -12,4 +12,8 @@ rec {
   homeDir = "/home/${let name = getEnv "USERNAME"; in
                      if elem name [ "" "root" ]
                      then "syl" else name}";
+  xdgConfig = "${homeDir}/.config";
+  xdgCache  = "${homeDir}/.cache";
+  xdgData   = "${homeDir}/.local/share";
+  xdgBin    = "${homeDir}/.local/bin";
 }

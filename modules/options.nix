@@ -22,6 +22,11 @@ with lib.my;
       default = {};
       description = "TODO";
     };
+    unsetenv = mkOption {
+      type = with types; listOf str;
+      default = [];
+      description = "TODO";
+    };
   };
 
   config = {
@@ -75,7 +80,16 @@ with lib.my;
     env.PATH = [ "$XDG_CONFIG_HOME/dotfiles/bin" "$PATH" ];
 
     environment.extraInit =
-      concatStringsSep "\n"
-        (mapAttrsToList (n: v: "export ${n}=\"${v}\"") config.env);
+      let
+        exportLines = mapAttrsToList (n: v: "export ${n}=\"${v}\"") config.env;
+        unsetVar    = map (str: "unset ${str}") config.unsetenv;
+      in ''
+        # Set Environment Variables
+        ${concatStringsSep "\n" exportLines}
+
+        # No longer use certain environment variables
+        # unset ${toString config.unsetenv}
+        ${concatStringsSep "\n" unsetVar}
+     '';
   };
 }

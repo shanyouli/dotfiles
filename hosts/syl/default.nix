@@ -5,12 +5,6 @@
   imports = [
     ../personal.nix
     ./hardware-configuration.nix ];
-  nix.binaryCaches = [
-    "https://mirrors.ustc.edu.cn/nix-channels/store"
-    "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-  ];
-  networking.proxy.default = "http://127.0.0.1:7890";
-  networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   modules = {
     desktop = {
       apps = {
@@ -45,8 +39,12 @@
     dev = {
       cc.enable = true;
     };
-    services = {
+    proxy = {
+      default = "clash";
       clash.enable = true;
+    };
+    services = {
+      # clash.enable = true;
       docker.enable = true;
     };
     shell = {
@@ -71,8 +69,5 @@
   };
   networking.networkmanager.enable = true;
   time.timeZone = "Asia/Shanghai";
-  environment.extraInit = ''
-    unset https_proxy http_proxy all_proxy rsync_proxy ftp_proxy
-  '';
   networking.useDHCP = false;
  }
