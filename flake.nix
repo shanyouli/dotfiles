@@ -14,7 +14,9 @@
     {
       # Core dependencies.
       # Two inputs so I can track them separately at different rates.
-      nixpkgs.url          = "nixpkgs/master";
+      #nixpkgs.url          = "nixpkgs/master";
+      nixpkgs.url           = "https://mirrors.ustc.edu.cn/nix-channels/nixos-20.09/nixexprs.tar.xz";
+
       nixpkgs-unstable.url = "nixpkgs/master";
 
       home-manager.url   = "github:rycee/home-manager/master";

@@ -14,13 +14,16 @@ in {
       [ pkgs.fcitx-engines.rime ]  else [
         pkgs.fcitx-engines.libpinyin
       ]);
-    home.configFile = {
-      "fcitx/config".source = "${configDir}/fcitx/config";
-      "fcitx/profile".source = (if cfg.rime.enable then
-        "${configDir}/fcitx/rime.profile" else
-          "${configDir}/fcitx/libpinyin.profile");
-      "fcitx/conf/fcitx-clipboard.config".source =
-        "${configDir}/fcitx/conf/fcitx-clipboard.config";
-    };
+    # home.configFile = {
+    #   "fcitx/config".source = "${configDir}/fcitx/config";
+    #   "fcitx/profile" = {
+    #     source = (if cfg.rime.enable then
+    #       "${configDir}/fcitx/rime.profile" else
+    #       "${configDir}/fcitx/libpinyin.profile");
+    #      executable = true;
+    #     };
+    #   "fcitx/conf/fcitx-clipboard.config".source =
+    #     "${configDir}/fcitx/conf/fcitx-clipboard.config";
+    # };
   };
 }

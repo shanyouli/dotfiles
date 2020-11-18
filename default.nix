@@ -18,7 +18,7 @@ with inputs;
   environment.variables.NIXPKGS_ALLOW_UNFREE = "1";
   nix = {
     package = pkgs.nixFlakes;
-    extraOptions = "experimental-features = nix-command flakes";
+    extraOptions = "experimental-features = nix-command flakes ca-references";
     nixPath = [
       "nixpkgs=${nixpkgs}"
       "nixpkgs-unstable=${nixpkgs-unstable}"
