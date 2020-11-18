@@ -44,7 +44,7 @@
       clash.enable = true;
     };
     services = {
-      # clash.enable = true;
+      dropbox.enable = true;
       docker.enable = true;
     };
     shell = {
