@@ -58,7 +58,7 @@ in {
         enableDefaultFonts = true;
         fontconfig = {
           includeUserConf = false;
-          localConf = lib.readFile <config/fontconfig/local.conf> ;
+          localConf = readFile "${configDir}/fontconfig/local.conf" ;
           defaultFonts    = {
             monospace     = [ "Fira Code" ];
             sansSerif     = [ "Fira Sans" ];
@@ -69,7 +69,7 @@ in {
       })
     ]);
     home.configFile = mkIf cfg.enable {
-      "fontconfig/fonts.conf".source = <config/fontconfig/fonts.conf> ;
+      "fontconfig/fonts.conf".source = "${configDir}/fontconfig/fonts.conf" ;
     };
     system.userActivationScripts.updateFontconfig = ''
        ${pkgs.fontconfig}/bin/fc-cache -f
