@@ -70,7 +70,7 @@ if command -v "lua" >/dev/null ; then
     export _ZL_ADD_ONCE=1 # 仅当路径更新时，更新数据库
 else
     zice 0c agkozak/zsh-z
-    export ZSHZ_DATA=$XDG_CACHE_HOME/z
+    export ZSHZ_DATA=$XDG_CACHE_HOME/zlua
 fi
 # fzf fzf-tmux
 zice if'! command -v fzf >/dev/null' from"gh-r" as"program" junegunn/fzf-bin

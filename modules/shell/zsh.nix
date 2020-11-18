@@ -43,7 +43,7 @@ in {
       fasd
       fd
       htop
-      tldr
+      tealdeer
       tree
     ] ++ (if cfg.fzf then [ fzf ] else [ file ]);
 
