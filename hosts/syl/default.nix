@@ -48,6 +48,7 @@
       docker.enable = true;
     };
     shell = {
+      adb.enable = true;
       aria2.enable = true;
       direnv.enable = true;
       git.enable = true;

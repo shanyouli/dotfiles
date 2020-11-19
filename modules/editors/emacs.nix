@@ -21,9 +21,9 @@ in {
 
     user.packages = with pkgs; [
       ## Emacs itself
-      ##binutils       # native-comp needs 'as', provided by this
-      ##emacsGcc       # 28 + native-comp
-      emacs
+      binutils       # native-comp needs 'as', provided by this
+      emacsGcc       # 28 + native-comp
+      # emacs
       ## Doom dependencies
       git
       (ripgrep.override {withPCRE2 = true;})
