@@ -33,6 +33,23 @@
   services.xserver.videoDrivers = [ "intel" ];
   hardware.opengl.enable = true;
 
+  # The touchpad fix errors
+  services.xserver.synaptics.enable = false;
+  services.xserver.libinput.naturalScrolling = false;
+  services.xserver.libinput.accelProfile = "flat";
+  services.xserver.libinput.enable = true;
+  services.xserver.inputClassSections = [
+    ''
+      Identifier "Enable libinput for TrackPoint"
+      MatchIsPointer "on"
+      Driver "libinput"
+      Option "Accel Speed" "0.1"
+    ''
+  ];
+
+  # Set DPI
+  services.xserver.dpi = 96;
+
   # Power management
   environment.systemPackages = [ pkgs.acpi ];
   powerManagement.powertop.enable = true;

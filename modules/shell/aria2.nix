@@ -31,6 +31,7 @@ in {
 
   config = mkIf cfg.enable {
     user.packages = [ aria2 ];
+
     home.configFile."aria2/aria2.conf".text =
       let other = "${configDir}/aria2/aria2.conf";
       in ''
@@ -41,6 +42,12 @@ in {
         on-download-complete=${aria2Home}/delete_aria2
         ${readFile other}
      '';
+
+    modules.shell.zsh.aliases = (mkIf (proxyPort != null) {
+      paria2c =
+        "aria2c --all-proxy=http://127.0.0.1:${toString proxyPort} -x16 -j16";
+    });
+
     services.xserver.displayManager.sessionCommands =
       let proxy = if proxyPort != null then
             ''--all-proxy="http://127.0.0.1:${toString proxyPort}"''
