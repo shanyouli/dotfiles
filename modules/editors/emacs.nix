@@ -76,5 +76,21 @@ in {
     #      ''}
     #   fi
     # '';
+    home.configFile."extra/emacs.el".text =
+      let f = {
+            mono = "mononoki Nerd Font Mono";
+            monoSize = "12";
+            emoji = "Noto Color Emoji";
+            cjk = "Sarasa Mono SC";
+          };
+      in ''
+        (setq mydotfile (expand-file-name "/etc/nixos"))
+        (setq doom-font (font-spec :family "${f.mono}" :size ${f.monoSize}))
+        (defadvice! my/use-chinese-font-a (&rest _)
+           "Set Chinese fonts."
+           :after #'doom-init-extra-fonts-h
+           (set-fontset-font t '(#x4e00 . #x9fff) "${f.cjk}")
+           (set-fontset-font t 'symbol "${f.emoji}"))
+      '';
   };
 }
