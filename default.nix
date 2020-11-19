@@ -23,6 +23,7 @@ with inputs;
       "nixpkgs=${nixpkgs}"
       "nixpkgs-unstable=${nixpkgs-unstable}"
       "nixpkgs-overlays=${dotFilesDir}/overlays"
+      "nixpkgs-overlays=${dotFilesDir}/pkgs"
       "home-manager=${home-manager}"
       "dotfiles=${dotFilesDir}"
     ];
@@ -39,6 +40,7 @@ with inputs;
     };
     useSandbox = true;
   };
+  nixpkgs.overlays = import ./pkgs;
   system.configurationRevision = mkIf (self ? rev) self.rev;
   system.stateVersion = "20.09";
 

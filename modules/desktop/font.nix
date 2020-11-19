@@ -15,12 +15,8 @@ in {
           siji
           wqy_microhei
           fira-code-symbols
-          fira
-          (unstable.nerdfonts.override {
-            fonts = [ "FantasqueSansMono" ] ++ (if cfg.enable then [] else [
-              "FiraCode"
-            ]);
-          })
+          fira-sans
+          nerd.fantasquesansmono
         ] ++ (if cfg.enable then [
           source-serif-pro
           joypixels
@@ -32,12 +28,9 @@ in {
           xorg.fontmiscmisc
           xorg.fontcursormisc
         ] else [
-          fira-code
+          nerd.mononoki
           noto-fonts
-          source-han-mono
-          source-han-serif
-          source-han-sans
-          noto-fonts-emoji
+          sarasa-gothic
           hanazono
         ]);
         enableFontDir = true;
@@ -60,7 +53,7 @@ in {
           includeUserConf = false;
           localConf = readFile "${configDir}/fontconfig/local.conf" ;
           defaultFonts    = {
-            monospace     = [ "Fira Code" ];
+            monospace     = [ "mononoki Nerd Font Mono" ];
             sansSerif     = [ "Fira Sans" ];
             serif         = [ "Noto Serif" ];
             emoji         = [ "Noto Color Emoji" ];
