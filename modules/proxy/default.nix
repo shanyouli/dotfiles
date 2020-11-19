@@ -21,10 +21,10 @@ in {
   };
 
   config = mkIf (cfg.default != null) {
-  nix.binaryCaches = lib.mkBefore [
-    "https://mirrors.ustc.edu.cn/nix-channels/store"
-    "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-  ];
+    nix.binaryCaches = lib.mkBefore [
+      "https://mirrors.ustc.edu.cn/nix-channels/store"
+      "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+    ];
     networking = {
       proxy = {
         default = "http://127.0.0.1:${toString cfg.httpPort}";
@@ -35,25 +35,54 @@ in {
         allowedUDPPorts = [ cfg.httpPort cfg.socksPort ];
       };
     };
+
     unsetenv = [
       "https_proxy" "http_proxy" "all_proxy" "rsync_proxy" "ftp_proxy"
     ];
-    home.services.proxy = (if cfg.default == "clash" then
-      let pkg = cfg.clash.pkg ;
-          conf = cfg.clash.confDir;
-      in {
-        Unit = {
-          After = [ "network.target" ];
-          Description = "Clash Proxy Daemon";
-        };
-        Install = { WantedBy = [ "default.target" ]; };
-        Service = {
-          ExecStart = "${pkg.out}/bin/clash -d ${conf}";
-          ExecReload = "${pkgs.coreutils.out}/bin/kill -HUP $MAINPID";
-          KillMode = "control-group";
-          Restart = "on-failure";
-        };
-      } else if cfg.default == "v2ray" then {
-    } else {});
+
+    user.packages = [ pkgs.nmap ];
+
+    modules.shell.zsh.rcInit =
+      let httpProxy = "http://127.0.0.1:${toString cfg.httpPort}";
+      in ''
+        function sproxy() {
+          export http_proxy="${httpProxy}"
+          export https_proxy="${httpProxy}"
+          export all_proxy="${httpProxy}"
+          export rsync_proxy="${httpProxy}"
+          export ftp_proxy="${httpProxy}"
+        }
+
+        function unproxy() {
+           unset "https_proxy" "http_proxy" "all_proxy" "rsync_proxy" "ftp_proxy"
+        }
+      '';
+
+    home = {
+      file.".ssh/config".text = ''
+        Host github.com
+        HostName github.com
+        User git
+        Port 22
+        ProxyCommand ${pkgs.nmap}/bin/ncat --proxy 127.0.0.1:${toString cfg.socksPort} --proxy-type socks5 %h %p
+      '';
+      services.proxy = (if cfg.default == "clash" then
+        let pkg = cfg.clash.pkg ;
+            conf = cfg.clash.confDir;
+        in {
+          Unit = {
+            After = [ "network.target" ];
+            Description = "Clash Proxy Daemon";
+          };
+          Install = { WantedBy = [ "default.target" ]; };
+          Service = {
+            ExecStart = "${pkg.out}/bin/clash -d ${conf}";
+            ExecReload = "${pkgs.coreutils.out}/bin/kill -HUP $MAINPID";
+            KillMode = "control-group";
+            Restart = "on-failure";
+          };
+        } else if cfg.default == "v2ray" then {
+        } else {});
+    };
   };
 }
