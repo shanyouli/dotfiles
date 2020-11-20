@@ -1,10 +1,11 @@
 # Syl -- My desktop
-{ ... }:
+{  pkgs, ... }:
 
 {
   imports = [
     ../personal.nix
-    ./hardware-configuration.nix ];
+    ./hardware-configuration.nix
+  ];
   modules = {
     desktop = {
       apps = {
@@ -32,8 +33,9 @@
      vm.virtualbox.enable = true;
     };
     editors = {
-      default = "emacs -nw";
+      default = "nvim";
       emacs.enable = true;
+      emacs.pkg   = pkgs.emacsGcc;
       vim.enable = true;
     };
     dev = {
@@ -56,6 +58,7 @@
       tmux.enable = true;
       zsh.enable = true;
       htop.enable = true;
+      sdcv.enable = true;
       trash.enable = true;
     };
     theme.active = "alucard";
@@ -67,6 +70,7 @@
       bluetooth.enable = true;
       bluetooth.audio.enable = true;
       light.enable = true;
+      thinkpad.enable = true;
     };
   };
   networking.networkmanager.enable = true;

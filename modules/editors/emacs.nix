@@ -14,49 +14,62 @@ in {
       enable  = mkBoolOpt true;
       fromSSH = mkBoolOpt false;
     };
+    pkg = mkOption {
+      type = types.package;
+      default = pkgs.unstable.emacs;
+    };
   };
 
   config = mkIf cfg.enable {
     nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
 
-    user.packages = with pkgs; [
-      ## Emacs itself
-      binutils       # native-comp needs 'as', provided by this
-      emacsGcc       # 28 + native-comp
-      # emacs
-      ## Doom dependencies
-      git
-      (ripgrep.override {withPCRE2 = true;})
-      gnutls              # for TLS connectivity
+    user.packages =
+      let
+        otherPkgs = with pkgs; [
+            ## native-comp needs 'as', provided by this
+            (mkIf (cfg.pkg == pkgs.emacsGcc ) binutils)
+            # emacs
+            ## Doom dependencies
+            git
+            (ripgrep.override {withPCRE2 = true;})
+            gnutls              # for TLS connectivity
 
-      ## Optional dependencies
-      fd                  # faster projectile indexing
-      imagemagick         # for image-dired
-      (mkIf (config.programs.gnupg.agent.enable)
-        pinentry_emacs)   # in-emacs gnupg prompts
-      zstd                # for undo-fu-session/undo-tree compression
+            ## Optional dependencies
+            fd                  # faster projectile indexing
+            imagemagick         # for image-dired
+            (mkIf (config.programs.gnupg.agent.enable)
+              pinentry_emacs)   # in-emacs gnupg prompts
+            zstd                # for undo-fu-session/undo-tree compression
 
-      ## Module dependencies
-      # :checkers spell
-      (aspellWithDicts (ds: with ds; [
-        en en-computers en-science
-      ]))
-      # :checkers grammar
-      languagetool
-      # :tools editorconfig
-      editorconfig-core-c # per-project style config
-      # :tools lookup & :lang org +roam
-      sqlite
-      # :lang cc
-      ccls
-      # :lang javascript
-      nodePackages.javascript-typescript-langserver
-      # :lang latex & :lang org (latex previews)
-      texlive.combined.scheme-medium
-      # :lang rust
-      rustfmt
-      unstable.rust-analyzer
-    ];
+            ## Module dependencies
+            # :checkers spell
+            (aspellWithDicts (ds: with ds; [
+              en en-computers en-science
+            ]))
+            # :checkers grammar
+            languagetool
+            # :tools editorconfig
+            editorconfig-core-c # per-project style config
+            # :tools lookup & :lang org +roam
+            sqlite
+            # :lang cc
+            ccls
+            # :lang javascript
+            nodePackages.javascript-typescript-langserver
+            # :lang latex & :lang org (latex previews)
+            texlive.combined.scheme-medium
+            # :lang rust
+            rustfmt
+            unstable.rust-analyzer
+          ];
+      in otherPkgs ++ [
+        ((pkgs.emacsPackagesNgGen cfg.pkg).emacsWithPackages
+          (epkgs: (with epkgs.melpaPackages; [
+            vterm
+            # BUG: 无法编译rime
+            # rime
+          ])))
+      ];
 
     env.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];
 
@@ -76,21 +89,31 @@ in {
     #      ''}
     #   fi
     # '';
-    home.configFile."extra/emacs.el".text =
-      let f = {
-            mono = "mononoki Nerd Font Mono";
-            monoSize = "12";
-            emoji = "Noto Color Emoji";
-            cjk = "Sarasa Mono SC";
-          };
-      in ''
-        (setq mydotfile (expand-file-name "/etc/nixos"))
-        (setq doom-font (font-spec :family "${f.mono}" :size ${f.monoSize}))
-        (defadvice! my/use-chinese-font-a (&rest _)
-           "Set Chinese fonts."
-           :after #'doom-init-extra-fonts-h
-           (set-fontset-font t '(#x4e00 . #x9fff) "${f.cjk}")
-           (set-fontset-font t 'symbol "${f.emoji}"))
+    home.configFile =  {
+      "extra/emacs.el".text =
+        let f = {
+              mono = "mononoki Nerd Font Mono";
+              monoSize = "12";
+              emoji = "Noto Color Emoji";
+              cjk = "Sarasa Mono SC";
+            };
+        in ''
+          (setq rime-emacs-module-header-root "${cfg.pkg}/include")
+          (setq rime-librime-root "${pkgs.librime}")
+          (setq rime-share-data-dir "${pkgs.brise}/share/rime-data")
+          (setq mydotfile (expand-file-name "/etc/nixos"))
+          (setq doom-font (font-spec :family "${f.mono}" :size ${f.monoSize}))
+          (defadvice! my/use-chinese-font-a (&rest _)
+             "Set Chinese fonts."
+             :after #'doom-init-extra-fonts-h
+             (set-fontset-font t '(#x4e00 . #x9fff) "${f.cjk}")
+             (set-fontset-font t 'symbol "${f.emoji}"))
       '';
+      "extra/emacs.packages.el".text = ''
+         ${optionalString (! config.modules.shell.sdcv.enable) ''
+           (disable-packages! sdcv)     ; Disable sdcv packages
+         ''}
+      '';
+    };
   };
 }
