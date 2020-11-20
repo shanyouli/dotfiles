@@ -23,53 +23,53 @@ in {
   config = mkIf cfg.enable {
     nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
 
-    user.packages =
-      let
-        otherPkgs = with pkgs; [
-            ## native-comp needs 'as', provided by this
-            (mkIf (cfg.pkg == pkgs.emacsGcc ) binutils)
-            # emacs
-            ## Doom dependencies
-            git
-            (ripgrep.override {withPCRE2 = true;})
-            gnutls              # for TLS connectivity
+    user.packages = with pkgs; [
+      ## native-comp needs 'as', provided by this
+      (mkIf (cfg.pkg == pkgs.emacsGcc ) binutils)
+      # emacs
+      ## Doom dependencies
+      git
+      (ripgrep.override {withPCRE2 = true;})
+      gnutls              # for TLS connectivity
 
-            ## Optional dependencies
-            fd                  # faster projectile indexing
-            imagemagick         # for image-dired
-            (mkIf (config.programs.gnupg.agent.enable)
-              pinentry_emacs)   # in-emacs gnupg prompts
-            zstd                # for undo-fu-session/undo-tree compression
+      ## Optional dependencies
+      fd                  # faster projectile indexing
+      imagemagick         # for image-dired
+      (mkIf (config.programs.gnupg.agent.enable)
+        pinentry_emacs)   # in-emacs gnupg prompts
+      zstd                # for undo-fu-session/undo-tree compression
 
-            ## Module dependencies
-            # :checkers spell
-            (aspellWithDicts (ds: with ds; [
-              en en-computers en-science
-            ]))
-            # :checkers grammar
-            languagetool
-            # :tools editorconfig
-            editorconfig-core-c # per-project style config
-            # :tools lookup & :lang org +roam
-            sqlite
-            # :lang cc
-            ccls
-            # :lang javascript
-            nodePackages.javascript-typescript-langserver
-            # :lang latex & :lang org (latex previews)
-            texlive.combined.scheme-medium
-            # :lang rust
-            rustfmt
-            unstable.rust-analyzer
-          ];
-      in otherPkgs ++ [
-        ((pkgs.emacsPackagesNgGen cfg.pkg).emacsWithPackages
-          (epkgs: (with epkgs.melpaPackages; [
-            vterm
-            # BUG: 无法编译rime
-            # rime
-          ])))
-      ];
+      ## Module dependencies
+      # :checkers spell
+      (aspellWithDicts (ds: with ds; [
+        en en-computers en-science
+      ]))
+      # :checkers grammar
+      languagetool
+      # :tools editorconfig
+      editorconfig-core-c # per-project style config
+      # :tools lookup & :lang org +roam
+      sqlite
+      # :lang cc
+      ccls
+      # :lang javascript
+      nodePackages.javascript-typescript-langserver
+      # :lang latex & :lang org (latex previews)
+      texlive.combined.scheme-medium
+      # :lang rust
+      rustfmt
+      unstable.rust-analyzer
+
+      # epkgs
+      ((pkgs.emacsPackagesNgGen cfg.pkg).emacsWithPackages
+        (epkgs: (with epkgs.melpaPackages; [
+          vterm
+          # BUG: 无法编译rime
+          # rime
+        ])))
+      librime
+      brise
+    ];
 
     env.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];
 
@@ -113,6 +113,7 @@ in {
          ${optionalString (! config.modules.shell.sdcv.enable) ''
            (disable-packages! sdcv)     ; Disable sdcv packages
          ''}
+         (package! vterm :type virtual)
       '';
     };
   };
