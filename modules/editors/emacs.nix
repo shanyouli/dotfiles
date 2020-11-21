@@ -66,9 +66,16 @@ in {
           vterm
           # BUG: 无法编译rime
           # rime
+          gif-screencast
+          vlf
         ])))
+      # rime package need
       librime
       brise
+      # gif-screencast package need
+      scrot
+      imagemagick
+      gifsicle
     ];
 
     env.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];
@@ -113,7 +120,8 @@ in {
          ${optionalString (! config.modules.shell.sdcv.enable) ''
            (disable-packages! sdcv)     ; Disable sdcv packages
          ''}
-         (package! vterm :type virtual)
+         (package! vterm :type 'virtual)
+         (package! vlf :type 'virtual)
       '';
     };
   };
