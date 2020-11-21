@@ -61,8 +61,9 @@
           (p: pkgs.callPackage p {});
 
       nixosModules =
-        { dotfiles = import ./.; }
-        // mapModulesRec ./modules import;
+        { dotfiles = import ./.;
+         # nixpkgs.overlays = (attrValues self.overlays);
+        } // mapModulesRec ./modules import;
 
       nixosConfigurations =
         mapHosts ./hosts { inherit system; };
