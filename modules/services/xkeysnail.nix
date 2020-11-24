@@ -10,5 +10,7 @@ in {
   config = mkIf cfg.enable {
     hardware.uinput.enable = true;
     user.extraGroups = [ "uinput" ];
+    environment.systemPackages = [ pkgs.my.xkeysnail ];
+
   };
 }

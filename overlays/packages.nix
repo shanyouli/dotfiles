@@ -1,7 +1,8 @@
-final: prev: {
+final: prev: with prev; {
   my = {
-    fantasquesansmono = prev.callPackage ../packages/fantasquesansmono.nix {};
-    fira-sans = prev.callPackage ../packages/fira-sans.nix {};
-    mononoki = prev.callPackage ../packages/mononoki.nix {};
+    fantasquesansmono = callPackage ../packages/fantasquesansmono.nix {};
+    fira-sans = callPackage ../packages/fira-sans.nix {};
+    mononoki = callPackage ../packages/mononoki.nix {};
+    xkeysnail = python3Packages.callPackage ../packages/xkeysnail.nix {};
   };
 }

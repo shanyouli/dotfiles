@@ -49,6 +49,8 @@
     services = {
       dropbox.enable = true;
       docker.enable = true;
+      xkeysnail.enable = true;
+
     };
     shell = {
       adb.enable = true;
@@ -67,7 +69,6 @@
       sensors.enable = true;
       audio.enable = true;
       fs.enable = true;
-      uinput.enable = true;
       fs.ssd.enable = true;
       bluetooth.enable = true;
       bluetooth.audio.enable = true;
