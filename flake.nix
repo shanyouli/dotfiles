@@ -28,7 +28,7 @@
 
   outputs = inputs @ { self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
     let
-      inherit (lib) attrValues;
+      inherit (lib) attrValues genAttrs attrNames recursiveUpdate;
       inherit (lib.my) mapModules mapModulesRec mapHosts;
 
       system = "x86_64-linux";
@@ -49,15 +49,23 @@
       overlay =
         final: prev: {
           unstable = uPkgs;
-          my = self.packages."${system}";
+          # my = self.packages."${system}";
         };
 
       overlays =
         mapModules ./overlays import;
 
+
       packages."${system}" =
-        mapModules ./packages
-          (p: pkgs.callPackage p {});
+        let
+          packages = self.overlay pkgs pkgs;
+          overlays = lib.filterAttrs (n: v: n != "pkgs") self.overlays;
+          overlayPkgs =
+            genAttrs
+              (attrNames overlays)
+              (name: (overlays."${name}" pkgs pkgs)."${name}");
+        in
+        recursiveUpdate packages overlayPkgs;
 
       nixosModules =
         { dotfiles = import ./.;
