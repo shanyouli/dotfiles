@@ -11,10 +11,13 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       user.packages = with pkgs; [
-        xfce.thunar
+        (xfce.thunar.override {
+          thunarPlugins = [
+            pkgs.xfce.thunar-archive-plugin
+          ] ++ (if config.modules.services.dropbox.enable then
+            [ pkgs.xfce.thunar-dropbox-plugin ] else []);
+        })
         xfce.tumbler
-        #(mkIf config.modules.desktop.apps.dropbox.enable
-        #  xfce.thunar-dropbox-plugin)
       ];
     }
     (mkIf cfg.gvfs.enable {

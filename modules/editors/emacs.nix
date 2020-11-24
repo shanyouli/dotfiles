@@ -64,14 +64,21 @@ in {
       ((pkgs.emacsPackagesNgGen cfg.pkg).emacsWithPackages
         (epkgs: (with epkgs.melpaPackages; [
           vterm
-          # BUG: 无法编译rime
-          # rime
+          (rime.overrideAttrs (esuper: {
+            buildInputs = esuper.buildInputs ++ [ pkgs.librime pkgs.brise ];
+            postInstall = ''
+              pushd source
+              LIBRIME_ROOT="${pkgs.librime}/"
+              MODULE_FILE_SUFFIX=".so"
+              make lib
+              install -m444 -t $out/share/emacs/site-lisp/elpa/rime-** ./*.so
+              rm -r $out/share/emacs/site-lisp/elpa/rime-*/{lib.c,Makefile}
+              popd
+            '';
+          }))
           gif-screencast
           vlf
         ])))
-      # rime package need
-      librime
-      brise
       # gif-screencast package need
       scrot
       imagemagick
@@ -120,8 +127,11 @@ in {
          ${optionalString (! config.modules.shell.sdcv.enable) ''
            (disable-packages! sdcv)     ; Disable sdcv packages
          ''}
-         (package! vterm :type 'virtual)
-         (package! vlf :type 'virtual)
+         (package! rime :built-in 'prefer)
+         (package! dash :built-in 'prefer)
+         (package! posframe :built-in 'prefer)
+         (package! vterm :built-in 'prefer)
+         (package! vlf :built-in 'prefer)
       '';
     };
   };

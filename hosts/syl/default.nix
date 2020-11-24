@@ -24,6 +24,7 @@
       browsers = {
         default = "firefox";
         firefox.enable = true;
+        qutebrowser.enable = true;
       };
       media.mpv.enable = true;
       term = {
@@ -66,6 +67,7 @@
       sensors.enable = true;
       audio.enable = true;
       fs.enable = true;
+      uinput.enable = true;
       fs.ssd.enable = true;
       bluetooth.enable = true;
       bluetooth.audio.enable = true;
