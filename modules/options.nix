@@ -27,6 +27,11 @@ with lib.my;
       default = [];
       description = "TODO";
     };
+    rootRun = mkOption {
+      type = with types; listOf str;
+      default = [];
+      description = "When ROOT is executed, you do not need a user password.";
+    };
   };
 
   config = {
@@ -91,5 +96,10 @@ with lib.my;
         # unset ${toString config.unsetenv}
         ${concatStringsSep "\n" unsetVar}
      '';
+
+    security.sudo.extraConfig = ''
+      # No password is required to use the root permission execution.
+      ${config.user.name} ALL=NOPASSWD: ${concatStringsSep "," config.rootRun}
+    '';
   };
 }

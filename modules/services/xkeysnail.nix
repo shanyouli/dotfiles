@@ -17,9 +17,7 @@ in {
     hardware.uinput.enable = true;
     # user.extraGroups = [ "uinput" ];
     environment.systemPackages = [ cfgPkg ];
-    security.sudo.extraConfig = ''
-      ${config.user.name} ALL=NOPASSWD: ${cfgPkg}/bin/xkeysnail
-    '';
+    rootRun = [ "${cfgPkg}/bin/xkeysnail" ];
     home = {
       configFile = (if cfg.conf == "${cfgConf}" then {
         "xkeysnail/config.py".source = "${configDir}/xkeysnail/config.py" ;
