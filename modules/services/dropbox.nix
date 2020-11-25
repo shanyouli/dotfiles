@@ -26,10 +26,10 @@ in {
         Environment = let
           QT_PLUGIN_PATH = "/run/current-system/sw" + pkgs.qt5.qtbase.qtPluginPrefix;
           QML2_IMPORT_PATH = "/run/current-system/sw" + pkgs.qt5.qtbase.qtQmlPrefix;
-        in ''
-          QT_PLUGIN_PATH=${QT_PLUGIN_PATH}
-          QML2_IMPORT_PATH=${QML2_IMPORT_PATH}
-        '';
+        in [
+          "QT_PLUGIN_PATH=${QT_PLUGIN_PATH}"
+          "QML2_IMPORT_PATH=${QML2_IMPORT_PATH}"
+        ];
         ExecStart = "${pkgs.dropbox.out}/bin/dropbox";
         ExecReload = "${pkgs.coreutils.out}/bin/kill -HUP $MAINPID";
         KillMode = "control-group"; # upstream recommends process
