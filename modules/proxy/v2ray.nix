@@ -3,14 +3,14 @@ with lib;
 with lib.my;
 let cfg = config.modules.proxy.v2ray;
 in {
-  options.modules.proxy.clash = {
+  options.modules.proxy.v2ray = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
     user.packages =
       [ (pkgs.unstable.v2ray.override {
-          assets = {
+          assetOverrides = {
             "geoip.dat" = pkgs.fetchurl {
               url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202011282208/geoip.dat";
               sha256 = "ef0fb30d373bec6d671adaa27ef2ca758845913e3077833527b73453e06e21f6";

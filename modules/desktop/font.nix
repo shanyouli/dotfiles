@@ -16,7 +16,7 @@ in {
           wqy_microhei
           fira-code-symbols
           my.fira-sans
-          my.fantasquesansmono
+          nerd-fonts.fantasque-sans-mono
         ] ++ (if cfg.enable then [
           source-serif-pro
           joypixels
@@ -28,7 +28,7 @@ in {
           xorg.fontmiscmisc
           xorg.fontcursormisc
         ] else [
-          my.mononoki
+          nerd-fonts.mononoki
           noto-fonts
           sarasa-gothic
           hanazono

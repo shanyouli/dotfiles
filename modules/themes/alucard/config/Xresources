@@ -50,11 +50,10 @@
 
 
 !! general
-scratch.font: Fira Code:pixelsize=16
+scratch.font: Monospace:pixelsize=16
 
 
 !! xst
-!!st.font: Fira Code:pixelsize=12
 st.font:  Monospace:pixelsize=12
 
 !! urxvt
