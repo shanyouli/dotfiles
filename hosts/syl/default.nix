@@ -46,6 +46,7 @@
     proxy = {
       default = "clash";
       clash.enable = true;
+      v2ray.enable = true;
     };
     services = {
       dropbox.enable = true;
