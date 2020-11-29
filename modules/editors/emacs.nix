@@ -26,7 +26,6 @@ in {
     user.packages = with pkgs; [
       ## native-comp needs 'as', provided by this
       (mkIf (cfg.pkg == pkgs.emacsGcc ) binutils)
-      # emacs
       ## Doom dependencies
       git
       (ripgrep.override {withPCRE2 = true;})
