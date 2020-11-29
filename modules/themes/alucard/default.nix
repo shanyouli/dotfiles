@@ -14,8 +14,8 @@ in {
           wallpaper = mkDefault ./config/wallpaper.png;
           gtk = {
             theme = "Dracula";
-            iconTheme = "Paper";
-            cursorTheme = "Paper";
+            iconTheme = "Qogir";
+            cursorTheme = "Qogir";
           };
         };
 
@@ -40,7 +40,7 @@ in {
     (mkIf config.services.xserver.enable {
       user.packages = with pkgs; [
         unstable.dracula-theme
-        paper-icon-theme # for rofi
+        qogir-icon-theme
       ];
 
       # Compositor

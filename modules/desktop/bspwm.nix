@@ -37,7 +37,9 @@ in {
         windowManager.bspwm.enable = true;
       };
     };
-
+    services.xserver.displayManager.sessionCommands = ''
+      ${pkgs.xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr
+    '';
     systemd.user.services."dunst" = {
       enable = true;
       description = "";

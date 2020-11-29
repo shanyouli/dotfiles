@@ -1,5 +1,5 @@
 # Syl -- My desktop
-{  pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   imports = [
@@ -19,6 +19,7 @@
           enable = true;
           gvfs.enable = true;
         };
+        calibre.enable = true;
       };
       bspwm.enable = true;
       browsers = {
@@ -79,4 +80,6 @@
   networking.networkmanager.enable = true;
   time.timeZone = "Asia/Shanghai";
   networking.useDHCP = false;
+  # see @https://nixos.wiki/wiki/NTP
+  networking.timeServers = lib.mkBefore [ "ntp.aliyun.com" ];
  }

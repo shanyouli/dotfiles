@@ -1,6 +1,6 @@
 /* -*- mode: css; -*- */
 configuration {
-  icon-theme:       "Paper";
+  icon-theme:       "Qogir";
   cycle:            true;
   disable-history:  false;
   monitor:          "-4";
@@ -26,9 +26,8 @@ configuration {
   magenta: #bd93f9;
   blue:    #61bfff;
 
-  text-font:      "Fira Sans 15";
-  text-mono-font: "Fira Code 13";
-  /* icon-font:      "Hurmit Nerd Font Mono 26"; */
+  text-font:      "sans-serif 15";
+  text-mono-font: "monospace  13";
   icon-font:      "FontAwesome 20";
 
   background-color: transparent;
@@ -40,8 +39,9 @@ configuration {
 
 /**** Layout ****/
 window {
-  width:    1000px;
-  y-offset: -50px;
+  height:   61.8%;
+  width:    61.8%;
+  y-offset: -30.2%;
   anchor:   north;
   location: center;
   border: 1px;
@@ -51,12 +51,12 @@ window {
 }
 
 listview {
-  lines: 12;
+  /* lines: 12; */
   fixed-height: false;
   /* reverse: true; */
   columns: 2;
   scrollbar: true;
-  spacing: 1px;
+  spacing: 2px;
   /* Remove strange gap between listview and inputbar */
   margin: -2px 0 0;
 }
@@ -74,7 +74,7 @@ listview {
 */
 
 scrollbar {
-  handle-width: 1px;
+  handle-width: 5px;
 }
 inputbar {
   children: [ textbox-icon, prompt, entry ];
