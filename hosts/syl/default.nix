@@ -47,6 +47,8 @@
       default = "clash";
       clash.enable = true;
       v2ray.enable = true;
+      # v2ray.asset = false;
+      # v2ray.vless = false;
     };
     services = {
       dropbox.enable = true;

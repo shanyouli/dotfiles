@@ -3,16 +3,15 @@ with lib;
 with lib.my;
 let
   cfg = config.modules.proxy.clash;
-  port = with config.modules.proxy;
-    if default != null then {
-      http = "${toString httpPort}";
-      socks = "${toString socksPort}";
-    } else {
-      http = "7890";
-      socks = "7891";
-    };
-in
-{
+  port = with config.modules.proxy; if default != null then {
+    http = "${toString httpPort}";
+    socks = "${toString socksPort}";
+  } else {
+    http = "1080";
+    socks = "1081";
+  };
+
+in {
   options.modules.proxy.clash = {
     enable = mkOption {
       type = types.bool;
