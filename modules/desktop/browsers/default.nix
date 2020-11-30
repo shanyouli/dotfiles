@@ -10,5 +10,13 @@ in {
 
   config = mkIf (cfg.default != null) {
     env.BROWSER = cfg.default;
+    home.defaultApps =
+      let default = if cfg.default == "firefox"
+                    then "firefox.desktop"
+                    else "org.qutebrowser.qutebrowser.desktop" ;
+      in {
+        "text/html" = "${default}";
+        "application/xhtml-xml" = "${default}";
+      };
   };
 }

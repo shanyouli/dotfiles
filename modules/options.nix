@@ -11,6 +11,7 @@ with lib.my;
       configFile = mkOpt' attrs {} "Files to place in $XDG_CONFIG_HOME";
       dataFile   = mkOpt' attrs {} "Files to place in $XDG_DATA_HOME";
       services   = mkOpt' attrs {} "User system service";
+      defaultApps = mkOpt' attrs {} "Default Applications";
     };
 
     env = mkOption {
@@ -68,6 +69,10 @@ with lib.my;
         xdg = {
           configFile = mkAliasDefinitions options.home.configFile;
           dataFile   = mkAliasDefinitions options.home.dataFile;
+
+          mime.enable = true;
+          mimeApps.enable = true;
+          mimeApps.defaultApplications = mkAliasDefinitions options.home.defaultApps;
         };
         systemd.user.services = mkAliasDefinitions options.home.services;
       };

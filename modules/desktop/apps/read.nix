@@ -13,8 +13,11 @@ in {
       calibre
       (mkIf cfg.zathura zathura)
     ];
-    home.configFile = (if cfg.zathura then {
-      "zathura/zathurarc".source = "${configDir}/zathura/zathurarc";
-    } else {});
+    home = (mkMerge [
+      (mkIf cfg.zathura {
+        configFile."zathura/zathurarc".source = "${configDir}/zathura/zathurarc";
+        defaultApps."application/pdf" = "zathura.desktop";
+      })
+    ]);
   };
 }
