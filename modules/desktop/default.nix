@@ -92,7 +92,12 @@ in {
     env.GTK_DATA_PREFIX = [ "${config.system.path}" ];
     env.QT_QPA_PLATFORMTHEME = "gtk2";
     qt5 = { style = "gtk2"; platformTheme = "gtk2"; };
+    # see @https://www.emacswiki.org/emacs/MovingTheCtrlKey#toc2
+    # see @https://unix.stackexchange.com/questions/377600/in-nixos-how-to-remap-caps-lock-to-control
     services.xserver.displayManager.sessionCommands = ''
+      ${optionalString (! config.modules.services.xkeysnail.enable)
+        "${pkgs.xorg.setxkbmap}/bin/setxkbmap -option ctrl:swapcaps"}
+
       # GTK2_RC_FILES must be available to the display manager.
       export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
     '';

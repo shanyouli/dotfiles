@@ -33,7 +33,6 @@ in {
           Type = "simple";
           KillMode = "process";
           ExecStart = "${sudoCmd} ${cmd} --quiet --watch ${cfg.conf}";
-          # ExecStop=/usr/bin/sudo /usr/bin/killall xkeysnail
           Restart = "on-failure";
           RestartSec = "3";
         };
