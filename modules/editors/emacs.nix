@@ -103,7 +103,14 @@ in {
     #   fi
     # '';
     home.configFile =  {
-      "extra/emacs.el".text =
+      "doom/config.org".source = "${configDir}/emacs/config.org";
+      "doom/init.el".text =
+        let  basefile = "${configDir}/emacs/init.el";
+        in ''
+          ${readFile basefile}
+          (setq using-nix-config-p t)
+        '';
+      "doom/config.extra.el".text =
         let f = {
               mono = "mononoki Nerd Font Mono";
               monoSize = "12";
@@ -122,7 +129,7 @@ in {
              (set-fontset-font t '(#x4e00 . #x9fff) "${f.cjk}")
              (set-fontset-font t 'symbol "${f.emoji}"))
       '';
-      "extra/emacs.packages.el".text = ''
+      "doom/packages.extra.el".text = ''
          ${optionalString (! config.modules.shell.sdcv.enable) ''
            (disable-packages! sdcv)     ; Disable sdcv packages
          ''}
