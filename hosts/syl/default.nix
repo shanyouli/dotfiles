@@ -19,7 +19,7 @@
           enable = true;
           gvfs.enable = true;
         };
-        calibre.enable = true;
+        read.enable = true;
       };
       bspwm.enable = true;
       browsers = {

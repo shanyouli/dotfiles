@@ -78,4 +78,7 @@
     };
   };
   swapDevices = [ { device = "/var/swapfile"; size = 4096 ; priority = 30; } ];
+
+  # zram startup
+  zramSwap = { enable = true; priority = 50 ; };
 }
