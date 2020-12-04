@@ -15,5 +15,9 @@ in {
       (mkIf config.services.xserver.enable
         celluloid)  # nice GTK GUI for mpv
     ];
+    home.configFile."mpv" = {
+      source = "${configDir}/mpv";
+      recursive = true;
+    };
   };
 }

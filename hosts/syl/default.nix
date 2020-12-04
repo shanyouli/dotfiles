@@ -25,6 +25,7 @@
       browsers = {
         default = "firefox";
         firefox.enable = true;
+        # firefox.extEnable = false;
         qutebrowser.enable = true;
       };
       media.mpv.enable = true;

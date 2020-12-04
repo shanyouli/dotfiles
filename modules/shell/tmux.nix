@@ -34,9 +34,9 @@ in {
         run-shell ${pkgs.tmuxPlugins.copycat}/share/tmux-plugins/copycat/copycat.tmux
         run-shell ${pkgs.tmuxPlugins.prefix-highlight}/share/tmux-plugins/prefix-highlight/prefix_highlight.tmux
         run-shell ${pkgs.tmuxPlugins.yank}/share/tmux-plugins/yank/yank.tmux
+    };
 
       '';
-    };
 
     env = {
       PATH = [ "$TMUXIFIER/bin" ];

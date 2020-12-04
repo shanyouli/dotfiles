@@ -136,9 +136,7 @@ available. You can either set `doom-theme' or manually load a theme with the
 Org-mode is one of my favorite features in Emacs.
 #+begin_src emacs-lisp :tangle "packages.el"
 (package! org-cliplink)
-(package! valign :recipe (:type git
-                          :host github
-                          :repo "casouri/valign"))
+(package! valign)
 (package! org-roam-server)
 #+end_src
 #+begin_src emacs-lisp :tangle "config.el"
@@ -211,11 +209,21 @@ Roam Research. Look at [[https://www.youtube.com/playlist?list=PLwXSqDdn_CpE934B
   (map! :map org-mode-map :localleader "l h" #'org-cliplink))
 #+end_src
 ** valign
-Form pixel alignment
+Form pixel alignment,Valign-Mode and Display-Line-Mode conflicts,
+so turn off ~display-line-numbers-mode~,
+How to turn off display-line-numbers-mode see
+@https://github.com/hlissner/doom-emacs/issues/870
+@https://github.com/hlissner/doom-emacs/issues/827
+@https://emacs-china.org/t/major-mode-smart-parens/15360
 #+begin_src emacs-lisp :tangle "config.el"
 (use-package! valign
   ;; :commands valign-mode
-  :hook ((org-mode markdown-mode)  . valign-mode))
+  :init (setq valign-fancy-bar t)
+  :hook ((org-mode markdown-mode)  . my/using-valign-mode)
+  :config
+  (defun my/using-valign-mode ()
+    (display-line-numbers-mode -1)
+    (valign-mode +1)))
 #+end_src
 
 * Chinese input method
@@ -662,7 +670,7 @@ Window Select
 #+end_src
 #+begin_src emacs-lisp :tangle "config.el"
 (use-package! vlf
-  :defer t
+  :defer 1.5
   :config
   (require 'vlf-setup)
   (custom-set-variables '(vlf-application 'dont-ask)))
@@ -670,6 +678,7 @@ Window Select
 ** other-packges
 #+begin_src emacs-lisp :tangle "packages.el"
 (package! ebuild-mode :ignore (not (executable-find "emerge")))
+(package! vimrc-mode)
 #+end_src
 
 #+begin_src emacs-lisp :tangle "config.el"

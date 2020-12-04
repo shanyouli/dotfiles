@@ -8,6 +8,12 @@
 with lib;
 with lib.my;
 let cfg = config.modules.desktop.browsers.firefox;
+    mozillaPath = ".mozilla";
+    extensionPath = "extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}";
+    extensionsEnvPkg = pkgs.buildEnv {
+      name = "hm-firefox-extensions";
+      paths = cfg.extensions;
+    };
 in {
   options.modules.desktop.browsers.firefox = with types; {
     enable = mkBoolOpt false;
@@ -22,6 +28,42 @@ in {
 
     userChrome  = mkOpt' lines "" "CSS Styles for Firefox's interface";
     userContent = mkOpt' lines "" "Global CSS Styles for websites";
+    extEnable   = mkBoolOpt true;
+    extensions = mkOption {
+      type = types.listOf types.package;
+      default = [];
+      example = literalExample ''
+          with pkgs.nur.repos.rycee.firefox-addons; [
+            https-everywhere
+            privacy-badger
+          ]
+        '';
+      description = ''
+          List of Firefox add-on packages to install. Some
+          pre-packaged add-ons are accessible from NUR,
+          <link xlink:href="https://github.com/nix-community/NUR"/>.
+          Once you have NUR installed run
+
+          <screen language="console">
+            <prompt>$</prompt> <userinput>nix-env -f '&lt;nixpkgs&gt;' -qaP -A nur.repos.rycee.firefox-addons</userinput>
+          </screen>
+
+          to list the available Firefox add-ons.
+
+          </para><para>
+
+          Note that it is necessary to manually enable these
+          extensions inside Firefox after the first installation.
+
+          </para><para>
+
+          Extensions listed here will only be available in Firefox
+          profiles managed through the
+          <link linkend="opt-programs.firefox.profiles">programs.firefox.profiles</link>
+          option. This is due to recent changes in the way Firefox
+          handles extension side-loading.
+        '';
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -42,84 +84,96 @@ in {
       # https://bugzilla.mozilla.org/show_bug.cgi?id=1082717
       env.XDG_DESKTOP_DIR = "$HOME/";
 
-      modules.desktop.browsers.firefox.settings = {
-        "devtools.theme" = "dark";
-        # Enable userContent.css and userChrome.css for our theme modules
-        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-        # Stop creating ~/Downloads!
-        "browser.download.dir" = "${homeDir}/dl";
-        # Don't use the built-in password manager; a nixos user is more likely
-        # using an external one (you are using one, right?).
-        "signon.rememberSignons" = false;
-        # Do not check if Firefox is the default browser
-        "browser.shell.checkDefaultBrowser" = false;
-        # Disable the "new tab page" feature and show a blank tab instead
-        # https://wiki.mozilla.org/Privacy/Reviews/New_Tab
-        # https://support.mozilla.org/en-US/kb/new-tab-page-show-hide-and-customize-top-sites#w_how-do-i-turn-the-new-tab-page-off
-        "browser.newtabpage.enabled" = false;
-        "browser.newtab.url" = "about:blank";
-        # Disable Activity Stream
-        # https://wiki.mozilla.org/Firefox/Activity_Stream
-        "browser.newtabpage.activity-stream.enabled" = false;
-        # Disable new tab tile ads & preload
-        # http://www.thewindowsclub.com/disable-remove-ad-tiles-from-firefox
-        # http://forums.mozillazine.org/viewtopic.php?p=13876331#p13876331
-        # https://wiki.mozilla.org/Tiles/Technical_Documentation#Ping
-        # https://gecko.readthedocs.org/en/latest/browser/browser/DirectoryLinksProvider.html#browser-newtabpage-directory-source
-        # https://gecko.readthedocs.org/en/latest/browser/browser/DirectoryLinksProvider.html#browser-newtabpage-directory-ping
-        "browser.newtabpage.enhanced" = false;
-        "browser.newtab.preload" = false;
-        "browser.newtabpage.directory.ping" = "";
-        "browser.newtabpage.directory.source" = "data:text/plain,{}";
-        # Disable some not so useful functionality.
-        "media.videocontrols.picture-in-picture.video-toggle.enabled" = false;
-        "extensions.htmlaboutaddons.recommendations.enabled" = false;
-        "extensions.htmlaboutaddons.discover.enabled" = false;
-        "extensions.pocket.enabled" = false;
-        "app.normandy.enabled" = false;
-        "app.normandy.api_url" = "";
-        "extensions.shield-recipe-client.enabled" = false;
-        "app.shield.optoutstudies.enabled" = false;
-        # Disable battery API
-        # https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager
-        # https://bugzilla.mozilla.org/show_bug.cgi?id=1313580
-        "dom.battery.enabled" = false;
-        # Disable "beacon" asynchronous HTTP transfers (used for analytics)
-        # https://developer.mozilla.org/en-US/docs/Web/API/navigator.sendBeacon
-        "beacon.enabled" = false;
-        # Disable pinging URIs specified in HTML <a> ping= attributes
-        # http://kb.mozillazine.org/Browser.send_pings
-        "browser.send_pings" = false;
-        # Disable gamepad API to prevent USB device enumeration
-        # https://www.w3.org/TR/gamepad/
-        # https://trac.torproject.org/projects/tor/ticket/13023
-        "dom.gamepad.enabled" = false;
-        # Don't try to guess domain names when entering an invalid domain name in URL bar
-        # http://www-archive.mozilla.org/docs/end-user/domain-guessing.html
-        "browser.fixup.alternate.enabled" = false;
-        # Disable telemetry
-        # https://wiki.mozilla.org/Platform/Features/Telemetry
-        # https://wiki.mozilla.org/Privacy/Reviews/Telemetry
-        # https://wiki.mozilla.org/Telemetry
-        # https://www.mozilla.org/en-US/legal/privacy/firefox.html#telemetry
-        # https://support.mozilla.org/t5/Firefox-crashes/Mozilla-Crash-Reporter/ta-p/1715
-        # https://wiki.mozilla.org/Security/Reviews/Firefox6/ReviewNotes/telemetry
-        # https://gecko.readthedocs.io/en/latest/browser/experiments/experiments/manifest.html
-        # https://wiki.mozilla.org/Telemetry/Experiments
-        # https://support.mozilla.org/en-US/questions/1197144
-        # https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/telemetry/internals/preferences.html#id1
-        "toolkit.telemetry.enabled" = false;
-        "toolkit.telemetry.unified" = false;
-        "toolkit.telemetry.archive.enabled" = false;
-        "experiments.supported" = false;
-        "experiments.enabled" = false;
-        "experiments.manifest.uri" = "";
-        # Disable health reports (basically more telemetry)
-        # https://support.mozilla.org/en-US/kb/firefox-health-report-understand-your-browser-perf
-        # https://gecko.readthedocs.org/en/latest/toolkit/components/telemetry/telemetry/preferences.html
-        "datareporting.healthreport.uploadEnabled" = false;
-        "datareporting.healthreport.service.enabled" = false;
-        "datareporting.policy.dataSubmissionEnabled" = false;
+      modules.desktop.browsers.firefox = {
+        extensions = (if cfg.extEnable then with pkgs.firefox-addons; [
+          ublock-origin stylus proxy-switchyomega surfingkeys tabSessionManager
+          gitako darkreader copy-all-tab-urls save-page-we simplifyGmail
+          videoDownloadHelper violentmonkey draculaDarkTheme inMyPocket
+          autoTabDiscard saladict
+          (mkIf config.modules.shell.aria2.enable aria2-gui)
+          (mkIf config.modules.desktop.apps.keepassxc.enable keePassXC-Browser)
+          (mkIf (! config.modules.desktop.apps.read.enable) mobiReader)
+          (mkIf (! config.modules.desktop.apps.read.enable) mobiReader)
+        ] else []);
+        settings = {
+          "devtools.theme" = "dark";
+          # Enable userContent.css and userChrome.css for our theme modules
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+          # Stop creating ~/Downloads!
+          "browser.download.dir" = "${homeDir}/dl";
+          # Don't use the built-in password manager; a nixos user is more likely
+          # using an external one (you are using one, right?).
+          "signon.rememberSignons" = false;
+          # Do not check if Firefox is the default browser
+          "browser.shell.checkDefaultBrowser" = false;
+          # Disable the "new tab page" feature and show a blank tab instead
+          # https://wiki.mozilla.org/Privacy/Reviews/New_Tab
+          # https://support.mozilla.org/en-US/kb/new-tab-page-show-hide-and-customize-top-sites#w_how-do-i-turn-the-new-tab-page-off
+          "browser.newtabpage.enabled" = false;
+          "browser.newtab.url" = "about:blank";
+          # Disable Activity Stream
+          # https://wiki.mozilla.org/Firefox/Activity_Stream
+          "browser.newtabpage.activity-stream.enabled" = false;
+          # Disable new tab tile ads & preload
+          # http://www.thewindowsclub.com/disable-remove-ad-tiles-from-firefox
+          # http://forums.mozillazine.org/viewtopic.php?p=13876331#p13876331
+          # https://wiki.mozilla.org/Tiles/Technical_Documentation#Ping
+          # https://gecko.readthedocs.org/en/latest/browser/browser/DirectoryLinksProvider.html#browser-newtabpage-directory-source
+          # https://gecko.readthedocs.org/en/latest/browser/browser/DirectoryLinksProvider.html#browser-newtabpage-directory-ping
+          "browser.newtabpage.enhanced" = false;
+          "browser.newtab.preload" = false;
+          "browser.newtabpage.directory.ping" = "";
+          "browser.newtabpage.directory.source" = "data:text/plain,{}";
+          # Disable some not so useful functionality.
+          "media.videocontrols.picture-in-picture.video-toggle.enabled" = false;
+          "extensions.htmlaboutaddons.recommendations.enabled" = false;
+          "extensions.htmlaboutaddons.discover.enabled" = false;
+          "extensions.pocket.enabled" = false;
+          "app.normandy.enabled" = false;
+          "app.normandy.api_url" = "";
+          "extensions.shield-recipe-client.enabled" = false;
+          "app.shield.optoutstudies.enabled" = false;
+          # Disable battery API
+          # https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager
+          # https://bugzilla.mozilla.org/show_bug.cgi?id=1313580
+          "dom.battery.enabled" = false;
+          # Disable "beacon" asynchronous HTTP transfers (used for analytics)
+          # https://developer.mozilla.org/en-US/docs/Web/API/navigator.sendBeacon
+          "beacon.enabled" = false;
+          # Disable pinging URIs specified in HTML <a> ping= attributes
+          # http://kb.mozillazine.org/Browser.send_pings
+          "browser.send_pings" = false;
+          # Disable gamepad API to prevent USB device enumeration
+          # https://www.w3.org/TR/gamepad/
+          # https://trac.torproject.org/projects/tor/ticket/13023
+          "dom.gamepad.enabled" = false;
+          # Don't try to guess domain names when entering an invalid domain name in URL bar
+          # http://www-archive.mozilla.org/docs/end-user/domain-guessing.html
+          "browser.fixup.alternate.enabled" = false;
+          # Disable telemetry
+          # https://wiki.mozilla.org/Platform/Features/Telemetry
+          # https://wiki.mozilla.org/Privacy/Reviews/Telemetry
+          # https://wiki.mozilla.org/Telemetry
+          # https://www.mozilla.org/en-US/legal/privacy/firefox.html#telemetry
+          # https://support.mozilla.org/t5/Firefox-crashes/Mozilla-Crash-Reporter/ta-p/1715
+          # https://wiki.mozilla.org/Security/Reviews/Firefox6/ReviewNotes/telemetry
+          # https://gecko.readthedocs.io/en/latest/browser/experiments/experiments/manifest.html
+          # https://wiki.mozilla.org/Telemetry/Experiments
+          # https://support.mozilla.org/en-US/questions/1197144
+          # https://firefox-source-docs.mozilla.org/toolkit/components/telemetry/telemetry/internals/preferences.html#id1
+          "toolkit.telemetry.enabled" = false;
+          "toolkit.telemetry.unified" = false;
+          "toolkit.telemetry.archive.enabled" = false;
+          "experiments.supported" = false;
+          "experiments.enabled" = false;
+          "experiments.manifest.uri" = "";
+          # Disable health reports (basically more telemetry)
+          # https://support.mozilla.org/en-US/kb/firefox-health-report-understand-your-browser-perf
+          # https://gecko.readthedocs.org/en/latest/toolkit/components/telemetry/telemetry/preferences.html
+          "datareporting.healthreport.uploadEnabled" = false;
+          "datareporting.healthreport.service.enabled" = false;
+          "datareporting.policy.dataSubmissionEnabled" = false;
+        };
       };
 
       # Use a stable profile name so we can target it in themes
@@ -155,6 +209,15 @@ in {
           mkIf (cfg.userContent != "") {
             text = cfg.userContent;
           };
+
+        "${cfgPath}/${cfg.profileName}.default/extensions" = mkIf cfg.extEnable {
+          source = "${extensionsEnvPkg}/share/mozilla/${extensionPath}";
+          recursive = true;
+        };
+        "${mozillaPath}/${extensionPath}" = mkIf cfg.extEnable {
+          source = "${extensionsEnvPkg}/share/mozilla/${extensionPath}";
+          recursive = true;
+        };
       };
     }
   ]);
