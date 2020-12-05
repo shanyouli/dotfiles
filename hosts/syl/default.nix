@@ -38,7 +38,7 @@
     editors = {
       default = "nvim";
       emacs.enable = true;
-      emacs.pkg   = pkgs.emacsPgtkGcc;
+      # emacs.gccEnable   = false;
       vim.enable = true;
     };
     dev = {

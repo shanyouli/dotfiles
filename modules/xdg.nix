@@ -6,7 +6,12 @@
 { config, home-manager, ... }:
 {
   ### A tidy $HOME is a tidy mind
-  home-manager.users.${config.user.name}.xdg.enable = true;
+  home-manager.users.${config.user.name}.xdg = {
+    enable = true;
+    configFile."wgetrc".text = ''
+      hsts-file = "$XDG_CACHE_HOME"/wget-hsts
+    '';
+  };
 
   environment = {
     sessionVariables = {

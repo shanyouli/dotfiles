@@ -10,19 +10,20 @@ let cfg = config.modules.editors.emacs;
 in {
   options.modules.editors.emacs = {
     enable = mkBoolOpt false;
+    gccEnable = mkBoolOpt true;
     doom = {
       enable  = mkBoolOpt true;
       fromSSH = mkBoolOpt false;
     };
     pkg = mkOption {
       type = types.package;
-      default = pkgs.unstable.emacs;
+      default = pkgs.emacs;
     };
   };
 
   config = mkIf cfg.enable {
-    nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
-
+    nixpkgs.overlays = mkIf cfg.gccEnable [ inputs.emacs-overlay.overlay ];
+    modules.editors.emacs.pkg = pkgs.emacsPgtkGcc;
     user.packages = with pkgs; [
       ## native-comp needs 'as', provided by this
       (mkIf (cfg.pkg == pkgs.emacsGcc ) binutils)

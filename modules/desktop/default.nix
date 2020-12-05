@@ -35,6 +35,7 @@ in {
         exec = ''scratch "${tmux}/bin/tmux new-session -s calc -n calc qalc"'';
         categories = "Development";
       })
+      my.zyplayer
     ];
     ## Apps/Services
     services.xserver.displayManager.lightdm.greeters.mini.user = config.user.name;
