@@ -52,7 +52,8 @@
 !! general
 scratch.font: Monospace:pixelsize=16
 
-
+!! XTerm
+XTerm.vt100.faceName: Monospace:size=9
 !! xst
 st.font:  Monospace:pixelsize=12
 

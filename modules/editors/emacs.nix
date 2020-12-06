@@ -127,7 +127,9 @@ in {
           (defadvice! my/use-chinese-font-a (&rest _)
              "Set Chinese fonts."
              :after #'doom-init-extra-fonts-h
-             (set-fontset-font t '(#x4e00 . #x9fff) "${f.cjk}")
+             (dolist (charset '(kana han cjk-misc bopomofo))
+               (set-fontset-font t charset "${f.cjk}"))
+             ;;(set-fontset-font t '(#x4e00 . #x9fff) "${f.cjk}")
              (set-fontset-font t 'symbol "${f.emoji}"))
       '';
       "doom/packages.extra.el".text = ''

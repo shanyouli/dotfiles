@@ -72,7 +72,7 @@ Notice that this function assume you have graphics display"
                          (memq 'ftcrhb frame-font-backend))
                  t)))
         (featurep 'cocoa)))
-  
+
   (defadvice! my/use-chinese-font-a (&rest _)
     "Set Chinese fonts and Color Emoji fonts."
     :after-until #'doom-init-extra-fonts-h
@@ -84,11 +84,13 @@ Notice that this function assume you have graphics display"
     (cl-loop for font in '("Adobe Heiti Std" "STXihei" "Microsoft Yahei"
                            "Hiragino Sans GB W6" "WenQuanYi Micro Hei Mono")
              when (my/font-installed-p font)
-             return (set-fontset-font t '(#x4e00 . #x9fff) font))))
+             ;; return (set-fontset-font t '(#x4e00 . #x9fff) font)
+             return (dolist (charset '(kana han cjk-misc bopomofo))
+                      (set-fontset-font t charset font)))))
 
+;; 等高配置
 (setq face-font-rescale-alist
-      '(
-        ("Sarasa Mono SC" . 1.167)
+      '(("Sarasa Mono SC" . 0.99)
         ("Microsoft Yahei" . 1.2)
         ("WenQuanYi Zen Hei" . 1.2)))
 #+end_src
