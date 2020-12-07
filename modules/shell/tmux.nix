@@ -13,20 +13,25 @@ let cfg = config.modules.shell.tmux;
 in {
   options.modules.shell.tmux = with types; {
     enable = mkBoolOpt false;
+    tmuxifierEn = mkBoolOpt true;
     rcFiles = mkOpt (listOf (either str path)) [];
   };
 
   config = mkIf cfg.enable {
-    user.packages = [ tmux ];
+    user.packages = [ tmux  (mkIf cfg.tmuxifierEn pkgs.my.tmuxifier) ];
 
     modules.theme.onReload.tmux = "${tmux}/bin/tmux source-file $TMUX_HOME/extraInit";
 
     modules.shell.zsh = {
-      rcInit = "_cache tmuxifier init -";
+      rcInit = mkIf cfg.tmuxifierEn "_cache tmuxifier init - >/dev/null";
       rcFiles = [ "${configDir}/tmux/aliases.zsh" ];
     };
 
-    home.configFile = {
+    home.configFile = (mkMerge [
+      (mkIf cfg.tmuxifierEn {
+        "tmuxifier" = { source = "${configDir}/tmuxifier"; recursive = true; };
+      })
+      {
       "tmux" = { source = "${configDir}/tmux"; recursive = true; };
       "tmux/extraInit".text = ''
         ${concatMapStrings (path: "source '${path}'\n") cfg.rcFiles}
@@ -35,12 +40,13 @@ in {
         run-shell ${pkgs.tmuxPlugins.prefix-highlight}/share/tmux-plugins/prefix-highlight/prefix_highlight.tmux
         run-shell ${pkgs.tmuxPlugins.yank}/share/tmux-plugins/yank/yank.tmux
       '';
-    };
-    env = {
-      PATH = [ "$TMUXIFIER/bin" ];
-      TMUX_HOME = "$XDG_CONFIG_HOME/tmux";
-      TMUXIFIER = "$XDG_DATA_HOME/tmuxifier";
-      TMUXIFIER_LAYOUT_PATH = "$XDG_DATA_HOME/tmuxifier";
-    };
+    }
+    ]);
+    env = (mkMerge [
+      (mkIf cfg.tmuxifierEn {
+        TMUXIFIER_LAYOUT_PATH = "$XDG_CONFIG_HOME/tmuxifier";
+      })
+      { TMUX_HOME = "$XDG_CONFIG_HOME/tmux"; }
+    ]);
   };
 }
