@@ -18,7 +18,7 @@
 
       nixpkgs-unstable.url = "nixpkgs/master";
 
-      home-manager.url   = "github:rycee/home-manager/master";
+      home-manager.url   = "github:nix-community/home-manager/release-20.09";
       home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
       # Extras

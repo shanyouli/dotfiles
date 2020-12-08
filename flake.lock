@@ -2,11 +2,11 @@
   "nodes": {
     "emacs-overlay": {
       "locked": {
-        "lastModified": 1606625793,
-        "narHash": "sha256-kNwWulq0TZokRzlSZ7VLbMMSdeC+xVWB3/Nu9AiM6Mg=",
+        "lastModified": 1607387548,
+        "narHash": "sha256-VX7LpdgPTiia0TySg3JIbGiG6xj3/sUEzzjlKsczUGs=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "00bccf994e1a73b198cd865cd4828aa2eb384820",
+        "rev": "effc618e148d45bd2eeb8276ab8ee7025611c8c3",
         "type": "github"
       },
       "original": {
@@ -22,27 +22,27 @@
         ]
       },
       "locked": {
-        "lastModified": 1606046962,
-        "narHash": "sha256-244JrrVFht/VMRItDcDlrcwejqpqJInDUWA/x6mucW4=",
-        "owner": "rycee",
+        "lastModified": 1604441492,
+        "narHash": "sha256-Wo7WqdwNQnWHmhyZuhVLrAEpCuZl88cA9ttxkiCTekY=",
+        "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "a3a0f1289acac24ce2ffe0481bf8cabd3a6ccc64",
+        "rev": "63f299b3347aea183fc5088e4d6c4a193b334a41",
         "type": "github"
       },
       "original": {
-        "owner": "rycee",
-        "ref": "master",
+        "owner": "nix-community",
+        "ref": "release-20.09",
         "repo": "home-manager",
         "type": "github"
       }
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1606379629,
-        "narHash": "sha256-Km8fqZnhve84HBue9FdGdpXjG2eR8YCJQp1lZstaGRs=",
+        "lastModified": 1607254103,
+        "narHash": "sha256-oU+aVtY3vIY0hGNUJM5RKdhx6ipuFDdn3farszfys/0=",
         "owner": "nixos",
         "repo": "nixos-hardware",
-        "rev": "abfae8841bcf6368c89366a100232e05d676e114",
+        "rev": "87522b29a276a4cab5718e5309aa7d74bc7de75a",
         "type": "github"
       },
       "original": {
@@ -53,7 +53,7 @@
     },
     "nixpkgs": {
       "locked": {
-        "narHash": "sha256-GoXevAP/ukQusjCQCuIl1gahPpMuFd+TDbQrY8TQUME=",
+        "narHash": "sha256-OKgdOdR9DbaZvu44YsBWg8MiGHN6AjrYWY6ZTX6ogJU=",
         "type": "tarball",
         "url": "https://mirrors.ustc.edu.cn/nix-channels/nixos-20.09/nixexprs.tar.xz"
       },
@@ -64,11 +64,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1606652934,
-        "narHash": "sha256-LVOj76cG3V8YomwCOzy5kD+ImNxyYdFEy5XWnWrLdmA=",
+        "lastModified": 1607399320,
+        "narHash": "sha256-0pt9MRWlnJ+L9kzR621IRYmZsoVjGG7FN4zILf/GTtU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "3a477cf32417b4c81c9fe42fbfb52c40b69fc110",
+        "rev": "b18d45b41c0312de6f47d7a2d45e649583d9fa7e",
         "type": "github"
       },
       "original": {
