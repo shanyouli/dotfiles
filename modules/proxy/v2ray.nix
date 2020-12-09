@@ -21,12 +21,17 @@ in {
       default = "${cfgCD}";
       description = "The file where v2ray configuration from.";
     };
+    pkg = mkOption {
+      type = types.package;
+      visible = false;
+      readOnly = true;
+      description = "The v2ray including any override.";
+    };
   };
 
   config = mkIf cfg.enable {
-    user.packages = if cfg.asset then [
+    modules.proxy.v2ray.pkg = if cfg.asset then (pkgs.unstable.v2ray.override {
       # see https://github.com/Loyalsoldier/v2ray-rules-dat
-      (pkgs.unstable.v2ray.override {
         assetOverrides = {
           "geoip.dat" = pkgs.fetchurl {
             url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202011282208/geoip.dat";
@@ -37,8 +42,8 @@ in {
             sha256 = "d458fde16b50d126fc6a913fbccd57257db790ad6301420154e197fbabb2ea77";
           };
         };
-      })
-    ] else [ pkgs.unstable.v2ray ];
+      }) else pkgs.unstable.v2ray ;
+    user.packages = [ cfg.pkg ];
 
     home.configFile = (if cfg.confDir == "${cfgCD}" then {
       "v2ray/config.json".text =
@@ -63,14 +68,14 @@ in {
             "inbounds": [
               { "protocol": "socks",
                 "listen": "0.0.0.0",
-                "port": 1080,
+                "port": ${port.socks},
                 "tag": "Socks-In",
                 "settings": { "ip": "127.0.0.1", "udp": true, "auth": "noauth" },
                 "sniffing": {"enabled": true, "destOverride": [ "http", "tls" ] }
               },
               { "protocol": "http",
                 "listen": "0.0.0.0",
-                "port": 2080,
+                "port": ${port.http},
                 "tag": "Http-In",
                 "sniffing": { "enabled": true, "destOverride": [ "http", "tls" ] }
               }

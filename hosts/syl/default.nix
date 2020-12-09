@@ -45,7 +45,7 @@
       cc.enable = true;
     };
     proxy = {
-      default = "clash";
+      default = "v2ray";
       clash.enable = true;
       v2ray.enable = true;
       # v2ray.asset = false;

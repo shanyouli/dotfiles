@@ -66,23 +66,27 @@ in {
         Port 22
         ProxyCommand ${pkgs.nmap}/bin/ncat --proxy 127.0.0.1:${toString cfg.socksPort} --proxy-type socks5 %h %p
       '';
-      services.proxy = (if cfg.default == "clash" then
-        let pkg = cfg.clash.pkg ;
-            conf = cfg.clash.confDir;
+      services.proxy =
+        let div = if ( cfg.default == "clash" && cfg.clash.enable ) then {
+              exec = "${cfg.clash.pkg}/bin/clash -d ${cfg.clash.confDir}";
+              desription = "Clash Proxy Daemon";
+            } else if ( cfg.default == "v2ray" && cfg.v2ray.enable ) then {
+              exec = "${cfg.v2ray.pkg}/bin/v2ray -confdir ${cfg.v2ray.confDir}";
+              description = "V2ray Proxy Daemon";
+            } else {};
         in {
           Unit = {
             After = [ "network.target" ];
-            Description = "Clash Proxy Daemon";
+            Description = "${div.description}";
           };
           Install = { WantedBy = [ "default.target" ]; };
           Service = {
-            ExecStart = "${pkg.out}/bin/clash -d ${conf}";
+            ExecStart = "${div.exec}";
             ExecReload = "${pkgs.coreutils.out}/bin/kill -HUP $MAINPID";
             KillMode = "control-group";
             Restart = "on-failure";
           };
-        } else if cfg.default == "v2ray" then {
-        } else {});
+        };
     };
   };
 }
