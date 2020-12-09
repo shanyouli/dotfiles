@@ -20,4 +20,10 @@ rec {
     type = with types; nullOr str;
     example = null;
   };
+  mkPkgReadOpt = description: mkOption {
+    inherit description;
+    type = types.package;
+    visible = false;
+    readOnly = true;
+  };
 }

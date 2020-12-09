@@ -3,7 +3,7 @@ with lib;
 with lib.my;
 let cfg = config.modules.proxy.v2ray;
     cfgCD = "${xdgConfig}/v2ray";
-    port = with config.modules.proxy; if default != null then {
+    port = with config.modules.proxy; if default == "v2ray" then {
       http = "${toString httpPort}";
       socks = "${toString socksPort}";
     } else {
@@ -21,17 +21,13 @@ in {
       default = "${cfgCD}";
       description = "The file where v2ray configuration from.";
     };
-    pkg = mkOption {
-      type = types.package;
-      visible = false;
-      readOnly = true;
-      description = "The v2ray including any override.";
-    };
+    pkg = mkPkgReadOpt "The v2ray including any override.";
   };
 
-  config = mkIf cfg.enable {
-    modules.proxy.v2ray.pkg = if cfg.asset then (pkgs.unstable.v2ray.override {
-      # see https://github.com/Loyalsoldier/v2ray-rules-dat
+  config = mkIf cfg.enable (mkMerge [
+    {
+      modules.proxy.v2ray.pkg = if cfg.asset then (pkgs.unstable.v2ray.override {
+        # see https://github.com/Loyalsoldier/v2ray-rules-dat
         assetOverrides = {
           "geoip.dat" = pkgs.fetchurl {
             url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/202011282208/geoip.dat";
@@ -43,10 +39,13 @@ in {
           };
         };
       }) else pkgs.unstable.v2ray ;
-    user.packages = [ cfg.pkg ];
-
-    home.configFile = (if cfg.confDir == "${cfgCD}" then {
-      "v2ray/config.json".text =
+      user.packages = [ cfg.pkg ];
+      warnings = optional ( cfg.confDir != "${cfgCD}" ) "
+        Port configuration can not be used.
+      ";
+    }
+    (mkIf (cfg.confDir == "${cfgCD}") {
+      home.configFile."v2ray/config.json".text =
         let file = if cfg.vless == true
                    then "${configDir}/v2ray/vless"
                    else "${configDir}/v2ray/vmess";
@@ -107,8 +106,7 @@ in {
                 { "type": "field", "outboundTag": "Proxy", "network": "tcp,udp" }
               ]
             }
-          }
-        '';
-    } else {});
-  };
+          }'';
+    })
+  ]);
 }
