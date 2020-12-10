@@ -38,6 +38,7 @@
     editors = {
       default = "nvim";
       emacs.enable = true;
+      # emacs.rimeEnable = false;
       # emacs.gccEnable   = false;
       vim.enable = true;
     };
@@ -55,7 +56,6 @@
       dropbox.enable = true;
       docker.enable = true;
       xkeysnail.enable = true;
-
     };
     shell = {
       adb.enable = true;

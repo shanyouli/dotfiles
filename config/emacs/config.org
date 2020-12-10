@@ -19,14 +19,14 @@ Make this file run (slightly) faster with lexical binding ( see [[https://nullpr
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 ;;; If you use NIXOS yourself to generate the configuration, you may need to load it.
-(load! "config.extra.el")
+(load! "config.init.el")
 #+end_src
 ** packages.el
 #+begin_src emacs-lisp :tangle "packages.el"
 ;;; $DOOMDIR/package.el -*- lexical-binding: t; -*-
 
 ;;; Load NIXOS automatically generated configuration.
-(load! "packages.extra.el")
+(load! "packages.init.el")
 
 (unpin! doom-modeline)
 #+end_src
