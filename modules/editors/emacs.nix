@@ -227,7 +227,7 @@ in {
         '';
         "doom/config.init.el".text =
           let f = {
-                mono = "mononoki Nerd Font Mono";
+                mono = "mononoki";
                 monoSize = "12";
                 emoji = "Noto Color Emoji";
                 cjk = "Sarasa Mono SC";

@@ -27,8 +27,8 @@ accent = #604c7e
 
 
 [global/wm]
-margin-top = 0
-margin-bottom = 24
+margin-top = 20
+margin-bottom = 0
 
 [bar/main]
 monitor = ${env:MONITOR}

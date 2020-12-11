@@ -28,6 +28,7 @@ in {
           xorg.fontmiscmisc
           xorg.fontcursormisc
         ] else [
+          mononoki
           nerd-fonts.mononoki
           noto-fonts
           sarasa-gothic
@@ -53,7 +54,7 @@ in {
           includeUserConf = false;
           localConf = readFile "${configDir}/fontconfig/local.conf" ;
           defaultFonts    = {
-            monospace     = [ "mononoki Nerd Font Mono" ];
+            monospace     = [ "mononoki" ];
             sansSerif     = [ "Fira Sans" ];
             serif         = [ "Noto Serif" ];
             emoji         = [ "Noto Color Emoji" ];
