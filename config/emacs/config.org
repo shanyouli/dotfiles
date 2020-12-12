@@ -2,7 +2,7 @@
 #+EMAIL: shanyouli6@gmail.com
 #+DATA: 20 Nov 2020
 #+AUTHOR: Syl
-
+#+STARTUP: overview
 + [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org][doom-emacs/getting_started.org at develop · hlissner/doom-emacs]]
 
 * Emacs

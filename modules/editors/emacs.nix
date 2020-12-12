@@ -145,8 +145,12 @@ in {
     })
     (mkIf cfg.pluginEnable {
       modules.editors.emacs = {
-        extraPkgs = epkgs: with epkgs; [ vterm gif-screencast vlf ];
-        doom.pkg.prefer = [ "vterm" "gif-screencast" "vlf" ];
+        extraPkgs = epkgs: with epkgs; [
+          vterm gif-screencast vlf
+        ];
+        doom.pkg.prefer = [
+          "vterm" "gif-screencast" "vlf"
+        ];
       };
       user.packages = with pkgs;[ scrot imagemagick gifsicle ];
     })
