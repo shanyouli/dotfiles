@@ -473,7 +473,8 @@ Chinese to English
       (evil-insert-state))
     (when (boundp 'int--sis-default-input-thmod)
       (setq int--sis-default-input-thmod default-input-method)
-      (setq-local default-input-method nil)
+     (unless (bound-and-true-p using-emacs-rime-p)
+      (setq-local default-input-method nil))
       (sis-set-other)))
   (defun int/inactive-a (&rest _)
     (unless int--evil-last-status-is-insert-p
