@@ -31,14 +31,14 @@ exec --no-startup-id nm-applet
 
 # Attach to a detached session. If none is available create a new one, rather
 # than attach to one that is already attached to elsewhere.
-bindsym $mod+grave exec --no-startup-id scratch
 bindsym $mod+Shift+grave exec --no-startup-id emacsclient -e '(open-scratch-frame)'
 
 bindsym $mod+Tab exec --no-startup-id "$DOTFILES/bin/rofi/windowmenu"
 bindsym $mod+slash exec --no-startup-id "$DOTFILES/bin/rofi/filemenu -x"
 bindsym $mod+backslash exec --no-startup-id "$DOTFILES/bin/rofi/passmenu"
 
-bindsym $mod+Return exec xst -e bash -c "tmuxifier load-session main"
+bindsym $mod+Return       exec --no-startup-id scratch
+bindsym $mod+Shift+Return exec --no-startup-id ttmux
 
 # toggle-funscreen
 bindsym $mod+f fullscreen toggle
@@ -83,9 +83,9 @@ mode "resize" {
         bindsym Shift+k resize shrink height 20 px or 4 ppt
         bindsym Shift+l resize grow   width  20 px or 4 ppt
 
-        bindsym 1 mode "default", resize set 50 ppt 50 ppt
-        bindsym 2 mode "default", resize set 75 ppt 75 ppt
-        bindsym 3 mode "default", resize set 80 ppt 80 ppt
+        bindsym 1 mode "default", resize set 50 ppt 50 ppt, move absolute position center
+        bindsym 2 mode "default", resize set 75 ppt 75 ppt, move absolute position center
+        bindsym 3 mode "default", resize set 85 ppt 85 ppt, move absolute position center
 
         bindsym Return         mode "default"
         bindsym Escape         mode "default"
@@ -126,7 +126,6 @@ floating_modifier $mod
 
 floating_minimum_size 640 x 480
 floating_maximum_size -1 x -1
-
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1"
@@ -164,8 +163,12 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
-for_window [class="scratch"] floating enable, \
+for_window [class=".*"] title_format "<b>%title</b>", border 1pixel
+for_window [class="^scratch$"] floating enable, \
            resize set 80ppt 80ppt, \
            move absolute position center, \
            border pixel 1, \
            sticky enable
+
+for_window [title="^ttmux$"] fullscreen enable
+assign [title="^ttmux$"] number $ws1

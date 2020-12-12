@@ -50,7 +50,7 @@
 
 
 !! general
-scratch.font: Monospace:pixelsize=16
+scratch.font: Monospace:pixelsize=14
 
 !! XTerm
 XTerm.vt100.faceName: Monospace:size=9

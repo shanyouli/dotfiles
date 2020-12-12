@@ -27,6 +27,7 @@ in {
       feh       # image viewer
       xclip
       xdotool
+      wmctrl
       libqalculate  # calculator cli w/ currency conversion
       (makeDesktopItem {
         name = "scratch-calc";

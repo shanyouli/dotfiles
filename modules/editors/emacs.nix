@@ -178,6 +178,8 @@ in {
              :after #'doom-init-extra-fonts-h
              (when (eq window-system 'pgtk)
                (pgtk-use-im-context nil)))
+          (global-set-key [f13] 'toggle-input-method)
+          (global-set-key (kbd "<269025153>") 'toggle-input-method)
         '';
       };
       user.packages = (mkIf config.services.xserver.enable [
@@ -223,7 +225,10 @@ in {
           let  basefile = "${configDir}/emacs/init.el";
           in ''
           ${readFile basefile}
-          (setq using-nix-config-p t)
+          (defvar using-nix-config-p t "Using Nixos config")
+          ${lib.optionalString cfg.rimeEnable ''
+            (defvar using-emacs-rime-p t "Using Emacs-Rime Input Method.")
+          ''}
         '';
         "doom/config.init.el".text =
           let f = {

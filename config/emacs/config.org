@@ -247,9 +247,12 @@ see@ https://emacs-china.org/t/native-os-sis/14089
   :after evil
   :config
   (push "M-<SPC>" sis-prefix-override-keys)
-  (sis-ism-lazyman-config "1" "2"
-                          (cond ((executable-find"fcitx5") 'fcitx5)
-                                ((executable-find "fcitx") 'fcitx)))
+  (if (bound-and-true-p using-emacs-rime-p)
+      (sis-ism-lazyman-config nil "rime" 'native)
+    (sis-ism-lazyman-config "1" "2"
+                            (cond ((executable-find"fcitx5") 'fcitx5)
+                                  ((executable-find "fcitx") 'fcitx))))
+
   ;; enable the /cursor color/ mode
   (sis-global-cursor-color-mode t)
   ;; enable the /respect/ mode
@@ -268,10 +271,10 @@ RIME Emacs Front End Framework
   (setq rime-user-data-dir (expand-file-name "~/.config/fcitx/rime"))
   (setq default-input-method "rime")
   (setq rime-show-candidate 'posframe)
-  (setq rime-disable-predicates '(rime-predicate-evil-mode-p
-                                  rime-predicate-after-alphabet-char-p
-                                  rime-predicate-prog-in-code-p))
-  (setq rime-inline-ascii-trigger 'shift-l)
+  ;; (setq rime-disable-predicates '(rime-predicate-evil-mode-p
+  ;;                                 rime-predicate-after-alphabet-char-p
+  ;;                                 rime-predicate-prog-in-code-p))
+  ;; (setq rime-inline-ascii-trigger 'shift-l)
   :bind
   ;; C-\ to toggle-input-method
   ;; C-` to toggle
@@ -672,7 +675,7 @@ Window Select
 #+end_src
 #+begin_src emacs-lisp :tangle "config.el"
 (use-package! vlf
-  :defer 1.5
+  :defer 0.5
   :config
   (require 'vlf-setup)
   (custom-set-variables '(vlf-application 'dont-ask)))

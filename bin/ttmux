@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Toggle a tmux terminal window.
+
+TMUX_NAME=ttmux
+if command -v tmuxifier >/dev/null ; then
+    TMUX_CMD=${1:-'tmuxifier load-session main'}
+else
+    TMUX_CMD=${1:-'tmux new-session -A -s main -n main'}
+fi
+TERMINAL=${TERMINAL:-xst}
+
+TMUX_ID=$(wmctrl -l | grep "$TMUX_NAME$" | cut -d" " -f1)
+echo $TMUX_ID
+if [[ -n $TMUX_ID ]]; then
+    exec wmctrl -i -a $TMUX_ID
+else
+    case $TERMINAL in
+        xst|st)
+            exec $TERMINAL -t $TMUX_NAME -n $TMUX_NAME -c $TMUX_NAME \
+                -e $SHELL -c "$TMUX_CMD" ;;
+        urxvt) exec $TERMINAL -name $TMUX_NAME -e $SHELL -c "$TMUX_CMD" ;;
+        *) exec $TERMINAL -t $TMUX_NAME -e $SHELL -c "$TMUX_CMD" ;;
+    esac
+    >&2 echo "No shell to launch the tmux which"
+    exit 1
+fi
