@@ -285,7 +285,49 @@ RIME Emacs Front End Framework
   ;; (:map rime-active-mode-map
   ;;  ("C-j" . 'rime-inline-ascii))
   :config
-  (when IS-MAC (setq rime-librime-root "~/.emacs.d/librime/dist")))
+  (when IS-MAC (setq rime-librime-root "~/.emacs.d/librime/dist"))
+
+  ;; fix emacs-rime with evil-escape
+  (defun rime-evil-escape-advice (orig-fun key)
+    "advice for `rime-input-method' to make it work together with `evil-escape'.
+   Mainly modified from `evil-escape-pre-command-hook'"
+    (if rime--preedit-overlay
+        ;; if `rime--preedit-overlay' is non-nil, then we are editing something, do not abort
+        (apply orig-fun (list key))
+      (when (featurep 'evil-escape)
+        (let* ((fkey (elt evil-escape-key-sequence 0))
+               (skey (elt evil-escape-key-sequence 1))
+               (evt (read-event nil nil evil-escape-delay)))
+          (cond
+           ((and (characterp evt)
+                 (or (and (char-equal key fkey) (char-equal evt skey))
+                     (and evil-escape-unordered-key-sequence
+                          (char-equal key skey) (char-equal evt fkey))))
+            (evil-repeat-stop)
+            (evil-normal-state))
+           ((null evt) (apply orig-fun (list key)))
+           (t
+            (apply orig-fun (list key))
+            (if (numberp evt)
+                (apply orig-fun (list evt))
+              (setq unread-command-events (append unread-command-events (list evt))))))))))
+  (advice-add 'rime-input-method :around #'rime-evil-escape-advice)
+
+  ;;; fix posfrmae 吃字现象
+  (defun +rime--posframe-display-content-a (args)
+    "给 `rime--posframe-display-content' 传入的字符串加一个全角空
+  格，以解决 `posframe' 偶尔吃字的问题。"
+    (cl-destructuring-bind (content) args
+       (let ((newresult (if (string-blank-p content)
+                           content
+                         (concat content "　"))))
+        (list newresult))))
+
+  (if (fboundp 'rime--posframe-display-content)
+      (advice-add 'rime--posframe-display-content
+                  :filter-args
+                  #'+rime--posframe-display-content-a)
+    (error "Function `rime--posframe-display-content' is not available.")))
 #+end_src
 ** pangu-spacing
 Automatically add Spaces between Chinese and English
