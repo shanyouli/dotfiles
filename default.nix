@@ -60,7 +60,8 @@ with inputs;
   # Just the bear necessities...
   environment.systemPackages = with pkgs; [
     cached-nix-shell
-    coreutils
+    # coreutils
+    coreutils-progress-bar
     git
     vim
     wget

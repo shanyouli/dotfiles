@@ -94,6 +94,19 @@ in {
       modules.editors.emacs.doom.confInit = ''
         (setq mydotfile "/etc/nixos")
       '';
+      modules.editors.emacs.overrides = self: super: {
+        rime = super.rime.overrideAttrs (esuper: {
+          buildInputs = esuper.buildInputs ++ [ pkgs.librime pkgs.brise ];
+          postInstall = ''
+            pushd source
+            MODULE_FILE_SUFFIX=".so"
+            make lib
+            install -m444 -t $out/share/emacs/site-lisp/elpa/rime-** ./*.so
+            rm -r $out/share/emacs/site-lisp/elpa/rime-*/{lib.c,Makefile}
+            popd
+          '';
+        });
+      };
       modules.editors.emacs.package =  #pkgs.emacsPgtkGcc;
         let ebPkg = if cfg.gccEnable then pkgs.emacsPgtkGcc else pkgs.emacs ;
         in (if cfg.rimeEnable then ebPkg.overrideAttrs(attrs: {
@@ -157,18 +170,7 @@ in {
     (mkIf cfg.rimeEnable {
       modules.editors.emacs = {
         extraPkgs = epkgs: with epkgs; [
-          (rime.overrideAttrs (esuper: {
-            buildInputs = esuper.buildInputs ++ [ pkgs.librime pkgs.brise ];
-            postInstall = ''
-              pushd source
-              LIBRIME_ROOT="${pkgs.librime}/"
-              MODULE_FILE_SUFFIX=".so"
-              make lib
-              install -m444 -t $out/share/emacs/site-lisp/elpa/rime-** ./*.so
-              rm -r $out/share/emacs/site-lisp/elpa/rime-*/{lib.c,Makefile}
-              popd
-            '';
-          }))
+          rime
           dash
           posframe
         ];
