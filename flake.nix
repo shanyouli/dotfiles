@@ -36,6 +36,7 @@
       mkPkgs = pkgs: extraOverlays: import pkgs {
         inherit system;
         config.allowUnfree = true;  # forgive me Stallman senpai
+        config.android_sdk.accept_license = true;
         overlays = extraOverlays ++ (attrValues self.overlays);
       };
       pkgs  = mkPkgs nixpkgs [ self.overlay ];
