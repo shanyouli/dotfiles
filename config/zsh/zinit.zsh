@@ -37,7 +37,11 @@ zice romkatv/powerlevel10k
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-[[ -r "$ZDOTDIR"/p10k.zsh ]] && source "$ZDOTDIR"/p10k.zsh
+if [[ $DISPLAY  ]] ; then
+    [[ -r "$ZDOTDIR"/p10k.zsh ]] && source "$ZDOTDIR"/p10k.zsh
+else
+    [[ -r "$ZDOTDIR"/p10k.tty.zsh ]] && source "$ZDOTDIR"/p10k.tty.zsh
+fi
 zt 0a light-mode for \
     blockf \
         zsh-users/zsh-completions \

@@ -189,7 +189,7 @@ in {
           StartWithLastProfile=1
           Version=2
         '';
-
+        ".mozilla/native-messaging-hosts/passff.json".source = "${pkgs.passff-host}/share/passff-host/passff.json";
         "${cfgPath}/${cfg.profileName}.default/user.js" =
           mkIf (cfg.settings != {} || cfg.extraConfig != "") {
             text = ''

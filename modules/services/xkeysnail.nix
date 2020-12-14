@@ -33,6 +33,7 @@ in {
           Type = "simple";
           KillMode = "process";
           ExecStart = "${sudoCmd} ${cmd} --quiet --watch ${cfg.conf}";
+          ExecStop = "${sudoCmd}  ${pkgs.procps}/bin/pkill -9 xkeysnail";
           Restart = "on-failure";
           RestartSec = "3";
         };
