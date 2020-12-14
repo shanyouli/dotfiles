@@ -45,6 +45,7 @@
     };
     dev = {
       cc.enable = true;
+      python.enable = true;
     };
     proxy = {
       default = "v2ray";
@@ -59,6 +60,7 @@
       xkeysnail.enable = true;
     };
     shell = {
+      pass.enable = true;
       adb.enable = true;
       aria2.enable = true;
       direnv.enable = true;

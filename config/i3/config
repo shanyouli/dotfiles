@@ -170,5 +170,15 @@ for_window [class="^scratch$"] floating enable, \
            border pixel 1, \
            sticky enable
 
-for_window [title="^ttmux$"] fullscreen enable
-assign [title="^ttmux$"] number $ws1
+for_window [title="^ttmux$"] border none
+for_window [title="^Close Virtual Machine$"] floating enable, \
+           resize set 40ppt 40ppt, \
+           move absolute position center, \
+           sticky enable
+for_window [title="^Download Panel — Mozilla Firefox$"] border 1pixel, \
+           floating enable, \
+           resize set 38ppt 38ppt, \
+           move absolute position center, \
+           sticky enable
+# assign [title="^ttmux$"] number $ws1
+assign [title="^ttmux$"] terminal

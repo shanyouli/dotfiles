@@ -9,7 +9,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
+    user.packages = with pkgs.unstable; [
       (pass.withExtensions (exts: [
         exts.pass-otp
         exts.pass-genphrase
@@ -17,6 +17,6 @@ in {
             then [ exts.pass-tomb ]
             else [])))
     ];
-    env.PASSWORD_STORE_DIR = "$HOME/.secrets/password-store";
+    env.PASSWORD_STORE_DIR = "$XDG_DATA_HOME/password-store";
   };
 }
