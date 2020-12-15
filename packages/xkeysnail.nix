@@ -3,11 +3,6 @@ buildPythonPackage rec {
   pname = "xkeysnail";
   version = "0.4.0";
 
-  # src = fetchPypi {
-  #   inherit pname version;
-  #   sha256 = "sha256-7tlxI8wxgfR9LQNxoUDm63gKftQMGySx6pWzjr252Pc=";
-  # };
-
   src = fetchFromGitHub {
     owner = "mooz";
 	  repo = "${pname}";

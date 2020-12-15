@@ -16,7 +16,12 @@ in {
       ] ++ (if config.modules.shell.gnupg.enable
             then [ exts.pass-tomb ]
             else [])))
+      pkgs.passff-host
     ];
     env.PASSWORD_STORE_DIR = "$XDG_DATA_HOME/password-store";
+    home.file = mkIf config.modules.desktop.browsers.firefox.enable {
+      ".mozilla/native-messaging-hosts/passff.json".source =
+        "${pkgs.passff-host}/share/passff-host/passff.json";
+    };
   };
 }

@@ -284,4 +284,15 @@
     };
     sha256 = "09vq7yvbysa0355vhpr55fwsiy5g4jm4mc16f0m63sv4q3k7ks71";
   };
+  "passff" = buildFirefoxXpiAddon {
+    pname = "passff";
+    version = "1.10.4";
+    url = "https://addons.mozilla.org/firefox/downloads/file/3685893/passff-1.10.4-fx.xpi";
+    addonId = "passff@invicem.pro";
+    meta = with stdenv.lib; {
+      description = "password store extensions.";
+      platforms = platforms.all;
+    };
+    sha256 = "047icalivyw06ximhc688ilva62yzljylww7cy4pzim0zyz9h4z3";
+  };
 }

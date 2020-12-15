@@ -93,7 +93,8 @@ in {
           (mkIf config.modules.shell.aria2.enable aria2-gui)
           (mkIf config.modules.desktop.apps.keepassxc.enable keePassXC-Browser)
           (mkIf (! config.modules.desktop.apps.read.enable) mobiReader)
-          (mkIf (! config.modules.desktop.apps.read.enable) mobiReader)
+          (mkIf (! config.modules.desktop.apps.read.enable) epubReader)
+          (mkIf config.modules.shell.pass.enable passff)
         ] else []);
         settings = {
           "devtools.theme" = "dark";
@@ -189,7 +190,6 @@ in {
           StartWithLastProfile=1
           Version=2
         '';
-        ".mozilla/native-messaging-hosts/passff.json".source = "${pkgs.passff-host}/share/passff-host/passff.json";
         "${cfgPath}/${cfg.profileName}.default/user.js" =
           mkIf (cfg.settings != {} || cfg.extraConfig != "") {
             text = ''
