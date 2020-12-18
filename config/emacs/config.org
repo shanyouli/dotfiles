@@ -36,6 +36,16 @@ It is useful to have some basic personal information.
 #+begin_src emacs-lisp :tangle "config.el"
 (setq user-full-name "Shanyou Li"
       user-mail-address "shanyouli6@gmail.com")
+
+(defun init-default-frame (&optional frame)
+  (interactive)
+  (let ((x-width (or (alist-get 'width default-frame-alist)
+                     (truncate (/ (- (* (x-display-pixel-width) 0.5) 24)
+                                  (frame-char-width)))))
+        (y-height (or (alist-get 'height default-frame-alist)
+                      (truncate (/ (* (x-display-pixel-height) 0.5)
+                                   (frame-char-height))))))
+    (set-frame-size (or frame (selected-frame)) x-width y-height)))
 #+end_src
 * Set Font
 Doom exposes five (optional) variables or controlling fonts in Doom.
@@ -186,7 +196,7 @@ Roam Research. Look at [[https://www.youtube.com/playlist?list=PLwXSqDdn_CpE934B
 ;; org-roam-server
 (use-package! org-roam-server
   :after org-roam
-  :commands (org-roam-server-open)
+  :commands (my/org-roam-server-open)
   :config
   (setq org-roam-server-host "127.0.0.1"
         org-roam-server-port 9091

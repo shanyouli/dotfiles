@@ -180,5 +180,8 @@ for_window [title="^Download Panel — Mozilla Firefox$"] border 1pixel, \
            resize set 38ppt 38ppt, \
            move absolute position center, \
            sticky enable
-# assign [title="^ttmux$"] number $ws1
+for_window [title="File Upload"] border none, \
+           floating enable, \
+           resize set 50ppt 50ppt, \
+           move absolute position center
 assign [title="^ttmux$"] terminal

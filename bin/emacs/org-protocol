@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-ECRID=Escratch
+ECRID=org-protocol
 focused=$(xdotool getactivewindow)
 scratch=$(xdotool search --onlyvisible --name $ECRID)
 
@@ -17,6 +17,5 @@ if [[ -n $scratch ]]; then
         xdotool windowactivate $scratch
     fi
 else
-    exec emacsclient -a "" -c -F "((name . \"$ECRID\"))" \
-        -e "(init-default-frame)" --socket-name="main" "$@"
+    exec emacsclient -a "" -c -F "((name . \"$ECRID\"))" --socket-name="main" "$@"
 fi

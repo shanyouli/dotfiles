@@ -21,8 +21,8 @@
         };
         read.enable = true;
       };
-      # bspwm.enable = true;
-      i3.enable = true;
+      bspwm.enable = true;
+      # i3.enable = true;
       browsers = {
         default = "firefox";
         firefox.enable = true;

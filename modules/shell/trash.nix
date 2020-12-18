@@ -9,10 +9,13 @@ in {
   config = mkIf cfg.enable {
     user.packages = [ pkgs.trash-cli ];
     #modules.shell.zsh.rcFiles = [ "${configDir}/trash/aliases.zsh" ];
-    modules.shell.zsh.aliases = mkIf config.modules.shell.zsh.enable {
+    modules.shell.zsh.aliases = {
       "rm" = "trash-put";
       "ri" = "command rm -i";
       "rmt" = "trash-empty";
     };
+    services.xserver.displayManager.sessionCommands = ''
+      ${pkgs.trash-cli}/bin/trash-empty 30
+    '';
   };
 }

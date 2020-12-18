@@ -18,6 +18,9 @@ in {
       lightdm
       dunst
       libnotify
+      jq
+      xtitle
+      bc # shell 进行浮点数的四则运算需要
       (polybar.override {
         pulseSupport = true;
         nlSupport = true;

@@ -19,7 +19,6 @@ autoload -Uz _zinit
 
 # Common ICE modifiers
 zt() { zinit depth"1" lucid  ${1/#[0-9][a-c]/wait"$1"} "${@:2}" ; }
-# zice() { zinit ice lucid depth'1' "$@" ; }
 zice() {
     local _all=( $@ )
     local _wait
@@ -65,7 +64,7 @@ zice 0b if'[[ -z $SSH_CONNECTION ]]' zdharma/fast-syntax-highlighting
 
 # fast alias-tips
 zice from'gh-r' as'program' sei40kr/fast-alias-tips-bin
-zice 0c NICHOLAS85/zsh-fast-alias-tips
+zice 0c sei40kr/zsh-fast-alias-tips
 
 # 快速目录跳转
 if command -v "lua" >/dev/null ; then

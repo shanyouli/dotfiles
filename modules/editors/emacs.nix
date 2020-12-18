@@ -188,7 +188,9 @@ in {
           (global-set-key (kbd "<269025153>") 'toggle-input-method)
         '';
       };
-      user.packages = (mkIf config.services.xserver.enable [
+    })
+    (mkIf config.services.xserver.enable {
+      user.packages = [
         (pkgs.makeDesktopItem {
           name = "emacsclient";
           desktopName = "Emacs Client";
@@ -201,8 +203,18 @@ in {
           categories = "Development;TextEditor";
           extraEntries = "StartupWMClass=EmacsD";
         })
-      ]);
+        (pkgs.makeDesktopItem {
+          name = "org-protocol";
+          desktopName = "Org-Protocol";
+          exec = "${binDir}/emacs/org-protocol %u";
+          icon = "emacs";
+          type = "Application";
+          terminal = "false";
+          mimeType = "x-scheme-handler/org-protocol";
+        })
+      ];
       services.xserver.displayManager.sessionCommands = "${binDir}/emacs/edaemon";
+      home.defaultApps."x-scheme-handler/org-protocol" = "org-protocol.desktop";
     })
     {
       modules.editors.emacs.doom.pkg.disable = [
@@ -210,7 +222,10 @@ in {
         (mkIf (! cfg.rimeEnable) "rime")
       ];
       modules.editors.emacs.pkg = emacsWithPackages cfg.extraPkgs;
-      user.packages = [ cfg.pkg ];
+      user.packages = [
+        cfg.pkg
+
+      ];
       env.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];
       modules.shell.zsh.rcFiles = [ "${configDir}/emacs/aliases.zsh" ];
       # init.doomEmacs = mkIf cfg.doom.enable ''
