@@ -17,6 +17,7 @@ function main {
     echo "  op (org-protocol)  Open a Org-protocl."
     echo "  oc (org-capture)   Open org-capture(TODO)."
     echo "  da (daemon)        Start Emacs-daemon"
+    echo "  be (base)          default open."
     echo "  kill (exit|quit)   Stop emacs daemon."
     echo "  re (restart)       restart emacs daemon."
     echo "  help               Help."
@@ -46,8 +47,8 @@ function main {
   }
 
 
-  function _scratch {
-    local name=scratch
+  function _half_run {
+    local name=$1
     local focused=$(xdotool getactivewindow)
     local scratch=$(xdotool search --onlyvisible --name $name)
 
@@ -63,6 +64,7 @@ function main {
       local width=$(_multip_int ${dp[0]} 0.5)
       local height=$(_multip_int ${dp[1]} 0.5)
       _daemon
+      [[ $# > 0 ]] && shift
       exec $CMD -a" " --socket-name=$SERNAME \
         -c -F "((name . \"$name\") \
                 (width . (text-pixels . $((width - 20)))) \
@@ -70,7 +72,7 @@ function main {
     fi
   }
 
-  function _org-protocol {
+  function _golden_run {
     local name=org-protocol
     local focused=$(xdotool getactivewindow)
     local scratch=$(xdotool search --onlyvisible --name $name)
@@ -87,6 +89,7 @@ function main {
       local width=$(_multip_int ${dp[0]} 0.618)
       local height=$(_multip_int ${dp[1]} 0.618)
       _daemon
+      [[ $# > 0 ]] && shift
       exec $CMD -a" " --socket-name=$SERNAME \
         -c -F "((name . \"$name\") \
                 (width . (text-pixels . $((width - 20)))) \
@@ -103,11 +106,12 @@ function main {
     da|daemon) _daemon ;;
     kill|quit|exit) _kill_daemon ;;
     restart|re) _kill_daemon ; sleep 1; _daemon ;;
-    op|org-protocol) _org-protocol "$@";;
+    op|org-protocol) _golden_run "org-protocol" "$@";;
     # oc|org-capture) TODO;;
-    sc|scratch) _scratch "$@";;
+    sc|scratch) _golden_run "scratch" "$@";;
+    be|base) _half_run "base" "$@";;
     h|help|-h|--help) _usage ;;
-    "")  _scratch "$@" ;;
+    "")  _half_run "base" "$@" ;;
   esac
 }
 
