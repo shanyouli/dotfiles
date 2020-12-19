@@ -8,14 +8,10 @@ consequences=$4
 
 wm_msg=( $(bspc wm -d | jq -r '.monitors[0] | .name as $n | .rectangle | "\($n)\t\(.width)\t\(.height)"') )
 wMsg=$(xprop -id $wid)
-wmTitle=$(echo -e "$wMsg"| grep "^WM_NAME"| awk -F'"' '{printf $2}')
-wmRole=$(echo -e "$wMsg" | grep "^WM_WINDOW_ROLE" | awk -F '"' '{print $2}')
-_printf_int() {
-    local result=$(echo "$@" | bc)
-    printf "%.0f" ${result}
-}
+wmTitle=$(echo -e "$wMsg" | awk -F'"' '/^WM_NAME/ {printf $2}')
+wmRole=$(echo -e "$wMsg" | awk -F '"' '/^WM_WINDOW_ROLE/ {print $2}')
 
-WM_WINDOW_ROLE rules
+_multip_int() { echo "$1 $2" | awk '{printf("%.0f", $1*$2)}'; }
 
 case "$role" in
   quake) #Tilix Quake
@@ -31,8 +27,8 @@ case "$role" in
   *)
     case $wmTitle in
       Escratch)
-        _width=$(_printf_int "${wm_msg[1]} * 0.5")
-        _height=$(_printf_int "${wm_msg[2]} * 0.5")
+        _width=$(_multip_int ${wm_msg[1]} 0.5)
+        _height=$(_multip_int ${wm_msg[2]}  0.5)
         _x=$((${wm_msg[1]} - ${_width}))
         _y=$((${wm_msg[2]} - ${_height}))
         echo "state=floating"
@@ -41,8 +37,8 @@ case "$role" in
         echo "rectangle=${_width}x${_height}+${_x}+${_y}"
       ;;
       'File Upload')
-        _width=$(_printf_int "${wm_msg[1]} * 0.618")
-        _height=$(_printf_int "${wm_msg[2]} * 0.618")
+        _width=$(_multip_int  ${wm_msg[1]} 0.618)
+        _height=$(_multip_int ${wm_msg[2]} 0.618)
         echo "state=floating"
         echo "center=on"
         echo "border=on"
