@@ -195,7 +195,7 @@ in {
           name = "emacsclient";
           desktopName = "Emacs Client";
           icon = "emacs";
-          exec = "${binDir}/emacs/eclient %F";
+          exec = "${binDir}/myemacs scratch %u";
           genericName = "Text Editor";
           mimeType = "text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++";
           comment = "Edit text";
@@ -206,7 +206,7 @@ in {
         (pkgs.makeDesktopItem {
           name = "org-protocol";
           desktopName = "Org-Protocol";
-          exec = "${binDir}/emacs/org-protocol %u";
+          exec = "${binDir}/myemacs org-protocol %u";
           icon = "emacs";
           type = "Application";
           terminal = "false";

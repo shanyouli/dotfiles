@@ -25,26 +25,48 @@ case "$role" in
     echo "state=floating"
   ;;
   *)
-    case $wmTitle in
-      Escratch)
-        _width=$(_multip_int ${wm_msg[1]} 0.5)
-        _height=$(_multip_int ${wm_msg[2]}  0.5)
-        _x=$((${wm_msg[1]} - ${_width}))
-        _y=$((${wm_msg[2]} - ${_height}))
-        echo "state=floating"
-        echo "center=off"
-        echo "border=off"
-        echo "rectangle=${_width}x${_height}+${_x}+${_y}"
-      ;;
-      'File Upload')
-        _width=$(_multip_int  ${wm_msg[1]} 0.618)
-        _height=$(_multip_int ${wm_msg[2]} 0.618)
-        echo "state=floating"
-        echo "center=on"
-        echo "border=on"
-        echo "rectangle=${_width}x${_height}+0+0"
-      ;;
-    esac
-  ;;
+    if [[ $class == Emacs ]]; then
+      case "$wmTitle" in
+        scratch)
+          _width=$(_multip_int ${wm_msg[1]} 0.5)
+          _height=$(_multip_int ${wm_msg[2]}  0.5)
+          _x=$((${wm_msg[1]} - ${_width}))
+          _y=$((${wm_msg[2]} - ${_height}))
+          echo "state=floating"
+          echo "center=off"
+          echo "border=1"
+          echo "rectangle=${_width}x${_height}+${_x}+${_y}"
+          ;;
+        org-protocol)
+          _width=$(_multip_int ${wm_msg[1]} 0.618)
+          _height=$(_multip_int ${wm_msg[2]}  0.618)
+          echo "state=floating"
+          echo "center=on"
+          echo "border=1"
+          echo "rectangle=${_width}x${_height}+0+0"
+      esac
+    else
+      case $wmTitle in
+        Escratch)
+          _width=$(_multip_int ${wm_msg[1]} 0.5)
+          _height=$(_multip_int ${wm_msg[2]}  0.5)
+          _x=$((${wm_msg[1]} - ${_width}))
+          _y=$((${wm_msg[2]} - ${_height}))
+          echo "state=floating"
+          echo "center=off"
+          echo "border=off"
+          echo "rectangle=${_width}x${_height}+${_x}+${_y}"
+          ;;
+        'File Upload')
+          _width=$(_multip_int  ${wm_msg[1]} 0.618)
+          _height=$(_multip_int ${wm_msg[2]} 0.618)
+          echo "state=floating"
+          echo "center=on"
+          echo "border=on"
+          echo "rectangle=${_width}x${_height}+0+0"
+          ;;
+      esac
+    fi
+    ;;
 esac
 

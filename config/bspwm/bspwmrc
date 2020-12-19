@@ -12,10 +12,7 @@ MONITOR=${MONITOR:-${MONITORS[0]}}
 export LAN=${LAN:-$(grep "^en.*" /proc/net/dev | cut -d":" -f1)}
 export WLP=${WLP:-$(grep "^wlp.*" /proc/net/dev | cut -d":" -f1)}
 
-wm_msg=($(bspc wm -d | jq -r '.monitors[0] | .name as $n | .rectangle | "\($n)\t\(.width)\t\(.height)"'))
-monitor_status=$(bspc wm -d | jq '.monitors[].rectangle')
-_width=$(echo $monitor_status | jq '.width')
-_height=$(echo $monitor_status | jq '.height')
+wmMsg=($(bspc wm -d | jq -r '.monitors[0] | .name as $n | .rectangle | "\($n)\t\(.width)\t\(.height)"'))
 
 _multip_int() { echo "$1 $2" | awk '{printf("%.0f", $1*$2)}'; }
 
@@ -36,7 +33,7 @@ bspc rule -a feh state=fullscreen
 bspc rule -a 'Emacs:org*' state=floating
 bspc rule -a 'Emacs:scratch' state=floating
 bspc rule -a '*:scratch' state=floating sticky=on center=on border=off \
-  rectangle=$(_multip_int ${_width} 0.8)x$(_multip_int ${_height} 0.8)+0+0
+  rectangle=$(_multip_int ${wmMsg[1]} 0.8)x$(_multip_int ${wmMsg[2]} 0.8)+0+0
 bspc rule -a '*:ttmux' desktop='^7' state=titled border=off
 
 bspc config external_rules_command "$XDG_CONFIG_HOME/bspwm/xtitle"

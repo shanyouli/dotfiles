@@ -37,15 +37,21 @@ It is useful to have some basic personal information.
 (setq user-full-name "Shanyou Li"
       user-mail-address "shanyouli6@gmail.com")
 
-(defun init-default-frame (&optional frame)
+(defun init-default-frame (&optional frame wratio hratio)
   (interactive)
   (let ((x-width (or (alist-get 'width default-frame-alist)
-                     (truncate (/ (- (* (x-display-pixel-width) 0.5) 24)
-                                  (frame-char-width)))))
+                     (truncate (- (* (x-display-pixel-width)
+                                     (or wratio 0.5) 16))))
         (y-height (or (alist-get 'height default-frame-alist)
-                      (truncate (/ (* (x-display-pixel-height) 0.5)
-                                   (frame-char-height))))))
-    (set-frame-size (or frame (selected-frame)) x-width y-height)))
+                      (truncate (* (x-display-pixel-height)
+                                   (or hratio 0.5)))))))
+    (set-frame-size (or frame (selected-frame)) x-width y-height t)))
+
+(add-hook 'after-make-frame-functions
+          (lambda (frame)
+            (pcase (frame-parameter nil 'name)
+              ("scratch" (init-default-frame frame))
+              ("org-protocol" (init-default-frame frame 0.618 0.618)))))
 #+end_src
 * Set Font
 Doom exposes five (optional) variables or controlling fonts in Doom.

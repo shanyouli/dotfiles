@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+#
+
+set -e
+
+SERNAME="main"
+CMD="emacsclient"
+# Fix incompatible terminals that cause odd 'not a valid terminal' errors
+[[ $TERM = "alacritty" ]] && export TERM=xterm-256color
+
+function main {
+  function _usage {
+    echo "USage: myemacs COMMAND "
+    echo
+    echo "Availabe commands:"
+    echo "  scratch            Open a Escratch desktop."
+    echo "  op (org-protocol)  Open a Org-protocl."
+    echo "  oc (org-capture)   Open org-capture(TODO)."
+    echo "  da (daemon)        Start Emacs-daemon"
+    echo "  kill (exit|quit)   Stop emacs daemon."
+    echo "  re (restart)       restart emacs daemon."
+    echo "  help               Help."
+  }
+
+  function _daemon {
+    if ! $CMD --socket-name=$SERNAME --suppress-output --eval nil; then
+      local input_met=${_EMACS_USING_INPUT:-rime}
+      local serfile="/run/user/$UID/${SERNAME}"
+      case $input_met in
+        rime) unset GTK_IM_MODULE QT_IM_MODULE XMODIFIERS ;;
+        fcitx) fcitx-remote >/dev/null || fcitx -d -r && sleep 1 ;;
+        *) >&2 echo "No support other options. \
+            Plese set _EMACS_USING_INPUT 'fcitx' or 'rime'" ;;
+      esac
+      [[ -f $serfile ]] && rm -rf $serfile
+      emacs --daemon="${SERNAME}" >/dev/null
+    fi
+  }
+
+  _multip_int() { echo "$1 $2" | awk '{printf("%.0f", $1*$2)}'; }
+
+  function _run_cmd {
+    local name=$1
+    [[ $# > 0 ]] && shift
+    exec $CMD -a" " --socket-name=$SERNAME -c -F "((name .\"$name\"))" "$@"
+  }
+
+
+  function _scratch {
+    local name=scratch
+    local focused=$(xdotool getactivewindow)
+    local scratch=$(xdotool search --onlyvisible --name $name)
+
+
+    if [[ -n $scratch ]]; then
+      if [[ $focused == $scratch ]]; then
+        xdotool windowkill $scratch
+      else
+        xdotool windowactivate $scratch
+      fi
+    else
+      local dp=($(xrandr | grep "primary" | cut -d" " -f4 | cut -d"+" -f1 | tr "x" " "))
+      local width=$(_multip_int ${dp[0]} 0.5)
+      local height=$(_multip_int ${dp[1]} 0.5)
+      _daemon
+      exec $CMD -a" " --socket-name=$SERNAME \
+        -c -F "((name . \"$name\") \
+                (width . (text-pixels . $((width - 20)))) \
+                (height . (text-pixels . $height)))" "$@"
+    fi
+  }
+
+  function _org-protocol {
+    local name=org-protocol
+    local focused=$(xdotool getactivewindow)
+    local scratch=$(xdotool search --onlyvisible --name $name)
+
+
+    if [[ -n $scratch ]]; then
+      if [[ $focused == $scratch ]]; then
+        xdotool windowkill $scratch
+      else
+        xdotool windowactivate $scratch
+      fi
+    else
+      local dp=($(xrandr | grep "primary" | cut -d" " -f4 | cut -d"+" -f1 | tr "x" " "))
+      local width=$(_multip_int ${dp[0]} 0.618)
+      local height=$(_multip_int ${dp[1]} 0.618)
+      _daemon
+      exec $CMD -a" " --socket-name=$SERNAME \
+        -c -F "((name . \"$name\") \
+                (width . (text-pixels . $((width - 20)))) \
+                (height . (text-pixels . $height)))" "$@"
+    fi
+  }
+
+  function _kill_daemon {
+    $CMD --socket-name=$SERNAME --eval '(let (kill-emacs-hook) (kill-emacs))'
+  }
+  cmd="$1"
+  [[ $# > 0 ]] && shift
+  case "$cmd" in
+    da|daemon) _daemon ;;
+    kill|quit|exit) _kill_daemon ;;
+    restart|re) _kill_daemon ; sleep 1; _daemon ;;
+    op|org-protocol) _org-protocol "$@";;
+    # oc|org-capture) TODO;;
+    sc|scratch) _scratch "$@";;
+    h|help|-h|--help) _usage ;;
+    "")  _scratch "$@" ;;
+  esac
+}
+
+main "$@"
