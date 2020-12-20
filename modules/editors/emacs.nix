@@ -213,7 +213,7 @@ in {
           mimeType = "x-scheme-handler/org-protocol";
         })
       ];
-      services.xserver.displayManager.sessionCommands = "${binDir}/emacs/edaemon";
+      services.xserver.displayManager.sessionCommands = "${binDir}/myemacs daemon";
       home.defaultApps."x-scheme-handler/org-protocol" = "org-protocol.desktop";
     })
     {
@@ -222,10 +222,7 @@ in {
         (mkIf (! cfg.rimeEnable) "rime")
       ];
       modules.editors.emacs.pkg = emacsWithPackages cfg.extraPkgs;
-      user.packages = [
-        cfg.pkg
-
-      ];
+      user.packages = [ cfg.pkg ];
       env.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];
       modules.shell.zsh.rcFiles = [ "${configDir}/emacs/aliases.zsh" ];
       # init.doomEmacs = mkIf cfg.doom.enable ''
