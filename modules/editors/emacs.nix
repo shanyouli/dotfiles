@@ -106,6 +106,14 @@ in {
             popd
           '';
         });
+        # FIXME: emacs startup error
+        popup = super.popup.overrideAttrs(esuper: {
+          postInstall = ''
+            pushd source
+            rm -r $out/share/emacs/site-lisp/elpa/popup-*/*.elc
+            popd
+          '';
+        });
       };
       modules.editors.emacs.package =  #pkgs.emacsPgtkGcc;
         let ebPkg = if cfg.gccEnable then pkgs.emacsPgtkGcc else pkgs.emacs ;

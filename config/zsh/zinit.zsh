@@ -79,3 +79,5 @@ else
     zinit snippet 'https://github.com/junegunn/fzf/blob/master/shell/completion.zsh'
     zinit snippet 'https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh'
 fi
+
+zinit add-fpath "$ZDOTDIR/completions"
