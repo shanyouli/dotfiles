@@ -33,10 +33,7 @@ zice() {
 }
 
 zice romkatv/powerlevel10k
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-if [[ $DISPLAY  ]] ; then
+if [[ -n $DISPLAY  ]] ; then
     [[ -r "$ZDOTDIR"/p10k.zsh ]] && source "$ZDOTDIR"/p10k.zsh
 else
     [[ -r "$ZDOTDIR"/p10k.tty.zsh ]] && source "$ZDOTDIR"/p10k.tty.zsh
@@ -59,11 +56,8 @@ zt 0b light-mode for \
 # fast-syntax-highlighting
 zice 0b if'[[ -z $SSH_CONNECTION ]]' zdharma/fast-syntax-highlighting
 
-# 为zsh 插件提供man的帮助
-#zice has'ruby' zinit-zsh/z-a-man
-
 # fast alias-tips
-zice from'gh-r' as'program' sei40kr/fast-alias-tips-bin
+zice 0a from'gh-r' as'program' sei40kr/fast-alias-tips-bin
 zice 0c sei40kr/zsh-fast-alias-tips
 
 # 快速目录跳转
@@ -76,7 +70,12 @@ else
     export ZSHZ_DATA=$XDG_CACHE_HOME/zlua
 fi
 # fzf fzf-tmux
-zice if'! command -v fzf >/dev/null' from"gh-r" as"program" junegunn/fzf-bin
-zice 0c has"fzf" pick'shell/key-bindings.zsh' \
-    atclone"cp -rv shell/completion.zsh ${ZINIT[COMPLETIONS_DIR]}/_fzf" \
-    junegunn/fzf
+if [[ -n ${commands[fzf-share]} ]]; then
+    source $(fzf-share)/key-bindings.zsh
+    source $(fzf-share)/completion.zsh
+else
+    zice 0a from"gh-r" as"program" junegunn/fzf-bin
+    # zinit ice mv="*.zsh -> _fzf" as="completion"
+    zinit snippet 'https://github.com/junegunn/fzf/blob/master/shell/completion.zsh'
+    zinit snippet 'https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh'
+fi

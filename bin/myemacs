@@ -100,6 +100,7 @@ function main {
   function _kill_daemon {
     $CMD --socket-name=$SERNAME --eval '(let (kill-emacs-hook) (kill-emacs))'
   }
+
   cmd="$1"
   [[ $# > 0 ]] && shift
   case "$cmd" in
