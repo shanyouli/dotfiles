@@ -14,14 +14,33 @@ in {
   config = mkIf cfg.enable {
     user.packages = with pkgs; [
       editorconfig-core-c
-      neovim
+      nodejs
+      (neovim.override {
+        viAlias = true;
+        vimAlias = true;
+        configure = {
+          packages.myPlugins = with pkgs.vimPlugins; {
+            start = [ vim-nix  coc-nvim coc-fzf fzf vim-startify ];
+            opt = [ vim-plug ];
+          };
+          # plug.plugins = with pkgs.vimPlugins; [
+          #   # vim-nix fzf vim-startify
+          #   vim-nix
+          # ];
+          customRC =
+            let baseFile = "${configDir}/vim/init.vim" ;
+            in ''
+              source ${pkgs.vimPlugins.vim-plug}/share/vim-plugins/vim-plug/plug.vim
+              ${readFile baseFile}
+            '';
+        };
+      })
     ];
 
     # This is for non-neovim, so it loads my nvim config
     # env.VIMINIT = "let \\$MYVIMRC='\\$XDG_CONFIG_HOME/nvim/init.vim' | source \\$MYVIMRC";
 
     environment.shellAliases = {
-      vim = "nvim";
       v   = "nvim";
     };
   };
