@@ -39,7 +39,11 @@ set timeoutlen=500              " Time to wait for a command
 " Source the vimrc file after saving it
 autocmd BufWritePost $MYVIMRC source $MYVIMRC
 " Fast edit the .vimrc file using ,x
-nnoremap <Leader>x :tabedit $MYVIMRC<CR>
+if isdirectory('/etc/nixos')
+  nnoremap <Leader>x :tabedit /etc/nixos/config/vim/init.vim<CR>
+else
+  nnoremap <leader>x :tabedit $DOTFILES/config/vim/init.vim<CR>
+endif
 
 set autoread " Set autoread when a file is changed outside
 set autowrite " Write on make/shell commands
@@ -81,14 +85,15 @@ function! InitializeDirectories()
 endfunction
 call InitializeDirectories()
 set viminfo='10,<100,:100,%,n$XDG_CACHE_HOME/vim/.viminfo
+
 "-------------------------------------------------
 " => Platform Specific Setting
 "-------------------------------------------------
 
 " On Windows, also use .vim instead of vimfiles
-" if has('win32') || has('win64')
-"     set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
-" endif
+if has('win32') || has('win64')
+    set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
+endif
 
 set viewoptions+=slash,unix " Better Unix/Windows compatibility
 set viewoptions-=options " in case of mapping change

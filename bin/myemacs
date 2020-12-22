@@ -73,7 +73,7 @@ function main {
   }
 
   function _golden_run {
-    local name=org-protocol
+    local name=$1
     local focused=$(xdotool getactivewindow)
     local scratch=$(xdotool search --onlyvisible --name $name)
 

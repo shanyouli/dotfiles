@@ -20,19 +20,61 @@ in {
         vimAlias = true;
         configure = {
           packages.myPlugins = with pkgs.vimPlugins; {
-            start = [ vim-nix  coc-nvim coc-fzf fzf vim-startify ];
+            start = [
+              # UI
+              ayu-vim           # theme
+              gruvbox-community # theme
+              lightline-vim         # modeline
+              vim-startify      # startup Buffer
+              lightline-bufferline # bufferline lightline
+              vim-bufferline           # bufferline
+              vim-nix           # nix Language
+              vim-clap
+              coc-nvim
+              coc-fzf
+              fzf
+              fzf-vim
+            ];
             opt = [ vim-plug ];
           };
-          # plug.plugins = with pkgs.vimPlugins; [
-          #   # vim-nix fzf vim-startify
-          #   vim-nix
-          # ];
-          customRC =
-            let baseFile = "${configDir}/vim/init.vim" ;
-            in ''
-              source ${pkgs.vimPlugins.vim-plug}/share/vim-plugins/vim-plug/plug.vim
-              ${readFile baseFile}
-            '';
+          # plug.plugins = with pkgs.vimPlugins; [ vim-nix ];
+          customRC = ''
+            source ${pkgs.vimPlugins.vim-plug}/share/vim-plugins/vim-plug/plug.vim
+            set termguicolors     " enable true colors support
+            let ayucolor="dark"   " for dark|mirage|light version of theme
+            syntax enable
+            colorscheme ayu
+
+            " modeline
+            set laststatus=2
+            " bufferline
+            set showtabline=2
+            let g:bufferline_echo=0
+            let g:bufferline_modified='[+]'
+            if !has('gui_running')
+              set t_Co=256
+            endif
+            set noshowmode
+            let g:lightline = {
+                 \ 'colorscheme': 'ayu_dark',
+                 \ 'active': {
+                 \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
+                 \ },
+                 \ 'tabline': {
+                    \   'left': [ ['buffers'] ],
+                    \   'right': [ ['close'] ]
+                    \ },
+                 \ 'component_expand': {
+                   \   'buffers': 'lightline#bufferline#buffers'
+                   \ },
+                 \ 'component_type': {
+                   \   'buffers': 'tabsel'
+                 \ }
+            \ }
+            if filereadable(expand("${xdgConfig}/nvim/init.vim"))
+              source ${xdgConfig}/nvim/init.vim
+            endif
+          '';
         };
       })
     ];
@@ -40,8 +82,8 @@ in {
     # This is for non-neovim, so it loads my nvim config
     # env.VIMINIT = "let \\$MYVIMRC='\\$XDG_CONFIG_HOME/nvim/init.vim' | source \\$MYVIMRC";
 
-    environment.shellAliases = {
-      v   = "nvim";
-    };
+    environment.shellAliases.v =  "nvim";
+
+    home.configFile."nvim" = { source = "${configDir}/vim"; recursive = true; };
   };
 }

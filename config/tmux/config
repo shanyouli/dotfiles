@@ -3,8 +3,8 @@
 # https://github.com/hlissner/dotfiles
 ########################################
 
-set  -g default-terminal "xterm-256color"
-
+#set  -g default-terminal "xterm-256color"
+set -g default-terminal "tmux-256color"
 new-session     # spawn session if attaching when none are running
 
 setw -g automatic-rename on      # rename window after current program

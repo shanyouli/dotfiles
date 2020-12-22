@@ -46,6 +46,7 @@
     dev = {
       cc.enable = true;
       python.enable = true;
+      go.enable  = true;
     };
     proxy = {
       default = "v2ray";

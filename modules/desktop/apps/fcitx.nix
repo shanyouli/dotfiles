@@ -14,7 +14,6 @@ in {
       [ pkgs.fcitx-engines.rime ]  else [
         pkgs.fcitx-engines.libpinyin
       ]);
-    modules.desktop.i3.startupApps.fcitx = "fcitx -d -r";
     # home.configFile = {
     #   "fcitx/config".source = "${configDir}/fcitx/config";
     #   "fcitx/profile" = {
