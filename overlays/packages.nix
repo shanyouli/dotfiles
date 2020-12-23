@@ -4,6 +4,7 @@ final: prev: with prev; {
     xkeysnail = python3Packages.callPackage ../packages/xkeysnail.nix { };
     zyplayer = callPackage ../packages/zy-player.nix {};
     tmuxifier = callPackage ../packages/tmuxifier.nix {};
+    wqy-microhei = callPackage ../packages/wqy-microhei-rk.nix {};
   };
   firefox-addons = recurseIntoAttrs (callPackage ../packages/firefox-addons { });
   nerd-fonts = recurseIntoAttrs (callPackage ../packages/nerd-fonts { });

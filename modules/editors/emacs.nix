@@ -33,7 +33,6 @@ in {
     gccEnable = mkBoolOpt true;
     pluginEnable = mkBoolOpt true;
     rimeEnable = mkBoolOpt true;
-    serviceEnable = mkBoolOpt false;
     doom = {
       enable  = mkBoolOpt true;
       fromSSH = mkBoolOpt false;
@@ -258,10 +257,12 @@ in {
         '';
         "doom/config.init.el".text =
           let f = {
-                mono = "mononoki";
-                monoSize = "12";
+                mono = "JetBrains Mono";
+                monoSize = "11";
+                # mono = "mononoki";
+                # monoSize = "12";
                 emoji = "Noto Color Emoji";
-                cjk = "Sarasa Mono SC";
+                cjk = "WenQuanYi Micro Hei Mono";
               };
           in ''
           (setq doom-font (font-spec :family "${f.mono}" :size ${f.monoSize}))

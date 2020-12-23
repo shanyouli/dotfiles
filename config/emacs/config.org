@@ -108,7 +108,7 @@ Notice that this function assume you have graphics display"
 (setq face-font-rescale-alist
       '(("Sarasa Mono SC" . 0.99)
         ("Microsoft Yahei" . 1.2)
-        ("WenQuanYi Zen Hei" . 1.2)))
+        ("WenQuanYi Micro Hei Mono" . 0.99)))
 #+end_src
 
 * Theme

@@ -13,9 +13,10 @@ in {
           symbola
           font-awesome-ttf
           siji
-          wqy_microhei
-          fira-code-symbols
+          # wqy_microhei
+          my.wqy-microhei
           my.fira-sans
+          jetbrains-mono
           nerd-fonts.fantasque-sans-mono
         ] ++ (if cfg.enable then [
           source-serif-pro
@@ -31,7 +32,6 @@ in {
           mononoki
           nerd-fonts.mononoki
           noto-fonts
-          sarasa-gothic
           hanazono
         ]);
         enableFontDir = true;
