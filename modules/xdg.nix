@@ -6,12 +6,7 @@
 { config, home-manager, ... }:
 {
   ### A tidy $HOME is a tidy mind
-  home-manager.users.${config.user.name}.xdg = {
-    enable = true;
-    configFile."wgetrc".text = ''
-      hsts-file = "$XDG_CACHE_HOME"/wget-hsts
-    '';
-  };
+  home-manager.users.${config.user.name}.xdg.enable = true;
 
   environment = {
     sessionVariables = {
@@ -36,7 +31,6 @@
       HISTFILE        = "$XDG_DATA_HOME/bash/history";
       INPUTRC         = "$XDG_CONFIG_HOME/readline/inputrc";
       LESSHISTFILE    = "$XDG_CACHE_HOME/lesshst";
-      WGETRC          = "$XDG_CONFIG_HOME/wgetrc";
 
       # Tools I don't use
       # SUBVERSION_HOME = "$XDG_CONFIG_HOME/subversion";

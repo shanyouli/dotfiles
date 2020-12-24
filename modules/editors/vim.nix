@@ -23,7 +23,6 @@ in {
             start = [
               # UI
               ayu-vim           # theme
-              gruvbox-community # theme
               lightline-vim         # modeline
               vim-startify      # startup Buffer
               lightline-bufferline # bufferline lightline

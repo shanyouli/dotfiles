@@ -64,7 +64,10 @@ with inputs;
     coreutils-progress-bar
     git
     vim
-    wget
+    (pkgs.writeScriptBin "wget" ''
+      #!${pkgs.stdenv.shell}
+      exec ${pkgs.wget}/bin/wget --hsts-file="$XDG_CACHE_HOME/wget-hsts" -c "$@"
+    '')
     gnumake
   ];
 }
