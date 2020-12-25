@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+#
+set -e
+
+CMD="nix profile"
+function main {
+  ### helpers
+  function _usage {
+    echo "Usage: mypkg COMMAND [FLAGES...] [ARGS...]"
+    echo
+    echo "Availabe commands:"
+    echo "  show (sh)         Show programs installed using a 'nix profile'"
+    echo "  install (in)     Install package"
+    echo "  remove (re)      Uninstall package"
+    echo "  upgrade (up)     Update package"
+  }
+
+  function _show { $CMD info | cut -d" " -f1,2 | sed "s/flake.*.linux.//" ; }
+
+  function _fzf_do { _show | fzf | cut -d" " -f1 | xargs -I{} $@ {} ; }
+
+  function _install {
+    local channel="nixos#"
+    case "$1" in
+      unstable|un|pkg)
+        channel="nixpkgs#"
+        shift
+        ;;
+      *#*) channel="no" ;;
+    esac
+    for pkg in $@; do
+      if [[ $channel == no ]]; then
+        $CMD install --impure $pkg
+      else
+        $CMD install --impure $channel$pkg
+      fi
+    done
+  }
+
+  function _upgrade {
+    case "$1" in
+      all|--all|-a) $CMD upgrade ".*" ;;
+      "") _fzf_do $CMD upgrade ;;
+      *) echo "Couldn't find command, Please Using 'mypkg up -a'" 1>&2
+         exit 1
+         ;;
+    esac      
+  }
+
+  function _remove {
+    case "$1" in
+      --all|all|a|-a) $CMD remove ".*" ;;
+      "") _fzf_do $CMD remove ;;
+      *) echo "No parameters, except all of `ALL`." 1>&2
+         exit 1
+         ;;
+    esac      
+  }
+
+  ###
+  cmd=$1
+  [[ $# > 0 ]] && shift
+  case "$cmd" in
+    sh|show) _show ;;
+    install|in) _install "$@" ;;
+    remove|re) _remove "$@" ;;
+    upgrade|up) _upgrade "$@" ;;
+    h|help|-h|--help) _usage ;;
+    "") _usage ;;
+    *) echo "Couldn't find command $cmd" 1>&2
+       exit 1
+       ;;
+  esac
+}
+
+main "$@"

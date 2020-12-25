@@ -47,7 +47,7 @@ in {
       fasd
       fd
       htop
-      tealdeer
+      tealdeer # rust tldr
       tree
       (mkIf ( ! cfg.commandNotFound) nix-index)
     ] ++ (if cfg.fzf then [ fzf ] else [ file ]);
@@ -56,9 +56,6 @@ in {
       ZDOTDIR     = "$XDG_CONFIG_HOME/zsh";
       ZSH_CACHE   = "$XDG_CACHE_HOME/zsh";
     };
-    modules.shell.zsh.aliases.mypkgs = ''
-      nix profile info | cut -d\" \" -f1,2 | sed \"s/flake.*.linux.//\"
-    '';
     home.configFile = {
       # Write it recursively so other modules can write files to it
       "zsh" = { source = "${configDir}/zsh"; recursive = true; };
