@@ -9,10 +9,7 @@
   modules = {
     desktop = {
       apps = {
-        fcitx = {
-          enable = true;
-          rime.enable = true;
-        };
+        fcitx.enable = true;
         keepassxc.enable = true;
         rofi.enable = true;
         thunar = {
@@ -30,6 +27,7 @@
         qutebrowser.enable = true;
       };
       media.mpv.enable = true;
+      media.rime.enable = true;
       term = {
         default = "xst";
         st.enable = true;

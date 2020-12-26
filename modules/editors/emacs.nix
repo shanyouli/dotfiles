@@ -183,6 +183,7 @@ in {
         ];
         doom.pkg.prefer = [ "rime" "dash" "posframe" ];
         doom.confInit = ''
+          (setq rime-user-data-dir "${xdgCache}/emacs/rime/")
           (setq rime-emacs-module-header-root "${cfg.package}/include")
           (setq rime-librime-root "${pkgs.librime}")
           (setq rime-share-data-dir "${pkgs.brise}/share/rime-data")
@@ -195,6 +196,15 @@ in {
           (global-set-key (kbd "<269025153>") 'toggle-input-method)
         '';
       };
+      home.file =
+        let fileDir = "${configDir}/rime";
+            defDir = ".cache/emacs/rime";
+            defCustom = "${defDir}/default.custom.yaml";
+            cloverCustom = "${defDir}/clover.custom.yaml";
+        in {
+          "${defCustom}".source = "${fileDir}/default.custom.yaml";
+          "${cloverCustom}".source = "${fileDir}/clover.custom.yaml";
+        };
     })
     (mkIf config.services.xserver.enable {
       user.packages = [
@@ -202,26 +212,17 @@ in {
           name = "emacsclient";
           desktopName = "Emacs Client";
           icon = "emacs";
-          exec = "${binDir}/myemacs scratch %u";
+          exec = "${binDir}/myemacs desktop %u";
           genericName = "Text Editor";
-          mimeType = "text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++";
+          mimeType = "text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;x-scheme-handler/org-protocol";
           comment = "Edit text";
           terminal = "false";
           categories = "Development;TextEditor";
           extraEntries = "StartupWMClass=EmacsD";
         })
-        (pkgs.makeDesktopItem {
-          name = "org-protocol";
-          desktopName = "Org-Protocol";
-          exec = "${binDir}/myemacs org-protocol %u";
-          icon = "emacs";
-          type = "Application";
-          terminal = "false";
-          mimeType = "x-scheme-handler/org-protocol";
-        })
       ];
       services.xserver.displayManager.sessionCommands = "${binDir}/myemacs daemon";
-      home.defaultApps."x-scheme-handler/org-protocol" = "org-protocol.desktop";
+      home.defaultApps."x-scheme-handler/org-protocol" = "emacsclient.desktop";
     })
     {
       modules.editors.emacs.doom.pkg.disable = [

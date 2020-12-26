@@ -8,4 +8,5 @@ final: prev: with prev; {
   };
   firefox-addons = recurseIntoAttrs (callPackage ../packages/firefox-addons { });
   nerd-fonts = recurseIntoAttrs (callPackage ../packages/nerd-fonts { });
+  rime-data = recurseIntoAttrs (callPackage ../packages/rime-data.nix {});
 }

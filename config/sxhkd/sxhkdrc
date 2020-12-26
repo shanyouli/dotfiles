@@ -7,23 +7,28 @@ super + {_,shift + }q
 super + t
 	bspc desktop -l next
 
+# '
 super + apostrophe
 	bspc window -s last
 
 # Attach to a detached session. If none is available create a new one, rather
 # than attach to one that is already attached to elsewhere.
-super + Return
-	bspc desktop -f 7 && $DOTFILES/bin/ttmux
+super + shift + Return
+	$DOTFILES/bin/ttmux
     # xst -e bash -c "(tmux ls | grep -qEv 'attached|scratch' && tmux at) || tmux"
 
 ctrl + super + Return
 	xst
 
+super + Return
+    scratch
+
 super + grave
-	scratch
+    $DOTFILES/bin/myemacs base
 
 super + shift + grave
-	emacsclient -e '(open-scratch-frame)'
+    $DOTFILES/bin/myemacs scratch
+	# emacsclient -e '(open-scratch-frame)'
 
 super + space
 	$DOTFILES/bin/rofi/appmenu

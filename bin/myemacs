@@ -4,7 +4,7 @@
 set -e
 
 SERNAME="main"
-CMD="emacsclient"
+CMD="emacsclient --socket-name=main"
 # Fix incompatible terminals that cause odd 'not a valid terminal' errors
 [[ $TERM = "alacritty" ]] && export TERM=xterm-256color
 
@@ -13,8 +13,8 @@ function main {
     echo "USage: myemacs COMMAND "
     echo
     echo "Availabe commands:"
-    echo "  scratch            Open a Escratch desktop."
-    echo "  op (org-protocol)  Open a Org-protocl."
+    echo "  scratch            Open a Scratch Frame."
+    echo "  desktop (de)       As Desktop shortcut."
     echo "  oc (org-capture)   Open org-capture(TODO)."
     echo "  da (daemon)        Start Emacs-daemon"
     echo "  be (base)          default open."
@@ -24,7 +24,7 @@ function main {
   }
 
   function _daemon {
-    if ! $CMD --socket-name=$SERNAME --suppress-output --eval nil; then
+    if ! $CMD --suppress-output --eval nil; then
       local input_met=${_EMACS_USING_INPUT:-rime}
       local serfile="/run/user/$UID/${SERNAME}"
       case $input_met in
@@ -43,19 +43,21 @@ function main {
   function _run_cmd {
     local name=$1
     [[ $# > 0 ]] && shift
-    exec $CMD -a" " --socket-name=$SERNAME -c -F "((name .\"$name\"))" "$@"
+    exec $CMD -c -F "((name .\"$name\"))" "$@"
   }
 
+  function _scratch {
+    exec $CMD -e "(open-scratch-frame 'doom/switch-to-scratch-buffer)"
+  }
 
   function _half_run {
     local name=$1
     local focused=$(xdotool getactivewindow)
     local scratch=$(xdotool search --onlyvisible --name $name)
 
-
     if [[ -n $scratch ]]; then
       if [[ $focused == $scratch ]]; then
-        xdotool windowkill $scratch
+        $CMD -e "(delete-frame (selected-frame) t)"
       else
         xdotool windowactivate $scratch
       fi
@@ -65,10 +67,9 @@ function main {
       local height=$(_multip_int ${dp[1]} 0.5)
       _daemon
       [[ $# > 0 ]] && shift
-      exec $CMD -a" " --socket-name=$SERNAME \
-        -c -F "((name . \"$name\") \
-                (width . (text-pixels . $((width - 20)))) \
-                (height . (text-pixels . $height)))" "$@"
+      exec $CMD -c -F "((name . \"$name\") \
+        (width . (text-pixels . $((width - 20)))) \
+        (height . (text-pixels . $height)))" "$@"
     fi
   }
 
@@ -77,10 +78,9 @@ function main {
     local focused=$(xdotool getactivewindow)
     local scratch=$(xdotool search --onlyvisible --name $name)
 
-
     if [[ -n $scratch ]]; then
       if [[ $focused == $scratch ]]; then
-        xdotool windowkill $scratch
+        $CMD -e "(delete-frame (selected-frame) t)"
       else
         xdotool windowactivate $scratch
       fi
@@ -90,16 +90,13 @@ function main {
       local height=$(_multip_int ${dp[1]} 0.618)
       _daemon
       [[ $# > 0 ]] && shift
-      exec $CMD -a" " --socket-name=$SERNAME \
-        -c -F "((name . \"$name\") \
-                (width . (text-pixels . $((width - 20)))) \
-                (height . (text-pixels . $height)))" "$@"
+      exec $CMD -c -F "((name . \"$name\") \
+                        (width . (text-pixels . $((width - 20)))) \
+                        (height . (text-pixels . $height)))" "$@"
     fi
   }
 
-  function _kill_daemon {
-    $CMD --socket-name=$SERNAME --eval '(let (kill-emacs-hook) (kill-emacs))'
-  }
+  function _kill_daemon { $CMD --eval '(let (kill-emacs-hook) (kill-emacs))'; }
 
   cmd="$1"
   [[ $# > 0 ]] && shift
@@ -107,9 +104,9 @@ function main {
     da|daemon) _daemon ;;
     kill|quit|exit) _kill_daemon ;;
     restart|re) _kill_daemon ; sleep 1; _daemon ;;
-    op|org-protocol) _golden_run "org-protocol" "$@";;
+    de|desktop) _golden_run "emacs-client" "$@";;
     # oc|org-capture) TODO;;
-    sc|scratch) _golden_run "scratch" "$@";;
+    sc|scratch) _scratch;;
     be|base) _half_run "base" "$@";;
     h|help|-h|--help) _usage ;;
     "")  _half_run "base" "$@" ;;

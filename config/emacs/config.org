@@ -46,6 +46,33 @@ It is useful to have some basic personal information.
                       (truncate (* (x-display-pixel-height)
                                    (or hratio 0.5))))))
     (set-frame-size (or frame (selected-frame)) x-width y-height t)))
+(defun open-scratch-frame (&optional fn)
+  "Opens the org-capture window in a floating frame that cleans itself up once
+you're done. This can be called from an external shell script."
+  (let* ((frame-title-format "")
+         (preframe (cl-loop for frame in (frame-list)
+                            if (equal (frame-parameter frame 'name) "scratch")
+                            return frame))
+         (frame (unless preframe
+                  (make-frame `((name . "scratch")
+                                (width . 90)
+                                (height . 26)
+                                (transient . t)
+                                (internal-border-width . 10)
+                                (left-fringe . 0)
+                                (right-fringe . 0)
+                                (undecorated . t)
+                                ,(if IS-LINUX '(display . ":0")))))))
+    (select-frame-set-input-focus (or frame preframe))
+    (when frame
+      (with-selected-frame frame
+        (if fn
+            (call-interactively fn)
+          (with-current-buffer (switch-to-buffer "*scratch*")
+            (text-scale-set 0.2)
+            (when (eq major-mode 'fundamental-mode)
+              (emacs-lisp-mode))
+            (redisplay)))))))
 
 ;; (add-hook 'after-make-frame-functions
 ;;           (lambda (frame)
@@ -284,7 +311,8 @@ RIME Emacs Front End Framework
 (use-package! rime
   :defer 0.5
   :init
-  (setq rime-user-data-dir (expand-file-name "~/.config/fcitx/rime"))
+  (unless (bound-and-true-p using-nix-config-p)
+    (setq rime-user-data-dir (expand-file-name "~/.config/fcitx/rime")))
   (setq default-input-method "rime")
   (setq rime-show-candidate 'posframe)
   ;; (setq rime-disable-predicates '(rime-predicate-evil-mode-p
