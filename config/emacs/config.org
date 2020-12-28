@@ -4,7 +4,6 @@
 #+AUTHOR: Syl
 #+STARTUP: overview
 + [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org][doom-emacs/getting_started.org at develop · hlissner/doom-emacs]]
-
 * Emacs
 Emacs or EMACS(Editor MACroS) is a family of text editors that are characterized by
 their extensibility. The manual for the most widely used variant, GNU Emacs, describes

@@ -205,6 +205,21 @@ in {
           "${defCustom}".source = "${fileDir}/default.custom.yaml";
           "${cloverCustom}".source = "${fileDir}/clover.custom.yaml";
         };
+      system.userActivationScripts.emacsRimeEnable = ''
+        _emacsRimeSync=${xdgCache}/emacs/rime/installation.yaml
+        if [[ -f $_emacsRimeSync  ]]; then
+          grep "sync_dir:" $_emacsRimeSync >/dev/null || {
+            ${pkgs.gnused}/bin/sed -i "/installation_id.*/c \
+              installation_id: \"emacs-rime\"\
+              \nsync_dir: \"${homeDir}\/Dropbox\/rime\"" $_emacsRimeSync
+          }
+        else
+          mkdir -p $(dirname $_emacsRimeSync)
+          echo -e "installation_id: \"emacc-rime\"\
+            \nsync_dir: \"${homeDir}/Dropbox/rime\"" > $_emacsRimeSync
+        fi
+        unset _emacsRimeSync
+      '';
     })
     (mkIf config.services.xserver.enable {
       user.packages = [

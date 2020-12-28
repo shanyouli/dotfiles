@@ -47,7 +47,10 @@ function main {
   }
 
   function _scratch {
-    exec $CMD -e "(open-scratch-frame 'doom/switch-to-scratch-buffer)"
+    exec $CMD -e "(open-scratch-frame 'doom/switch-to-scratch-buffer)" &
+    if command -v bspc >/dev/null && bspc wm --get-status >/dev/null ; then
+        bspc desktop -f 6
+    fi
   }
 
   function _half_run {
