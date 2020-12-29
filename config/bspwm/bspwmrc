@@ -31,7 +31,7 @@ bspc rule -a Firefox desktop='^1' split_ratio=0.382
 bspc rule -a feh state=fullscreen
 bspc rule -a Fcitx-config-gtk3 state=floating
 bspc rule -a '*:scratch' state=floating sticky=on center=on border=off \
-  rectangle=$(_multip_int ${wmMsg[1]} 0.8)x$(_multip_int ${wmMsg[2]} 0.8)+0+0
+  rectangle=$(_multip_int ${wmMsg[1]} 0.618)x$(_multip_int ${wmMsg[2]} 0.618)+0+0
 bspc rule -a '*:ttmux' desktop='^7' state=titled border=off
 
 bspc config external_rules_command "$XDG_CONFIG_HOME/bspwm/xtitle"

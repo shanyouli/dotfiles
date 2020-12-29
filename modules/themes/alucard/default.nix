@@ -24,14 +24,15 @@ in {
           firefox.userChrome = concatMapStringsSep "\n" readFile [
             ./config/firefox/userChrome.css
           ];
+          qutebrowser.userStyles = concatMapStringsSep "\n" readFile [
           # qutebrowser.userStyles = concatMapStringsSep "\n" toCSSFile [
-          #   ./config/qutebrowser/github.scss
-          #   ./config/qutebrowser/monospace-textareas.scss
-          #   ./config/qutebrowser/quora.scss
-          #   ./config/qutebrowser/stackoverflow.scss
-          #   ./config/qutebrowser/xkcd.scss
-          #   ./config/qutebrowser/youtube.scss
-          # ];
+            ./config/userstyles/qutebrowser/github.scss
+            ./config/userstyles/qutebrowser/monospace-textareas.scss
+            ./config/userstyles/qutebrowser/quora.scss
+            ./config/userstyles/qutebrowser/stackoverflow.scss
+            ./config/userstyles/qutebrowser/xkcd.scss
+            ./config/userstyles/qutebrowser/youtube.scss
+          ];
         };
       };
     }

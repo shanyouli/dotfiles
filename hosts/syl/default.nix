@@ -10,7 +10,6 @@
     desktop = {
       apps = {
         fcitx.enable = true;
-        keepassxc.enable = true;
         rofi.enable = true;
         thunar = {
           enable = true;
@@ -19,7 +18,6 @@
         read.enable = true;
       };
       bspwm.enable = true;
-      # i3.enable = true;
       browsers = {
         default = "firefox";
         firefox.enable = true;
