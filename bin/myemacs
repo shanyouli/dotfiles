@@ -24,7 +24,7 @@ function main {
   }
 
   function _daemon {
-    if ! $CMD --suppress-output --eval nil; then
+    if ! $CMD --suppress-output --eval nil >/dev/null; then
       local input_met=${_EMACS_USING_INPUT:-rime}
       local serfile="/run/user/$UID/${SERNAME}"
       case $input_met in
@@ -99,7 +99,11 @@ function main {
     fi
   }
 
-  function _kill_daemon { $CMD --eval '(let (kill-emacs-hook) (kill-emacs))'; }
+  function _kill_daemon {
+    if $CMD --suppress-output --eval nil >/dev/null; then
+      $CMD --eval '(let (kill-emacs-hook) (kill-emacs))'
+    fi
+  }
 
   cmd="$1"
   [[ $# > 0 ]] && shift
