@@ -30,6 +30,7 @@ in {
           xorg.fontcursormisc
         ] else [
           mononoki
+          twemoji-color-font
           nerd-fonts.mononoki
           noto-fonts
           hanazono

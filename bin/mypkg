@@ -62,7 +62,7 @@ function main {
   [[ $# > 0 ]] && shift
   case "$cmd" in
     sh|show) _show ;;
-    install|in) _install "$@" ;;
+    install|in|i|-i) _install "$@" ;;
     remove|re) _remove "$@" ;;
     upgrade|up) _upgrade "$@" ;;
     h|help|-h|--help) _usage ;;
