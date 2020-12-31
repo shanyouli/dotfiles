@@ -3,7 +3,7 @@
 
 TMUX_NAME=ttmux
 if command -v tmuxifier >/dev/null ; then
-    TMUX_CMD=${1:-'unset TMUX ; tmuxifier load-session main'}
+    TMUX_CMD=${1:-'unset TMUX && tmuxifier load-session main'}
 else
     TMUX_CMD=${1:-'tmux new-session -A -s main -n main'}
 fi

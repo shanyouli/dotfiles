@@ -277,7 +277,7 @@ in {
                 monoSize = "11";
                 # mono = "mononoki";
                 # monoSize = "12";
-                emoji = "Noto Color Emoji";
+                emoji = "JoyPixels";
                 cjk = "WenQuanYi Micro Hei Mono";
               };
           in ''
