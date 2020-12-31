@@ -11,14 +11,15 @@ TERMINAL=${TERMINAL:-xst}
 
 TMUX_ID=$(wmctrl -l | grep "$TMUX_NAME$" | cut -d" " -f1)
 if [[ -n $TMUX_ID ]]; then
-    exec wmctrl -i -a $TMUX_ID
+    wmctrl -i -a $TMUX_ID
 else
     case $TERMINAL in
         xst|st)
-            exec $TERMINAL -t $TMUX_NAME -n $TMUX_NAME -c $TMUX_NAME \
+            $TERMINAL -t $TMUX_NAME -n $TMUX_NAME -c $TMUX_NAME \
+                -f "$(xrdb -query | grep 'st\.font' | cut -f2)" \
                 -e $SHELL -c "$TMUX_CMD" & ;;
-        urxvt) exec $TERMINAL -name $TMUX_NAME -e $SHELL -c "$TMUX_CMD" & ;;
-        *) exec $TERMINAL -t $TMUX_NAME -e $SHELL -c "$TMUX_CMD" & ;;
+        urxvt) $TERMINAL -name $TMUX_NAME -e $SHELL -c "$TMUX_CMD" & ;;
+        *) $TERMINAL -t $TMUX_NAME -e $SHELL -c "$TMUX_CMD" & ;;
     esac
     if command -v bspc >/dev/null && bspc wm --get-status >/dev/null ; then
         bspc desktop -f 7

@@ -28,7 +28,7 @@
       media.mpv.enable = true;
       media.rime.enable = true;
       term = {
-        default = "xst";
+        default = "st";
         st.enable = true;
       };
      vm.virtualbox.enable = true;
