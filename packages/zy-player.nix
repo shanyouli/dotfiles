@@ -1,6 +1,6 @@
 { appimageTools, fetchurl, lib, gsettings-desktop-schemas, gtk3, makeDesktopItem }:
 let pname = "zy";
-    version = "2.7.0";
+    version = "2.7.1";
     desktopItem = makeDesktopItem {
       name = pname;
       desktopName = "ZY-Player";
@@ -13,8 +13,8 @@ let pname = "zy";
 in appimageTools.wrapType2 rec {
   name = "${pname}-${version}";
   src = fetchurl {
-    url = "https://github.com/Hunlongyu/ZY-Player/releases/download/v${version}/ZY-Player-${version}.AppImage";
-    sha512 = "xalL2EgxxiBTrh23i1Lupsvd7gXMvCZ/w7uv3q81C2ubbw3LgxgQFgSrK4Zcp8d9BvGLMGsd1FgiGTVqo+631Q==";
+    url = "https://github.com/Hunlongyu/ZY-Player/releases/download/v${version}-HappyNewYear/ZY-Player-${version}-HappyNewYear.AppImage";
+    sha512 = "Mn0ejIRIysHCl5ZkaC8dWT95uYJDhx6eOlw357rQJbQ3q8fnLrMcsQ5RTJ6SuUjHMIUd6VghjE3+X9usizDLlA==";
   };
   profile = ''
     export LC_ALL=C.UTF-8
