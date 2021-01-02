@@ -15,12 +15,9 @@
       # Core dependencies.
       # Two inputs so I can track them separately at different rates.
       nixpkgs.url           = "https://mirrors.ustc.edu.cn/nix-channels/nixos-20.09/nixexprs.tar.xz";
-
       nixpkgs-unstable.url = "nixpkgs/master";
-
       home-manager.url   = "github:nix-community/home-manager/release-20.09";
-      home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
+      home-manager.inputs.nixpkgs.follows = "/nixpkgs";
       # Extras
       emacs-overlay.url  = "github:nix-community/emacs-overlay";
       nixos-hardware.url = "github:nixos/nixos-hardware";

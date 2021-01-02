@@ -24,8 +24,9 @@
         # firefox.extEnable = false;
         qutebrowser.enable = true;
       };
-      # font.enable = true;
+      font.enable = true;
       media.mpv.enable = true;
+      media.feeluown.enable = true;
       media.rime.enable = true;
       term = {
         default = "st";
