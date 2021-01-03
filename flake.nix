@@ -48,11 +48,10 @@
         final: prev: {
           unstable = uPkgs;
           # my = self.packages."${system}";
-        };
+        } // import ./packages final prev;
 
       overlays =
         mapModules ./overlays import;
-
 
       packages."${system}" =
         let
