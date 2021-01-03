@@ -166,7 +166,7 @@ in {
     (mkIf cfg.pluginEnable {
       modules.editors.emacs = {
         extraPkgs = epkgs: with epkgs; [
-          vterm gif-screencast vlf
+          vterm gif-screencast vlf emacs-webkit
         ];
         doom.pkg.prefer = [
           "vterm" "gif-screencast" "vlf"
