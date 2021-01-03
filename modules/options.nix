@@ -72,6 +72,7 @@ with lib.my;
           dataFile   = mkAliasDefinitions options.home.dataFile;
 
           mime.enable = true;
+          # NOTE: some application can change ~/.config/mimeapps.list
           mimeApps.enable = true;
           mimeApps.defaultApplications = mkAliasDefinitions options.home.defaultApps;
         };

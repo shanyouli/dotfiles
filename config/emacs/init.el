@@ -64,7 +64,7 @@
 
        :emacs
        (dired +icons)            ; making dired pretty [functional]
-       electric          ; smarter, keyword-based electric-indent
+       ;; electric          ; smarter, keyword-based electric-indent
        ;;ibuffer         ; interactive buffer management
        vc                ; version-control and Emacs, sitting in a tree
        undo
@@ -174,8 +174,7 @@
 
        :config
        literate
-       ;; (default +bindings +smartparens)
-       (default +bindings))
+       (default +bindings +smartparens))
 
 (setq custom-file (expand-file-name "custom.el" doom-local-dir))
 (load custom-file 'no-error 'no-message)

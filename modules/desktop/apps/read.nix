@@ -16,7 +16,7 @@ in {
     home = (mkMerge [
       (mkIf cfg.zathura {
         configFile."zathura/zathurarc".source = "${configDir}/zathura/zathurarc";
-        defaultApps."application/pdf" = "zathura.desktop";
+        defaultApps."application/pdf" = "org.pwmt.zathura.desktop";
       })
     ]);
   };

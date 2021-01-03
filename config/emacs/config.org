@@ -204,7 +204,6 @@ Roam Research. Look at [[https://www.youtube.com/playlist?list=PLwXSqDdn_CpE934B
 #+begin_src emacs-lisp :tangle "config.el"
 ;; not open the org-roam buffer when opening an org roam file
 (setq +org-roam-open-buffer-on-find-file nil)
-
 ;; see @https://www.zmonster.me/2020/06/27/org-roam-introduction.html
 (setq org-roam-capture-templates
       '(( "d" "default" plain (function org-roam-capture--get-point)
@@ -782,4 +781,14 @@ Window Select
 ;; flycheck
 (when (featurep! :checkers syntax)
   (setq flycheck-global-modes '(not emacs-lisp-mode)))
+#+end_src
+** nxml-mode
+when closing the tags in nxml-mode, smartparens will conflict with the nxml
+tag completion and result in double closing _>>_ for a tag.
+@see https://github.com/Fuco1/smartparens/issues/397
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! nxml-mode
+  :config
+  (when (fboundp 'sp-local-pair)
+    (sp-local-pair 'nxml-mode "<" ">" :post-handlers '(("[d1]" "/")))))
 #+end_src
