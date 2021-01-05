@@ -30,8 +30,8 @@
       media.zyplayer.enable = true;
       media.rime.enable = true;
       term = {
-        default = "st";
-        st.enable = true;
+        default = "xst";
+        xst.enable = true;
       };
      vm.virtualbox.enable = true;
     };

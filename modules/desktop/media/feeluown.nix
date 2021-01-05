@@ -7,36 +7,35 @@ in {
   options.modules.desktop.media.feeluown = {
     enable = mkBoolOpt false;
     dataHome = mkBoolOpt true;
+    rcFile = mkOption {
+      type = types.str;
+      default = ".fuorc";
+      description = "Don't modify it, feeluown configuration file.";
+    };
+    pkg = mkOption {
+      type = types.package;
+      default = pkgs.my.feeluown-full;
+      description = "Don't modify it, Feeluown default package.";
+    };
   };
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.dataHome {
-      user.packages = with pkgs; [
-        (makeDesktopItem {
-          name = "feeluown";
-          desktopName = "FeelUOwn";
-          icon = "${python3Packages.feeluown}/${python3Packages.python.sitePackages}/feeluown/feeluown.png";
-          exec = "feeluown --log-to-file";
-          categories = "AudioVideo;Audio;Player;Qt";
-          terminal = "false";
-          startupNotify = "true";
-        })
-        (writeScriptBin "feeluown" ''
-           #!${pkgs.stdenv.shell}
-           export HOME=${xdgData}/feeluown
-           [[ -d $HOME ]] || mkdir -p $HOME
-           exec ${pkgs.my.feeluown-full}/bin/feeluown "$@"
-        '')
-        (writeScriptBin "fuo" ''
-          #!${pkgs.stdenv.shell}
-          export HOME=${xdgData}/feeluown
-          [[ -d $HOME ]] || mkdir -p $HOME
-          exec ${pkgs.my.feeluown-full}/bin/fuo "$@"
-       '')];
-      home.dataFile."feeluown/.fuorc".source = "${cfgFile}";
+      modules.desktop.media.feeluown = {
+        pkg = pkgs.my.feeluown-full.overrideAttrs(attrs: {
+          postInstall = (attrs.postInstall or "") + ''
+            for i in $out/bin/* ; do
+              wrapProgram $i \
+                --set HOME "${xdgData}/feeluown"
+            done
+          '';
+        });
+        rcFile = ".local/share/feeluown/.fuorc";
+      };
     })
-    (mkIf (! cfg.dataHome) {
-      user.packages = [ pkgs.my.feeluown-full ];
-      home.file.".fuorc".source = "${cfgFile}";
-    })
+
+    {
+      user.packages = [ cfg.pkg ];
+      home.file."${cfg.rcFile}".source = "${cfgFile}";
+    }
   ]);
 }
