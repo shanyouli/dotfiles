@@ -4,7 +4,11 @@ with lib.my;
 let
   cfg = config.modules.shell.aria2;
   aria2Home = "${xdgConfig}/aria2";
-  proxyPort = config.modules.proxy.httpPort;
+  proxyArg =
+    let port = config.modules.proxy.httpPort;
+    in if port != null
+       then "--all-proxy=http://127.0.0.1:${toString port}"
+       else "";
   aria2     = (pkgs.writeScriptBin "aria2c" ''
             #!${pkgs.stdenv.shell}
             exec ${pkgs.aria2}/bin/aria2c --no-conf true "$@"
@@ -42,18 +46,12 @@ in {
         on-download-complete=${aria2Home}/delete_aria2
         ${readFile other}
      '';
+    modules.shell.zsh.aliases.paria2c = ''aria2c ${proxyArg} -x16 -j16'';
 
-    modules.shell.zsh.aliases = (mkIf (proxyPort != null) {
-      paria2c =
-        "aria2c --all-proxy=http://127.0.0.1:${toString proxyPort} -x16 -j16";
-    });
+    modules.desktop.browsers.firefox.extensions = [ pkgs.firefox-addons.aria2-gui ];
 
-    services.xserver.displayManager.sessionCommands =
-      let proxy = if proxyPort != null then
-            ''--all-proxy="http://127.0.0.1:${toString proxyPort}"''
-                  else "";
-      in ''
-        ${pkgs.aria2}/bin/aria2c ${proxy} --conf-path=${aria2Home}/aria2.conf --daemon
-      '';
+    services.xserver.displayManager.sessionCommands = ''
+      ${pkgs.aria2}/bin/aria2c ${proxyArg} --conf-path=${aria2Home}/aria2.conf --daemon
+    '';
   };
 }

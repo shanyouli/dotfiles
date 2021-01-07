@@ -8,5 +8,7 @@ in {
   };
   config = mkIf cfg.enable {
     user.packages = [ pkgs.unstable.keepassx-community ];
+
+    modules.desktop.browsers.firefox.extensions = [ pkgs.firefox-addons.keePassXC-Browser ];
   };
 }

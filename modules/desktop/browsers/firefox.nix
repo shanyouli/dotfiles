@@ -85,17 +85,14 @@ in {
       env.XDG_DESKTOP_DIR = "$HOME/";
 
       modules.desktop.browsers.firefox = {
-        extensions = (if cfg.extEnable then with pkgs.firefox-addons; [
+        extensions = with pkgs.firefox-addons; ifEnable cfg.extEnable  [
           ublock-origin stylus proxy-switchyomega surfingkeys tabSessionManager
           gitako darkreader copy-all-tab-urls save-page-we simplifyGmail
           videoDownloadHelper violentmonkey draculaDarkTheme inMyPocket
           autoTabDiscard saladict
-          (mkIf config.modules.shell.aria2.enable aria2-gui)
-          (mkIf config.modules.desktop.apps.keepassxc.enable keePassXC-Browser)
           (mkIf (! config.modules.desktop.apps.read.enable) mobiReader)
           (mkIf (! config.modules.desktop.apps.read.enable) epubReader)
-          (mkIf config.modules.shell.pass.enable passff)
-        ] else []);
+        ];
         settings = {
           "devtools.theme" = "dark";
           # Enable userContent.css and userChrome.css for our theme modules

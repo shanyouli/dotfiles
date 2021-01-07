@@ -4,6 +4,7 @@ with lib;
 with lib.my;
 let cfg = config.modules.shell.pass;
     # passBin, Special treatment for ClipMenu and GreenClip
+    # see@ https://github.com/vxcamiloxv/pass-utils/blob/main/passp
     passFunction = pass: pkgs.writeScriptBin "pass" ''
       #!${pkgs.stdenv.shell}
       PASS_CMD="${pass}/bin/pass"
@@ -29,6 +30,7 @@ in {
     })
     (mkIf ((! cfg.gopassEn) && config.modules.desktop.browsers.firefox.extEnable) {
       user.packages = [ pkgs.passff-host ];
+      modules.desktop.browsers.firefox.extensions = [ pkgs.firefox-addons.passff ];
       home.file.".mozilla/native-messaging-hosts/passff.json".source =
         "${pkgs.passff-host}/share/passff-host/passff.json";
     })
