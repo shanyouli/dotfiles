@@ -14,7 +14,7 @@ in {
     enable = mkBoolOpt false;
     downloadDir = mkOption {
       type = types.str;
-      default = "${homeDir}/Share/Aria2";
+      default = "${homeDir}/Downloads/aria2";
       description = "Save the file absolute path.";
     };
     rpcPort = mkOption {

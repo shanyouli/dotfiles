@@ -1,0 +1,40 @@
+# -*-mode: sh-*-
+
+PASS_CMD="${PASS_CMD:-pass}"
+CLIPMENU_CTL_CMD='clipctl'
+CLIPMENU_DAEMON_CMD='clipmenud'
+GREENCLIP_DAEMON_CMD='greenclip daemon'
+
+function _pgrep() {
+    if command -v pgrep >/dev/null; then
+        pgrep -f '$1'
+    else
+        ps axf | grep "$1" | grep -v grep | awk '{print $1}'
+    fi
+}
+
+# If has greenclip process active
+processID="$(_pgrep "$GREENCLIP_DAEMON_CMD")"
+if ! [[ -z $processId ]]; then
+    kill -20 $processId
+    $PASS_CMD "$@"
+    exit_code=$?
+
+    greenclip print ' '
+    kill -18 processId
+    exit $exit_code
+fi
+
+# If has clipmenud process active
+processId="$(_pgrep "$CLIPMENU_DAEMON_CMD")"
+if ! [[ -z $processId ]]; then
+    $CLIPMENU_CTL_CMD disable
+    $PASS_CMD "$@"
+    exit_code=$?
+
+    $CLIPMENU_CTL_CMD enable
+    exit $exit_code
+fi
+
+# default pass if not clipboard is running
+$PASS_CMD "$@"

@@ -18,6 +18,7 @@ in {
       description = "Don't modify it, Feeluown default package.";
     };
   };
+
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.dataHome {
       modules.desktop.media.feeluown = {
