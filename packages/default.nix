@@ -20,6 +20,7 @@ in rec {
     wqy-microhei = callPackage ./wqy-microhei-rk.nix {};
     icons-in-terminal = callPackage ./icons-in-terminal.nix {};
   };
+  zinit = callPackage ./zinit.nix {};
   firefox-addons = recurseIntoAttrs (callPackage ./firefox-addons { });
   nerd-fonts = recurseIntoAttrs (callPackage ./nerd-fonts { });
   rime-data = recurseIntoAttrs (callPackage ./rime-data.nix {});

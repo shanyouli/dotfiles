@@ -11,23 +11,26 @@ stdenv.mkDerivation rec {
     rev = "v${version}";
     sha256 = "sha256-7TvJnvtZEo5h45PcSy3tJN09UblswV0mQbTaKjgLyqw=";
   };
-  dontBuild = true;
-
+  # dontBuild = true;
+  buildPhase = ''
+    sed -i "/set -e/a #\nexport TMUXIFIER=$out/share/tmuxifier \
+      \nexport TMUXFIER_LAYOUT_PATH=$\{TMUXFIER_LAYOUT_PATH:-$\HOME/.tmuxifier}" \
+      bin/tmuxifier
+  '';
   installPhase = ''
     runHook preInstall
     mkdir -p $out/bin
     mkdir -p $out/share/${pname}
     install -m0755 bin/tmuxifier $out/bin
-    runHook postInstall
-  '';
-  postInstall = ''
+
     for i in "completion" "lib" "libexec" "templates" "init.*"; do
       cp -r $i $out/share/${pname}
     done
-    sed -i "/set -e/a #\nexport TMUXIFIER=$out/share/tmuxifier \
-      \nexport TMUXFIER_LAYOUT_PATH=$\{TMUXFIER_LAYOUT_PATH:-$\HOME/.tmuxifier}" \
-      $out/bin/tmuxifier
+
+    runHook postInstall
   '';
+  # postInstall = ''
+  # '';
   meta = with stdenv.lib; {
     description = "Tmux Window management tool.";
     homepage = "https://github.com/jimeh/tmuxifier";

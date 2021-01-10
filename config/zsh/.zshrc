@@ -1,4 +1,85 @@
-source $ZDOTDIR/zinit.zsh
+typeset -gA ZINIT=(
+  HOME_DIR        $XDG_DATA_HOME/zinit
+  ZCOMPDUMP_PATH  $ZSH_CACHE
+  COMPINIT_OPTS   -C
+)
+# declare -x -A ZINIT=(
+#   [HOME_DIR]="$XDG_CACHE_HOME/zinit"
+#   [BIN_DIR]="$XDG_CACHE_HOME/zinit/bin"
+# )
+[[ -f "$ZDOTDIR/prev.zshrc" ]] && source "$ZDOTDIR/prev.zshrc"
+if [[ -z ${ZINIT[BIN_DIR]} ]] ; then
+  export ZINIT[BIN_DIR]="${ZINIT[HOME_DIR]}/bin"
+  [[ -d "${ZINIT[BIN_DIR]}" ]] || {
+    git clone --depth 1 https://github.com/zdharma/zinit "${ZINIT[BIN_DIR]}"
+  }
+  source "${ZINIT[BIN_DIR]}/zinit.zsh"
+fi
+
+# Common ICE modifiers
+function zt { zinit depth"1" lucid  ${1/#[0-9][a-c]/wait"$1"} "${@:2}" ; }
+function zice {
+  local _all=( $@ )
+  local _wait
+  local _package
+  if [[ ${_all[1]} == [0-9][a-c] ]]; then
+    _wait=wait"${_all[1]}"
+    shift _all
+  fi
+  _package=${_all[-1]}
+  zinit ice lucid depth'1' $_wait ${_all:0:-1}
+  zinit light $_package
+}
+
+zice romkatv/powerlevel10k
+if [[ -n $DISPLAY  ]] ; then
+    [[ -r "$ZDOTDIR"/p10k.zsh ]] && source "$ZDOTDIR"/p10k.zsh
+else
+    [[ -r "$ZDOTDIR"/p10k.tty.zsh ]] && source "$ZDOTDIR"/p10k.tty.zsh
+fi
+zt 0a light-mode for \
+    blockf \
+        zsh-users/zsh-completions \
+    compile'{src/*.zsh,src/strategies/*}' pick'zsh-autosuggestions.zsh' \
+    atload'_zsh_autosuggest_start' \
+        zsh-users/zsh-autosuggestions
+
+zt 0b light-mode for \
+    compile'{hsmw-*,test/*}' \
+        zdharma/history-search-multi-word \
+    pick'autopair.zsh' nocompletions atload'bindkey "^H" backward-kill-word;
+    ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(autopair-insert)' \
+        hlissner/zsh-autopair \
+        zsh-users/zsh-history-substring-search
+
+# fast-syntax-highlighting
+zice 0b if'[[ -z $SSH_CONNECTION ]]' zdharma/fast-syntax-highlighting
+
+# fast alias-tips
+zice 0a from'gh-r' as'program' sei40kr/fast-alias-tips-bin
+zice 0c sei40kr/zsh-fast-alias-tips
+
+# 快速目录跳转
+if [[ -n ${commands[lua]} ]]; then
+    zice 0c skywind3000/z.lua
+    export _ZL_DATA=$XDG_CACHE_HOME/zlua
+    export _ZL_ADD_ONCE=1 # 仅当路径更新时，更新数据库
+else
+    zice 0c agkozak/zsh-z
+    export ZSHZ_DATA=$XDG_CACHE_HOME/zlua
+fi
+# fzf fzf-tmux
+if [[ -z ${commands[fzf-share]} ]]; then
+  zice 0a from"gh-r" as"program" junegunn/fzf-bin
+  # zinit ice mv="*.zsh -> _fzf" as="completion"
+  zinit snippet 'https://github.com/junegunn/fzf/blob/master/shell/completion.zsh'
+  zinit snippet 'https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh'
+fi
+
+[[ -d "${ZINIT[COMPLETIONS_DIR]}" ]] || mkdir -p ${ZINIT[COMPLETIONS_DIR]}
+# autoload -Uz _zinit
+# (( ${+_comps} )) && _comps[zinit]=_zinit
+zinit add-fpath "$ZDOTDIR/completions"
 
 autoload -Uz compinit && compinit -u -d $ZSH_CACHE/zcompdump
 source $ZDOTDIR/config.zsh

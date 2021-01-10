@@ -18,6 +18,7 @@ in {
       Zsh lines to be written to $XDG_CONFIG_HOME/zsh/extra.zshenv and sourced
       by $XDG_CONFIG_HOME/zsh/.zshenv
     '';
+    prevInit = mkOpt' lines "" "zshrc pre";
 
     rcFiles  = mkOpt (listOf (either str path)) [];
     envFiles = mkOpt (listOf (either str path)) [];
@@ -49,9 +50,10 @@ in {
       htop
       tealdeer # rust tldr
       tree
+      zinit
       (mkIf ( ! cfg.commandNotFound) nix-index)
-    ] ++ (if cfg.fzf then [ fzf ] else [ file ]);
-
+      fzf
+    ];
     env = {
       ZDOTDIR     = "$XDG_CONFIG_HOME/zsh";
       ZSH_CACHE   = "$XDG_CACHE_HOME/zsh";
@@ -64,6 +66,15 @@ in {
       # Because extraInit generates those files in /etc/profile, and mine just
       # write the files to ~/.config/zsh; where it's easier to edit and tweak
       # them in case of issues or when experimenting.
+      "zsh/prev.zshrc".text = ''
+        source ${pkgs.zinit}/share/zinit/zinit.zsh
+        module_path+=( ${pkgs.zinit}/share/zinit/zsh )
+        zmodload zdharma/zplugin
+
+        source ${pkgs.fzf}/share/fzf/key-bindings.zsh
+        source ${pkgs.fzf}/share/fzf/completion.zsh
+        ${cfg.prevInit}
+      '';
       "zsh/extra.zshrc".text =
         let aliasLines = mapAttrsToList (n: v: "alias ${n}=\"${v}\"") cfg.aliases;
             nixIdex = if  cfg.commandNotFound then ""

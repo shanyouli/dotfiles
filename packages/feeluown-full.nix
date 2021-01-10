@@ -47,12 +47,3 @@ in stdenv.mkDerivation rec {
     runHook postInstall
   '';
 }
-# runCommand "feeluown-full" {
-#     buildInputs =  [ pythonEnv ] ;
-#     nativeBuildInputs = [ makeWrapper ];
-#   } ''
-#   for file in ${python3Packages.feeluown}/bin/*; do
-#     makeWrapper "$file" "$out/bin/$(basename "$file")" \
-#       --prefix PYTHONPATH : "${pythonEnv}/${python3Packages.python.sitePackages}"
-#   done
-# ''
