@@ -1,5 +1,6 @@
 { stdenv, installShellFiles, lib, ncurses, zsh, asciidoc-full, fetchFromGitHub,}:
 # see https://github.com/sei40kr/dotfiles/blob/master/packages/zinit.nix
+# https://github.com/NixOS/nixpkgs/blob/master/pkgs/shells/zsh/zplugin/default.nix
 stdenv.mkDerivation rec {
   pname = "zinit";
   version = "3.7";

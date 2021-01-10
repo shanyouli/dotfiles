@@ -23,7 +23,7 @@ in {
     modules.theme.onReload.tmux = "${tmux}/bin/tmux source-file $TMUX_HOME/extraInit";
 
     modules.shell.zsh = {
-      rcInit = mkIf cfg.tmuxifierEn "_cache tmuxifier init ->/dev/null";
+      rcInit = mkIf cfg.tmuxifierEn "_cache tmuxifier init -";
       rcFiles = [ "${configDir}/tmux/aliases.zsh" ];
     };
 

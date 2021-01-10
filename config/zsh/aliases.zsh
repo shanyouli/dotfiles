@@ -20,9 +20,10 @@ alias p='xclip -selection clipboard -out'
 
 alias sc=systemctl
 alias ssc='sudo systemctl'
-
-if command -v exa >/dev/null; then
+alias usc='systemctl --user'
+if [[ -n ${commands[exa]} ]]; then
   alias exa="exa --group-directories-first";
+  alias ls="exa"
   alias l="exa -1";
   alias ll="exa -lg";
   alias la="LC_COLLATE=C exa -la";

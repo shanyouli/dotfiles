@@ -1,20 +1,10 @@
+source $ZDOTDIR/config.zsh
+
 typeset -gA ZINIT=(
   HOME_DIR        $XDG_DATA_HOME/zinit
   ZCOMPDUMP_PATH  $ZSH_CACHE
   COMPINIT_OPTS   -C
 )
-# declare -x -A ZINIT=(
-#   [HOME_DIR]="$XDG_CACHE_HOME/zinit"
-#   [BIN_DIR]="$XDG_CACHE_HOME/zinit/bin"
-# )
-[[ -f "$ZDOTDIR/prev.zshrc" ]] && source "$ZDOTDIR/prev.zshrc"
-if [[ -z ${ZINIT[BIN_DIR]} ]] ; then
-  export ZINIT[BIN_DIR]="${ZINIT[HOME_DIR]}/bin"
-  [[ -d "${ZINIT[BIN_DIR]}" ]] || {
-    git clone --depth 1 https://github.com/zdharma/zinit "${ZINIT[BIN_DIR]}"
-  }
-  source "${ZINIT[BIN_DIR]}/zinit.zsh"
-fi
 
 # Common ICE modifiers
 function zt { zinit depth"1" lucid  ${1/#[0-9][a-c]/wait"$1"} "${@:2}" ; }
@@ -28,15 +18,22 @@ function zice {
   fi
   _package=${_all[-1]}
   zinit ice lucid depth'1' $_wait ${_all:0:-1}
-  zinit light $_package
+  zinit load $_package
 }
+# declare -x -A ZINIT=(
+#   [HOME_DIR]="$XDG_CACHE_HOME/zinit"
+#   [BIN_DIR]="$XDG_CACHE_HOME/zinit/bin"
+# )
 
-zice romkatv/powerlevel10k
-if [[ -n $DISPLAY  ]] ; then
-    [[ -r "$ZDOTDIR"/p10k.zsh ]] && source "$ZDOTDIR"/p10k.zsh
-else
-    [[ -r "$ZDOTDIR"/p10k.tty.zsh ]] && source "$ZDOTDIR"/p10k.tty.zsh
+[[ -f "$ZDOTDIR/prev.zshrc" ]] && source "$ZDOTDIR/prev.zshrc"
+if [[ -z ${ZINIT[BIN_DIR]} ]] ; then
+  export ZINIT[BIN_DIR]="${ZINIT[HOME_DIR]}/bin"
+  [[ -d "${ZINIT[BIN_DIR]}" ]] || {
+    git clone --depth 1 https://github.com/zdharma/zinit "${ZINIT[BIN_DIR]}"
+  }
+  source "${ZINIT[BIN_DIR]}/zinit.zsh"
 fi
+
 zt 0a light-mode for \
     blockf \
         zsh-users/zsh-completions \
@@ -60,13 +57,9 @@ zice 0a from'gh-r' as'program' sei40kr/fast-alias-tips-bin
 zice 0c sei40kr/zsh-fast-alias-tips
 
 # 快速目录跳转
-if [[ -n ${commands[lua]} ]]; then
-    zice 0c skywind3000/z.lua
-    export _ZL_DATA=$XDG_CACHE_HOME/zlua
-    export _ZL_ADD_ONCE=1 # 仅当路径更新时，更新数据库
-else
+if [[ -z ${commands[z]} ]]; then
     zice 0c agkozak/zsh-z
-    export ZSHZ_DATA=$XDG_CACHE_HOME/zlua
+    export ZSHZ_DATA=$ZSH_CACHE/zlua
 fi
 # fzf fzf-tmux
 if [[ -z ${commands[fzf-share]} ]]; then
@@ -81,8 +74,8 @@ fi
 # (( ${+_comps} )) && _comps[zinit]=_zinit
 zinit add-fpath "$ZDOTDIR/completions"
 
-autoload -Uz compinit && compinit -u -d $ZSH_CACHE/zcompdump
-source $ZDOTDIR/config.zsh
+autoload -Uz compinit && compinit -u -d $ZSH_CACHE/cache/zcompdump
+
 if [[ $TERM != dumb ]]; then
   source $ZDOTDIR/keybinds.zsh
   source $ZDOTDIR/completion.zsh
@@ -91,7 +84,7 @@ if [[ $TERM != dumb ]]; then
   ##
   function _cache {
     command -v "$1" >/dev/null || return 1
-    local cache_dir="$XDG_CACHE_HOME/${SHELL##*/}"
+    local cache_dir="$XDG_CACHE_HOME/${SHELL##*/}/cache"
     local cache="$cache_dir/$1"
     if [[ ! -f $cache || ! -s $cache ]]; then
       echo "Caching $1"

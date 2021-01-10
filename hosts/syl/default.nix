@@ -67,7 +67,6 @@
       git.enable = true;
       gnupg.enable = true;
       tmux.enable = true;
-      zsh.enable = true;
       htop.enable = true;
       sdcv.enable = true;
       trash.enable = true;

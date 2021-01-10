@@ -7,8 +7,6 @@ if [[ $TERM == dumb || -n $INSIDE_EMACS ]]; then
 fi
 
 ## General
-export _FASD_DATA="$XDG_CACHE_HOME/fasd"
-export _FASD_VIMINFO="$XDG_CACHE_HOME/viminfo"
 
 # Treat these characters as part of a word.
 WORDCHARS='_-*?[]~&.;!#$%^(){}<>'
@@ -32,7 +30,7 @@ unsetopt HUP              # Don't kill jobs on shell exit.
 unsetopt CHECK_JOBS       # Don't report on jobs when shell exit.
 
 ## History
-HISTFILE="$XDG_CACHE_HOME/zhistory"
+HISTFILE="$ZSH_CACHE/zhistory"
 HISTSIZE=100000                   # Max events to store in internal history.
 SAVEHIST=100000                   # Max events to store in history file.
 
