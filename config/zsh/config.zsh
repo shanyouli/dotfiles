@@ -60,3 +60,17 @@ setopt MULTIOS              # Write to multiple descriptors.
 setopt EXTENDED_GLOB        # Use extended globbing syntax.
 unsetopt GLOB_DOTS
 unsetopt AUTO_NAME_DIRS     # Don't add variable-stored paths to ~ list
+
+
+##
+function _cache {
+  command -v "$1" >/dev/null || return 1
+  local cache_dir="$XDG_CACHE_HOME/${SHELL##*/}/cache"
+  local cache="$cache_dir/$1"
+  if [[ ! -f $cache || ! -s $cache ]]; then
+    echo "Caching $1"
+    mkdir -p $cache_dir
+    "$@" >$cache
+  fi
+  source $cache || rm -f $cache
+}

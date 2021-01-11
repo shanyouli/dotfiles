@@ -68,7 +68,7 @@ in {
     (mkIf cfg.fzf {
       user.packages = [ pkgs.fzf ];
       modules.shell.zsh.prevInit = if cfg.zinit then ''
-        zinit ice pick"*.zsh" wait"0" silent
+        zinit ice wait"0" silent pick'completion.zsh' src'key-bindings.zsh'
         zinit load ${pkgs.fzf}/share/fzf
       '' else ''
         source ${pkgs.fzf}/share/fzf/completion.zsh
@@ -77,8 +77,9 @@ in {
     })
     (mkIf cfg.zlua {
       user.packages = [ pkgs.z-lua ];
-      modules.shell.zsh.rcInit = ''
+      modules.shell.zsh.prevInit = ''
         export _ZL_DATA=$ZSH_CACHE/zlua
+        function _z() { _zlua "$@"; }
         _cache z --init zsh enhanced once ${optionalString cfg.fzf "echo fzf"}
       '';
     })
@@ -114,6 +115,9 @@ in {
             source ${pkgs.zinit}/share/zinit/zinit.zsh
             module_path+=( ${pkgs.zinit}/share/zinit/zsh )
             zmodload zdharma/zplugin
+            if [[ -n ''${aliases[zi]} ]]; then
+              unalias zi zini zplg zpl
+            fi
           ''}
           ${cfg.prevInit}
         '';
@@ -132,11 +136,11 @@ in {
           ${cfg.envInit}
         '';
       };
-    system.userActivationScripts.cleanupZgen = ''
-      ${optionalString cfg.zinit "rm -rvf $XDG_CONFIG_HOME/zsh/*.zwc"}
-      ${optionalString cfg.theme "rm -rf $XDG_CACHE_HOME/p10k*"}
-      rm -rvf $XDG_CACHE_HOME/zsh/cache/*
-    '';
-  }
+      system.userActivationScripts.cleanupZgen = ''
+        ${optionalString cfg.zinit "rm -rvf $XDG_CONFIG_HOME/zsh/*.zwc"}
+        ${optionalString cfg.theme "rm -rf $XDG_CACHE_HOME/p10k*"}
+        rm -rvf $XDG_CACHE_HOME/zsh/cache/*
+      '';
+    }
   ];
 }

@@ -26,6 +26,7 @@ function zice {
 # )
 
 [[ -f "$ZDOTDIR/prev.zshrc" ]] && source "$ZDOTDIR/prev.zshrc"
+
 if [[ -z ${ZINIT[BIN_DIR]} ]] ; then
   export ZINIT[BIN_DIR]="${ZINIT[HOME_DIR]}/bin"
   [[ -d "${ZINIT[BIN_DIR]}" ]] || {
@@ -58,8 +59,8 @@ zice 0c sei40kr/zsh-fast-alias-tips
 
 # 快速目录跳转
 if [[ -z ${commands[z]} ]]; then
-    zice 0c agkozak/zsh-z
-    export ZSHZ_DATA=$ZSH_CACHE/zlua
+  zice 0c agkozak/zsh-z
+  export ZSHZ_DATA=$ZSH_CACHE/zlua
 fi
 # fzf fzf-tmux
 if [[ -z ${commands[fzf-share]} ]]; then
@@ -68,6 +69,8 @@ if [[ -z ${commands[fzf-share]} ]]; then
   zinit snippet 'https://github.com/junegunn/fzf/blob/master/shell/completion.zsh'
   zinit snippet 'https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh'
 fi
+
+zice 3c pick"fz.sh" changyuheng/fz
 
 [[ -d "${ZINIT[COMPLETIONS_DIR]}" ]] || mkdir -p ${ZINIT[COMPLETIONS_DIR]}
 # autoload -Uz _zinit
@@ -80,19 +83,6 @@ if [[ $TERM != dumb ]]; then
   source $ZDOTDIR/keybinds.zsh
   source $ZDOTDIR/completion.zsh
   source $ZDOTDIR/aliases.zsh
-
-  ##
-  function _cache {
-    command -v "$1" >/dev/null || return 1
-    local cache_dir="$XDG_CACHE_HOME/${SHELL##*/}/cache"
-    local cache="$cache_dir/$1"
-    if [[ ! -f $cache || ! -s $cache ]]; then
-      echo "Caching $1"
-      mkdir -p $cache_dir
-      "$@" >$cache
-    fi
-    source $cache || rm -f $cache
-  }
 
   # fd > find
   if command -v fd >/dev/null; then
