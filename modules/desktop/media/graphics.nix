@@ -19,32 +19,29 @@ in {
     sprites.enable = mkBoolOpt true;
   };
 
-  config = mkIf cfg.enable {
-    user.packages = with pkgs;
-      (if cfg.tools.enable then [
-        font-manager   # so many damned fonts...
-        imagemagick    # for image manipulation from the shell
-      ] else []) ++
-
+  config = mkIf cfg.enable (mkMerge [
+    (mkIf cfg.tools.enable {
+      user.packages = with pkgs; [
+        font-manager # so many damned fonts...
+        imagemagick # for image manipulation from the shell
+      ];
+    })
+    (mkIf cfg.vector.enable {
       # replaces illustrator & indesign
-      (if cfg.vector.enable then [
-        unstable.inkscape
-      ] else []) ++
-
+      user.packages = [ pkgs.unstable.inkscape ];
+      home.configFile."inkscape/templates/default.svg".source = "${configDir}/inkscape/default-template.svg";
+    })
+    (mkIf cfg.raster.enable {
       # Replaces photoshop
-      (if cfg.raster.enable then [
-        krita
-        gimp
-        gimpPlugins.resynthesizer2  # content-aware scaling in gimp
-      ] else []) ++
-
+      user.packages = with pkgs; [
+        krita gimp
+        gimpPlugins.resynthesizer2 # content-aware scaling in gimp
+      ];
+      home.configFile."GIMP/2.10" = { source = "${configDir}/gimp"; recursive = true; };
+    })
+    (mkIf cfg.sprites.enable {
       # Sprite sheets & animation
-      (if cfg.sprites.enable then [
-        aseprite-unfree
-      ] else []);
-
-    home.configFile = mkIf cfg.raster.enable {
-      "GIMP/2.10" = { source = "${configDir}/gimp"; recursive = true; };
-    };
-  };
+      user.packages = [ pkgs.aseprite-unfree ];
+    })
+  ]);
 }

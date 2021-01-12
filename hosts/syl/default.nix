@@ -25,6 +25,11 @@
         qutebrowser.enable = true;
       };
       # font.enable = true;
+      media.graphics.enable = true;
+      media.graphics.tools.enable = true;
+      media.graphics.raster.enable = false;
+      media.graphics.vector.enable = false;
+      media.graphics.sprites.enable = false;
       media.mpv.enable = true;
       media.feeluown.enable = true;
       media.zyplayer.enable = true;
