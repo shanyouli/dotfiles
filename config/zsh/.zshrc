@@ -71,7 +71,9 @@ if [[ -z ${commands[fzf-share]} ]]; then
 fi
 
 zice 3c pick"fz.sh" changyuheng/fz
-
+# use wd mark fold
+export WD_CONFIG=$ZSH_CACHE/warprc
+zice 0c blockf as"program" pick"wd.sh" mv"_wd.sh -> _wd" atload="wd() { source wd.sh }" mfaerevaag/wd
 [[ -d "${ZINIT[COMPLETIONS_DIR]}" ]] || mkdir -p ${ZINIT[COMPLETIONS_DIR]}
 # autoload -Uz _zinit
 # (( ${+_comps} )) && _comps[zinit]=_zinit
