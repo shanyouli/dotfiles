@@ -10,6 +10,6 @@ in {
 
   config = mkIf cfg.enable {
     user.packages = [ pkgs.direnv ];
-    modules.shell.zsh.rcInit = ''eval "$(direnv hook zsh)"'';
+    modules.shell.zsh.rcInit = ''_cache direnv hook zsh'';
   };
 }

@@ -53,17 +53,20 @@ in {
         bat
         exa
         fd
-        htop
+        unstable.bottom
         tealdeer # rust tldr
         zsh-nix-shell
         (mkIf cfg.zinit zinit)
       ];
-      modules.shell.zsh.prevInit = if cfg.zinit then ''
-        zinit ice pick"nix-shell.plugin.zsh" wait"2" silent
-        zinit load ${pkgs.zsh-nix-shell}/share/zsh-nix-shell
-      '' else ''
-        source ${pkgs.zsh-nix-shell}/share/zsh-nix-shell/nix-shell.plugin.zsh
-      '';
+      modules.shell.zsh = {
+        prevInit = if cfg.zinit then ''
+          zinit ice pick"nix-shell.plugin.zsh" wait"2" silent
+          zinit load ${pkgs.zsh-nix-shell}/share/zsh-nix-shell
+        '' else ''
+          source ${pkgs.zsh-nix-shell}/share/zsh-nix-shell/nix-shell.plugin.zsh
+        '';
+        aliases.htop = "btm --basic";
+      };
     }
     (mkIf cfg.fzf {
       user.packages = [ pkgs.fzf ];
