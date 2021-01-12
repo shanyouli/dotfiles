@@ -41,10 +41,19 @@ in {
     services.xserver.displayManager.lightdm.greeters.mini.user = config.user.name;
 
     services.picom = {
+      fade = true;
+      fadeDelta = 1;
+      fadeSteps = [ 0.01 0.012 ];
+      shadow = true;
+      shadowOffsets = [ (-10) (-10) ];
+      shadowOpacity = 0.22;
+      activeOpacity = 1.00;
+      inactiveOpacity = 0.92;
+
       backend = "glx";
       vSync = true;
       opacityRules = [
-        # "100:class_g = 'Firefox'"
+        "100:class_g = 'Firefox'"
         # "100:class_g = 'Vivaldi-stable'"
         "100:class_g = 'VirtualBox Machine'"
         # Art/image programs where we need fidelity
@@ -86,6 +95,13 @@ in {
         # calls are finished before picom starts drawing. Needed on
         # nvidia-drivers with GLX backend for some users.
         xrender-sync-fence = true;
+
+        shadow-radius = 12;
+        blur-background = true;
+        blur-background-frame = true;
+        blur-background-fixed = true;
+        blur-kern = "7x7box";
+        blur-strength = 320;
       };
     };
 
@@ -110,5 +126,6 @@ in {
       [ -s .xsession-errors ] || rm -f .xsession-errors*
       popd
     '';
+    home.configFile."dunst/dunstrc".source = "${configDir}/dunst/dunstrc";
   };
 }

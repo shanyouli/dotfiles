@@ -70,7 +70,7 @@
       sdcv.enable = true;
       trash.enable = true;
     };
-    theme.active = "alucard";
+    theme.enable = true;
     hardware = {
       sensors.enable = true;
       audio.enable = true;

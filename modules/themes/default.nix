@@ -9,11 +9,13 @@ with lib.my;
 let cfg = config.modules.theme;
 in {
   options.modules.theme = with types; {
+    enable = mkBoolOpt false;
     active = mkOption {
       type = nullOr str;
       default = null;
-      apply = v: let theme = builtins.getEnv "THEME"; in
-                 if theme != "" then theme else v;
+      apply = v: if elem v [ "dark" "light" "mirage" "nord" ]
+                 then v
+                 else "mirage";
       description = ''
         Name of the theme to enable. Can be overridden by the THEME environment
         variable. Themes can also be hot-swapped with 'hey theme $THEME'.
@@ -36,33 +38,13 @@ in {
     onReload = mkOpt (attrsOf lines) {};
   };
 
-  config = mkIf (cfg.active != null) (mkMerge [
+  config = mkIf cfg.enable (mkMerge [
     # Desktop (X11) theming
     (mkIf config.services.xserver.enable {
       user.packages = with pkgs; [
         unstable.dracula-theme
         qogir-icon-theme
       ];
-      # Compositor
-      services.picom = {
-        fade = true;
-        fadeDelta = 1;
-        fadeSteps = [ 0.01 0.012 ];
-        shadow = true;
-        shadowOffsets = [ (-10) (-10) ];
-        shadowOpacity = 0.22;
-        activeOpacity = 1.00;
-        inactiveOpacity = 0.92;
-        settings = {
-          shadow-radius = 12;
-          blur-background = true;
-          blur-background-frame = true;
-          blur-background-fixed = true;
-          blur-kern = "7x7box";
-          blur-strength = 320;
-        };
-      };
-
       # Login screen theme
       services.xserver.displayManager.lightdm.greeters.mini.extraConfig = ''
         text-color = "#ff79c6"
@@ -86,7 +68,6 @@ in {
         })
         (mkIf (desktop.bspwm.enable || desktop.stumpwm.enable) {
           "polybar" = { source = ./config/polybar; recursive = true; };
-          "dunst/dunstrc".source = ./config/dunstrc;
         })
         (mkIf desktop.media.graphics.vector.enable {
           "inkscape/templates/default.svg".source = ./config/inkscape/default-template.svg;
