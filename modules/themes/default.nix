@@ -36,6 +36,7 @@ in {
     };
 
     onReload = mkOpt (attrsOf lines) {};
+    xrdbConf = mkOpt lines "";
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -45,30 +46,41 @@ in {
         unstable.dracula-theme
         qogir-icon-theme
       ];
-      # Login screen theme
-      services.xserver.displayManager.lightdm.greeters.mini.extraConfig = ''
-        text-color = "#ff79c6"
-        password-background-color = "#1E2029"
-        window-color = "#181a23"
-        border-color = "#181a23"
-      '';
-
       # Other dotfiles
       home.configFile = with config.modules; mkMerge [
-        {
-          # Sourced from sessionCommands in modules/themes/default.nix
-          "xtheme/90-theme".source = ./config/Xresources;
-        }
         (mkIf desktop.bspwm.enable {
-          "bspwm/rc.d/polybar".source = ./config/polybar/run.sh;
           "bspwm/rc.d/theme".source = ./config/bspwmrc;
+          "bspwm/rc.d/color".text = let
+            color = (if (cfg.active == "dark") then {
+              nb = "#000000";
+              ab = "#304357";
+              fb = "#f07178";
+              pf = "#f29668";
+            } else if (cfg.active == "light") then {
+              nb = "#f0f0f0";
+              ab = "#e1e1e2";
+              fb = "#f07171";
+              pf = "#ed9366";
+            } else {
+              nb = "#101521";
+              ab = "#323a4c";
+              fb = "#f28779";
+              pf = "#f29e74";
+            });
+            in ''
+              #!${pkgs.stdenv.shell}
+              bspc config normal_border_color "${color.nb}"
+              bspc config active_border_color "${color.ab}"
+              bspc config focused_border_color "${color.fb}"
+              bspc config presel_feedback_color "${color.pf}"
+            '';
         })
         (mkIf desktop.apps.rofi.enable {
           "rofi/theme" = { source = ./config/rofi; recursive = true; };
         })
-        (mkIf (desktop.bspwm.enable || desktop.stumpwm.enable) {
-          "polybar" = { source = ./config/polybar; recursive = true; };
-        })
+        # (mkIf (desktop.bspwm.enable || desktop.stumpwm.enable) {
+        #   "polybar" = { source = ./config/polybar; recursive = true; };
+        # })
       ];
     })
     {
@@ -99,6 +111,33 @@ in {
         };
       };
     }
+    (mkIf (cfg.active == "light") {
+      services.xserver.displayManager.lightdm.greeters.mini.extraConfig = ''
+        text-color = "#a37acc"
+        password-background-color = "#8a9199"
+        window-color = "#fafafa"
+        border-color = "#f0f0f0"
+      '';
+      modules.theme.xrdbConf = readFile ./config/xrdb/ayu-light;
+    })
+    (mkIf (cfg.active == "mirage") {
+      services.xserver.displayManager.lightdm.greeters.mini.extraConfig = ''
+        text-color = "#d4bfff"
+        password-background-color = "#191e2a"
+        window-color = "#1f2430"
+        border-color = "#101521"
+      '';
+      modules.theme.xrdbConf = readFile ./config/xrdb/ayu-mirage;
+    })
+    (mkIf (cfg.active == "dark") {
+      services.xserver.displayManager.lightdm.greeters.mini.extraConfig = ''
+        text-color = "#ffee99"
+        password-background-color = "#00010a"
+        window-color = "#0a0e14"
+        border-color = "#000000"
+      '';
+      modules.theme.xrdbConf = readFile ./config/xrdb/ayu-dark;
+    })
     # Read xresources files in ~/.config/xtheme/* to allow modular
     # configuration of Xresources.
     (let xrdb = ''${pkgs.xorg.xrdb}/bin/xrdb -merge "$XDG_CONFIG_HOME"/xtheme/*'';
@@ -106,7 +145,6 @@ in {
        services.xserver.displayManager.sessionCommands = xrdb;
        modules.theme.onReload.xtheme = xrdb;
      })
-
     {
       home.configFile = {
         # GTK
@@ -135,8 +173,11 @@ in {
         # QT4/5 global theme
         "Trolltech.conf".text = ''
           [Qt]
-          ${optionalString (cfg.gtk.theme != "")
-            ''style=${cfg.gtk.theme}''}
+          ${optionalString (cfg.gtk.theme != "") ''style=${cfg.gtk.theme}''}
+        '';
+        "xtheme/theme".text = ''
+          ${cfg.xrdbConf}
+          ${readFile ./config/Xresources}
         '';
       };
     }

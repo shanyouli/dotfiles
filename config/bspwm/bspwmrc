@@ -32,7 +32,7 @@ bspc rule -a feh state=fullscreen
 bspc rule -a Fcitx-config-gtk3 state=floating
 bspc rule -a '*:scratch' state=floating sticky=on center=on border=off \
   rectangle=$(_multip_int ${wmMsg[1]} 0.618)x$(_multip_int ${wmMsg[2]} 0.618)+0+0
-bspc rule -a '*:ttmux' desktop='^7' state=titled border=off
+bspc rule -a '*:ttmux' desktop='^7' state=titled border=on
 
 bspc config external_rules_command "$XDG_CONFIG_HOME/bspwm/xtitle"
 #

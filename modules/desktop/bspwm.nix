@@ -18,16 +18,19 @@ in {
       lightdm
       dunst
       libnotify
-      jq
       (polybar.override {
         pulseSupport = true;
         nlSupport = true;
       })
     ];
-
+    user.packages = [ pkgs.jq ];
     services = {
-      picom.enable = true;
       redshift.enable = true;
+      redshift.temperature.day = 5400;
+      redshift.temperature.night = 3200;
+      redshift.brightness.day = "1";
+      redshift.brightness.night = "0.5";
+      picom.enable = true;
       xserver = {
         enable = true;
         displayManager = {
@@ -38,9 +41,10 @@ in {
         windowManager.bspwm.enable = true;
       };
     };
-    services.xserver.displayManager.sessionCommands = ''
-      ${pkgs.xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr
-    '';
+    services.xserver.displayManager.sessionCommands = let
+      in ''
+        ${pkgs.xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr
+      '';
     systemd.user.services."dunst" = {
       enable = true;
       description = "";
@@ -57,6 +61,26 @@ in {
         source = "${configDir}/bspwm";
         recursive = true;
       };
+      "bspwm/rc.d/polybar".source = "${configDir}/polybar/run.sh";
+      "polybar" = { source = "${configDir}/polybar"; recursive = true; };
+      "redshift/redshift.conf".text = let
+        redshift = config.services.redshift;
+        lat      = toString config.location.latitude;
+        lon      = toString config.location.longitude;
+      in ''
+        [redshift]
+        ; Set the day and night screen temperatures
+        temp-day=${toString redshift.temperature.day}
+        temp-night=${toString redshift.temperature.night}
+        ; It is also possible to use different settings for day and night
+        brightness-day=${redshift.brightness.day}
+        brightness-night=${redshift.brightness.night}
+        ; Set the location-provider: 'geoclue2', 'manual
+        location-provider=manual
+        [manual]
+        lat=${lat}
+        lon=${lon}
+      '';
     };
   };
 }

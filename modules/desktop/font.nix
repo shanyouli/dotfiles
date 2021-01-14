@@ -13,7 +13,6 @@ in {
           # symbol
           symbola
           font-awesome-ttf
-          siji
           my.icons-in-terminal
 
           joypixels                 # emoji
