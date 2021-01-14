@@ -140,7 +140,9 @@ in {
         '';
       };
       system.userActivationScripts.cleanupZgen = ''
-        ${optionalString cfg.zinit "rm -rvf $XDG_CONFIG_HOME/zsh/*.zwc"}
+        ${optionalString cfg.zinit ''
+          find $XDG_CONFIG_HOME -name "*.zwc" -exec rm -rf {} \;
+        ''}
         ${optionalString cfg.theme "rm -rf $XDG_CACHE_HOME/p10k*"}
         rm -rvf $XDG_CACHE_HOME/zsh/cache/*
       '';

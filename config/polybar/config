@@ -136,7 +136,7 @@ label-indicator-off-capslock = 
 type = internal/cpu
 interval = 5
 format = <label>
-label = %percentage:2%%
+label = :%percentage:2%%
 format-prefix = 
 format-prefix-foreground = ${colors.green}
 label-foreground = ${colors.accent}
@@ -249,13 +249,14 @@ ramp-volume-3 = 
 ramp-volume-foreground = ${colors.bblue}
 ramp-volume-3-foreground = ${colors.red}
 ramp-volume-3-underline = ${colors.bred}
-
+click-right = pavucontrol
+click-middle = pactl set-sink-volume 0 100%
 [module/backlight]
 type = internal/xbacklight
 output = ${env:MONITOR:eDP1}
 enable-scroll = true
 format = <ramp> <label>
-label = %percentage%%
+label = %percentage:2%%
 label-foreground = ${colors.blue}
 ramp-0 = 
 ramp-1 = 

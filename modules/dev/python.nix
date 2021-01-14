@@ -42,5 +42,9 @@ in {
       ipy    = "ipython --no-banner";
       ipylab = "ipython --pylab=qt5 --no-banner";
     };
+
+    home.configFile = {
+      "python" = { source = "${configDir}/python"; recursive = true; };
+    }
   };
 }
