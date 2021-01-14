@@ -45,6 +45,6 @@ in {
 
     home.configFile = {
       "python" = { source = "${configDir}/python"; recursive = true; };
-    }
+    };
   };
 }

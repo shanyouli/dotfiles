@@ -18,7 +18,7 @@ in {
       lightdm
       dunst
       libnotify
-      (polybar.override {
+      (unstable.polybar.override {
         pulseSupport = true;
         nlSupport = true;
       })
