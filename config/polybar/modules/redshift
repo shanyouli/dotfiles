@@ -7,19 +7,15 @@ if [[ $? -eq 0 ]]; then
     temp=$(redshift -p 2>/dev/null | grep temp | cut -d' ' -f3)
     temp=${temp//K/}
 fi
-
+function get_colors() { xrdb -query | grep "color$1:" | cut -f2 ; }
 icon=""
 # OPTIONAL: Append ' ${temp}K' after $icon
 if [[ -z $temp ]]; then
-    grey=$(xrdb -query | grep "\.color240" | cut -f2)
-    echo "%{F$grey}$icon"       # Greyed out (not running)
+    echo "%{F$(get_colors 240)}$icon"       # Greyed out (not running)
 elif [[ $temp -ge 5000 ]]; then
-    blue=$(xrdb -query | grep "\.color4" | cut -f2)
-    echo "%{F$blue}$icon"       # Blue
+    echo "%{F$(get_colors 4)}$icon"       # Blue
 elif [[ $temp -ge 4000 ]]; then
-    yello=$(xrdb -query | grep "\.color3" | cut -f2)
-    echo "%{F$yello}$icon"       # Yellow
+    echo "%{F$(get_colors 3)}$icon"       # Yellow
 else
-    red=$(xrdb -query | grep "\.color1" | cut -f2)
-    echo "%{F$red}$icon"       # Orange
+    echo "%{F$(get_colors 1)}$icon"       # Orange
 fi

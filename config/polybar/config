@@ -55,7 +55,7 @@ underline-color = #00f
 border-size = 0
 border-color = ${colors.bblack}
 
-padding-left = 1
+padding-left = 0
 padding-right = 1
 module-margin-left = 0
 module-margin-right = 0
@@ -67,9 +67,9 @@ font-0 = Monospace:style=bold:pixelsize=9;1
 font-1 = "icons\-in\-terminal:pixelsize=9;2"
 font-2 = unifont:pixelsize=9;2
 
-modules-left = pulseaudio p backlight xwindow
-modules-center = bspwm
-modules-right = redshift wl wu nu wd nd p mem p cpu p fs p temp p bat date p caps
+modules-left = bspwm pulseaudio p backlight xwindow
+# modules-center = bspwm
+modules-right = redshift wlan net nd p mem p cpu p fs p temp p bat date p caps
 
 ;; tray
 tray-position = right
@@ -136,7 +136,7 @@ label-indicator-off-capslock = 
 type = internal/cpu
 interval = 5
 format = <label>
-label = :%percentage:2%%
+label = %percentage:2%%
 format-prefix = 
 format-prefix-foreground = ${colors.green}
 label-foreground = ${colors.accent}
@@ -182,56 +182,24 @@ format-warn = <label-warn>
 label-warn =  %temperature-c%
 label-warn-background = #dc1432
 
-[module/wl]
+[module/wlan]
 type = internal/network
 interface = ${env:WLP:wlp4s0}
-interval = 5.0
-format-connected = <ramp-signal>
-format-disconnected =
+interval = 3.0
+format-connected = <ramp-signal> <label-connected>
+
 ramp-signal-0 = 
 ramp-signal-1 = 
 ramp-signal-2 = 
 ram-signal-foreground = ${colors.magenta}
+label-connected = ${env:SPEED_FORMAT:"%upspeed% %downspeed%"}
+format-disconnected =
 
-[module/wu]
-type = internal/network
-interface = ${env:WLP:wlp4s0}
-interval = 3.0
-label-connected = %upspeed%
-format-connected-prefix = 
-format-connected-prefix-padding = 1
-format-connected-prefix-foreground = ${colors.blue}
-format-connected-foreground = ${colors.yellow}
-
-[module/wd]
-type = internal/network
-interface = ${env:WLP:wlp4s0}
-interval = 3.0
-label-connected = %downspeed%
-format-connected-prefix = 
-format-connected-prefix-padding = 1
-format-connected-prefix-foreground = ${colors.bblue}
-format-connected-foreground = ${colors.byellow}
-
-[module/nu]
+[module/net]
 type = internal/network
 interface = ${env:LAN:enp3s0}
 interval = 3.0
-label-connected = %upspeed%
-format-connected-prefix = 
-format-connected-prefix-padding = 1
-format-connected-prefix-foreground = ${colors.blue}
-format-connected-foreground = ${colors.yellow}
-
-[module/nd]
-type = internal/network
-interface = ${env:LAN:enp3s0}
-interval = 3.0
-label-connected = %downspeed%
-format-connected-prefix = 
-format-connected-prefix-padding = 1
-format-connected-prefix-foreground = ${colors.bblue}
-format-connected-foreground = ${colors.byellow}
+label-connected = ${env:SPEED_FORMAT:"%upspeed% %downspeed%"}
 
 [module/pulseaudio]
 type = internal/pulseaudio
@@ -239,7 +207,9 @@ use-ui-max = true
 interval = 5
 format-volume = <ramp-volume> <label-volume>
 label-volume-foreground = ${colors.cyan}
-label-muted = 
+label-volume = %percentage:3%%
+format-muted = <label-muted>
+label-muted =  %percentage:3%%
 label-muted-foreground = ${colors.byellow}
 
 ramp-volume-0 = 
@@ -250,7 +220,7 @@ ramp-volume-foreground = ${colors.bblue}
 ramp-volume-3-foreground = ${colors.red}
 ramp-volume-3-underline = ${colors.bred}
 click-right = pavucontrol
-click-middle = pactl set-sink-volume 0 100%
+click-middle = "pactl set-sink-volume 0 100%"
 [module/backlight]
 type = internal/xbacklight
 output = ${env:MONITOR:eDP1}
@@ -288,6 +258,7 @@ label = %title:0:24:...%
 format-background = ${colors.bblack}
 format-padding = 2
 
+;; Custom module
 [module/p]
 type = custom/text
 content = " "

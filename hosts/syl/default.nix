@@ -31,8 +31,8 @@
       media.graphics.vector.enable = false;
       media.graphics.sprites.enable = false;
       media.mpv.enable = true;
+      media.mpv.zyEn = true;
       media.feeluown.enable = true;
-      media.zyplayer.enable = true;
       media.rime.enable = true;
       term = {
         default = "xst";
