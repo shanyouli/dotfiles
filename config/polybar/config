@@ -69,7 +69,7 @@ font-2 = unifont:pixelsize=9;2
 
 modules-left = bspwm pulseaudio p backlight xwindow
 # modules-center = bspwm
-modules-right = redshift wlan net nd p mem cpu p fs p temp p bat date p caps
+modules-right = redshift wlan net p mem cpu p fs p temp p bat date p caps
 
 ;; tray
 tray-position = right
@@ -268,6 +268,9 @@ content-foreground = ${colors.fg}
 [module/redshift]
 type = custom/script
 exec = ~/.config/polybar/modules/redshift
-exec-if = pgrep redshift
+exec-if = command -v redshift >/dev/null
 interval = 60
 format-padding = 1
+click-middle = ~/.config/polybar/modules/redshift restart
+click-right = ~/.config/polybar/modules/redshift stop
+click-left = ~/.config/polybar/modules/redshift start

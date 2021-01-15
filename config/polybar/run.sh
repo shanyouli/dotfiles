@@ -9,8 +9,8 @@ bblk=${colors[8]}
 function _fgcolor() { echo %{F$1}$2%{F-}; }
 function _bgcolor() { echo %{B$1}$2%{B-}; }
 function _fbcolor() { echo %{B$1}%{F$2}$3%{B- F-} ; }
-upspeed="$(_fgcolor $bl ) $(_fgcolor $ye "%upspeed%")"
-downspeed="$(_fgcolor $bl ) $(_fgcolor $ye "%downspeed%")"
+upspeed="$(_fgcolor $bl ) $(_fgcolor $ye "%upspeed:3%")"
+downspeed="$(_fgcolor $bl ) $(_fgcolor $ye "%downspeed:3%")"
 export SPEED_FORMAT=$(_bgcolor $bblk "$upspeed $downspeed")
 
 pkill -u $UID -x polybar
