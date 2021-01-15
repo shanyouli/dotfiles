@@ -69,7 +69,7 @@ font-2 = unifont:pixelsize=9;2
 
 modules-left = bspwm pulseaudio p backlight xwindow
 # modules-center = bspwm
-modules-right = redshift wlan net nd p mem p cpu p fs p temp p bat date p caps
+modules-right = redshift wlan net nd p mem cpu p fs p temp p bat date p caps
 
 ;; tray
 tray-position = right
@@ -138,6 +138,7 @@ interval = 5
 format = <label>
 label = %percentage:2%%
 format-prefix = 
+format-prefix-padding = 1
 format-prefix-foreground = ${colors.green}
 label-foreground = ${colors.accent}
 
