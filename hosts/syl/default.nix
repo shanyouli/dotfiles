@@ -15,7 +15,6 @@
           enable = true;
           gvfs.enable = true;
         };
-        read.enable = true;
       };
       bspwm.enable = true;
       browsers = {
@@ -30,10 +29,11 @@
       media.graphics.raster.enable = false;
       media.graphics.vector.enable = false;
       media.graphics.sprites.enable = false;
-      media.mpv.enable = true;
-      media.mpv.zyEn = true;
+      media.video.enable = true;
+      media.video.zyEn = true;
       media.feeluown.enable = true;
       media.rime.enable = true;
+      media.documents.enable = true;
       term = {
         default = "xst";
         xst.enable = true;

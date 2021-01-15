@@ -90,7 +90,8 @@ in {
           gitako darkreader copy-all-tab-urls save-page-we simplifyGmail
           videoDownloadHelper violentmonkey draculaDarkTheme inMyPocket
           autoTabDiscard saladict
-        ] ++ ifEnable (! config.modules.desktop.apps.read.enable) [ mobiReader epubReader ];
+        ] ++ ifEnable (! config.modules.desktop.media.documents.enable)
+          [ mobiReader epubReader ];
         settings = {
           "devtools.theme" = "dark";
           # Enable userContent.css and userChrome.css for our theme modules

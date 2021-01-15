@@ -2,9 +2,9 @@
 
 with lib;
 with lib.my;
-let cfg = config.modules.desktop.media.mpv;
+let cfg = config.modules.desktop.media.video;
 in {
-  options.modules.desktop.media.mpv = {
+  options.modules.desktop.media.video = {
     enable = mkBoolOpt false;
     zyEn = mkBoolOpt false;
   };
