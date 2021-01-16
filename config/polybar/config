@@ -77,7 +77,7 @@ modules-right = caps redshift wlan net mem cpu fs temp bat date
 
 ;; tray
 tray-position = right
-tray-padding = 1
+;tray-padding = 1
 tray-background = ${colors.bg}
 
 [module/bspwm]
