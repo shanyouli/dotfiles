@@ -27,9 +27,9 @@ in {
           dropboxHome = "${xdgData}/dropbox";
       in {
       Unit = {
-        After = (if config.modules.proxy.default != null then [
-          "proxy.services"
-        ] else []);
+        # After = (if config.modules.proxy.default != null then [
+        #   "proxy.services"
+        # ] else []);
         Description = "Dropbox";
       };
       Install = { WantedBy = [ "graphical-session.target" ]; };

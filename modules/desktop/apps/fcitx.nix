@@ -21,7 +21,7 @@ in {
         in {
           "${defCustom}".source = "${fileDir}/default.custom.yaml";
         };
-      system.userActivationScripts.fciteRimeEnable = ''
+      home.onReload.fciteRimeEnable = ''
         _fcitxRimeSync=${xdgConfig}/fcitx/rime/installation.yaml
         if [[ -f $_fcitxRimeSync  ]]; then
           grep "sync_dir:" $_fcitxRimeSync >/dev/null || {

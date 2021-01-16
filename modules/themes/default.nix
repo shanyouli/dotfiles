@@ -92,7 +92,9 @@ in {
             cursorTheme = "Qogir";
           };
         };
-
+        shell.zsh.rcFiles = if (! config.modules.shell.zsh.theme)
+                            then [ ./config/zsh/prompt.zsh ]
+                            else [];
         shell.tmux.rcFiles = [ ./config/tmux.conf ];
         desktop.browsers = {
           firefox.userChrome = concatMapStringsSep "\n" readFile [
@@ -177,22 +179,17 @@ in {
          services.xserver.displayManager.lightdm.background = loginWallpaper;
        }))
 
-    (mkIf (cfg.onReload != {})
-      (let reloadTheme =
-             with pkgs; (writeScriptBin "reloadTheme" ''
-               #!${stdenv.shell}
-               echo "Reloading current theme: ${cfg.active}"
-               ${concatStringsSep "\n"
-                 (mapAttrsToList (name: script: ''
-                   echo "[${name}]"
-                   ${script}
-                 '') cfg.onReload)}
-             '');
-       in {
-         user.packages = [ reloadTheme ];
-         system.userActivationScripts.reloadTheme = ''
-           [ -z "$NORELOAD" ] && ${reloadTheme}/bin/reloadTheme
+    (mkIf (cfg.onReload != {}) {
+      home.onReload.reloadTheme = ''
+        [ -z "$NORELOAD" ] && {
+          echo "Reloading current theme: ${cfg.active}"
+          ${concatStringsSep "\n"
+            (mapAttrsToList (name: script: ''
+              echo "[theme: [${name}]]"
+              ${script}
+            '') cfg.onReload)}
+           }
          '';
-       }))
+       })
   ]);
 }

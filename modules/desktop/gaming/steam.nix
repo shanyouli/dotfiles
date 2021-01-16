@@ -40,7 +40,7 @@ in {
           categories = "Network;FileTransfer;Game";
         })
       ];
-      system.userActivationScripts.setupSteamDir = ''mkdir -p "${cfg.libDir}"'';
+      home.onReload.setupSteamDir = ''mkdir -p "${cfg.libDir}"'';
 
       # better for steam proton games
       systemd.extraConfig = "DefaultLimitNOFILE=1048576";

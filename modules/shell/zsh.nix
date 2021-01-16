@@ -139,7 +139,7 @@ in {
           ${cfg.envInit}
         '';
       };
-      system.userActivationScripts.cleanupZgen = ''
+      home.onReload.cleanupZsh = ''
         ${optionalString cfg.zinit ''
           find $XDG_CONFIG_HOME -name "*.zwc" -exec rm -rf {} \;
         ''}

@@ -184,7 +184,7 @@ in {
           "${defCustom}".source = "${fileDir}/default.custom.yaml";
           "${cloverCustom}".source = "${fileDir}/clover.custom.yaml";
         };
-      system.userActivationScripts.emacsRimeEnable = ''
+      home.onReload.emacsRimeEnable = ''
         _emacsRimeSync=${xdgCache}/emacs/rime/installation.yaml
         if [[ -f $_emacsRimeSync  ]]; then
           grep "sync_dir:" $_emacsRimeSync >/dev/null || {

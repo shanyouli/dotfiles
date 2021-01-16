@@ -1,4 +1,4 @@
-{ config, options, lib, home-manager, ... }:
+{ config, options, lib, home-manager, pkgs, ... }:
 
 with lib;
 with lib.my;
@@ -13,6 +13,7 @@ with lib.my;
       services   = mkOpt' attrs {} "User system service";
       sockets   = mkOpt' attrs {} "User system service";
       defaultApps = mkOpt' attrs {} "Default Applications";
+      onReload = mkOpt' (attrsOf lines) {} "Run each update code.";
     };
 
     env = mkOption {
@@ -36,64 +37,64 @@ with lib.my;
     };
   };
 
-  config = {
-    user = {
-      description = "The primary user account";
-      extraGroups = [ "wheel" ];
-      isNormalUser = true;
-      name = let name = builtins.getEnv "USER"; in
-             if elem name [ "" "root" ]
-             then "syl" else name;
-      uid = 1000;
-    };
-
-    # Install user packages to /etc/profiles instead. Necessary for
-    # nixos-rebuild build-vm to work.
-    home-manager = {
-      useUserPackages = true;
-
-      # I only need a subset of home-manager's capabilities. That is, access to
-      # its home.file, home.xdg.configFile and home.xdg.dataFile so I can deploy
-      # files easily to my $HOME, but 'home-manager.users.hlissner.home.file.*'
-      # is much too long and harder to maintain, so I've made aliases in:
-      #
-      #   home.file        ->  home-manager.users.hlissner.home.file
-      #   home.configFile  ->  home-manager.users.hlissner.home.xdg.configFile
-      #   home.dataFile    ->  home-manager.users.hlissner.home.xdg.dataFile
-      users.${config.user.name} = {
-        home = {
-          file = mkAliasDefinitions options.home.file;
-          # Necessary for home-manager to work with flakes, otherwise it will
-          # look for a nixpkgs channel.
-          stateVersion = config.system.stateVersion;
-        };
-        xdg = {
-          configFile = mkAliasDefinitions options.home.configFile;
-          dataFile   = mkAliasDefinitions options.home.dataFile;
-
-          mime.enable = true;
-          # NOTE: some application can change ~/.config/mimeapps.list
-          mimeApps.enable = true;
-          mimeApps.defaultApplications = mkAliasDefinitions options.home.defaultApps;
-        };
-        systemd.user.services = mkAliasDefinitions options.home.services;
-        systemd.user.sockets = mkAliasDefinitions options.home.sockets;
+  config = mkMerge [
+    {
+      user = {
+        description = "The primary user account";
+        extraGroups = [ "wheel" ];
+        isNormalUser = true;
+        name = let name = builtins.getEnv "USER"; in
+               if elem name [ "" "root" ]
+               then "syl" else name;
+        uid = 1000;
       };
-    };
 
-    users.users.${config.user.name} = mkAliasDefinitions options.user;
+      # Install user packages to /etc/profiles instead. Necessary for
+      # nixos-rebuild build-vm to work.
+      home-manager = {
+        useUserPackages = true;
 
-    nix = let users = [ "root" config.user.name ]; in {
-      trustedUsers = users;
-      allowedUsers = users;
-    };
+        # I only need a subset of home-manager's capabilities. That is, access to
+        # its home.file, home.xdg.configFile and home.xdg.dataFile so I can deploy
+        # files easily to my $HOME, but 'home-manager.users.hlissner.home.file.*'
+        # is much too long and harder to maintain, so I've made aliases in:
+        #
+        #   home.file        ->  home-manager.users.hlissner.home.file
+        #   home.configFile  ->  home-manager.users.hlissner.home.xdg.configFile
+        #   home.dataFile    ->  home-manager.users.hlissner.home.xdg.dataFile
+        users.${config.user.name} = {
+          home = {
+            file = mkAliasDefinitions options.home.file;
+            # Necessary for home-manager to work with flakes, otherwise it will
+            # look for a nixpkgs channel.
+            stateVersion = config.system.stateVersion;
+          };
+          xdg = {
+            configFile = mkAliasDefinitions options.home.configFile;
+            dataFile   = mkAliasDefinitions options.home.dataFile;
 
-    # must already begin with pre-existing PATH. Also, can't use binDir here,
-    # because it contains a nix store path.
-    env.PATH = [ "$XDG_CONFIG_HOME/dotfiles/bin" "$PATH" ];
+            mime.enable = true;
+            # NOTE: some application can change ~/.config/mimeapps.list
+            mimeApps.enable = true;
+            mimeApps.defaultApplications = mkAliasDefinitions options.home.defaultApps;
+          };
+          systemd.user.services = mkAliasDefinitions options.home.services;
+          systemd.user.sockets = mkAliasDefinitions options.home.sockets;
+        };
+      };
 
-    environment.extraInit =
-      let
+      users.users.${config.user.name} = mkAliasDefinitions options.user;
+
+      nix = let users = [ "root" config.user.name ]; in {
+        trustedUsers = users;
+        allowedUsers = users;
+      };
+
+      # must already begin with pre-existing PATH. Also, can't use binDir here,
+      # because it contains a nix store path.
+      env.PATH = [ "$XDG_CONFIG_HOME/dotfiles/bin" "$PATH" ];
+
+      environment.extraInit = let
         exportLines = mapAttrsToList (n: v: "export ${n}=\"${v}\"") config.env;
         unsetVar    = map (str: "unset ${str}") config.unsetenv;
       in ''
@@ -103,11 +104,31 @@ with lib.my;
         # No longer use certain environment variables
         # unset ${toString config.unsetenv}
         ${concatStringsSep "\n" unsetVar}
-     '';
+      '';
 
-    security.sudo.extraConfig = ''
-      # No password is required to use the root permission execution.
-      ${config.user.name} ALL=NOPASSWD: ${concatStringsSep "," config.rootRun}
-    '';
-  };
+      security.sudo.extraConfig = ''
+        # No password is required to use the root permission execution.
+        ${config.user.name} ALL=NOPASSWD: ${concatStringsSep "," config.rootRun}
+      '';
+    }
+    (mkIf (config.home.onReload != {})
+      (let switchReload =
+             with pkgs; (writeScriptBin "switchReload" ''
+               #!${stdenv.shell}
+               echo "Import all custom system variables."
+               source ${config.system.build.setEnvironment}
+               ${concatStringsSep "\n"
+                 (mapAttrsToList (name: script: ''
+                   echo "[${name}]"
+                   ${script}
+                 '') config.home.onReload)}
+             '');
+       in {
+         user.packages = [ switchReload ];
+         system.userActivationScripts.switchReload = ''
+           ${switchReload}/bin/switchReload
+         '';
+       })
+    )
+  ];
 }

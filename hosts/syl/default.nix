@@ -48,6 +48,7 @@
       vim.enable = true;
     };
     dev = {
+      shell.enable = true;
       cc.enable = true;
       python.enable = true;
       go.enable  = true;

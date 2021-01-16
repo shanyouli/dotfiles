@@ -120,7 +120,7 @@ in {
     '';
 
     # Clean up leftovers, as much as we can
-    system.userActivationScripts.cleanupHome = ''
+    home.onReload.cleanupHome = ''
       pushd "${homeDir}"
       rm -rf .compose-cache .nv .pki .dbus .fehbg
       [ -s .xsession-errors ] || rm -f .xsession-errors*
