@@ -13,9 +13,9 @@ in {
     active = mkOption {
       type = nullOr str;
       default = null;
-      apply = v: if elem v [ "dark" "light" "mirage" "nord" ]
+      apply = v: if elem v [ "dark" "light" ]
                  then v
-                 else "mirage";
+                 else "dark";
       description = ''
         Name of the theme to enable. Can be overridden by the THEME environment
         variable. Themes can also be hot-swapped with 'hey theme $THEME'.
@@ -24,11 +24,6 @@ in {
 
     wallpaper = mkOpt (either path null) null;
 
-    loginWallpaper = mkOpt (either path null)
-      (if cfg.wallpaper != null
-       then toFilteredImage cfg.wallpaper "-gaussian-blur 0x2 -modulate 70 -level 5%"
-       else null);
-
     gtk = {
       theme = mkOpt str "";
       iconTheme = mkOpt str "";
@@ -36,6 +31,7 @@ in {
     };
 
     onReload = mkOpt (attrsOf lines) {};
+
     xrdbConf = mkOpt lines "";
   };
 
@@ -47,42 +43,45 @@ in {
         qogir-icon-theme
       ];
       # Other dotfiles
-      home.configFile = with config.modules; mkMerge [
-        (mkIf desktop.bspwm.enable {
-          "bspwm/rc.d/theme".source = ./config/bspwmrc;
-          "bspwm/rc.d/color".text = let
-            color = (if (cfg.active == "dark") then {
-              nb = "#000000";
-              ab = "#304357";
-              fb = "#f07178";
-              pf = "#f29668";
-            } else if (cfg.active == "light") then {
-              nb = "#f0f0f0";
-              ab = "#e1e1e2";
-              fb = "#f07171";
-              pf = "#ed9366";
-            } else {
-              nb = "#101521";
-              ab = "#323a4c";
-              fb = "#f28779";
-              pf = "#f29e74";
-            });
-            in ''
-              #!${pkgs.stdenv.shell}
-              bspc config normal_border_color "${color.nb}"
-              bspc config active_border_color "${color.ab}"
-              bspc config focused_border_color "${color.fb}"
-              bspc config presel_feedback_color "${color.pf}"
-            '';
-        })
-        (mkIf desktop.apps.rofi.enable {
-          "rofi/theme" = { source = ./config/rofi; recursive = true; };
-        })
-        # (mkIf (desktop.bspwm.enable || desktop.stumpwm.enable) {
-        #   "polybar" = { source = ./config/polybar; recursive = true; };
-        # })
-      ];
+      home.configFile = with config.modules; (mkIf desktop.apps.rofi.enable {
+        "rofi/theme" = { source = ./config/rofi; recursive = true; };
+      });
     })
+    (let colors = if (cfg.active == "light") then {
+           bg = "#fbf1c7";
+           fg = "#3c3836";
+           cyan = "#427b58";
+           bgrey = "#928374";
+           borange = "#d65d0e";
+           fg4 = "#7c6f64";
+         } else {
+           bg = "#282828";
+           fg = "#ebdbb2";
+           cyan = "#8ec07c";
+           bgrey = "#928374";
+           borange = "#d65d0e";
+           fg4 = "#a89984";
+         };
+     in {
+       home.configFile = mkIf config.modules.desktop.bspwm.enable {
+         "bspwm/rc.d/color".text = ''
+           #!${pkgs.stdenv.shell}
+           bspc config normal_border_color "${colors.fg}"
+           bspc config active_border_color "${colors.cyan}"
+           bspc config focused_border_color "${colors.bgrey}"
+           bspc config presel_feedback_color "${colors.fg4}"
+         '';
+       };
+      services.xserver.displayManager.lightdm.greeters.mini.extraConfig = ''
+        text-color = "${colors.fg}"
+        password-background-color = "${colors.bg}"
+        window-color = "${colors.bg}"
+        border-color = "${colors.borange}"
+      '';
+      modules.theme.xrdbConf =if (cfg.active == "light")
+                              then readFile ./config/xrdb/light.xresource
+                              else readFile ./config/xrdb/dark.xresource;
+     })
     {
       modules = {
         theme = {
@@ -111,79 +110,52 @@ in {
         };
       };
     }
-    (mkIf (cfg.active == "light") {
-      services.xserver.displayManager.lightdm.greeters.mini.extraConfig = ''
-        text-color = "#a37acc"
-        password-background-color = "#8a9199"
-        window-color = "#fafafa"
-        border-color = "#f0f0f0"
-      '';
-      modules.theme.xrdbConf = readFile ./config/xrdb/ayu-light;
-    })
-    (mkIf (cfg.active == "mirage") {
-      services.xserver.displayManager.lightdm.greeters.mini.extraConfig = ''
-        text-color = "#d4bfff"
-        password-background-color = "#191e2a"
-        window-color = "#1f2430"
-        border-color = "#101521"
-      '';
-      modules.theme.xrdbConf = readFile ./config/xrdb/ayu-mirage;
-    })
-    (mkIf (cfg.active == "dark") {
-      services.xserver.displayManager.lightdm.greeters.mini.extraConfig = ''
-        text-color = "#ffee99"
-        password-background-color = "#00010a"
-        window-color = "#0a0e14"
-        border-color = "#000000"
-      '';
-      modules.theme.xrdbConf = readFile ./config/xrdb/ayu-dark;
-    })
     # Read xresources files in ~/.config/xtheme/* to allow modular
     # configuration of Xresources.
     (let xrdb = ''${pkgs.xorg.xrdb}/bin/xrdb -merge "$XDG_CONFIG_HOME"/xtheme/*'';
      in {
        services.xserver.displayManager.sessionCommands = xrdb;
        modules.theme.onReload.xtheme = xrdb;
+       home.configFile."xtheme/theme".text = ''
+         ${cfg.xrdbConf}
+         ${readFile ./config/Xresources}
+       '';
      })
-    {
-      home.configFile = {
-        # GTK
-        "gtk-3.0/settings.ini".text = ''
-          [Settings]
-          ${optionalString (cfg.gtk.theme != "")
-            ''gtk-theme-name=${cfg.gtk.theme}''}
-          ${optionalString (cfg.gtk.iconTheme != "")
-            ''gtk-icon-theme-name=${cfg.gtk.iconTheme}''}
-          ${optionalString (cfg.gtk.cursorTheme != "")
-            ''gtk-cursor-theme-name=${cfg.gtk.cursorTheme}''}
-          gtk-fallback-icon-theme=gnome
-          gtk-application-prefer-dark-theme=true
-          gtk-xft-hinting=1
-          gtk-xft-hintstyle=hintfull
-          gtk-xft-rgba=none
-        '';
-        # GTK2 global theme (widget and icon theme)
-        "gtk-2.0/gtkrc".text = ''
-          ${optionalString (cfg.gtk.theme != "")
-            ''gtk-theme-name="${cfg.gtk.theme}"''}
-          ${optionalString (cfg.gtk.iconTheme != "")
-            ''gtk-icon-theme-name="${cfg.gtk.iconTheme}"''}
-          gtk-font-name="Sans 10"
-        '';
-        # QT4/5 global theme
-        "Trolltech.conf".text = ''
-          [Qt]
-          ${optionalString (cfg.gtk.theme != "") ''style=${cfg.gtk.theme}''}
-        '';
-        "xtheme/theme".text = ''
-          ${cfg.xrdbConf}
-          ${readFile ./config/Xresources}
-        '';
+    (let cgtk = cfg.gtk;
+         themeEnable = (cgtk.theme != "");
+         iconEnable = (cgtk.iconTheme != "");
+         cursorEnable = (cgtk.cursorTheme != "");
+     in {
+       home.configFile = {
+         # GTK
+         "gtk-3.0/settings.ini".text = ''
+           [Settings]
+           ${optionalString themeEnable ''gtk-theme-name=${cgtk.theme}''}
+           ${optionalString iconEnable  ''gtk-icon-theme-name=${cgtk.iconTheme}''}
+           ${optionalString cursorEnable ''gtk-cursor-theme-name=${cgtk.cursorTheme}''}
+           gtk-fallback-icon-theme=gnome
+           gtk-application-prefer-dark-theme=true
+           gtk-xft-hinting=1
+           gtk-xft-hintstyle=hintfull
+           gtk-xft-rgba=none
+         '';
+         # GTK2 global theme (widget and icon theme)
+         "gtk-2.0/gtkrc".text = ''
+           ${optionalString themeEnable ''gtk-theme-name="${cfg.gtk.theme}"''}
+           ${optionalString iconEnable ''gtk-icon-theme-name="${cfg.gtk.iconTheme}"''}
+           gtk-font-name="Sans 10"
+         '';
+         # QT4/5 global theme
+         "Trolltech.conf".text = ''
+           [Qt]
+           ${optionalString (cfg.gtk.theme != "") ''style=${cfg.gtk.theme}''}
+         '';
       };
-    }
+     })
 
     (mkIf (cfg.wallpaper != null)
       (let wCfg = config.services.xserver.desktopManager.wallpaper;
+           loginWallpaper = toFilteredImage cfg.wallpaper "-gaussian-blur 0x2 -modulate 70 -level 5%";
            command = ''
              if [ -e "$XDG_DATA_HOME/wallpaper" ]; then
                ${pkgs.feh}/bin/feh --bg-${wCfg.mode} \
@@ -201,11 +173,9 @@ in {
          home.dataFile = mkIf (cfg.wallpaper != null) {
            "wallpaper".source = cfg.wallpaper;
          };
-       }))
 
-    (mkIf (cfg.loginWallpaper != null) {
-      services.xserver.displayManager.lightdm.background = cfg.loginWallpaper;
-    })
+         services.xserver.displayManager.lightdm.background = loginWallpaper;
+       }))
 
     (mkIf (cfg.onReload != {})
       (let reloadTheme =

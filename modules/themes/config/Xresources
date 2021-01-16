@@ -19,15 +19,25 @@
 *.color7:  wht
 *.color15: bwht
 
-! greys
-*.color234: #1E2029
-*.color235: #282a36
-*.color236: #373844
-*.color237: #44475a
-*.color239: #565761
-*.color240: #6272a4
-*.color241: #b6b6b2
+! dark or grey colors
+*.color234: bg0h
+*.color235: bg0
+*.color236: bg0s
+*.color237: bg1
+*.color239: bg2
+*.color241: bg3
+*.color243: bg4
 
+! orange
+*.color208: org
+*.color166: borg
+
+! fg light
+*.color246: fg4
+*.color248: fg3
+*.color250: fg2
+*.color223: fg1
+*.color229: fg0
 
 !! general
 scratch.font: Monospace:pixelsize=14
@@ -43,7 +53,7 @@ URxvt*.background:             blk
 URxvt*.borderless:             1
 URxvt*.buffered:               true
 URxvt*.cursorBlink:            true
-URxvt*.font:                   xft:Fira Code:pixelsize=12
+URxvt*.font:                   xft:Monospace:pixelsize=12
 URxvt*.internalBorder:         10
 URxvt*.letterSpace:            0
 URxvt*.lineSpace:              0

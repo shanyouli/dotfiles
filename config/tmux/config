@@ -5,7 +5,7 @@
 
 #set  -g default-terminal "xterm-256color"
 set -g default-terminal "tmux-256color"
-new-session     # spawn session if attaching when none are running
+set -ga terminal-overrides ",*256color:Tc"
 
 setw -g automatic-rename on      # rename window after current program
 set  -g renumber-windows on      # renumber windows when one is closed
