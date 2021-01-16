@@ -9,21 +9,27 @@ function main {
     echo "Usage: mypkg COMMAND [FLAGES...] [ARGS...]"
     echo
     echo "Availabe commands:"
-    echo "  show (sh)         Show programs installed using a 'nix profile'"
+    echo "  show (sh|info)   Show programs installed using a 'nix profile'"
     echo "  install (in)     Install package"
     echo "  remove (re)      Uninstall package"
     echo "  upgrade (up)     Update package"
   }
 
-  function _show { $CMD info | cut -d" " -f1,2 | sed "s/flake.*.linux.//" ; }
+  function _show {
+    # 获取版本号，删除无法获取版本号的程序，获取安装使用的 channel
+    $CMD info | sed -e 's/path.*\/nix\/store.*-\([0-9]*\.\?[0-9].*\)/\1/' \
+      -e 's/path.*//' \
+      -e 's/flake:\(nix.*\)\#.*linux./\1 /' | column -t
+  }
 
   function _fzf_do { _show | fzf | cut -d" " -f1 | xargs -I{} $@ {} ; }
 
   function _install {
-    local channel="nixos#"
+    # 默认使用 nixpkgs-unstable 安装程序
+    local channel="nixpkgs#"
     case "$1" in
-      unstable|un|pkg)
-        channel="nixpkgs#"
+      os|stable|-s)
+        channel="nixos#"
         shift
         ;;
       *#*) channel="no" ;;
@@ -56,12 +62,11 @@ function main {
          ;;
     esac      
   }
-
   ###
   cmd=$1
   [[ $# > 0 ]] && shift
   case "$cmd" in
-    sh|show) _show ;;
+    sh|show|info) _show ;;
     install|in|i|-i) _install "$@" ;;
     remove|re) _remove "$@" ;;
     upgrade|up) _upgrade "$@" ;;
