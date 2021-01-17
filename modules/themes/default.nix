@@ -95,7 +95,9 @@ in {
         shell.zsh.rcFiles = if (! config.modules.shell.zsh.theme)
                             then [ ./config/zsh/prompt.zsh ]
                             else [];
-        shell.tmux.rcFiles = [ ./config/tmux.conf ];
+        shell.tmux.rcFiles = if (! config.modules.shell.tmux.themeEn)
+                             then [ ./config/tmux.conf ]
+                             else [];
         desktop.browsers = {
           firefox.userChrome = concatMapStringsSep "\n" readFile [
             ./config/firefox/userChrome.css

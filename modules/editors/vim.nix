@@ -22,7 +22,7 @@ in {
           packages.myPlugins = with pkgs.vimPlugins; {
             start = [
               # UI
-              ayu-vim           # theme
+              gruvbox-community # theme
               lightline-vim         # modeline
               vim-startify      # startup Buffer
               lightline-bufferline # bufferline lightline
@@ -40,9 +40,9 @@ in {
           customRC = ''
             source ${pkgs.vimPlugins.vim-plug}/share/vim-plugins/vim-plug/plug.vim
             set termguicolors     " enable true colors support
-            let ayucolor="dark"   " for dark|mirage|light version of theme
             syntax enable
-            colorscheme ayu
+            set background=${config.modules.theme.active}
+            colorscheme gruvbox
 
             " modeline
             set laststatus=2
@@ -54,22 +54,6 @@ in {
               set t_Co=256
             endif
             set noshowmode
-            let g:lightline = {
-                 \ 'colorscheme': 'ayu_dark',
-                 \ 'active': {
-                 \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
-                 \ },
-                 \ 'tabline': {
-                    \   'left': [ ['buffers'] ],
-                    \   'right': [ ['close'] ]
-                    \ },
-                 \ 'component_expand': {
-                   \   'buffers': 'lightline#bufferline#buffers'
-                   \ },
-                 \ 'component_type': {
-                   \   'buffers': 'tabsel'
-                 \ }
-            \ }
             if filereadable(expand("${xdgConfig}/nvim/init.vim"))
               source ${xdgConfig}/nvim/init.vim
             endif
