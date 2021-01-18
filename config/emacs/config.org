@@ -142,7 +142,7 @@ There are two ways to load a theme. Both assume the theme is installed and
 available. You can either set `doom-theme' or manually load a theme with the
 `load-theme' function. This is the default:
 #+begin_src emacs-lisp :tangle "config.el"
-(setq doom-theme 'doom-moonlight)
+;; (setq doom-theme 'doom-moonlight)
 #+end_src
 
 * General configuration
@@ -165,9 +165,19 @@ available. You can either set `doom-theme' or manually load a theme with the
     (unless (file-directory-p dotfiles)
       (make-directory dotfiles t))
     (doom-project-find-file dotfiles)))
+;; open file in org-directory
+(defun my/find-file-in-org-directory ()
+  "Browse Your `ORG-DIRECTORY'."
+  (interactive)
+  (let ((org-dir (or (bound-and-true-p org-directory)
+                     (expand-file-name "~/org"))))
+    (unless (file-directory-p org-dir)
+      (make-directory org-dir t))
+    (doom-project-find-file org-dir)))
 (map! :leader
       (:prefix-map ("d" . "open prjs")
-       :desc "dotfile" "d" #'my/find-file-in-dotfiles))
+       :desc "dotfile" "d" #'my/find-file-in-dotfiles
+       :desc "org-dird" "o" #'my/find-file-in-org-directory))
 
 
 ;; When using the parameter -t emacs start, remove the default title
@@ -185,7 +195,8 @@ Org-mode is one of my favorite features in Emacs.
 #+end_src
 #+begin_src emacs-lisp :tangle "config.el"
 ;; Set `org-directory'
-(setq org-directory (if (not IS-WINDOWS) "~/projects/org"))
+(setq org-directory (if (not IS-WINDOWS) "~/projects/org")
+      org-archive-location (concat org-directory "/.archive/%s::"))
 
 (setq org-ellipsis " [...]" ; Hide the logo
       org-priority-highest ?A

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+export CM_LAUNCHER=rofi
+if command -v "clipmenu" >/dev/null; then
+    clipmenu -theme theme/clipmenu.rasi
+elif command -v "greenclip"; then
+    # TODO:
+    exit 0
+fi

@@ -1,7 +1,7 @@
 [user]
 	name = shanyou Li
 	email = shanyouli6@gmail.com
-	# signingkey = 5F6C0EA160557395
+	signingkey = 7D4D804EAE0740BA
 [commit]
 	# gpgsign = true
 [core]

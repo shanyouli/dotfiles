@@ -250,14 +250,17 @@ in {
             (defvar using-emacs-rime-p t "Using Emacs-Rime Input Method.")
           ''}
         '';
-        "doom/config.init.el".text =
-          let f = {
-                mono = "JetBrains Mono";
-                monoSize = "11";
-                emoji = "JoyPixels";
-                cjk = "WenQuanYi Micro Hei Mono";
-              };
-          in ''
+        "doom/config.init.el".text = let
+          f = {
+            mono = "JetBrains Mono";
+            monoSize = "11";
+            emoji = "JoyPixels";
+            cjk = "WenQuanYi Micro Hei Mono";
+          };
+          theme = "doom-gruvbox" + (if (config.modules.theme.active == "light")
+                                    then "-light"
+                                    else "");
+        in ''
           (setq doom-font (font-spec :family "${f.mono}" :size ${f.monoSize}))
           (defadvice! my/use-chinese-font-a (&rest _)
              "Set Chinese fonts."
@@ -266,19 +269,19 @@ in {
                (set-fontset-font t charset "${f.cjk}"))
              ;;(set-fontset-font t '(#x4e00 . #x9fff) "${f.cjk}")
              (set-fontset-font t 'symbol "${f.emoji}"))
-         ${cfg.doom.confInit}
-      '';
-        "doom/packages.init.el".text =
-          let
-            prefer = map (str: "(package! ${str} :built-in 'prefer)") cfg.doom.pkg.prefer;
-            disable = map (str: "(disable-packages! ${str})") cfg.doom.pkg.disable;
-          in ''
-            ;;; disable some package.
-            ${concatStringsSep "\n" disable}
+          (setq doom-theme '${theme})
+          ${cfg.doom.confInit}
+        '';
+        "doom/packages.init.el".text = let
+          prefer = map (str: "(package! ${str} :built-in 'prefer)") cfg.doom.pkg.prefer;
+          disable = map (str: "(disable-packages! ${str})") cfg.doom.pkg.disable;
+        in ''
+          ;;; disable some package.
+          ${concatStringsSep "\n" disable}
 
-            ;;; Prefer buildin package.
-            ${concatStringsSep "\n" prefer}
-      '';
+          ;;; Prefer buildin package.
+          ${concatStringsSep "\n" prefer}
+        '';
       };
     }
   ]);

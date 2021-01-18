@@ -61,6 +61,7 @@
       # v2ray.vless = false;
     };
     services = {
+      clipmenu.enable = true;
       dropbox.enable = true;
       docker.enable = true;
       xkeysnail.enable = true;

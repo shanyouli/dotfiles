@@ -125,6 +125,7 @@ in {
       rm -rf .compose-cache .nv .pki .dbus .fehbg
       [ -s .xsession-errors ] || rm -f .xsession-errors*
       popd
+      # find . -type l -name "result" -not -path "*/projects/*" -exec rm -rf {} \;
     '';
     home.configFile."dunst/dunstrc".source = "${configDir}/dunst/dunstrc";
   };

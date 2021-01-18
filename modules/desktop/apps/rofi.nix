@@ -31,7 +31,6 @@ in {
       #        -theme ${themesDir}/$themename/rofi/$themefile \
       #        "$@"
       #   '')
-
       # Fake rofi dmenu entries
       (makeDesktopItem {
         name = "rofi-bookmarkmenu";
@@ -58,6 +57,12 @@ in {
         icon = "system-lock-screen";
         exec = "${binDir}/zzz";
       })
+      (mkIf config.modules.services.clipmenu.enable (makeDesktopItem {
+        name = "rofi-clipmenu";
+        desktopName = "Rofi Clipmenu";
+        icon = "copy";
+        exec = "${binDir}/rofi/clip";
+      }))
     ];
   };
 }

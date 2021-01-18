@@ -116,6 +116,10 @@ with lib.my;
              with pkgs; (writeScriptBin "switchReload" ''
                #!${stdenv.shell}
                echo "Import all custom system variables."
+               export XDG_CACHE_HOME="${xdgCache}";
+               export XDG_CONFIG_HOME="${xdgConfig}";
+               export XDG_DATA_HOME="${xdgData}";
+               export XDG_BIN_HOME="${xdgBin}";
                source ${config.system.build.setEnvironment}
                ${concatStringsSep "\n"
                  (mapAttrsToList (name: script: ''

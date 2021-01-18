@@ -1,0 +1,16 @@
+/* -*- mode: css; -*- */
+@import "config.rasi"
+
+textbox-icon {
+  str: "  ";
+}
+prompt {
+  enabled: false;
+}
+listview {
+  font: "sans-serif 12";
+  columns: 1;
+}
+element {
+  font: "sans-serif 12";
+}

@@ -78,9 +78,7 @@ in {
         window-color = "${colors.bg}"
         border-color = "${colors.borange}"
       '';
-      modules.theme.xrdbConf =if (cfg.active == "light")
-                              then readFile ./config/xrdb/light.xresource
-                              else readFile ./config/xrdb/dark.xresource;
+      modules.theme.xrdbConf = readFile (./config/xrdb + "/${cfg.active}.xresource");
      })
     {
       modules = {
