@@ -53,7 +53,7 @@ zt 0b light-mode for \
 # history-search-multi-word config
 # # Color in which to highlight matched, searched text
 # (default bg=17 on 256-color terminals)
-style ":history-search-multi-word" highlight-color "fg=yellow,bold"
+zstyle ":history-search-multi-word" highlight-color "fg=yellow,bold"
 # Whether to perform syntax highlighting (default true)
 zstyle ":plugin:history-search-multi-word" synhl "yes"
 # Effect on active history entry. Try: standout, bold, bg=blue (default underline)
