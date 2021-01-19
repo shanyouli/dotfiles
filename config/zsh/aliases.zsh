@@ -27,6 +27,7 @@ if [[ -n ${commands[exa]} ]]; then
   alias l="exa -1";
   alias ll="exa -lg";
   alias la="LC_COLLATE=C exa -la";
+  alias tree="exa --tree"
 fi
 
 autoload -U zmv
@@ -38,6 +39,7 @@ take() {
 zman() {
   PAGER="less -g -s '+/^       "$1"'" man zshall;
 }
+
 function man() {
   env \
     LESS_TERMCAP_md=$(tput bold; tput setaf 4) \

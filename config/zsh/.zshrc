@@ -97,7 +97,7 @@ if [[ $TERM != dumb ]]; then
   source $ZDOTDIR/keybinds.zsh
   source $ZDOTDIR/completion.zsh
   source $ZDOTDIR/aliases.zsh
-
+  source $ZDOTDIR/color.zsh
   # fd > find
   if command -v fd >/dev/null; then
     export FZF_DEFAULT_OPTS="--reverse --ansi"

@@ -53,6 +53,7 @@ in {
         bat
         exa
         fd
+        grc
         unstable.bottom
         tealdeer # rust tldr
         zsh-nix-shell
