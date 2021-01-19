@@ -120,7 +120,10 @@ with lib.my;
                export XDG_CONFIG_HOME="${xdgConfig}";
                export XDG_DATA_HOME="${xdgData}";
                export XDG_BIN_HOME="${xdgBin}";
-               source ${config.system.build.setEnvironment}
+               ${concatStringsSep "\n"
+                 (mapAttrsToList (n: v: "export ${n}=\"${v}\"") config.env)
+                }
+               # source ${config.system.build.setEnvironment}
                ${concatStringsSep "\n"
                  (mapAttrsToList (name: script: ''
                    echo "[${name}]"

@@ -26,7 +26,19 @@ let cfg = config.modules.editors.emacs;
       merge = _loc: defs: self: super:
         foldl' (res: def: mergeAttrs res (def.value self super)) { } defs;
     };
-
+    # BUG: (wrong-number-of-arguments (3 . 4) 2)
+    # @see https://github.com/hlissner/doom-emacs/issues/4534
+    # BUMP: emacsPgtkGcc version
+    emacsPgtkGcc.overlay = final: prev: {
+      emacsPgtkGcc =  prev.emacsPgtkGcc.overrideAttrs (oldAttrs: rec {
+        src = prev.fetchFromGitHub {
+          owner = oldAttrs.pname;
+          repo = oldAttrs.pname;
+          rev = "b6a0af3e117c2eed3e70e2545549a7531834e758";
+          sha256 = "0ivrnrml649jnsw72dapwik5fin4yxg8gfcy2r7p51m4g21fpbdf";
+        };
+      });
+    };
 in {
   options.modules.editors.emacs = {
     enable = mkBoolOpt false;
@@ -89,7 +101,7 @@ in {
 
   config = mkIf cfg.enable (mkMerge [
     {
-      nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
+      nixpkgs.overlays = [ inputs.emacs-overlay.overlay emacsPgtkGcc.overlay ];
       modules.editors.emacs.doom.confInit = ''
         (setq mydotfile "/etc/nixos")
       '';

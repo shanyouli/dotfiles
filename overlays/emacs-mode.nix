@@ -16,14 +16,6 @@ final: prev: let
           popd
         '';
       });
-      # FIXME: emacs startup error
-      popup = esuper.popup.overrideAttrs(esuper: {
-        postInstall = ''
-          pushd source
-          rm -r $out/share/emacs/site-lisp/elpa/popup-*/*.elc
-          popd
-        '';
-      });
   };
 in {
   emacsPackages =

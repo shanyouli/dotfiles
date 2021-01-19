@@ -37,8 +37,10 @@ in {
     {
       user.packages = [ (passFunction cfg.basePkg) ];
       env.PASSWORD_STORE_DIR = "$XDG_DATA_HOME/password-store";
-      # modules.shell.zsh.rcInit = "zinit add-fpath ${cfg.basePkg}/share/zsh/site-functions";
-      modules.shell.zsh.prevInit = "zinit add-fpath ${cfg.basePkg}/share/zsh/site-functions";
+      modules.shell.zsh.prevInit =
+        if config.modules.shell.zsh.zinit
+        then "zinit add-fpath ${cfg.basePkg}/share/zsh/site-functions"
+        else ''fpath+=( "${cfg.basePkg}/share/zsh/site-functions" )'';
     }
   ]);
 }

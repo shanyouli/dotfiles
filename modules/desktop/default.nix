@@ -134,7 +134,7 @@ in {
         )}
       [ -s ${homeDir}/.xsession-errors ] || {
         echo "remove xsession-errors"
-        rm -f ${homeDir}/.xsession-errors*
+        rm -rf ${homeDir}/.xsession-errors*
       }
     '';
     home.configFile."dunst/dunstrc".source = "${configDir}/dunst/dunstrc";
