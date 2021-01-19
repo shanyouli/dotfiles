@@ -121,11 +121,21 @@ in {
 
     # Clean up leftovers, as much as we can
     home.onReload.cleanupHome = ''
-      pushd "${homeDir}"
-      rm -rf .compose-cache .nv .pki .dbus .fehbg
-      [ -s .xsession-errors ] || rm -f .xsession-errors*
-      popd
-      # find . -type l -name "result" -not -path "*/projects/*" -exec rm -rf {} \;
+      ${concatStringsSep "\n"
+        (map (name:
+          let file = "${homeDir}/${name}";
+          in ''
+            [[ -f ${file} ]] && {
+              echo "remove ${name} ..."
+              rm -rf ${homeDir}/${name}
+            }
+          '')
+          [ ".compose-cache" ".nv" ".pki" ".dbus" ".fehbg" ]
+        )}
+      [ -s ${homeDir}/.xsession-errors ] || {
+        echo "remove xsession-errors"
+        rm -f ${homeDir}/.xsession-errors*
+      }
     '';
     home.configFile."dunst/dunstrc".source = "${configDir}/dunst/dunstrc";
   };
