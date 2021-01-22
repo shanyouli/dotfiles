@@ -110,5 +110,5 @@ else
   #S
   set "status-right" "#[bg=${bg2},f${fg4}] %Y-%m-%d %H:%M #{prefix_highlight}"
   setw "window-status-current-format" "#[bg=${yellow},fg=${bg1}] #W"
-  setw "window-status-format" "#[bg=${red},fg=${bg1}]|#[bg=${blue},fg=${bg1}] #W"
+  setw "window-status-format" "#[bg=${blue},fg=${bg1}] #W"
 fi

@@ -1,4 +1,4 @@
-{ runCommand, lib, python3Packages, makeWrapper, pkgs, stdenv, makeDesktopItem
+{ lib, python3Packages, makeWrapper, pkgs, stdenv, makeDesktopItem
 , dl ? true
 , local ? true
 , xiami ? true

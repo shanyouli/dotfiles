@@ -1,5 +1,5 @@
 # -*- mode: sh -*-
-
+# see@ https://github.com/zpm-zsh/colorize/blob/master/colorize.plugin.zsh
 export LESS="$LESS -R -M"
 
 function ip() { command ip --color=auto "$@"; }
@@ -15,6 +15,22 @@ elif (( $+commands[delta] )); then
 else
     function diff() { command diff --color "$@" ; }
 fi
+
+[[ $(tput colors) -ge 256 ]] && {
+    function man() {
+        env \
+            LESS_TERMCAP_md=$(tput bold; tput setaf 4) \
+            LESS_TERMCAP_me=$(tput sgr0) \
+            LESS_TERMCAP_mb=$(tput blink) \
+            LESS_TERMCAP_us=$(tput setaf 2) \
+            LESS_TERMCAP_ue=$(tput sgr0) \
+            LESS_TERMCAP_so=$(tput smso) \
+            LESS_TERMCAP_se=$(tput rmso) \
+            PAGER="${commands[less]:-$PAGER}" \
+            man "$@"
+};
+}
+
 
 (( $+commands[grc] )) && {
     function env() { command grc --colour=auto env "$@" ; }

@@ -3,53 +3,52 @@ let
   inherit (python3Packages) buildPythonPackage fetchPypi;
 in lib.recurseIntoAttrs rec {
   qasync = let inherit (python3Packages) pyqt5 pyside2 ;
-    in buildPythonPackage rec {
-      pname = "qasync";
-      version = "0.13.0";
-      src = fetchPypi {
-        inherit pname version;
-        sha256 = "sha256-B6GUqfF3Bu7JCFlrOkC0adLL+BwbnTOVNXpMkQRLovI=";
-      };
-      propagatedBuildInputs = [ pyqt5 pyside2 ];
-      doCheck = false;
+           in buildPythonPackage rec {
+             pname = "qasync";
+             version = "0.13.0";
+             src = fetchPypi {
+               inherit pname version;
+               sha256 = "sha256-B6GUqfF3Bu7JCFlrOkC0adLL+BwbnTOVNXpMkQRLovI=";
+             };
+             propagatedBuildInputs = [ pyqt5 pyside2 ];
+             doCheck = false;
+           };
+  feeluown = let
+    inherit (python3Packages) buildPythonApplication janus requests qasync tomlkit pyopengl pyqt5;
+    inherit (python3Packages.python) withPackages;
+    inherit (pkgs) makeWrapper ;
+    inherit (qt5) wrapQtAppsHook ;
+    # BUG: dbus.mainloop.pyqt5 modules, needing pyqt5 and dbus-python env;
+    pythonEnv = withPackages (p: [
+      qasync
+      p.setuptools
+      p.janus
+      p.requests
+      p.tomlkit
+      p.pyopengl
+      p.pyqt5
+    ]);
+  in buildPythonApplication rec {
+    pname = "feeluown";
+    version = "3.6.1";
+    src = fetchPypi {
+      inherit pname version;
+      sha256 = "sha256-dXFSAH2CdWkJsidFqwvnftPHKFcLCq7MjRIjDGYy/ds=";
     };
-  feeluown =
-    let
-      inherit (python3Packages) buildPythonApplication janus requests qasync tomlkit pyopengl pyqt5;
-      inherit (python3Packages.python) withPackages;
-      inherit (pkgs) makeWrapper ;
-      inherit (qt5) wrapQtAppsHook ;
-        # wrapQtAppsHook ;
-      pythonEnv = withPackages (p: [
-        qasync
-        p.setuptools
-        p.janus
-        p.requests
-        p.tomlkit
-        p.pyopengl
-        p.pyqt5
-      ]);
-    in buildPythonApplication rec {
-      pname = "feeluown";
-      version = "3.6.1";
-      src = fetchPypi {
-        inherit pname version;
-        sha256 = "sha256-dXFSAH2CdWkJsidFqwvnftPHKFcLCq7MjRIjDGYy/ds=";
-      };
-      dontWrapQtApps = true;
-      nativeBuildInputs = [ makeWrapper wrapQtAppsHook ];
-      propagatedBuildInputs = [ janus requests qasync tomlkit pyopengl pyqt5 ];
-      makeWrapperArgs = let
-        packagesToLibraryPath = [ pkgs.mpv ];
-      in [ ''--prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath packagesToLibraryPath}"''
-           ''--prefix PYTHONPATH : "${pythonEnv}/${python3Packages.python.sitePackages}" '' ];
-      doCheck = false;
-      postFixup = ''
-        for file in $out/bin/*; do
-          wrapProgram "$file" "''${qtWrapperArgs[@]}"
-        done
-      '';
-    };
+    dontWrapQtApps = true;
+    nativeBuildInputs = [ makeWrapper wrapQtAppsHook ];
+    propagatedBuildInputs = [ janus requests qasync tomlkit pyopengl pyqt5 ];
+    makeWrapperArgs = let
+      packagesToLibraryPath = [ pkgs.mpv ];
+    in [ ''--prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath packagesToLibraryPath}"''
+         ''--prefix PYTHONPATH : "${pythonEnv}/${python3Packages.python.sitePackages}" '' ];
+    doCheck = false;
+    postFixup = ''
+      for file in $out/bin/*; do
+        wrapProgram "$file" "''${qtWrapperArgs[@]}"
+      done
+    '';
+  };
   fuo_local =
     let inherit (python3Packages) mutagen marshmallow fuzzywuzzy ;
     in buildPythonPackage rec {

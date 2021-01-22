@@ -22,6 +22,7 @@ in {
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.dataHome {
       modules.desktop.media.feeluown = {
+        # see @https://github.com/mjlbach/nix-dotfiles/blob/master/nixpkgs/configs/doom/shell.nix
         pkg = pkgs.symlinkJoin {
           name = "my-feeluown-${pkgs.my.feeluown-full.version}";
           paths = [ pkgs.my.feeluown-full ];
@@ -33,14 +34,6 @@ in {
             done
           '';
         };
-        # pkg = pkgs.my.feeluown-full.overrideAttrs(attrs: {
-        #   postInstall = (attrs.postInstall or "") + ''
-        #     for i in $out/bin/* ; do
-        #       wrapProgram $i \
-        #         --set HOME "${xdgData}/feeluown"
-        #     done
-        #   '';
-        # });
         rcFile = ".local/share/feeluown/.fuorc";
       };
     })
