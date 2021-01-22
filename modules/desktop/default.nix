@@ -136,6 +136,7 @@ in {
         echo "remove xsession-errors"
         rm -rf ${homeDir}/.xsession-errors*
       }
+      rm -rf $XDG_CONFIG_HOME/mimeapps.list
     '';
     home.configFile."dunst/dunstrc".source = "${configDir}/dunst/dunstrc";
   };
