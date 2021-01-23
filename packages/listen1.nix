@@ -1,17 +1,17 @@
 { appimageTools, fetchurl, lib, gsettings-desktop-schemas, gtk3 }:
 # A great Net Music Player
 # code from: @https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/office/timeular/default.nix
-let pname = "listen1";
-    version = "2.17.9";
-    name = "${pname}-${version}";
-    src = fetchurl {
-      url = "https://github.com/listen1/listen1_desktop/releases/download/v${version}/${pname}_${version}_linux_x86_64.AppImage";
-      sha256 = "1jsqjm2031pzc5z3kzvlahhfwxrs6kaf43iwr6ahnib8cbd9lsj5";
-    };
-    appimageContents = appimageTools.extractType2 {
-      inherit name src;
-    };
-in appimageTools.wrapType2 rec {
+let
+  inherit (appimageTools) extractType2 wrapType2;
+  pname = "listen1";
+  version = "2.17.9";
+  name = "${pname}-${version}";
+  src = fetchurl {
+    url = "https://github.com/listen1/listen1_desktop/releases/download/v${version}/${pname}_${version}_linux_x86_64.AppImage";
+    sha256 = "1jsqjm2031pzc5z3kzvlahhfwxrs6kaf43iwr6ahnib8cbd9lsj5";
+  };
+  appimageContents = extractType2 { inherit name src; };
+in wrapType2 rec {
   inherit name src;
   profile = ''
     export LC_ALL=C.UTF-8

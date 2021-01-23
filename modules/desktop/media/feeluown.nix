@@ -39,7 +39,7 @@ in {
     })
 
     {
-      user.packages = [ cfg.pkg ];
+      user.packages = [ cfg.pkg pkgs.my.listen1 ];
       home.file."${cfg.rcFile}".source = "${cfgFile}";
     }
   ]);

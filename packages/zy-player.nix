@@ -1,17 +1,17 @@
 { appimageTools, fetchurl, lib, gsettings-desktop-schemas, gtk3 }:
 # A great Player
 # code from: @https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/office/timeular/default.nix
-let pname = "zy";
-    version = "2.7.2";
-    name = "${pname}-${version}";
-    src = fetchurl {
-      url = "https://github.com/Hunlongyu/ZY-Player/releases/download/v${version}/ZY-Player-${version}.AppImage";
-      sha256 = "1dr8392jzf64b9g28yk1r3bd3m0an58fk0lrm970ziw8vv9gddn5";
-    };
-    appimageContents = appimageTools.extractType2 {
-      inherit name src;
-    };
-in appimageTools.wrapType2 rec {
+let
+  inherit (appimageTools) extractType2 wrapType2;
+  pname = "zy";
+  version = "2.7.2";
+  name = "${pname}-${version}";
+  src = fetchurl {
+    url = "https://github.com/Hunlongyu/ZY-Player/releases/download/v${version}/ZY-Player-${version}.AppImage";
+    sha256 = "1dr8392jzf64b9g28yk1r3bd3m0an58fk0lrm970ziw8vv9gddn5";
+  };
+  appimageContents = extractType2 { inherit name src; };
+in wrapType2 rec {
   inherit name src;
   profile = ''
     export LC_ALL=C.UTF-8
