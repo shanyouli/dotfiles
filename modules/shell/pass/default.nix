@@ -5,11 +5,18 @@ with lib.my;
 let cfg = config.modules.shell.pass;
     # passBin, Special treatment for ClipMenu and GreenClip
     # see@ https://github.com/vxcamiloxv/pass-utils/blob/main/passp
-    passFunction = pass: pkgs.writeScriptBin "pass" ''
+    passBinFun = pass: name: pkgs.writeScriptBin "${name}" ''
       #!${pkgs.stdenv.shell}
-      PASS_CMD="${pass}/bin/pass"
+      PASS_CMD="${pass}/bin/${name}"
       ${readFile ./wrapper}
     '';
+    passSymFun = pass: name: pkgs.symlinkJoin {
+      name = "my-${name}";
+      paths = [ pass ];
+      postBuild = ''
+        rm -rf bin/${name}
+      '';
+    };
 in {
   options.modules.shell.pass = {
     enable = mkBoolOpt false;
@@ -35,12 +42,11 @@ in {
         "${pkgs.passff-host}/share/passff-host/passff.json";
     })
     {
-      user.packages = [ (passFunction cfg.basePkg) ];
+      user.packages = [
+        (passBinFun cfg.basePkg "pass")
+        (passSymFun cfg.basePkg "pass")
+      ];
       env.PASSWORD_STORE_DIR = "$XDG_DATA_HOME/password-store";
-      modules.shell.zsh.prevInit =
-        if config.modules.shell.zsh.zinit
-        then "zinit add-fpath ${cfg.basePkg}/share/zsh/site-functions"
-        else ''fpath+=( "${cfg.basePkg}/share/zsh/site-functions" )'';
     }
   ]);
 }

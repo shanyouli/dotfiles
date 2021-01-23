@@ -16,6 +16,7 @@ in rec {
     fira-sans = callPackage ./fira-sans.nix { };
     xkeysnail = prev.python3Packages.callPackage ./xkeysnail.nix { };
     zyplayer = callPackage ./zy-player.nix {};
+    listen1 = callPackage ./listen1.nix {};
     tmuxifier = callPackage ./tmuxifier.nix {};
     wqy-microhei = callPackage ./wqy-microhei-rk.nix {};
     icons-in-terminal = callPackage ./icons-in-terminal.nix {};

@@ -46,6 +46,7 @@
       # emacs.rimeEnable = false;
       # emacs.gccEnable   = false;
       vim.enable = true;
+      vscode.enable = true;
     };
     dev = {
       shell.enable = true;

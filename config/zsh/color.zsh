@@ -18,7 +18,7 @@ fi
 
 [[ $(tput colors) -ge 256 ]] && {
     function man() {
-        env \
+        command env \
             LESS_TERMCAP_md=$(tput bold; tput setaf 4) \
             LESS_TERMCAP_me=$(tput sgr0) \
             LESS_TERMCAP_mb=$(tput blink) \
@@ -27,8 +27,8 @@ fi
             LESS_TERMCAP_so=$(tput smso) \
             LESS_TERMCAP_se=$(tput rmso) \
             PAGER="${commands[less]:-$PAGER}" \
-            man "$@"
-};
+        man "$@"
+    };
 }
 
 

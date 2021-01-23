@@ -1,12 +1,12 @@
 { appimageTools, fetchurl, lib, gsettings-desktop-schemas, gtk3 }:
-# A great Player
+# A great Net Music Player
 # code from: @https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/office/timeular/default.nix
-let pname = "zy";
-    version = "2.7.2";
+let pname = "listen1";
+    version = "2.17.9";
     name = "${pname}-${version}";
     src = fetchurl {
-      url = "https://github.com/Hunlongyu/ZY-Player/releases/download/v${version}/ZY-Player-${version}.AppImage";
-      sha256 = "1dr8392jzf64b9g28yk1r3bd3m0an58fk0lrm970ziw8vv9gddn5";
+      url = "https://github.com/listen1/listen1_desktop/releases/download/v${version}/${pname}_${version}_linux_x86_64.AppImage";
+      sha256 = "1jsqjm2031pzc5z3kzvlahhfwxrs6kaf43iwr6ahnib8cbd9lsj5";
     };
     appimageContents = appimageTools.extractType2 {
       inherit name src;
@@ -16,21 +16,24 @@ in appimageTools.wrapType2 rec {
   profile = ''
     export LC_ALL=C.UTF-8
     export XDG_DATA_DIRS=${gsettings-desktop-schemas}/share/gsettings-schemas/${gsettings-desktop-schemas.name}:${gtk3}/share/gsettings-schemas/${gtk3.name}:$XDG_DATA_DIRS
+    export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
+    export FONTCONFIG_FILE=/etc/fonts/fonts.conf
   '';
 
   multiPkgs = null; # no 32bit needed
   extraPkgs = p:(appimageTools.defaultFhsEnvArgs.multiPkgs p);
-  extraInstallCommands = ''
+  extraInstallCommands = let
+    desktop = "$out/share/applications/${pname}.desktop";
+  in ''
     mv $out/bin/{${name},${pname}}
-    # chmod +x $out/bin/${pname}
-    install -m 444 -D ${appimageContents}/zy.desktop $out/share/applications/zy.desktop
-    substituteInPlace $out/share/applications/zy.desktop --replace 'Exec=AppRun' 'Exec=${pname}'
-    substituteInPlace $out/share/applications/zy.desktop --replace 'Icon=zy' 'Icon=${appimageContents}/zy.png'
+    install -m 444 -D ${appimageContents}/listen1.desktop ${desktop}
+    substituteInPlace ${desktop} --replace 'Exec=AppRun' 'Exec=${pname}'
+    substituteInPlace ${desktop} --replace 'Icon=${pname}' 'Icon=${appimageContents}/${pname}.png'
   '';
 
   meta = with lib; {
-    description = "跨平台桌面端视频资源播放器.简洁无广告.免费高颜值";
-    homepage = http://zyplayer.fun/;
+    description = "One for all free music in China";
+    homepage = "http://listen1.github.io/listen1/";
     license = licenses.mit;
     platforms = [ "x86_64-linux" ];
     maintainers = with maintainers; [ syl ];
