@@ -57,16 +57,22 @@ with inputs;
   };
 
   # Just the bear necessities...
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; let
+    my-wget = let
+      flags = ''--hsts-file="${xdgConfig}/wget-hsts" -c'';
+    in symlinkJoin {
+      name = "my-wget-${wget.version}";
+      paths = [ wget ];
+      buildInputs = [ makeWrapper  ];
+      postBuild = '' wrapProgram $out/bin/wget --add-flags "${flags}" '';
+    };
+  in [
     cached-nix-shell
     # coreutils
     coreutils-progress-bar
     git
     vim
-    (pkgs.writeScriptBin "wget" ''
-      #!${pkgs.stdenv.shell}
-      exec ${pkgs.wget}/bin/wget --hsts-file="$XDG_CACHE_HOME/wget-hsts" -c "$@"
-    '')
+    my-wget
     gnumake
   ];
 }

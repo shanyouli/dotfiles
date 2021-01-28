@@ -31,7 +31,8 @@
       media.graphics.sprites.enable = false;
       media.video.enable = true;
       media.video.zyEn = true;
-      media.feeluown.enable = true;
+      media.music.enable = true;
+      media.music.feeluown.enable = true;
       media.rime.enable = true;
       media.documents.enable = true;
       term = {

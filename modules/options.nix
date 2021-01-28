@@ -111,28 +111,37 @@ with lib.my;
         ${config.user.name} ALL=NOPASSWD: ${concatStringsSep "," config.rootRun}
       '';
     }
-    (mkIf (config.home.onReload != {})
-      (let switchReload =
-             with pkgs; (writeScriptBin "switchReload" ''
-               #!${stdenv.shell}
-               echo "Import all custom system variables."
-               export XDG_CACHE_HOME="${xdgCache}";
-               export XDG_CONFIG_HOME="${xdgConfig}";
-               export XDG_DATA_HOME="${xdgData}";
-               export XDG_BIN_HOME="${xdgBin}";
-               source ${config.system.build.setEnvironment}
-               ${concatStringsSep "\n"
-                 (mapAttrsToList (name: script: ''
-                   echo "[${name}]"
-                   ${script}
-                 '') config.home.onReload)}
-             '');
-       in {
-         user.packages = [ switchReload ];
-         system.userActivationScripts.switchReload = ''
-           ${switchReload}/bin/switchReload
-         '';
-       })
-    )
+    # source ${config.system.build.setEnvironment}
+    (mkIf (config.home.onReload != {}) (let
+      switchReload = let
+        path = [
+          "${homeDir}/.nix-profile/bin"
+          "/etc/profiles/per-user/${config.user.name}/bin"
+          "/nix/var/nix/profiles/default/bin"
+          "/run/current-system/sw/bin"
+          "$PATH"
+        ];
+        exportLines = mapAttrsToList (n: v: "export ${n}=\"${v}\"") config.env;
+      in with pkgs; (writeScriptBin "switchReload" ''
+        #!${stdenv.shell}
+        echo "Import all custom system variables."
+        export XDG_CACHE_HOME="${xdgCache}";
+        export XDG_CONFIG_HOME="${xdgConfig}";
+        export XDG_DATA_HOME="${xdgData}";
+        export XDG_BIN_HOME="${xdgBin}";
+        export PATH=":${concatStringsSep ":" path }"
+        ${concatStringsSep "\n" exportLines}
+        ${concatStringsSep "\n"
+          (mapAttrsToList (name: script: ''
+            echo "[${name}]"
+            ${script}
+          '') config.home.onReload)}
+        '');
+    in {
+      user.packages = [ switchReload ];
+      system.userActivationScripts.switchReload = ''
+        ${switchReload}/bin/switchReload
+      '';
+    }))
   ];
 }
