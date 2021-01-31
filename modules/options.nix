@@ -129,7 +129,7 @@ with lib.my;
         export XDG_CONFIG_HOME="${xdgConfig}";
         export XDG_DATA_HOME="${xdgData}";
         export XDG_BIN_HOME="${xdgBin}";
-        export PATH=":${concatStringsSep ":" path }"
+        export PATH="${concatStringsSep ":" path }"
         ${concatStringsSep "\n" exportLines}
         ${concatStringsSep "\n"
           (mapAttrsToList (name: script: ''

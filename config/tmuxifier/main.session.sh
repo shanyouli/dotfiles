@@ -13,6 +13,7 @@ if initialize_session "main"; then
   run_cmd "htop"
   split_h 50
   #run_cmd "watch -t date"
+  run_cmd "sproxy"
   select_pane 1
   # Load a defined window layout.
   #load_window "example"

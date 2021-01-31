@@ -33,9 +33,8 @@ in {
       };
     }
     (mkIf cfg.feeluown.enable {
-      # user.packages = [ (myfeeluownFun pkgs.my.feeluown-full) ];
+      user.packages = [ (myfeeluownFun pkgs.my.feeluown-full) ];
       home.dataFile."feeluown/.fuorc".source = "${configDir}/feeluown/.fuorc";
     })
   ]);
-
 }
