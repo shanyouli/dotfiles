@@ -54,6 +54,7 @@
       cc.enable = true;
       python.enable = true;
       go.enable  = true;
+      rust.enable = true;
     };
     proxy = {
       default = "v2ray";

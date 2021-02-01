@@ -39,7 +39,11 @@ in {
     unsetenv = [
       "https_proxy" "http_proxy" "all_proxy" "rsync_proxy" "ftp_proxy"
     ];
-
+    env = with confg.modules; mkMerge [
+      (mkIf dev.rust.enable {
+        RUSTUP_DIST_SERVER = "https://mirrors.tuna.tsinghua.edu.cn/rustup";
+      })
+    ];
     user.packages = [ pkgs.nmap ];
 
     modules.shell.zsh.rcInit =
@@ -58,22 +62,26 @@ in {
         }
       '';
 
-    home = {
-      file.".ssh/config".text = ''
-        Host github.com
-        HostName github.com
-        User git
-        Port 22
-        ProxyCommand ${pkgs.nmap}/bin/ncat --proxy 127.0.0.1:${toString cfg.socksPort} --proxy-type socks5 %h %p
-      '';
-      services.proxy =
-        let div = if ( cfg.default == "clash" && cfg.clash.enable ) then {
-              exec = "${cfg.clash.pkg}/bin/clash -d ${cfg.clash.confDir}";
-              desription = "Clash Proxy Daemon";
-            } else if ( cfg.default == "v2ray" && cfg.v2ray.enable ) then {
-              exec = "${cfg.v2ray.pkg}/bin/v2ray -confdir ${cfg.v2ray.confDir}";
-              description = "V2ray Proxy Daemon";
-            } else {};
+    home = with config.modules; mkMerge [
+      (mkIf dev.rust.enable {
+        dataFile."cargo/config".source = configDir + "/cargo/config";
+      })
+      {
+        file.".ssh/config".text = ''
+          Host github.com
+          HostName github.com
+          User git
+          Port 22
+          ProxyCommand ${pkgs.nmap}/bin/ncat --proxy 127.0.0.1:${toString cfg.socksPort} --proxy-type socks5 %h %p
+        '';
+        services.proxy = let
+          div = if ( cfg.default == "clash" && cfg.clash.enable ) then {
+            exec = "${cfg.clash.pkg}/bin/clash -d ${cfg.clash.confDir}";
+            desription = "Clash Proxy Daemon";
+          } else if ( cfg.default == "v2ray" && cfg.v2ray.enable ) then {
+            exec = "${cfg.v2ray.pkg}/bin/v2ray -confdir ${cfg.v2ray.confDir}";
+            description = "V2ray Proxy Daemon";
+          } else {};
         in {
           Unit = {
             After = [ "network.target" ];
@@ -87,6 +95,7 @@ in {
             Restart = "on-failure";
           };
         };
-    };
+      }
+    ];
   };
 }
