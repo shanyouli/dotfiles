@@ -173,6 +173,7 @@ in {
           posframe
         ];
         doom.pkg.prefer = [ "rime" "dash" "posframe" ];
+        doom.pkg.disable = [ "sis" ];
         doom.confInit = ''
           (setq rime-user-data-dir "${xdgCache}/emacs/rime/")
           (setq rime-emacs-module-header-root "${cfg.package}/include")

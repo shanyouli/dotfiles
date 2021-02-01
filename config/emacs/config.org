@@ -399,13 +399,14 @@ RIME Emacs Front End Framework
 (use-package! rime
   :defer 0.5
   :init
-  (unless (bound-and-true-p using-nix-config-p)
+  (if (bound-and-true-p using-nix-config-p)
+      (setq rime-disable-predicates '(rime-predicate-evil-mode-p
+                                      rime-predicate-after-alphabet-char-p
+                                      rime-predicate-prog-in-code-p))
     (setq rime-user-data-dir (expand-file-name "~/.config/fcitx/rime")))
   (setq default-input-method "rime")
   (setq rime-show-candidate 'posframe)
-  ;; (setq rime-disable-predicates '(rime-predicate-evil-mode-p
-  ;;                                 rime-predicate-after-alphabet-char-p
-  ;;                                 rime-predicate-prog-in-code-p))
+
   ;; (setq rime-inline-ascii-trigger 'shift-l)
   :bind
   ;; C-\ to toggle-input-method
@@ -414,37 +415,10 @@ RIME Emacs Front End Framework
   (:map rime-mode-map
    ;; open rime menu
    ("C-`" . 'rime-send-keybinding))
-  ;; (:map rime-active-mode-map
-  ;;  ("C-j" . 'rime-inline-ascii))
+  (:map rime-active-mode-map
+   ("C-j" . 'rime-inline-ascii))
   :config
   (when IS-MAC (setq rime-librime-root "~/.emacs.d/librime/dist"))
-
-  ;; fix emacs-rime with evil-escape
-  (defun rime-evil-escape-advice (orig-fun key)
-    "advice for `rime-input-method' to make it work together with `evil-escape'.
-   Mainly modified from `evil-escape-pre-command-hook'"
-    (if rime--preedit-overlay
-        ;; if `rime--preedit-overlay' is non-nil, then we are editing something, do not abort
-        (apply orig-fun (list key))
-      (when (featurep 'evil-escape)
-        (let* ((fkey (elt evil-escape-key-sequence 0))
-               (skey (elt evil-escape-key-sequence 1))
-               (evt (read-event nil nil evil-escape-delay)))
-          (cond
-           ((and (characterp evt)
-                 (or (and (char-equal key fkey) (char-equal evt skey))
-                     (and evil-escape-unordered-key-sequence
-                          (char-equal key skey) (char-equal evt fkey))))
-            (evil-repeat-stop)
-            (evil-normal-state))
-           ((null evt) (apply orig-fun (list key)))
-           (t
-            (apply orig-fun (list key))
-            (if (numberp evt)
-                (apply orig-fun (list evt))
-              (setq unread-command-events (append unread-command-events (list evt))))))))))
-  (advice-add 'rime-input-method :around #'rime-evil-escape-advice)
-
   ;;; fix posfrmae 吃字现象
   (defun +rime--posframe-display-content-a (args)
     "给 `rime--posframe-display-content' 传入的字符串加一个全角空
@@ -594,28 +568,42 @@ Chinese to English
          :desc "Camel" "c" #'insert-translated-name-insert-with-camel
          :desc "intelligent" "i" #'insert-translated-name-insert))
   :config
-  (defvar int--evil-last-status-is-insert-p nil
-    "Last evil-mode status is inserted?")
-  (defvar int--sis-default-input-thmod nil
-    "Staging the default input method.")
+  (setq insert-translated-name-translate-engine "youdao") ;; google has bug
+
+  (defvar int--evil-last-status-is-insert-p nil "Last evil-mode status is inserted?")
+  (defvar int--sis-default-input-method nil "Staging the default input method.")
+  (defvar int--rime-disable-pred nil "Staging the `rime-disable-predicates'.")
+
   (defun int/active-a (&rest _)
-    (when (and (fboundp 'evil-insert-state-p) (evil-insert-state-p))
-      (setq int--evil-last-status-is-insert-p t))
-    (unless int--evil-last-status-is-insert-p
-      (evil-insert-state))
-    (when (boundp 'int--sis-default-input-thmod)
-      (setq int--sis-default-input-thmod default-input-method)
-     (unless (bound-and-true-p using-emacs-rime-p)
-      (setq-local default-input-method nil))
-      (sis-set-other)))
+
+    (setq int--evil-last-status-is-insert-p
+          (and (fboundp 'evil-insert-state-p) (evil-insert-state-p)))
+    (unless int--evil-last-status-is-insert-p (evil-insert-state))
+
+    (when (featurep 'sis)
+      (setq init--sis-default-input-method default-input-method)
+      (setq-local default-input-method nil)
+      (sis-set-other))
+
+    (when (bound-and-true-p rime-disable-predicates)
+      (setq int--rime-disable-pred rime-disable-predicates)
+      (setq rime-disable-predicates nil)))
+
   (defun int/inactive-a (&rest _)
+
     (unless int--evil-last-status-is-insert-p
       (evil-normal-state)
       (setq int--evil-last-status-is-insert-p nil))
-    (when (bound-and-true-p int--sis-default-input-thmod)
+
+    (when (bound-and-true-p int-sis-default-input-method)
       (sis-set-english)
       (setq-local default-input-method int--sis-default-input-thmod)
-      (setq int--sis-default-input-thmod nil)))
+      (setq int--sis-default-input-thmod nil))
+
+    (when (bound-and-true-p int--rime-disable-pred)
+      (setq rime-disable-predicates int--rime-disable-pred)
+      (setq int--rime-disable-pred nil)))
+
   (advice-add #'insert-translated-name-active :before 'int/active-a)
   (advice-add #'insert-translated-name-inactive :after 'int/inactive-a))
 #+end_src
