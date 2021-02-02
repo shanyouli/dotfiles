@@ -39,7 +39,7 @@ in {
     unsetenv = [
       "https_proxy" "http_proxy" "all_proxy" "rsync_proxy" "ftp_proxy"
     ];
-    env = with confg.modules; mkMerge [
+    env = with config.modules; mkMerge [
       (mkIf dev.rust.enable {
         RUSTUP_DIST_SERVER = "https://mirrors.tuna.tsinghua.edu.cn/rustup";
       })

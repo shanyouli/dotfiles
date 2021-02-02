@@ -29,7 +29,9 @@ in {
   config = mkIf cfg.enable {
     user.packages = [ tmux  (mkIf cfg.tmuxifierEn pkgs.my.tmuxifier)];
 
-    modules.theme.onReload.tmux = "${tmux}/bin/tmux source-file $TMUX_HOME/extraInit";
+    modules.theme.onReload.tmux = ''
+      ${tmux}/bin/tmux source-file $XDG_CONFIG_HOME/tmux/extraInit
+    '';
 
     modules.shell.zsh = {
       rcInit = mkIf cfg.tmuxifierEn "_cache tmuxifier init -";

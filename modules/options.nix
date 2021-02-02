@@ -121,7 +121,6 @@ with lib.my;
           "/run/current-system/sw/bin"
           "$PATH"
         ];
-        exportLines = mapAttrsToList (n: v: "export ${n}=\"${v}\"") config.env;
       in with pkgs; (writeScriptBin "switchReload" ''
         #!${stdenv.shell}
         echo "Import all custom system variables."
@@ -130,7 +129,6 @@ with lib.my;
         export XDG_DATA_HOME="${xdgData}";
         export XDG_BIN_HOME="${xdgBin}";
         export PATH="${concatStringsSep ":" path }"
-        ${concatStringsSep "\n" exportLines}
         ${concatStringsSep "\n"
           (mapAttrsToList (name: script: ''
             echo "[${name}]"

@@ -36,7 +36,7 @@ in {
             ];
             opt = [ vim-plug ];
           };
-          # plug.plugins = with pkgs.vimPlugins; [ vim-nix ];
+          plug.plugins = with pkgs.vimPlugins; [ vim-nix ];
           customRC = ''
             source ${pkgs.vimPlugins.vim-plug}/share/vim-plugins/vim-plug/plug.vim
             set termguicolors     " enable true colors support
