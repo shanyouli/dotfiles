@@ -179,51 +179,6 @@ available. You can either set `doom-theme' or manually load a theme with the
           company-pseudo-tooltip-frontend
           company-echo-metadata-frontend)))
 #+end_src
-** company-backend
-#+begin_src emacs-lisp :tangle "config.el"
-(set-company-backend! '(julia-mode
-                        org-mode)
-  '(
-    company-math-symbols-unicode
-    company-files
-    company-yasnippet
-    :separate
-    company-tabnine
-    ))
-;;  (set-company-backend! 'sh-mode nil) ; unsets backends for sh-mode
-(set-company-backend! '(c-mode
-                        c++-mode
-                        ess-mode
-                        haskell-mode
-                        ;;emacs-lisp-mode
-                        conf-mode
-                        lisp-mode
-                        sh-mode
-                        php-mode
-                        python-mode
-                        go-mode
-                        ruby-mode
-                        rust-mode
-                        js-mode
-                        css-mode
-                        web-mode
-                        nix-mode
-                        json-mode
-                        )
-  '(
-    company-files
-    company-yasnippet
-    :separate
-    company-tabnine
-    ))
-
-(setq +lsp-company-backends '(company-lsp
-                              company-files
-                              company-yasnippet
-                              :separate
-                              company-tabnine
-                              ))
-#+end_src
 * General configuration
 #+begin_src emacs-lisp :tangle "config.el"
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -755,81 +710,6 @@ Emacs to record screen
   :config
   (setq gif-screencast-output-directory (expand-file-name "~/Videos/Gif")))
 #+end_src
-** ace-window
-Window Select
-#+begin_src emacs-lisp :tangle "packages.el"
-(package! ace-window)
-#+end_src
-#+begin_src emacs-lisp :tangle "config.el"
-(use-package! ace-window
-  :bind ([remap other-window] . ace-window)
-  :hook (emacs-startup . ace-window-display-mode)
-  :config
-  ;; Select window via 'C-w 1' ... `C-w 9'
-  (defun aw--select-window (number)
-    "Slecet the specified window."
-    (when (numberp number)
-      (let ((found nil))
-        (dolist (win (aw-window-list))
-          (when (and (window-live-p win)
-                     (eq number (string-to-number (window-parameter win 'ace-window-path))))
-            (setq found t)
-            (aw-switch-to-window win)))
-        (unless found
-          (message "No specified window: %d" number)))))
-  (defun aw--select-window-1 ()
-    (interactive )
-    (aw--select-window 1))
-  (defun aw--select-window-2 ()
-    (interactive )
-    (aw--select-window 2))
-  (defun aw--select-window-3 ()
-    (interactive )
-    (aw--select-window 3))
-  (defun aw--select-window-4 ()
-    (interactive )
-    (aw--select-window 4))
-  (defun aw--select-window-5 ()
-    (interactive )
-    (aw--select-window 5))
-  (defun aw--select-window-6 ()
-    (interactive )
-    (aw--select-window 6))
-  (defun aw--select-window-7 ()
-    (interactive )
-    (aw--select-window 7))
-  (defun aw--select-window-8 ()
-    (interactive )
-    (aw--select-window 8))
-  (defun aw--select-window-9 ()
-    (interactive )
-    (aw--select-window 9))
-  ;; (dotimes (n 9)
-  ;;   (bind-key (format "M-%d" (1+ n))
-  ;;             (lambda ()
-  ;;               (interactive)
-  ;;               (aw--select-window (1+ n))))
-  (map! :map evil-window-map
-        "1" #'aw--select-window-1
-        "2" #'aw--select-window-2
-        "3" #'aw--select-window-3
-        "4" #'aw--select-window-4
-        "5" #'aw--select-window-5
-        "6" #'aw--select-window-6
-        "7" #'aw--select-window-7
-        "8" #'aw--select-window-8
-        "9" #'aw--select-window-9)
-  (map! "M-1" #'aw--select-window-1
-        "M-2" #'aw--select-window-2
-        "M-3" #'aw--select-window-3
-        "M-4" #'aw--select-window-4
-        "M-5" #'aw--select-window-5
-        "M-6" #'aw--select-window-6
-        "M-7" #'aw--select-window-7
-        "M-8" #'aw--select-window-8
-        "M-9" #'aw--select-window-9))
-#+end_src
-
 ** DONE vterm
 #+begin_src emacs-lisp :tangle "config.el"
 (when (file-exists-p! "/usr/include/vterm.h")

@@ -46,7 +46,7 @@
       emacs.enable = true;
       # emacs.rimeEnable = false;
       # emacs.gccEnable   = false;
-      vim.enable = true;
+      # vim.enable = true;
       vscode.enable = true;
     };
     dev = {
@@ -55,6 +55,8 @@
       python.enable = true;
       go.enable  = true;
       rust.enable = true;
+	  node.enable = true;
+      nix.enable = true;
     };
     proxy = {
       default = "v2ray";

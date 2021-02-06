@@ -39,8 +39,6 @@ in {
           plug.plugins = with pkgs.vimPlugins; [ vim-nix ];
           customRC = ''
             source ${pkgs.vimPlugins.vim-plug}/share/vim-plugins/vim-plug/plug.vim
-            set termguicolors     " enable true colors support
-            syntax enable
             set background=${config.modules.theme.active}
             colorscheme gruvbox
 
@@ -50,9 +48,6 @@ in {
             set showtabline=2
             let g:bufferline_echo=0
             let g:bufferline_modified='[+]'
-            if !has('gui_running')
-              set t_Co=256
-            endif
             set noshowmode
             if filereadable(expand("${xdgConfig}/nvim/init.vim"))
               source ${xdgConfig}/nvim/init.vim

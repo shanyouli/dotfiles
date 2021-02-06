@@ -58,7 +58,9 @@ case "$wmRole" in
         *)
           echo "center=on state=floating border=1"
           _resize 0.618 0.618
-      esac
+      esac 
+    elif [[ $class == "VirtualBox Machine" ]]; then
+		echo "desktop=^5 center=on state=floating border=1"
     fi
     ;;
 esac

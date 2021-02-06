@@ -87,7 +87,7 @@ in {
       modules.desktop.browsers.firefox = {
         extensions = with pkgs.firefox-addons; ifEnable cfg.extEnable  [
           ublock-origin stylus proxy-switchyomega surfingkeys tabSessionManager
-          gitako darkreader copy-all-tab-urls save-page-we simplifyGmail
+          gitako darkreader save-page-we simplifyGmail
           videoDownloadHelper violentmonkey draculaDarkTheme inMyPocket
           autoTabDiscard saladict
         ] ++ ifEnable (! config.modules.desktop.media.documents.enable)
