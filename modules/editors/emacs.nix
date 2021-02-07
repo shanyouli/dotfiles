@@ -31,6 +31,7 @@ let cfg = config.modules.editors.emacs;
     # BUMP: emacsPgtkGcc version
     emacsPgtkGcc.overlay = final: prev: {
       emacsPgtkGcc =  prev.emacsPgtkGcc.overrideAttrs (oldAttrs: rec {
+        version = "20210203.0";
         src = prev.fetchFromGitHub {
           owner = oldAttrs.pname;
           repo = oldAttrs.pname;

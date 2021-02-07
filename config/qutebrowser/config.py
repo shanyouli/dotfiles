@@ -23,7 +23,7 @@ c.aliases = {
 
 # set searchengines
 c.url.searchengines = {
-    'DEFAULT': 'https://duckducogo.com/?q={}',
+    'DEFAULT': 'https://duckduckgo.com/?q={}',
     'gg': 'https://www.google.com/search?q={}',
     'no': 'https://search.nixos.org/options?query={}',
     'np': 'https://search.nixos.org/packages?query={}',
