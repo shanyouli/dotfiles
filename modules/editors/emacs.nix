@@ -222,7 +222,24 @@ in {
           icon = "emacs";
           exec = "${binDir}/myemacs desktop %u";
           genericName = "Text Editor";
-          mimeType = "text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;x-scheme-handler/org-protocol";
+          mimeType = concatStringsSep ";" [
+            "text/english"
+            "text/plain"
+            "text/x-makefile"
+            "text/x-c++hdr"
+            "text/x-c++src"
+            "text/x-chdr"
+            "text/x-csrc"
+            "text/x-java"
+            "text/x-moc"
+            "text/x-pascal"
+            "text/x-tcl"
+            "text/x-tex"
+            "application/x-shellscript"
+            "text/x-c"
+            "text/x-c++"
+            "x-scheme-handler/org-protocol"
+          ];
           comment = "Edit text";
           terminal = "false";
           categories = "Development;TextEditor";

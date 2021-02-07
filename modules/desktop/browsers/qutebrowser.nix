@@ -8,6 +8,7 @@
 with lib;
 with lib.my;
 let cfg = config.modules.desktop.browsers.qutebrowser;
+    pkg = pkgs.qutebrowser;
 in {
   options.modules.desktop.browsers.qutebrowser = with types; {
     enable = mkBoolOpt false;
@@ -16,15 +17,16 @@ in {
 
   config = mkIf cfg.enable {
     user.packages = with pkgs; [
-      qutebrowser
+      pkg
       (makeDesktopItem {
         name = "qutebrowser-private";
         desktopName = "Qutebrowser (Private)";
         genericName = "Open a private Qutebrowser window";
         icon = "qutebrowser";
-        exec = ''${qutebrowser}/bin/qutebrowser ":open -p"'';
+        exec = ''${pkg}/bin/qutebrowser ":open -p"'';
         categories = "Network";
       })
+      # unstable.python4Packages.adblock
     ];
 
     home = {
