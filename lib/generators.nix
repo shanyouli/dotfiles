@@ -27,4 +27,17 @@ with lib;
               convert ${options} ${imageFile} $out/${result}
             '';
     in "${filteredImage}/${result}";
+
+  homePkgFun = home: pkg: pkgs.symlinkJoin {
+    name = "my-" + (if (pkg ? pname)
+                    then pkg.pname + "-" + pkg.version
+                    else pkg.name );
+    paths = [ pkg ];
+    buildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      for i in $out/bin/* ; do
+        wrapProgram $i --set HOME "${home}"
+      done
+    '';
+  };
 }

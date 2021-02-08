@@ -1,103 +1,58 @@
-# modules/browser/firefox.nix --- https://www.mozilla.org/en-US/firefox
-#
-# Oh firefox, gateway to the interwebs, devourer of ram. Give onto me your
-# infinite knowledge and shelter me from ads.
-
-{ options, config, lib, pkgs, ... }:
-
+{ config, lib, options, pkgs, ... }:
 with lib;
 with lib.my;
 let cfg = config.modules.desktop.browsers.firefox;
-    mozillaPath = ".mozilla";
-    extensionPath = "extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}";
-    extensionsEnvPkg = pkgs.buildEnv {
-      name = "hm-firefox-extensions";
-      paths = cfg.extensions;
-    };
+    homeName = "firefox";
+    mozillaPath = ".mozilla/firefox";
 in {
   options.modules.desktop.browsers.firefox = with types; {
     enable = mkBoolOpt false;
     profileName = mkOpt types.str config.user.name;
-
     settings = mkOpt' (attrsOf (oneOf [ bool int str ])) {} ''
-      Firefox preferences to set in <filename>user.js</filename>
+      Firefox preferences to set in <filename>user.js</filename> or "mozilla.cfg"
     '';
     extraConfig = mkOpt' lines "" ''
-      Extra lines to add to <filename>user.js</filename>
+      Extra Lines to add to user.js or mozilla.cfg
     '';
-
-    userChrome  = mkOpt' lines "" "CSS Styles for Firefox's interface";
-    userContent = mkOpt' lines "" "Global CSS Styles for websites";
-    extEnable   = mkBoolOpt true;
+    userChrome = mkOpt' lines "" "CSS Styles for Firefox's interface";
+    userContent = mkOpt' lines "" "Globarl CSS styles for websites";
+    extEn = mkBoolOpt false;
     extensions = mkOption {
-      type = types.listOf types.package;
+      type = listOf package;
       default = [];
-      example = literalExample ''
-          with pkgs.nur.repos.rycee.firefox-addons; [
-            https-everywhere
-            privacy-badger
-          ]
-        '';
       description = ''
-          List of Firefox add-on packages to install. Some
-          pre-packaged add-ons are accessible from NUR,
-          <link xlink:href="https://github.com/nix-community/NUR"/>.
-          Once you have NUR installed run
-
-          <screen language="console">
-            <prompt>$</prompt> <userinput>nix-env -f '&lt;nixpkgs&gt;' -qaP -A nur.repos.rycee.firefox-addons</userinput>
-          </screen>
-
-          to list the available Firefox add-ons.
-
-          </para><para>
-
-          Note that it is necessary to manually enable these
-          extensions inside Firefox after the first installation.
-
-          </para><para>
-
-          Extensions listed here will only be available in Firefox
-          profiles managed through the
-          <link linkend="opt-programs.firefox.profiles">programs.firefox.profiles</link>
-          option. This is due to recent changes in the way Firefox
-          handles extension side-loading.
-        '';
+        firefox addons packages.
+      '';
     };
+    hosts = mkOpt' (listOf (oneOf [ str package path ])) [] ''
+       extra Native Messaging Hosts
+    '';
   };
-
   config = mkIf cfg.enable (mkMerge [
     {
-      user.packages = with pkgs; [
-        unstable.firefox-bin
-        (makeDesktopItem {
-          name = "firefox-private";
-          desktopName = "Firefox (Private)";
-          genericName = "Open a private Firefox window";
-          icon = "firefox";
-          exec = "${unstable.firefox-bin}/bin/firefox --private-window";
-          categories = "Network";
-        })
-      ];
-
+      user.packages = [ (pkgs.makeDesktopItem {
+        name = "firefox-private";
+        desktopName = "Firefox (Private)";
+        genericName = "Open a private Firefox window";
+        icon = "firefox";
+        exec = "firefox --private-window";
+        categories = "Network";
+      })];
       # Prevent auto-creation of ~/Desktop. The trailing slash is necessary; see
       # https://bugzilla.mozilla.org/show_bug.cgi?id=1082717
       env.XDG_DESKTOP_DIR = "$HOME/";
-
       modules.desktop.browsers.firefox = {
-        extensions = with pkgs.firefox-addons; ifEnable cfg.extEnable  [
-          ublock-origin stylus proxy-switchyomega surfingkeys tabSessionManager
-          gitako darkreader save-page-we simplifyGmail
-          videoDownloadHelper violentmonkey draculaDarkTheme inMyPocket
-          autoTabDiscard saladict
-        ] ++ ifEnable (! config.modules.desktop.media.documents.enable)
-          [ mobiReader epubReader ];
+        extensions = with pkgs.firefox-addons; [
+          ublock-origin surfingkeys stylus proxy-switchyomega darkreader
+          save-page
+        ];
         settings = {
           "devtools.theme" = "dark";
           # Enable userContent.css and userChrome.css for our theme modules
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
           # Stop creating ~/Downloads!
           "browser.download.dir" = "${homeDir}/Downloads";
+          "browser.startup.homepage" = "about:blank";
           # Don't use the built-in password manager; a nixos user is more likely
           # using an external one (you are using one, right?).
           "signon.rememberSignons" = false;
@@ -125,7 +80,7 @@ in {
           "media.videocontrols.picture-in-picture.video-toggle.enabled" = false;
           "extensions.htmlaboutaddons.recommendations.enabled" = false;
           "extensions.htmlaboutaddons.discover.enabled" = false;
-          "extensions.pocket.enabled" = false;
+          "extensions.pocket.enabled" = true;
           "app.normandy.enabled" = false;
           "app.normandy.api_url" = "";
           "extensions.shield-recipe-client.enabled" = false;
@@ -172,9 +127,23 @@ in {
           "datareporting.policy.dataSubmissionEnabled" = false;
         };
       };
-
-      # Use a stable profile name so we can target it in themes
-      home.file = let cfgPath = ".mozilla/firefox"; in {
+    }
+    {
+      user.packages = let
+        basepkg = let
+          extraPrefs = ''
+            ${concatStrings (mapAttrsToList (name: value: ''
+              lockPref("${name}", ${builtins.toJSON value});
+            '') cfg.settings)}
+            ${cfg.extraConfig}
+          '';
+          extraNativeMessagingHosts = cfg.hosts;
+          nixExtensions = if cfg.extEn then  cfg.extensions else null;
+        in pkgs.unstable.wrapFirefox pkgs.unstable.firefox-unwrapped {
+          inherit extraPrefs extraNativeMessagingHosts nixExtensions;
+        };
+      in [ (homePkgFun "${xdgData}/firefox" basepkg) ];
+      home.dataFile = let cfgPath = "${xdgData}/${homeName}/${mozillaPath}"; in {
         "${cfgPath}/profiles.ini".text = ''
           [Profile0]
           Name=default
@@ -182,20 +151,15 @@ in {
           Path=${cfg.profileName}.default
           Default=1
 
+          [Profile1]
+          Name=default
+          IsRelative=1
+          Path=test.default
+
           [General]
           StartWithLastProfile=1
           Version=2
         '';
-        "${cfgPath}/${cfg.profileName}.default/user.js" =
-          mkIf (cfg.settings != {} || cfg.extraConfig != "") {
-            text = ''
-              ${concatStrings (mapAttrsToList (name: value: ''
-                user_pref("${name}", ${builtins.toJSON value});
-              '') cfg.settings)}
-              ${cfg.extraConfig}
-            '';
-          };
-
         "${cfgPath}/${cfg.profileName}.default/chrome/userChrome.css" =
           mkIf (cfg.userChrome != "") {
             text = cfg.userChrome;
@@ -205,15 +169,6 @@ in {
           mkIf (cfg.userContent != "") {
             text = cfg.userContent;
           };
-
-        "${cfgPath}/${cfg.profileName}.default/extensions" = mkIf cfg.extEnable {
-          source = "${extensionsEnvPkg}/share/mozilla/${extensionPath}";
-          recursive = true;
-        };
-        "${mozillaPath}/${extensionPath}" = mkIf cfg.extEnable {
-          source = "${extensionsEnvPkg}/share/mozilla/${extensionPath}";
-          recursive = true;
-        };
       };
     }
   ]);

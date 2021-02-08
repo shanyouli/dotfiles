@@ -2,12 +2,7 @@
 with lib;
 with lib.my;
 let cfg = config.modules.services.dropbox;
-    dropbox = (pkgs.writeScriptBin "dropbox" ''
-      #!${pkgs.stdenv.shell}
-      export HOME=${xdgData}/dropbox
-      [[ -d $HOME ]] || mkdir -p $HOME
-      exec ${pkgs.dropbox-cli}/bin/dropbox "$@"
-    '');
+    pkg = homePkgFun "${xdgData}/dropbox" pkgs.dropbox-cli;
 in {
   options.modules.services.dropbox = {
     enable = mkBoolOpt false;
@@ -19,13 +14,12 @@ in {
       allowedTCPPorts = [ 17500 ];
       allowedUDPPorts = [ 17500 ];
     };
-    user.packages = [ dropbox ];
-    home.services.dropbox =
-      let
-          QT_PLUGIN_PATH = "/run/current-system/sw" + pkgs.qt5.qtbase.qtPluginPrefix;
-          QML2_IMPORT_PATH = "/run/current-system/sw" + pkgs.qt5.qtbase.qtQmlPrefix;
-          dropboxHome = "${xdgData}/dropbox";
-      in {
+    user.packages = [ pkg ];
+    home.services.dropbox = let
+      QT_PLUGIN_PATH = "/run/current-system/sw" + pkgs.qt5.qtbase.qtPluginPrefix;
+      QML2_IMPORT_PATH = "/run/current-system/sw" + pkgs.qt5.qtbase.qtQmlPrefix;
+      dropboxHome = "${xdgData}/dropbox";
+    in {
       Unit = {
         # After = (if config.modules.proxy.default != null then [
         #   "proxy.services"
@@ -41,7 +35,7 @@ in {
         ];
         ExecStart = "${pkgs.dropbox.out}/bin/dropbox";
         ExecReload = "${pkgs.coreutils.out}/bin/kill -HUP $MAINPID";
-        ExecStop = "${dropbox}/bin/dropbox stop";
+        ExecStop = "${pkg}/bin/dropbox stop";
         KillMode = "control-group"; # upstream recommends process
         Restart = "on-failure";
         PrivateTmp = true;

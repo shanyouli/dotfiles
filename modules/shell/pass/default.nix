@@ -35,11 +35,11 @@ in {
         exts.pass-genphrase
       ] ++ optional config.modules.shell.gnupg.enable exts.pass-tomb);
     })
-    (mkIf ((! cfg.gopassEn) && config.modules.desktop.browsers.firefox.extEnable) {
-      user.packages = [ pkgs.passff-host ];
-      modules.desktop.browsers.firefox.extensions = [ pkgs.firefox-addons.passff ];
-      home.file.".mozilla/native-messaging-hosts/passff.json".source =
-        "${pkgs.passff-host}/share/passff-host/passff.json";
+    (mkIf (! cfg.gopassEn) {
+      modules.desktop.browsers.firefox = {
+        extensions = [ pkgs.firefox-addons.passff ];
+        hosts = [ pkgs.unstable.passff-host ];
+      };
     })
     {
       user.packages = [

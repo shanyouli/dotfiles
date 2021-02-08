@@ -48,7 +48,9 @@ in {
      '';
     modules.shell.zsh.aliases.paria2c = ''aria2c ${proxyArg} -x16 -j16'';
 
-    modules.desktop.browsers.firefox.extensions = [ pkgs.firefox-addons.aria2-gui ];
+    modules.desktop.browsers.firefox.extensions = with pkgs.firefox-addons ;[
+      aria2-manager
+    ];
 
     services.xserver.displayManager.sessionCommands = ''
       ${pkgs.aria2}/bin/aria2c ${proxyArg} --conf-path=${aria2Home}/aria2.conf --daemon

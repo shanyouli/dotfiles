@@ -3,17 +3,6 @@ with lib;
 with lib.my;
 let
   cfg = config.modules.desktop.media.music;
-  myfeeluownFun = pkg: pkgs.symlinkJoin {
-    name = "my-feeluown-" + pkg.version;
-    paths = [ pkg ];
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      for i in $out/bin/* ; do
-        wrapProgram $i \
-          --set HOME "${xdgData}/feeluown"
-      done
-    '';
-  };
 in {
   options.modules.desktop.media.music = {
     enable = mkBoolOpt false;
@@ -33,7 +22,7 @@ in {
       };
     }
     (mkIf cfg.feeluown.enable {
-      user.packages = [ (myfeeluownFun pkgs.my.feeluown-full) ];
+      user.packages = [ (homePkgFun "${xdgData}/feeluown" pkgs.my.feeluown-full) ];
       home.dataFile."feeluown/.fuorc".source = "${configDir}/feeluown/.fuorc";
     })
   ]);
