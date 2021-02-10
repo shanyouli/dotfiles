@@ -139,5 +139,9 @@ in {
       rm -rf $XDG_CONFIG_HOME/mimeapps.list
     '';
     home.configFile."dunst/dunstrc".source = "${configDir}/dunst/dunstrc";
+    # @see https://elementaryos.stackexchange.com/questions/6796/why-does-firefox-keep-creating-a-desktop-folder
+    home.configFile."user-dirs.dirs".text = ''
+      XDG_DESKTOP_DIR="$HOME/"
+    '';
   };
 }

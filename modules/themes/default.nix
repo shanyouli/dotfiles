@@ -100,6 +100,9 @@ in {
           firefox.userChrome = concatMapStringsSep "\n" readFile [
             ./config/firefox/userChrome.css
           ];
+          firefox.userContent = concatMapStringsSep "\n" readFile [
+            ./config/firefox/userContent.css
+          ];
           qutebrowser.userStyles = concatMapStringsSep "\n" readFile
             (map toCSSFile [
               ./config/userstyles/qutebrowser/github.scss

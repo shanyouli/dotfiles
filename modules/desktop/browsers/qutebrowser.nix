@@ -35,15 +35,15 @@ in {
         recursive = true;
       };
       dataFile."qutebrowser/userstyles.css".text = cfg.userStyles;
-      configFile."qutebrowser/config.py".text =
-        let baseFile = lib.readFile "${configDir}/qutebrowser/config.py";
-            proxy = config.modules.proxy.httpPort ;
-        in ''
-          ${baseFile}
-          ${optionalString ( proxy != null ) ''
-            c.content.proxy = "http://127.0.0.1:${toString proxy}"
-          ''}
-        '';
+      configFile."qutebrowser/config.py".text = let
+        baseFile = lib.readFile "${configDir}/qutebrowser/config.py";
+        proxy = config.modules.proxy.httpPort ;
+      in ''
+        ${baseFile}
+        ${optionalString ( proxy != null ) ''
+          c.content.proxy = "http://127.0.0.1:${toString proxy}"
+        ''}
+      '';
     };
   };
 }
