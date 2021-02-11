@@ -435,7 +435,7 @@ Both English and Chinese translation
 (package! english-teacher :recipe (:type git
                                    :host github
                                    :repo "loyalpartner/english-teacher.el"
-                                   :no-byte-compile t))
+                                   ))
 (package! sdcv :recipe (:type git :host github
                         :repo "manateelazycat/sdcv"))
 (package! youdao-dictionary)
