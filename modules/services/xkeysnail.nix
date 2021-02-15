@@ -32,8 +32,8 @@ in {
           # Environment = [ "DISPLAY=:0" ]; 如果无法启动，取消这行注释
           Type = "simple";
           KillMode = "process";
-          ExecStart = "${sudoCmd} ${cmd} --quiet --watch ${cfg.conf}";
-          ExecStop = "${sudoCmd}  ${pkgs.procps}/bin/pkill -9 xkeysnail";
+          ExecStart = "+${cmd} --quiet --watch ${cfg.conf}";
+          ExecStop = "+${pkgs.procps}/bin/pkill -9 xkeysnail";
           Restart = "on-failure";
           RestartSec = "3";
         };

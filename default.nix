@@ -38,6 +38,9 @@ with inputs;
       nixpkgs.flake = nixpkgs-unstable;
     };
     useSandbox = true;
+    # nix-store --optimise : 使用硬链接相同内容减少磁盘占用
+    # 开机自动运行 nix-store --optimise
+    autoOptimiseStore = true;
   };
   system.configurationRevision = mkIf (self ? rev) self.rev;
   system.stateVersion = "20.09";

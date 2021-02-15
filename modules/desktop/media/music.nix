@@ -8,12 +8,14 @@ in {
     enable = mkBoolOpt false;
     feeluown.enable = mkBoolOpt false;
     listen1.enable = mkBoolOpt false;
+    netease.enable = mkBoolOpt false;
   };
   config = mkIf cfg.enable (mkMerge [
     {
       user.packages = [
         (pkgs.ncmpcpp.override { visualizerSupport = true; })
         (mkIf cfg.listen1.enable pkgs.my.listen1)
+        (mkIf cfg.netease.enable pkgs.netease-cloud-music)
       ];
       env.NCMPCPP_HOME = xdgConfig + "/ncmpcpp";
       home.configFile = {

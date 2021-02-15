@@ -48,6 +48,7 @@ in {
         ZSH_CACHE   = "$XDG_CACHE_HOME/zsh";
       };
       user.packages = with pkgs; [
+        xray
         zsh
         nix-zsh-completions
         bat

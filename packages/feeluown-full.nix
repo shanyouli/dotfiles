@@ -37,8 +37,10 @@ in stdenv.mkDerivation rec {
   buildInputs = [ pythonEnv ];
   installPhase = ''
     runHook preInstall
-    for file in bin/*; do
-      makeWrapper "$file" "$out/bin/$(basename "$file")" \
+    mkdir -p $out/bin
+    cp -rv bin/* $out/bin
+    for file in $out/bin/*; do
+      wrapProgram $file  \
         --prefix PYTHONPATH : "${pythonEnv}/${python3Packages.python.sitePackages}"
     done
     mkdir -p "$out/share/applications/"

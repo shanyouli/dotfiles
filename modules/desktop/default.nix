@@ -29,6 +29,7 @@ in {
       xdotool
       wmctrl
       libqalculate  # calculator cli w/ currency conversion
+      eudic
       (makeDesktopItem {
         name = "scratch-calc";
         desktopName = "Calculator";

@@ -29,7 +29,8 @@ super + grave
 super + shift + grave
     $DOTFILES/bin/myemacs scratch
 	# emacsclient -e '(open-scratch-frame)'
-
+super + shift + v
+    $DOTFILES/bin/rofi/clip
 super + space
 	$DOTFILES/bin/rofi/appmenu
 

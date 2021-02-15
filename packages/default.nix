@@ -12,7 +12,7 @@ in rec {
   emacsPackagesFor = emacs: recurseIntoAttrs ((prev.emacsPackagesFor emacs).overrideScope' emacsOverride);
 
   my = {
-    feeluown-full = callPackage ./feeluown-full.nix {};
+    feeluown-full = callPackage ./feeluown-full.nix { };
     fira-sans = callPackage ./fira-sans.nix { };
     xkeysnail = prev.python3Packages.callPackage ./xkeysnail.nix { };
     zyplayer = callPackage ./zy-player.nix {};
@@ -25,4 +25,15 @@ in rec {
   firefox-addons = recurseIntoAttrs (callPackage ./firefox-addons { });
   nerd-fonts = recurseIntoAttrs (callPackage ./nerd-fonts { });
   rime-data = recurseIntoAttrs (callPackage ./rime-data.nix {});
+  libdatrie = callPackage ./libdatrie.nix {};
+  libthai = callPackage ./libthai.nix { inherit libdatrie; };
+  netease-cloud-music = callPackage ./netease-cloud-music.nix {
+    inherit libthai;
+  };
+  eudic = callPackage ./eudic.nix {  };
+  xray-asset = callPackage ./xray-asset.nix {};
+  xray-core = callPackage ./xray-core.nix { };
+  xray = callPackage ./xray.nix {
+    inherit xray-asset xray-core;
+  };
 }
