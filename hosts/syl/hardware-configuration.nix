@@ -19,6 +19,7 @@
 
   ## CPU
   nix.maxJobs = lib.mkDefault 3;
+  nix.buildCores = lib.mkDefault 1;
   powerManagement.cpuFreqGovernor = "performance";
   hardware.cpu.intel.updateMicrocode = true;
 

@@ -273,6 +273,9 @@ Roam Research. Look at [[https://www.youtube.com/playlist?list=PLwXSqDdn_CpE934B
 (use-package! org-roam-server
   :after org-roam
   :commands (my/org-roam-server-open)
+  :init
+  (map! :leader
+        :desc "org-roam-server" "on" #'my/org-roam-server-open)
   :config
   (setq org-roam-server-host "127.0.0.1"
         org-roam-server-port 9091
@@ -284,10 +287,11 @@ Roam Research. Look at [[https://www.youtube.com/playlist?list=PLwXSqDdn_CpE934B
   (defun my/org-roam-server-open ()
     "Ensure the server is active, then open the roam graph."
     (interactive)
-    (org-roam-server-mode 1)
-    (browse-url-xdg-open (format "http://localhost:%d" org-roam-server-port))))
-(map! :leader
-      :desc "org-roam-server" "on" #'my/org-roam-server-open)
+    (let ((sp-mode-p (bound-and-true-p smartparens-global-mode)))
+      (and sp-mode-p (smartparens-global-mode -1))
+      (org-roam-server-mode 1)
+      (and sp-mode-p (smartparens-global-mode 1))
+      (browse-url-xdg-open (format "http://localhost:%d" org-roam-server-port)))))
 #+end_src
 ** org-cliplink
 #+begin_src emacs-lisp :tangle "config.el"

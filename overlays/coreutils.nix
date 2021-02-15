@@ -9,7 +9,7 @@ final: prev: {
         (final.fetchpatch {
           name = "advcpmv-0.8-8.31.patch";
           url = "https://github.com/jarun/advcpmv/raw/master/advcpmv-0.8-8.31.patch";
-          sha256 = "0m0plga0m9q8rcg9s2sihxap31q1z64a74jaypvyjzy01gcmccnq";
+          sha256 = "sha256-oLSa7n9Cnmn49kJ4YMj/MetvA4eVaDpjWSQcXp/wDgk=";
         })] else if o.version == "8.30" then [
           (final.fetchpatch {
             name = "advcpmv-0.8-8.30.patch";

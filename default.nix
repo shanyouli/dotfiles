@@ -62,7 +62,7 @@ with inputs;
   # Just the bear necessities...
   environment.systemPackages = with pkgs; let
     my-wget = let
-      flags = ''--hsts-file="${xdgConfig}/wget-hsts" -c'';
+      flags = ''--hsts-file="${xdgCache}/wget-hsts" -c'';
     in symlinkJoin {
       name = "my-wget-${wget.version}";
       paths = [ wget ];

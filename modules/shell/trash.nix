@@ -15,7 +15,7 @@ in {
       "rmt" = "trash-empty";
     };
     services.xserver.displayManager.sessionCommands = ''
-      ${pkgs.trash-cli}/bin/trash-empty 30
+      ${pkgs.trash-cli}/bin/trash-empty 7
     '';
   };
 }

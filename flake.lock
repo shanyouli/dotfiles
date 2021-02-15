@@ -53,7 +53,7 @@
     },
     "nixpkgs": {
       "locked": {
-        "narHash": "sha256-OKgdOdR9DbaZvu44YsBWg8MiGHN6AjrYWY6ZTX6ogJU=",
+        "narHash": "sha256-y9OKMQFWaULQgsEl2Otr5qfZCQrcVVtDAXwn5FR3dCM=",
         "type": "tarball",
         "url": "https://mirrors.ustc.edu.cn/nix-channels/nixos-20.09/nixexprs.tar.xz"
       },
