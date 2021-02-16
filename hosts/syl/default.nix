@@ -59,9 +59,10 @@
       nix.enable = true;
     };
     proxy = {
-      default = "v2ray";
-      clash.enable = true;
-      v2ray.enable = true;
+    #  default = "v2ray";
+    #  clash.enable = true;
+    #  v2ray.enable = true;
+      xray.enable = true;
       # v2ray.asset = false;
       # v2ray.vless = false;
     };

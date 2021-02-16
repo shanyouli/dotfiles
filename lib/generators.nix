@@ -27,7 +27,15 @@ with lib;
               convert ${options} ${imageFile} $out/${result}
             '';
     in "${filteredImage}/${result}";
-
+  text.substitution = file: old: new:
+    let fileName = builtins.baseNameOf file;
+        subCommand = runCommand "substitutionTxt" {
+          buildInputs = [ gnused ];
+        } ''
+          mkdir "$out"
+          sed s@${old}@${new}@g ${file} >> $out/${fileName}
+        '';
+    in "${subCommand}/${fileName}";
   homePkgFun = home: pkg: pkgs.symlinkJoin {
     name = "my-" + (if (pkg ? pname)
                     then pkg.pname + "-" + pkg.version

@@ -199,13 +199,13 @@ label-warn-foreground = ${colors.bg-alt}
 type = internal/network
 interface = ${env:WLP:wlp4s0}
 interval = 3.0
-format-connected = <ramp-signal><label-connected>
-
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-background = ${colors.cyan}
-ramp-signal-0-background = ${colors.bg}
+;;format-connected = <ramp-signal><label-connected>
+format-connected = <label-connected>
+; ramp-signal-0 = 
+; ramp-signal-1 = 
+; ramp-signal-2 = 
+; ramp-signal-background = ${colors.cyan}
+; ramp-signal-0-background = ${colors.bg}
 label-connected = ${env:SPEED_FORMAT:"%upspeed% %downspeed%"}
 format-disconnected =
 

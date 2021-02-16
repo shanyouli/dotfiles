@@ -34,7 +34,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = [ aria2 ];
+    user.packages = [ aria2  pkgs.annie ];
 
     home.configFile."aria2/aria2.conf".text =
       let other = "${configDir}/aria2/aria2.conf";

@@ -36,4 +36,5 @@ in rec {
   xray = callPackage ./xray.nix {
     inherit xray-asset xray-core;
   };
+  annie = callPackage ./annie.nix {};
 }
