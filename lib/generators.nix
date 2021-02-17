@@ -29,11 +29,12 @@ with lib;
     in "${filteredImage}/${result}";
   text.substitution = file: old: new:
     let fileName = builtins.baseNameOf file;
-        subCommand = runCommand "substitutionTxt" {
-          buildInputs = [ gnused ];
+        subCommand = pkgs.runCommand "substitutionTxt" {
+          buildInputs = [ pkgs.gnused pkgs.coreutils ];
         } ''
           mkdir "$out"
-          sed s@${old}@${new}@g ${file} >> $out/${fileName}
+          install ${file} $out/${fileName}
+          sed -i "s|${old}|${new}|g" $out/${fileName}
         '';
     in "${subCommand}/${fileName}";
   homePkgFun = home: pkg: pkgs.symlinkJoin {

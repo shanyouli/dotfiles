@@ -243,7 +243,6 @@ in {
           comment = "Edit text";
           terminal = "false";
           categories = "Development;TextEditor";
-          extraEntries = "StartupWMClass=EmacsD";
         })
       ];
       services.xserver.displayManager.sessionCommands = "${binDir}/myemacs daemon";

@@ -15,6 +15,7 @@ in {
     env =
       let gopath = "$XDG_DATA_HOME/go";
       in {
+        GO111MODULE = "auto";
         GOROOT = "${pkgs.go.out}/share/go";
         GOPATH = "${gopath}";
         PATH = [ "${gopath}/bin" ];

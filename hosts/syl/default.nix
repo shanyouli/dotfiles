@@ -58,21 +58,15 @@
 	  node.enable = true;
       nix.enable = true;
     };
-    proxy = {
-    #  default = "v2ray";
-    #  clash.enable = true;
-    #  v2ray.enable = true;
-      xray.enable = true;
-      # v2ray.asset = false;
-      # v2ray.vless = false;
-    };
     services = {
+      xray.enable = true;
       clipmenu.enable = true;
       dropbox.enable = true;
       docker.enable = true;
       xkeysnail.enable = true;
     };
     shell = {
+      mirrors.enable = true;
       pass.enable = true;
       adb.enable = true;
       aria2.enable = true;

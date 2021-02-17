@@ -54,6 +54,8 @@ in {
           "browser.download.dir" = "${homeDir}/Downloads";
           "browser.download.folderList" = 2;
           "browser.startup.homepage" = "about:blank";
+          # Resume the previous browser session
+          "browser.startup.page" = 3;
           # Don't use the built-in password manager; a nixos user is more likely
           # using an external one (you are using one, right?).
           "signon.rememberSignons" = false;
@@ -126,6 +128,9 @@ in {
           "datareporting.healthreport.uploadEnabled" = false;
           "datareporting.healthreport.service.enabled" = false;
           "datareporting.policy.dataSubmissionEnabled" = false;
+          # override fallback order since Firefox doesn't look for LC_CTYPE or
+          # follow the language of the page content to display tab titles
+          "font.cjk_pref_fallback_order" = "ja,zh-cn,zh-hk,zh-tw,ko";
         };
       };
     }
@@ -140,7 +145,7 @@ in {
           '';
           extraNativeMessagingHosts = cfg.hosts;
           nixExtensions = if cfg.extEn then  cfg.extensions else null;
-        in pkgs.unstable.wrapFirefox pkgs.unstable.firefox-unwrapped {
+        in pkgs.my.wrapFirefox pkgs.firefox-esr-78-unwrapped {
           inherit extraPrefs extraNativeMessagingHosts nixExtensions;
         };
       in [ (homePkgFun "${xdgData}/firefox" basepkg) ];

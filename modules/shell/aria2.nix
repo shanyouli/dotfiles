@@ -4,11 +4,9 @@ with lib.my;
 let
   cfg = config.modules.shell.aria2;
   aria2Home = "${xdgConfig}/aria2";
-  proxyArg =
-    let port = config.modules.proxy.httpPort;
-    in if port != null
-       then "--all-proxy=http://127.0.0.1:${toString port}"
-       else "";
+  proxyArg = if config.modules.shell.mirrors.enable
+             then "--all-proxy=http://127.0.0.1:7890"
+             else "";
   aria2     = (pkgs.writeScriptBin "aria2c" ''
             #!${pkgs.stdenv.shell}
             exec ${pkgs.aria2}/bin/aria2c --no-conf true "$@"

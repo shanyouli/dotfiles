@@ -1,18 +1,33 @@
 { config, options, lib, pkgs, ... }:
 with lib;
 with lib.my;
+
 let
   inherit (pkgs) gnugpre iptables iproute;
-  cfg = config.modules.proxy.xray;
-  cfgdir = "/etc/xray-config";
+  cfg = config.modules.services.xray;
+  cfgdir = "/etc/xray";
+  logScript = let
+    logDir = "/var/log/xray";
+    utilsBin = "${pkgs.coreutils}/bin";
+  in ''
+    [[ -d ${logDir} ]] || ${utilsBin}/mkdir -p ${logDir}
+    ${utilsBin}/chown -R ${cfg.xrayUserName}  ${logDir}
+  '';
 in {
-  options.modules.proxy.xray = {
+  options.modules.services.xray = {
     enable = mkBoolOpt false;
-    vless.enable = mkBoolOpt true;
+    xtls.enable = mkBoolOpt true;
+    tproxy.enable = mkBoolOpt true;
+
     configDir = mkOpt' types.str "${cfgdir}" ''
       The dir wher xray configuration form.
     '';
-    pkg = mkOpt' types.package pkgs.xray "default package.";
+
+    pkg = mkOpt' types.package pkgs.xray ''
+      default package. Sometimes can use xray v2ray replaced,
+      but cannot use XTLS configuration
+    '';
+
     xrayUserName = mkOption {
       type = types.str;
       default = "xray";
@@ -21,6 +36,12 @@ in {
         will be created automatically.
       '';
     };
+
+    # 是否开启 log file
+    logDirEnable = mkBoolOpt true;
+
+    # 当可用 cdn 时，修改地址
+    cloudIp = mkStrOpt null;
   };
 
   config = mkIf cfg.enable {
@@ -28,16 +49,42 @@ in {
       description = "xray Daemon user";
       isSystemUser = true;
     };
-    boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+    environment.etc = mkMerge [
+      {
+        "xray/00_log.json".source = "${configDir}/xray/00_log.json";
+        "xray/02_dns.json".source = "${configDir}/xray/02_dns.json";
+        "xray/03_routing.json".source = "${configDir}/xray/03_routing.json";
+        "xray/05_inbounds.json".source = "${configDir}/xray/05_inbounds.json";
+        "xray/06_outbounds.json".source =
+          if cfg.xtls.enable
+          then "${configDir}/secret/xtls.json"
+          else if (cfg.cloudIp != null)
+          then (text.substitution
+            ../../config/secret/vless.json
+            ''\"address\":.*,''
+            ''\"address\": \"${cfg.cloudIp}\",''
+          ) else "${configDir/secret/vless.json}";
+      }
+      (mkIf cfg.logDirEnable {
+        "xray/10_logs.json".text = ''
+          {
+            "log": {
+              "error": "/var/log/xray/error.log",
+              "access": "/var/log/xray/access.log"
+            }
+          }
+        '';
+      })
+    ];
+
+    boot.kernel.sysctl = (mkIf cfg.tproxy.enable {
+      "net.ipv4.ip_forward" = 1;
+    });
+
     systemd.services.xray-transproxy = let
       ipt = "${iptables}/bin/iptables";
       ip = "${iproute}/bin/ip";
       preStartScript = pkgs.writeShellScript "xray-prestart" ''
-        [[ -d /var/log/xray ]] || ${pkgs.coreutils}/bin/mkdir -p /var/log/xray
-        for file in "error.log" "access.log"; do
-          [[ -f $file ]] && ${pkgs.coreutils}/bin/touch $file
-        done
-        ${pkgs.coreutils}/bin/chown -R ${cfg.xrayUserName} /var/log/xray
         ${ip} route add local default dev lo table 100 # 添加路由表 100
         ${ip} rule add fwmark 1 table 100 # 为路由表 100 设定规则
         ${ipt} -t mangle -N XRAY
@@ -46,6 +93,7 @@ in {
         ${ipt} -t mangle -A XRAY -d 127.0.0.0/8 -j RETURN
         ${ipt} -t mangle -A XRAY -d 169.254.0.0/16 -j RETURN
         ${ipt} -t mangle -A XRAY -d 172.16.0.0/12 -j RETURN
+        ${ipt} -t mangle -A V2RAY -s 172.17.0.0/16 -j RETURN
         ${ipt} -t mangle -A XRAY -d 192.0.0.0/24 -j RETURN
         ${ipt} -t mangle -A XRAY -d 224.0.0.0/4 -j RETURN
         ${ipt} -t mangle -A XRAY -d 240.0.0.0/4 -j RETURN
@@ -62,6 +110,10 @@ in {
         ${ipt} -t mangle -A XRAY_SELF -d 127.0.0.0/8 -j RETURN
         ${ipt} -t mangle -A XRAY_SELF -d 169.254.0.0/16 -j RETURN
         ${ipt} -t mangle -A XRAY_SELF -d 172.16.0.0/12 -j RETURN
+
+        ${ipt} -t mangle -A XRAY_SELF -d 172.17.0.0/16 -j RETURN
+        ${ipt} -t mangle -A XRAY_SELF -s 172.17.0.0/16 -j RETURN
+
         ${ipt} -t mangle -A XRAY_SELF -d 192.0.0.0/24 -j RETURN
         ${ipt} -t mangle -A XRAY_SELF -d 224.0.0.0/4 -j RETURN
         ${ipt} -t mangle -A XRAY_SELF -d 240.0.0.0/4 -j RETURN
@@ -82,22 +134,30 @@ in {
       description = "xray transparent proxy service";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
-      script =
-        "exec ${cfg.pkg}/bin/xray run  -confdir ${cfg.configDir}";
+      script = ''
+        ${lib.optionalString cfg.logDirEnable ''
+          ${logScript}
+        ''}
+        exec ${cfg.pkg}/bin/xray run  -confdir ${cfg.configDir}
+      '';
 
       # Don't start if the config file doesn't exist.
       unitConfig = { ConditionPathExists = "${cfg.configDir}"; };
-      serviceConfig = {
-        ExecStartPre =
-          "+${preStartScript}"; # Use prefix `+` to run iptables as root/
-        ExecStopPost = "+${postStopScript}";
-        # CAP_NET_BIND_SERVICE: Bind arbitary ports by unprivileged user.
-        # CAP_NET_ADMIN: Listen on UDP.
-        AmbientCapabilities =
-          "CAP_NET_BIND_SERVICE CAP_NET_ADMIN"; # We want additional capabilities upon a unprivileged user.
-        User = cfg.xrayUserName;
-        Restart = "on-failure";
-      };
+      serviceConfig = (mkMerge [
+        {
+          Restart = "on-failure";
+          User = cfg.xrayUserName;
+        }
+        (mkIf cfg.tproxy.enable {
+          ExecStartPre =
+            "+${preStartScript}"; # Use prefix `+` to run iptables as root/
+          ExecStopPost = "+${postStopScript}";
+          # CAP_NET_BIND_SERVICE: Bind arbitary ports by unprivileged user.
+          # CAP_NET_ADMIN: Listen on UDP.
+          AmbientCapabilities =
+            "CAP_NET_BIND_SERVICE CAP_NET_ADMIN"; # We want additional capabilities upon a unprivileged user.
+        })
+      ]);
     };
   };
 }

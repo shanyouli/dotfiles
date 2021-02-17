@@ -20,6 +20,7 @@ in rec {
     tmuxifier = callPackage ./tmuxifier.nix {};
     wqy-microhei = callPackage ./wqy-microhei-rk.nix {};
     icons-in-terminal = callPackage ./icons-in-terminal.nix {};
+    wrapFirefox = callPackage ./firefox-wrapper.nix {};
   };
   zinit = callPackage ./zinit.nix {};
   firefox-addons = recurseIntoAttrs (callPackage ./firefox-addons { });
@@ -32,9 +33,6 @@ in rec {
   };
   eudic = callPackage ./eudic.nix {  };
   xray-asset = callPackage ./xray-asset.nix {};
-  xray-core = callPackage ./xray-core.nix { };
-  xray = callPackage ./xray.nix {
-    inherit xray-asset xray-core;
-  };
+  xray = callPackage ./xray.nix { inherit xray-asset; };
   annie = callPackage ./annie.nix {};
 }
