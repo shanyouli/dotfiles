@@ -60,6 +60,8 @@
     };
     services = {
       xray.enable = true;
+      xray.xtls.enable = false;
+      xray.cloudIp = "104.16.209.216";
       clipmenu.enable = true;
       dropbox.enable = true;
       docker.enable = true;

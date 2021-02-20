@@ -21,6 +21,7 @@ in rec {
     wqy-microhei = callPackage ./wqy-microhei-rk.nix {};
     icons-in-terminal = callPackage ./icons-in-terminal.nix {};
     wrapFirefox = callPackage ./firefox-wrapper.nix {};
+    signwriting = callPackage ./signwriting.nix {};
   };
   zinit = callPackage ./zinit.nix {};
   firefox-addons = recurseIntoAttrs (callPackage ./firefox-addons { });

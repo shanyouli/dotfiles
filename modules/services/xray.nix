@@ -70,7 +70,8 @@ in {
           {
             "log": {
               "error": "/var/log/xray/error.log",
-              "access": "/var/log/xray/access.log"
+              "access": "/var/log/xray/access.log",
+              "loglevel": "debug"
             }
           }
         '';
@@ -88,12 +89,15 @@ in {
         ${ip} route add local default dev lo table 100 # 添加路由表 100
         ${ip} rule add fwmark 1 table 100 # 为路由表 100 设定规则
         ${ipt} -t mangle -N XRAY
+        # dns 国内直连
+
         ${ipt} -t mangle -A XRAY -d 10.0.0.0/8 -j RETURN
         ${ipt} -t mangle -A XRAY -d 100.64.0.0/10 -j RETURN
         ${ipt} -t mangle -A XRAY -d 127.0.0.0/8 -j RETURN
         ${ipt} -t mangle -A XRAY -d 169.254.0.0/16 -j RETURN
         ${ipt} -t mangle -A XRAY -d 172.16.0.0/12 -j RETURN
-        ${ipt} -t mangle -A V2RAY -s 172.17.0.0/16 -j RETURN
+        ${ipt} -t mangle -A XRAY -d 172.17.0.0/16 -j RETURN
+        ${ipt} -t mangle -A XRAY -s 172.17.0.0/16 -j RETURN
         ${ipt} -t mangle -A XRAY -d 192.0.0.0/24 -j RETURN
         ${ipt} -t mangle -A XRAY -d 224.0.0.0/4 -j RETURN
         ${ipt} -t mangle -A XRAY -d 240.0.0.0/4 -j RETURN

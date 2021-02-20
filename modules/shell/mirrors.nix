@@ -39,7 +39,9 @@ in {
         unset "https_proxy" "http_proxy" "all_proxy" "rsync_proxy" "ftp_proxy"
       }
     '';
-    virtualisation.docker.extraOptions = ''--registry-mirror "https://hub-mirror.c.163.com"'';
+    virtualisation.docker.extraOptions = ''
+      --registry-mirror "https://hub-mirror.c.163.com" \
+      --registry-mirror "https://mirror.baidubce.com"'';
     modules.dev.node.rcInit = ''
       registry=https://registry.npm.taobao.org
     '';

@@ -14,7 +14,7 @@ in {
           symbola
           font-awesome-ttf
           my.icons-in-terminal
-
+          my.signwriting
           joypixels                 # emoji
           my.wqy-microhei           # chinese
           my.fira-sans              # sans-serif

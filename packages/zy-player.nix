@@ -4,11 +4,11 @@
 let
   inherit (appimageTools) extractType2 wrapType2;
   pname = "zy";
-  version = "2.7.2";
+  version = "2.7.3";
   name = "${pname}-${version}";
   src = fetchurl {
     url = "https://github.com/Hunlongyu/ZY-Player/releases/download/v${version}/ZY-Player-${version}.AppImage";
-    sha256 = "1dr8392jzf64b9g28yk1r3bd3m0an58fk0lrm970ziw8vv9gddn5";
+    sha256 = "1v2as2mmzxjcdlg02nlqg5jmwrsqlr20caigw62as0wg4lb81csh";
   };
   appimageContents = extractType2 { inherit name src; };
 in wrapType2 rec {

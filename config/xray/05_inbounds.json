@@ -30,6 +30,7 @@
             "port": 7892,
             "protocol": "dokodemo-door",
             "settings": {
+				"address": "https+local://rubyfish.cn/dns-query",
                 "network": "tcp,udp",
                 "followRedirect": true
             },

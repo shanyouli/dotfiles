@@ -130,7 +130,7 @@ in {
           "datareporting.policy.dataSubmissionEnabled" = false;
           # override fallback order since Firefox doesn't look for LC_CTYPE or
           # follow the language of the page content to display tab titles
-          "font.cjk_pref_fallback_order" = "ja,zh-cn,zh-hk,zh-tw,ko";
+          "font.cjk_pref_fallback_order" = "zh-cn,zh-hk,zh-tw,ja,ko";
         };
       };
     }
