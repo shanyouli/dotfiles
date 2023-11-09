@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+#
+
+wid=$1
+class=$2
+instance=$3
+consequences=$4
+
+wm_msg=( $(bspc wm -d | jq -r '.monitors[0] | .name as $n | .rectangle | "\($n)\t\(.width)\t\(.height)"') )
+wMsg=$(xprop -id $wid)
+wmTitle=$(echo -e "$wMsg" | awk -F'"' '/^WM_NAME/ {printf $2}')
+wmRole=$(echo -e "$wMsg" | awk -F '"' '/^WM_WINDOW_ROLE/ {printf $2}')
+
+_multip_int() { echo "$1 $2" | awk '{printf("%.0f", $1*$2)}'; }
+
+_resize() {
+  local width=$(_multip_int ${wm_msg[1]} $1)
+  local height=$(_multip_int ${wm_msg[2]} $2)
+  local x=0
+  local y=0
+  case $3 in
+    rb) y=$((${wm_msg[2]} - ${height} - 2))     # Rigth botom
+        x=$((${wm_msg[1]} - ${width}  - 2)) ;;
+    lb) y=$((${wm_msg[2]} - ${height} - 2)) ;;     # Left botom
+    rt) x=$((${wm_msg[1]} - ${width}  - 2)) ;;
+  esac
+  echo "rectangle=${width}x${height}+${x}+${y}"
+}
+case "$wmRole" in
+  quake) #Tilix Quake
+    echo "state=floating border=off"
+  ;;
+  pop-up|bubble|task_dialog|Preferences|dialog|menu)
+    echo "state=floating"
+   ;;
+  About|Organizer|Buscando) #Firefox
+    echo "state=floating"
+  ;;
+  GtkFileChooserDialog)
+    echo "state=floating center=on border=on"
+    _resize 0.618 0.618
+    ;;
+  *)
+    if [[ $class == Emacs ]]; then
+      case "$wmTitle" in
+        base)
+          echo "state=floating center=off border=1"
+          _resize 0.5 0.5 rb
+          ;;
+        emacs-client)
+          echo "center=on state=floating border=1"
+          _resize 0.618 0.618
+          ;;
+        scratch)
+          echo "desktop=^6 center=on state=tiled border=1"
+          _resize 0.618 0.618
+          ;;
+        *)
+          echo "center=on state=floating border=1"
+          _resize 0.618 0.618
+      esac 
+    elif [[ $class == "VirtualBox Machine" ]]; then
+		echo "desktop=^5 center=on state=floating border=1"
+    fi
+    ;;
+esac
+

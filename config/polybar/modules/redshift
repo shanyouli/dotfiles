@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# Specifying the icon(s) in the script
+# This allows us to change its appearance conditionally
+function main() {
+    function _get_color() { xrdb -query | grep "color$1:" | cut -f2 ; }
+    function _status() {
+        if pgrep redshift >/dev/null; then
+            temp=$(redshift -p 2>/dev/null | grep temp | cut -d' ' -f3)
+            temp=${temp//K/}
+        fi
+        icon=""
+        if [[ -z $temp ]]; then
+            echo "%{F$(_get_color 240)}$icon"       # Greyed out (not running)
+        elif [[ $temp -ge 5000 ]]; then
+            echo "%{F$(_get_color 4)}$icon"       # Blue
+        elif [[ $temp -ge 4000 ]]; then
+            echo "%{F$(_get_color 3)}$icon"       # Yellow
+        else
+            echo "%{F$(_get_color 1)}$icon"       # Orange
+        fi
+    }
+    function _get_redshift_service() {
+        systemctl --type=service --user list-unit-files | grep redshift | grep -v disabled >/dev/null || return 1
+    }
+    function _stop() {
+        if _get_redshift_service ; then
+            systemctl --user stop redshift
+        else
+            pkill -9 redshift
+        fi
+    }
+    function _start() {
+        if _get_redshift_service ; then
+            systemctl --user start redshift
+        else
+            redshift >/dev/null &
+        fi
+    }
+    function _restart() {
+        if _get_redshift_service ; then
+            systemctl --user restart redshift
+        else
+            pgrep -f redshift || pkill -9 redshift
+            redshift >/dev/null &
+        fi
+    }
+
+    case "$1" in
+        status) _status ;;
+        stop) _stop ;;
+        start) _start ;;
+        restart) _restart ;;
+        *) _status ;;
+    esac
+}
+main "$@"

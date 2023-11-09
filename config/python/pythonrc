@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+"""python startup"""
+# see https://bugs.python.org/msg318437
+import atexit
+import os
+import readline
+
+if 'XDG_CACHE_HOME' in os.environ:
+    history = os.path.join(os.path.expanduser(os.environ['XDG_CACHE_HOME']),
+                           'python_history')
+else:
+    histfile = os.path.join(os.path.expanduser("~"), ".cache/python_history")
+
+try:
+    readline.read_history_file(histfile)
+    # default history len is -1 (infinite), which may grow unruly
+    readline.set_history_length(1000)
+except FileNotFoundError:
+    pass
+
+atexit.register(readline.write_history_file, histfile)

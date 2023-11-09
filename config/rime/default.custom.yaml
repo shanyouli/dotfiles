@@ -1,0 +1,19 @@
+patch:
+  "menu/page_size": 9
+  schema_list:
+    - schema: clover
+    - schema: luna_pinyin
+  "switcher/hotkeys":  # 这个列表里每项定义一个快捷键，使哪个都中
+    # - "Control+s"      # 添加 Ctrl+s
+    - "Control+grave"  # 你看写法并不是 Ctrl+` 而是与 IBus 一致的表示法
+    # - F4
+
+  # Mac 系统上的鼠须管不能区分左、右，因此只有对 Shift_L, Control_L 的设定起作用
+  ascii_composer/good_old_caps_lock: true
+  ascii_composer/switch_key:
+    Caps_Lock: commit_code
+    Eisu_toggle: clear
+    Shift_L: commit_code
+    Shift_R: commit_code
+    Control_L: noop
+    Control_R: noop

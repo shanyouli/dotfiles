@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# case $HOSTNAME in
+#   kuro)  export LAN=eno1   ;;
+#   shiro) export LAN=wlp3s0 ;;
+# esac
+
+export MONITOR=$(xrandr -q | grep primary | cut -d' ' -f1)
+export MONITORS=( $(xrandr -q | grep ' connected' | cut -d' ' -f1) )
+MONITOR=${MONITOR:-${MONITORS[0]}}
+
+export LAN=${LAN:-$(grep "^en.*" /proc/net/dev | cut -d":" -f1)}
+export WLP=${WLP:-$(grep "^wlp.*" /proc/net/dev | cut -d":" -f1)}
+
+wmMsg=($(bspc wm -d | jq -r '.monitors[0] | .name as $n | .rectangle | "\($n)\t\(.width)\t\(.height)"'))
+
+_multip_int() { echo "$1 $2" | awk '{printf("%.0f", $1*$2)}'; }
+
+# Only have workspaces for primary monitor
+bspc monitor $MONITOR -d {1,2,3,4,5,6,7}
+
+bspc config remove_disabled_monitors true
+bspc config remove_unplugged_monitors true
+
+bspc config borderless_monocle true
+bspc config gapless_monocle true
+
+bspc config border_width 1
+bspc config window_gap 0
+
+# Extra padding for polybar
+bspc config -m primary top_padding 18
+bspc config -m primary bottom_padding 0
+
+bspc config split_ratio 0.55
+
+# Rules
+bspc rule -r '*'
+# bspc rule -a (<class_name>|*)[:(<instance_name>|*)[:(<name>|*)]]
+bspc rule -a Pinentry state=floating center=on
+bspc rule -a Firefox desktop='^1' split_ratio=0.382
+bspc rule -a feh state=fullscreen
+bspc rule -a Fcitx-config-gtk3 state=floating
+bspc rule -a '*:scratch' state=floating sticky=on center=on border=off \
+  rectangle=$(_multip_int ${wmMsg[1]} 0.618)x$(_multip_int ${wmMsg[2]} 0.618)+0+0
+bspc rule -a '*:ttmux' desktop='^7' state=titled border=on
+
+bspc config external_rules_command "$XDG_CONFIG_HOME/bspwm/xtitle"
+#
+for file in $XDG_CONFIG_HOME/bspwm/rc.d/*; do
+  source "$file"
+done

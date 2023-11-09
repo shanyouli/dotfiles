@@ -1,0 +1,19 @@
+{ self, lib, ... }:
+
+with builtins;
+with lib;
+rec {
+  # ...
+  dotFilesDir = toString ../.;
+  modulesDir  = "${dotFilesDir}/modules";
+  configDir   = "${dotFilesDir}/config";
+  binDir      = "${dotFilesDir}/bin";
+  themesDir   = "${modulesDir}/themes";
+  homeDir = "/home/${let name = getEnv "USERNAME"; in
+                     if elem name [ "" "root" ]
+                     then "syl" else name}";
+  xdgConfig = "${homeDir}/.config";
+  xdgCache  = "${homeDir}/.cache";
+  xdgData   = "${homeDir}/.local/share";
+  xdgBin    = "${homeDir}/.local/bin";
+}

@@ -1,0 +1,51 @@
+{
+    "inbounds": [
+        {
+            "tag": "http-in",
+            "protocol": "http",
+            "listen": "0.0.0.0",
+            "port": 7890,
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [ "http", "tls" ]
+            }
+        },
+        {
+            "tag": "socks-in",
+            "protocol": "socks",
+            "listen": "0.0.0.0",
+            "port": 7891,
+            "settings": {
+                "ip": "127.0.0.1",
+                "udp": true,
+                "auth": "noauth"
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [ "http", "tls" ]
+            }
+        },
+        {
+            "tag": "all-in",
+            "port": 7892,
+            "protocol": "dokodemo-door",
+            "settings": {
+				"address": "https+local://rubyfish.cn/dns-query",
+                "network": "tcp,udp",
+                "followRedirect": true
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls"
+                ]
+            },
+            "streamSettings": {
+                "sockopt": {
+                    "tproxy": "tproxy"
+                }
+            }
+        }
+    ]
+}

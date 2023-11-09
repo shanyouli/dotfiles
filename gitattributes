@@ -1,0 +1,3 @@
+/config/clash/** filter=git-crypt diff=git-crypt
+/config/v2ray/** filter=git-crypt diff=git-crypt
+/config/secret/** filter=git-crypt diff=git-crypt

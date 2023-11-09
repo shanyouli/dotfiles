@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+
+GRUVBOX_THEME="@tmux-gruvbox"
+GRUVBOX_SYMBOL="@gruvbox-symbol"
+function _theme_is_light() {
+  [[ $(tmux show-option -gqv "$GRUVBOX_THEME") == light ]] || return 1
+}
+function _gruvbox_using_symbol() {
+   [[ $(tmux show-option -gqv "$GRUVBOX_SYMBOL") == true ]] || return 1
+}
+
+set() {
+   local option=$1
+   local value=$2
+   tmux set-option -gq "$option" "$value"
+}
+
+setw() {
+   local option=$1
+   local value=$2
+   tmux set-window-option -gq "$option" "$value"
+}
+
+if _theme_is_light ; then
+  bg="#fbf1c7" # s: #f2e5bc h: #f9f5d7
+  bg1="#ebdbb2"
+  bg2="#d5c4a1"
+  bg3="#bdae93"
+  fg1="#3c3836"
+  fg2="#504945"
+  fg3="#665c54"
+  fg4="#7c6f64"
+  red="#9d0006"
+  yellow="#b57614"
+  blue="#657b83"
+else
+   bg="#282828" # s #32302f h: #1d2021
+   bg1="#3c3836"
+   bg2="#504945"
+   bg3="#665c54"
+   fg1="#ebdbb2"
+   fg2="#d5c4a1"
+   fg3="#bdae93"
+   fg4="#a89984";
+   red="#fb4934"
+   yellow="#fabd2f"
+   blue="#83a598"
+fi
+
+set "status" "on" # Enable TMUX status bar
+set "status-position" "bottom" # Set the status bar position below, or "top"
+
+# default statusbar color
+set "status-style" bg=${bg1},fg=${fg1}
+
+# default window title colors
+setw "window-status-style" bg=${yellow},fg=${bg1}
+
+# default window with an activity alert
+setw "window-status-activity-style" bg=${bg1},fg=${fg3}
+
+# active window title colors
+setw "window-status-current-style" bg=red,fg=${bg1}
+
+# pane border
+set "pane-active-border-style" fg=${fg2}
+set "pane-border-style" fg=${bg1}
+
+# message infos
+set "message-style" bg=${bg2},fg=${fg1}
+
+# writing commands inactive
+set "message-command-style" bg=${fg3},fg=${bg1}
+
+# pane number display
+set "display-panes-active-colour" ${fg2}
+set "display-panes-colour" ${bg1}
+
+# clock
+setw "colock-mode-colour" ${blue}
+
+# bell
+setw "window-status-bell-style" bg=${red},fg=${bg}
+
+## Theme settings mixed with colors (unfortunately, but there is no cleaner way)
+set "status-justify" "left"
+set "status-left-style" none
+set "status-left-length" "80"
+set "status-right-style" "none"
+set "status-right-length" "80"
+setw "window-status-separator" ""
+
+# prefix-highlight
+set "@prefix_highlight_empty_prompt" "#[bg=${fg3},fg=${bg1}] #h"
+set "@prefix_highlight_fg" "$bg1"
+set "@prefix_highlight_bg" "$fg3"
+set "@prefix_highlight_copy_mode_attr" "fg=$bg1,bg=$fg3"
+set "@prefix_highlight_output_prefix" ""
+
+if _gruvbox_use_symbol ; then
+  set "status-left" "#[bg=${bg3},fg=${fg3}] #S #[bg=${bg1},fg=${bg3},nobold,noitalics,nounderscore]"
+  set "status-right" "#[bg=${bg1},fg=${bg2} nobold, nounderscore, noitalics]#[bg=${bg2},fg=${fg4}] %Y-%m-%d  %H:%M #[bg=${bg2},fg=${fg3},nobold,noitalics,nounderscore]#{prefix_highlight}"
+
+  setw "window-status-current-format" "#[bg=${yellow},fg=${bg1},nobold,noitalics,nounderscore]#[bg=${yellow},fg=${bg2}] #I #[bg=${yellow},fg=${bg2},bold] #W #[bg=${bg1},fg=${yellow},nobold,noitalics,nounderscore]"
+  setw "window-status-format" "#[bg=${bg2},fg=${bg1},noitalics]#[bg=${bg2},fg=${fg1}] #I #[bg=${bg2},fg=${fg1}] #W #[bg=${bg1},fg=${bg2},noitalics]"
+else
+  set "status-left-length" "40"
+  set "status-justify"  "centre"
+  set "status-left" "#[fg=${yellow}]W:#I #[fg=${blue}]P:#P"
+  #S
+  set "status-right" "#[bg=${bg2},f${fg4}] %Y-%m-%d %H:%M #{prefix_highlight}"
+  setw "window-status-current-format" "#[bg=${yellow},fg=${bg1}] #W"
+  setw "window-status-format" "#[bg=${blue},fg=${bg1}] #W"
+fi

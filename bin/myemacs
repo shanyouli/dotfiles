@@ -1,0 +1,124 @@
+#!/usr/bin/env bash
+#
+
+set -e
+
+SERNAME="main"
+CMD="emacsclient --socket-name=main"
+# Fix incompatible terminals that cause odd 'not a valid terminal' errors
+[[ $TERM = "alacritty" ]] && export TERM=xterm-256color
+
+function main {
+  function _usage {
+    echo "USage: myemacs COMMAND "
+    echo
+    echo "Availabe commands:"
+    echo "  scratch            Open a Scratch Frame."
+    echo "  desktop (de)       As Desktop shortcut."
+    echo "  oc (org-capture)   Open org-capture(TODO)."
+    echo "  da (daemon)        Start Emacs-daemon"
+    echo "  be (base)          default open."
+    echo "  kill (exit|quit)   Stop emacs daemon."
+    echo "  re (restart)       restart emacs daemon."
+    echo "  help               Help."
+  }
+
+  function _daemon {
+    # if ! $CMD --suppress-output --eval nil >/dev/null; then
+    if ! pgrep -f "emacs --daemon=$SERNAME" ; then
+      local input_met=${_EMACS_USING_INPUT:-rime}
+      local serfile="/run/user/$UID/${SERNAME}"
+      case $input_met in
+        rime) unset GTK_IM_MODULE QT_IM_MODULE XMODIFIERS ;;
+        fcitx) fcitx-remote >/dev/null || fcitx -d -r && sleep 1 ;;
+        *) >&2 echo "No support other options. \
+            Plese set _EMACS_USING_INPUT 'fcitx' or 'rime'" ;;
+      esac
+      [[ -f $serfile ]] && rm -rf $serfile
+      emacs --daemon="${SERNAME}" >/dev/null
+    fi
+  }
+
+  _multip_int() { echo "$1 $2" | awk '{printf("%.0f", $1*$2)}'; }
+
+  function _run_cmd {
+    local name=$1
+    [[ $# > 0 ]] && shift
+    exec $CMD -c -F "((name .\"$name\"))" "$@"
+  }
+
+  function _scratch {
+    exec $CMD -e "(open-scratch-frame 'doom/switch-to-scratch-buffer)" &
+    if command -v bspc >/dev/null && bspc wm --get-status >/dev/null ; then
+        bspc desktop -f 6
+    fi
+  }
+
+  function _half_run {
+    local name=$1
+    local focused=$(xdotool getactivewindow)
+    local scratch=$(xdotool search --onlyvisible --name $name)
+
+    if [[ -n $scratch ]]; then
+      if [[ $focused == $scratch ]]; then
+        $CMD -e "(delete-frame (selected-frame) t)"
+      else
+        xdotool windowactivate $scratch
+      fi
+    else
+      local dp=($(xrandr | grep "primary" | cut -d" " -f4 | cut -d"+" -f1 | tr "x" " "))
+      local width=$(_multip_int ${dp[0]} 0.5)
+      local height=$(_multip_int ${dp[1]} 0.5)
+      _daemon
+      [[ $# > 0 ]] && shift
+      exec $CMD -c -F "((name . \"$name\") \
+        (width . (text-pixels . $((width - 20)))) \
+        (height . (text-pixels . $height)))" "$@"
+    fi
+  }
+
+  function _golden_run {
+    local name=$1
+    local focused=$(xdotool getactivewindow)
+    local scratch=$(xdotool search --onlyvisible --name $name)
+
+    if [[ -n $scratch ]]; then
+      if [[ $focused == $scratch ]]; then
+        $CMD -e "(delete-frame (selected-frame) t)"
+      else
+        xdotool windowactivate $scratch
+      fi
+    else
+      local dp=($(xrandr | grep "primary" | cut -d" " -f4 | cut -d"+" -f1 | tr "x" " "))
+      local width=$(_multip_int ${dp[0]} 0.618)
+      local height=$(_multip_int ${dp[1]} 0.618)
+      _daemon
+      [[ $# > 0 ]] && shift
+      exec $CMD -c -F "((name . \"$name\") \
+                        (width . (text-pixels . $((width - 20)))) \
+                        (height . (text-pixels . $height)))" "$@"
+    fi
+  }
+
+  function _kill_daemon {
+    if pgrep -f "emacs --daemon=main" >/dev/null; then
+      $CMD --eval '(let (kill-emacs-hook) (kill-emacs))'
+    fi
+  }
+
+  cmd="$1"
+  [[ $# > 0 ]] && shift
+  case "$cmd" in
+    da|daemon) _daemon ;;
+    kill|quit|exit) _kill_daemon ;;
+    restart|re) _kill_daemon ; sleep 1; _daemon ;;
+    de|desktop) _golden_run "emacs-client" "$@";;
+    # oc|org-capture) TODO;;
+    sc|scratch) _scratch;;
+    be|base) _half_run "base" "$@";;
+    h|help|-h|--help) _usage ;;
+    "")  _half_run "base" "$@" ;;
+  esac
+}
+
+main "$@"

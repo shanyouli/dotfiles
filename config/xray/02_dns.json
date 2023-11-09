@@ -1,0 +1,47 @@
+{
+    "dns": {
+        "hosts": {
+            "wiki.shanyouli.tk": "107.182.31.196",
+            "dns.google": "8.8.8.8",
+            "doh.pub": "119.29.29.29",
+            "1.1.1.1": "1.1.1.1"
+        },
+        "servers": [
+            {
+                "address": "8.8.8.8",
+                "domains": [ "geosite:geolocation-!cn" ]
+            },
+            {
+				"address": "119.29.29.29",
+                "domains": [
+                    "geosite:cn",
+                    "ntp.org",
+                    "wiki.shanyouli.tk",
+                    "amp.cloudflare.com",
+                    "www.digitalocean.com",
+                    "domain08.qiu4.ml"
+                ],
+                "expectIPs": [ "geoip:cn" ]
+            },
+            {
+                "address": "1.1.1.1",
+                "domains": [ "geosite:geolocation-!cn" ]
+            },
+            {
+                "address": "114.114.114.114",
+                "domains": [
+                    "geosite:cn",
+                    "ntp.org",
+                    "wiki.shanyouli.tk",
+                    "amp.cloudflare.com",
+                    "www.digitalocean.com",
+                    "domain08.qiu4.ml"
+                ],
+                "expectIPs": [ "geoip:cn" ]
+            },
+			"https+locale://rubyfish.cn/dns-query",
+            "https://dns.google/dns-query",
+			"223.5.5.5"
+        ]
+    }
+}

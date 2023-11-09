@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+#
+set -e
+
+CMD="nix profile"
+function main {
+  ### helpers
+  function _usage {
+    echo "Usage: mypkg COMMAND [FLAGES...] [ARGS...]"
+    echo
+    echo "Availabe commands:"
+    echo "  show (sh|info)   Show programs installed using a 'nix profile'"
+    echo "  install (in)     Install package"
+    echo "  remove (re)      Uninstall package"
+    echo "  upgrade (up)     Update package"
+  }
+
+  function _show {
+    # 获取版本号，删除无法获取版本号的程序，获取安装使用的 channel
+    $CMD info | sed -e 's/path.*\/nix\/store.*-\([0-9]*\.\?[0-9].*\)/\1/' \
+      -e 's/path.*//' \
+      -e 's/flake:\(nix.*\)\#.*linux./\1 /' | column -t
+  }
+
+  function _fzf_do { _show | fzf | cut -d" " -f1 | xargs -I{} $@ {} ; }
+
+  function _install {
+    # 默认使用 nixpkgs-unstable 安装程序
+    local channel="nixpkgs#"
+    case "$1" in
+      os|stable|-s)
+        channel="nixos#"
+        shift
+        ;;
+      *#*) channel="no" ;;
+    esac
+    for pkg in $@; do
+      if [[ $channel == no ]]; then
+        $CMD install --impure $pkg
+      else
+        $CMD install --impure $channel$pkg
+      fi
+    done
+  }
+
+  function _upgrade {
+    case "$1" in
+      all|--all|-a) $CMD upgrade ".*" ;;
+      "") _fzf_do $CMD upgrade ;;
+      *) echo "Couldn't find command, Please Using 'mypkg up -a'" 1>&2
+         exit 1
+         ;;
+    esac      
+  }
+
+  function _remove {
+    case "$1" in
+      --all|all|a|-a) $CMD remove ".*" ;;
+      "") _fzf_do $CMD remove ;;
+      *) echo "No parameters, except all of `ALL`." 1>&2
+         exit 1
+         ;;
+    esac      
+  }
+  ###
+  cmd=$1
+  [[ $# > 0 ]] && shift
+  case "$cmd" in
+    sh|show|info) _show ;;
+    install|in|i|-i) _install "$@" ;;
+    remove|re) _remove "$@" ;;
+    upgrade|up) _upgrade "$@" ;;
+    h|help|-h|--help) _usage ;;
+    "") _usage ;;
+    *) echo "Couldn't find command $cmd" 1>&2
+       exit 1
+       ;;
+  esac
+}
+
+main "$@"

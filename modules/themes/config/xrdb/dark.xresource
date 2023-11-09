@@ -1,0 +1,47 @@
+! -*- mode: conf-Xdefaults -*-
+! gruvbox-dark
+! hard: #1d2021, soft #32302f
+#define bg      #282828
+#define fg      #ebdbb2
+! black + DarkGrey
+#define blk     #282828
+#define bblk    #928374
+! DarkRed + Red
+#define red     #cc241d
+#define bred    #fb4934
+! DarkGreen + Green
+#define grn         #98971a
+#define bgrn        #b8bb26
+! DarkYellow + Yellow
+#define ylw         #d78821
+#define bylw        #fabd2f
+! DarkBlue + Blue
+#define blu         #458588
+#define bblu        #83a598
+! DarkMagenta + Magenta
+#define mag         #b16286
+#define bmag        #d3869b
+! DarkCyan + cyan
+#define cyn         #689d6a
+#define bcyn        #8ec07c
+! LightGrey + White
+#define wht         #a89984
+#define bwht        #ebdbb2
+
+! DarkOrange + Orange
+#define borg        #d65d0e
+#define org         #fe8019
+
+#define bg0s        #32302f
+#define bg0         #282828
+#define bg0h        #1d2021
+#define bg1         #3c3836
+#define bg2         #504945
+#define bg3         #665c54
+#define bg4         #7c6f64
+
+#define fg0         #fbf1c7
+#define fg1         fg
+#define fg2         #d5c4a1
+#define fg3         #bdae93
+#define fg4         #a89984

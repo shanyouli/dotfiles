@@ -1,0 +1,759 @@
+#+TITLE: My Doom Emacs config
+#+EMAIL: shanyouli6@gmail.com
+#+DATA: 20 Nov 2020
+#+AUTHOR: Syl
+#+STARTUP: overview
++ [[https://github.com/hlissner/doom-emacs/blob/develop/docs/getting_started.org][doom-emacs/getting_started.org at develop · hlissner/doom-emacs]]
+* Emacs
+Emacs or EMACS(Editor MACroS) is a family of text editors that are characterized by
+their extensibility. The manual for the most widely used variant, GNU Emacs, describes
+it as "the extensible, customizable, self-documenting, real-time display editor".
+Develoment of the first Emacs began in the mid-1970s, and work on its direct
+descendant, GNU Emacs, continues actively as of 2020.
+
+* Rudimentary configuration
+Make this file run (slightly) faster with lexical binding ( see [[https://nullprogram.com/blog/2016/12/22/][this blog post]] for more info).
+** config.el
+#+begin_src emacs-lisp :tangle "config.el"
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+
+;;; If you use NIXOS yourself to generate the configuration, you may need to load it.
+(load! "config.init.el")
+#+end_src
+** packages.el
+#+begin_src emacs-lisp :tangle "packages.el"
+;;; $DOOMDIR/package.el -*- lexical-binding: t; -*-
+
+;;; Load NIXOS automatically generated configuration.
+(load! "packages.init.el")
+
+(unpin! doom-modeline)
+#+end_src
+
+* set my personal Information
+It is useful to have some basic personal information.
+#+begin_src emacs-lisp :tangle "config.el"
+(setq user-full-name "Shanyou Li"
+      user-mail-address "shanyouli6@gmail.com")
+
+(defun init-default-frame (&optional frame wratio hratio)
+  (interactive)
+  (let ((x-width (or (alist-get 'width default-frame-alist)
+                     (truncate (- (* (x-display-pixel-width)
+                                     (or wratio 0.5)) 20))))
+        (y-height (or (alist-get 'height default-frame-alist)
+                      (truncate (* (x-display-pixel-height)
+                                   (or hratio 0.5))))))
+    (set-frame-size (or frame (selected-frame)) x-width y-height t)))
+(defun open-scratch-frame (&optional fn)
+  "Opens the org-capture window in a floating frame that cleans itself up once
+you're done. This can be called from an external shell script."
+  (let* ((frame-title-format "")
+         (preframe (cl-loop for frame in (frame-list)
+                            if (equal (frame-parameter frame 'name) "scratch")
+                            return frame))
+         (frame (unless preframe
+                  (make-frame `((name . "scratch")
+                                (width . 90)
+                                (height . 26)
+                                (transient . t)
+                                (internal-border-width . 10)
+                                (left-fringe . 0)
+                                (right-fringe . 0)
+                                (undecorated . t)
+                                ,(if IS-LINUX '(display . ":0")))))))
+    (select-frame-set-input-focus (or frame preframe))
+    (when frame
+      (with-selected-frame frame
+        (if fn
+            (call-interactively fn)
+          (with-current-buffer (switch-to-buffer "*scratch*")
+            (text-scale-set 0.2)
+            (when (eq major-mode 'fundamental-mode)
+              (emacs-lisp-mode))
+            (redisplay)))))))
+
+;; (add-hook 'after-make-frame-functions
+;;           (lambda (frame)
+;;             (pcase (frame-parameter nil 'name)
+;;               ("scratch" (init-default-frame frame))
+;;               ("org-protocol" (init-default-frame frame 0.618 0.618)))))
+#+end_src
+* Set Font
+Doom exposes five (optional) variables or controlling fonts in Doom.
++ ~doom-font~ : set default font
++ ~doom-variable-pitch-font~: Set Serif font
++ ~doom-big-font~: used for `doom-big-font-mode`; use this for presentations or streaming
++ ~doom-unicode-font~: Fallback font for Unicode glyphs
+#+begin_src emacs-lisp :tangle "config.el"
+(unless (bound-and-true-p using-nix-config-p)
+  (defun my/font-installed-p (font-name)
+    "Check if font with FONT-NAME is available."
+    (if (find-font (font-spec :name font-name)) t nil))
+  (defadvice! my/use-default-font-a (&rest _)
+    "Set `doom-font'!"
+    :before #'doom-init-fonts-h
+    (cl-loop for font in '( "JetBrains Mono" "Fira Code" "Cascadia Code"
+                            "Source Code Pro" "Menlo" "Fantasque Sans Mono"
+                            "monospace")
+             when (my/font-installed-p font)
+             return (setq doom-font (font-spec :family font :size 12)))
+    (advice-remove #'doom-init-fonts-h #'my/use-default-font-a))
+
+  ;; use emoji color font
+  ;; see @https://emacs-china.org/t/emacs-cairo/9437/13
+  (defun my/walle-ui-display-color-emoji? ()
+    "Return non-nil if emacs can display color emoji.
+
+Notice that this function assume you have graphics display"
+    (or (and EMACS27+
+             (featurep 'cairo)
+             (let ((frame-font-backend
+                    (frame-parameter (selected-frame) 'font-backend)))
+               (when (or (memq 'ftcr frame-font-backend)
+                         (memq 'ftcrhb frame-font-backend))
+                 t)))
+        (featurep 'cocoa)))
+
+  (defadvice! my/use-chinese-font-a (&rest _)
+    "Set Chinese fonts and Color Emoji fonts."
+    :after-until #'doom-init-extra-fonts-h
+    (when (and (my/walle-ui-display-color-emoji?) IS-LINUX)
+      (cl-loop for font in '("Apple Color Emoji" "Segoe UI Emoji"
+                             "Noto Color Emoji" "JoyPixels")
+               when (my/font-installed-p font)
+               return (set-fontset-font t 'symbol font)))
+    (cl-loop for font in '("Adobe Heiti Std" "STXihei" "Microsoft Yahei"
+                           "Hiragino Sans GB W6" "WenQuanYi Micro Hei Mono")
+             when (my/font-installed-p font)
+             ;; return (set-fontset-font t '(#x4e00 . #x9fff) font)
+             return (dolist (charset '(kana han cjk-misc bopomofo))
+                      (set-fontset-font t charset font)))))
+
+;; 等高配置
+(setq face-font-rescale-alist
+      '(("Sarasa Mono SC" . 0.99)
+        ("Microsoft Yahei" . 1.2)
+        ("WenQuanYi Micro Hei Mono" . 0.99)))
+#+end_src
+
+* Theme
+There are two ways to load a theme. Both assume the theme is installed and
+available. You can either set `doom-theme' or manually load a theme with the
+`load-theme' function. This is the default:
+#+begin_src emacs-lisp :tangle "config.el"
+;; (setq doom-theme 'doom-moonlight)
+#+end_src
+
+* company
+** company-tabnine
+#+begin_src emacs-lisp :tangle "packages.el"
+(package! company-tabnine)
+#+end_src
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! company-tabnine
+  :when (featurep! :completion company)
+  :config
+  (setq company-tabnine--disable-next-transform nil)
+  (defun my-company--transform-candidates-a (func &rest args)
+    (if (not company-tabnine--disable-next-transform)
+        (apply func args)
+      (setq company-tabnine--disable-next-transform nil)
+      (car args)))
+
+  (defun my-company-tabnine-a (func &rest args)
+    (when (eq (car args) 'candidates)
+      (setq company-tabnine--disable-next-transform t))
+    (apply func args))
+
+  (advice-add #'company--transform-candidates :around #'my-company--transform-candidates-a)
+  (advice-add #'company-tabnine :around #'my-company-tabnine-a)
+
+  (setq company-idle-delay 0.2) ; Trigger completion immediately.
+  (setq company-show-numbers t) ; Number the candidates (use M-1, M-2 etc to select completions).
+
+  ;; Use the tab-and-go frontend.
+  (company-tng-configure-default)
+  (setq company-frontends
+        '(company-tng-frontend
+          company-pseudo-tooltip-frontend
+          company-echo-metadata-frontend)))
+#+end_src
+* General configuration
+#+begin_src emacs-lisp :tangle "config.el"
+;; This determines the style of line numbers in effect. If set to `nil', line
+;; numbers are disabled. For relative line numbers, set this to `relative'.
+(setq display-line-numbers-type t)
+
+(setq word-wrap-by-category t)  ; Chinese Wrap
+(setq confirm-kill-emacs nil)   ; kill emacs, not prompt
+(setq confirm-kill-processes nil) ; 退出后自动杀掉进程
+
+;; open file in Dotfiles
+(defun my/find-file-in-dotfiles ()
+  "Browse your `DOTFILES'."
+  (interactive)
+  (let* ((dotfiles (or (bound-and-true-p mydotfile)
+                    (getenv "DOTFILES")
+                    (expand-file-name "~/.dotfiles"))))
+    (unless (file-directory-p dotfiles)
+      (make-directory dotfiles t))
+    (doom-project-find-file dotfiles)))
+;; open file in org-directory
+(defun my/find-file-in-org-directory ()
+  "Browse Your `ORG-DIRECTORY'."
+  (interactive)
+  (let ((org-dir (or (bound-and-true-p org-directory)
+                     (expand-file-name "~/org"))))
+    (unless (file-directory-p org-dir)
+      (make-directory org-dir t))
+    (doom-project-find-file org-dir)))
+(map! :leader
+      (:prefix-map ("d" . "open prjs")
+       :desc "dotfile" "d" #'my/find-file-in-dotfiles
+       :desc "org-dird" "o" #'my/find-file-in-org-directory))
+
+
+;; When using the parameter -t emacs start, remove the default title
+(add-hook! doom-after-init-modules
+  (let ((title (assoc 'title default-frame-alist)))
+    (delq! title default-frame-alist)))
+#+end_src
+
+* org
+Org-mode is one of my favorite features in Emacs.
+#+begin_src emacs-lisp :tangle "packages.el"
+(package! org-cliplink)
+(package! valign)
+(package! org-roam-server)
+#+end_src
+#+begin_src emacs-lisp :tangle "config.el"
+;; Set `org-directory'
+(setq org-directory (if (not IS-WINDOWS) "~/projects/org")
+      org-archive-location (concat org-directory "/.archive/%s::"))
+
+(setq org-ellipsis " [...]" ; Hide the logo
+      org-priority-highest ?A
+      org-priority-lowest ?E)
+#+end_src
+**  org-superstar
+The header of the beautification org-mdoe
+#+begin_src emacs-lisp :tangle "config.el"
+(setq org-superstar-headline-bullets-list '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
+      ;; org-superstar-headline-bullets-list '("Ⅰ" "Ⅱ" "Ⅲ" "Ⅳ" "Ⅴ" "Ⅵ" "Ⅶ" "Ⅷ" "Ⅸ" "Ⅹ")
+      org-superstar-prettify-item-bullets t)
+#+end_src
+** org-roam
+Org-Roam is one of the best notes notes.It is one of the ways to implement
+Roam Research. Look at [[https://www.youtube.com/playlist?list=PLwXSqDdn_CpE934BjXMgmzHnlwXMy41TC][this video series]] for more info.
+#+begin_src emacs-lisp :tangle "config.el"
+;; not open the org-roam buffer when opening an org roam file
+(setq +org-roam-open-buffer-on-find-file nil)
+;; see @https://www.zmonster.me/2020/06/27/org-roam-introduction.html
+(setq org-roam-capture-templates
+      '(( "d" "default" plain (function org-roam-capture--get-point)
+          "%?"
+          :file-name "%<%Y%m%d%H%M%S>-${slug}"
+          :head "#+title: ${title}\n#+roam_tags:\n\n")
+        ( "a" "alias" plain (function org-roam-capture--get-point)
+          "%?"
+          :file-name "%<%Y%m%d%H%M%S>-${slug}"
+          :head "#+title: ${title}\n#+roam_alias:\n\n")))
+
+(after! org-roam
+  (add-to-list 'org-roam-capture-ref-templates
+               '("a" "Annotation" plain (function org-roam-capture--get-point)
+                 "%U ${body}\n"
+                 :file-name "${slug}"
+                 :head "#+title: ${title}\n#+roam_key: ${ref}\n#+roam_alias:\n"
+                 :immediate-finish t
+                 :unnarrowed t)))
+
+;; org-roam-server
+(use-package! org-roam-server
+  :after org-roam
+  :commands (my/org-roam-server-open)
+  :init
+  (map! :leader
+        :desc "org-roam-server" "on" #'my/org-roam-server-open)
+  :config
+  (setq org-roam-server-host "127.0.0.1"
+        org-roam-server-port 9091
+        org-roam-server-export-inline-images t
+        org-roam-server-authenticate nil
+        org-roam-server-network-label-truncate t
+        org-roam-server-network-label-truncate-length 60
+        org-roam-server-network-label-wrap-length 20)
+  (defun my/org-roam-server-open ()
+    "Ensure the server is active, then open the roam graph."
+    (interactive)
+    (let ((sp-mode-p (bound-and-true-p smartparens-global-mode)))
+      (and sp-mode-p (smartparens-global-mode -1))
+      (org-roam-server-mode 1)
+      (and sp-mode-p (smartparens-global-mode 1))
+      (browse-url-xdg-open (format "http://localhost:%d" org-roam-server-port)))))
+#+end_src
+** org-cliplink
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! org-cliplink
+  :after org
+  :config
+  (map! :map org-mode-map :localleader "l h" #'org-cliplink))
+#+end_src
+** valign
+Form pixel alignment,Valign-Mode and Display-Line-Mode conflicts,
+so turn off ~display-line-numbers-mode~,
+How to turn off display-line-numbers-mode see
+@https://github.com/hlissner/doom-emacs/issues/870
+@https://github.com/hlissner/doom-emacs/issues/827
+@https://emacs-china.org/t/major-mode-smart-parens/15360
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! valign
+  ;; :commands valign-mode
+  :init (setq valign-fancy-bar t)
+  :hook ((org-mode markdown-mode)  . my/using-valign-mode)
+  :config
+  (defun my/using-valign-mode ()
+    (display-line-numbers-mode -1)
+    (valign-mode +1)))
+#+end_src
+
+* Chinese input method
+In order to obtain better Chinese input environment.
+#+begin_src emacs-lisp :tangle "packages.el"
+(package! sis :recipe (:type git
+                        :host github
+                        :repo "laishulu/emacs-smart-input-source"))
+(package! pangu-spacing)
+(package! ace-pinyin)
+(package! rime :ignore IS-WINDOWS)
+#+end_src
+** sis
+smart change input method(EN or ZH)
+see@ https://emacs-china.org/t/os-smart-input-source/13436/726
+see@ https://emacs-china.org/t/native-os-sis/14089
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! sis
+  :after evil
+  :config
+  (push "M-<SPC>" sis-prefix-override-keys)
+  (if (bound-and-true-p using-emacs-rime-p)
+      (sis-ism-lazyman-config nil "rime" 'native)
+    (sis-ism-lazyman-config "1" "2"
+                            (cond ((executable-find"fcitx5") 'fcitx5)
+                                  ((executable-find "fcitx") 'fcitx))))
+
+  ;; enable the /cursor color/ mode
+  (sis-global-cursor-color-mode t)
+  ;; enable the /respect/ mode
+  (sis-global-respect-mode t)
+  ;; enable the /follow context/ mode for all buffers
+  (sis-global-context-mode t)
+  ;; enable the /inline english/ mode for all buffers
+  (sis-global-inline-mode t))
+#+end_src
+** emacs-rime
+RIME Emacs Front End Framework
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! rime
+  :defer 0.5
+  :init
+  (if (bound-and-true-p using-nix-config-p)
+      (setq rime-disable-predicates '(rime-predicate-evil-mode-p
+                                      rime-predicate-after-alphabet-char-p
+                                      rime-predicate-prog-in-code-p))
+    (setq rime-user-data-dir (expand-file-name "~/.config/fcitx/rime")))
+  (setq default-input-method "rime")
+  (setq rime-show-candidate 'posframe)
+
+  ;; (setq rime-inline-ascii-trigger 'shift-l)
+  :bind
+  ;; C-\ to toggle-input-method
+  ;; C-` to toggle
+  ;; , and . to page up and down
+  (:map rime-mode-map
+   ;; open rime menu
+   ("C-`" . 'rime-send-keybinding))
+  (:map rime-active-mode-map
+   ("C-j" . 'rime-inline-ascii))
+  :config
+  (when IS-MAC (setq rime-librime-root "~/.emacs.d/librime/dist"))
+  (setq rime-posframe-properties
+        (list :font (font-spec :family "Unifont" :size 14)
+              :internal-border-width 5))
+  ;;; fix posfrmae 吃字现象
+  (defun +rime--posframe-display-content-a (args)
+    "给 `rime--posframe-display-content' 传入的字符串加一个全角空
+  格，以解决 `posframe' 偶尔吃字的问题。"
+    (cl-destructuring-bind (content) args
+       (let ((newresult (if (string-blank-p content)
+                           content
+                         (concat content "　"))))
+        (list newresult))))
+
+  (if (fboundp 'rime--posframe-display-content)
+      (advice-add 'rime--posframe-display-content
+                  :filter-args
+                  #'+rime--posframe-display-content-a)
+    (error "Function `rime--posframe-display-content' is not available.")))
+#+end_src
+** pangu-spacing
+Automatically add Spaces between Chinese and English
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! pangu-spacing
+  :hook (text-mode . pangu-spacing-mode)
+  :config
+  ;; Always insert `real' space in org-mode.
+  (setq-hook! 'org-mode-hook pangu-spacing-real-insert-separtor t))
+#+end_src
+** ace-pinyin
+Make avy support Chinese jump
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! ace-pinyin
+  :after avy
+  :init (setq ace-pinyin-use-avy t)
+  :config (ace-pinyin-global-mode 1))
+#+end_src
+** other
+#+begin_src emacs-lisp :tangle "config.el"
+(defadvice! +chinese--org-html-paragraph-a (args)
+  "Join consecutive Chinese lines into a single long line without unwanted space
+when exporting org-mode to html."
+  :filter-args #'org-html-paragraph
+  (cl-destructuring-bind (paragraph contents info) args
+    (let* ((fix-regexp "[[:multibyte:]]")
+           (fixed-contents
+            (replace-regexp-in-string
+             (concat "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)")
+             "\\1\\2"
+             contents)))
+      (list paragraph fixed-contents info))))
+#+end_src
+* The dictionary
+Both English and Chinese translation
+#+begin_src emacs-lisp :tangle "packages.el"
+(package! insert-translated-name
+  :recipe (:type git
+                 :host github
+                 :repo "manateelazycat/insert-translated-name"))
+(package! english-teacher :recipe (:type git
+                                   :host github
+                                   :repo "loyalpartner/english-teacher.el"
+                                   ))
+(package! sdcv :recipe (:type git :host github
+                        :repo "manateelazycat/sdcv"))
+(package! youdao-dictionary)
+(package! posframe)
+#+end_src
+** sdcv
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! sdcv
+  :commands my/sdcv-point
+  :init
+  (setq sdcv-dictionary-data-dir
+        (or (getenv "STARDICT_DATA_DIR")
+            (expand-file-name "sdcv" (or (getenv "XDG_DATA_HOME")
+                                         "~/.local/share"))))
+  (map! :leader
+        (:prefix-map ("y" . "en2zh")
+         :desc "sdcv" "s" #'my/sdcv-point))
+  :config
+  (setq sdcv-dictionary-simple-list ; setup dictionary list for simple search
+        '("KDic11万英汉词典"
+          "懒虫简明英汉词典"
+          "懒虫简明汉英词典"))
+  (setq sdcv-dictionary-complete-list ; setup dictionary list for complete search
+        '("KDic11万英汉词典"
+          "懒虫简明英汉词典"
+          "懒虫简明汉英词典"
+          "21世纪英汉汉英双向词典"
+          "新世纪汉英科技大词典"
+          "牛津现代英汉双解词典"
+          "XDICT汉英辞典"
+          "XDICT英汉辞典"
+          "朗道汉英字典5.0"
+          "朗道英汉字典5.0"
+          "quick_eng-zh_CN"
+          "CDICT5英汉辞典"))
+  (defun my/sdcv-point ()
+    (interactive)
+    (if (display-graphic-p)
+        (call-interactively #'sdcv-search-pointer+)
+      (call-interactively #'sdcv-search-pointer))))
+#+end_src
+** youdao-dictionary
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! youdao-dictionary
+  :commands my/youdao-dictionary-point
+  :init
+;; Set file for saving search history
+  (setq youdao-dictionary-search-history-file  (concat doom-local-dir "ydcv/"))
+  (map! :leader
+        :desc "youdao" "yy" #'my/youdao-dictionary-point)
+  :config
+  (setq url-automatic-caching t
+        ;; Enable Chinese word segmentation support (支持中文分词)
+        youdao-dictionary-use-chinese-word-segmentaton t)
+  (defun my/youdao-dictionary-point ()
+    (interactive)
+    (if (display-graphic-p)
+        (call-interactively #'youdao-dictionary-search-at-point-posframe)
+      (call-interactively #'youdao-dictionary-search-at-point))))
+#+end_src
+** English-teacher
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! english-teacher
+  :commands (english-teacher-follow-mode)
+  ;; :hook ((Info-mode
+  ;;         elfeed-show-mode
+  ;;         eww-mode
+  ;;         Man-mode
+  ;;         Woman-Mode) . english-teacher-follow-mode)
+  )
+#+end_src
+** Insert translated name
+Chinese to English
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! insert-translated-name
+  :commands (insert-translated-name-insert-original-translation
+             insert-translated-name-insert-with-underline
+             insert-translated-name-insert-with-line
+             insert-translated-name-insert-with-camel
+             insert-translated-name-insert)
+  :init
+  (map! :leader
+        :desc "Chinese to English" "it" #'insert-translated-name-insert-original-translation
+        (:prefix-map ("iT" . "ZH-EN format")
+         :desc "underline" "u" #'insert-translated-name-insert-with-underline
+         :desc "Original" "o" #'insert-translated-name-insert-original-translation
+         :desc "line" "l" #'insert-translated-name-insert-with-line
+         :desc "Camel" "c" #'insert-translated-name-insert-with-camel
+         :desc "intelligent" "i" #'insert-translated-name-insert))
+  :config
+  (setq insert-translated-name-translate-engine "youdao") ;; google has bug
+
+  (defvar int--evil-last-status-is-insert-p nil "Last evil-mode status is inserted?")
+  (defvar int--sis-default-input-method nil "Staging the default input method.")
+  (defvar int--rime-disable-pred nil "Staging the `rime-disable-predicates'.")
+
+  (defun int/active-a (&rest _)
+
+    (setq int--evil-last-status-is-insert-p
+          (and (fboundp 'evil-insert-state-p) (evil-insert-state-p)))
+    (unless int--evil-last-status-is-insert-p (evil-insert-state))
+
+    (when (featurep 'sis)
+      (setq init--sis-default-input-method default-input-method)
+      (setq-local default-input-method nil)
+      (sis-set-other))
+
+    (when (bound-and-true-p rime-disable-predicates)
+      (setq int--rime-disable-pred rime-disable-predicates)
+      (setq rime-disable-predicates nil)))
+
+  (defun int/inactive-a (&rest _)
+
+    (unless int--evil-last-status-is-insert-p
+      (evil-normal-state)
+      (setq int--evil-last-status-is-insert-p nil))
+
+    (when (bound-and-true-p int-sis-default-input-method)
+      (sis-set-english)
+      (setq-local default-input-method int--sis-default-input-thmod)
+      (setq int--sis-default-input-thmod nil))
+
+    (when (bound-and-true-p int--rime-disable-pred)
+      (setq rime-disable-predicates int--rime-disable-pred)
+      (setq int--rime-disable-pred nil)))
+
+  (advice-add #'insert-translated-name-active :before 'int/active-a)
+  (advice-add #'insert-translated-name-inactive :after 'int/inactive-a))
+#+end_src
+
+* Evil
+Evil-mode: Simulated VIM button in Emacs
+#+begin_src emacs-lisp :tangle "packages.el"
+(package! evil-pinyin)
+#+end_src
+** evil-pinyin
+Search Chinese characters in Evil-Mode
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! evil-pinyin
+  :after evil
+  :config
+  (global-evil-pinyin-mode +1))
+#+end_src
+** evil-escape
+Use JK as a shortcut button for <ESC>
+#+begin_src emacs-lisp :tangle "config.el"
+(setq evil-escape-delay 0.2)
+#+end_src
+* package Configuration
+Add your own configuration for each package
+** noflet
+Closed emacs kill all emacs child process
+#+begin_src emacs-lisp :tangle "packages.el"
+(package! noflet)
+#+end_src
+
+#+begin_src emacs-lisp :tangle "config.el"
+(defadvice! +no-query-kill-emacs-a (orign &rest args)
+  "Prevent annoying \"Active process exits\" query when you quit Emacs."
+  :around #'save-buffers-kill-emacs
+  (require 'noflet)
+  (noflet ((process-list ()))
+          (apply orign args)))
+#+end_src
+** Recentf
+This is a package that opens the recently opened file, has been configured.
+#+begin_src emacs-lisp :tangle "config.el"
+(setq recentf-max-saved-items 200
+      recentf-exclude
+      '("\\.?cache" ".cask" "url" "COMMIT_EDITMSG\\'" "bookmars"
+        "\\.\\(?.gz\\|gif\\|svg\\|png\\|jpe?g\\|bmp\\|xpm\\)$"
+        "\\.?ido\\.last$" "\\.revive$" "/G?TAGS$" "/.elfeed/"
+        "^/tmp/" "^/var/folders/.+$" "^/nix/"
+        (lambda (file)
+          (or (file-directory-p file)
+              (file-in-directory-p file (bound-and-true-p package-user-dir))
+              (file-in-directory-p file (concat straight-base-dir "straight"))
+              (file-in-directory-p file
+                                   (file-name-directory (doom-session-file)))))))
+
+(after! recentf
+  (push (expand-file-name recentf-save-file) recentf-exclude))
+#+end_src
+** all-the-icons
+Add color icon to some major-mode
+#+begin_src emacs-lisp :tangle "config.el"
+(after! all-the-icons
+  (push '("\\.ass\\'" all-the-icons-material "subtitles"
+          :face all-the-icons-yellow)
+        all-the-icons-icon-alist)
+  (after! org
+   (setq org-priority-faces '((?A . 'all-the-icons-red)
+                              (?B . 'all-the-icons-orange)
+                              (?C . 'all-the-icons-yellow)
+                              (?D . 'all-the-icons-green)
+                              (?E . 'all-the-icons-blue)))))
+#+end_src
+*** icons and ivy-mode
+#+begin_src emacs-lisp :tangle "packages.el"
+(package! all-the-icons-ivy-rich
+  :ignore (not (and (featurep! :emacs dired +icons)
+                    (featurep! :completion ivy))))
+#+end_src
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! all-the-icons-ivy-rich
+  :if (and (featurep! :completion ivy) (featurep! :emacs dired +icons))
+  :hook (ivy-mode . all-the-icons-ivy-rich-mode))
+#+end_src
+** super-save
+auto save buffer.
+#+begin_src emacs-lisp :tangle "packages.el"
+(package! super-save
+  :recipe (:type git :host github :repo "shanyouli/super-save"))
+#+end_src
+
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! super-save
+  :hook (doom-first-file . super-save-mode)
+  :config
+  (push 'split-window-below super-save-triggers)
+  (push 'split-window-right super-save-triggers)
+  (push 'aw--select-window super-save-triggers)
+  (push 'ace-window super-save-triggers))
+#+end_src
+** rainbow-mode
+sets background color to strings that match color
+#+begin_src emacs-lisp :tangle "packages.el"
+(package! rainbow-mode)
+#+end_src
+
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! rainbow-mode
+  :hook (prog-mode . rainbow-mode))
+#+end_src
+** hungry-delete
+Delete a large space
+#+begin_src emacs-lisp :tangle "packages.el"
+(package! hungry-delete)
+#+end_src
+
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! hungry-delete
+  :hook (doom-first-buffer . global-hungry-delete-mode)
+  :config (setq-default hungry-delete-chars-to-skip " \t\f\v"))
+#+end_src
+** page-break-lines
+Beautify the page break
+#+begin_src emacs-lisp :tangle "packages.el"
+(package! page-break-lines)
+#+end_src
+
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! page-break-lines
+  :hook (doom-first-buffer . global-page-break-lines-mode))
+#+end_src
+** gif-screncast
+Emacs to record screen
+#+begin_src emacs-lisp :tangle "packages.el"
+(unless (bound-and-true-p using-nix-config-p)
+  (if (and (or (executable-find "scrot")
+               (executable-find "screencapture"))
+           (executable-find "convert") ;; imagemagick
+           (executable-find "gifsicle"))
+      (package! gif-screencast)
+    (disable-packages! gif-screencast)))
+#+end_src
+
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! gif-screencast
+  :commands gif-screencast-start-or-stop
+  :bind ("<f5>" . gif-screencast-start-or-stop)
+  :config
+  (setq gif-screencast-output-directory (expand-file-name "~/Videos/Gif")))
+#+end_src
+** DONE vterm
+#+begin_src emacs-lisp :tangle "config.el"
+(when (file-exists-p! "/usr/include/vterm.h")
+  (setq vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=yes"))
+#+end_src
+** vlf
+#+begin_src emacs-lisp :tangle "packages.el"
+(package! vlf)
+#+end_src
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! vlf
+  :defer 0.5
+  :config
+  (require 'vlf-setup)
+  (custom-set-variables '(vlf-application 'dont-ask)))
+#+end_src
+** other-packges
+#+begin_src emacs-lisp :tangle "packages.el"
+(package! ebuild-mode :ignore (not (executable-find "emerge")))
+(package! vimrc-mode)
+#+end_src
+
+#+begin_src emacs-lisp :tangle "config.el"
+;; css-mode
+(use-package! css-mode :mode ("\\.rasi\\'" . css-mode))
+
+;; sh-mode
+(use-package! sh-script :mode (("/.bashrc\\'" . sh-mode)))
+
+;; flycheck
+(when (featurep! :checkers syntax)
+  (setq flycheck-global-modes '(not emacs-lisp-mode)))
+#+end_src
+** nxml-mode
+when closing the tags in nxml-mode, smartparens will conflict with the nxml
+tag completion and result in double closing _>>_ for a tag.
+@see https://github.com/Fuco1/smartparens/issues/397
+#+begin_src emacs-lisp :tangle "config.el"
+(use-package! nxml-mode
+  :config
+  (when (fboundp 'sp-local-pair)
+    (sp-local-pair 'nxml-mode "<" ">" :post-handlers '(("[d1]" "/")))))
+#+end_src

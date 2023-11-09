@@ -1,0 +1,298 @@
+; -*- mode: conf-windows -*-
+[colors]
+black = ${xrdb:color0}
+bblack = ${xrdb:color8}
+red = ${xrdb:color1}
+bred = ${xrdb:color9}
+green = ${xrdb:color2}
+bgreen = ${xrdb:color10}
+yellow = ${xrdb:color3}
+byellow = ${xrdb:color11}
+blue = ${xrdb:color4}
+bblue = ${xrdb:color12}
+magenta = ${xrdb:color5}
+bmagenta = ${xrdb:color13}
+cyan = ${xrdb:color6}
+bcyan = ${xrdb:color14}
+white = ${xrdb:color7}
+bwhite = ${xrdb:color15}
+orange = ${xrdb:color208}
+borange = ${xrdb:color166}
+
+bg = ${xrdb:background}
+bg-alt = ${xrdb:color234}
+fg = ${xrdb:foreground}
+fg-alt = ${xrdb:color229}
+
+accent = ${colors.yellow}
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+[bar/main]
+monitor = ${env:MONITOR:eDP1}
+monitor-strict = true
+enable-ipc = true
+wm-restack = ${env:WMNAME:bspwm}
+# REQUIRED to move the window with hideit.sh
+override-redirect = true
+fixed-center = true
+
+background = ${colors.bg}
+foreground = ${colors.fg}
+
+width = 100%
+height = 18
+offset-x = 0
+offset-y = 0
+radius = 1.0
+
+top = true
+border-bootom-size = 1
+border-top-size = 0
+
+overline-size = 0
+overline-color = #f00
+underline-size = 2
+underline-color = #00f
+
+border-size = 0
+border-color = ${colors.bblack}
+
+padding-left = 0
+padding-right = 0
+module-margin-left = 0
+module-margin-right = 0
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+font-0 = Monospace:style=bold:pixelsize=9;1
+font-1 = "icons\-in\-terminal:pixelsize=9;2"
+font-2 = unifont:pixelsize=9;2
+
+modules-left = pulseaudio backlight title
+modules-center = bspwm
+modules-right = caps redshift wlan net mem cpu fs temp bat date
+
+;; tray
+tray-position = right
+;tray-padding = 1
+tray-background = ${colors.bg}
+
+[module/bspwm]
+type = internal/bspwm
+pin-workspaces = true
+enable-click = true
+ws-icon-default = 
+format = <label-state> <label-mode>
+
+label-focused = %icon%
+label-focused-background = ${colors.bg-alt}
+label-focused-foreground = ${colors.fg-alt}
+label-focused-underline = ${colors.orange}
+# label-focused-padding = 1
+
+label-occupied = %icon%
+label-occupied-foreground = ${colors.blue}
+# label-occupied-padding = 1
+label-urgent-foreground = ${colors.red}
+
+label-empty = %icon%
+label-empty-foreground = ${colors.fg}
+; label-empty-padding = 1
+label-separator = " "
+
+[module/date]
+type = internal/date
+interval = 1
+label = %date% %time%
+date =
+time = %H:%M
+time-alt = %H:%M:%S
+date-alt = %A, %Y-%m-%d
+format-prefix = 
+# format-prefix-padding = 1
+format-prefix-background = ${colors.blue}
+label-background = ${colors.blue}
+label-foreground = ${colors.fg-alt}
+
+[module/fs]
+type = internal/fs
+mount-0 = /
+mount-1 = /mnt/archive
+interval = 60
+fixed-values = true
+spacing =
+label-mounted =  %percentage_free%%
+label-mounted-background = ${colors.blue}
+
+label-unmounted = %mountpoint%: not mounted
+label-unmounted-foreground = ${colors.bred}
+
+[module/caps]
+type = internal/xkeyboard
+blacklist-0 = num lock
+blacklist-1 = scroll lock
+format = <label-indicator>
+label-indicator-on = %icon%
+label-indicator-on-capslock = 
+label-indicator-on-capslock-background = ${colors.orange}
+label-indicator-on-capslock-underline  = ${colors.borange}
+label-indicator-off-capslock = 
+label-indicator-off-capslock-foreground = ${colors.bg}
+
+[module/cpu]
+type = internal/cpu
+interval = 5
+format = <label>
+label = %percentage:2%%
+label-background = ${colors.green}
+
+[module/bat]
+type = internal/battery
+battery = BAT0
+adapter = ADP1
+full-at = 98
+poll-interval = 10
+format-charging = <animation-charging><label-charging>
+format-discharging = <ramp-capacity><label-discharging>
+
+format-full-prefix = 
+format-full-prefix-background = ${colors.bgreen}
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-framerate = 1000
+animation-charging-background = ${colors.magenta}
+label-charging-background = ${colors.magenta}
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+ramp-capacity-background = ${colors.bmagenta}
+ramp-capactiy-underline = ${colors.red}
+label-discharging-background = ${colors.bmagenta}
+
+
+[module/temp]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 70
+format = <label>
+label =  %temperature-c%
+label-background = ${colors.yellow}
+label-foreground = ${colors.bg}
+
+format-warn = <label-warn>
+label-warn =  %temperature-c%
+label-warn-background = ${colors.red}
+label-warn-foreground = ${colors.bg-alt}
+
+[module/wlan]
+type = internal/network
+interface = ${env:WLP:wlp4s0}
+interval = 3.0
+;;format-connected = <ramp-signal><label-connected>
+format-connected = <label-connected>
+; ramp-signal-0 = 
+; ramp-signal-1 = 
+; ramp-signal-2 = 
+; ramp-signal-background = ${colors.cyan}
+; ramp-signal-0-background = ${colors.bg}
+label-connected = ${env:SPEED_FORMAT:"%upspeed% %downspeed%"}
+format-disconnected =
+
+[module/net]
+type = internal/network
+interface = ${env:LAN:enp3s0}
+interval = 3.0
+label-connected = ${env:SPEED_FORMAT:"%upspeed% %downspeed%"}
+
+[module/pulseaudio]
+type = internal/pulseaudio
+use-ui-max = true
+interval = 5
+format-volume = <ramp-volume><label-volume>
+label-volume-background = ${colors.cyan}
+label-volume = %percentage:3%%
+format-muted = <label-muted>
+label-muted =  %percentage:3%%
+label-muted-foreground = ${colors.white}
+ramp-volume-0 = 奄
+ramp-volume-1 = 
+ramp-volume-2 = 奔
+ramp-volume-3 = 奔
+ramp-volume-4 = 奔
+ramp-volume-5 = 
+ramp-volume-6 = 墳
+ramp-volume-7 = 
+ramp-volume-8 = 
+
+ramp-volume-background = ${colors.cyan}
+ramp-volume-9-background = ${colors.red}
+ramp-volume-9-underline = ${colors.bred}
+click-right = pavucontrol
+click-middle = "pactl set-sink-volume 0 100%"
+
+[module/backlight]
+type = internal/xbacklight
+output = ${env:MONITOR:eDP1}
+enable-scroll = true
+format = <ramp><label>
+label = %percentage:3%%
+label-background = ${colors.yellow}
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-3 = 
+ramp-4 = 
+ramp-background = ${colors.yellow}
+ramp-4-background = ${colors.bred}
+ramp-4-underline = ${colors.red}
+
+[module/mem]
+type = internal/memory
+interval = 3
+format = <ramp-used><label>
+label = %percentage_used:2%%
+label-background = ${colors.bmagenta}
+ramp-used-0 = ▁
+ramp-used-1 = ▂
+ramp-used-2 = ▃
+ramp-used-3 = ▄
+ramp-used-4 = ▅
+ramp-used-background = ${colors.bmagenta}
+ramp-used-4-background = ${colors.red}
+ram-used-4-underline = ${colors.bred}
+
+[module/title]
+type = internal/xwindow
+label =   %title:0:24:...%
+format-background = ${colors.cyan}
+format-padding = 2
+
+;; Custom module
+[module/p]
+type = custom/text
+content = " "
+content-foreground = ${colors.fg}
+
+[module/redshift]
+type = custom/script
+exec = ~/.config/polybar/modules/redshift
+exec-if = command -v redshift >/dev/null
+interval = 60
+# format-padding = 1
+click-middle = ~/.config/polybar/modules/redshift restart
+click-right = ~/.config/polybar/modules/redshift stop
+click-left = ~/.config/polybar/modules/redshift start
+
+[settings]
+screenchange-reload = true
