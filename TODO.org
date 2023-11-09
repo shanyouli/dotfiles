@@ -1,0 +1,13 @@
+#+title: Todo
+
+* DOWN wezterm module
+
+* DOWN firefox module
+
+* DOWN mac 平铺管理
+
+* DOWN git 配置
+
+* TODO emacs 常用包的整合
+@see https://github.com/shaunsingh/nix-darwin-dotfiles/blob/main/flake.nix
+* TODO 修改 Kitty 的快捷按键

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+expr_str="import <nixpkgs> {}"
+# shellcheck disable=SC2086
+dotfiles=${DOTFILES:-0}
+[[ $dotfiles != "0" ]] || {
+    if [[ -d /etc/nixos ]]; then
+        dotfiles=$DOTFILES
+    elif [[ -d $HOME/.nixpkgs ]]; then
+        dotfiles=$HOME/.nixpkgs
+    elif [[ -d $HOME/.config/dotfiles ]]; then
+        dotfiles=$HOME/.config/dotfiles
+    elif [[ -d $HOME/.dotfiles ]]; then
+        dotfiles=$HOME/.dotfiles
+    fi
+}
+if [[ -n $dotfiles ]]; then
+    expr_str="${expr_str} // (builtins.getFlake \"${dotfiles}\")"
+fi
+nix repl --expr "$expr_str"

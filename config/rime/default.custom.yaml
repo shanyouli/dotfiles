@@ -1,0 +1,6 @@
+patch:
+  "menu/page_size": 7
+  "ascii_composer/switch_key/Shift_L": commit_code
+  "switcher/hotkeys":
+    - F4
+    - Control+grave

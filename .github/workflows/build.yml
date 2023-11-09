@@ -1,0 +1,39 @@
+name: 'system build'
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # Shallow clones won't work
+          fetch-depth: 0
+      - uses: cachix/install-nix-action@v20
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            # access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - uses: cachix/cachix-action@v12
+        with:
+          name: shanyouli
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: Run Flake Checks
+        run: |
+          if [[ $(uname) == "Linux" ]] && [[ $(uname -m) == "x86_64" ]]; then
+            nix flake check -j auto --system "x86_64-linux" --show-trace --accept-flake-config
+          else
+            nix flake check -j auto --system "aarch64-darwin" --show-trace --accept-flake-config
+          fi
+        timeout-minutes: 240
