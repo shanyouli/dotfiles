@@ -48,6 +48,8 @@ in {
             cfg.rcFiles}
           set -g @tmux_power_prefix_highlight_pos 'L'
           set -g @continuum-restore 'on'
+          set -g @resurrect-dir '${config.my.hm.cacheHome}/tmux-resurrect'
+          set -g @resurrect-processes 'btm'
           ${theme}
           run-shell '${pkgs.tmuxPlugins.copycat}/share/tmux-plugins/copycat/copycat.tmux'
           run-shell '${pkgs.tmuxPlugins.prefix-highlight}/share/tmux-plugins/prefix-highlight/prefix_highlight.tmux'

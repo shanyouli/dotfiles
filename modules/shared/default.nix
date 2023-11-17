@@ -65,10 +65,11 @@ with lib.my; {
       direnv.enable = true;
       firefox.enable = true;
       git.enable = true;
+      git.enGui = true;
       lua.enable = true;
       tmux.enable = true;
       nvim.enable = true;
-      nvim.enGui = true;
+      # nvim.enGui = true;
       rsync.enable = true;
       theme.enable = true;
       java.enable = true;

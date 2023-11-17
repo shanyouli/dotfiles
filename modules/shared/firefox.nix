@@ -26,6 +26,7 @@ in {
   config = mkIf cfg.enable {
     my.programs.browserpass.enable = true;
     my.programs.browserpass.browsers = ["firefox" "chrome"];
+    my.user.packages = [pkgs.geckodriver];
     my.programs.firefox = {
       enable = true;
       package = cfg.package;
@@ -55,23 +56,12 @@ in {
           # userContent =
           #   builtins.readFile "${configDir}/firefox/userContent.css";
           extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-            aria2-integration
-            onetab
             browserpass
             surfingkeys
-            # clearurls
             darkreader
-            # df-youtube
-            # facebook-container
-            # grammarly
-            # octotree
-            # okta-browser-plugin
-            # onepassword-password-manager
-            # plasma-integration
-            # sponsorblock
             auto-tab-discard
-            stylus
-            user-agent-string-switcher
+            # stylus
+            # user-agent-string-switcher
             violentmonkey
             switchyomega
             stylus

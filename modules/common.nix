@@ -48,9 +48,10 @@
       lxgw-wenkai
       unifont
       (nerdfonts.override {fonts = ["FantasqueSansMono"];})
-      maple-mono
-      maple-sc
+      # maple-mono
+      # maple-sc
       julia-mono
+      monaspace
     ];
   };
 }

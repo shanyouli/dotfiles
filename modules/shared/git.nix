@@ -8,12 +8,16 @@ with lib;
 with lib.my; let
   cfg = config.my.modules.git;
 in {
-  options.my.modules.git = with types; {enable = mkBoolOpt false;};
+  options.my.modules.git = with types; {
+    enable = mkBoolOpt false;
+    enGui = mkBoolOpt false;
+  };
   config = mkIf cfg.enable {
     my.user.packages = with pkgs; [
       github-cli
       git-crypt
       pre-commit # git 提交前自检
+      (mkIf (cfg.enGui && stdenvNoCC.isLinux) github-desktop)
     ];
     my.programs.git = {
       enable = true;

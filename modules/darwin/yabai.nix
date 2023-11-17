@@ -16,9 +16,8 @@ with lib.my; let
     src = pkgs.fetchFromGitHub {
       owner = "koekeishiya";
       repo = "yabai";
-      rev = "v6.0.0";
-      hash = "sha256-bfJOPoPMrkyZDRNuwhxQ7pZAOyy9WQl1GFSbubs/3hs=";
-      # hash = "sha256-uy1KOBJa9BNK5bd+5q5okMouAV0H3DUXrG3Mvr5U6oc=";
+      rev = "v6.0.1";
+      hash = "sha256-G7yjxhKk5Yz6qLHy8I8MMmZdVYUggGVvIW0j5kdkwlo=";
     };
     version = src.rev;
     nativeBuildInputs = (prev.nativeBuildInputes or []) ++ [buildSymlinks];

@@ -98,7 +98,6 @@ in {
       # "microsoft-office" , 手动安装
       "cryptomator"
       # "picgo" 使用 upic取代
-      "google-chrome"
       "wechat"
       "wpsoffice-cn"
       "mactex"
@@ -122,7 +121,6 @@ in {
       "zotero" # 文献管理
 
       # "warp" # next terminal, 不太好用
-      "arc" # next browser
 
       # "glance-chamburr" # finder 扩展
       "syntax-highlight"
@@ -135,18 +133,25 @@ in {
 
       "appcleaner" # 软件卸载
       "clean-me" # ka
-      #
-      "chromedriver"
+
       "charles" # "proxyman", 抓包
       "visual-studio-code" # other editors
       "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
       "background-music"
 
       "postman" # "rapidapi" "httpie"
-      "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
+      # "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
+      "sequel-ace" # mysql
 
       # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
       # "maccy" # clip 剪切薄，使用raycast取代
+      (mkIf config.my.modules.git.enGui "github") # github客户端
+
+      "chromedriver" # brave 浏览器的driver
+
+      # "google-chrome"
+      # "arc" # next browser
+      "brave-browser"
     ];
     homebrew.brews = [
       "macos-trash" # trash-cli

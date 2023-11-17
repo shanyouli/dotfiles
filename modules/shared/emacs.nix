@@ -86,7 +86,6 @@ in {
           epkgs.emacsql-sqlite-builtin
           # epkgs.telega
           epkgs.vterm
-          epkgs.youdao-dictionary
           epkgs.pdf-tools
           epkgs.saveplace-pdf-view
           (epkgs.treesit-grammars.with-grammars

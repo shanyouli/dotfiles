@@ -9,14 +9,9 @@ with lib.my; let
     withZshCompletion = true;
     withRich = true;
   };
-  mybid = pkgs.mybid.override {
-    withZshCompletion = true;
-    withRich = true;
-  };
 in {
   my.user.packages = [
     sysdo
-    mybid
     pkgs.coreutils-prefixed
     pkgs.cachix
     pkgs.hugo

@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 with builtins;
@@ -31,16 +32,24 @@ in {
         text = ''
           mac_UUID=$(/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice | awk -F'"' '/IOPlatformUUID/{print $4}')
           mac_loginFile=${config.my.hm.dir}/Library/Preferences/ByHost/com.apple.loginwindow.''${mac_UUID}.plist
-          if $(grep ":TALAppsToRelaunchAtLogin" $mac_loginFile > /dev/null); then
-            /usr/bin/chflags nouchg $mac_loginFile
-            /usr/libexec/PlistBuddy -c 'Delete :TALAppsToRelaunchAtLogin' $mac_loginFile
-            /usr/bin/chflags uimmutable $mac_loginFile
-            unset mac_UUID mac_loginFile
+          if [[ -f $mac_loginFile ]]; then
+            if $(grep ":TALAppsToRelaunchAtLogin" $mac_loginFile > /dev/null); then
+              /usr/bin/chflags nouchg $mac_loginFile
+              /usr/libexec/PlistBuddy -c 'Delete :TALAppsToRelaunchAtLogin' $mac_loginFile
+              /usr/bin/chflags uimmutable $mac_loginFile
+            fi
           fi
+          unset mac_UUID mac_loginFile
         '';
         desc = "Stopping the repon program when starting up after a system shutdown!";
       };
       my.modules.zsh.rcFiles = ["${configDir}/macos/macos.zsh"];
+      my.user.packages = let
+        mybid = pkgs.mybid.override {
+          withZshCompletion = true;
+          withRich = true;
+        };
+      in [mybid pkgs.defaultbrowser];
       system = {
         defaults = {
           # ".GlobalPreferences".com.apple.sound.beep.sound = "Funk";

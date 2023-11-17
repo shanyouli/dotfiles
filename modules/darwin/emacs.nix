@@ -191,24 +191,24 @@ in {
             # src = inputs.emacs-src;
             # version = inputs.emacs-src.shortRev;
           });
-        doom.confInit = let
-          postFix =
-            lib.optionalString
-            (builtins.isString config.my.modules.emacs.package.postFixup)
-            config.my.modules.emacs.package.postFixup;
-          postFixList =
-            lib.splitString " "
-            (builtins.replaceStrings ["\n"] [" "] postFix);
-          fn = attr:
-            builtins.filter (n:
-              (lib.strings.hasPrefix "/nix/store" n)
-              && (lib.strings.hasSuffix "tree-sitter-grammars/lib" n))
-            attr;
-          resultList = fn postFixList;
-        in
-          lib.optionalString (resultList != []) ''
-            (setq treesit-extra-load-path (list "${builtins.head resultList}"))
-          '';
+        # doom.confInit = let
+        #   postFix =
+        #     lib.optionalString
+        #     (builtins.isString config.my.modules.emacs.package.postFixup)
+        #     config.my.modules.emacs.package.postFixup;
+        #   postFixList =
+        #     lib.splitString " "
+        #     (builtins.replaceStrings ["\n"] [" "] postFix);
+        #   fn = attr:
+        #     builtins.filter (n:
+        #       (lib.strings.hasPrefix "/nix/store" n)
+        #       && (lib.strings.hasSuffix "tree-sitter-grammars/lib" n))
+        #     attr;
+        #   resultList = fn postFixList;
+        # in
+        #   lib.optionalString (resultList != []) ''
+        #     (setq treesit-extra-load-path (list "${builtins.head resultList}"))
+        #   '';
       };
     }
     (mkIf cfg.serverEnable {
