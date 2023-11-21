@@ -29,7 +29,14 @@
         $DRY_RUN_CMD rm -rf '/Applications/Nix Apps'
       fi
     '';
-    desc = "删除 /Applications/Nix\ Apps";
+    desc = "Remove /Applications/Nix\ Apps";
+  };
+  config.macos.systemScript.zshell = {
+    enable = true;
+    text = ''
+      chsh -s /run/current-system/sw/bin/zsh ${config.my.username}
+    '';
+    desc = "setting Default Shell";
   };
   config.macos.userScript.clear_zsh = {
     enable = true;

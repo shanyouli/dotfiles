@@ -16,7 +16,7 @@ in {
     my.user.packages = with pkgs; [
       github-cli
       git-crypt
-      pre-commit # git 提交前自检
+      # pre-commit # git 提交前自检, 使用 pipx安装
       (mkIf (cfg.enGui && stdenvNoCC.isLinux) github-desktop)
     ];
     my.programs.git = {

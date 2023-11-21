@@ -80,3 +80,23 @@ if [ -n $INSIDE_EMACS ]; then
 
     fi
 fi
+
+function emacsclient() {
+    local name="emacs"
+    if [[ $(uname) == Darwin ]]; then
+        name="Emacs"
+    fi
+    local sock_file=$(lsof -c $name | grep main | tr -s " " | cut -d' ' -f8)
+    if [[ $sock_file == "" ]]; then
+        sock_file=$(lsof -c $name | grep server | tr -s " " | cut -d' ' -f8)
+    fi
+    local _arg=""
+    if [[ $sock_name != "" ]]; then
+        _arg="-s $sock_file"
+    fi
+    command emacsclient $_arg $@
+}
+
+alias ec=emacsclient
+alias ecn="emacsclient -nw -n"
+alias ecc="emacsclient -n -c"

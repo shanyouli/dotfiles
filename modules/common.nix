@@ -44,12 +44,12 @@
     fonts = with pkgs; [
       fantasque-sans-mono
       cascadia-code
-      codicons
       lxgw-wenkai
       unifont
-      (nerdfonts.override {fonts = ["FantasqueSansMono"];})
+      (nerdfonts.override {fonts = ["FantasqueSansMono" "NerdFontsSymbolsOnly"];})
       # maple-mono
       # maple-sc
+      # codicons # vscode icons 字体
       julia-mono
       monaspace
     ];
