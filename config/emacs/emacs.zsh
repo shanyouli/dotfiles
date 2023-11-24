@@ -91,10 +91,11 @@ function emacsclient() {
         sock_file=$(lsof -c $name | grep server | tr -s " " | cut -d' ' -f8)
     fi
     local _arg=""
-    if [[ $sock_name != "" ]]; then
-        _arg="-s $sock_file"
+    if [[ $sock_file != "" ]]; then
+        command emacsclient -s $sock_file $@
+    else
+        command emacsclient $@
     fi
-    command emacsclient $_arg $@
 }
 
 alias ec=emacsclient

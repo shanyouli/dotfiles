@@ -51,21 +51,17 @@ in {
     environment.systemPackages = [cfg.package];
     # https://github.com/LnL7/nix-darwin/blob/b8c286c82c6b47826a6c0377e7017052ad91353c/modules/services/yabai/default.nix#L79
     launchd.user.agents.yabai = {
-      script = ''
-        exec ${cfg.package}/bin/yabai
-      '';
+      serviceConfig.ProgramArguments = ["${cfg.package}/bin/yabai"];
+      # command = "${cfg.package}/bin/yabai";
+      # script = ''
+      #   exec ${cfg.package}/bin/yabai
+      # '';
       serviceConfig.KeepAlive = false;
       serviceConfig.RunAtLoad = true;
       serviceConfig.EnvironmentVariables = {
         PATH = "${cfg.package}/bin:${config.environment.systemPath}";
       };
     };
-    # services.yabai = {
-    #   # path = [ "${yabai}/bin"  config.environment.systemPath ];
-    #   enable = true;
-    #   package = yabai;
-    #   # configFile = "${config.my.hm.configHome}/yabai/yabairc";
-    # };
     # The scripting addition needs root access to load, which we want to do automatically when logging in.
     # Disable the password requirement for it so that a service can do so without user interaction.
     environment.etc."sudoers.d/yabai-load-sa".text =
