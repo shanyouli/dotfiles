@@ -20,6 +20,7 @@
     ./rime.nix
     ./iina.nix
     ./battery.nix
+    ./nginx.nix
     ./other.nix
   ];
   config.macos.systemScript.removeNixApps = {

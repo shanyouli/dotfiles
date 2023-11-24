@@ -11,78 +11,89 @@ with lib.my; let
   emacsPkg = config.my.modules.emacs.pkg;
   EmacsClientAppleScript = pkgs.writeScript "emacsclient" ''
     on emacsclient(input)
-    	set cmd to "${emacsPkg}/bin/emacsclient"
-    	-- set cmd to "/etc/profiles/per-user/lyeli/bin/emacsclient"
-    	set base_cmd to ""
-    	if runShellIsSuccess(cmd & " -s main --suppress-output --eval nil") then
-    		set base_cmd to cmd & " -s main -n "
-    	end if
-
-    	if base_cmd is "" then
-    		if runShellIsSuccess(cmd & " --suppress-output --eval nil") then
-    			set base_cmd to cmd & " -n "
-    		else
-    			display notification "请运行 emacs --fg-daemon=main or Emacs 启动服务" with title "emacsDaemon 没有运行" subtitle "emacs"
-    			my logit("OOPs: Emacs Daemon has not started", "Emacsclient")
-    			return false
-    		end if
-    	end if
-    	try
-    		if input is "" then
-    			set my_frames_is_t to do shell script base_cmd & "-e \"(fboundp '+my-emacs-client-open-frame)\""
-    			if my_frames_is_t is "t" then
-    				do shell script base_cmd & "--eval '(+my-emacs-client-open-frame)'"
-    			else
-    				set visible_frames to do shell script base_cmd & "-e '(length (visible-frame-list))'"
-    				set vf to visible_frames as number
-    				if vf = 1 then
-    					do shell script base_cmd & "-c --frame-parameters='(quote (name . \"EmacsClient\"))' --eval '(switch-to-buffer \"*scratch*\")'"
-    				end if
-    				do shell script base_cmd & "-e '(select-frame-set-input-focus (selected-frame))'"
-    			end if
-    		else if input starts with "org-protocol://" then
-    			do shell script base_cmd & "'" & input & "'"
-    		else
-          set my_frames_is_t to do shell script base_cmd & "-e \"(fboundp '+my-emacs-client-open-frame)\""
-          if my_frames_is_t is "t" then
-            do shell script base_cmd & " --eval '(+my-emacs-client-open-frame \"" & input & "\" )'"
+      set cmd to "${emacsPkg}/bin/emacsclient"
+      --set cmd to "/etc/profiles/per-user/lyeli/bin/emacsclient"
+      set base_cmd to ""
+      if runSuccess(cmd & " -s main --suppress-output --eval nil", false) then
+        set base_cmd to cmd & " -s main -n "
+      end if
+      if base_cmd is "" then
+        if runSuccess(cmd & " --suppress-output --eval nil", false) then
+          set base_cmd to cmd & " -n "
+        else
+          display notification "请运行 emacs --fg-daemon=main or Emacs 启动服务" with title "emacsDaemon 没有运行" subtitle "emacs"
+          my logit("OOPs: Emacs Daemon has not started", "Emacsclient")
+          return false
+        end if
+      end if
+      try
+        if input is "" then
+          set result to runSuccess(base_cmd & "-e \"(and (fboundp '+my-emacs-client-open-frame) (+my-emacs-client-open-frame))\"", true)
+          set result_1 to item 1 of result
+          if result_1 then
+            set result_1 to item 2 of result
           else
+            set result_1 to "nil"
+          end if
+          if result_1 is "nil" then
+            set visible_frames to do shell script base_cmd & "-e '(length (visible-frame-list))'"
+            set vf to visible_frames as number
+            if vf = 1 then
+          	  do shell script base_cmd & "-c --frame-parameters='(quote (name . \"EmacsClient\"))' --eval '(switch-to-buffer \"*scratch*\")'"
+            end if
+            do shell script base_cmd & "-e '(select-frame-set-input-focus (selected-frame))'"
+          end if
+        else if input starts with "org-protocol://" then
+          do shell script base_cmd & "'" & input & "'"
+        else
+            set result to runSuccess(base_cmd & "-e \"(and (fboundp '+my-emacs-client-open-frame) (+my-emacs-client-open-frame))\"", true)
+            set result_1 to item 1 of result
+          if result_1 then
+            set result_1 to item 2 of result
+          else
+            set result_1 to "nil"
+          end if
+          if result_1 is "nil" then
             do shell script base_cmd & "-c --frame-parameters='(quote (name . \"EmacsClient\"))' '" & input & "'"
           end if
-    		end if
-    	on error e number n
-    		display notification e with title "Error" subtitle "emacs"
-    		my logit("OOPs: " & e & " " & n, "Emacsclient")
-    	end try
+        end if
+      on error e number n
+        display notification e with title "Error" subtitle "emacs"
+        my logit("OOPs: " & e & " " & n, "Emacsclient")
+      end try
     end emacsclient
 
     to logit(log_string, log_file)
-    	do shell script ¬
-    		"echo `date '+%Y-%m-%d %T: '`\"" & log_string & "\" >> $HOME/Library/Logs/" & log_file & ".log"
+      do shell script ¬
+        "echo `date '+%Y-%m-%d %T: '`\"" & log_string & "\" >> $HOME/Library/Logs/" & log_file & ".log"
     end logit
 
-    on runShellIsSuccess(cmd)
-    	try
-    		do shell script cmd
-    		return true
-    	on error e number n
-    		return false
-    	end try
-    end runShellIsSuccess
+    on runSuccess(cmd, out)
+      try
+        set _result to do shell script cmd
+        if out then
+          return {true, _result}
+        else
+          return true
+        end if
+      on error e number n
+        return false
+      end try
+    end runSuccess
 
     on open location input
-    	emacsclient(input)
+      emacsclient(input)
     end open location
 
     on open inputs
-    	repeat with raw_input in inputs
-    		set input to POSIX path of raw_input
-    		emacsclient(input)
-    	end repeat
+      repeat with raw_input in inputs
+        set input to POSIX path of raw_input
+        emacsclient(input)
+      end repeat
     end open
 
     on run
-    	emacsclient("")
+      emacsclient("")
     end run
   '';
   infoPlist = builtins.toJSON [
@@ -242,9 +253,7 @@ in {
             '';
           };
       in [pngpaste emacsClient];
-      my.modules.zsh.rcInit = ''
-        alias emacs="${emacsPkg}/Applications/Emacs.app/Contents/MacOS/Emacs"
-      '';
+      my.modules.zsh.aliases.emacs = "${emacsPkg}/Applications/Emacs.app/Contents/MacOS/Emacs";
     }
   ]);
 }

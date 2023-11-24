@@ -41,6 +41,7 @@ with lib.my; {
     ./fzf.nix
     ./mycli.nix
     ./ugrep.nix
+    ./nginx.nix
   ];
   my.modules = mkMerge [
     {

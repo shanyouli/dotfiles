@@ -24,6 +24,7 @@
       macos.games.enable = true;
       macos.yabai.enable = true;
       macos.emacs.enable = true;
+      macos.emacs.serverEnable = true;
       macos.aria2.enable = true;
       macos.hammerspoon.enable = true;
       macos.alist.enable = true;
@@ -35,6 +36,7 @@
       asdf.withDirenv = true;
       firefox.package = pkgs.firefox-esr-bin;
       macos.brew.mirror = "tuna";
+      macos.nginx.enable = true;
       # macos.mosdns.enable                  = true;
       # mail                                 = { enable = true; };
       # aerc                                 = { enable = true; };
