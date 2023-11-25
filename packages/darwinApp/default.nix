@@ -33,6 +33,7 @@ let
           ${lib.optionalString useZip ''unzip $src''}
           _pathDmg="${pathdir}.dmg"
           [[ ''${src: -4} == ".dmg" ]] && _pathDmg=$src
+          echo $_pathDmg
           ${lib.optionalString useDmg ''undmg $_pathDmg''}
           ${lib.optionalString useSystemCmd ''/usr/bin/hdiutil attach $_pathDmg''}
           runHook postUnpack

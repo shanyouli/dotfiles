@@ -12,6 +12,7 @@ in {
     {
       my.user.packages = [
         pkgs.qbittorrent-app
+        pkgs.xbydriver-app
         # pkgs.chatgpt-app
         pkgs.chatgpt-next-web-app
         pkgs.localsend-app
