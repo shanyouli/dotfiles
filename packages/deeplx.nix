@@ -5,13 +5,13 @@
 }:
 stdenv.mkDerivation rec {
   pname = "deeplx";
-  version = "0.8.3";
+  version = "0.8.7";
   src =
     if stdenv.isDarwin
     then
       fetchurl {
         url = "https://github.com/OwO-Network/DeepLX/releases/download/v${version}/deeplx_darwin_arm64";
-        sha256 = "sha256-1c6WR2Gpkfs5VZY2joNd/+YZWTzZRSCC+7829wVCZPQ=";
+        sha256 = "sha256-sozVGIf5IvntabSVr0F+3NXEeUoHXsOVNyTMxW1Z+FI=";
       }
     else {
       url = "https://github.com/OwO-Network/DeepLX/releases/download/v${version}/deeplx_linux_amd64";

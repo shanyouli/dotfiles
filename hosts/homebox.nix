@@ -44,6 +44,7 @@
       # rescript.enable                      = false;
       # clojure.enable                       = true;
       gpg.enable = true;
+      gpg.cacheTTL = 36000;
       # discord.enable                       = true;
       # hledger.enable                       = true;
       adb.enable = true;
@@ -156,6 +157,6 @@
   # environment.darwinConfig                 = "$HOME/.config/nixpkgs/darwin/configuration.nix";
 
   # Used for backwards compatibility, please read the changelog before changing.
-  # $ darwin-rebuild changelog
+  # $ darwin-rebuild chang/nix/store/6xnavkbxd3kkkyssqds9p9rw9r47cj1q-gnupg-2.4.1/bin/gpg-connect-agentelog
   system.stateVersion = 4;
 }
