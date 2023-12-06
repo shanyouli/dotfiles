@@ -1,24 +1,28 @@
-{lib, runCommand, fetchFromGitHub, installShellFiles }:
-
+{
+  lib,
+  runCommand,
+  fetchFromGitHub,
+  installShellFiles,
+}:
 runCommand "yabai-zsh-completions" {
   pname = "yabai-zsh-completions";
-  version = "2022-05-25";
+  version = "2023-12-01";
 
   src = fetchFromGitHub {
-     owner = "Amar1729";
+    owner = "Amar1729";
     repo = "yabai-zsh-completions";
-    rev = "5b096ee3a63ebc3fb32765704eb434af9388e323";
-    sha256 = "sha256-gWSYNkdljzdBeB7DmdSwzENQURdueJJVPXtFY4bA4BI=";
+    rev = "6e38681a002e13bdcd43f461f73c53b7c11fd4e5";
+    sha256 = "sha256-II00E32Pnt7PO+PcTtWp4NzSUDhQJTgAPw9HdlItbhQ=";
   };
 
-  nativeBuildInputs = [ installShellFiles ];
+  nativeBuildInputs = [installShellFiles];
 
   meta = with lib; {
-        homepage = "https://github.com/Amar1729/yabai-zsh-completions";
+    homepage = "https://github.com/Amar1729/yabai-zsh-completions";
     description = "zsh completions for yabai, the tiling window manager";
     license = licenses.mit;
     platforms = platforms.darwin;
   };
 } ''
-  installShellCompletion --zsh $src/_yabai
+  installShellCompletion --zsh $src/src/_yabai
 ''

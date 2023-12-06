@@ -19,7 +19,7 @@ mkDarwinApp rec {
   };
 
   meta = {
-    description = "跨平台视频资源播放器, 简洁免费无广告.";
-    homepage = "http://zyplayer.fun/";
+    description = "upic 图床管理";
+    homepage = "https://github.com/gee1k/uPic";
   };
 }

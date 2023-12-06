@@ -41,6 +41,7 @@ in {
 
       return {
         ${yabaiCmd}
+        ${emacsClient}
       }
     '';
     macos.userScript.setHMInitFile = {

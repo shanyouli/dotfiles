@@ -7,7 +7,7 @@
 }:
 buildNpmPackage rec {
   pname = "musicn";
-  version = "1.4.64";
+  version = "1.4.65";
 
   src = fetchFromGitHub {
     owner = "zonemeen";

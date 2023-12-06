@@ -11,51 +11,29 @@ with lib.my; let
   emacsPkg = config.my.modules.emacs.pkg;
   EmacsClientAppleScript = pkgs.writeScript "emacsclient" ''
     on emacsclient(input)
-      set cmd to "${emacsPkg}/bin/emacsclient"
-      --set cmd to "/etc/profiles/per-user/lyeli/bin/emacsclient"
-      set base_cmd to ""
-      if runSuccess(cmd & " -s main --suppress-output --eval nil", false) then
-        set base_cmd to cmd & " -s main -n "
+      --set cmd to "${emacsPkg}/bin/emacsclient"
+      set cmd to "/etc/profiles/per-user/lyeli/bin/emacsclient"
+      set daemonFile to getDaemon(cmd)
+      if daemonFile is "" then
+        display notification "请运行 emacs --fg-daemon=main or Emacs 启动服务" with title "emacsDaemon 没有运行" subtitle "emacs"
+        my logit("OOPs: Emacs Daemon has not started", "Emacsclient")
+        return false
       end if
-      if base_cmd is "" then
-        if runSuccess(cmd & " --suppress-output --eval nil", false) then
-          set base_cmd to cmd & " -n "
-        else
-          display notification "请运行 emacs --fg-daemon=main or Emacs 启动服务" with title "emacsDaemon 没有运行" subtitle "emacs"
-          my logit("OOPs: Emacs Daemon has not started", "Emacsclient")
-          return false
-        end if
-      end if
+      set base_cmd to cmd & " -s " & daemonFile & " -n "
       try
         if input is "" then
-          set result to runSuccess(base_cmd & "-e \"(and (fboundp '+my-emacs-client-open-frame) (+my-emacs-client-open-frame))\"", true)
-          set result_1 to item 1 of result
-          if result_1 then
-            set result_1 to item 2 of result
-          else
-            set result_1 to "nil"
-          end if
-          if result_1 is "nil" then
+          if not runMyFunction(base_cmd, "+my-emacs-client-open-frame") then
             set visible_frames to do shell script base_cmd & "-e '(length (visible-frame-list))'"
             set vf to visible_frames as number
             if vf = 1 then
-          	  do shell script base_cmd & "-c --frame-parameters='(quote (name . \"EmacsClient\"))' --eval '(switch-to-buffer \"*scratch*\")'"
+              do shell script base_cmd & "-c --frame-parameters='(quote (name . \"EmacsClient\"))' --eval '(switch-to-buffer \"*scratch*\")'"
             end if
             do shell script base_cmd & "-e '(select-frame-set-input-focus (selected-frame))'"
           end if
         else if input starts with "org-protocol://" then
           do shell script base_cmd & "'" & input & "'"
         else
-            set result to runSuccess(base_cmd & "-e \"(and (fboundp '+my-emacs-client-open-frame) (+my-emacs-client-open-frame))\"", true)
-            set result_1 to item 1 of result
-          if result_1 then
-            set result_1 to item 2 of result
-          else
-            set result_1 to "nil"
-          end if
-          if result_1 is "nil" then
-            do shell script base_cmd & "-c --frame-parameters='(quote (name . \"EmacsClient\"))' '" & input & "'"
-          end if
+          do shell script base_cmd & "-c --frame-parameters='(quote (name . \"EmacsClient\"))' '" & input & "'"
         end if
       on error e number n
         display notification e with title "Error" subtitle "emacs"
@@ -68,19 +46,6 @@ with lib.my; let
         "echo `date '+%Y-%m-%d %T: '`\"" & log_string & "\" >> $HOME/Library/Logs/" & log_file & ".log"
     end logit
 
-    on runSuccess(cmd, out)
-      try
-        set _result to do shell script cmd
-        if out then
-          return {true, _result}
-        else
-          return true
-        end if
-      on error e number n
-        return false
-      end try
-    end runSuccess
-
     on open location input
       emacsclient(input)
     end open location
@@ -91,6 +56,33 @@ with lib.my; let
         emacsclient(input)
       end repeat
     end open
+
+    on getDaemon(cmd)
+      set server_list to {"main", "server"}
+      repeat with citem in server_list
+        set daemonFile to do shell script "lsof -c Emacs | grep " & citem & " | tr -s \" \" | cut -d' ' -f8"
+        if daemonFile is not equal to "" then
+          return daemonFile
+        end if
+      end repeat
+      return ""
+    end getDaemon
+
+    on runMyFunction(cmd, func)
+      try
+        set result to do shell script cmd & " --eval \"(fboundp '" & func & ")\""
+        if result is "t" then
+          set result to do shell script cmd & " --eval \"(" & func & ")\""
+          if result is "t" then
+            return true
+          end if
+        end if
+        return false
+      on error e number n
+        my logit("OOPs: " & e & " " & n, "Emacsclient")
+        return false
+      end try
+    end runMyFunction
 
     on run
       emacsclient("")
@@ -130,6 +122,10 @@ with lib.my; let
 
       # icons file
       /usr/bin/plutil -replace CFBundleIconFile -string "EmacsClient" EmacsClient.app/Contents/Info.plist
+
+      # execute
+      /usr/bin/plutil -replace CFBundleExecutable -string "EmacsClient" EmacsClient.app/Contents/Info.plist
+
       # bundleID
       /usr/bin/plutil -insert CFBundleIdentifier -string "org.nixos.EmacsClient" EmacsClient.app/Contents/Info.plist
 
@@ -140,8 +136,9 @@ with lib.my; let
         lib.escapeShellArg infoPlist
       } EmacsClient.app/Contents/Info.plist
       cp -r ${icns}/share/EmacsClient/EmacsClient.icns EmacsClient.app/Contents/Resources/
+      rm -rf EmacsClient.app/Contents/Resources/droplet.icns
+      mv -f EmacsClient.app/Contents/MacOS/droplet EmacsClient.app/Contents/MacOS/EmacsClient
       cp -r EmacsClient.app $out/Applications
-
     '';
   };
 in {

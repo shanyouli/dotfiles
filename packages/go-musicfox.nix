@@ -11,7 +11,7 @@
 }:
 buildGo121Module rec {
   pname = "go-musicfox";
-  version = "4.1.7";
+  version = "4.3.0";
   src = fetchFromGitHub {
     owner = "go-musicfox";
     repo = "go-musicfox";
