@@ -11,8 +11,8 @@ with lib.my; let
   emacsPkg = config.my.modules.emacs.pkg;
   EmacsClientAppleScript = pkgs.writeScript "emacsclient" ''
     on emacsclient(input)
-      --set cmd to "${emacsPkg}/bin/emacsclient"
-      set cmd to "/etc/profiles/per-user/lyeli/bin/emacsclient"
+      set cmd to "${emacsPkg}/bin/emacsclient"
+      --set cmd to "/etc/profiles/per-user/lyeli/bin/emacsclient"
       set daemonFile to getDaemon(cmd)
       if daemonFile is "" then
         display notification "请运行 emacs --fg-daemon=main or Emacs 启动服务" with title "emacsDaemon 没有运行" subtitle "emacs"

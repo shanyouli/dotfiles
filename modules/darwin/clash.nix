@@ -19,9 +19,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # homebrew.casks = [ "clash-for-windows" ]; # 手动安装 clash-verge 取代
-
-    my.user.packages = [pkgs.clash-verge-app];
+    my.user.packages = [pkgs.clash-nyanpasu-app];
     my.modules.clash = {
       enable = true;
       configFile = cfg.configFile;

@@ -15,6 +15,7 @@ in {
   config = mkIf cfg.enable {
     homebrew.casks = ["hammerspoon"];
     homebrew.brews = ["blueutil"];
+    my.user.packages = [pkgs.defaultbrowser];
     my.hm.configFile."hammerspoon/nixpath.lua".text = let
       luaPaths = lib.optionalString (cfmLua.enable
         && ((pkgs.lib.take 2 (builtins.splitVersion cfmLua.package.version))
@@ -36,12 +37,19 @@ in {
       yabaiCmd = lib.optionalString config.my.modules.macos.yabai.enable ''
         yabaicmd="${config.services.yabai.package}/bin/yabai",
       '';
+      emacsClient = lib.optionalString config.my.modules.macos.emacs.enable ''
+        emacsClient = "${config.my.modules.emacs.pkg}/bin/emacsclient"
+      '';
+      defaultBrowser = ''
+        defaultbrowser = "${pkgs.defaultbrowser}/bin/defaultbrowser"
+      '';
     in ''
       ${luaPaths}
 
       return {
         ${yabaiCmd}
         ${emacsClient}
+        ${defaultBrowser}
       }
     '';
     macos.userScript.setHMInitFile = {

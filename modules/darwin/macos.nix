@@ -49,7 +49,7 @@ in {
           withZshCompletion = true;
           withRich = true;
         };
-      in [mybid pkgs.defaultbrowser];
+      in [mybid];
       system = {
         defaults = {
           # ".GlobalPreferences".com.apple.sound.beep.sound = "Funk";

@@ -5,12 +5,12 @@
 }:
 mkDarwinApp rec {
   appName = "zyplayer";
-  version = "3.2.10";
+  version = "3.3.0";
   useSystemCmd = true;
   useDmg = false;
   src = fetchurl {
     url = "https://github.com/Hiram-Wong/ZyPlayer/releases/download/v${version}/zyplayer-mac-${version}-arm64.dmg";
-    sha256 = "sha256-jXRfqmyT/Uy5mMccLkqsTMFMQ2d4QzKaX6bGlTMiUjk=";
+    sha256 = "sha256-ekl/i1wb29a6QmV7n9aTjpQqCegPwgMGfEoMwC7OU84=";
   };
   pathdir = "zyplayer ${version}-arm64";
   appMeta = {
