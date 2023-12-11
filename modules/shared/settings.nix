@@ -25,6 +25,7 @@ in {
       terminal = mkStrOpt "wezterm";
       repodir = mkStrOpt "~/Repos"; # 一下第三方仓库管理
       workdir = mkStrOpt "~/Work"; # 自己的仓库管理，和工作目录
+      enGui = mkEnableOption "GUI Usage";
       nix_managed =
         mkStrOpt
         "vim: set nomodifiable : Nix managed - DO NOT EDIT - see source inside ~/.dotfiles or use `:set modifiable` to force.";

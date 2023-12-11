@@ -1,28 +1,4 @@
 {config, ...}: {
-  config.imports = [
-    ../common.nix
-    # ./settings.nix
-    # ./homebrew.nix
-    # ./asdf.nix
-    # ./core.nix
-    # ./macos.nix
-    # ./music.nix
-    # ./games.nix
-    # ./services.nix
-    # ./yabai.nix
-    # ./emacs.nix
-    # ./aria2.nix
-    # ./hammerspoon.nix
-    # ./alist.nix
-    # ./mosdns.nix
-    # ./clash.nix
-    # ./mpd.nix
-    # ./rime.nix
-    # ./iina.nix
-    # ./battery.nix
-    # ./nginx.nix
-    # ./other.nix
-  ];
   config.macos.systemScript.removeNixApps = {
     enable = true;
     text = ''

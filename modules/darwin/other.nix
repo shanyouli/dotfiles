@@ -22,7 +22,7 @@ in {
       ];
       macos.userScript.mpv = {
         # enable = config.my.modules.mpv.enable;
-        enable = false; # 改问题已被修复
+        enable = false; # 该问题已被修复
         text = ''
           if [[ ! -f /usr/local/lib/libmujs.dylib ]] || [[ -L /usr/local/lib/libmujs.dylib ]]; then
             ln -sf ${pkgs.mujs}/lib/libmujs.dylib /usr/local/lib/libmujs.dylib
@@ -30,6 +30,7 @@ in {
         '';
         desc = "mpv js support ";
       };
+      my.enGui = true;
     }
     (mkIf cfg.sdcv.enable (let
       workdir = "${config.my.hm.cacheHome}/deeplx";
