@@ -35,13 +35,9 @@ in {
   config = with lib;
     mkIf cfg.enable (mkMerge [
       {my.user.packages = [aria2];}
-      (mkIf cfg.aria2p (let
-        pyenv = pkgs.python3.withPackages (ps: with ps; [aria2p] ++ aria2p.optional-dependencies.tui);
-        myaria2p = pkgs.writeScriptBin "aria2p" ''
-          #!${pkgs.stdenv.shell} -e
-          exec -a "$0" "${pyenv}/bin/aria2p" "$@"
-        '';
-      in {my.user.packages = [myaria2p];}))
+      (mkIf cfg.aria2p {
+        my.modules.python.extraPkgs = ps: with ps; [aria2p] ++ aria2p.optional-dependencies.tui;
+      })
       (mkIf cm.ytdlp.enable {
         my.modules.ytdlp.settings = {
           downloader = ["aria2c"];

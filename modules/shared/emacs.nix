@@ -178,9 +178,7 @@ in {
             (setq rime-share-data-dir "${pkgs.brise}/share/rime-data")
             (setq rime-user-data-dir "${config.my.hm.configHome}/emacs-rime")
           ''}
-          ${lib.optionalString config.my.modules.python.enable ''
-            (setq lsp-bridge-python-command "${config.my.modules.python.finalPkg}/bin/python3")
-          ''}
+          (setq lsp-bridge-python-command "${config.my.modules.python.finalPkg}/bin/python3")
           ${cfg.doom.confInit}
         '';
       };

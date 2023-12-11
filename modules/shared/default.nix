@@ -51,7 +51,6 @@ with lib.my; {
       dev.enable = true;
       # asdf.enable = true;
       gopass.enable = true;
-      python.enable = true;
       node.enable = true;
       rust.enable = true;
       rust.rustup = {
