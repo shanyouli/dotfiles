@@ -5,10 +5,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.my.modules.macos.music;
+  cfg = config.modules.macos.music;
 in {
   options = with lib; {
-    my.modules.macos.music = {
+    modules.macos.music = {
       enable = mkEnableOption "Whether to enable music module ";
     };
   };

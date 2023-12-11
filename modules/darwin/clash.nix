@@ -7,11 +7,11 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.macos.clash;
+  cfg = config.modules.macos.clash;
   clashCmd = "${config.my.hm.profileDirectory}/bin/clash-meta";
   cfgFile = "${config.my.hm.configHome}/clash-meta/clash.yaml";
 in {
-  options.my.modules.macos.clash = {
+  options.modules.macos.clash = {
     enable = mkBoolOpt false;
     configFile = mkOpt' types.path cfgFile ''
       clash 配置文件保存位置
@@ -20,7 +20,7 @@ in {
 
   config = mkIf cfg.enable {
     my.user.packages = [pkgs.clash-nyanpasu-app];
-    my.modules.clash = {
+    modules.clash = {
       enable = true;
       configFile = cfg.configFile;
     };

@@ -7,11 +7,11 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.zsh;
+  cfg = config.modules.zsh;
   toWgetConfig = opts:
     concatStringsSep "\n" (mapAttrsToList (p: v: "${p} = ${toString v}") opts);
 in {
-  options.my.modules = {
+  options.modules = {
     zsh = with types; {
       enZinit = mkBoolOpt false;
       zoxide = mkBoolOpt true;
@@ -86,7 +86,7 @@ in {
         ZDOTDIR = "$XDG_CONFIG_HOME/zsh";
         ZSH_CACHE = "${config.my.hm.cacheHome}/zsh";
       };
-      my.modules.zsh = {
+      modules.zsh = {
         prevInit = ''
           # starship和p10有自己的提示方法；--info-right
           _cache ${pkgs.any-nix-shell}/bin/any-nix-shell zsh
@@ -100,7 +100,7 @@ in {
       };
 
       # WGETRC
-      my.modules.wget.settings = {
+      modules.wget.settings = {
         # Use the server-provided last modification date, if available
         timestamping = "on";
         # Do not go up in the directory structure when downloading recursively
@@ -146,7 +146,7 @@ in {
           '';
           "zsh/extra.zshrc".text = let
             p10 =
-              if config.my.modules.starship.enable
+              if config.modules.starship.enable
               then "_cache starship init zsh --print-full-init"
               else ''
                 zinit ice depth=1
@@ -197,7 +197,7 @@ in {
     }
     (mkIf cfg.zoxide {
       my.user.packages = [pkgs.zoxide];
-      my.modules.zsh.rcInit = ''
+      modules.zsh.rcInit = ''
         _cache zoxide init zsh
       '';
     })
@@ -208,16 +208,16 @@ in {
     (mkIf cfg.vivid {
       my.user.packages = [pkgs.vivid];
     })
-    (mkIf (config.my.modules.wget.settings != {})
+    (mkIf (config.modules.wget.settings != {})
       (let
         wgetrc = "${config.my.hm.configHome}/wgetrc";
       in {
         environment.variables.WGETRC = wgetrc;
-        my.hm.configFile."wgetrc".text = toWgetConfig config.my.modules.wget.settings;
+        my.hm.configFile."wgetrc".text = toWgetConfig config.modules.wget.settings;
       }))
     (mkIf cfg.enZinit {
       my.user.packages = [pkgs.zinit];
-      my.modules.zsh.env.ZINIT_HOME = "${pkgs.zinit}/share/zinit";
+      modules.zsh.env.ZINIT_HOME = "${pkgs.zinit}/share/zinit";
     })
   ];
 }

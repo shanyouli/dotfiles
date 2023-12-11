@@ -6,7 +6,7 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules;
+  cfg = config.modules;
 in {
   config = mkMerge [
     {
@@ -21,7 +21,7 @@ in {
         pkgs.upic-app
       ];
       macos.userScript.mpv = {
-        # enable = config.my.modules.mpv.enable;
+        # enable = config.modules.mpv.enable;
         enable = false; # 该问题已被修复
         text = ''
           if [[ ! -f /usr/local/lib/libmujs.dylib ]] || [[ -L /usr/local/lib/libmujs.dylib ]]; then
@@ -46,7 +46,7 @@ in {
         serviceConfig.WorkingDirectory = workdir;
       };
       macos.userScript.preDeeplxService = {
-        # enable = config.my.modules.mpv.enable;
+        # enable = config.modules.mpv.enable;
         enable = true; # 改问题已被修复
         text = ''
           [[ -d "${workdir}" ]] || mkdir -p "${workdir}"

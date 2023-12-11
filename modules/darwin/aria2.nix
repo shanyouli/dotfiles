@@ -7,15 +7,15 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.macos.aria2;
+  cfg = config.modules.macos.aria2;
 in {
-  options.my.modules.macos.aria2 = {
+  options.modules.macos.aria2 = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
-    my.modules.aria2.enable = true;
-    my.modules.aria2.aria2p = true;
+    modules.aria2.enable = true;
+    modules.aria2.aria2p = true;
     launchd.user.agents.aria2 = {
       path = ["${pkgs.aria2}/bin" config.environment.systemPath];
       script = ''

@@ -1,24 +1,29 @@
-{ pkgs, lib, config, options, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  options,
+  ...
+}:
 with lib;
-with lib.my;
-let
-  cfg = config.my.modules.starship;
-  tomlFormat = pkgs.formats.toml { };
+with lib.my; let
+  cfg = config.modules.starship;
+  tomlFormat = pkgs.formats.toml {};
   starshipCmd = "${config.my.hm.profileDirectory}/bin/starship";
 in {
-  options.my.modules.starship = {
+  options.modules.starship = {
     enable = mkBoolOpt false;
 
     settings = mkOption {
-      type = with types;
-        let
-          prim = either bool (either int str);
-          primOrPrimAttrs = either prim (attrsOf prim);
-          entry = either prim (listOf primOrPrimAttrs);
-          entryOrAttrsOf = t: either entry (attrsOf t);
-          entries = entryOrAttrsOf (entryOrAttrsOf entry);
-        in attrsOf entries // { description = "Starship configuration"; };
-      default = { };
+      type = with types; let
+        prim = either bool (either int str);
+        primOrPrimAttrs = either prim (attrsOf prim);
+        entry = either prim (listOf primOrPrimAttrs);
+        entryOrAttrsOf = t: either entry (attrsOf t);
+        entries = entryOrAttrsOf (entryOrAttrsOf entry);
+      in
+        attrsOf entries // {description = "Starship configuration";};
+      default = {};
       example = literalExpression ''
         {
           add_newline = false;
@@ -46,16 +51,21 @@ in {
     enableBash = mkBoolOpt true;
   };
   config = mkIf cfg.enable {
-    my.user.packages = [ pkgs.starship ];
-    my.hm.configFile."starship.toml" = if (cfg.settings != { }) then {
-      source = let
-        default = builtins.fromTOML
-          (builtins.readFile "${configDir}/starship/starship.toml");
-        allSettings = default // cfg.settings;
-      in tomlFormat.generate "starship-config" allSettings;
-    } else {
-      source = "${configDir}/starship/starship.toml";
-    };
+    my.user.packages = [pkgs.starship];
+    my.hm.configFile."starship.toml" =
+      if (cfg.settings != {})
+      then {
+        source = let
+          default =
+            builtins.fromTOML
+            (builtins.readFile "${configDir}/starship/starship.toml");
+          allSettings = default // cfg.settings;
+        in
+          tomlFormat.generate "starship-config" allSettings;
+      }
+      else {
+        source = "${configDir}/starship/starship.toml";
+      };
     programs.bash.interactiveShellInit = mkIf cfg.enableBash ''
       if [[ $TERM != "dumb" && (-z $INSIDE_EMACS || $INSIDE_EMACS == "vterm") ]]; then
         eval "$(${starshipCmd} init bash --print-full-init)"

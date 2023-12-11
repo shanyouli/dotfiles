@@ -7,17 +7,17 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.macos.nginx;
-  cfm = config.my.modules;
+  cfg = config.modules.macos.nginx;
+  cfm = config.modules;
   cfb = cfm.nginx;
 in {
-  options.my.modules.macos.nginx = {
+  options.modules.macos.nginx = {
     enable = mkBoolOpt false;
     workDir = mkStrOpt "/opt/nginx";
   };
 
   config = mkIf cfg.enable {
-    my.modules.nginx = {
+    modules.nginx = {
       enable = true;
       workDir = cfg.workDir;
     };

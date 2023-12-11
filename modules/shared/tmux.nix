@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.tmux;
-  cft = config.my.modules.theme;
+  cfg = config.modules.tmux;
+  cft = config.modules.theme;
 in {
-  options.my.modules.tmux = with types; {
+  options.modules.tmux = with types; {
     enable = mkBoolOpt false;
     rcFiles = mkOpt (listOf (either str path)) [];
   };
@@ -18,7 +18,7 @@ in {
   config = mkIf cfg.enable {
     my.user.packages = with pkgs; [tmux];
 
-    my.modules.zsh = {
+    modules.zsh = {
       rcFiles = ["${configDir}/tmux/tmux.zsh"];
     };
 

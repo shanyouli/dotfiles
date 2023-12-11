@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.macos.brew;
+  cfg = config.modules.macos.brew;
   mirrors = ["bfsu" "tuna"];
 in {
-  options.my.modules.macos.brew = {
+  options.modules.macos.brew = {
     enable = mkBoolOpt true;
     useMirror = mkBoolOpt true;
     mirror = mkOption {
@@ -92,7 +92,7 @@ in {
       # "syncthing" 同步
       # "downie"
       # # 使用第三方工具取代openmtp，MacDroid.app
-      # (lib.mkIf config.my.modules.adb.enable
+      # (lib.mkIf config.modules.adb.enable
       #   "openmtp") # 或者  "android-file-transfer"
       "lulu" # 网络管理
       # "microsoft-office" , 手动安装
@@ -145,7 +145,7 @@ in {
 
       # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
       # "maccy" # clip 剪切薄，使用raycast取代
-      (mkIf config.my.modules.git.enGui "github") # github客户端
+      (mkIf config.modules.git.enGui "github") # github客户端
 
       "chromedriver" # brave 浏览器的driver
 
@@ -171,7 +171,7 @@ in {
       "xnip" = 1221250572; # 截图
       "medis" = 1579200037; # redis 管理工具
     };
-    my.modules.zsh = mkMerge [
+    modules.zsh = mkMerge [
       {
         envInit =
           if pkgs.stdenvNoCC.isx86_64

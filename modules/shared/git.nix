@@ -6,9 +6,9 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.git;
+  cfg = config.modules.git;
 in {
-  options.my.modules.git = with types; {
+  options.modules.git = with types; {
     enable = mkBoolOpt false;
     enGui = mkBoolOpt false;
   };
@@ -55,7 +55,7 @@ in {
       };
       lfs.enable = true;
     };
-    my.modules.zsh = {
+    modules.zsh = {
       rcFiles = ["${configDir}/git/git.zsh"];
     };
   };

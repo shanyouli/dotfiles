@@ -7,9 +7,9 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.sdcv;
+  cfg = config.modules.sdcv;
 in {
-  options.my.modules.sdcv = {enable = mkBoolOpt false;};
+  options.modules.sdcv = {enable = mkBoolOpt false;};
 
   config = mkIf cfg.enable {
     # 主要使用了 sdcv 本地翻译工具
@@ -19,8 +19,8 @@ in {
     my.user.packages = with pkgs;
       [sdcv deeplx translate-shell]
       ++ optionals stdenvNoCC.isLinux [crow-translate];
-    my.modules.zsh.env.STARDICT_DATA_DIR = "${config.my.hm.dataHome}/stardict";
-    my.modules.zsh.env.SDCV_HISTSIZE = "100000";
-    my.modules.zsh.env.SDCV_HISTFILE = "${config.my.hm.cacheHome}/sdcv_history";
+    modules.zsh.env.STARDICT_DATA_DIR = "${config.my.hm.dataHome}/stardict";
+    modules.zsh.env.SDCV_HISTSIZE = "100000";
+    modules.zsh.env.SDCV_HISTFILE = "${config.my.hm.cacheHome}/sdcv_history";
   };
 }

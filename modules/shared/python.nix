@@ -6,9 +6,9 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.python;
+  cfg = config.modules.python;
 in {
-  options.my.modules.python = with types; {
+  options.modules.python = with types; {
     extraPkgs = mkOption {
       type = nullOr selectorFunction;
       default = null;
@@ -20,12 +20,12 @@ in {
     finalPkg = mkPkgReadOpt "The Python include with packages";
   };
   config = mkIf (cfg.extraPkgs != null) {
-    my.modules.python.finalPkg = pkgs.python3.withPackages cfg.extraPkgs;
+    modules.python.finalPkg = pkgs.python3.withPackages cfg.extraPkgs;
     my.user.packages = [
       cfg.finalPkg
       pkgs.stable.pipx # A better python command line installation tool
     ];
-    my.modules.zsh = {
+    modules.zsh = {
       env = {
         IPYTHONDIR = "${config.my.hm.configHome}/ipython";
         PIP_CONFIG_FILE = "${config.my.hm.configHome}/pip/pip.conf";

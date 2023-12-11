@@ -7,7 +7,7 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.macos.iina;
+  cfg = config.modules.macos.iina;
   homeDir = config.my.hm.dir;
   bbdown-cmd = pkgs.writeScriptBin "bbdown" ''
     #!${pkgs.stdenv.shell}
@@ -22,13 +22,13 @@ with lib.my; let
     exec -a "$0" "$_dir/bbdown"  "$@"
   '';
 in {
-  options.my.modules.macos.iina = {
+  options.modules.macos.iina = {
     enable = mkBoolOpt false;
     isStream = mkBoolOpt true;
   };
 
   config = mkIf cfg.enable {
-    my.modules.mpv.enable = true;
+    modules.mpv.enable = true;
     my.user.packages = with pkgs; [
       iina-app
       (mkIf cfg.isStream iinaplus-app)

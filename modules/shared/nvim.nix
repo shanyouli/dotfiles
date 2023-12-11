@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.nvim;
+  cfg = config.modules.nvim;
 in {
   options = with lib; {
-    my.modules.nvim = {
+    modules.nvim = {
       enable = mkEnableOption "Whether to enable nvim module";
       enGui = mkEnableOption "Whether to enable GUI vim";
       script = mkStrOpt "";
@@ -39,16 +39,16 @@ in {
           "nvim/lua/config/lazy.lua".source = "${sc}/lua/config/lazy.lua";
           "nvim/lua/plugins/colorscheme.lua".source = "${configDir}/nvim/colorscheme.lua";
         };
-        modules.nvim.script = ''
-          [[ -d ${config.my.hm.dir}/.config/nvim/lua/config ]] || mkdir -p ${config.my.hm.dir}/.config/nvim/lua/config
-          for i in "autocmds" "keymaps" "options" ; do
-            if [[ -f ${configDir}/nvim/$i.lua ]]; then
-              ln -sf ${configDir}/nvim/$i.lua ${config.my.hm.dir}/.config/nvim/lua/config/$i.lua
-            elif [[ ! -f ${config.my.hm.dir}/.config/nvim/lua/config/$i.lua ]]; then
-              touch ${config.my.hm.dir}/.config/nvim/lua/config/$i.lua
-            fi
-          done
-        '';
       };
+      modules.nvim.script = ''
+        [[ -d ${config.my.hm.dir}/.config/nvim/lua/config ]] || mkdir -p ${config.my.hm.dir}/.config/nvim/lua/config
+        for i in "autocmds" "keymaps" "options" ; do
+          if [[ -f ${configDir}/nvim/$i.lua ]]; then
+            ln -sf ${configDir}/nvim/$i.lua ${config.my.hm.dir}/.config/nvim/lua/config/$i.lua
+          elif [[ ! -f ${config.my.hm.dir}/.config/nvim/lua/config/$i.lua ]]; then
+            touch ${config.my.hm.dir}/.config/nvim/lua/config/$i.lua
+          fi
+        done
+      '';
     };
 }

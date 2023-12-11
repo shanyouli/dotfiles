@@ -1,17 +1,22 @@
-{ config, options, lib, pkgs, ... }:
-
+{
+  config,
+  options,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.my.modules.direnv;
+with lib.my; let
+  cfg = config.modules.direnv;
 in {
-  options.my.modules.direnv = {
+  options.modules.direnv = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
-    my.user.packages = [ pkgs.direnv ];
-    my.modules.zsh.rcInit = ''_cache direnv hook zsh'';
-    my.hm.configFile."direnv"= {
+    my.user.packages = [pkgs.direnv];
+    modules.zsh.rcInit = ''_cache direnv hook zsh'';
+    my.hm.configFile."direnv" = {
       source = "${configDir}/direnv";
       recursive = true;
     };

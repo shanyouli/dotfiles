@@ -7,9 +7,9 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.ytdlp;
+  cfg = config.modules.ytdlp;
 in {
-  options.my.modules.ytdlp = {
+  options.modules.ytdlp = {
     enable = mkBoolOpt false;
     settings = with types;
       mkOption {
@@ -30,7 +30,7 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       my.user.packages = [pkgs.yt-dlp pkgs.python3.pkgs.musicdl];
-      my.modules.ytdlp.settings = let
+      modules.ytdlp.settings = let
         download = "${config.my.hm.dir}/Downloads/Youtube";
       in {
         # Get English and zh 字幕

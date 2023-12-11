@@ -7,7 +7,7 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.asdf;
+  cfg = config.modules.asdf;
   asdf_plugin_fn = v: ''
     if ! ${pkgs.asdf-vm}/bin/asdf plugin list | grep ${v} 2>&1 >/dev/null ; then
       echo "asdf: install plugin ${v} ..."
@@ -15,7 +15,7 @@ with lib.my; let
     fi
   '';
 in {
-  options.my.modules.asdf = with types; {
+  options.modules.asdf = with types; {
     enable = mkBoolOpt false;
     plugins = mkOption {
       description = "asdf default plugins";
@@ -29,7 +29,7 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       my.user.packages = [pkgs.asdf-vm];
-      my.modules.zsh = {
+      modules.zsh = {
         rcInit = "_source ${pkgs.asdf-vm}/etc/profile.d/asdf-prepare.sh";
         env = {
           ASDF_CONFIG_FILE = "${config.my.hm.configHome}/asdf/asdf.conf";
@@ -44,12 +44,12 @@ in {
       '';
     }
     (mkIf (cfg.plugins != []) {
-      my.modules.asdf.text = "${concatMapStrings asdf_plugin_fn cfg.plugins}";
+      modules.asdf.text = "${concatMapStrings asdf_plugin_fn cfg.plugins}";
     })
     (mkIf cfg.withDirenv {
-      my.modules.asdf.text = asdf_plugin_fn "direnv";
-      my.modules.direnv.enable = true;
-      my.modules.zsh.env.ASDF_DIRENV_BIN = "${config.my.hm.profileDirectory}/bin/direnv";
+      modules.asdf.text = asdf_plugin_fn "direnv";
+      modules.direnv.enable = true;
+      modules.zsh.env.ASDF_DIRENV_BIN = "${config.my.hm.profileDirectory}/bin/direnv";
     })
   ]);
 }

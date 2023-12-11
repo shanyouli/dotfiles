@@ -6,15 +6,15 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.macos.mpd;
-  cfm = config.my.modules;
+  cfg = config.modules.macos.mpd;
+  cfm = config.modules;
   mpdCmd = "${config.my.hm.profileDirectory}/bin/mpd";
   mpdDir = "${config.my.hm.cacheHome}/mpd";
 in {
-  options.my.modules.macos.mpd = {enable = mkBoolOpt false;};
+  options.modules.macos.mpd = {enable = mkBoolOpt false;};
 
   config = mkIf cfg.enable {
-    my.modules.mpd = let
+    modules.mpd = let
       mpdfifo = "/private/tmp/mpd.fifo";
     in {
       enable = true;

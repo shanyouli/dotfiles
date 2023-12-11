@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.theme;
-  cm = config.my.modules;
+  cfg = config.modules.theme;
+  cm = config.modules;
 in {
-  options.my.modules.theme = {
+  options.modules.theme = {
     enable = mkBoolOpt false;
     # https://github.com/catppuccin
     name = mkStrOpt "mocha";
@@ -18,17 +18,17 @@ in {
 
   config = mkIf cfg.enable (mkMerge [
     {
-      my.modules.zsh.rcInit = ''
+      modules.zsh.rcInit = ''
         BAT_THEME="Catppuccin-${cfg.name}"
       '';
     }
     (mkIf cm.zsh.vivid {
-      my.modules.zsh.envInit = ''
+      modules.zsh.envInit = ''
         export LS_COLORS=$(${pkgs.vivid.out}/bin/vivid generate catppuccin-${cfg.name})
       '';
     })
     (mkIf cm.starship.enable {
-      my.modules.starship.settings.palette = "catppuccin_${cfg.name}";
+      modules.starship.settings.palette = "catppuccin_${cfg.name}";
     })
     (mkIf cm.nvim.enable {
       my.hm.configFile."nvim/lua/plugins/usetheme.lua".text = ''
@@ -77,7 +77,7 @@ in {
             --color=marker:#f2d5cf,fg+:#c6d0f5,prompt:#ca9ee6,hl+:#e78284"
         '';
     in {
-      my.modules.zsh.rcInit = ''
+      modules.zsh.rcInit = ''
         if [[ -z $INSIDE_EMACS ]]; then
            ${fzftheme}
         fi

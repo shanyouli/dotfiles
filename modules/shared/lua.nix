@@ -13,10 +13,10 @@
 }:
 with lib;
 with lib.my; let
-  devCfg = config.my.modules;
+  devCfg = config.modules;
   cfg = devCfg.lua;
 in {
-  options.my.modules.lua = {
+  options.modules.lua = {
     enable = mkBoolOpt false;
     xdg.enable = mkBoolOpt devCfg.enableXDG;
     extraPkgs = mkOption {
@@ -35,11 +35,11 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      my.modules.lua.extraPkgs = ps: with ps; [luarocks-nix lua-cjson luacheck];
-      my.modules.lua.package = pkgs.lua5_4;
+      modules.lua.extraPkgs = ps: with ps; [luarocks-nix lua-cjson luacheck];
+      modules.lua.package = pkgs.lua5_4;
     }
     {
-      my.modules.lua.finalPkg = cfg.package.withPackages cfg.extraPkgs;
+      modules.lua.finalPkg = cfg.package.withPackages cfg.extraPkgs;
       my.user.packages = with pkgs; [
         cfg.finalPkg
         # lua54Packages.luarocks-nix

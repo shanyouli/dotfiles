@@ -6,13 +6,13 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.macos.asdf;
-  cfm = config.my.modules;
+  cfg = config.modules.macos.asdf;
+  cfm = config.modules;
 in {
-  options.my.modules.macos.asdf = {enable = mkBoolOpt false;};
+  options.modules.macos.asdf = {enable = mkBoolOpt false;};
 
   config = mkIf cfg.enable {
-    my.modules.asdf.enable = true;
+    modules.asdf.enable = true;
     # asdf 安装依赖工具
     homebrew.brews = [
       "autoconf"

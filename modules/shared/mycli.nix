@@ -7,9 +7,9 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.mycli;
+  cfg = config.modules.mycli;
 in {
-  options.my.modules.mycli = {
+  options.modules.mycli = {
     enable = mkBoolOpt false;
   };
 
@@ -18,7 +18,7 @@ in {
     # usql 可以的多平台客户端,PostgreSQL, MySQL, Oracle Database, SQLite3, Microsoft SQL Server, and many other databases including NoSQL and non-relational databases!
     # pgcli Postgres CLI with autocompletion and syntax highlighting
     my.user.packages = [pkgs.mycli pkgs.stable.usql];
-    my.modules.zsh.prevInit = ''
+    modules.zsh.prevInit = ''
       MYCLI_HISTFILE="${config.my.hm.cacheHome}/mycli/mycli.history"
     '';
     my.hm.configFile."mycli/myclirc".source = "${configDir}/mycli/myclirc";

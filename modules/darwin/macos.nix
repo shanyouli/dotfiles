@@ -7,10 +7,10 @@
 with builtins;
 with lib;
 with lib.my; let
-  cfg = config.my.modules.macos;
+  cfg = config.modules.macos;
 in {
   options = with lib; {
-    my.modules.macos = {
+    modules.macos = {
       enable = mkEnableOption ''
         Whether to enable macos module
       '';
@@ -43,7 +43,7 @@ in {
         '';
         desc = "Stopping the repon program when starting up after a system shutdown!";
       };
-      my.modules.zsh.rcFiles = ["${configDir}/macos/macos.zsh"];
+      modules.zsh.rcFiles = ["${configDir}/macos/macos.zsh"];
       my.user.packages = let
         mybid = pkgs.mybid.override {
           withZshCompletion = true;

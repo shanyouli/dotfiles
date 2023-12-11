@@ -6,9 +6,9 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.macos.battery;
+  cfg = config.modules.macos.battery;
 in {
-  options.my.modules.macos.battery = {
+  options.modules.macos.battery = {
     enable = mkBoolOpt false;
     maxPower = mkOpt (types.ints.between 0 100) 75;
     minPower = mkOpt (types.ints.between 0 100) 65;

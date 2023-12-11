@@ -1,14 +1,19 @@
-{pkgs, lib, config, options, ...}:
+{
+  lib,
+  config,
+  options,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.my.modules.macos.games;
+with lib.my; let
+  cfg = config.modules.macos.games;
 in {
-  options.my.modules.macos.games = {
+  options.modules.macos.games = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
-    homebrew.casks = [ "openemu" ];
-# my.user.packages = [ pkgs.rpcs3-app ];
+    homebrew.casks = ["openemu"];
+    # my.user.packages = [ pkgs.rpcs3-app ];
   };
 }

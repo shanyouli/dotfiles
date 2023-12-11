@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.mpv;
+  cfg = config.modules.mpv;
 in {
   options = with lib; {
-    my.modules.mpv = {
+    modules.mpv = {
       enable = mkEnableOption "Whether to enable mpv module ";
     };
   };

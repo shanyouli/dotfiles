@@ -7,11 +7,11 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.dev;
-  modules = config.my.modules;
+  cfg = config.modules.dev;
+  modules = config.modules;
 in {
   options = {
-    my.modules.dev = {
+    modules.dev = {
       enable = mkEnableOption "Whether to enable dev module ";
     };
   };

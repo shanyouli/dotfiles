@@ -8,14 +8,14 @@
 with lib;
 with lib.my; let
   # emacs 29.0.50 It is not stable
-  cfg = config.my.modules.emacs;
+  cfg = config.modules.emacs;
   emacsPackages = let
     epkgs = pkgs.emacsPackagesFor cfg.package;
   in
     epkgs.overrideScope' cfg.overrides;
   emacsWithPackages = emacsPackages.emacsWithPackages;
 in {
-  options.my.modules.emacs = {
+  options.modules.emacs = {
     enable = mkBoolOpt false;
     gccEnable = mkBoolOpt true;
     pluginEnable = mkBoolOpt true;
@@ -77,10 +77,10 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       nixpkgs.overlays = [inputs.emacs-overlay.overlay];
-      my.modules.emacs.doom.confInit = ''
+      modules.emacs.doom.confInit = ''
         ;; (setq mydotfile "/etc/nixos")
       '';
-      my.modules.emacs.extraPkgs = epkgs:
+      modules.emacs.extraPkgs = epkgs:
         [
           epkgs.emacsql-sqlite-builtin
           # epkgs.telega
@@ -140,7 +140,7 @@ in {
             '';
           }))
         ];
-      my.modules.emacs.pkg = emacsWithPackages cfg.extraPkgs;
+      modules.emacs.pkg = emacsWithPackages cfg.extraPkgs;
     }
     {
       my.user.packages = [
@@ -155,7 +155,7 @@ in {
         # grip markdown 预览配置
         pkgs.python3Packages.grip
       ];
-      my.modules.python.extraPkgs = ps:
+      modules.python.extraPkgs = ps:
         with ps; [
           epc
           orjson
@@ -166,7 +166,7 @@ in {
           sexpdata # 0.0.3, or lsp-bridge
           openai
         ];
-      my.modules.zsh = {
+      modules.zsh = {
         env.PATH = ["$XDG_CONFIG_HOME/emacs/bin"];
         rcFiles = ["${configDir}/emacs/emacs.zsh"];
       };
@@ -178,7 +178,7 @@ in {
             (setq rime-share-data-dir "${pkgs.brise}/share/rime-data")
             (setq rime-user-data-dir "${config.my.hm.configHome}/emacs-rime")
           ''}
-          (setq lsp-bridge-python-command "${config.my.modules.python.finalPkg}/bin/python3")
+          (setq lsp-bridge-python-command "${config.modules.python.finalPkg}/bin/python3")
           ${cfg.doom.confInit}
         '';
       };

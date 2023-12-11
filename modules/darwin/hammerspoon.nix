@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.macos.hammerspoon;
-  cfmLua = config.my.modules.lua;
+  cfg = config.modules.macos.hammerspoon;
+  cfmLua = config.modules.lua;
 in {
-  options.my.modules.macos.hammerspoon = {enable = mkBoolOpt false;};
+  options.modules.macos.hammerspoon = {enable = mkBoolOpt false;};
 
   config = mkIf cfg.enable {
     homebrew.casks = ["hammerspoon"];
@@ -23,22 +23,22 @@ in {
         -- 使用nix中安装的lua环境
         local paths = {
           package.path ,
-          "${config.my.modules.lua.finalPkg}" .. "/share/lua/5.4/?.lua",
-          "${config.my.modules.lua.finalPkg}" .. "/share/lua/5.4/?/init.lua"
+          "${config.modules.lua.finalPkg}" .. "/share/lua/5.4/?.lua",
+          "${config.modules.lua.finalPkg}" .. "/share/lua/5.4/?/init.lua"
                       }
         local cpaths = {
           package.cpath ,
-          "${config.my.modules.lua.finalPkg}" .. "/lib/lua/5.4/?.dylib",
-          "${config.my.modules.lua.finalPkg}" .. "/lib/lua/5.4/?.so"
+          "${config.modules.lua.finalPkg}" .. "/lib/lua/5.4/?.dylib",
+          "${config.modules.lua.finalPkg}" .. "/lib/lua/5.4/?.so"
                       }
         package.path = table.concat(paths, ";")
         package.cpath = table.concat(cpaths, ";")
       '';
-      yabaiCmd = lib.optionalString config.my.modules.macos.yabai.enable ''
+      yabaiCmd = lib.optionalString config.modules.macos.yabai.enable ''
         yabaicmd="${config.services.yabai.package}/bin/yabai",
       '';
-      emacsClient = lib.optionalString config.my.modules.macos.emacs.enable ''
-        emacsClient = "${config.my.modules.emacs.pkg}/bin/emacsclient",
+      emacsClient = lib.optionalString config.modules.macos.emacs.enable ''
+        emacsClient = "${config.modules.emacs.pkg}/bin/emacsclient",
       '';
       defaultBrowser = ''
         defaultbrowser = "${pkgs.defaultbrowser}/bin/defaultbrowser",

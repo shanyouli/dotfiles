@@ -5,8 +5,8 @@
   options,
   ...
 }: let
-  cfg = config.my.modules.aria2;
-  cm = config.my.modules;
+  cfg = config.modules.aria2;
+  cm = config.modules;
   # aria2     = (pkgs.writeScriptBin "aria2c" ''
   #         #!${pkgs.stdenv.shell}
   #         exec ${pkgs.aria2}/bin/aria2c --no-conf true "$@"
@@ -27,7 +27,7 @@
     };
 in {
   options = with lib; {
-    my.modules.aria2 = {
+    modules.aria2 = {
       enable = mkEnableOption "Whether to enable aria2 module";
       aria2p = mkEnableOption "aria2c daemon python cli";
     };
@@ -36,10 +36,10 @@ in {
     mkIf cfg.enable (mkMerge [
       {my.user.packages = [aria2];}
       (mkIf cfg.aria2p {
-        my.modules.python.extraPkgs = ps: with ps; [aria2p] ++ aria2p.optional-dependencies.tui;
+        modules.python.extraPkgs = ps: with ps; [aria2p] ++ aria2p.optional-dependencies.tui;
       })
       (mkIf cm.ytdlp.enable {
-        my.modules.ytdlp.settings = {
+        modules.ytdlp.settings = {
           downloader = ["aria2c"];
           downloader-args = "-x16 -k 1M";
         };

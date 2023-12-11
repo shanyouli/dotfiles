@@ -1,14 +1,20 @@
-{pkgs, lib, config, options, ...}:
+{
+  pkgs,
+  lib,
+  config,
+  options,
+  ...
+}:
 with lib;
-with lib.my;
-let cfg = config.my.modules.rsync;
+with lib.my; let
+  cfg = config.modules.rsync;
 in {
-  options.my.modules.rsync = {
+  options.modules.rsync = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
-    my.user.packages = [ pkgs.rsync ];
-    my.modules.zsh.rcFiles = [ "${configDir}/rsync/rsync.zsh" ];
+    my.user.packages = [pkgs.rsync];
+    modules.zsh.rcFiles = ["${configDir}/rsync/rsync.zsh"];
   };
 }

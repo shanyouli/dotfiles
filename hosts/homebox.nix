@@ -15,83 +15,83 @@
 
   my = {
     terminal = "kitty";
-    modules = {
-      # shared
-      # zsh.starship = false; # using p10k theme
-      zsh.enZinit = true;
-      zsh.vivid = true;
-      dev.enable = true;
-      # asdf.enable = true;
-      gopass.enable = true;
-      node.enable = true;
-      rust.enable = true;
-      rust.rustup = {
-        enable = true;
-        # version = "1.56.1";
-        rlspEn = false;
-      };
-      sdcv.enable = true;
-      ytdlp.enable = true;
-      # emacs.enable = true;
-      # aria2.enable = true;
-      direnv.enable = true;
-      firefox.enable = true;
-      git.enable = true;
-      git.enGui = true;
-      lua.enable = true;
-      tmux.enable = true;
-      nvim.enable = true;
-      # nvim.enGui = true;
-      rsync.enable = true;
-      theme.enable = true;
-      java.enable = true;
-      fzf.enable = true;
-      mycli.enable = true;
-      ugrep.enable = true;
-
-      # macos
-      macos.enable = true;
-      macos.stopAutoReopen = true;
-      macos.clash.enable = true;
-      macos.clash.configFile = "${config.my.hm.dir}/Nutstore Files/我的坚果云/clash/meta.yaml";
-      macos.music.enable = true;
-      macos.games.enable = true;
-      macos.yabai.enable = true;
-      macos.emacs.enable = true;
-      macos.emacs.serverEnable = true;
-      macos.aria2.enable = true;
-      macos.hammerspoon.enable = true;
-      macos.alist.enable = true;
-      macos.mpd.enable = true;
-      macos.rime.enable = true;
-      macos.iina.enable = true;
-      macos.battery.enable = true;
-      macos.asdf.enable = true;
-      asdf.withDirenv = true;
-      firefox.package = pkgs.firefox-esr-bin;
-      macos.brew.mirror = "tuna";
-      macos.nginx.enable = true;
-      # macos.mosdns.enable                  = true;
-      # mail                                 = { enable = true; };
-      # aerc                                 = { enable = true; };
-      # irc.enable                           = true;
-      # rescript.enable                      = false;
-      # clojure.enable                       = true;
-      gpg.enable = true;
-      gpg.cacheTTL = 36000;
-      # discord.enable                       = true;
-      # hledger.enable                       = true;
-      adb.enable = true;
-    };
-    # https://github.com/LnL7/nix-darwin/issues/214#issuecomment-1230730292
-    # hm.file."Applications/Myapps" = let
-    #   app = pkgs.buildEnv {
-    #     name = "my-manager-applications";
-    #     paths = config.my.user.packages ++ config.my.hm.pkgs;
-    #     pathsToLink = "/Applications";
-    #   };
-    # in { source = "${app}/Applications"; };
   };
+  modules = {
+    # shared
+    # zsh.starship = false; # using p10k theme
+    zsh.enZinit = true;
+    zsh.vivid = true;
+    dev.enable = true;
+    # asdf.enable = true;
+    gopass.enable = true;
+    node.enable = true;
+    rust.enable = true;
+    rust.rustup = {
+      enable = true;
+      # version = "1.56.1";
+      rlspEn = false;
+    };
+    sdcv.enable = true;
+    ytdlp.enable = true;
+    # emacs.enable = true;
+    # aria2.enable = true;
+    direnv.enable = true;
+    firefox.enable = true;
+    git.enable = true;
+    git.enGui = true;
+    lua.enable = true;
+    tmux.enable = true;
+    nvim.enable = true;
+    # nvim.enGui = true;
+    rsync.enable = true;
+    theme.enable = true;
+    java.enable = true;
+    fzf.enable = true;
+    mycli.enable = true;
+    ugrep.enable = true;
+
+    # macos
+    macos.enable = true;
+    macos.stopAutoReopen = true;
+    macos.clash.enable = true;
+    macos.clash.configFile = "${config.my.hm.dir}/Nutstore Files/我的坚果云/clash/meta.yaml";
+    macos.music.enable = true;
+    macos.games.enable = true;
+    macos.yabai.enable = true;
+    macos.emacs.enable = true;
+    macos.emacs.serverEnable = true;
+    macos.aria2.enable = true;
+    macos.hammerspoon.enable = true;
+    macos.alist.enable = true;
+    macos.mpd.enable = true;
+    macos.rime.enable = true;
+    macos.iina.enable = true;
+    macos.battery.enable = true;
+    macos.asdf.enable = true;
+    asdf.withDirenv = true;
+    firefox.package = pkgs.firefox-esr-bin;
+    macos.brew.mirror = "tuna";
+    macos.nginx.enable = true;
+    # macos.mosdns.enable                  = true;
+    # mail                                 = { enable = true; };
+    # aerc                                 = { enable = true; };
+    # irc.enable                           = true;
+    # rescript.enable                      = false;
+    # clojure.enable                       = true;
+    gpg.enable = true;
+    gpg.cacheTTL = 36000;
+    # discord.enable                       = true;
+    # hledger.enable                       = true;
+    adb.enable = true;
+  };
+  # https://github.com/LnL7/nix-darwin/issues/214#issuecomment-1230730292
+  # hm.file."Applications/Myapps" = let
+  #   app = pkgs.buildEnv {
+  #     name = "my-manager-applications";
+  #     paths = config.my.user.packages ++ config.my.hm.pkgs;
+  #     pathsToLink = "/Applications";
+  #   };
+  # in { source = "${app}/Applications"; };
 
   networking = {hostName = "home-box";};
   macos.userScript.setingApplications = {

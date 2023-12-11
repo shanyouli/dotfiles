@@ -7,9 +7,9 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.nginx;
+  cfg = config.modules.nginx;
 in {
-  options.my.modules.nginx = {
+  options.modules.nginx = {
     enable = mkBoolOpt false;
     workDir = mkStrOpt "/etc/nginx";
     sScript = mkStrOpt "";
@@ -18,7 +18,7 @@ in {
 
   config = mkIf cfg.enable {
     my.user.packages = [pkgs.stable.nginx];
-    my.modules.nginx = {
+    modules.nginx = {
       sScript = ''
         [[ -d ${cfg.workDir} ]] || {
            mkdir -p ${cfg.workDir}
@@ -38,6 +38,6 @@ in {
         }
       '';
     };
-    my.modules.zsh.aliases.nginx = "nginx -p ${cfg.workDir} -e logs/error.log -c conf/nginx.conf";
+    modules.zsh.aliases.nginx = "nginx -p ${cfg.workDir} -e logs/error.log -c conf/nginx.conf";
   };
 }

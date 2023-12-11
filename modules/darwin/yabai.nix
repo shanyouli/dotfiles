@@ -7,7 +7,7 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.my.modules.macos.yabai;
+  cfg = config.modules.macos.yabai;
   buildSymlinks = pkgs.runCommandLocal "build-symlinks" {} ''
     mkdir -p $out/bin
     ln -s /usr/bin/{xcrun,codesign,xxd} $out/bin
@@ -31,7 +31,7 @@ with lib.my; let
     '';
   });
 in {
-  options.my.modules.macos.yabai = {
+  options.modules.macos.yabai = {
     enable = mkBoolOpt false;
     package = mkOption {
       type = types.package;
