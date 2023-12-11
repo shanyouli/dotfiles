@@ -29,11 +29,19 @@ in {
   options = with lib; {
     my.modules.aria2 = {
       enable = mkEnableOption "Whether to enable aria2 module";
+      aria2p = mkEnableOption "aria2c daemon python cli";
     };
   };
   config = with lib;
     mkIf cfg.enable (mkMerge [
       {my.user.packages = [aria2];}
+      (mkIf cfg.aria2p (let
+        pyenv = pkgs.python3.withPackages (ps: with ps; [aria2p] ++ aria2p.optional-dependencies.tui);
+        myaria2p = pkgs.writeScriptBin "aria2p" ''
+          #!${pkgs.stdenv.shell} -e
+          exec -a "$0" "${pyenv}/bin/aria2p" "$@"
+        '';
+      in {my.user.packages = [myaria2p];}))
       (mkIf cm.ytdlp.enable {
         my.modules.ytdlp.settings = {
           downloader = ["aria2c"];

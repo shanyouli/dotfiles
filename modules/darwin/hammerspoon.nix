@@ -38,10 +38,10 @@ in {
         yabaicmd="${config.services.yabai.package}/bin/yabai",
       '';
       emacsClient = lib.optionalString config.my.modules.macos.emacs.enable ''
-        emacsClient = "${config.my.modules.emacs.pkg}/bin/emacsclient"
+        emacsClient = "${config.my.modules.emacs.pkg}/bin/emacsclient",
       '';
       defaultBrowser = ''
-        defaultbrowser = "${pkgs.defaultbrowser}/bin/defaultbrowser"
+        defaultbrowser = "${pkgs.defaultbrowser}/bin/defaultbrowser",
       '';
     in ''
       ${luaPaths}

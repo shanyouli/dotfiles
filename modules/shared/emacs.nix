@@ -80,7 +80,6 @@ in {
       my.modules.emacs.doom.confInit = ''
         ;; (setq mydotfile "/etc/nixos")
       '';
-      # fonts.fonts = [pkgs.emacs-all-the-icons-fonts];
       my.modules.emacs.extraPkgs = epkgs:
         [
           epkgs.emacsql-sqlite-builtin
@@ -110,7 +109,7 @@ in {
                 tree-sitter-make
                 tree-sitter-markdown
                 tree-sitter-ocaml
-                # tree-sitter-org-nvim # 安装后命名存在问题，采用其他安装方法
+                tree-sitter-org-nvim # 安装后命名存在问题，采用其他安装方法
                 tree-sitter-python
                 tree-sitter-rust
                 tree-sitter-sql
@@ -153,6 +152,8 @@ in {
         # poppler
         pkgs.ffmpegthumbnailer
         pkgs.mediainfo
+        # grip markdown 预览配置
+        pkgs.python3Packages.grip
       ];
       my.modules.python.extraPkgs = ps:
         with ps; [

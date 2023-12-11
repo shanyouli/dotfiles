@@ -94,7 +94,7 @@ in {
           # _cache "${pkgs.atuin}"/bin/atuin init zsh
         '';
         aliases = {
-          htop = "btm --basic";
+          htop = "btm --basic --mem_as_value";
           wget = "${pkgs.wget}/bin/wget --hsts-file ${config.my.hm.cacheHome}/wget-hsts";
         };
       };

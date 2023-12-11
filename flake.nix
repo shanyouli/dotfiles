@@ -4,8 +4,8 @@
   inputs = {
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
-    nixos-stable.url = "github:nixos/nixpkgs/nixos-23.05";
-    darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-23.05-darwin";
+    nixos-stable.url = "github:nixos/nixpkgs/nixos-23.11";
+    darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
 
     nixos-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";

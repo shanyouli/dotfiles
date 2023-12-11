@@ -60,7 +60,7 @@ with lib.my; let
     on getDaemon(cmd)
       set server_list to {"main", "server"}
       repeat with citem in server_list
-        set daemonFile to do shell script "lsof -c Emacs | grep " & citem & " | tr -s \" \" | cut -d' ' -f8"
+        set daemonFile to do shell script "lsof -c Emacs | grep " & citem & " | tr -s \" \" | cut -d' ' -f8 | head -n1"
         if daemonFile is not equal to "" then
           return daemonFile
         end if
@@ -192,9 +192,9 @@ in {
                   sha256 = "sha256-oM6fXdXCWVcBnNrzXmF0ZMdp8j0pzkLE66WteeCutv8=";
                 })
               ];
-            buildInputs =
-              old.buildInputs
-              ++ [pkgs.darwin.apple_sdk.frameworks.WebKit];
+            # buildInputs =
+            #   old.buildInputs
+            #   ++ [pkgs.darwin.apple_sdk.frameworks.WebKit];
             CFLAGS = "-DMAC_OS_X_VERSION_MAX_ALLOWED=110203 -g -O2";
             # src = inputs.emacs-src;
             # version = inputs.emacs-src.shortRev;
