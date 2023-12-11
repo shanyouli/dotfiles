@@ -48,9 +48,8 @@
     ...
   }: let
     inherit (flake-utils.lib) eachSystemMap;
-    inherit (builtins) map;
     inherit (lib) attrValues;
-    inherit (lib.my) defaultSystems;
+    inherit (lib.my) defaultSystems mapModulesRec';
 
     isDarwin = system: (builtins.elem system inputs.nixpkgs.lib.platforms.darwin);
 
@@ -72,12 +71,7 @@
           automatic = true;
           options = "--delete-older-than 7d";
         };
-        # readOnlyStore = true;
-        nixPath = builtins.map (source: "${source}=/etc/${config.environment.etc.${source}.target}") [
-          "home-manager"
-          "nixpkgs"
-          "stable"
-        ];
+        # readOnlyStore = true; # nixos only
         extraOptions = ''
           keep-outputs = true
           keep-derivations = true
@@ -121,18 +115,19 @@
     mkDarwinConfig = {
       system ? "aarch64-darwin",
       nixpkgs ? inputs.nixpkgs,
-      baseModules ? [
-        {
-          nixpkgs.config.allowUnfree = true;
-          nixpkgs.overlays =
-            [inputs.nixpkgs-firefox-darwin.overlay]
-            ++ (builtins.attrValues self.overlays);
-        }
-        home-manager.darwinModules.home-manager
-        ./modules/shared
-        sharedHostsConfig
-        ./modules/darwin
-      ],
+      baseModules ?
+        [
+          {
+            nixpkgs.config.allowUnfree = true;
+            nixpkgs.overlays =
+              [inputs.nixpkgs-firefox-darwin.overlay]
+              ++ (builtins.attrValues self.overlays);
+          }
+          home-manager.darwinModules.home-manager
+          sharedHostsConfig
+        ]
+        ++ (mapModulesRec' (toString ./modules/shared) import)
+        ++ (mapModulesRec' (toString ./modules/darwin) import),
       extraModules ? [],
     }:
       inputs.darwin.lib.darwinSystem {

@@ -1,15 +1,16 @@
 {
   inputs,
   pkgs,
+  config,
   ...
 }: {
-  imports = [./primary.nix ./nixpkgs.nix];
+  config.imports = [./primary.nix ./nixpkgs.nix];
 
   # bootstrap home manager using system config
-  hm = import ./home-manager;
+  config.hm = import ./home-manager;
 
   # environment setup
-  environment = {
+  config.environment = {
     systemPackages = with pkgs; [
       # standard toolset
       coreutils-full
@@ -39,7 +40,7 @@
     shells = with pkgs; [bash zsh];
   };
 
-  fonts = {
+  config.fonts = {
     fontDir.enable = true;
     fonts = with pkgs; [
       fantasque-sans-mono
@@ -54,4 +55,9 @@
       monaspace
     ];
   };
+  config.nix.nixPath = builtins.map (source: "${source}=/etc/${config.environment.etc.${source}.target}") [
+    "home-manager"
+    "nixpkgs"
+    "stable"
+  ];
 }

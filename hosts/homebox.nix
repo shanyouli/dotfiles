@@ -16,6 +16,40 @@
   my = {
     terminal = "kitty";
     modules = {
+      # shared
+      # zsh.starship = false; # using p10k theme
+      zsh.enZinit = true;
+      zsh.vivid = true;
+      dev.enable = true;
+      # asdf.enable = true;
+      gopass.enable = true;
+      node.enable = true;
+      rust.enable = true;
+      rust.rustup = {
+        enable = true;
+        # version = "1.56.1";
+        rlspEn = false;
+      };
+      sdcv.enable = true;
+      ytdlp.enable = true;
+      # emacs.enable = true;
+      # aria2.enable = true;
+      direnv.enable = true;
+      firefox.enable = true;
+      git.enable = true;
+      git.enGui = true;
+      lua.enable = true;
+      tmux.enable = true;
+      nvim.enable = true;
+      # nvim.enGui = true;
+      rsync.enable = true;
+      theme.enable = true;
+      java.enable = true;
+      fzf.enable = true;
+      mycli.enable = true;
+      ugrep.enable = true;
+
+      # macos
       macos.enable = true;
       macos.stopAutoReopen = true;
       macos.clash.enable = true;
