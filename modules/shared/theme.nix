@@ -42,8 +42,8 @@ in {
         }
       '';
     })
-    (mkIf cm.kitty.enable {
-      my.modules.kitty.settings = ''
+    (mkIf config.modules.kitty.enable {
+      modules.kitty.settings = ''
         include themes/${cfg.name}.conf
       '';
     })
