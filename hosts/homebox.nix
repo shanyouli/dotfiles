@@ -73,7 +73,6 @@
     macos.aria2.enable = true;
     macos.hammerspoon.enable = true;
     macos.alist.enable = true;
-    macos.mpd.enable = true;
     macos.rime.enable = true;
     macos.iina.enable = true;
     macos.battery.enable = true;

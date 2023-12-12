@@ -28,9 +28,5 @@ in {
     (mkIf cm.aria2.enable {
       modules.shell.aliases.paria2 = "aria2c --all-proxy=${proxy}";
     })
-    (mkIf cm.ytdlp.enable {
-      # yt-dlp 使用 代理
-      modules.ytdlp.settings.proxy = proxy;
-    })
   ]);
 }
