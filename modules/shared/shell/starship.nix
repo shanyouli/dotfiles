@@ -7,11 +7,11 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.starship;
+  cfg = config.modules.shell.starship;
   tomlFormat = pkgs.formats.toml {};
   starshipCmd = "${config.my.hm.profileDirectory}/bin/starship";
 in {
-  options.modules.starship = {
+  options.modules.shell.starship = {
     enable = mkBoolOpt false;
 
     settings = mkOption {

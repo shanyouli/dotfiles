@@ -1,13 +1,16 @@
-{ fetchurl, mkDarwinApp, ... }:
-
+{
+  fetchurl,
+  mkDarwinApp,
+  ...
+}:
 mkDarwinApp rec {
   appName = "qutebrowser";
-  version = "2.5.3";
+  version = "3.1.0";
   src = fetchurl {
     url = "https://github.com/qutebrowser/qutebrowser/releases/download/v${version}/qutebrowser-${version}.dmg";
-    sha256 = "1pnlkni4kykfa4skajlmc1q6radv4ywqp11hnhsi4prf29kcqw2g";
+    sha256 = "1db31lndbpxn6rbwhk2sbp6j50pz9d8knzs6gbvclcgi970sxyq2";
   };
-  appMeta =  {
+  appMeta = {
     description = "Keyboard-driven, vim-like browser based on PyQt5";
     homepage = "https://www.qutebrowser.org/";
   };

@@ -250,7 +250,7 @@ in {
             '';
           };
       in [pngpaste emacsClient];
-      modules.zsh.aliases.emacs = "${emacsPkg}/Applications/Emacs.app/Contents/MacOS/Emacs";
+      modules.shell.aliases.emacs = "${emacsPkg}/Applications/Emacs.app/Contents/MacOS/Emacs";
     }
   ]);
 }

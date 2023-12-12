@@ -26,7 +26,7 @@ in {
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.rustup.enable {
       my.user.packages = with pkgs; [rustup (mkIf cfg.rustup.rlspEn rust-analyzer)];
-      modules.zsh.env.RUSTUP_HOME = rustup_dir;
+      modules.shell.env.RUSTUP_HOME = rustup_dir;
       #TODO: rustup install stable and rust-analyzer
       modules.rust.rustup.script =
         ''
@@ -70,7 +70,7 @@ in {
       my = {
         user.packages = with pkgs; [cargo-update];
       };
-      modules.zsh = {
+      modules.shell = {
         env = {
           CARGO_HOME = let
             cargoConfig = ''

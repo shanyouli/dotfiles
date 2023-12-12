@@ -258,7 +258,6 @@ def update(
         "nixos-hardware",
         "nixos-stable",
         "darwin-stable",
-        "nixos-unstable",
         "nixpkgs",
         "small",
         "darwin",

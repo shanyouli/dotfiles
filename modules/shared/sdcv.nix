@@ -19,8 +19,8 @@ in {
     my.user.packages = with pkgs;
       [sdcv deeplx translate-shell]
       ++ optionals stdenvNoCC.isLinux [crow-translate];
-    modules.zsh.env.STARDICT_DATA_DIR = "${config.my.hm.dataHome}/stardict";
-    modules.zsh.env.SDCV_HISTSIZE = "100000";
-    modules.zsh.env.SDCV_HISTFILE = "${config.my.hm.cacheHome}/sdcv_history";
+    modules.shell.env.STARDICT_DATA_DIR = "${config.my.hm.dataHome}/stardict";
+    modules.shell.env.SDCV_HISTSIZE = "100000";
+    modules.shell.env.SDCV_HISTFILE = "${config.my.hm.cacheHome}/sdcv_history";
   };
 }

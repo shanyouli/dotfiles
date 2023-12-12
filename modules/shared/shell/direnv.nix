@@ -7,15 +7,15 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.direnv;
+  cfg = config.modules.shell.direnv;
 in {
-  options.modules.direnv = {
+  options.modules.shell.direnv = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
     my.user.packages = [pkgs.direnv];
-    modules.zsh.rcInit = ''_cache direnv hook zsh'';
+    modules.shell.rcInit = ''_cache direnv hook zsh'';
     my.hm.configFile."direnv" = {
       source = "${configDir}/direnv";
       recursive = true;

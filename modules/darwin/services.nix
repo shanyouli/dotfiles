@@ -26,9 +26,9 @@ in {
         script = ''
           # Use launchctl set the environment variable
           # /bin/launchctl setenv env value
-          ${optionalString config.modules.gpg.enable
+          ${optionalString config.modules.shell.gpg.enable
             "/bin/launchctl setenv GNUPGHOME ${config.environment.variables.GNUPGHOME}"}
-          ${optionalString config.modules.gopass.enable
+          ${optionalString config.modules.shell.gopass.enable
             "/bin/launchctl setenv PASSWORD_STORE_DIR ${config.env.PASSWORD_STORE_DIR}"}
         '';
         path = [config.environment.systemPath];

@@ -54,31 +54,27 @@ if (( $+commands[eza] )) then
    alias lS='eza -1' # one column by just names
 fi
 
-if (( $+commands[atool] )) then
-   alias unzip="atool --extract --explain"
-   alias zip="atool --add"
-fi
 
 # 在sudo中使用用户环境变量
 alias mysudo='sudo -E env "PATH=$PATH"'
 
 # nixgc 清理
-function nixgc() {
+function nixgcall() {
   (( $+commands[nix] )) && {
     [[ -d $HOME/.local/state/home-manager/gcroots ]] && \
         rm -rf ${HOME}/.local/state/nix/profiles/home-manager*
     [[ -f $HOME/.local/state/home-manager/gcroots/current-home ]] && \
         rm  -rf ${HOME}/.local/state/home-manager/gcroots/current-home
     sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations +1
-    # pushd /nix/var/nix/gcroots/auto
-    # for i in $(ls -Al | awk '{print $NF}') ; do
-    #     if [[ $i != $HOME/.nixpkgs/* ]]; then
-    #       sudo rm -rf $i;
-    #     fi
-    # done
+    pushd /nix/var/nix/gcroots/auto
+    for i in $(ls -Al | awk '{print $NF}') ; do
+        if [[ $i != $HOME/.nixpkgs/* ]]; then
+          sudo rm -rf $i;
+        fi
+    done
+    popd
     nix-collect-garbage
     sudo nix-collect-garbage
-    # popd
   }
 }
 

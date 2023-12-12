@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.tmux;
+  cfg = config.modules.shell.tmux;
   cft = config.modules.theme;
 in {
-  options.modules.tmux = with types; {
+  options.modules.shell.tmux = with types; {
     enable = mkBoolOpt false;
     rcFiles = mkOpt (listOf (either str path)) [];
   };
@@ -18,7 +18,7 @@ in {
   config = mkIf cfg.enable {
     my.user.packages = with pkgs; [tmux];
 
-    modules.zsh = {
+    modules.shell = {
       rcFiles = ["${configDir}/tmux/tmux.zsh"];
     };
 
@@ -61,8 +61,6 @@ in {
         executable = true;
       };
     };
-    env = mkMerge [
-      {TMUX_HOME = "$XDG_CONFIG_HOME/tmux";}
-    ];
+    env.TMUX_HOME = "$XDG_CONFIG_HOME/tmux";
   };
 }

@@ -17,6 +17,6 @@ in {
       enable = true;
       plugins = ["java"];
     };
-    modules.zsh.rcInit = "_source ${config.my.hm.dataHome}/asdf/plugins/java/set-java-home.zsh";
+    modules.shell.rcInit = "_source ${config.my.hm.dataHome}/asdf/plugins/java/set-java-home.zsh";
   };
 }

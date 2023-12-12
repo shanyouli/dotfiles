@@ -17,7 +17,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    my.user.packages = [pkgs.stable.nginx];
+    my.user.packages = [pkgs.nginx];
     modules.nginx = {
       sScript = ''
         [[ -d ${cfg.workDir} ]] || {
@@ -29,7 +29,7 @@ in {
         for i in "conf" "logs" "www" "conf.d" ; do
           [[ -d ${cfg.workDir}/$i ]] || mkdir -p ${cfg.workDir}/$i
         done
-        ln -sf ${pkgs.stable.nginx.out}/conf/mime.types ${cfg.workDir}/conf
+        ln -sf ${pkgs.nginx.out}/conf/mime.types ${cfg.workDir}/conf
         [[ -f ${configDir}/nginx/nginx.conf ]] && {
           if [[ -e ${cfg.workDir}/conf/nginx.conf ]] && [[ ! -h ${cfg.workDir}/conf/nginx.conf ]]; then
             mv ${cfg.workDir}/conf/nginx.conf ${cfg.workDir}/conf/nginx.conf.backup
@@ -38,6 +38,6 @@ in {
         }
       '';
     };
-    modules.zsh.aliases.nginx = "nginx -p ${cfg.workDir} -e logs/error.log -c conf/nginx.conf";
+    modules.shell.aliases.nginx = "nginx -p ${cfg.workDir} -e logs/error.log -c conf/nginx.conf";
   };
 }

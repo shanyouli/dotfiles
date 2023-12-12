@@ -148,7 +148,6 @@ in {
         cfg.pkg
         pkgs.pandoc
         #dirvish 包需要的工具
-        pkgs.fd
         # poppler
         pkgs.ffmpegthumbnailer
         pkgs.mediainfo
@@ -166,16 +165,21 @@ in {
           sexpdata # 0.0.3, or lsp-bridge
           openai
         ];
-      modules.zsh = {
+      modules.shell = {
         env.PATH = ["$XDG_CONFIG_HOME/emacs/bin"];
         rcFiles = ["${configDir}/emacs/emacs.zsh"];
       };
-      my.hm.configFile = {
+      my.hm.configFile = let
+        data-dir =
+          if pkgs.stdenvNoCC.isLinux
+          then "${pkgs.brise}/share/rime-data"
+          else "/Library/Input Methods/Squirrel.app/Contents/SharedSupport";
+      in {
         "doom/config.init.el".text = ''
           ${lib.optionalString cfg.rimeEnable ''
             (setq rime-emacs-module-header-root "${cfg.package}/include")
             (setq rime-librime-root "${pkgs.librime}")
-            (setq rime-share-data-dir "${pkgs.brise}/share/rime-data")
+            (setq rime-share-data-dir "${data-dir}")
             (setq rime-user-data-dir "${config.my.hm.configHome}/emacs-rime")
           ''}
           (setq lsp-bridge-python-command "${config.modules.python.finalPkg}/bin/python3")

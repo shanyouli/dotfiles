@@ -12,7 +12,7 @@ in {
   options = with lib; {
     modules.nvim = {
       enable = mkEnableOption "Whether to enable nvim module";
-      enGui = mkEnableOption "Whether to enable GUI vim";
+      enGui = mkBoolOpt config.my.enGui;
       script = mkStrOpt "";
     };
   };
@@ -28,7 +28,7 @@ in {
       my = let
         sc = pkgs.lazyvim-star.out;
       in {
-        user.packages = [pkgs.neovim (mkIf cfg.enGui pkgs.neovide)];
+        user.packages = [pkgs.neovim (mkIf (cfg.enGui && pkgs.stdenvNoCC.isLinux) pkgs.neovide)];
         hm.configFile = {
           "nvim/init.lua".source = "${sc}/init.lua";
           "nvim/stylua.toml".source = "${sc}/stylua.toml";

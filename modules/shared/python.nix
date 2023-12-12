@@ -23,9 +23,9 @@ in {
     modules.python.finalPkg = pkgs.python3.withPackages cfg.extraPkgs;
     my.user.packages = [
       cfg.finalPkg
-      pkgs.stable.pipx # A better python command line installation tool
+      pkgs.pipx # A better python command line installation tool
     ];
-    modules.zsh = {
+    modules.shell = {
       env = {
         IPYTHONDIR = "${config.my.hm.configHome}/ipython";
         PIP_CONFIG_FILE = "${config.my.hm.configHome}/pip/pip.conf";

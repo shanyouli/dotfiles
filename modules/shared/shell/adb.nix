@@ -7,13 +7,13 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.adb;
+  cfg = config.modules.shell.adb;
 in {
-  options.modules.adb = {
+  options.modules.shell.adb = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
-    my.user.packages = [pkgs.androidenv.androidPkgs_9_0.platform-tools];
+    my.user.packages = [pkgs.android-tools];
   };
 }

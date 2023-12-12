@@ -18,12 +18,25 @@
   };
   modules = {
     # shared
-    # zsh.starship = false; # using p10k theme
-    zsh.enZinit = true;
-    zsh.vivid = true;
+    shell.enZinit = true;
+    shell.enVivid = true;
+    shell.enZoxide = true;
+    shell.wget.enable = true;
+    shell.tmux.enable = true;
+    shell.adb.enable = true;
+    shell.fzf.enable = true;
+    shell.rsync.enable = true;
+    shell.starship.enable = false;
+    shell.ugrep.enable = true;
+    shell.gpg.enable = true;
+    shell.gpg.cacheTTL = 36000;
+    shell.direnv.enable = true;
+    shell.git.enable = true;
+    shell.git.enGui = true;
+    shell.gopass.enable = true;
+
     dev.enable = true;
     # asdf.enable = true;
-    gopass.enable = true;
     node.enable = true;
     rust.enable = true;
     rust.rustup = {
@@ -35,20 +48,13 @@
     ytdlp.enable = true;
     # emacs.enable = true;
     # aria2.enable = true;
-    direnv.enable = true;
     firefox.enable = true;
-    git.enable = true;
-    git.enGui = true;
     lua.enable = true;
-    tmux.enable = true;
     nvim.enable = true;
     # nvim.enGui = true;
-    rsync.enable = true;
     theme.enable = true;
     java.enable = true;
-    fzf.enable = true;
     mycli.enable = true;
-    ugrep.enable = true;
 
     # macos
     macos.enable = true;
@@ -78,11 +84,8 @@
     # irc.enable                           = true;
     # rescript.enable                      = false;
     # clojure.enable                       = true;
-    gpg.enable = true;
-    gpg.cacheTTL = 36000;
     # discord.enable                       = true;
     # hledger.enable                       = true;
-    adb.enable = true;
   };
   # https://github.com/LnL7/nix-darwin/issues/214#issuecomment-1230730292
   # hm.file."Applications/Myapps" = let
@@ -93,7 +96,7 @@
   #   };
   # in { source = "${app}/Applications"; };
 
-  networking = {hostName = "home-box";};
+  # networking = {hostName = "home-box";};
   macos.userScript.setingApplications = {
     enable = true;
     desc = "My method is used to manage applications";

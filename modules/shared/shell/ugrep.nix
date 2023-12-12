@@ -7,14 +7,14 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.ugrep;
+  cfg = config.modules.shell.ugrep;
 in {
-  options.modules.ugrep = {
+  options.modules.shell.ugrep = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
     my.user.packages = [pkgs.ugrep];
-    modules.zsh.rcFiles = ["${configDir}/ugrep/ugrep.zsh"];
+    modules.shell.rcFiles = ["${configDir}/ugrep/ugrep.zsh"];
   };
 }

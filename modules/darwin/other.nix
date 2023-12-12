@@ -30,7 +30,6 @@ in {
         '';
         desc = "mpv js support ";
       };
-      my.enGui = true;
     }
     (mkIf cfg.sdcv.enable (let
       workdir = "${config.my.hm.cacheHome}/deeplx";

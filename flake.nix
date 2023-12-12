@@ -7,12 +7,11 @@
     nixos-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
 
-    nixos-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     # small.url = "github:nixos/nixpkgs/nixos-unstable-small";
     darwin = {
       url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "darwin-stable";
     };
     home-manager = {
       url = "github:rycee/home-manager";
@@ -30,10 +29,7 @@
     # shell stuff
     flake-utils.url = "github:numtide/flake-utils";
     nixpkgs-firefox-darwin.url = "github:bandithedoge/nixpkgs-firefox-darwin";
-    nur = {
-      url = "github:nix-community/NUR";
-      # inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nur.url = "github:nix-community/NUR";
     devenv.url = "github:cachix/devenv/latest";
     treefmt-nix.url = "github:numtide/treefmt-nix";
   };
@@ -45,19 +41,17 @@
     home-manager,
     flake-utils,
     devenv,
+    darwin-stable,
+    nixos-stable,
     ...
   }: let
     inherit (flake-utils.lib) eachSystemMap;
     inherit (lib) attrValues;
-    inherit (lib.my) defaultSystems mapModulesRec';
-
-    isDarwin = system: (builtins.elem system inputs.nixpkgs.lib.platforms.darwin);
-
-    allPkgs = lib.my.mkPkgs {
-      inherit nixpkgs;
+    inherit (lib.my) defaultSystems mkPkgs mkPkg;
+    allPkgs = mkPkgs {
+      nixpkgs = [nixos-stable darwin-stable];
       cfg = {allowUnfree = true;};
       overlays = self.overlays // {};
-      # overlays = [] ++ (builtins.attrValues self.overlays);
     };
 
     sharedHostsConfig = {
@@ -109,55 +103,6 @@
         # generateCaches = true;
       };
     };
-
-    # generate a base darwin configuration with the
-    # specified hostname, overlays, and any extraModules applied
-    mkDarwinConfig = {
-      system ? "aarch64-darwin",
-      nixpkgs ? inputs.nixpkgs,
-      baseModules ?
-        [
-          {
-            nixpkgs.config.allowUnfree = true;
-            nixpkgs.overlays =
-              [inputs.nixpkgs-firefox-darwin.overlay]
-              ++ (builtins.attrValues self.overlays);
-          }
-          home-manager.darwinModules.home-manager
-          sharedHostsConfig
-        ]
-        ++ (mapModulesRec' (toString ./modules/shared) import)
-        ++ (mapModulesRec' (toString ./modules/darwin) import),
-      extraModules ? [],
-    }:
-      inputs.darwin.lib.darwinSystem {
-        inherit system;
-        modules = baseModules ++ extraModules;
-        specialArgs = {inherit inputs self nixpkgs lib;};
-      };
-
-    # generate a base nixos configuration with the
-    # specified overlays, hardware modules, and any extraModules applied
-    mkNixosConfig = {
-      system ? "x86_64-linux",
-      pkgs ? nixpkgs,
-      hardwareModules,
-      baseModules ? [
-        {nixpkgs.pkgs = allPkgs."${system}";}
-        home-manager.nixosModules.home-manager
-        ./modules/shared
-        sharedHostsConfig
-        ./modules/nixos
-      ],
-      extraModules ? [],
-    }:
-      nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = baseModules ++ hardwareModules ++ extraModules;
-        specialArgs = {inherit inputs nixpkgs lib self;};
-      };
-
-    # generate a home-manager configuration usable on any unix system
     # with overlays and any extraModules applied
     lib = nixpkgs.lib.extend (self: super: {
       my = import ./lib {
@@ -165,75 +110,99 @@
         lib = self;
       };
     });
-    mkChecks = {
-      arch,
-      os,
-      username ? "lyeli",
-    }: {
-      "${arch}-${os}" = {
-        "${username}_${os}" =
-          (
-            if os == "darwin"
-            then self.darwinConfigurations
-            else self.nixosConfigurations
-          )
-          ."${username}@${arch}-${os}"
-          .config
-          .system
-          .build
-          .toplevel;
-      };
-      # devShell = self.devShells."${arch}-${os}".default;
-    };
   in {
     lib = lib.my;
     checks =
       {}
-      // (mkChecks {
+      // (lib.my.mkChecks {
+        inherit self;
         arch = "aarch64";
         os = "darwin";
       })
-      // (mkChecks {
+      // (lib.my.mkChecks {
+        inherit self;
         arch = "x86_64";
         os = "linux";
         username = "shanyouli";
       });
 
     darwinConfigurations = {
-      Lye-MAC = mkDarwinConfig {
-        extraModules = [
-          ./hosts/homebox.nix
-          # { homebrew.brewPrefix = "/opt/homebrew/bin"; }
-        ];
-      };
-      "lyeli@aarch64-darwin" = mkDarwinConfig {
+      Lye-MAC = lib.my.mkDarwinConfig {
+        name = "home-box";
         system = "aarch64-darwin";
-        extraModules = [
-          ./hosts/homebox.nix
-          # { homebrew.brewPrefix = "/opt/homebrew/bin"; }
+        darwin = inputs.darwin;
+        allPkgs = allPkgs;
+        baseModules = [
+          {
+            nixpkgs.config.allowUnfree = true;
+            nixpkgs.overlays =
+              (builtins.attrValues self.overlays) ++ [inputs.nixpkgs-firefox-darwin.overlay];
+          }
+          home-manager.darwinModules.home-manager
+          sharedHostsConfig
         ];
-      };
-      "lyeli@x86_64-darwin" = mkDarwinConfig {
-        system = "x86_64-darwin";
         extraModules = [./hosts/homebox.nix];
+        specialArgs = {inherit inputs self nixpkgs lib;};
+      };
+      "lyeli@aarch64-darwin" = lib.my.mkDarwinConfig {
+        name = "home-box";
+        system = "aarch64-darwin";
+        darwin = inputs.darwin;
+        allPkgs = allPkgs;
+        baseModules = [
+          {
+            nixpkgs.config.allowUnfree = true;
+            nixpkgs.overlays =
+              (builtins.attrValues self.overlays) ++ [inputs.nixpkgs-firefox-darwin.overlay];
+          }
+          home-manager.darwinModules.home-manager
+          sharedHostsConfig
+        ];
+        extraModules = [./hosts/homebox.nix];
+        specialArgs = {inherit inputs self nixpkgs lib;};
+      };
+      "lyeli@x86_64-darwin" = lib.my.mkDarwinConfig {
+        name = "home-box";
+        darwin = inputs.darwin;
+        allPkgs = allPkgs;
+        system = "x86_64-darwin";
+        baseModules = [
+          {
+            nixpkgs.config.allowUnfree = true;
+            nixpkgs.overlays =
+              (builtins.attrValues self.overlays) ++ [inputs.nixpkgs-firefox-darwin.overlay];
+          }
+          home-manager.darwinModules.home-manager
+          sharedHostsConfig
+        ];
+        extraModules = [./host/test.nix];
+        specialArgs = {inherit inputs self nixpkgs lib;};
       };
     };
 
     nixosConfigurations = {
-      "shanyouli@x86_64-linux" = mkNixosConfig {
-        hardwareModules = [
+      "shanyouli@x86_64-linux" = lib.my.mkNixosConfig {
+        name = "nixos-work";
+        nixos = inputs.nixos-stable;
+        allPkgs = allPkgs;
+        extraModules = [
           ./modules/hardware/phil.nix
           inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t460s
+          ./pofiles/personal.nix
         ];
-        extraModules = [./profiles/personal.nix];
+        baseModules = [
+          home-manager.nixosModules.home-manager
+          sharedHostsConfig
+        ];
+        specialArgs = {inherit inputs nixpkgs lib self;};
       };
     };
 
     devShells = eachSystemMap defaultSystems (system: let
-      pkgs = lib.my.mkPkg {
+      pkgs = mkPkg {
         inherit system;
         nixpkgs = inputs.nixpkgs;
-        overlays = self.overlays // {};
+        overlays = self.overlays;
       };
     in {
       default = devenv.lib.mkShell {
@@ -272,12 +241,10 @@
     overlays = {
       channels = final: prev: {
         # expose other channels via overlays
-
-        stable = import (
-          if isDarwin prev.system
-          then inputs.darwin-stable
-          else inputs.nixos-stable
-        ) {system = prev.system;};
+        unstable = mkPkg {
+          system = prev.system;
+          nixpkgs = inputs.nixpkgs;
+        };
         # small = import inputs.small {system = prev.system;};
         devenv = inputs.devenv.defaultPackage.${prev.system};
       };

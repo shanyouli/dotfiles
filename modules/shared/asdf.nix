@@ -29,7 +29,7 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       my.user.packages = [pkgs.asdf-vm];
-      modules.zsh = {
+      modules.shell = {
         rcInit = "_source ${pkgs.asdf-vm}/etc/profile.d/asdf-prepare.sh";
         env = {
           ASDF_CONFIG_FILE = "${config.my.hm.configHome}/asdf/asdf.conf";
@@ -48,8 +48,8 @@ in {
     })
     (mkIf cfg.withDirenv {
       modules.asdf.text = asdf_plugin_fn "direnv";
-      modules.direnv.enable = true;
-      modules.zsh.env.ASDF_DIRENV_BIN = "${config.my.hm.profileDirectory}/bin/direnv";
+      modules.shell.direnv.enable = true;
+      modules.shell.env.ASDF_DIRENV_BIN = "${config.my.hm.profileDirectory}/bin/direnv";
     })
   ]);
 }

@@ -145,7 +145,7 @@ in {
 
       # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
       # "maccy" # clip 剪切薄，使用raycast取代
-      (mkIf config.modules.git.enGui "github") # github客户端
+      (mkIf config.modules.shell.git.enGui "github") # github客户端
 
       "chromedriver" # brave 浏览器的driver
 
@@ -171,7 +171,7 @@ in {
       "xnip" = 1221250572; # 截图
       "medis" = 1579200037; # redis 管理工具
     };
-    modules.zsh = mkMerge [
+    modules.shell = mkMerge [
       {
         envInit =
           if pkgs.stdenvNoCC.isx86_64

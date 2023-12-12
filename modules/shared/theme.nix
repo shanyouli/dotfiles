@@ -18,17 +18,17 @@ in {
 
   config = mkIf cfg.enable (mkMerge [
     {
-      modules.zsh.rcInit = ''
+      modules.shell.rcInit = ''
         BAT_THEME="Catppuccin-${cfg.name}"
       '';
     }
-    (mkIf cm.zsh.vivid {
-      modules.zsh.envInit = ''
+    (mkIf cm.shell.enVivid {
+      modules.shell.envInit = ''
         export LS_COLORS=$(${pkgs.vivid.out}/bin/vivid generate catppuccin-${cfg.name})
       '';
     })
-    (mkIf cm.starship.enable {
-      modules.starship.settings.palette = "catppuccin_${cfg.name}";
+    (mkIf cm.shell.starship.enable {
+      modules.shell.starship.settings.palette = "catppuccin_${cfg.name}";
     })
     (mkIf cm.nvim.enable {
       my.hm.configFile."nvim/lua/plugins/usetheme.lua".text = ''
@@ -47,7 +47,7 @@ in {
         include themes/${cfg.name}.conf
       '';
     })
-    (mkIf cm.fzf.enable (let
+    (mkIf cm.shell.fzf.enable (let
       fzftheme =
         if cfg.name == "macchiato"
         then ''
@@ -77,7 +77,7 @@ in {
             --color=marker:#f2d5cf,fg+:#c6d0f5,prompt:#ca9ee6,hl+:#e78284"
         '';
     in {
-      modules.zsh.rcInit = ''
+      modules.shell.rcInit = ''
         if [[ -z $INSIDE_EMACS ]]; then
            ${fzftheme}
         fi

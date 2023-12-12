@@ -8,7 +8,9 @@
   withFishCompletion ? false,
   withRich ? false,
 }: let
-  pyEnv = python3.withPackages (ps: with ps; [typer colorama shellingham] ++ (lib.optionals withRich [rich]));
+  pyEnv =
+    python3.withPackages
+    (ps: with ps; [typer colorama shellingham] ++ (lib.optionals withRich [rich]));
 in
   stdenv.mkDerivation rec {
     pname = "sysdo";

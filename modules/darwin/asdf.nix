@@ -33,7 +33,7 @@ in {
         else false;
       desc = "初始化 asdf";
       text = ''
-        export ASDF_DATA_DIR=${cfm.zsh.env.ASDF_DATA_DIR}
+        export ASDF_DATA_DIR=${cfm.shell.env.ASDF_DATA_DIR}
         ${pl.text}
       '';
     };

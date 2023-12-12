@@ -34,7 +34,7 @@ in {
 
     launchd.user.agents.nginx = {
       serviceConfig.ProgramArguments = [
-        "${pkgs.stable.nginx}/bin/nginx"
+        "${pkgs.nginx}/bin/nginx"
         "-p"
         cfg.workDir
         "-e"

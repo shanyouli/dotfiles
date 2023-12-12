@@ -36,7 +36,7 @@ in {
       '';
     };
     modules.asdf.plugins = ["nodejs"];
-    modules.zsh = {
+    modules.shell = {
       env = {
         NPM_CONFIG_USERCONFIG = npm_config_userconfig;
         NPM_CONFIG_CACHE = npm_config_cache;

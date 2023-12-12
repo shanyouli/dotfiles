@@ -26,7 +26,7 @@ in {
         sudoNotPass config.my.username "${pkgs.clash-meta}/bin/clash-meta";
     }
     (mkIf cm.aria2.enable {
-      modules.zsh.aliases.paria2 = "aria2c --all-proxy=${proxy}";
+      modules.shell.aliases.paria2 = "aria2c --all-proxy=${proxy}";
     })
     (mkIf cm.ytdlp.enable {
       # yt-dlp 使用 代理

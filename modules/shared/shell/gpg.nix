@@ -7,9 +7,9 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.gpg;
+  cfg = config.modules.shell.gpg;
 in {
-  options.modules.gpg = {
+  options.modules.shell.gpg = {
     enable = mkBoolOpt false;
     cacheTTL = mkOpt types.int 28800;
   };

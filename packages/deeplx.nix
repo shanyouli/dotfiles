@@ -31,7 +31,7 @@ stdenv.mkDerivation rec {
       DeepL Free API (No TOKEN required)
     '';
     homepage = "https://github.com/OwO-Network/DeepLX";
-    platforms = with platforms; [darwin linux];
+    platforms = with platforms; darwin ++ linux;
     maintainers = with maintainers; [shanyouli];
     license = licenses.gpl3;
   };

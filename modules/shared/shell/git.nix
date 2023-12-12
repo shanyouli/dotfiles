@@ -6,11 +6,11 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.git;
+  cfg = config.modules.shell.git;
 in {
-  options.modules.git = with types; {
+  options.modules.shell.git = with types; {
     enable = mkBoolOpt false;
-    enGui = mkBoolOpt false;
+    enGui = mkBoolOpt config.my.enGui;
   };
   config = mkIf cfg.enable {
     my.user.packages = with pkgs; [
@@ -55,7 +55,7 @@ in {
       };
       lfs.enable = true;
     };
-    modules.zsh = {
+    modules.shell = {
       rcFiles = ["${configDir}/git/git.zsh"];
     };
   };

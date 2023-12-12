@@ -1,14 +1,16 @@
-{lib, ...}:
+{
+  self,
+  lib,
+  ...
+}:
 # copy from https://github.com/wiltaylor/dotfiles/blob/e0217a4042fb2c226f34f67d5cc90c3cf1e4364c/lib/default.nix
-with builtins; rec {
-  defaultSystems = [
-    "aarch64-linux"
-    "aarch64-darwin"
-    # "i686-linux"
-    "x86_64-darwin"
-    "x86_64-linux"
-  ];
-
+let
+  inherit (builtins) elem foldl' attrValues typeOf elemAt head tryEval filter getAttr attrNames;
+  inherit (self.modules) mapModulesRec';
+in rec {
+  defaultSystems = ["aarch64-linux" "aarch64-darwin" "x86_64-darwin" "x86_64-linux"];
+  darwinSystem = ["x86_64-darwin" "aarch64-darwin"];
+  isDarwin = system: elem system darwinSystem;
   # Package names to exclude from search
   # Use to exclude packages that cause errors during search.
   searchBlackList = ["hyper-haskell-server-with-packages"];
@@ -62,7 +64,6 @@ with builtins; rec {
     "aarch64-genode"
     "x86_64-genode"
   ];
-
   evalMods = {
     allPkgs,
     systems ? defaultSystems,
@@ -88,9 +89,9 @@ with builtins; rec {
       overlays =
         attrValues
         (
-          if elem system ["aarch64-darwin" "x86_64-darwin"]
+          if isDarwin system
           then overlays
-          else removeAttrs overlays ["macos" "darwinApp"]
+          else removeAttrs overlays ["macos" "darwinApp" "firefoxDarwin"]
         );
     };
   mkPkgs = {
@@ -99,11 +100,20 @@ with builtins; rec {
     cfg ? {},
     overlays ? {},
   }:
-    withSystems systems (system:
+    withSystems systems (system: (let
+      pkgs =
+        if (typeOf nixpkgs) == "list"
+        then
+          if isDarwin system
+          then elemAt nixpkgs 1
+          else head nixpkgs
+        else nixpkgs;
+    in
       mkPkg {
-        inherit nixpkgs cfg overlays;
+        inherit cfg overlays;
+        nixpkgs = pkgs;
         system = system;
-      });
+      }));
 
   mkOverlays = {
     allPkgs,
@@ -118,42 +128,83 @@ with builtins; rec {
     foldl' (cur: nxt: let ret = {"${nxt}" = f nxt;}; in cur // ret) {}
     systems;
 
-  mkNixOSConfig = {
-    name,
-    nixpkgs,
-    allPkgs,
-    system,
-    modules ? [../modules],
-    cfg ? {},
-    ...
-  }: let
-    pkgs = allPkgs."${system}";
-
-    secrets = LoadRepoSecrets ../.secrets;
-  in
-    nixpkgs.lib.nixosSystem {
-      inherit system;
-
-      modules = [
-        cfg
-        {
-          imports = modules;
-
-          sys.security.secrets = secrets;
-
-          nixpkgs.pkgs = pkgs;
-          system.stateVersion = "20.09";
-          networking.hostName = "${name}";
-        }
-      ];
-    };
-
   LoadRepoSecrets = path: let
     data = tryEval (import path);
   in
     if data.success
     then data.value
     else {};
+
+  mkNixosConfig = {
+    name,
+    nixos,
+    allPkgs,
+    system ? "aarch64-darwin",
+    baseModules ? [{nixpkgs.config.allowUnfree = true;}],
+    extraModules ? [],
+    specialArgs ? {},
+  }:
+    nixos.lib.nixosSystem {
+      inherit system specialArgs;
+      modules =
+        [
+          {
+            nixpkgs.pkgs = allPkgs."${system}";
+            networking.hostName = "${name}";
+            system.stateVersion = "23.11";
+          }
+        ]
+        ++ baseModules
+        ++ (mapModulesRec' (toString ../modules/shared) import)
+        ++ (mapModulesRec' (toString ../modules/darwin) import)
+        ++ extraModules;
+    };
+
+  mkDarwinConfig = {
+    name,
+    darwin,
+    system ? "aarch64-darwin",
+    baseModules ? [{nixpkgs.config.allowUnfree = true;}],
+    extraModules ? [],
+    specialArgs ? {},
+    ...
+  }:
+    darwin.lib.darwinSystem {
+      inherit specialArgs system;
+      modules =
+        [
+          {
+            networking.hostName = "${name}";
+            # nixpkgs.pkgs = allPkgs."${system}"; # BUG: 无法构建成功
+          }
+        ]
+        ++ baseModules
+        ++ (mapModulesRec' (toString ../modules/shared) import)
+        ++ (mapModulesRec' (toString ../modules/darwin) import)
+        ++ extraModules;
+    };
+
+  # @see https://github.com/kclejeune/system/blob/9c3b4222e1f4a48d392d0bba244740481160f819/flake.nix#L129
+  mkChecks = {
+    self,
+    arch,
+    os,
+    username ? "lyeli",
+  }: {
+    "${arch}-${os}" = {
+      "${username}_${os}" = let
+        osConfig =
+          if os == "darwin"
+          then self.darwinConfigurations
+          else self.nixosConfigurations;
+      in
+        osConfig."${username}@${arch}-${os}".config.system.build.toplevel;
+      devShell = self.devShells."${arch}-${os}".default;
+      # TODO:
+      # "${username}_home" =
+      #     self.homeConfigurations."${username}@${arch}-${os}".activationPackage;
+    };
+  };
 
   mkSearchablePackages = allPkgs: let
     filterBadPkgs = pkgs: let

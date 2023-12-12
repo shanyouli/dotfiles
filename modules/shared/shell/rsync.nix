@@ -7,14 +7,14 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.rsync;
+  cfg = config.modules.shell.rsync;
 in {
-  options.modules.rsync = {
+  options.modules.shell.rsync = {
     enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
     my.user.packages = [pkgs.rsync];
-    modules.zsh.rcFiles = ["${configDir}/rsync/rsync.zsh"];
+    modules.shell.rcFiles = ["${configDir}/rsync/rsync.zsh"];
   };
 }
