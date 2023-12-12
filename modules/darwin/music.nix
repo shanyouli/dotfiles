@@ -6,6 +6,7 @@
   ...
 }: let
   cfg = config.modules.macos.music;
+  netease = config.modules.media.netease-music;
 in {
   options = with lib; {
     modules.macos.music = {
@@ -14,12 +15,12 @@ in {
   };
   config = with lib;
     mkIf cfg.enable {
+      modules.media.mpd.enable = true;
       homebrew.casks = [
-        # "neteasemusic" # yesplaymusic 目前使用go-musicfox取代
+        (mkIf (netease.enable && netease.enGui) "yesplaymusic") # or neteasemusic
         "vox"
         "lx-music" # 可下载无损音乐
       ];
-      # musicn 无法下载无损音乐了
-      my.user.packages = [pkgs.go-musicfox pkgs.lyricx-app pkgs.musicn];
+      my.user.packages = [pkgs.lyricx-app];
     };
 }

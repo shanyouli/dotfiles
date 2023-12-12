@@ -7,9 +7,9 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.mpd;
+  cfg = config.modules.media.mpd;
 in {
-  options.modules.mpd = with types; {
+  options.modules.media.mpd = with types; {
     enable = mkBoolOpt false;
     extraConfig = mkOpt' lines "" ''
       Extra directives added to the end of MPD's configuration file.
@@ -54,7 +54,7 @@ in {
       };
     }
     (mkIf cfg.ncmpcppEn {
-      my.user.packages = [pkgs.ncmpcpp];
+      my.user.packages = [(pkgs.ncmpcpp.override {visualizerSupport = true;})];
       my.hm = let
         ncmpcpp_dir = "${config.my.hm.cacheHome}/ncmpcpp";
         lyrics_dir = "${config.my.hm.dir}/Music/LyricsX";

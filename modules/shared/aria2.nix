@@ -6,12 +6,6 @@
   ...
 }: let
   cfg = config.modules.aria2;
-  cm = config.modules;
-  # aria2     = (pkgs.writeScriptBin "aria2c" ''
-  #         #!${pkgs.stdenv.shell}
-  #         exec ${pkgs.aria2}/bin/aria2c --no-conf true "$@"
-  #         '');
-
   aria2 = let
     cfgPkg = pkgs.aria2;
     flags = "--no-conf=true";
@@ -37,12 +31,6 @@ in {
       {my.user.packages = [aria2];}
       (mkIf cfg.aria2p {
         modules.python.extraPkgs = ps: with ps; [aria2p] ++ aria2p.optional-dependencies.tui;
-      })
-      (mkIf cm.ytdlp.enable {
-        modules.ytdlp.settings = {
-          downloader = ["aria2c"];
-          downloader-args = "-x16 -k 1M";
-        };
       })
     ]);
   # TODO: alias

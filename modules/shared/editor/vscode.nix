@@ -25,7 +25,7 @@ in {
       ];
       userSettings = {
         "nix.serverPath" = "rnix-lsp";
-        "nix.enableLanguageServer" = trie;
+        "nix.enableLanguageServer" = true;
         "nix.formatterPath" = "alejandra";
       };
     };

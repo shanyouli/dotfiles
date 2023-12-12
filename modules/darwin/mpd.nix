@@ -14,7 +14,7 @@ in {
   options.modules.macos.mpd = {enable = mkBoolOpt false;};
 
   config = mkIf cfg.enable {
-    modules.mpd = let
+    modules.media.mpd = let
       mpdfifo = "/private/tmp/mpd.fifo";
     in {
       enable = true;
@@ -64,7 +64,7 @@ in {
         '';
       };
       ncmpcpp = {
-        enable = cfm.mpd.ncmpcppEn;
+        enable = cfm.media.mpd.ncmpcppEn;
         desc = "初始化ncmpcpp";
         text = let
           ncmpcpp_dir = "${config.my.hm.cacheHome}/ncmpcpp";

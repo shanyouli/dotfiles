@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.mpv;
+  cfg = config.modules.media.mpv;
 in {
   options = with lib; {
-    modules.mpv = {
+    modules.media.mpv = {
       enable = mkEnableOption "Whether to enable mpv module ";
     };
   };
@@ -18,7 +18,7 @@ in {
   config = with lib;
     mkIf cfg.enable (mkMerge [
       {
-        my.user.packages = with pkgs; [mpv ffmpeg];
+        my.user.packages = with pkgs; [mpv mpvc ffmpeg];
       }
     ]);
 }

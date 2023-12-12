@@ -279,6 +279,7 @@
         go-musicfox = prev.callPackage ./packages/go-musicfox.nix {};
         lazyvim-star = prev.callPackage ./packages/lazyvim-star.nix {};
         sysdo = prev.callPackage ./packages/sysdo {};
+        yutto = prev.callPackage ./packages/yutto.nix {};
       };
       macos = final: prev: {
         yabai-zsh-completions =

@@ -28,7 +28,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    modules.mpv.enable = true;
+    modules.media.mpv.enable = true;
     my.user.packages = with pkgs; [
       iina-app
       (mkIf cfg.isStream iinaplus-app)

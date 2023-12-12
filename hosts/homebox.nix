@@ -39,6 +39,8 @@
     editor.nvim.enGui = false; # GUI 编辑工具为emacs
     editor.vscode.enable = true;
 
+    media.netease-music.enable = true;
+    media.download.enable = true;
     dev.enable = true;
     # asdf.enable = true;
     node.enable = true;
@@ -49,7 +51,7 @@
       rlspEn = false;
     };
     sdcv.enable = true;
-    ytdlp.enable = true;
+    # ytdlp.enable = true;
     # emacs.enable = true;
     # aria2.enable = true;
     firefox.enable = true;
