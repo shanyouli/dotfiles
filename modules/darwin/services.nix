@@ -47,8 +47,8 @@ in {
     text = cfm.rust.cargoScript;
   };
   macos.userScript.initNvim = {
-    enable = cfm.nvim.enable;
+    enable = cfm.editor.nvim.enable;
     desc = "Init nvim";
-    text = cfm.nvim.script;
+    text = cfm.editor.nvim.script;
   };
 }

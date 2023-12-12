@@ -8,14 +8,14 @@
 with lib;
 with lib.my; let
   # emacs 29.0.50 It is not stable
-  cfg = config.modules.emacs;
+  cfg = config.modules.editor.emacs;
   emacsPackages = let
     epkgs = pkgs.emacsPackagesFor cfg.package;
   in
     epkgs.overrideScope' cfg.overrides;
   emacsWithPackages = emacsPackages.emacsWithPackages;
 in {
-  options.modules.emacs = {
+  options.modules.editor.emacs = {
     enable = mkBoolOpt false;
     gccEnable = mkBoolOpt true;
     pluginEnable = mkBoolOpt true;
@@ -77,10 +77,10 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       nixpkgs.overlays = [inputs.emacs-overlay.overlay];
-      modules.emacs.doom.confInit = ''
+      modules.editor.emacs.doom.confInit = ''
         ;; (setq mydotfile "/etc/nixos")
       '';
-      modules.emacs.extraPkgs = epkgs:
+      modules.editor.emacs.extraPkgs = epkgs:
         [
           epkgs.emacsql-sqlite-builtin
           # epkgs.telega
@@ -140,7 +140,7 @@ in {
             '';
           }))
         ];
-      modules.emacs.pkg = emacsWithPackages cfg.extraPkgs;
+      modules.editor.emacs.pkg = emacsWithPackages cfg.extraPkgs;
     }
     {
       my.user.packages = [

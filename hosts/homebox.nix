@@ -35,6 +35,9 @@
     shell.git.enGui = true;
     shell.gopass.enable = true;
 
+    editor.nvim.enable = true;
+    editor.nvim.enGui = false; # GUI 编辑工具为emacs
+
     dev.enable = true;
     # asdf.enable = true;
     node.enable = true;
@@ -50,8 +53,6 @@
     # aria2.enable = true;
     firefox.enable = true;
     lua.enable = true;
-    nvim.enable = true;
-    # nvim.enGui = true;
     theme.enable = true;
     java.enable = true;
     mycli.enable = true;

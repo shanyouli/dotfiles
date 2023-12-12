@@ -8,7 +8,7 @@
 with lib;
 with lib.my; let
   cfg = config.modules.macos.emacs;
-  emacsPkg = config.modules.emacs.pkg;
+  emacsPkg = config.modules.editor.emacs.pkg;
   EmacsClientAppleScript = pkgs.writeScript "emacsclient" ''
     on emacsclient(input)
       set cmd to "${emacsPkg}/bin/emacsclient"
@@ -149,7 +149,7 @@ in {
 
   config = mkIf cfg.enable (mkMerge [
     {
-      modules.emacs = {
+      modules.editor.emacs = {
         enable = true;
         package = let
           # Fix OS window role (needed for window managers like yabai)
@@ -202,8 +202,8 @@ in {
         # doom.confInit = let
         #   postFix =
         #     lib.optionalString
-        #     (builtins.isString config.modules.emacs.package.postFixup)
-        #     config.modules.emacs.package.postFixup;
+        #     (builtins.isString config.modules.editor.emacs.package.postFixup)
+        #     config.modules.editor.emacs.package.postFixup;
         #   postFixList =
         #     lib.splitString " "
         #     (builtins.replaceStrings ["\n"] [" "] postFix);

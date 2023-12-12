@@ -30,7 +30,7 @@ in {
     (mkIf cm.shell.starship.enable {
       modules.shell.starship.settings.palette = "catppuccin_${cfg.name}";
     })
-    (mkIf cm.nvim.enable {
+    (mkIf cm.editor.nvim.enable {
       my.hm.configFile."nvim/lua/plugins/usetheme.lua".text = ''
         return {
           {

@@ -160,6 +160,7 @@ in {
       my.user.packages = [pkgs.zoxide];
       modules.shell.rcInit = ''
         _cache zoxide init zsh
+        alias cd='z'
       '';
     })
     (mkIf cfg.enNavi {

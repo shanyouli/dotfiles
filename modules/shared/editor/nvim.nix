@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.nvim;
+  cfg = config.modules.editor.nvim;
 in {
   options = with lib; {
-    modules.nvim = {
+    modules.editor.nvim = {
       enable = mkEnableOption "Whether to enable nvim module";
       enGui = mkBoolOpt config.my.enGui;
       script = mkStrOpt "";
@@ -28,7 +28,7 @@ in {
       my = let
         sc = pkgs.lazyvim-star.out;
       in {
-        user.packages = [pkgs.neovim (mkIf (cfg.enGui && pkgs.stdenvNoCC.isLinux) pkgs.neovide)];
+        user.packages = [pkgs.unstable.neovim (mkIf (cfg.enGui && pkgs.stdenvNoCC.isLinux) pkgs.neovide)];
         hm.configFile = {
           "nvim/init.lua".source = "${sc}/init.lua";
           "nvim/stylua.toml".source = "${sc}/stylua.toml";
@@ -40,7 +40,7 @@ in {
           "nvim/lua/plugins/colorscheme.lua".source = "${configDir}/nvim/colorscheme.lua";
         };
       };
-      modules.nvim.script = ''
+      modules.editor.nvim.script = ''
         [[ -d ${config.my.hm.dir}/.config/nvim/lua/config ]] || mkdir -p ${config.my.hm.dir}/.config/nvim/lua/config
         for i in "autocmds" "keymaps" "options" ; do
           if [[ -f ${configDir}/nvim/$i.lua ]]; then

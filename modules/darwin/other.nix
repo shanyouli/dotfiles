@@ -16,7 +16,7 @@ in {
         # pkgs.chatgpt-app
         pkgs.chatgpt-next-web-app
         pkgs.localsend-app
-        (lib.mkIf cfg.nvim.enGui pkgs.neovide-app)
+        (lib.mkIf cfg.editor.nvim.enGui pkgs.neovide-app)
         # qutebrowser-app # 不再需要
         pkgs.upic-app
       ];
