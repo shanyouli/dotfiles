@@ -37,6 +37,7 @@
 
     editor.nvim.enable = true;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs
+    editor.vscode.enable = true;
 
     dev.enable = true;
     # asdf.enable = true;

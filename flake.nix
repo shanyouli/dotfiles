@@ -243,6 +243,7 @@
         # expose other channels via overlays
         unstable = mkPkg {
           system = prev.system;
+          cfg = {allowUnfree = true;};
           nixpkgs = inputs.nixpkgs;
         };
         # small = import inputs.small {system = prev.system;};

@@ -24,8 +24,9 @@ in {
         shfmt
         shellcheck
         # nix lanaguage
-        pkgs.nil # nix language-server
+        pkgs.unstable.rnix-lsp # nix language-server
         alejandra # nix 格式化工具
+
         allure # 测试报告生产工具
         taplo # toml 格式化工具
       ];

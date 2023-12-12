@@ -135,7 +135,7 @@ in {
       "clean-me" # ka
 
       "charles" # "proxyman", 抓包
-      "visual-studio-code" # other editors
+      # "visual-studio-code" # other editors nix 管理
       "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
       "background-music"
 

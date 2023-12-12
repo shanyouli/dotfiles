@@ -60,8 +60,7 @@ in {
             surfingkeys
             darkreader
             auto-tab-discard
-            # stylus
-            # user-agent-string-switcher
+            user-agent-string-switcher
             violentmonkey
             switchyomega
             stylus
