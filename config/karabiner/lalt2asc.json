@@ -1,0 +1,25 @@
+{
+  "title": " Right_option → hyper Key (⌃⇧󰘳) (rOption if alone)",
+  "rules": [
+    {
+      "description": "right_option → Hyper Key (⌃⇧󰘳) (rOption if alone)",
+      "manipulators": [
+        {
+          "from": {
+            "key_code": "right_option"
+          },
+          "to": [
+            {
+              "key_code": "left_option",
+              "modifiers": [
+                "left_shift",
+                "left_command"
+              ]
+            }
+          ],
+          "type": "basic"
+        }
+      ]
+    }
+  ]
+}

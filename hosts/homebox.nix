@@ -62,6 +62,7 @@
 
     # macos
     macos.enable = true;
+    macos.karabiner.enable = true;
     macos.stopAutoReopen = true;
     macos.clash.enable = true;
     macos.clash.configFile = "${config.my.hm.dir}/Nutstore Files/我的坚果云/clash/meta.yaml";

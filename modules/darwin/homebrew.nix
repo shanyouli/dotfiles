@@ -72,7 +72,6 @@ in {
           "homebrew/cask"
           "homebrew/core"
           "homebrew/services"
-          # "homebrew/cask-drivers" # migrations to cask
           "homebrew/cask-versions"
           "homebrew/command-not-found"
           # "homebrew/cask-fonts" 不需要使用, 使用nix控制安装字体
@@ -84,8 +83,6 @@ in {
       "stats" # 状态显示
       "telegram"
       "baidunetdisk"
-      # better using caplocks @see https://github.com/Eason0210/karabiner-config/blob/master/karabiner.json
-      "karabiner-elements"
       "orbstack" # docker
       "easydict" # 翻译软件
       "jetbrains-toolbox"
