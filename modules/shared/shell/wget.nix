@@ -58,9 +58,9 @@ in {
       # (https://www.gnu.org/software/wget/manual/html_node/HTTPS-_0028SSL_002fTLS_0029-Options.html)
       hsts-file = "${config.my.hm.cacheHome}/wget-hsts";
     };
-    environment.variables.WGETRC = "${config.my.hm.configHome}/wgetrc";
+    environment.variables.WGETRC = "${config.my.hm.configHome}/wget/wgetrc";
 
-    my.hm.configFile."wgetrc".text = toWgetConfig cfg.settings;
+    my.hm.configFile."wget/wgetrc".text = toWgetConfig cfg.settings;
 
     modules.shell.aliases.wget = "{wget}/bin/wget --hsts-file ${config.my.hm.cacheHome}/wget-hsts";
   };
