@@ -27,6 +27,8 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       my.user.packages = [pkgs.mpd pkgs.mpc-cli];
+      modules.shell.aliases.mpcs = "mpc search any";
+      modules.shell.aliases.mpcsp = "mpc searchplay any";
       my.hm = let
         mpd_dir = "${config.my.hm.cacheHome}/mpd";
       in {
