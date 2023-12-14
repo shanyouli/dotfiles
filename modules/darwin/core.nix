@@ -22,7 +22,7 @@
           "/sbin/shutdown"
           "/sbin/reboot"
         ];
-        # ++ lib.optionals config.modules.macos.clash.enable [ "/usr/sbin/networksetup" ];
+        # ++ lib.optionals config.modules.macos.service.clash.enable [ "/usr/sbin/networksetup" ];
         commandsString = builtins.concatStringsSep ", " commands;
       in ''
         %admin ALL=(ALL:ALL) NOPASSWD: ${commandsString}

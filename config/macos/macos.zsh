@@ -131,7 +131,7 @@ if (( $+commands[brew] )); then
 fi
 
 function upclash() {
-    local _clash_verge="Clash Verge.app"
+    local _clash_verge="Clash Nyanpasu.app"
     if [[ -d "/Applications/${_clash_verge}" ]]; then
         _clash_verge="/Applications/${_clash_verge}"
     elif [[ -d "$HOME/Applications/${_clash_verge}" ]]; then

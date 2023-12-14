@@ -32,7 +32,6 @@
     shell.gpg.cacheTTL = 36000;
     shell.direnv.enable = true;
     shell.git.enable = true;
-    shell.git.enGui = true;
     shell.gopass.enable = true;
     shell.nix-init.enable = true;
 
@@ -57,14 +56,13 @@
     lua.enable = true;
     theme.enable = true;
     java.enable = true;
-    # mycli.enable = true;
 
     # macos
     macos.enable = true;
     macos.karabiner.enable = true;
     macos.stopAutoReopen = true;
-    macos.clash.enable = true;
-    macos.clash.configFile = "${config.my.hm.dir}/Nutstore Files/我的坚果云/clash/meta.yaml";
+    macos.service.clash.enable = true;
+    macos.service.clash.configFile = "${config.my.hm.dir}/Nutstore Files/我的坚果云/clash/meta.yaml";
     macos.music.enable = true;
     macos.games.enable = true;
     macos.yabai.enable = true;

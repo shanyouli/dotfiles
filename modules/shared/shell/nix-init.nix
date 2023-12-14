@@ -16,7 +16,7 @@ in {
     enable = mkEnableOption "Whether to install nix-init";
   };
   config = mkIf cfg.enable {
-    my.user.package = [pkgs.unstable.nix-init];
+    my.user.packages = [pkgs.unstable.nix-init];
     my.hm.configFile."nix-init/config.toml".text = ''
       maintainers = [ "${config.my.username}" ]
       nixpkgs = "<nixpkgs>"

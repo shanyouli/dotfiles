@@ -17,6 +17,7 @@ with lib.my; let
   mysqlSock = "${workdir}/mysql.sock";
   mysqlPid = "${workdir}/mysql.pid";
   mysqlScript = pkgs.writeScriptBin "mysqld-service" ''
+    #!${pkgs.stdenv.shell}
     export MYSQL_UNIX_PORT=${mysqlSock}
     export MYSQL_HOME=${workdir}
     /bin/launchctl setenv MYSQL_UNIX_PORT ${mysqlSock}
