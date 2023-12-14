@@ -31,7 +31,12 @@ in rec {
       visible = false;
       readOnly = true;
     };
-
+  mkOptPkg = package: description:
+    mkOption {
+      inherit description;
+      type = types.package;
+      default = package;
+    };
   selectorFunction = mkOptionType {
     name = "selectorFunction";
     description =

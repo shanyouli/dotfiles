@@ -34,6 +34,7 @@
     shell.git.enable = true;
     shell.git.enGui = true;
     shell.gopass.enable = true;
+    shell.nix-init.enable = true;
 
     editor.nvim.enable = true;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs
@@ -51,14 +52,12 @@
       rlspEn = false;
     };
     sdcv.enable = true;
-    # ytdlp.enable = true;
-    # emacs.enable = true;
     # aria2.enable = true;
     firefox.enable = true;
     lua.enable = true;
     theme.enable = true;
     java.enable = true;
-    mycli.enable = true;
+    # mycli.enable = true;
 
     # macos
     macos.enable = true;
@@ -82,6 +81,7 @@
     firefox.package = pkgs.firefox-esr-bin;
     macos.brew.mirror = "tuna";
     macos.nginx.enable = true;
+    macos.service.mysql.enable = true;
     # macos.mosdns.enable                  = true;
     # mail                                 = { enable = true; };
     # aerc                                 = { enable = true; };
