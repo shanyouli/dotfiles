@@ -59,7 +59,7 @@ in {
           $DRY_RUN_CMD rm -rf '/Applications/Nix Apps'
         fi
       '';
-      desc = "Remove /Applications/Nix\ Apps";
+      desc = "Remove /Applications/Nix\ Apps ...";
     };
     macos.systemScript.zshell = {
       enable = true;

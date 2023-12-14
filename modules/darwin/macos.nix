@@ -25,7 +25,7 @@ in {
       environment.variables = {
         LANG = "en_US.UTF-8";
         LC_TIME = "en_US.UTF-8";
-        EDITOR = "nvim";
+        # EDITOR = "nvim";
       };
       macos.systemScript.StopAutoReopen = {
         enable = cfg.stopAutoReopen;

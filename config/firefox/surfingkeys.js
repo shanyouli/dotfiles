@@ -206,13 +206,6 @@ mapkey("G", "移动到最下面", function() {
 //     javascript:location.href = 'org-protocol:///capture-html?template=w&url=' + encodeURIComponent(location.href) + '&title=' + encodeURIComponent(document.title || "[untitled page]") + '&body=' + encodeURIComponent(function () {var html = ""; if (typeof window.getSelection != "undefined") {var sel = window.getSelection(); if (sel.rangeCount) {var container = document.createElement("div"); for (var i = 0, len = sel.rangeCount; i < len; ++i) {container.appendChild(sel.getRangeAt(i).cloneContents());} html = container.innerHTML;}} else if (typeof document.selection != "undefined") {if (document.selection.type == "Text") {html = document.selection.createRange().htmlText;}} var relToAbs = function (href) {var a = document.createElement("a"); a.href = href; var abs = a.protocol + "//" + a.host + a.pathname + a.search + a.hash; a.remove(); return abs;}; var elementTypes = [['a', 'href'], ['img', 'src']]; var div = document.createElement('div'); div.innerHTML = html; elementTypes.map(function(elementType) {var elements = div.getElementsByTagName(elementType[0]); for (var i = 0; i < elements.length; i++) {elements[i].setAttribute(elementType[1], relToAbs(elements[i].getAttribute(elementType[1])));}}); return div.innerHTML;}());
 // });
 
-// name: Rosé Pine Moon
-// author: thuanowa
-// license: unlicense
-// upstream: https://github.com/rose-pine/surfingkeys/blob/main/dist/rose-pine-moon.conf
-// blurb: All natural pine, faux fur and a bit of soho vibes for the classy minimalist
-
-
 api.Front.registerInlineQuery({
   url: function(q) {
     return `http://dict.youdao.com/w/eng/${q}/#keyfrom=dict2.index`;
@@ -241,53 +234,59 @@ api.Front.registerInlineQuery({
   }
 });
 
+// name: Rosé Pine Dawn
+// author: thuanowa
+// license: unlicense
+// upstream: https://github.com/rose-pine/surfingkeys/blob/main/dist/rose-pine-dawn.conf
+// blurb: All natural pine, faux fur and a bit of soho vibes for the classy minimalist
+
 const hintsCss =
-      "font-size: 10pt; font-family: 'JetBrains Mono NL', 'Cascadia Code', 'Helvetica Neue', Helvetica, Arial, sans-serif; border: 0px; color: #e0def4 !important; background: #232136; background-color: #232136";
+  "font-size: 13pt; font-family: 'JetBrains Mono NL', 'Cascadia Code', 'Helvetica Neue', Helvetica, Arial, sans-serif; border: 0px; color: #575279 !important; background: #faf4ed; background-color: #faf4ed";
 
 api.Hints.style(hintsCss);
 api.Hints.style(hintsCss, "text");
 
 settings.theme = `
   .sk_theme {
-    background: #191724;
-    color: #e0def4;
+    background: #faf4ed;
+    color: #575279;
   }
   .sk_theme input {
-    color: #e0def4;
+    color: #575279;
   }
   .sk_theme .url {
-    color: #c4a7e7;
+    color: #907aa9;
   }
   .sk_theme .annotation {
-    color: #ebbcba;
+    color: #d7827e;
   }
   .sk_theme kbd {
-    background: #26233a;
-    color: #e0def4;
+    background: #f2e9e1;
+    color: #575279;
   }
   .sk_theme .frame {
-    background: #1f1d2e;
+    background: #fffaf3;
   }
   .sk_theme .omnibar_highlight {
-    color: #403d52;
+    color: #dfdad9;
   }
   .sk_theme .omnibar_folder {
-    color: #e0def4;
+    color: #575279;
   }
   .sk_theme .omnibar_timestamp {
-    color: #9ccfd8;
+    color: #56949f;
   }
   .sk_theme .omnibar_visitcount {
-    color: #9ccfd8;
+    color: #56949f;
   }
   .sk_theme .prompt, .sk_theme .resultPage {
-    color: #e0def4;
+    color: #575279;
   }
   .sk_theme .feature_name {
-    color: #e0def4;
+    color: #575279;
   }
   .sk_theme .separator {
-    color: #524f67;
+    color: #cecacd;
   }
   body {
     margin: 0;
@@ -302,7 +301,7 @@ settings.theme = `
     max-height: 80%;
     left: 10%;
     text-align: left;
-    box-shadow: 0px 2px 10px #21202e;
+    box-shadow: 0px 2px 10px #f4ede8;
     z-index: 2147483000;
   }
   .sk_omnibar_middle {
@@ -335,7 +334,7 @@ settings.theme = `
   #sk_omnibarSearchArea {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #524f67;
+    border-bottom: 1px solid #cecacd;
   }
   .sk_omnibar_middle #sk_omnibarSearchArea {
     margin: 0.5rem 1rem;
@@ -368,18 +367,18 @@ settings.theme = `
     overflow-y: auto;
   }
   .sk_theme #sk_omnibarSearchResult>ul>li:nth-child(odd) {
-    background: #1f1d2e;
+    background: #fffaf3;
   }
   .sk_theme #sk_omnibarSearchResult>ul>li.focused {
-    background: #26233a;
+    background: #f2e9e1;
   }
   .sk_theme #sk_omnibarSearchResult>ul>li.window {
-    border: 2px solid #524f67;
+    border: 2px solid #cecacd;
     border-radius: 8px;
     margin: 4px 0px;
   }
   .sk_theme #sk_omnibarSearchResult>ul>li.window.focused {
-    border: 2px solid #c4a7e7;
+    border: 2px solid #907aa9;
   }
   .sk_theme div.table {
     display: table;
@@ -405,7 +404,7 @@ settings.theme = `
     display: inline-block;
     padding: 5px;
     margin: 5px;
-    box-shadow: 0px 2px 10px #21202e;
+    box-shadow: 0px 2px 10px #f4ede8;
   }
   #sk_status {
     position: fixed;
@@ -414,7 +413,7 @@ settings.theme = `
     z-index: 2147483000;
     padding: 4px 8px 0 8px;
     border-radius: 4px 4px 0px 0px;
-    border: 1px solid #524f67;
+    border: 1px solid #cecacd;
     font-size: 12px;
   }
   #sk_status>span {
@@ -422,7 +421,7 @@ settings.theme = `
   }
   .expandRichHints span.annotation {
     padding-left: 4px;
-    color: #ebbcba;
+    color: #d7827e;
   }
   .expandRichHints .kbd-span {
     min-width: 30px;
@@ -430,7 +429,7 @@ settings.theme = `
     display: inline-block;
   }
   .expandRichHints kbd>.candidates {
-    color: #e0def4;
+    color: #575279;
     font-weight: bold;
   }
   .expandRichHints kbd {
@@ -447,8 +446,8 @@ settings.theme = `
     bottom: 0px;
     z-index: 2147483000;
     right: 0px;
-    background: #191724;
-    color: #e0def4;
+    background: #faf4ed;
+    color: #575279;
   }
   #sk_usage, #sk_popup, #sk_editor {
     overflow: auto;
@@ -458,7 +457,7 @@ settings.theme = `
     top: 10%;
     left: 10%;
     text-align: left;
-    box-shadow: #21202e;
+    box-shadow: #f4ede8;
     z-index: 2147483298;
     padding: 1rem;
   }
@@ -486,7 +485,7 @@ settings.theme = `
     padding-bottom: 4px;
   }
   #sk_usage .feature_name>span {
-    border-bottom: 2px solid #524f67;
+    border-bottom: 2px solid #cecacd;
   }
   #sk_usage span.annotation {
     padding-left: 32px;
@@ -502,10 +501,10 @@ settings.theme = `
     font: 11px "JetBrains Mono NL", "Cascadia Code", "Helvetica Neue", Helvetica, Arial, sans-serif;
     line-height: 10px;
     vertical-align: middle;
-    border: solid 1px #524f67;
-    border-bottom-lolor: #524f67;
+    border: solid 1px #cecacd;
+    border-bottom-lolor: #cecacd;
     border-radius: 3px;
-    box-shadow: inset 0 -1px 0 #21202e;
+    box-shadow: inset 0 -1px 0 #f4ede8;
   }
   #sk_banner {
     padding: 0.5rem;
@@ -515,10 +514,10 @@ settings.theme = `
     z-index: 2147483000;
     width: 80%;
     border-radius: 0px 0px 4px 4px;
-    border: 1px solid #524f67;
+    border: 1px solid #cecacd;
     border-top-style: none;
     text-align: center;
-    background: #191724;
+    background: #faf4ed;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -538,8 +537,8 @@ settings.theme = `
     border-radius: 3px;
     padding: 10px 20px;
     margin: 5px;
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#191724), color-stop(100%,#191724));
-    box-shadow: 0px 3px 7px 0px #21202e;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#faf4ed), color-stop(100%,#faf4ed));
+    box-shadow: 0px 3px 7px 0px #f4ede8;
   }
   div.sk_tab_wrap {
     display: inline-block;
@@ -560,14 +559,14 @@ settings.theme = `
     text-overflow: ellipsis;
     overflow: hidden;
     padding-left: 5px;
-    color: #e0def4;
+    color: #575279;
   }
   div.sk_tab_url {
     font-size: 10pt;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    color: #c4a7e7;
+    color: #907aa9;
   }
   div.sk_tab_hint {
     display: inline-block;
@@ -575,20 +574,20 @@ settings.theme = `
     font-size: 10pt;
     font-weight: bold;
     padding: 0px 2px 0px 2px;
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#191724), color-stop(100%,#191724));
-    color: #e0def4;
-    border: solid 1px #524f67;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#faf4ed), color-stop(100%,#faf4ed));
+    color: #575279;
+    border: solid 1px #cecacd;
     border-radius: 3px;
-    box-shadow: #21202e;
+    box-shadow: #f4ede8;
   }
   #sk_bubble {
     position: absolute;
     padding: 9px;
-    border: 1px solid #524f67;
+    border: 1px solid #cecacd;
     border-radius: 4px;
-    box-shadow: 0 0 20px #21202e;
-    color: #e0def4;
-    background-color: #191724;
+    box-shadow: 0 0 20px #f4ede8;
+    color: #575279;
+    background-color: #faf4ed;
     z-index: 2147483000;
     font-size: 14px;
   }
@@ -599,16 +598,16 @@ settings.theme = `
     background-repeat: no-repeat;
   }
   .sk_scroller_indicator_top {
-    background-image: linear-gradient(#191724, transparent);
+    background-image: linear-gradient(#faf4ed, transparent);
   }
   .sk_scroller_indicator_middle {
-    background-image: linear-gradient(transparent, #191724, transparent);
+    background-image: linear-gradient(transparent, #faf4ed, transparent);
   }
   .sk_scroller_indicator_bottom {
-    background-image: linear-gradient(transparent, #191724);
+    background-image: linear-gradient(transparent, #faf4ed);
   }
   #sk_bubble * {
-    color: #e0def4 !important;
+    color: #575279 !important;
   }
   div.sk_arrow>div:nth-of-type(1) {
     left: 0;
@@ -619,10 +618,10 @@ settings.theme = `
     background: transparent;
   }
   div.sk_arrow[dir=down]>div:nth-of-type(1) {
-    border-top: 12px solid #524f67;
+    border-top: 12px solid #cecacd;
   }
   div.sk_arrow[dir=up]>div:nth-of-type(1) {
-    border-bottom: 12px solid #524f67;
+    border-bottom: 12px solid #cecacd;
   }
   div.sk_arrow>div:nth-of-type(2) {
     left: 2px;
@@ -633,11 +632,11 @@ settings.theme = `
     background: transparent;
   }
   div.sk_arrow[dir=down]>div:nth-of-type(2) {
-    border-top: 10px solid #e0def4;
+    border-top: 10px solid #575279;
   }
   div.sk_arrow[dir=up]>div:nth-of-type(2) {
     top: 2px;
-    border-bottom: 10px solid #e0def4;
+    border-bottom: 10px solid #575279;
   }
   .ace_editor.ace_autocomplete {
     z-index: 2147483300 !important;
