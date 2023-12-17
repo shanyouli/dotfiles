@@ -52,11 +52,41 @@ in {
               # "javascript.options.mem.high_water_mark" = 16;
             }
           ];
+          # userChrome = builtins.readFile (pkgs.fetchurl {
+          #   url = "https://github.com/betterbrowser/arcfox/releases/download/2.4.3/userChrome.css";
+          #   sha256 = "0x7ssvhiw843aff6xc462m90mqah6a6hzkqdnslw2q3aw121fkb6";
+          # });
           # userChrome = builtins.readFile "${configDir}/firefox/userChrome.css";
           # userContent =
           #   builtins.readFile "${configDir}/firefox/userContent.css";
           extensions = with pkgs.nur.repos.rycee.firefox-addons; [
             browserpass
+            (buildFirefoxXpiAddon rec {
+              pname = "sidebery";
+              version = "5.0.0";
+              url = "https://github.com/mbnuqw/sidebery/releases/download/v${version}/sidebery-${version}.1.xpi";
+              addonId = "{3c078156-979c-498b-8990-85f7987dd929}";
+              sha256 = "1ppvmg37734cdk44mx8bjd88la5gwjhd9ml86p352ajk4zgb2mwp";
+              meta = {
+                homepage = "https://github.com/mbnuqw/sidebery";
+                description = "Firefox extension for managing tabs and bookmarks in sidebar.";
+                license = licenses.mit;
+              };
+              platforms = platforms.all;
+            })
+            (buildFirefoxXpiAddon rec {
+              pname = "download_with_aria2";
+              version = "4.6.0";
+              url = "https://addons.mozilla.org/firefox/downloads/file/4208616/download_with_aria2-4.6.0.2278.xpi";
+              addonId = "firefox@downloadWithAria2";
+              sha256 = "02im79290md7amrcycw7jay97w7sdhhc7b2048jsj648jjn01hyy";
+              meta = {
+                homepage = "https://github.com/jc3213/download_with_aria2";
+                description = "Browser extension for aria2c json-rpc";
+                license = licenses.mit;
+              };
+              platforms = platforms.all;
+            })
             surfingkeys
             darkreader
             auto-tab-discard
