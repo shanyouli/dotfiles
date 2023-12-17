@@ -81,6 +81,7 @@
     macos.brew.mirror = "tuna";
     macos.nginx.enable = true;
     macos.service.mysql.enable = true;
+    macos.service.deeplx.enable = true;
     # macos.mosdns.enable                  = true;
     # mail                                 = { enable = true; };
     # aerc                                 = { enable = true; };

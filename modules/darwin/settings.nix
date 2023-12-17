@@ -71,6 +71,7 @@ in {
     macos.userScript.clear_zsh = {
       enable = true;
       text = ''
+        echo "Clear zsh ..."
         if [[ -d ${config.env.ZSH_CACHE}/cache ]]; then
           $DRY_RUN_CMD rm -rf ${config.env.ZSH_CACHE}/cache
         fi
@@ -81,7 +82,6 @@ in {
         # 禁止在网络卷创建元数据文件
         defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
       '';
-      desc = "clear zsh ";
     };
   };
 }

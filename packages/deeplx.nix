@@ -17,8 +17,8 @@ buildGoModule rec {
   vendorHash = "sha256-x4Z8fTrgXOH+9Ixj9NKr2G3BuQPm7/CqNGoIVbXmMOE=";
   ldflags = ["-s" "-w"];
   postInstall = ''
-    mv $out/bin/DeepLX $out/bin/deeplx.bak
-    mv $out/bin/deeplx.bak $out/bin/deeplx
+    mv $out/bin/DeepLX $out
+    mv $out/DeeplX $out/bin/deeplx
   '';
   meta = with lib; {
     description = "DeepL Free API (No TOKEN required";

@@ -17,7 +17,7 @@ in {
     # google-translate python 编写的google翻译工具
     # crow-translate 一个多后端的翻译工具可惜不支持mac
     my.user.packages = with pkgs;
-      [sdcv deeplx translate-shell]
+      [sdcv translate-shell]
       ++ optionals stdenvNoCC.isLinux [crow-translate];
     modules.shell.env.STARDICT_DATA_DIR = "${config.my.hm.dataHome}/stardict";
     modules.shell.env.SDCV_HISTSIZE = "100000";
