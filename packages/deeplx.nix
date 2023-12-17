@@ -1,38 +1,30 @@
 {
-  stdenv,
-  fetchurl,
   lib,
+  buildGoModule,
+  fetchFromGitHub,
 }:
-stdenv.mkDerivation rec {
+buildGoModule rec {
   pname = "deeplx";
-  version = "0.8.7";
-  src =
-    if stdenv.isDarwin
-    then
-      fetchurl {
-        url = "https://github.com/OwO-Network/DeepLX/releases/download/v${version}/deeplx_darwin_arm64";
-        sha256 = "sha256-sozVGIf5IvntabSVr0F+3NXEeUoHXsOVNyTMxW1Z+FI=";
-      }
-    else {
-      url = "https://github.com/OwO-Network/DeepLX/releases/download/v${version}/deeplx_linux_amd64";
-      sha256 = "1ndrnlcmhw17bqjkcf9v455k7i7ny47lj9h420kys80slcwyjxyp";
-    };
-  unpackPhase = ''
-    cp $src deeplx
-  '';
-  dontBuild = true;
-  installPhase = ''
-    install -D -m755 -t $out/bin deeplx
-  '';
+  version = "0.8.8";
 
-  broken = ! ((stdenv.isDarwin && stdenv.isAarch64) || (stdenv.isLinux && stdenv.isx86_64));
+  src = fetchFromGitHub {
+    owner = "OwO-Network";
+    repo = "DeepLX";
+    rev = "v${version}";
+    hash = "sha256-4/sfePuNS67tlyt0KGqLiYXfTu5uvHS2+XD8X5IrROo=";
+  };
+
+  vendorHash = "sha256-x4Z8fTrgXOH+9Ixj9NKr2G3BuQPm7/CqNGoIVbXmMOE=";
+  ldflags = ["-s" "-w"];
+  postInstall = ''
+    mv $out/bin/DeepLX $out/bin/deeplx.bak
+    mv $out/bin/deeplx.bak $out/bin/deeplx
+  '';
   meta = with lib; {
-    description = ''
-      DeepL Free API (No TOKEN required)
-    '';
+    description = "DeepL Free API (No TOKEN required";
     homepage = "https://github.com/OwO-Network/DeepLX";
-    platforms = with platforms; darwin ++ linux;
-    maintainers = with maintainers; [shanyouli];
-    license = licenses.gpl3;
+    license = licenses.mit;
+    maintainers = with maintainers; [lyeli];
+    mainProgram = "deeplx";
   };
 }

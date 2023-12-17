@@ -106,7 +106,7 @@ in {
       #
       "displaperture" # screen 曲线图
       "licecap" # GIF kap
-      "imazing" # 手机备份管理
+      # "imazing" # 手机备份管理
       # "shottr" # 截图
       # "betterdisplay" # 其他替代工具
       # "dozer" # 菜单栏管理,

@@ -36,7 +36,7 @@ buildGo121Module rec {
       各种音质级别、lastfm、MPRIS、MacOS交互响应（睡眠暂停、蓝牙耳机连接断开响应、菜单栏控制等）.
     '';
     homepage = "https://github.com/go-musicfox/go-musicfox";
-    platforms = with platforms; [darwin linux];
+    platforms = with platforms; darwin ++ linux;
     maintainers = with maintainers; [shanyouli];
     license = licenses.mit;
   };

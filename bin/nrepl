@@ -2,19 +2,15 @@
 
 expr_str="import <nixpkgs> {}"
 # shellcheck disable=SC2086
-dotfiles=${DOTFILES:-0}
-[[ $dotfiles != "0" ]] || {
-    if [[ -d /etc/nixos ]]; then
-        dotfiles=$DOTFILES
-    elif [[ -d $HOME/.nixpkgs ]]; then
-        dotfiles=$HOME/.nixpkgs
-    elif [[ -d $HOME/.config/dotfiles ]]; then
-        dotfiles=$HOME/.config/dotfiles
-    elif [[ -d $HOME/.dotfiles ]]; then
-        dotfiles=$HOME/.dotfiles
-    fi
+[[ ${DOTFILES:-0} == "0" ]] || {
+    for i in /etc/nixos $HOME/.nixpkgs $HOME/.config/dotfiles $HOME/.dotfiles ; do
+        if [[ -d $i ]]; then
+            DOTFILES=$i
+            break
+        fi
+    done
 }
-if [[ -n $dotfiles ]]; then
-    expr_str="${expr_str} // (builtins.getFlake \"${dotfiles}\")"
+if [[ -n $DOTFILES ]]; then
+    expr_str="${expr_str} // (builtins.getFlake \"${DOTFILES}\")"
 fi
 nix repl --expr "$expr_str"
