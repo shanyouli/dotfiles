@@ -81,10 +81,11 @@ in {
       enable = true;
       text = ''
         [[ -d ${workdir} ]] || mkdir -p ${workdir}
-        [[ -d ${workdir}/ui ]] || \
+        [[ -d ${workdir}/ui ]] || {
           echo "init Clash Web UI"
           git clone --depth 1 -b gh-pages https://github.com/MetaCubeX/Yacd-meta.git \
             ${workdir}/ui
+        }
       '';
     };
 

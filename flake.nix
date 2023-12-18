@@ -281,6 +281,7 @@
         sysdo = prev.callPackage ./packages/sysdo {};
         yutto = prev.callPackage ./packages/yutto.nix {};
         mihomo = prev.callPackage ./packages/mihomo.nix {};
+        clash2singbox = prev.callPackage ./packages/clash2singbox.nix {};
       };
       macos = final: prev: {
         yabai-zsh-completions =
