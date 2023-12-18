@@ -62,6 +62,6 @@ in {
 
     my.hm.configFile."wget/wgetrc".text = toWgetConfig cfg.settings;
 
-    modules.shell.aliases.wget = "{wget}/bin/wget --hsts-file ${config.my.hm.cacheHome}/wget-hsts";
+    modules.shell.aliases.wget = "${wget}/bin/wget --hsts-file ${config.my.hm.cacheHome}/wget-hsts";
   };
 }

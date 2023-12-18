@@ -17,13 +17,14 @@ in {
     configFile = mkOpt' types.path "${config.my.hm.configHome}/clash-meta/clash.yaml" ''
       clash 配置文件保存位置
     '';
+    package = mkPkgOpt pkgs.clash-meta "clash service";
   };
 
   config = mkIf cfg.enable (mkMerge [
     {
-      my.user.packages = [pkgs.clash-meta];
+      # my.user.packages = [pkgs.clash-meta];
       environment.etc."sudoers.d/clash".text =
-        sudoNotPass config.my.username "${pkgs.clash-meta}/bin/clash-meta";
+        sudoNotPass config.my.username "${cfg.package}/bin/${cfg.package.pname}";
     }
     (mkIf cm.aria2.enable {
       modules.shell.aliases.paria2 = "aria2c --all-proxy=${proxy}";

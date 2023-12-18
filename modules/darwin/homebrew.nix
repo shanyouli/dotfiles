@@ -107,7 +107,7 @@ in {
       "displaperture" # screen 曲线图
       "licecap" # GIF kap
       # "imazing" # 手机备份管理
-      # "shottr" # 截图
+      "shottr" # 截图
       # "betterdisplay" # 其他替代工具
       # "dozer" # 菜单栏管理,
       "maczip" # 压缩解压GUI
@@ -119,7 +119,6 @@ in {
 
       # "warp" # next terminal, 不太好用
 
-      # "glance-chamburr" # finder 扩展
       "syntax-highlight"
       "qlmarkdown"
 
@@ -132,7 +131,6 @@ in {
       "clean-me" # ka
 
       "charles" # "proxyman", 抓包
-      # "visual-studio-code" # other editors nix 管理
       "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
       "background-music"
 
@@ -142,6 +140,7 @@ in {
 
       # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
       # "maccy" # clip 剪切薄，使用raycast取代
+      # "visual-studio-code" # other editors nix 管理
       (mkIf config.modules.shell.git.enGui "github") # github客户端
 
       "chromedriver" # brave 浏览器的driver
@@ -165,7 +164,6 @@ in {
       "text-scaner" = 1452523807;
       "medis2" = 1579200037;
       "vidhub" = 1659622164; # 视频管理,需要网速足够好
-      "xnip" = 1221250572; # 截图
       "medis" = 1579200037; # redis 管理工具
     };
     modules.shell = mkMerge [

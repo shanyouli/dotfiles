@@ -31,7 +31,7 @@ in rec {
       visible = false;
       readOnly = true;
     };
-  mkOptPkg = package: description:
+  mkPkgOpt = package: description:
     mkOption {
       inherit description;
       type = types.package;

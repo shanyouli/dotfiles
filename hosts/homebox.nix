@@ -63,7 +63,9 @@
     macos.karabiner.enable = true;
     macos.stopAutoReopen = true;
     macos.service.clash.enable = true;
+    macos.service.clash.package = pkgs.mihomo;
     macos.service.clash.configFile = "${config.my.hm.dir}/Nutstore Files/我的坚果云/clash/meta.yaml";
+
     macos.music.enable = true;
     macos.games.enable = true;
     macos.yabai.enable = true;
