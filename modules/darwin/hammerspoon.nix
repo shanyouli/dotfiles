@@ -35,7 +35,7 @@ in {
         package.cpath = table.concat(cpaths, ";")
       '';
       yabaiCmd = lib.optionalString config.modules.macos.yabai.enable ''
-        yabaicmd="${config.services.yabai.package}/bin/yabai",
+        yabaicmd="${config.modules.macos.yabai.package}/bin/yabai",
       '';
       emacsClient = lib.optionalString config.modules.macos.emacs.enable ''
         emacsClient = "${config.modules.editor.emacs.pkg}/bin/emacsclient",

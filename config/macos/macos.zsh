@@ -83,6 +83,7 @@ function sc() {
         restart) launchctl stop $server_name
                  sleep 0.3
                  launchctl start $server_name;;
+        status) launchctl list $server_name;;
         *) launchctl $@;;
     esac
 }

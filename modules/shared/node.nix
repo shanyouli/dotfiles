@@ -20,16 +20,15 @@ in {
   options.modules.node = with types; {enable = mkBoolOpt false;};
   config = mkIf cfg.enable {
     my = {
-      user.packages =
-        [
-          node
-          pkgs.nodePackages.pnpm
-        ]
-        ++ optionals config.modules.dev.enable [
-          pkgs.nodePackages.typescript-language-server
-          pkgs.nodePackages.stylelint
-          pkgs.nodePackages.js-beautify
-        ];
+      user.packages = [
+        node
+        pkgs.nodePackages.pnpm
+        # ]
+        # ++ optionals config.modules.dev.enable [
+        pkgs.nodePackages.typescript-language-server
+        pkgs.nodePackages.stylelint
+        pkgs.nodePackages.js-beautify
+      ];
       hm.configFile."npm/config".text = ''
         cache=${npm_config_cache}
         prefix=${npm_config_prefix}

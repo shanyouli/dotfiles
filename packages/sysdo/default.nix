@@ -21,13 +21,13 @@ in
       install -D -m755 do.py $out/bin/sysdo
       substituteInPlace $out/bin/sysdo --replace "/usr/bin/env python3" ${pyEnv}/bin/python
       ${lib.optionalString withBashCompletion ''
-        installShellCompletion --cmd sysdo --bash <($out/bin/sysdo completion show bash)
+        installShellCompletion --cmd sysdo --bash <($out/bin/sysdo --show-completion bash)
       ''}
       ${lib.optionalString withZshCompletion ''
-        installShellCompletion --cmd sysdo --zsh <($out/bin/sysdo completion show zsh)
+        installShellCompletion --cmd sysdo --zsh <($out/bin/sysdo --show-completion zsh)
       ''}
       ${lib.optionalString withFishCompletion ''
-        installShellCompletion --cmd sysdo --fish <($out/bin/sysdo completion show fish)
+        installShellCompletion --cmd sysdo --fish <($out/bin/sysdo --show-completion fish)
       ''}
     '';
     meta = with lib; {

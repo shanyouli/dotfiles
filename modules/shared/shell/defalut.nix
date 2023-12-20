@@ -58,7 +58,6 @@ in {
         nix-index
         bat
         any-nix-shell
-        nurl # better nix-prefetch-xxx
         duf
         httrack # 网页抓取
         cachix # nix cache

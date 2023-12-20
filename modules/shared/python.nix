@@ -27,7 +27,6 @@ in {
     ];
     modules.shell = {
       env = {
-        IPYTHONDIR = "${config.my.hm.configHome}/ipython";
         PIP_CONFIG_FILE = "${config.my.hm.configHome}/pip/pip.conf";
         PIP_LOG_FILE = "${config.my.hm.dataHome}/pip/log";
         PYTHONSTARTUP = "${config.my.hm.configHome}/python/config.py";

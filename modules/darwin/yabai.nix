@@ -14,12 +14,19 @@ with lib.my; let
   '';
   yabai = pkgs.yabai.overrideAttrs (prev: rec {
     src = pkgs.fetchFromGitHub {
-      owner = "koekeishiya";
+      owner = "FelixKratz";
       repo = "yabai";
-      rev = "v6.0.1";
-      hash = "sha256-G7yjxhKk5Yz6qLHy8I8MMmZdVYUggGVvIW0j5kdkwlo=";
+      rev = "df5b037108c4a70dc5e854bb60ccbff9701da4f5";
+      hash = "sha256-xMOwte/nuJdrwMWNLxfHikxA3btuyDyle6aLm5TD8ac=";
     };
-    version = src.rev;
+    # src = pkgs.fetchFromGitHub {
+    #   owner = "koekeishiya";
+    #   repo = "yabai";
+    #   rev = "v6.0.1";
+    #   hash = "sha256-G7yjxhKk5Yz6qLHy8I8MMmZdVYUggGVvIW0j5kdkwlo=";
+    # };
+    # version = src.rev;
+    version = "6.0.2";
     nativeBuildInputs = (prev.nativeBuildInputes or []) ++ [buildSymlinks];
     dontBuild = false;
     installPhase = ''

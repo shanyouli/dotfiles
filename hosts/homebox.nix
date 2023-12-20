@@ -33,7 +33,6 @@
     shell.direnv.enable = true;
     shell.git.enable = true;
     shell.gopass.enable = true;
-    shell.nix-init.enable = true;
 
     editor.nvim.enable = true;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs
@@ -41,7 +40,13 @@
 
     media.netease-music.enable = true;
     media.download.enable = true;
-    dev.enable = true;
+
+    dev.bash.enable = true;
+    dev.python.enable = true;
+    dev.nix.enable = true;
+    dev.toml.fmt = true;
+    dev.enWebReport = true;
+
     # asdf.enable = true;
     node.enable = true;
     rust.enable = true;
