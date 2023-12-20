@@ -24,6 +24,7 @@ in {
         vi = "nvim";
         v = "nvim";
       };
+      env.MANPAGER = "nvim +Man!";
       # @https://discourse.nixos.org/t/stuck-writing-my-first-package/19022/4
       my = let
         sc = pkgs.lazyvim-star.out;

@@ -7,53 +7,11 @@ import subprocess
 from enum import Enum
 from functools import wraps
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 
 import typer
 
 app = typer.Typer(add_completion=True)
-
-
-link_pattern = re.compile(r'(.*)-(\d*)-link')
-
-
-class Dotfile:
-    @property
-    def value(self):
-        for i in [
-            os.getenv('DOTFILES'),
-            '/etc/nixos',
-            os.path.expanduser('~/.nixpkgs'),
-            os.path.expanduser('~/.config/dotfiles'),
-            os.path.expanduser('~/.dotfiles'),
-        ]:
-            if os.path.isdir(i):
-                return i
-        else:
-            typer.secho('Unable to set the working directory', fg=Colors.ERROR.value)
-            typer.secho(
-                'The working directory for this script can only be the following location',
-                fg=Colors.ERROR.value,
-            )
-            typer.secho('1.     /etc/nixos', fg=Colors.INFO.value)
-            typer.secho('2.     ~/.nixpkgs', fg=Colors.INFO.value)
-            typer.secho('3.     ~/.config/dotfiles', fg=Colors.INFO.value)
-            typer.secho('4.     ~/.dotfiles', fg=Colors.INFO.value)
-            raise typer.Abort()
-
-
-def set_workdir_to_dotfiles(func):
-    """Set the working directory to dotfiles"""
-
-    @wraps(func)
-    def wrapper(*args, **kw):
-        old_workdir = os.getcwd()
-        os.chdir(Dotfile().value)
-        result = func(*args, **kw)
-        os.chdir(old_workdir)
-        return result
-
-    return wrapper
 
 
 class FlakeOutputs(Enum):
@@ -69,107 +27,49 @@ class Colors(Enum):
     WARN = typer.colors.YELLOW
 
 
-def change_workdir(func):
-    @wraps(func)
-    def wrapper(*args, **kw):
-        old_workdir = os.getcwd()
-        os.chdir(args[0])
-        result = func(*args, **kw)
-        os.chdir(old_workdir)
-        return result
+class Dotfile:
+    @property
+    def value(self):
+        for i in [
+            os.getenv('DOTFILES'),
+            '/etc/nixos',
+            os.path.expanduser('~/.nixpkgs'),
+            os.path.expanduser('~/.config/dotfiles'),
+            os.path.expanduser('~/.dotfiles'),
+        ]:
+            if (
+                os.path.isdir(i)
+                and os.path.exists(os.path.join(i, 'flake.nix'))
+                and os.path.exists(os.path.join(i, '.git'))
+            ):
+                return os.path.realpath(i)
 
-    return wrapper
-
-
-def file_exists(f: Optional[Path]):
-    if not os.path.exists(f):
-        return False
-    if os.path.islink(f):
-        return os.path.exists(os.readlink(f))
-    else:
-        return True
-
-
-def link_remove(f: Optional[Path]):
-    if not (os.path.islink(f) or os.path.isfile(f)):
-        return False
-    try:
-        os.remove(f)
-    except PermissionError:
-        subprocess.getoutput(f'sudo rm -vf {f}')
-
-
-def remove_from_link_list(clearl: List[Path], dry_run: bool = False):
-    if dry_run:
-        typer.secho(
-            f'The following files will be deleted from {os.getcwd()}..',
-            fg=Colors.INFO.value,
-        )
-        print(*clearl, sep='\n')
-    else:
-        for i in clearl:
-            link_remove(i)
-
-
-def gc_save_link(store: dict[str, List], clear_list: List[str], test: str | tuple):
-    if isinstance(test, str):
-        f = test
-        cf = test
-    else:
-        f = test[1]
-        cf = test[0]
-
-    if not file_exists(f):
-        clear_list.append(cf)
-        return
-
-    f_prefix_num_group = link_pattern.match(f)
-    if not f_prefix_num_group:
-        return
-
-    f_prefix = f_prefix_num_group.group(1)
-    num = int(f_prefix_num_group.group(2))
-
-    if f_prefix not in store:
-        store[f_prefix] = (cf, num)
-        return
-
-    if store[f_prefix][-1] < num:
-        clear_list.append(store[f_prefix][0])
-        store[f_prefix] = (cf, num)
-    else:
-        clear_list.append(cf)
-
-
-@change_workdir
-def gc_remove_profile_link(profile: Optional[Path], clear: bool = False):
-    store = {}
-    clear_list = []
-    for i in os.listdir():
-        gc_save_link(store, clear_list, i)
-    if clear_list:
-        remove_from_link_list(clear_list, clear)
-    else:
-        typer.secho(
-            f'There are no files in the {os.getcwd()} directory that need to be deleted',
-            fg=Colors.INFO.value,
-        )
-
-
-@change_workdir
-def gc_remove_auto_link(gc_fpath: Path, clear: bool = False):
-    rlinks = [(i, os.readlink(i)) for i in os.listdir() if os.path.islink(i)]
-    clear_list = []
-    store = {}
-    for i in rlinks:
-        gc_save_link(store, clear_list, i)
-    if clear_list:
-        remove_from_link_list(clear_list, clear)
-    else:
-        typer.secho(
-            f'There are no files in the {os.getcwd()} directory that need to be deleted',
-            fg=Colors.INFO.value,
-        )
+    def get_flake(self, current_dir: bool = False) -> str:
+        if current_dir:
+            check_git = subprocess.run(
+                ['git', 'rev-parse', '--show-toplevel'], capture_output=True
+            )
+            if check_git.returncode == 0:
+                local_flake = os.path.realpath(check_git.stdout.decode().strip())
+                return (
+                    local_flake
+                    if os.path.isfile(os.path.join(local_flake, 'flake.nix'))
+                    else REMOTE_FLAKE
+                )
+        if self.value:
+            return self.value
+        else:
+            typer.secho('No nix configuration directory found', fg=Colors.WARN.value)
+            typer.secho(
+                'The configuration directory for this script can only be the following location',
+                fg=Colors.WARN.value,
+            )
+            typer.secho('1.     /etc/nixos', fg=Colors.WARN.value)
+            typer.secho('2.     ~/.nixpkgs', fg=Colors.WARN.value)
+            typer.secho('3.     ~/.config/dotfiles', fg=Colors.WARN.value)
+            typer.secho('4.     ~/.dotfiles', fg=Colors.WARN.value)
+            typer.secho('Remote flake will be used', fg=Colors.WARN.value)
+            return REMOTE_FLAKE
 
 
 def test_cmd_exists(cmd):
@@ -197,19 +97,187 @@ SYSTEM_OS = UNAME.system.lower()
 DEFAULT_HOST = f'{USERNAME}@{SYSTEM_ARCH}-{SYSTEM_OS}'
 
 REMOTE_FLAKE = 'github:shanyouli/dotfiles'
+DOTFILE = Dotfile()
 
 
-def get_flake() -> str:
-    check_git = subprocess.run(
-        ['git', 'rev-parse', '--show-toplevel'], capture_output=True
-    )
-    local_flake = os.path.realpath(check_git.stdout.decode().strip())
-    if check_git.returncode == 0 and os.path.isfile(
-        os.path.join(local_flake, 'flake.nix')
+def change_workdir(func):
+    @wraps(func)
+    def wrapper(*args, **kw):
+        old_workdir = os.getcwd()
+        if 'workdir' in kw:
+            new_workdir = os.path.abspath(kw['workdir'])
+        elif len(args) >= 2 and os.path.isdir(args[1]):
+            new_workdir = os.path.abspath(args[1])
+        elif DOTFILE.value:
+            new_workdir = os.path.abspath(DOTFILE.value)
+        is_change = new_workdir != old_workdir
+        if is_change:
+            os.chdir(new_workdir)
+        result = func(*args, **kw)
+        if is_change:
+            os.chdir(old_workdir)
+        return result
+
+    return wrapper
+
+
+class NixGc:
+    def __init__(
+        self,
+        dry_run: bool = True,
+        re_pattern: str = r'(.*)-(\d+)-link$',
+        save_num: int = 1,
+        default: str = 'default',
     ):
-        return local_flake
-    else:
-        return REMOTE_FLAKE
+        self.dry_run = dry_run
+        self.re_pattern = re.compile(re_pattern)
+        self.save_num = save_num
+        self.clear_list = []
+        self.profiles = [
+            i
+            for i in [
+                '/nix/var/nix/profiles',
+                os.path.expanduser('~/.local/state/nix/profiles'),
+            ]
+            if os.path.isdir(i)
+        ]
+        self.gc_autos = [i for i in ['/nix/var/nix/gcroots/auto'] if os.path.isdir(i)]
+        self.default = default
+
+    def link_exists(self, f: Path):
+        if os.path.exists(f):
+            if os.path.islink(f):
+                return os.path.exists(os.readlink(f))
+            else:
+                return True
+        else:
+            return False
+
+    def link_remove(self, f: Path):
+        if not (os.path.islink(f) or os.path.isfile(f)):
+            return False
+        try:
+            os.remove(f)
+        except PermissionError:
+            subprocess.getoutput(f'sudo rm -vf {f}')
+
+    def remove_from_link_list(self):
+        if self.clear_list:
+            if self.dry_run:
+                typer.secho(
+                    f'The following files will be deleted from {os.getcwd()}..',
+                    fg=Colors.INFO.value,
+                )
+                print(*self.clear_list, sep='\n')
+            else:
+                for i in self.clear_list:
+                    self.link_remove(i)
+        else:
+            typer.secho(
+                f'Not File will be deleted from {os.getcwd()}...',
+                fg=Colors.INFO.value,
+            )
+
+    @change_workdir
+    def gc_auto(self, profile: Path):
+        store = {}
+        self.clear_list = []
+        for i in os.listdir():
+            if os.path.islink(i):
+                target_path = os.readlink(i)
+                if not os.path.exists(target_path):
+                    self.clear_list.append(i)
+                    continue
+            f_prefix_num = self.re_pattern.match(target_path)
+            if not f_prefix_num:
+                store[target_path] = [(i, 1)]
+                continue
+            f_prefix = f_prefix_num.group(1)
+            num = int(f_prefix_num.group(2))
+            if f_prefix not in store:
+                store[f_prefix] = [(i, num)]
+            else:
+                store[f_prefix].append((i, num))
+        for i in store:
+            store[i] = sorted(store[i], key=lambda k: k[-1], reverse=True)
+            for path in store[i][self.save_num :]:
+                self.clear_list.append(path[0])
+        self.remove_from_link_list()
+
+    @change_workdir
+    def gc_profile(self, profile: Path):
+        store = {}
+        self.clear_list = []
+        for i in os.listdir():
+            if os.path.islink(i):
+                if not os.path.exists(os.readlink(i)):
+                    self.clear_list.append(i)
+                    continue
+            f_prefix_num = self.re_pattern.match(i)
+            if not f_prefix_num:
+                continue
+            f_prefix = f_prefix_num.group(1)
+            num = int(f_prefix_num.group(2))
+            if f_prefix not in store:
+                store[f_prefix] = [(i, num)]
+            else:
+                store[f_prefix].append((i, num))
+        for i in store.values():
+            i = sorted(i, key=lambda k: k[-1], reverse=True)
+            for path in i[self.save_num :]:
+                self.clear_list.append(path[0])
+        self.remove_from_link_list()
+
+    def gc_clear_list(self):
+        for i in self.gc_autos:
+            self.gc_auto(i)
+        for i in self.profiles:
+            self.gc_profile(i)
+
+    def get_link_target_path(self, f):
+        f_target = os.readlink(f)
+        return (
+            f_target
+            if f_target.startswith('/')
+            else os.path.join(os.path.dirname(f), f_target)
+        )
+
+    def clear_remove_default(self, reverse: bool = False):
+        for i in self.gc_autos:
+            for k in os.listdir(i):
+                kpath = os.path.join(i, k)
+                if not os.path.islink(kpath):
+                    continue
+                target_path = self.get_link_target_path(kpath)
+                is_p = os.path.basename(target_path).startswith(self.default)
+                is_p = (not is_p) if reverse else is_p
+                if is_p:
+                    if self.dry_run:
+                        typer.secho(f'Delete {kpath}', fg=Colors.WARN.value)
+                    else:
+                        self.link_remove(kpath)
+        for i in self.profiles:
+            for k in os.listdir(i):
+                kpath = os.path.join(i, k)
+                is_p = os.path.basename(kpath).startswith(self.default)
+                is_p = (not is_p) if reverse else is_p
+                if is_p:
+                    if self.dry_run:
+                        typer.secho(f'Delete {kpath}', fg=Colors.WARN.value)
+                    else:
+                        self.link_remove(kpath)
+
+    def run(self):
+        if not self.dry_run:
+            run_cmd(['sudo', 'nix', 'store', 'gc', '-v'])
+
+
+# HACK: When macos is updated it automatically generates new /etc/shells,
+# causing the nix-darwin build to fail
+def shell_backup():
+    etc_shell = '/etc/shells'
+    if os.path.exists(etc_shell) and (not os.path.islink(etc_shell)):
+        test_cmd(['sudo', 'mv', '-vf', etc_shell, '/etc/shells.backup'])
 
 
 def fmt_command(cmd: List[str]):
@@ -251,7 +319,7 @@ def select(nixos: bool, darwin: bool, home_manager: bool):
     help='builds an initial configuration',
     hidden=PLATFORM == FlakeOutputs.NIXOS,
 )
-@set_workdir_to_dotfiles
+@change_workdir
 def bootstrap(
     host: str = typer.Argument(
         DEFAULT_HOST, help='the hostname of the configuration to build'
@@ -271,7 +339,7 @@ def bootstrap(
         '--extra-substituters',
         'https://shanyouli.cachix.org',
     ]
-    bootstrap_flake = REMOTE_FLAKE if remote else get_flake()
+    bootstrap_flake = REMOTE_FLAKE if remote else DOTFILE.get_flake(True)
     if host is None:
         typer.secho('Host unspecified', fg=Colors.ERROR.value)
         return
@@ -285,8 +353,12 @@ def bootstrap(
         raise typer.Abort()
     elif cfg == FlakeOutputs.DARWIN:
         diskSetup()
-        flake = f'${bootstrap_flake}#{cfg.value}.{host}.config.system.build.toplevel'
-        run_cmd(['nix', 'build', 'flake'] + flags)
+        shell_backup()
+        flake = f'{bootstrap_flake}#{cfg.value}.{host}.config.system.build.toplevel'
+        nix = (
+            'nix' if test_cmd_exists('nix') else '/nix/var/nix/profiles/default/bin/nix'
+        )
+        run_cmd([nix, 'build', flake] + flags)
         run_cmd(
             f'./result/sw/bin/darwin-rebuild switch --flake {bootstrap_flake}#{host}'.split()
         )
@@ -313,11 +385,12 @@ def bootstrap(
 
 @app.command(
     help='builds the specified flake output; infers correct platform to use if not specified',
-    no_args_is_help=True,
+    # no_args_is_help=True,
 )
-@set_workdir_to_dotfiles
 def build(
-    host: str = typer.Argument(None, help='the hostname of the configuration to build'),
+    host: str = typer.Argument(
+        DEFAULT_HOST, help='the hostname of the configuration to build'
+    ),
     remote: bool = typer.Option(
         default=False, help='whether to fetch current changes from the remote'
     ),
@@ -337,7 +410,7 @@ def build(
     else:
         typer.secho('could not infer system type.', fg=Colors.ERROR.value)
         raise typer.Abort()
-    flake = f'{REMOTE_FLAKE if remote else get_flake()}#{host}'
+    flake = f'{REMOTE_FLAKE if remote else DOTFILE.get_flake()}#{host}'
     flags = ['--show-trace']
     run_cmd(cmd + [flake] + flags)
 
@@ -345,7 +418,7 @@ def build(
 @app.command(
     help='remove previously built configurations and symlinks from the current directory',
 )
-@set_workdir_to_dotfiles
+@change_workdir
 def clean(
     filename: str = typer.Argument(
         'result', help="the filename to be cleaned, or '*' for all files"
@@ -376,7 +449,7 @@ def diskSetup():
 
 @app.command(
     help='run garbage collection on unused nix store paths',
-    no_args_is_help=True,
+    # no_args_is_help=True,
 )
 def gc(
     delete_older_than: str = typer.Option(
@@ -386,38 +459,28 @@ def gc(
         metavar='[AGE]',
         help='specify minimum age for deleting store paths',
     ),
+    save: int = typer.Option(
+        3, '--save', '-s', help='Save the last x number of builds'
+    ),
     dry_run: bool = typer.Option(False, help='test the result of garbage collection'),
-    only: bool = typer.Option(False, help='Keep only one build'),
+    # only: bool = typer.Option(False, help='Keep only one build'),
 ):
-    if only:
-        gc_remove_auto_link('/nix/var/nix/gcroots/auto', dry_run)
-        gc_remove_profile_link('/nix/var/nix/profiles', dry_run)
-        gc_remove_profile_link(
-            os.path.expanduser('~/.local/state/nix/profiles'), dry_run
-        )
-    else:
-        if dry_run:
-            cmd = f"nix-collect-garbage { '--delete-older-than ' + delete_older_than if delete_older_than else '-d' } --dry-run"
-            run_cmd(cmd.split())
-        else:
-            for i in [
-                '/nix/var/nix/profiles/default',
-                '/nix/var/nix/profiles/system',
-                os.path.expanduser('~/.local/state/nix/profiles/home-manager'),
-            ]:
-                if os.path.exists(i):
-                    cmd = f"sudo nix profile wipe-history --profile {i} --older-than {delete_older_than} {'--dry-run' if dry_run else ''}"
-                    run_cmd(cmd.split())
-    if not dry_run:
-        cmd = 'sudo nix store gc --debug'
+    if delete_older_than:
+        cmd = f"nix-collect-garbage --delete-older-then {delete_older_than} {'--dry-run' if dry_run else ''}"
+        if not dry_run:
+            run_cmd(['sudo'] + cmd.split())
         run_cmd(cmd.split())
+    else:
+        nix_gc = NixGc(dry_run=dry_run, save_num=save)
+        nix_gc.gc_clear_list()
+        nix_gc.run()
 
 
-@set_workdir_to_dotfiles
-def get_inputs_flake():
-    path = os.path.join(os.path.expanduser(os.getcwd()), 'flake.lock')
-    if os.path.exists(path) and os.path.isfile(path):
-        with open(path, mode='r', encoding='utf-8') as f:
+def get_inputs_flake(path: Path = None):
+    path = os.getcwd() if path is None else path
+    flake_lock = os.path.join(os.path.realpath(path), 'flake.lock')
+    if os.path.isfile(flake_lock):
+        with open(flake_lock, mode='r', encoding='utf-8') as f:
             data_json = json.load(f)
             try:
                 return [i for i in data_json['nodes']['root']['inputs'].keys()]
@@ -431,7 +494,7 @@ def get_inputs_flake():
 @app.command(
     help='update all flake inputs or optionally specific flakes',
 )
-@set_workdir_to_dotfiles
+@change_workdir
 def update(
     flake: List[str] = typer.Option(
         None,
@@ -483,7 +546,7 @@ def update(
 
 
 @app.command(help='pull changes from remote repo')
-@set_workdir_to_dotfiles
+@change_workdir
 def pull():
     cmd = 'git stash && git pull && git stash apply'
     run_cmd(cmd.split())
@@ -491,9 +554,8 @@ def pull():
 
 @app.command(
     help='builds and activates the specified flake output; infers correct platform to use if not specified',
-    no_args_is_help=True,
+    # no_args_is_help=True,
 )
-@set_workdir_to_dotfiles
 def switch(
     host: str = typer.Argument(
         default=DEFAULT_HOST,
@@ -516,30 +578,27 @@ def switch(
     elif cfg == FlakeOutputs.NIXOS:
         cmd = 'sudo nixos-rebuild switch --flake'
     elif cfg == FlakeOutputs.DARWIN:
+        shell_backup()
         cmd = 'darwin-rebuild switch --flake'
     elif cfg == FlakeOutputs.HOME_MANAGER:
         cmd = 'home-manager switch --flake'
     else:
         typer.secho('could not infer system type.', fg=Colors.ERROR.value)
         raise typer.Abort()
-
-    if remote:
-        flake = f'{REMOTE_FLAKE}#{host}'
-    else:
-        flake = f'{get_flake()}#{host}'
+    flake = [f'{REMOTE_FLAKE}#{host}'] if remote else [f'{DOTFILE.get_flake()}#{host}']
     flags = ['--show-trace']
-    run_cmd(cmd.split() + [flake] + flags)
+    run_cmd(cmd.split() + flake + flags)
 
 
 @app.command(help='cache the output environment of flake.nix')
-@set_workdir_to_dotfiles
+@change_workdir
 def cache(cache_name: str = 'shanyouli'):
     cmd = f"nix flake archive --json | jq -r '.path,(.inputs|to_entries[].value.path)' | cachix push {cache_name}"
     run_cmd(cmd.split(), shell=True)
 
 
 @app.command(help='nix repl')
-@set_workdir_to_dotfiles
+@change_workdir
 def repl(
     pkgs: bool = typer.Option(False, help='import <nixpkgs>'),
     flake: bool = typer.Option(False, help='Automatically import build flake'),
@@ -600,6 +659,39 @@ def refresh(rd: bool = typer.Option(False, help='Reset to start the machine layo
     envfile = os.path.expanduser(os.path.join('~/.cache', 'menv.json'))
     with open(envfile, mode='w', encoding='utf-8') as f:
         f.write(json.dumps(source_env))
+
+
+@app.command(help='Reinitialize darwin', hidden=PLATFORM != FlakeOutputs.DARWIN)
+def init(
+    host: str = typer.Argument(
+        DEFAULT_HOST, help='the hostname of the configuration to build'
+    ),
+    dry_run: bool = typer.Option(False, help='Test the result of init'),
+):
+    if PLATFORM != FlakeOutputs.DARWIN:
+        typer.secho('command is only supported on macos.')
+        raise typer.Abort()
+    nixgc = NixGc(dry_run=dry_run, default='default')
+    nixgc.clear_remove_default()
+    if not dry_run:
+        # sudo nix upgrade-nix -p /nix/var/nix/profiles/default
+        run_cmd(
+            [
+                'sudo',
+                'nix',
+                'upgrade-nix',
+                '-p',
+                '/nix/var/nix/profiles/default',
+                '--keep-outputs',
+                '--keep-derivations',
+                '--experimental-features',
+                '"nix-command flakes"',
+            ]
+        )
+    nixgc.clear_remove_default(True)
+    nixgc.run()
+    if not dry_run:
+        bootstrap(host=host, darwin=True, remote=False)
 
 
 if __name__ == '__main__':

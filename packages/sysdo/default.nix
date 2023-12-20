@@ -10,11 +10,11 @@
 }: let
   pyEnv =
     python3.withPackages
-    (ps: with ps; [typer colorama shellingham] ++ (lib.optionals withRich [rich]));
+    (ps: with ps; [typer colorama] ++ (lib.optionals withRich [rich])); # shellingham
 in
   stdenv.mkDerivation rec {
     pname = "sysdo";
-    version = "0.2";
+    version = "0.5";
     src = ./.;
     buildInputs = [pyEnv installShellFiles];
     installPhase = ''

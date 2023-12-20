@@ -47,12 +47,9 @@ yabai -m config window_gap 4
 # Do not manage windows with certain titles eg. Copying files or moving to bin
 yabai -m rule --add title="(Copy|Bin|About This Mac|Info)" manage=off
 # Do not manage some apps which are not resizable
-yabai -m rule --add app="^(Calculator|System Preferences|[sS]tats|[Jj]et[Bb]rains [Tt]ool[Bb]ox)$" manage=off
+yabai -m rule --add app="^(Calculator|System Preferences|[sS]tats|[Jj]et[Bb]rains [Tt]ool[Bb]ox|系统设置|System Settings|Hearthstone|Battle.net|Clash for Window|Dash|Ryujinx|OpenMTP|Tencent Lemon|Android File Transfer|BaiduNetdisk|Finder|VOX|mpv|Easydict)$" manage=off
 
-yabai -m rule --add app="^(系统设置|System Settings|Hearthstone|Battle.net|Clash for Window)$" manage=off
-
-yabai -m rule --add title="^.*[Cc]onsole$" manage=off
-yabai -m rule --add title="^FloatTerm$" sticky=off manage=off
+yabai -m rule --add title="^(.*[Cc]onsole|FloatTerm)$" manage=off
 # if [[ $(yabai -m query --displays | jq -rj '. | length') -gt 1  ]]; then
 #   yabai -m rule --add app="^Firefox$" display=2
 # fi
@@ -63,22 +60,16 @@ yabai -m rule --add app="^Safari$" \
   title="(Passwords|General|Tabs|AutoFill|Search|Security|Privacy|Websites|Extensions|Advanced)" \
   manage=off
 
-yabai -m rule --add app="^Firefox$" title="^(Library|Extension:).*" manage=off
-
 yabai -m rule --add app="^(Nutstore|Karabiner-|GPG [Kk]eychain|IINA|Raycast).*$" manage=off
-
-yabai -m rule --add app="^(Dash|Ryujinx|OpenMTP|Tencent Lemon|Android File Transfer|BaiduNetdisk|Finder|VOX|mpv|Easydict)$" \
-  manage=off
-
 
 # 视频播放程序,不透明度设置为1
 yabai -m rule --add app="^([Mm]pv|IINA|VidHub)$" opacity=1
 
 # yabai -m rule --add app="^[Ee]macs$" title="^Edit File.*" manage=off
 
-if command -v jq >/dev/null 2>&1 && [[ $(yabai -m query --displays | jq -rj '. | length') -gt 1  ]]; then
-  yabai -m rule --add app="^[Mm][pP][Vv]$" display=1
-fi
+# if command -v jq >/dev/null 2>&1 && [[ $(yabai -m query --displays | jq -rj '. | length') -gt 1  ]]; then
+#   yabai -m rule --add app="^[Mm][pP][Vv]$" display=1
+# fi
 
 if [[ -d /Applications/Hammerspoon.app ]]; then
   pgrep -x "Hammerspoon" >/dev/null 2>&1 || open -a /Applications/Hammerspoon.app

@@ -127,7 +127,8 @@ in {
       if [[ -x /usr/libexec/path_helper ]]; then
         PATH=""
         eval $(/usr/libexec/path_helper -s)
-        PATH=${pkgs.lib.makeBinPath config.environment.profiles}:$PATH
+        PATH=${pkgs.lib.makeBinPath
+        (builtins.filter (x: x != "/nix/var/nix/profiles/default") config.environment.profiles)}:$PATH
       fi
       ${concatStringsSep "\n" (mapAttrsToList (n: v: (
           if "${n}" == "PATH"
