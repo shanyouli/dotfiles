@@ -4,7 +4,6 @@ import os
 import platform
 import re
 import subprocess
-import sys
 from enum import Enum
 from functools import wraps
 from pathlib import Path
@@ -40,7 +39,7 @@ class Dotfile:
             typer.secho('2.     ~/.nixpkgs', fg=Colors.INFO.value)
             typer.secho('3.     ~/.config/dotfiles', fg=Colors.INFO.value)
             typer.secho('4.     ~/.dotfiles', fg=Colors.INFO.value)
-            sys.exit(1)
+            raise typer.Abort()
 
 
 def set_workdir_to_dotfiles(func):
@@ -197,18 +196,34 @@ SYSTEM_ARCH = 'aarch64' if UNAME.machine == 'arm64' else UNAME.machine
 SYSTEM_OS = UNAME.system.lower()
 DEFAULT_HOST = f'{USERNAME}@{SYSTEM_ARCH}-{SYSTEM_OS}'
 
-
-def fmt_command(cmd: str):
-    return f'> {cmd}'
+REMOTE_FLAKE = 'github:shanyouli/dotfiles'
 
 
-def test_cmd(cmd: str):
-    return os.system(f'{cmd} > /dev/null') == 0
+def get_flake() -> str:
+    check_git = subprocess.run(
+        ['git', 'rev-parse', '--show-toplevel'], capture_output=True
+    )
+    local_flake = os.path.realpath(check_git.stdout.decode().strip())
+    if check_git.returncode == 0 and os.path.isfile(
+        os.path.join(local_flake, 'flake.nix')
+    ):
+        return local_flake
+    else:
+        return REMOTE_FLAKE
 
 
-def run_cmd(cmd: str):
+def fmt_command(cmd: List[str]):
+    cmd_str = ' '.join(cmd)
+    return f'> {cmd_str}'
+
+
+def test_cmd(cmd: List[str]):
+    return subprocess.run(cmd).returncode == 0
+
+
+def run_cmd(cmd: List[str], shell: bool = False):
     typer.secho(fmt_command(cmd), fg=Colors.INFO.value)
-    return os.system(cmd)
+    return subprocess.run((' '.join(cmd) if shell else cmd), shell=shell)
 
 
 def select(nixos: bool, darwin: bool, home_manager: bool):
@@ -238,15 +253,30 @@ def select(nixos: bool, darwin: bool, home_manager: bool):
 )
 @set_workdir_to_dotfiles
 def bootstrap(
-    host: str = typer.Argument(None, help='the hostname of the configuration to build'),
+    host: str = typer.Argument(
+        DEFAULT_HOST, help='the hostname of the configuration to build'
+    ),
     nixos: bool = False,
     darwin: bool = False,
     home_manager: bool = False,
+    remote: bool = typer.Option(
+        default=False, help='whether to fetch current changes from the remote'
+    ),
 ):
     cfg = select(nixos=nixos, darwin=darwin, home_manager=home_manager)
-    flags = "-v --experimental-features 'nix-command flakes'"
-    if cfg is None:
+    flags = [
+        '-v',
+        '--experimental-features',
+        'nix-command flakes',
+        '--extra-substituters',
+        'https://shanyouli.cachix.org',
+    ]
+    bootstrap_flake = REMOTE_FLAKE if remote else get_flake()
+    if host is None:
+        typer.secho('Host unspecified', fg=Colors.ERROR.value)
         return
+    if cfg is None:
+        typer.secho('missing configuration', fg=Colors.ERROR.value)
     elif cfg == FlakeOutputs.NIXOS:
         typer.secho(
             'boostrap does not apply to nixos systems.',
@@ -255,13 +285,26 @@ def bootstrap(
         raise typer.Abort()
     elif cfg == FlakeOutputs.DARWIN:
         diskSetup()
-        flake = f'.#{cfg.value}.{host}.config.system.build.toplevel {flags}'
-        run_cmd(f'nix build {flake} {flags}')
-        run_cmd(f'./result/sw/bin/darwin-rebuild switch --flake .#{host}')
-    elif cfg == FlakeOutputs.HOME_MANAGER:
-        flake = f'.#{host}'
+        flake = f'${bootstrap_flake}#{cfg.value}.{host}.config.system.build.toplevel'
+        run_cmd(['nix', 'build', 'flake'] + flags)
         run_cmd(
-            f'nix run github:nix-community/home-manager {flags} --no-write-lock-file -- switch --flake {flake} -b backup'
+            f'./result/sw/bin/darwin-rebuild switch --flake {bootstrap_flake}#{host}'.split()
+        )
+    elif cfg == FlakeOutputs.HOME_MANAGER:
+        flake = f'{bootstrap_flake}#{host}'
+        run_cmd(
+            ['nix', 'run']
+            + flags
+            + [
+                'github:nix-community/home-manager',
+                '--no-write-lock-file',
+                '--',
+                'switch',
+                '--flake',
+                flake,
+                '-b',
+                'backup',
+            ]
         )
     else:
         typer.secho('could not infer system type.', fg=Colors.ERROR.value)
@@ -275,7 +318,7 @@ def bootstrap(
 @set_workdir_to_dotfiles
 def build(
     host: str = typer.Argument(None, help='the hostname of the configuration to build'),
-    pull: bool = typer.Option(
+    remote: bool = typer.Option(
         default=False, help='whether to fetch current changes from the remote'
     ),
     nixos: bool = False,
@@ -286,31 +329,29 @@ def build(
     if cfg is None:
         return
     elif cfg == FlakeOutputs.NIXOS:
-        cmd = 'sudo nixos-rebuild build --flake'
-        flake = f'.#{host}'
+        cmd = ['sudo', 'nixos-rebuild', 'build', '--flake']
     elif cfg == FlakeOutputs.DARWIN:
-        flake = f'.#{host}'
-        cmd = 'darwin-rebuild build --flake'
+        cmd = ['sudo', 'darwin-rebuild', 'build', '--flake']
     elif cfg == FlakeOutputs.HOME_MANAGER:
-        flake = f'.#{host}'
-        cmd = 'home-manager build --flake'
+        cmd = ['home-manager', 'built', '--flake']
     else:
         typer.secho('could not infer system type.', fg=Colors.ERROR.value)
         raise typer.Abort()
-
-    if pull:
-        git_pull()
-    flake = f'.#{host}'
-    flags = ' '.join(['--show-trace'])
-    run_cmd(f'{cmd} {flake} {flags}')
+    flake = f'{REMOTE_FLAKE if remote else get_flake()}#{host}'
+    flags = ['--show-trace']
+    run_cmd(cmd + [flake] + flags)
 
 
 @app.command(
     help='remove previously built configurations and symlinks from the current directory',
 )
 @set_workdir_to_dotfiles
-def clean():
-    run_cmd('for i in *; do [[ -L $i ]] && rm -f $i; done')
+def clean(
+    filename: str = typer.Argument(
+        'result', help="the filename to be cleaned, or '*' for all files"
+    ),
+):
+    run_cmd(f'find . -type l -maxdepth 1 -name {filename} -exec rm {{}} +'.split())
 
 
 @app.command(
@@ -318,44 +359,19 @@ def clean():
     hidden=PLATFORM != FlakeOutputs.DARWIN,
 )
 def diskSetup():
-    if PLATFORM != FlakeOutputs.DARWIN:
-        typer.secho(
-            'nix-darwin does not apply on this platform. aborting...',
-            fg=Colors.ERROR.value,
-        )
-        return
-
-    if not test_cmd("grep -q '^run\\b' /etc/synthetic.conf 2>/dev/null"):
+    if not test_cmd('grep -q ^run\\b /etc/synthetic.conf'.split()):
         APFS_UTIL = '/System/Library/Filesystems/apfs.fs/Contents/Resources/apfs.util'
         typer.secho('setting up /etc/synthetic.conf', fg=Colors.INFO.value)
-        run_cmd("echo 'run\tprivate/var/run' | sudo tee -a /etc/synthetic.conf")
-        run_cmd(f'{APFS_UTIL} -B || true')
-        run_cmd(f'{APFS_UTIL} -t || true')
-    if not test_cmd('test -L /run'):
+        run_cmd(
+            "echo 'run\tprivate/var/run' | sudo tee -a /etc/synthetic.conf".split(),
+            shell=True,
+        )
+        run_cmd([APFS_UTIL, '-B'])
+        run_cmd([APFS_UTIL, '-t'])
+    if not test_cmd(['test', '-L', '/run']):
         typer.secho('linking /run directory', fg=Colors.INFO.value)
-        run_cmd('sudo ln -sfn private/var/run /run')
+        run_cmd('sudo ln -sfn private/var/run /run'.split())
     typer.secho('disk setup complete', fg=Colors.SUCCESS.value)
-
-
-@app.command(help='run formatter on all files')
-@set_workdir_to_dotfiles
-def fmt():
-    run_cmd('fmt')
-
-
-@set_workdir_to_dotfiles
-def get_inputs_flake():
-    path = os.path.join(os.path.expanduser(os.getcwd()), 'flake.lock')
-    if os.path.exists(path) and os.path.isfile(path):
-        with open(path, mode='r', encoding='utf-8') as f:
-            data_json = json.load(f)
-            try:
-                return [i for i in data_json['nodes']['root']['inputs'].keys()]
-            except KeyError as er:
-                raise er
-    else:
-        print('没有发现路径')
-        return False
 
 
 @app.command(
@@ -382,6 +398,7 @@ def gc(
     else:
         if dry_run:
             cmd = f"nix-collect-garbage { '--delete-older-than ' + delete_older_than if delete_older_than else '-d' } --dry-run"
+            run_cmd(cmd.split())
         else:
             for i in [
                 '/nix/var/nix/profiles/default',
@@ -390,10 +407,25 @@ def gc(
             ]:
                 if os.path.exists(i):
                     cmd = f"sudo nix profile wipe-history --profile {i} --older-than {delete_older_than} {'--dry-run' if dry_run else ''}"
-                    run_cmd(cmd)
+                    run_cmd(cmd.split())
     if not dry_run:
         cmd = 'sudo nix store gc --debug'
-    run_cmd(cmd)
+        run_cmd(cmd.split())
+
+
+@set_workdir_to_dotfiles
+def get_inputs_flake():
+    path = os.path.join(os.path.expanduser(os.getcwd()), 'flake.lock')
+    if os.path.exists(path) and os.path.isfile(path):
+        with open(path, mode='r', encoding='utf-8') as f:
+            data_json = json.load(f)
+            try:
+                return [i for i in data_json['nodes']['root']['inputs'].keys()]
+            except KeyError as er:
+                raise er
+    else:
+        print('没有发现路径')
+        return False
 
 
 @app.command(
@@ -417,7 +449,7 @@ def update(
     ),
     commit: bool = typer.Option(False, help='commit the updated lockfile'),
 ):
-    flags = '--commit-lock-file' if commit else ''
+    flags = ['--commit-lock-file'] if commit else ['']
     flakes = []
     if flake:
         all_flags = get_inputs_flake()
@@ -443,26 +475,18 @@ def update(
 
     if not flakes:
         typer.secho('updating all flake inputs')
-        cmd = f'nix flake update {flags}'
+        run_cmd(['nix', 'flake', 'update'] + flags)
     else:
         inputs = [f'--update-input {input}' for input in flakes]
         typer.secho(f"updating {','.join(flakes)}")
-        cmd = f"nix flake lock {' '.join(inputs)} {flags}"
-    run_cmd(cmd)
+        run_cmd(['nix', 'flake', 'lock'] + inputs + flags)
 
 
 @app.command(help='pull changes from remote repo')
 @set_workdir_to_dotfiles
-def git_pull():
+def pull():
     cmd = 'git stash && git pull && git stash apply'
-    run_cmd(cmd)
-
-
-@app.command(help='update remote repo with current changes')
-@set_workdir_to_dotfiles
-def git_push():
-    cmd = 'git push'
-    run_cmd(cmd)
+    run_cmd(cmd.split())
 
 
 @app.command(
@@ -472,10 +496,10 @@ def git_push():
 @set_workdir_to_dotfiles
 def switch(
     host: str = typer.Argument(
-        default=None,
+        default=DEFAULT_HOST,
         help='the hostname of the configuration to build',
     ),
-    pull: bool = typer.Option(
+    remote: bool = typer.Option(
         default=False, help='whether to fetch current changes from the remote'
     ),
     nixos: bool = False,
@@ -499,18 +523,19 @@ def switch(
         typer.secho('could not infer system type.', fg=Colors.ERROR.value)
         raise typer.Abort()
 
-    if pull:
-        git_pull()
-    flake = f'.#{host}'
-    flags = ' '.join(['--show-trace'])
-    run_cmd(f'{cmd} {flake} {flags}')
+    if remote:
+        flake = f'{REMOTE_FLAKE}#{host}'
+    else:
+        flake = f'{get_flake()}#{host}'
+    flags = ['--show-trace']
+    run_cmd(cmd.split() + [flake] + flags)
 
 
 @app.command(help='cache the output environment of flake.nix')
 @set_workdir_to_dotfiles
 def cache(cache_name: str = 'shanyouli'):
     cmd = f"nix flake archive --json | jq -r '.path,(.inputs|to_entries[].value.path)' | cachix push {cache_name}"
-    run_cmd(cmd)
+    run_cmd(cmd.split(), shell=True)
 
 
 @app.command(help='nix repl')
@@ -522,13 +547,14 @@ def repl(
     cmd = 'nix repl'
     exarg = 'import <nixpkgs> {}' if pkgs else None
     if flake:
-        get_flake = f'(builtins.getFlake \\"{os.getcwd()}\\")'
+        flake_src = f'(builtins.getFlake \\"{os.getcwd()}\\")'
         if exarg:
-            exarg = exarg + ' // ' + get_flake
+            exarg = exarg + ' // ' + flake_src
         else:
-            exarg = get_flake + f'.{PLATFORM.value}.\\"{DEFAULT_HOST}\\"'
+            exarg = flake_src + f'.{PLATFORM.value}.\\"{DEFAULT_HOST}\\"'
     cmd = cmd + ' --expr "' + exarg + '"' if exarg else cmd
-    run_cmd(cmd)
+    typer.secho(f'> {cmd}', fg=Colors.INFO.value)
+    os.system(cmd)
 
 
 @app.command(help='Redirect the bundle id to specify the version')
@@ -536,11 +562,31 @@ def refresh(rd: bool = typer.Option(False, help='Reset to start the machine layo
     if PLATFORM == FlakeOutputs.DARWIN:
         if rd:
             run_cmd(
-                'defaults write com.apple.dock ResetLaunchPad -bool true && killall Dock'
+                [
+                    'defaults',
+                    'write',
+                    'com.apple.dock',
+                    'ResetLaunchPad',
+                    '-bool',
+                    'true',
+                    '&&',
+                    'killall',
+                    'Dock',
+                ],
+                shell=True,
             )
-
         run_cmd(
-            '/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -domain local -domain system -domain user'
+            [
+                '/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister',
+                '-kill',
+                '-r',
+                '-domain local',
+                '-domain',
+                'system',
+                '-domain',
+                'user',
+            ],
+            shell=True,
         )
     SHELL = os.getenv('SHELL')
     proc = subprocess.getoutput(f'unset PATH;{SHELL} -c -i printenv')
@@ -554,54 +600,6 @@ def refresh(rd: bool = typer.Option(False, help='Reset to start the machine layo
     envfile = os.path.expanduser(os.path.join('~/.cache', 'menv.json'))
     with open(envfile, mode='w', encoding='utf-8') as f:
         f.write(json.dumps(source_env))
-
-
-@app.command(help='search pacakge')
-def search(
-    pkg: str = typer.Argument(default=None, help='package name'),
-    max_num: int = typer.Argument(default=100, help='search max num'),
-):
-    if not pkg:
-        typer.secho('Error: Please input package name', fg=Colors.ERROR.value)
-        raise typer.Abort()
-    cmd = f'nix search --json --no-update-lock-file nixpkgs {pkg}'
-    search_result = os.popen(cmd).readlines()[0]
-    if search_result == '{}':
-        typer.secho('Warn: No search packages', fg=Colors.WARN.value)
-        raise typer.Abort()
-    search_dict = json.loads(search_result)
-    search_keys = search_dict.keys()
-    search_package = [i for i in search_keys if i.find(pkg) != -1]
-    if search_package == []:
-        typer.secho('Warn: No search packages', fg=Colors.WARN.value)
-        raise typer.Abort()
-    search_package = [
-        pkg_key for i, pkg_key in enumerate(search_package) if i < max_num
-    ]
-    names = [
-        typer.style(
-            i.split('.', 2)[-1], fg=typer.colors.GREEN, bold=True, underline=True
-        )
-        for i in search_package
-    ]
-    pnames = [
-        typer.style(
-            search_dict[i]['pname'], fg=typer.colors.GREEN, bold=True, underline=True
-        )
-        for i in search_package
-    ]
-    pversions = [
-        typer.style(search_dict[i]['version'], fg=typer.colors.YELLOW, bold=True)
-        for i in search_package
-    ]
-    pdesc = [search_dict[i]['description'] for i in search_package]
-    names_max = max([len(i) for i in names])
-    pnames_max = max([len(i) for i in pnames])
-    pversions_max = max([len(i) for i in pversions])
-    for i, pname in enumerate(pnames):
-        num = typer.style(f'{i + 1}.\t', fg=Colors.INFO.value)
-        message = f'{num} name: {names[i].ljust(names_max)} ppname: {pname.ljust(pnames_max)} version: {pversions[i].ljust(pversions_max)} desc: {pdesc[i]}'
-        typer.echo(message)
 
 
 if __name__ == '__main__':
