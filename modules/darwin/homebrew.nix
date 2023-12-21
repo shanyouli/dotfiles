@@ -21,9 +21,7 @@ in {
         then str
         else "bfsu";
     };
-    description = ''
-      homebrew 使用 mirror
-    '';
+    description = "homebrew 使用 mirror";
   };
 
   config = mkIf cfg.enable {
@@ -37,6 +35,13 @@ in {
       lockfiles = true;
       # noLock = true;
     };
+    homebrew.brewPrefix = let
+      inherit (pkgs.stdenvNoCC) isAarch64 isAarch32;
+    in (
+      if isAarch64 || isAarch32
+      then "/opt/homebrew/bin"
+      else "/usr/local/bin"
+    );
     homebrew.taps =
       (
         if cfg.useMirror
@@ -154,12 +159,12 @@ in {
       # "mysql"
     ];
     homebrew.masApps = {
-      # "Userscript" = 1463298887; tampermonkey
+      "Userscript" = 1463298887; # tampermonkey
       "OneTab" = 1540160809;
       "Amphetamine" = 937984704;
       "mineweeper" = 1475921958;
       "immersive-translate" = 6447957425;
-      # "vimkey" = 1585682577; # replace vimari
+      "vimkey" = 1585682577; # replace vimari
       "adblock" = 1018301773;
       "text-scaner" = 1452523807;
       "medis2" = 1579200037;
@@ -168,10 +173,7 @@ in {
     };
     modules.shell = mkMerge [
       {
-        envInit =
-          if pkgs.stdenvNoCC.isx86_64
-          then "_cache /usr/local/bin/brew shellenv"
-          else "_cache /opt/homebrew/bin/brew shellenv";
+        envInit = "_cache ${config.homebrew.brewPrefix}/brew shellenv";
       }
       (mkIf cfg.useMirror {
         env = let

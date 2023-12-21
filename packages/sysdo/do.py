@@ -512,7 +512,7 @@ def update(
     ),
     commit: bool = typer.Option(False, help='commit the updated lockfile'),
 ):
-    flags = ['--commit-lock-file'] if commit else ['']
+    flags = ['--commit-lock-file'] if commit else []
     flakes = []
     if flake:
         all_flags = get_inputs_flake()
