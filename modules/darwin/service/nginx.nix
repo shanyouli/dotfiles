@@ -7,11 +7,11 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.macos.nginx;
+  cfg = config.modules.macos.service.nginx;
   cfm = config.modules;
   cfb = cfm.nginx;
 in {
-  options.modules.macos.nginx = {
+  options.modules.macos.service.nginx = {
     enable = mkBoolOpt false;
     workDir = mkStrOpt "/opt/nginx";
   };
