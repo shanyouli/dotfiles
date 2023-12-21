@@ -603,7 +603,7 @@ def repl(
     pkgs: bool = typer.Option(False, help='import <nixpkgs>'),
     flake: bool = typer.Option(False, help='Automatically import build flake'),
 ):
-    cmd = 'nix repl'
+    cmd = 'nix repl --expr '
     exarg = 'import <nixpkgs> {}' if pkgs else None
     if flake:
         flake_src = f'(builtins.getFlake \\"{os.getcwd()}\\")'
@@ -611,7 +611,7 @@ def repl(
             exarg = exarg + ' // ' + flake_src
         else:
             exarg = flake_src + f'.{PLATFORM.value}.\\"{DEFAULT_HOST}\\"'
-    cmd = cmd + ' --expr "' + exarg + '"' if exarg else cmd
+    cmd = cmd + '"' + exarg + '"' if exarg else cmd + 'builtins'
     typer.secho(f'> {cmd}', fg=Colors.INFO.value)
     os.system(cmd)
 

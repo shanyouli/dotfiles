@@ -8,188 +8,165 @@
 with lib;
 with lib.my; let
   cfg = config.modules.macos.brew;
-  mirrors = ["bfsu" "tuna"];
+  mirrors = {
+    bfsu = "https://mirrors.bfsu.edu.cn"; # 北外
+    tuna = "https://mirrors.tuna.tsinghua.edu.cn"; # 清华
+    sust = "https://mirrors.sustech.edu.cn"; # 南方科技大学
+    nju = "https://mirror.nju.edu.cn"; # 浙江大学
+  };
+  can_mirror_taps = ["cask" "core" "services" "command-not-found"]; # cask-fonts
 in {
   options.modules.macos.brew = {
     enable = mkBoolOpt true;
     useMirror = mkBoolOpt true;
     mirror = mkOption {
-      type = types.nullOr types.str;
+      type = types.str;
       default = "bfsu";
       apply = str:
-        if builtins.elem str mirrors
+        if builtins.hasAttr str mirrors
         then str
         else "bfsu";
     };
     description = "homebrew 使用 mirror";
   };
 
-  config = mkIf cfg.enable {
-    homebrew.enable = true; # 你需要手动安装homebrew
-    homebrew.onActivation = {
-      autoUpdate = false;
-      cleanup = "zap";
-    };
-    homebrew.global = {
-      brewfile = true;
-      lockfiles = true;
-      # noLock = true;
-    };
-    homebrew.brewPrefix = let
-      inherit (pkgs.stdenvNoCC) isAarch64 isAarch32;
-    in (
-      if isAarch64 || isAarch32
-      then "/opt/homebrew/bin"
-      else "/usr/local/bin"
-    );
-    homebrew.taps =
-      (
-        if cfg.useMirror
-        then
-          (let
-            domain =
-              if cfg.mirror == "bfsu"
-              then "https://mirrors.bfsu.edu.cn"
-              else "https://mirrors.tuna.tsinghua.edu.cn";
-          in [
-            {
-              name = "homebrew/cask";
-              clone_target = "${domain}/git/homebrew/homebrew-cask.git";
-            }
-            {
-              name = "homebrew/core";
-              clone_target = "${domain}/git/homebrew/homebrew-core.git";
-            }
-            {
-              name = "homebrew/services";
-              clone_target = "${domain}/git/homebrew/homebrew-services.git";
-            }
-            {
-              name = "homebrew/cask-versions";
-              clone_target = "${domain}/git/homebrew/homebrew-cask-versions.git";
-            }
-            {
-              name = "homebrew/command-not-found";
-              clone_target = "${domain}/git/homebrew/homebre-command-not-found.git";
-            }
-          ])
-        else [
-          "homebrew/cask"
-          "homebrew/core"
-          "homebrew/services"
-          "homebrew/cask-versions"
-          "homebrew/command-not-found"
-          # "homebrew/cask-fonts" 不需要使用, 使用nix控制安装字体
-        ]
-      )
-      ++ ["buo/cask-upgrade"];
-    homebrew.casks = [
-      "raycast" # 取代 spotlight
-      "stats" # 状态显示
-      "telegram"
-      "baidunetdisk"
-      "orbstack" # docker
-      "easydict" # 翻译软件
-      "jetbrains-toolbox"
-      # "syncthing" 同步
-      # "downie"
-      # # 使用第三方工具取代openmtp，MacDroid.app
-      # (lib.mkIf config.modules.adb.enable
-      #   "openmtp") # 或者  "android-file-transfer"
-      "lulu" # 网络管理
-      # "microsoft-office" , 手动安装
-      "cryptomator"
-      # "picgo" 使用 upic取代
-      "wechat"
-      "wpsoffice-cn"
-      "mactex"
+  config = mkIf cfg.enable (mkMerge [
+    (mkIf (! cfg.useMirror) {
+      homebrew.taps = map (x: "homebrew/" + x) can_mirror_taps;
+    })
+    (mkIf cfg.useMirror (let
+      domain = mirrors."${cfg.mirror}";
+      need_git =
+        if cfg.mirror == "sust"
+        then ""
+        else "git/";
+      fmtfunc = x: {
+        name = "homebrew/" + x;
+        clone_target = domain + "/" + need_git + "homebrew/homebrew-" + x + ".git";
+      };
+    in {
+      homebrew.taps = map fmtfunc can_mirror_taps;
+      modules.shell.rcInit = ''
+        export HOMEBREW_INSTALL_FROM_API=1
 
-      "calibre" #"koodo-reader", 书籍管理和阅读
-      "skim" # PDF
+        export HOMEBREW_API_DOMAIN="${domain}/homebrew-bottles/api"
+        export HOMEBREW_BOTTLE_DOMAIN="${domain}/homebrew-bottles"
 
-      "imageoptim" # 图片压缩
-      #
-      "displaperture" # screen 曲线图
-      "licecap" # GIF kap
-      # "imazing" # 手机备份管理
-      "shottr" # 截图
-      # "betterdisplay" # 其他替代工具
-      # "dozer" # 菜单栏管理,
-      "maczip" # 压缩解压GUI
-      # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
-      "squirrel" # 输入法
-      "findergo" # 快捷方式，在finder中打开终端
-      # "coconutbattery" # 电量查看
-      "zotero" # 文献管理
+        export HOMEBREW_PIP_INDEX_URL="${domain}/pypi/web/simple"
 
-      # "warp" # next terminal, 不太好用
+        export HOMEBREW_BREW_GIT_REMOTE="${domain}/${need_git}homebrew/brew.git"
+        export HOMEBREW_CORE_GIT_REMOTE="${domain}/${need_git}homebrew/homebrew-core.git"
+      '';
+    }))
+    {
+      homebrew.enable = true; # 你需要手动安装homebrew
+      homebrew.onActivation = {
+        autoUpdate = false;
+        cleanup = "zap";
+      };
+      homebrew.global = {
+        brewfile = true;
+        lockfiles = true;
+        # noLock = true;
+      };
+      homebrew.brewPrefix = let
+        inherit (pkgs.stdenvNoCC) isAarch64 isAarch32;
+      in (
+        if isAarch64 || isAarch32
+        then "/opt/homebrew/bin"
+        else "/usr/local/bin"
+      );
+      homebrew.taps = ["buo/cask-upgrade"];
 
-      "syntax-highlight"
-      "qlmarkdown"
+      homebrew.casks = [
+        "raycast" # 取代 spotlight
+        "stats" # 状态显示
+        "telegram"
+        "baidunetdisk"
+        "orbstack" # docker
+        "easydict" # 翻译软件
+        "jetbrains-toolbox"
+        # "syncthing" 同步
+        # "downie"
+        # # 使用第三方工具取代openmtp，MacDroid.app
+        # (lib.mkIf config.modules.adb.enable
+        #   "openmtp") # 或者  "android-file-transfer"
+        "lulu" # 网络管理
+        # "microsoft-office" , 手动安装
+        "cryptomator"
+        # "picgo" 使用 upic取代
+        "wechat"
+        "wpsoffice-cn"
+        "mactex"
 
-      "playcover-community" # 侧载工具
+        "calibre" #"koodo-reader", 书籍管理和阅读
+        "skim" # PDF
 
-      "mac-mouse-fix" # 鼠标fix
-      "pictureview" # 看图
+        "imageoptim" # 图片压缩
+        #
+        "displaperture" # screen 曲线图
+        "licecap" # GIF kap
+        # "imazing" # 手机备份管理
+        "shottr" # 截图
+        # "betterdisplay" # 其他替代工具
+        # "dozer" # 菜单栏管理,
+        "maczip" # 压缩解压GUI
+        # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
+        "squirrel" # 输入法
+        "findergo" # 快捷方式，在finder中打开终端
+        # "coconutbattery" # 电量查看
+        "zotero" # 文献管理
 
-      "appcleaner" # 软件卸载
-      "clean-me" # ka
+        # "warp" # next terminal, 不太好用
 
-      "charles" # "proxyman", 抓包
-      "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
-      "background-music"
+        "syntax-highlight"
+        "qlmarkdown"
 
-      "postman" # "rapidapi" "httpie"
-      # "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
-      "sequel-ace" # mysql
+        "playcover-community" # 侧载工具
 
-      # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
-      # "maccy" # clip 剪切薄，使用raycast取代
-      # "visual-studio-code" # other editors nix 管理
-      (mkIf config.modules.shell.git.enGui "github") # github客户端
+        "mac-mouse-fix" # 鼠标fix
+        "pictureview" # 看图
 
-      "chromedriver" # brave 浏览器的driver
+        "appcleaner" # 软件卸载
+        "clean-me" # ka
 
-      # "google-chrome"
-      # "arc" # next browser
-      "brave-browser"
-    ];
-    homebrew.brews = [
-      "macos-trash" # trash-cli
-      # "mysql"
-    ];
-    homebrew.masApps = {
-      "Userscript" = 1463298887; # tampermonkey
-      "OneTab" = 1540160809;
-      "Amphetamine" = 937984704;
-      "mineweeper" = 1475921958;
-      "immersive-translate" = 6447957425;
-      "vimkey" = 1585682577; # replace vimari
-      "adblock" = 1018301773;
-      "text-scaner" = 1452523807;
-      "medis2" = 1579200037;
-      "vidhub" = 1659622164; # 视频管理,需要网速足够好
-      "medis" = 1579200037; # redis 管理工具
-    };
-    modules.shell = mkMerge [
-      {
-        envInit = "_cache ${config.homebrew.brewPrefix}/brew shellenv";
-      }
-      (mkIf cfg.useMirror {
-        env = let
-          domain =
-            if cfg.mirror == "bfsu"
-            then "https://mirrors.bfsu.edu.cn"
-            else "https://mirrors.tuna.tsinghua.edu.cn";
-        in {
-          HOMEBREW_INSTALL_FROM_API = "1";
-          HOMEBREW_API_DOMAIN = "${domain}/homebrew-bottles/api";
-          HOMEBREW_BOTTLE_DOMAIN = "${domain}/homebrew-bottles";
-          HOMEBREW_BREW_GIT_REMOTE = "${domain}/git/homebrew/brew.git";
-          HOMEBREW_CORE_GIT_REMOTE = "${domain}/git/homebrew/homebrew-core.git";
-          HOMEBREW_PIP_INDEX_URL = "${domain}/pypi/web/simple";
-        };
-      })
-    ];
-  };
+        "charles" # "proxyman", 抓包
+        "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
+        "background-music"
+
+        "postman" # "rapidapi" "httpie"
+        # "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
+        "sequel-ace" # mysql
+
+        # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
+        # "maccy" # clip 剪切薄，使用raycast取代
+        # "visual-studio-code" # other editors nix 管理
+        (mkIf config.modules.shell.git.enGui "github") # github客户端
+
+        "chromedriver" # brave 浏览器的driver
+
+        # "google-chrome"
+        # "arc" # next browser
+        "brave-browser"
+      ];
+      homebrew.brews = [
+        "macos-trash" # trash-cli
+        # "mysql"
+      ];
+      homebrew.masApps = {
+        "Userscript" = 1463298887; # tampermonkey
+        "OneTab" = 1540160809;
+        "Amphetamine" = 937984704;
+        "mineweeper" = 1475921958;
+        "immersive-translate" = 6447957425;
+        "vimkey" = 1585682577; # replace vimari
+        "adblock" = 1018301773;
+        "text-scaner" = 1452523807;
+        "medis2" = 1579200037;
+        "vidhub" = 1659622164; # 视频管理,需要网速足够好
+        "medis" = 1579200037; # redis 管理工具
+      };
+      modules.shell.envInit = "_cache ${config.homebrew.brewPrefix}/brew shellenv";
+    }
+  ]);
 }
