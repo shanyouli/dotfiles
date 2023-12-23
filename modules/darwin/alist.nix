@@ -21,7 +21,7 @@ in {
         if [[ ! -d ${workdir} ]]; then
           mkdir -p ${workdir}
         fi
-        ${pkgs.alist}/bin/alist server
+        ${pkgs.alist}/bin/alist server --data '${workdir}'
       '';
       path = [config.environment.systemPath];
       serviceConfig.RunAtLoad = true;

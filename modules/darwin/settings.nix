@@ -91,9 +91,9 @@ in {
       text = config.modules.dev.rust.initScript;
     };
     macos.userScript.initNvim = {
-      enable = cfm.editor.nvim.enable;
+      enable = config.modules.editor.nvim.enable;
       desc = "Init nvim";
-      text = cfm.editor.nvim.script;
+      text = config.modules.editor.nvim.script;
     };
   };
 }
