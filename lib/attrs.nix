@@ -1,11 +1,9 @@
-{ lib, ... }:
-
+{lib, ...}:
 with builtins;
-with lib;
-rec {
+with lib; rec {
   # attrsToList
   attrsToList = attrs:
-    mapAttrsToList (name: value: { inherit name value; }) attrs;
+    mapAttrsToList (name: value: {inherit name value;}) attrs;
 
   # mapFilterAttrs ::
   #   (name -> value -> bool)
@@ -29,12 +27,40 @@ rec {
   '';
 
   strToLists = sep: str:
-    filter (s: isString s && s != "")(split sep str);
+    filter (s: isString s && s != "") (split sep str);
 
-  strDeletePrefix = prefix: str:
-    let lenPrefix = stringLength prefix;
-        lenStr = stringLength str;
-    in (if (substring 0 lenPrefix str == prefix)  then
-      substring (stringLength prefix) (stringLength str) str
-      else "");
+  strDeletePrefix = prefix: str: let
+    lenPrefix = stringLength prefix;
+  in (
+    if (substring 0 lenPrefix str == prefix)
+    then substring (stringLength prefix) (stringLength str) str
+    else ""
+  );
+
+  asdfInPlugins = bin: plugin: versions: ''
+    version_exist=( $(${bin} list ${plugin}) )
+    all_versions=$(${bin} list all ${plugin})
+    ${concatStrings (map (v: ''
+        is_install_p=1
+        for i in ''${version_exist[@]}; do
+          if [[ $i == "${v}" ]] || [[ $i == "*${v}" ]]; then
+            is_install_p=0
+            break
+          fi
+        done
+        if [[ $is_install_p == 1 ]]; then
+          for i in ''${all_versions[@]}; do
+            if [[ $i == "${v}" ]]; then
+              is_install_p=0
+              ${bin} install ${plugin} ${v}
+              break
+            fi
+          done
+        fi
+        if [[ $is_install_p == 1 ]]; then
+          echo "Warning: ${plugin} No ${v} version!!!"
+        fi
+      '')
+      versions)}
+  '';
 }

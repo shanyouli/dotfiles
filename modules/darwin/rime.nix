@@ -22,9 +22,8 @@ in {
     modules.rime.userDir = "${config.my.hm.dir}/Library/Rime";
     modules.rime.backupid = "macos";
     modules.rime.ice.enable = true;
-    modules.rime.ice.dir = "${config.my.repodir}/rime-ice";
+    # modules.rime.ice.dir = "${config.my.repodir}/rime-ice";
     macos.userScript.rime = {
-      enable = true;
       desc = "配置rime输入法";
       text = cfm.rime.script;
     };

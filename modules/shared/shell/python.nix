@@ -6,9 +6,9 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.python;
+  cfg = config.modules.shell.python;
 in {
-  options.modules.python = with types; {
+  options.modules.shell.python = with types; {
     extraPkgs = mkOption {
       type = nullOr selectorFunction;
       default = null;
@@ -20,7 +20,7 @@ in {
     finalPkg = mkPkgReadOpt "The Python include with packages";
   };
   config = mkIf (cfg.extraPkgs != null) {
-    modules.python.finalPkg = pkgs.python3.withPackages cfg.extraPkgs;
+    modules.shell.python.finalPkg = pkgs.python3.withPackages cfg.extraPkgs;
     my.user.packages = [
       cfg.finalPkg
       pkgs.pipx # A better python command line installation tool

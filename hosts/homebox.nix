@@ -43,24 +43,20 @@
 
     dev.bash.enable = true;
     dev.python.enable = true;
+    dev.python.plugins = ["3.12.1" "3.10.13" "3.11.7"];
     dev.nix.enable = true;
+    dev.java.enable = true;
+    dev.java.plugins = ["oracle-21.0.1" "liberica-8u392+9"];
+    dev.lua.enable = true;
+    dev.cc.enable = true;
+    dev.node.enable = true;
     dev.toml.fmt = true;
     dev.enWebReport = true;
+    dev.rust.enable = true;
 
-    # asdf.enable = true;
-    node.enable = true;
-    rust.enable = true;
-    rust.rustup = {
-      enable = true;
-      # version = "1.56.1";
-      rlspEn = false;
-    };
     sdcv.enable = true;
-    # aria2.enable = true;
     firefox.enable = true;
-    lua.enable = true;
     theme.enable = true;
-    java.enable = true;
 
     # macos
     macos.enable = true;
@@ -83,8 +79,6 @@
     macos.rime.enable = true;
     macos.iina.enable = true;
     macos.battery.enable = true;
-    macos.asdf.enable = true;
-    asdf.withDirenv = true;
     firefox.package = pkgs.firefox-esr-bin;
     macos.brew.mirror = "tuna";
     macos.service.nginx.enable = true;

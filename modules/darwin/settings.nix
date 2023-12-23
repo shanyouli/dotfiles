@@ -13,7 +13,7 @@ with lib.my; let
     filterLambda = x:
       if builtins.hasAttr "enable" x
       then x.enable
-      else false;
+      else true;
     sortLambda = x: y: let
       levelx =
         if builtins.hasAttr "level" x
@@ -34,10 +34,12 @@ with lib.my; let
     '') (sortFn (lib.filter filterLambda attrList));
   userScripts = pkgs.writeScript "postUserScript" ''
     #!${pkgs.stdenv.shell}
+    export PATH=/usr/bin:$PATH
     ${filterEnabledTexts cfg.userScript}
   '';
   systemScripts = pkgs.writeScript "postSystemScript" ''
     #!${pkgs.stdenv.shell}
+    export PATH=/usr/bin:$PATH
     ${filterEnabledTexts cfg.systemScript}
   '';
 in {
@@ -82,6 +84,16 @@ in {
         # 禁止在网络卷创建元数据文件
         defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
       '';
+    };
+    macos.userScript.initRust = {
+      enable = config.modules.dev.rust.enable;
+      desc = "init rust";
+      text = config.modules.dev.rust.initScript;
+    };
+    macos.userScript.initNvim = {
+      enable = cfm.editor.nvim.enable;
+      desc = "Init nvim";
+      text = cfm.editor.nvim.script;
     };
   };
 }

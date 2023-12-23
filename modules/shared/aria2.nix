@@ -30,7 +30,7 @@ in {
     mkIf cfg.enable (mkMerge [
       {my.user.packages = [aria2];}
       (mkIf cfg.aria2p {
-        modules.python.extraPkgs = ps: with ps; [aria2p] ++ aria2p.optional-dependencies.tui;
+        modules.shell.python.extraPkgs = ps: with ps; [aria2p] ++ aria2p.optional-dependencies.tui;
       })
     ]);
   # TODO: alias

@@ -33,5 +33,12 @@ in {
     (mkIf cfg.shell.gopass.enable {
       modules.macos.service.env.PASSWORD_STORE_DIR = config.env.PASSWORD_STORE_DIR;
     })
+    (mkIf (cfg.dev.plugins != []) {
+      macos.userScript.initAsdf = {
+        desc = "Init asdf ...";
+        text = cfg.dev.text;
+      };
+      # homebrew.brews = ["openssl@3"];
+    })
   ];
 }

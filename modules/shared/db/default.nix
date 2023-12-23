@@ -5,6 +5,9 @@
   options,
   ...
 }:
+# mycli mysql 一个好用的客户端
+# usql 可以的多平台客户端,PostgreSQL, MySQL, Oracle Database, SQLite3, Microsoft SQL Server, and many other databases including NoSQL and non-relational databases!
+# pgcli Postgres CLI with autocompletion and syntax highlighting
 with lib;
 with lib.my; let
   cfm = config.modules;

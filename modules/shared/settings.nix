@@ -10,7 +10,7 @@
 with lib;
 with lib.my; let
   home =
-    if pkgs.stdenv.isDarwin
+    if pkgs.stdenvNoCC.isDarwin
     then "/Users/${config.my.username}"
     else "/home/${config.my.username}";
 in {
@@ -24,7 +24,7 @@ in {
       email = mkStrOpt "shanyouli6@gmail.com";
       terminal = mkStrOpt "wezterm";
       repodir = mkStrOpt "~/Repos"; # 一下第三方仓库管理
-      workdir = mkStrOpt "~/Work"; # 自己的仓库管理，和工作目录
+      workdir = mkStrOpt "~/Workspace"; # 自己的仓库管理，和工作目录
       enGui = mkEnableOption "GUI Usage";
       nix_managed =
         mkStrOpt
@@ -81,7 +81,7 @@ in {
     };
     my.programs.home-manager.enable = true;
     my.repodir = "${home}/Repos";
-    my.workdir = "${home}/Work";
+    my.workdir = "${home}/Workspace";
     my.hm = let
       prefix = config.home-manager.users."${config.my.username}".home;
     in {
@@ -112,7 +112,7 @@ in {
         # look for a nixpkgs channel.
         stateVersion =
           if pkgs.stdenv.isDarwin
-          then "22.11"
+          then "23.11"
           else config.system.stateVersion;
         inherit (config.my) username;
         file = mkAliasDefinitions options.my.hm.file;

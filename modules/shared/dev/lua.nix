@@ -13,10 +13,10 @@
 }:
 with lib;
 with lib.my; let
-  devCfg = config.modules;
+  devCfg = config.modules.dev;
   cfg = devCfg.lua;
 in {
-  options.modules.lua = {
+  options.modules.dev.lua = {
     enable = mkBoolOpt false;
     xdg.enable = mkBoolOpt devCfg.enableXDG;
     extraPkgs = mkOption {
@@ -33,19 +33,15 @@ in {
     };
     finalPkg = mkPkgReadOpt "lua env";
   };
-  config = mkIf cfg.enable (mkMerge [
-    {
-      modules.lua.extraPkgs = ps: with ps; [luarocks-nix lua-cjson luacheck];
-      modules.lua.package = pkgs.lua5_4;
-    }
-    {
-      modules.lua.finalPkg = cfg.package.withPackages cfg.extraPkgs;
-      my.user.packages = with pkgs; [
-        cfg.finalPkg
-        # lua54Packages.luarocks-nix
-        stylua
-        sumneko-lua-language-server
-      ];
-    }
-  ]);
+  config = mkIf cfg.enable {
+    modules.dev.lua.extraPkgs = ps: with ps; [luarocks-nix lua-cjson luacheck];
+    modules.dev.lua.package = pkgs.lua5_4;
+    modules.dev.lua.finalPkg = cfg.package.withPackages cfg.extraPkgs;
+    my.user.packages = with pkgs; [
+      cfg.finalPkg
+      # lua54Packages.luarocks-nix
+      stylua # fmt
+      sumneko-lua-language-server # lsp
+    ];
+  };
 }

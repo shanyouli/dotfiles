@@ -58,25 +58,17 @@ fi
 # 在sudo中使用用户环境变量
 alias mysudo='sudo -E env "PATH=$PATH"'
 
-# nixgc 清理
-function nixgcall() {
-  (( $+commands[nix] )) && {
-    [[ -d $HOME/.local/state/home-manager/gcroots ]] && \
-        rm -rf ${HOME}/.local/state/nix/profiles/home-manager*
-    [[ -f $HOME/.local/state/home-manager/gcroots/current-home ]] && \
-        rm  -rf ${HOME}/.local/state/home-manager/gcroots/current-home
-    sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations +1
-    pushd /nix/var/nix/gcroots/auto
-    for i in $(ls -Al | awk '{print $NF}') ; do
-        if [[ $i != $HOME/.nixpkgs/* ]]; then
-          sudo rm -rf $i;
-        fi
-    done
-    popd
-    nix-collect-garbage
-    sudo nix-collect-garbage
-  }
+
+# Proxy
+function setproxy() {
+  local url=http://127.0.0.1:${1:-10801}
+  export http_proxy=$url
+  export https_proxy=$url
+  export all_proxy=$url
+  export no_proxy=10.*.*.*,192.168.*.*,*.local,localhost,127.0.0.1
+  echo "proxy=$url"
 }
+function unsetproxy() { unset http_proxy https_proxy all_proxy no_proxy ; }
 
 # 通过 alias -g xxxx=yyy 设置，在指令的任何地方遇到单独的 xxx 都会被替换为 yyy
 alias -g :n='/dev/null'

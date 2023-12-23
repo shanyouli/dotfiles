@@ -19,10 +19,29 @@ in {
       package = pkgs.unstable.vscode;
       enableUpdateCheck = false;
       enableExtensionUpdateCheck = false;
-      extensions = with pkgs.unstable.vscode-extensions; [
-        vscodevim.vim
-        jnoortheen.nix-ide
-      ];
+      extensions = with pkgs.unstable.vscode-extensions; let
+        cpp =
+          if pkgs.stdenvNoCC.isLinux
+          then ms-vscode.cpptools
+          else
+            pkgs.unstable.vscode-utils.extensionFromVscodeMarketplace {
+              name = "cpptools";
+              publisher = "ms-vscode";
+              version = "1.18.5";
+              sha256 = "sha256-Ke0PCq9vJtqi1keqzTbVlils8g5UVvMw14b8Y0Rb49Y=";
+            };
+      in
+        [
+          vscodevim.vim
+          jnoortheen.nix-ide
+          formulahendry.code-runner
+        ]
+        ++ optionals cfm.shell.direnv.enable [
+          mkhl.direnv
+        ]
+        ++ optionals cfm.dev.cc.enable [
+          cpp
+        ];
       userSettings = {
         "nix.serverPath" = "rnix-lsp";
         "nix.enableLanguageServer" = true;

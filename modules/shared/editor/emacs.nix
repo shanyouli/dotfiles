@@ -154,7 +154,7 @@ in {
         # grip markdown 预览配置
         pkgs.python3Packages.grip
       ];
-      modules.python.extraPkgs = ps:
+      modules.shell.python.extraPkgs = ps:
         with ps; [
           epc
           orjson
@@ -182,7 +182,7 @@ in {
             (setq rime-share-data-dir "${data-dir}")
             (setq rime-user-data-dir "${config.my.hm.configHome}/emacs-rime")
           ''}
-          (setq lsp-bridge-python-command "${config.modules.python.finalPkg}/bin/python3")
+          (setq lsp-bridge-python-command "${config.modules.shell.python.finalPkg}/bin/python3")
           ${cfg.doom.confInit}
         '';
       };

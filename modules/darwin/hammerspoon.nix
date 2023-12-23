@@ -8,7 +8,7 @@
 with lib;
 with lib.my; let
   cfg = config.modules.macos.hammerspoon;
-  cfmLua = config.modules.lua;
+  cfmLua = config.modules.dev.lua;
 in {
   options.modules.macos.hammerspoon = {enable = mkBoolOpt false;};
 
@@ -23,14 +23,14 @@ in {
         -- 使用nix中安装的lua环境
         local paths = {
           package.path ,
-          "${config.modules.lua.finalPkg}" .. "/share/lua/5.4/?.lua",
-          "${config.modules.lua.finalPkg}" .. "/share/lua/5.4/?/init.lua"
-                      }
+          "${config.modules.dev.lua.finalPkg}" .. "/share/lua/5.4/?.lua",
+          "${config.modules.dev.lua.finalPkg}" .. "/share/lua/5.4/?/init.lua"
+        }
         local cpaths = {
           package.cpath ,
-          "${config.modules.lua.finalPkg}" .. "/lib/lua/5.4/?.dylib",
-          "${config.modules.lua.finalPkg}" .. "/lib/lua/5.4/?.so"
-                      }
+          "${config.modules.dev.lua.finalPkg}" .. "/lib/lua/5.4/?.dylib",
+          "${config.modules.dev.lua.finalPkg}" .. "/lib/lua/5.4/?.so"
+        }
         package.path = table.concat(paths, ";")
         package.cpath = table.concat(cpaths, ";")
       '';

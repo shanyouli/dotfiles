@@ -24,7 +24,7 @@ in {
     port = mkNumOpt 1188;
   };
   config = mkIf cfg.enable {
-    my.user.packages = [pkgs.deeplx];
+    # my.user.packages = [pkgs.deeplx];
     launchd.user.agents.deeplx = {
       serviceConfig.ProgramArguments = ["${deeplxService}/bin/deeplx-service"];
       path = [config.environment.systemPath];

@@ -14,7 +14,7 @@ in {
   options.modules.rime = {
     enable = mkBoolOpt false;
     backupDir =
-      mkOpt' types.path "${config.my.hm.dir}/Repos/Rime-bak" "rime 词库同步文件";
+      mkOpt' types.path "${config.my.workdir}/rime-bak" "rime 词库同步文件";
     userDir =
       mkOpt' types.path "${config.my.hm.dir}/.config/fcitx/rime"
       "rime 用户文件保存位置";
@@ -23,7 +23,7 @@ in {
     backupid = mkOpt' types.str "" "rime 同步id";
     ice = {
       enable = mkBoolOpt true;
-      dir = mkOpt' types.path "~/Repos/rime-ice" "保存雾凇拼音仓库位置";
+      dir = mkOpt' types.path "${config.my.workdir}/rime-ice" "保存雾凇拼音仓库位置";
     };
   };
   config = mkIf cfg.enable (mkMerge [
@@ -46,14 +46,12 @@ in {
               mkdir -p ${config.my.hm.configHome}/emacs-rime
             fi
           ''}
+          echo ${cfg.ice.dir}
           if [[ ! -d ${cfg.ice.dir} ]]; then
             git clone --depth 1 https://github.com/iDvel/rime-ice.git ${cfg.ice.dir}
             for i in ${cfg.ice.dir}/* ; do
               ln -sf $i ${rimedir}/
-              ${
-            optionalString useEmacs
-            "ln -sf $i ${config.my.hm.configHome}/emacs-rime/"
-          }
+              ${optionalString useEmacs "ln -sf $i ${config.my.hm.configHome}/emacs-rime/"}
             done
           fi
         ''}

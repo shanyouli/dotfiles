@@ -42,7 +42,7 @@ in {
         --downloader dash,m3u8:native
         ${optionalString cfm.aria2.enable ''
           --downloader aria2c
-          --downloader-args "aria2c:-x16 -k 1M"
+          --downloader-args "aria2c:-x16 -s 8 -k 5M"
         ''}
       '';
       # TODO: alias
