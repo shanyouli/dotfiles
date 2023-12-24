@@ -21,11 +21,7 @@
     # @see https://github.com/nix-community/emacs-overlay/issues/275
     # emacs-src.url = "github:emacs-mirror/emacs/emacs-29";
     # emacs-src.flake = false;
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
+
     # shell stuff
     flake-utils.url = "github:numtide/flake-utils";
     nixpkgs-firefox-darwin.url = "github:bandithedoge/nixpkgs-firefox-darwin";

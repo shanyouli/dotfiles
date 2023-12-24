@@ -14,11 +14,20 @@ in {
   };
 
   config = mkIf cfg.enable {
-    my.user.packages = [pkgs.direnv];
+    my.user.packages = [pkgs.direnv pkgs.nix-direnv];
     modules.shell.rcInit = ''_cache direnv hook zsh'';
-    my.hm.configFile."direnv" = {
-      source = "${configDir}/direnv";
-      recursive = true;
-    };
+    my.hm.configFile = mkMerge [
+      (mkIf (config.modules.dev.plugins != []) {
+        "direnv/lib/use_asdf.sh".source = "${configDir}/direnv/lib/use_asdf.sh";
+      })
+      (mkIf config.modules.dev.python.enable {
+        "direnv/lib/use_poetry.sh".source = "${configDir}/direnv/lib/use_poetry.sh";
+      })
+      {
+        "direnv/direnvrc".text = ''
+          source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc
+        '';
+      }
+    ];
   };
 }

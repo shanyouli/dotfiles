@@ -404,7 +404,7 @@ def build(
     elif cfg == FlakeOutputs.NIXOS:
         cmd = ['sudo', 'nixos-rebuild', 'build', '--flake']
     elif cfg == FlakeOutputs.DARWIN:
-        cmd = ['sudo', 'darwin-rebuild', 'build', '--flake']
+        cmd = [ 'darwin-rebuild', 'build', '--flake']
     elif cfg == FlakeOutputs.HOME_MANAGER:
         cmd = ['home-manager', 'built', '--flake']
     else:

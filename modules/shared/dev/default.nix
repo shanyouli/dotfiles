@@ -34,7 +34,7 @@ in {
       senv = cfm.shell.env;
       asdf_bin = "${cfg.package}/bin/asdf";
       asdf_plugin_fn = v: ''
-        if ! echo $asdf_plugins | grep -w ${v} 2>&1 >/dev/null ; then
+        if ! echo $asdf_plugins | grep -w ${v} >/dev/null 2>&1 ; then
           echo "asdf: install plugin ${v} ..."
           ${asdf_bin} plugin add ${v}
         fi

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-#
-layout_poetry() {
+
+use_poetry() {
     PYPROJECT_TOML="${PYPROJECT_TOML:-pyproject.toml}"
     if [[ ! -f "$PYPROJECT_TOML" ]]; then
         log_status "No pyproject.toml found. Executing \`poetry init\` to create a \`$PYPROJECT_TOML\` first."
@@ -9,7 +9,7 @@ layout_poetry() {
 
     VIRTUAL_ENV=$(poetry env info --path 2>/dev/null ; true)
 
-    if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
+    if [ -z "$VIRTUAL_ENV" ] || [ ! -d "$VIRTUAL_ENV" ]; then
         log_status "No virtual environment exists. Executing \`poetry install\` to create one."
         poetry install
         VIRTUAL_ENV=$(poetry env info --path)

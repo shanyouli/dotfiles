@@ -39,9 +39,7 @@ function _cache {
 typeset -U path
 path=( $path )
 
-[[ -d ~zdot/completion ]] && {
-    fpath+=~zdot/completion
-}
+[[ -d ~zdot/completion ]] && fpath+=~zdot/completion
 
 # Be more restrictive with permissions; no one has any business reading things
 # that don't belong to them.
