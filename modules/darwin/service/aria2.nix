@@ -20,7 +20,7 @@ in {
       path = ["${config.modules.tool.aria2.package}/bin" config.environment.systemPath];
       serviceConfig.ProgramArguments = [
         "${config.modules.tool.aria2.package}/bin/aria2c"
-        (mkIf config.modules.clash.enable "--all-proxy=http://127.0.0.1:10801")
+        (mkIf config.modules.tool.clash.enable "--all-proxy=http://127.0.0.1:10801")
         "--conf-path=${config.my.hm.configHome}/aria2/config"
         "--rpc-listen-port=${toString cfg.port}"
       ];

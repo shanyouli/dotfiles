@@ -66,7 +66,7 @@
     macos.stopAutoReopen = true;
     service.clash.enable = true;
     service.clash.package = pkgs.mihomo;
-    clash.enSingbox = true;
+    tool.clash.enSingbox = true;
     service.clash.configFile = "${config.my.hm.dir}/Nutstore Files/我的坚果云/clash/meta.yaml";
 
     macos.music.enable = true;

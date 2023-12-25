@@ -8,11 +8,11 @@
 with lib;
 with lib.my; let
   # TODO: 设置更好的管理配置文件的方法
-  cfg = config.modules.clash;
+  cfg = config.modules.tool.clash;
   cm = config.modules;
   proxy = "http://127.0.0.1:10801";
 in {
-  options.modules.clash = {
+  options.modules.tool.clash = {
     enable = mkBoolOpt false;
     enSingbox = mkBoolOpt false;
     configFile = mkOpt' types.path "${config.my.hm.configHome}/clash-meta/clash.yaml" ''

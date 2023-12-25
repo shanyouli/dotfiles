@@ -9,7 +9,7 @@ with lib;
 with lib.my; let
   cfg = config.modules.service.clash;
   cfgFile = "${config.my.hm.configHome}/clash-meta/clash.yaml";
-  mclash = config.modules.clash;
+  mclash = config.modules.tool.clash;
 in {
   options.modules.service.clash = {
     enable = mkBoolOpt false;
@@ -71,23 +71,21 @@ in {
     '';
   in {
     my.user.packages = [pkgs.clash-nyanpasu-app];
-    modules.clash = {
+    modules.tool.clash = {
       enable = true;
       package = cfg.package;
       configFile = cfg.configFile;
     };
 
-    macos.userScript.clashUI = {
-      enable = true;
-      text = ''
-        [[ -d ${workdir} ]] || mkdir -p ${workdir}
-        [[ -d ${workdir}/ui ]] || {
-          echo "init Clash Web UI"
-          git clone --depth 1 -b gh-pages https://github.com/MetaCubeX/Yacd-meta.git \
-            ${workdir}/ui
-        }
-      '';
-    };
+    macos.userScript.clashUI.text = ''
+      echo "init clash UI"
+      [[ -d ${workdir} ]] || mkdir -p ${workdir}
+      [[ -d ${workdir}/ui ]] || {
+        echo "init Clash Web UI"
+        git clone --depth 1 -b gh-pages https://github.com/MetaCubeX/Yacd-meta.git \
+          ${workdir}/ui
+      }
+    '';
 
     launchd.user.agents.clash = {
       path = [config.environment.systemPath];
