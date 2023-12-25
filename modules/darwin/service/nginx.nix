@@ -1,5 +1,4 @@
 {
-  pkgs,
   lib,
   config,
   options,
@@ -9,7 +8,7 @@ with lib;
 with lib.my; let
   cfg = config.modules.service.nginx;
   cfm = config.modules;
-  cfb = cfm.nginx;
+  cfb = cfm.tool.nginx;
 in {
   options.modules.service.nginx = {
     enable = mkBoolOpt false;
@@ -17,7 +16,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    modules.nginx = {
+    modules.tool.nginx = {
       enable = true;
       workDir = cfg.workDir;
     };
@@ -34,7 +33,7 @@ in {
 
     launchd.user.agents.nginx = {
       serviceConfig.ProgramArguments = [
-        "${pkgs.nginx}/bin/nginx"
+        "${cfb.package}/bin/nginx"
         "-p"
         cfg.workDir
         "-e"
