@@ -38,7 +38,6 @@ in {
         desc = "Init asdf ...";
         text = cfg.dev.text;
       };
-      # homebrew.brews = ["openssl@3"];
     })
   ];
 }

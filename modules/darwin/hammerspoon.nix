@@ -53,7 +53,6 @@ in {
       }
     '';
     macos.userScript.setHMInitFile = {
-      enable = true;
       text = ''
         /usr/bin/defaults write org.hammerspoon.Hammerspoon MJConfigFile \
           "${config.my.hm.configHome}/hammerspoon/init.lua"

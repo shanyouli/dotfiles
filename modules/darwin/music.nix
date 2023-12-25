@@ -50,9 +50,6 @@ in {
       '';
     };
     launchd.user.agents.mpd = {
-      # script = ''
-      #   ${mpdCmd} --no-daemon "${config.my.hm.configHome}/mpd/mpd.conf"
-      # '';
       serviceConfig.ProgramArguments = [mpdCmd "--no-daemon" "${config.my.hm.configHome}/mpd/mpd.conf"];
       path = [config.environment.systemPath];
       serviceConfig.RunAtLoad = true;
