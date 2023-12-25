@@ -28,10 +28,10 @@ in {
       };
     })
     (mkIf cfg.shell.gpg.enable {
-      modules.macos.service.env.GNUPGHOME = config.environment.variables.GNUPGHOME;
+      modules.service.env.GNUPGHOME = config.environment.variables.GNUPGHOME;
     })
     (mkIf cfg.shell.gopass.enable {
-      modules.macos.service.env.PASSWORD_STORE_DIR = config.env.PASSWORD_STORE_DIR;
+      modules.service.env.PASSWORD_STORE_DIR = config.env.PASSWORD_STORE_DIR;
     })
     (mkIf (cfg.dev.plugins != []) {
       macos.userScript.initAsdf = {

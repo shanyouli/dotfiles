@@ -7,11 +7,11 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.macos.service.alist;
+  cfg = config.modules.service.alist;
   package = pkgs.alist.override {withZshCompletion = true;};
   workdir = "${config.my.hm.cacheHome}/alist";
 in {
-  options.modules.macos.service.alist = {enable = mkBoolOpt false;};
+  options.modules.service.alist = {enable = mkBoolOpt false;};
 
   config = mkIf cfg.enable {
     my.user.packages = [package];

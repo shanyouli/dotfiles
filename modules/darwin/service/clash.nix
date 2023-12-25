@@ -7,11 +7,11 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.macos.service.clash;
+  cfg = config.modules.service.clash;
   cfgFile = "${config.my.hm.configHome}/clash-meta/clash.yaml";
   mclash = config.modules.clash;
 in {
-  options.modules.macos.service.clash = {
+  options.modules.service.clash = {
     enable = mkBoolOpt false;
     configFile = mkOpt' types.path cfgFile "clash 配置文件保存位置";
     package = mkPkgOpt pkgs.clash "clash command";

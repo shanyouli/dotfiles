@@ -8,7 +8,7 @@
 with lib;
 with lib.my; let
   cfm = config.modules;
-  cfg = cfm.macos.service.mysql;
+  cfg = cfm.service.mysql;
   chm = config.my.hm;
   workdir = cfg.workDir;
   homebin = "${chm.profileDirectory}/bin";
@@ -46,7 +46,7 @@ with lib.my; let
     }
   '';
 in {
-  options.modules.macos.service.mysql = {
+  options.modules.service.mysql = {
     enable = mkEnableOption "Whether to enable mysql service";
     workDir = mkOpt' types.path "${chm.cacheHome}/mysql" "mysql 服务工作目录";
     port = mkNumOpt 3306;

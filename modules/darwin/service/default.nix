@@ -8,13 +8,13 @@
 with lib;
 with lib.my; let
   cfm = config.modules;
-  cfg = cfm.macos.service;
+  cfg = cfm.service;
   envScript = pkgs.writeScriptBin "launchdenv-service" ''
     #!${pkgs.stdenv.shell}
     ${concatStringsSep "\n" cfg.env}
   '';
 in {
-  options.modules.macos.service = {
+  options.modules.service = {
     env = with types;
       mkOption {
         type = attrsOf str;

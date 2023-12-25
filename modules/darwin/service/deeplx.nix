@@ -8,7 +8,7 @@
 with lib;
 with lib.my; let
   cfm = config.modules;
-  cfg = cfm.macos.service.deeplx;
+  cfg = cfm.service.deeplx;
   log_file = "${config.my.hm.dir}/Library/Logs/deeplx.log";
   deeplxService = pkgs.writeScriptBin "deeplx-service" ''
     #!${pkgs.stdenv.shell}
@@ -18,7 +18,7 @@ with lib.my; let
     ${pkgs.deeplx}/bin/deeplx -p ${toString cfg.port}
   '';
 in {
-  options.modules.macos.service.deeplx = {
+  options.modules.service.deeplx = {
     enable = mkEnableOption "Whether to deeplx service";
     workdir = mkOpt' types.path "${config.my.hm.cacheHome}/deeplx" "deeplx workdir";
     port = mkNumOpt 1188;

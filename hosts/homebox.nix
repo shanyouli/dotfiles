@@ -64,16 +64,15 @@
     macos.app.enable = true;
     macos.karabiner.enable = true;
     macos.stopAutoReopen = true;
-    macos.service.clash.enable = true;
-    macos.service.clash.package = pkgs.mihomo;
+    service.clash.enable = true;
+    service.clash.package = pkgs.mihomo;
     clash.enSingbox = true;
-    macos.service.clash.configFile = "${config.my.hm.dir}/Nutstore Files/我的坚果云/clash/meta.yaml";
+    service.clash.configFile = "${config.my.hm.dir}/Nutstore Files/我的坚果云/clash/meta.yaml";
 
     macos.music.enable = true;
     macos.games.enable = true;
     macos.yabai.enable = true;
     macos.emacs.enable = true;
-    macos.emacs.serverEnable = true;
     macos.aria2.enable = true;
     macos.hammerspoon.enable = true;
     macos.rime.enable = true;
@@ -81,10 +80,11 @@
     macos.battery.enable = true;
     firefox.package = pkgs.firefox-esr-bin;
     macos.brew.mirror = "tuna";
-    macos.service.nginx.enable = true;
-    macos.service.mysql.enable = true;
-    macos.service.deeplx.enable = true;
-    macos.service.alist.enable = true;
+    service.nginx.enable = true;
+    service.mysql.enable = true;
+    service.deeplx.enable = true;
+    service.alist.enable = true;
+    service.emacs.enable = true;
     # macos.mosdns.enable                  = true;
     # mail                                 = { enable = true; };
     # aerc                                 = { enable = true; };
