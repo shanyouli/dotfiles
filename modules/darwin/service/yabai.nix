@@ -7,26 +7,25 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.macos.yabai;
+  cfg = config.modules.service.yabai;
   buildSymlinks = pkgs.runCommandLocal "build-symlinks" {} ''
     mkdir -p $out/bin
     ln -s /usr/bin/{xcrun,codesign,xxd} $out/bin
   '';
   yabai = pkgs.yabai.overrideAttrs (prev: rec {
-    src = pkgs.fetchFromGitHub {
-      owner = "FelixKratz";
-      repo = "yabai";
-      rev = "df5b037108c4a70dc5e854bb60ccbff9701da4f5";
-      hash = "sha256-xMOwte/nuJdrwMWNLxfHikxA3btuyDyle6aLm5TD8ac=";
-    };
     # src = pkgs.fetchFromGitHub {
-    #   owner = "koekeishiya";
+    #   owner = "FelixKratz";
     #   repo = "yabai";
-    #   rev = "v6.0.1";
-    #   hash = "sha256-G7yjxhKk5Yz6qLHy8I8MMmZdVYUggGVvIW0j5kdkwlo=";
+    #   rev = "df5b037108c4a70dc5e854bb60ccbff9701da4f5";
+    #   hash = "sha256-xMOwte/nuJdrwMWNLxfHikxA3btuyDyle6aLm5TD8ac=";
     # };
-    # version = src.rev;
     version = "6.0.2";
+    src = pkgs.fetchFromGitHub {
+      owner = "koekeishiya";
+      repo = "yabai";
+      rev = "v${version}";
+      hash = "sha256-VI7Gu5Y50Ed65ZUrseMXwmW/iovlRbAJGlPD7Ooajqw=";
+    };
     nativeBuildInputs = (prev.nativeBuildInputes or []) ++ [buildSymlinks];
     dontBuild = false;
     installPhase = ''
@@ -38,7 +37,7 @@ with lib.my; let
     '';
   });
 in {
-  options.modules.macos.yabai = {
+  options.modules.service.yabai = {
     enable = mkBoolOpt false;
     package = mkOption {
       type = types.package;
@@ -58,11 +57,7 @@ in {
     environment.systemPackages = [cfg.package];
     # https://github.com/LnL7/nix-darwin/blob/b8c286c82c6b47826a6c0377e7017052ad91353c/modules/services/yabai/default.nix#L79
     launchd.user.agents.yabai = {
-      serviceConfig.ProgramArguments = ["${cfg.package}/bin/yabai"];
-      # command = "${cfg.package}/bin/yabai";
-      # script = ''
-      #   exec ${cfg.package}/bin/yabai
-      # '';
+      serviceConfig.ProgramArguments = ["${cfg.package}/bin/yabai" "--config" "${config.my.hm.configHome}/yabai/yabairc"];
       serviceConfig.KeepAlive = false;
       serviceConfig.RunAtLoad = true;
       serviceConfig.EnvironmentVariables = {

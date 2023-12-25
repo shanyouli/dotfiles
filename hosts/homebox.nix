@@ -71,20 +71,21 @@
 
     macos.music.enable = true;
     macos.games.enable = true;
-    macos.yabai.enable = true;
     macos.emacs.enable = true;
     macos.aria2.enable = true;
     macos.hammerspoon.enable = true;
     macos.rime.enable = true;
     macos.iina.enable = true;
-    macos.battery.enable = true;
     firefox.package = pkgs.firefox-esr-bin;
     macos.brew.mirror = "tuna";
+
     service.nginx.enable = true;
     service.mysql.enable = true;
     service.deeplx.enable = true;
     service.alist.enable = true;
     service.emacs.enable = true;
+    service.battery.enable = true;
+    service.yabai.enable = true;
     # macos.mosdns.enable                  = true;
     # mail                                 = { enable = true; };
     # aerc                                 = { enable = true; };
