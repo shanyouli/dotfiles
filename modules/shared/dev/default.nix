@@ -39,21 +39,45 @@ in {
           ${asdf_bin} plugin add ${v}
         fi
       '';
+      asdf_data_dir = "${cmh.dataHome}/asdf";
     in {
       my.user.packages = [cfg.package];
-      modules.shell = {
-        rcInit =
-          ''
-            _source ${cfg.package}/etc/profile.d/asdf-prepare.sh
-          ''
-          + optionalString cfm.shell.direnv.enable
-          ''export ASDF_DIRENV_BIN="${config.my.hm.profileDirectory}/bin/direnv"'';
-        env = {
-          ASDF_CONFIG_FILE = "${cmh.configHome}/asdf/asdf.conf";
-          ASDF_DATA_DIR = "${cmh.dataHome}/asdf";
-        };
-        rcFiles = ["${configDir}/asdf/asdf.zsh"];
-      };
+      modules.shell = mkMerge [
+        (mkIf cfm.shell.direnv.enable {
+          env.ASDF_DIRENV_BIN = "${config.my.hm.profileDirectory}/bin/direnv";
+          env.PATH = mkOrder 100 ["${asdf_data_dir}/shims" "${cfg.package}/share/asdf-vm/bin"];
+          env.ASDF_DIR = "${cfg.package}/share/asdf-vm";
+          # HACK: https://github.com/asdf-community/asdf-direnv/issues/149
+          rcInit = mkBefore ''
+            asdfDir="''${ASDF_DIR:-$HOME/.asdf}"
+            asdfDataDir="''${ASDF_DATA_DIR:-$HOME/.asdf}"
+
+            prevAsdfDirFilePath="$asdfDataDir/.nix-prev-asdf-dir-path"
+
+            if [ -r "$prevAsdfDirFilePath" ]; then
+              prevAsdfDir="$(cat "$prevAsdfDirFilePath")"
+            else
+              prevAsdfDir=""
+            fi
+
+            if [ "$prevAsdfDir" != "$asdfDir" ]; then
+              rm -rf "$asdfDataDir"/shims
+              "$asdfDir"/bin/asdf reshim
+              echo "$asdfDir" > "$prevAsdfDirFilePath"
+            fi
+          '';
+        })
+        (mkIf (! cfm.shell.direnv.enable) {
+          rcInit = mkBefore ''source ${cfg.package}/etc/profile.d/asdf-prepare.sh '';
+        })
+        {
+          env = {
+            ASDF_CONFIG_FILE = "${cmh.configHome}/asdf/asdf.conf";
+            ASDF_DATA_DIR = asdf_data_dir;
+          };
+          rcFiles = ["${configDir}/asdf/asdf.zsh"];
+        }
+      ];
       my.hm.configFile."asdf/asdf.conf".text = ''
         plugin_repository_last_check_duration = never
         legacy_version_file = yes

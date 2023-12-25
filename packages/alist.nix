@@ -2,6 +2,10 @@
   lib,
   fetchurl,
   stdenv,
+  installShellFiles,
+  withBashCompletion ? false,
+  withZshCompletion ? false,
+  withFishCompletion ? false,
 }:
 stdenv.mkDerivation rec {
   name = "alist";
@@ -11,9 +15,19 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-t01TeEOJAw4DqkPgkTMX4bw0/E2kYR+Hc46wlrsY9Is=";
   };
   sourceRoot = ".";
+  buildInputs = [installShellFiles];
   # dontInstall = true;
   installPhase = ''
     install -D -m755 -t $out/bin alist
+    ${lib.optionalString withBashCompletion ''
+      installShellCompletion --cmd alist --bash <($out/bin/alist completion bash)
+    ''}
+    ${lib.optionalString withZshCompletion ''
+      installShellCompletion --cmd alist --zsh <($out/bin/alist completion zsh)
+    ''}
+    ${lib.optionalString withFishCompletion ''
+      installShellCompletion --cmd alist --fish <($out/bin/alist completion fish)
+    ''}
   '';
 
   meta = with lib; {
