@@ -50,15 +50,12 @@ if (( $+commands[fzf] )); then
         fi
     }
 fi
-
-asd() {
-    if (( $+commands[direnv] )) && (asdf list | grep direnv) >/dev/null 2>&1; then
+if (( $+commands[direnv] )) && (asdf list | grep direnv) >/dev/null 2>&1; then
+    asdf() {
         if [[ $1 == "local" ]] || [[ $1 == "shell" ]]; then
             command asdf direnv $@
         else
             command asdf $@
         fi
-    else
-        command asdf $@
-    fi
-}; compdef asd=asdf
+    }
+fi

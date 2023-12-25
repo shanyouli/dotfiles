@@ -107,7 +107,7 @@ in {
         "displaperture" # screen 曲线图
         "licecap" # GIF kap
         # "imazing" # 手机备份管理
-        "shottr" # 截图
+        (mkIf (! config.modules.media.flameshot.enable) "shottr") # 截图
         # "betterdisplay" # 其他替代工具
         # "dozer" # 菜单栏管理,
         "maczip" # 压缩解压GUI
@@ -166,7 +166,6 @@ in {
         "vidhub" = 1659622164; # 视频管理,需要网速足够好
         "medis" = 1579200037; # redis 管理工具
       };
-      modules.shell.envInit = "_cache ${config.homebrew.brewPrefix}/brew shellenv";
     }
   ]);
 }

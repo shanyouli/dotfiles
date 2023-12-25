@@ -123,22 +123,31 @@ in {
       programs = config.my.programs;
     };
 
-    environment.extraInit = ''
-      if [[ -x /usr/libexec/path_helper ]]; then
+    environment.extraInit = let
+      inherit (pkgs.stdenvNoCC) isAarch64 isAarch32 isDarwin;
+      brewHome =
+        if isAarch64 || isAarch32
+        then "/opt/homebrew/bin"
+        else "/usr/local/bin";
+      darwinPath = optionalString isDarwin ''
         PATH=""
         eval $(/usr/libexec/path_helper -s)
+        [[ -d ${brewHome} ]] && eval $(${brewHome}/brew shellenv)
         PATH=${pkgs.lib.makeBinPath
-        (builtins.filter (x: x != "/nix/var/nix/profiles/default") config.environment.profiles)}:$PATH
-      fi
-      ${concatStringsSep "\n" (mapAttrsToList (n: v: (
+          (builtins.filter (x: x != "/nix/var/nix/profiles/default") config.environment.profiles)}:$PATH
+      '';
+    in
+      ''
+        ${darwinPath}
+      ''
+      + concatStringsSep "\n" (mapAttrsToList (n: v: (
           if "${n}" == "PATH"
           then ''export ${n}="${v}:$PATH"''
           else ''export ${n}="${v}"''
         ))
-        config.env)}
-      ${optionalString (config.nix.envVars != {}) ''
+        config.env)
+      + optionalString (config.nix.envVars != {}) ''
         unset all_proxy http_proxy https_proxy
-      ''}
-    '';
+      '';
   };
 }

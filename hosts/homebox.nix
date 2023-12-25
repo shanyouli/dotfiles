@@ -40,6 +40,7 @@
 
     media.netease-music.enable = true;
     media.download.enable = true;
+    media.flameshot.enable = true;
 
     dev.bash.enable = true;
     dev.python.enable = true;
@@ -75,7 +76,6 @@
     macos.emacs.serverEnable = true;
     macos.aria2.enable = true;
     macos.hammerspoon.enable = true;
-    macos.alist.enable = true;
     macos.rime.enable = true;
     macos.iina.enable = true;
     macos.battery.enable = true;
@@ -84,6 +84,7 @@
     macos.service.nginx.enable = true;
     macos.service.mysql.enable = true;
     macos.service.deeplx.enable = true;
+    macos.service.alist.enable = true;
     # macos.mosdns.enable                  = true;
     # mail                                 = { enable = true; };
     # aerc                                 = { enable = true; };
