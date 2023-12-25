@@ -283,7 +283,6 @@
         yabai-zsh-completions =
           prev.callPackage ./packages/yabai-zsh-completions.nix {};
         alist = prev.callPackage ./packages/alist.nix {};
-        mosdns = prev.callPackage ./packages/mosdns.nix {};
         seam = prev.callPackage ./packages/seam.nix {};
         bbdown = prev.callPackage ./packages/bbdown.nix {};
         mybid = prev.callPackage ./packages/mybid {};
