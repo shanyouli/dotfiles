@@ -72,7 +72,6 @@
     macos.music.enable = true;
     macos.games.enable = true;
     macos.emacs.enable = true;
-    macos.aria2.enable = true;
     macos.hammerspoon.enable = true;
     macos.rime.enable = true;
     macos.iina.enable = true;
@@ -86,7 +85,7 @@
     service.emacs.enable = true;
     service.battery.enable = true;
     service.yabai.enable = true;
-    # macos.mosdns.enable                  = true;
+    service.aria2.enable = true;
     # mail                                 = { enable = true; };
     # aerc                                 = { enable = true; };
     # irc.enable                           = true;

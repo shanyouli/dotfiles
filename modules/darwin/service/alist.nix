@@ -11,7 +11,9 @@ with lib.my; let
   package = pkgs.alist.override {withZshCompletion = true;};
   workdir = "${config.my.hm.cacheHome}/alist";
 in {
-  options.modules.service.alist = {enable = mkBoolOpt false;};
+  options.modules.service.alist = {
+    enable = mkBoolOpt false;
+  };
 
   config = mkIf cfg.enable {
     my.user.packages = [package];

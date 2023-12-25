@@ -26,7 +26,7 @@ in {
       environment.etc."sudoers.d/clash".text =
         sudoNotPass config.my.username "${cfg.package}/bin/${cfg.package.pname}";
     }
-    (mkIf cm.aria2.enable {
+    (mkIf cm.tool.aria2.enable {
       modules.shell.aliases.paria2 = "aria2c --all-proxy=${proxy}";
     })
     (mkIf cfg.enSingbox {
