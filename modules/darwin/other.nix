@@ -11,7 +11,7 @@ in {
   config = mkMerge [
     {
       my.user.packages = [
-        pkgs.qbittorrent-app
+        # pkgs.qbittorrent-app
         pkgs.xbydriver-app
         # pkgs.chatgpt-app
         pkgs.chatgpt-next-web-app

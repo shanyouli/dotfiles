@@ -86,7 +86,8 @@
     service.battery.enable = true;
     service.yabai.enable = true;
     service.aria2.enable = true;
-    # mail                                 = { enable = true; };
+    service.qbittorrent.enable = true;
+    #    mail                                 = { enable = true; };
     # aerc                                 = { enable = true; };
     # irc.enable                           = true;
     # rescript.enable                      = false;
