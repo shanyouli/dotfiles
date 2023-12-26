@@ -22,8 +22,8 @@ in {
       ];
     }
     (mkIf cfg.firefox.enable {
-      my.hm.file."Library/Application Support/Firefox/Profiles/default/chrome" = {
-        source = "${configDir}/firefox/chrome";
+      home.file."Library/Application Support/Firefox/Profiles/default/chrome" = {
+        source = "${config.dotfiles.configDir}/firefox/chrome";
         recursive = true;
       };
     })

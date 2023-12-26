@@ -25,9 +25,9 @@ in {
       # mycli mysql 一个好用的客户端
       user.packages = [pkgs.mycli];
       modules.shell.prevInit = ''
-        MYCLI_HISTFILE="${config.my.hm.cacheHome}/mycli/mycli.history"
+        MYCLI_HISTFILE="${config.home.cacheDir}/mycli/mycli.history"
       '';
-      my.hm.configFile."mycli/myclirc".source = "${configDir}/mycli/myclirc";
+      home.configFile."mycli/myclirc".source = "${config.dotfiles.configDir}/mycli/myclirc";
     })
   ]);
 }

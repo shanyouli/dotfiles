@@ -27,11 +27,11 @@ in {
     ];
     modules.shell = {
       env = {
-        PIP_CONFIG_FILE = "${config.my.hm.configHome}/pip/pip.conf";
-        PIP_LOG_FILE = "${config.my.hm.dataHome}/pip/log";
-        PYTHONSTARTUP = "${config.my.hm.configHome}/python/config.py";
-        PYTHON_EGG_CACHE = "${config.my.hm.cacheHome}/python-eggs";
-        JUPYTER_CONFIG_DIR = "${config.my.hm.dataHome}/jupyter";
+        PIP_CONFIG_FILE = "${config.home.config.dotfiles.configDir}/pip/pip.conf";
+        PIP_LOG_FILE = "${config.home.dataDir}/pip/log";
+        PYTHONSTARTUP = "${config.home.config.dotfiles.configDir}/python/config.py";
+        PYTHON_EGG_CACHE = "${config.home.cacheDir}/python-eggs";
+        JUPYTER_CONFIG_DIR = "${config.home.dataDir}/jupyter";
       };
       aliases = {
         py = "python";

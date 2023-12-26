@@ -21,10 +21,10 @@ with lib.my; let
     else "/home/${name}";
 in {
   options = with types; {
-    user = mkOpt attrs {};
-    #       user = mkOption {type = options.users.users.type.functor.wrapped;};
+    # user = mkOpt attrs {};
+    user = mkOption {type = options.users.users.type.functor.wrapped;};
     dotfiles = {
-      dir = mkOpt path (removePrefix "/mnt" (findFirst pathExists (toString ../.) [
+      dir = mkOpt path (removePrefix "/mnt" (findFirst pathExists (toString ../../.) [
         "/mnt/etc/dotfiles"
         "/etc/dotfiles"
         "/etc/nixos"
@@ -36,15 +36,27 @@ in {
       configDir = mkOpt path "${config.dotfiles.dir}/config";
       modulesDir = mkOpt path "${config.dotfiles.dir}/modules";
     };
-    modules.enGui = mkBoolOpt false; # Whether to use GUI mode
+    modules.opt = {
+      enGui = mkBoolOpt false; # Whether to use GUI mode
+      name = mkStrOpt "Shanyou Li";
+      timezone = mkStrOpt "Asia/Shanghai";
+      website = mkStrOpt "https://shanyouli.github.io";
+      email = mkStrOpt "shanyouli6@gmail.com";
+    };
     home = {
       file = mkOpt' attrs {} "Files to place directly in $HOME";
       configFile = mkOpt' attrs {} "Files to place directly in $XDG_CONFIG_HOME";
       dataFile = mkOpt' attrs {} "Files to place in $XDG_CONFIG_HOME";
       packages = mkOpt' (listOf package) [] "home-manager packages alias";
       programs = mkOpt' attrs {} "home-manager programs";
-      binDir = mkOpt' path "${homedir}/.nix-profile/bin" "home-manager profile-directory bin";
+      profileBinDir = mkOpt' path "${homedir}/.nix-profile/bin" "home-manager profile-directory bin";
       activation = mkOpt' attrs {} "home-manager activation script";
+
+      dataDir = mkOpt' path "${homedir}/.local/share" "xdg_data_home";
+      stateDir = mkOpt' path "${homedir}/.local/state" "xdg_state_home";
+      binDir = mkOpt' path "${homedir}/.local/bin" "xdg_bin_home";
+      config.dotfiles.configDir = mkOpt' path "${homedir}/.config" "xdg_config_home";
+      cacheDir = mkOpt' path "${homedir}/.cache" "xdg_cache_home";
     };
     env = mkOption {
       type = attrsOf (oneOf [str path (listOf (either str path))]);
@@ -70,11 +82,9 @@ in {
         isNormalUser = true;
       })
     ];
-    users.users.${config.user.name} = mkAliasDefinitions options.user;
-
     home.programs.home-manager.enable = true;
     home.packages = config.home-manager.users."${config.user.name}".home.packages;
-    home.binDir = "${config.home-manager.users."${config.user.name}".home.profileDirectory}/bin";
+    home.profileBinDir = "${config.home-manager.users."${config.user.name}".home.profileDirectory}/bin";
 
     home-manager = {
       extraSpecialArgs = {inherit inputs;};
@@ -96,17 +106,19 @@ in {
           activation = mkAliasDefinitions options.home.activation;
         };
         xdg = {
-          cacheHome = mkAliasDefinitions options.my.hm.cacheHome;
-          configFile = mkAliasDefinitions options.my.hm.configFile;
-          # configHome = mkAliasDefinitions options.my.hm.configHome;
-          dataFile = mkAliasDefinitions options.my.hm.dataFile;
-          # dataHome = mkAliasDefinitions options.my.hm.dataHome;
-          # stateHome = mkAliasDefinitions options.my.hm.stateHome;
+          configFile = mkAliasDefinitions options.home.configFile;
+          dataFile = mkAliasDefinitions options.home.dataFile;
+
+          dataHome = mkAliasDefinitions options.home.dataDir;
+          cacheHome = mkAliasDefinitions options.home.cacheDir;
+          configHome = mkAliasDefinitions options.home.config.dotfiles.configDir;
+          stateHome = mkAliasDefinitions options.home.stateDir;
         };
         programs = config.home.programs;
       };
     };
 
+    users.users.${config.user.name} = mkAliasDefinitions options.user;
     nix.settings = let
       users = ["root" config.user.name "@admin" "@wheel"];
     in {

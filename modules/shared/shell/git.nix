@@ -10,7 +10,7 @@ with lib.my; let
 in {
   options.modules.shell.git = with types; {
     enable = mkBoolOpt false;
-    enGui = mkBoolOpt config.modules.enGui;
+    enGui = mkBoolOpt config.modules.opt.enGui;
   };
   config = mkIf cfg.enable {
     user.packages = with pkgs; [
@@ -21,10 +21,10 @@ in {
     ];
     home.programs.git = {
       enable = true;
-      userName = config.my.name;
-      userEmail = config.my.email;
+      userName = config.modules.opt.name;
+      userEmail = config.modules.opt.email;
       signing = {
-        key = "${config.my.email}";
+        key = "${config.modules.opt.email}";
         signByDefault = true;
       };
       extraConfig = {
@@ -56,7 +56,7 @@ in {
       lfs.enable = true;
     };
     modules.shell = {
-      rcFiles = ["${configDir}/git/git.zsh"];
+      rcFiles = ["${config.dotfiles.configDir}/git/git.zsh"];
     };
   };
 }

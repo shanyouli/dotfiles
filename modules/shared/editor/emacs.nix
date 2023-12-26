@@ -167,9 +167,9 @@ in {
         ];
       modules.shell = {
         env.PATH = ["$XDG_CONFIG_HOME/emacs/bin"];
-        rcFiles = ["${configDir}/emacs/emacs.zsh"];
+        rcFiles = ["${config.dotfiles.configDir}/emacs/emacs.zsh"];
       };
-      my.hm.configFile = let
+      home.configFile = let
         data-dir =
           if pkgs.stdenvNoCC.isLinux
           then "${pkgs.brise}/share/rime-data"
@@ -180,7 +180,7 @@ in {
             (setq rime-emacs-module-header-root "${cfg.package}/include")
             (setq rime-librime-root "${pkgs.librime}")
             (setq rime-share-data-dir "${data-dir}")
-            (setq rime-user-data-dir "${config.my.hm.configHome}/emacs-rime")
+            (setq rime-user-data-dir "${config.home.config.dotfiles.configDir}/emacs-rime")
           ''}
           (setq lsp-bridge-python-command "${config.modules.shell.python.finalPkg}/bin/python3")
           ${cfg.doom.confInit}

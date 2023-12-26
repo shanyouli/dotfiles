@@ -34,11 +34,11 @@ in {
         default = {
           name = "Default";
           settings = merge [
-            (import (configDir + "/firefox/annoyances.nix"))
-            (import (configDir + "/firefox/browser-features.nix"))
-            (import (configDir + "/firefox/privacy.nix"))
-            (import (configDir + "/firefox/tracking.nix"))
-            (import (configDir + "/firefox/security.nix"))
+            (import (config.dotfiles.configDir + "/firefox/annoyances.nix"))
+            (import (config.dotfiles.configDir + "/firefox/browser-features.nix"))
+            (import (config.dotfiles.configDir + "/firefox/privacy.nix"))
+            (import (config.dotfiles.configDir + "/firefox/tracking.nix"))
+            (import (config.dotfiles.configDir + "/firefox/security.nix"))
             {
               "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
               "svg.context-properties.content.enabled" = true;
@@ -56,9 +56,9 @@ in {
           #   url = "https://github.com/betterbrowser/arcfox/releases/download/2.4.3/userChrome.css";
           #   sha256 = "0x7ssvhiw843aff6xc462m90mqah6a6hzkqdnslw2q3aw121fkb6";
           # });
-          # userChrome = builtins.readFile "${configDir}/firefox/userChrome.css";
+          # userChrome = builtins.readFile "${config.dotfiles.configDir}/firefox/userChrome.css";
           # userContent =
-          #   builtins.readFile "${configDir}/firefox/userContent.css";
+          #   builtins.readFile "${config.dotfiles.configDir}/firefox/userContent.css";
           extensions = with pkgs.nur.repos.rycee.firefox-addons; [
             browserpass
             (buildFirefoxXpiAddon rec {

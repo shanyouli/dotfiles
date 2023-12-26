@@ -11,7 +11,7 @@ with lib.my; let
   cfg = cfm.fonts;
 in {
   options.modules.fonts = {
-    enable = mkBoolOpt config.modules.enGui;
+    enable = mkBoolOpt config.modules.opt.enGui;
     term = {
       family = mkStrOpt "Cascadia Code";
       size = mkNumOpt 10;

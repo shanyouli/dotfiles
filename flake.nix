@@ -90,7 +90,7 @@
         allowUnfree = true;
         allowBroken = false;
       };
-      time.timeZone = config.my.timezone;
+      time.timeZone = config.modules.opt.timezone;
 
       documentation.man = {
         enable = true;

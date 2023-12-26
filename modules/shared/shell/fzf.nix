@@ -30,7 +30,7 @@ in {
         source ${pkg}/share/fzf/completion.zsh
         source ${pkg}/share/fzf/key-bindings.zsh
       '';
-      rcFiles = ["${configDir}/fzf/fzf.zsh"];
+      rcFiles = ["${config.dotfiles.configDir}/fzf/fzf.zsh"];
     };
   });
 }

@@ -42,9 +42,9 @@ in {
     ];
     modules.shell = {
       env = {
-        PYLINTHOME = "${config.my.hm.dataHome}/pylint";
-        PYLINTRC = "${config.my.hm.configHome}/pylint/pylintrc";
-        IPYTHONDIR = "${config.my.hm.configHome}/ipython";
+        PYLINTHOME = "${config.home.dataDir}/pylint";
+        PYLINTRC = "${config.home.config.dotfiles.configDir}/pylint/pylintrc";
+        IPYTHONDIR = "${config.home.config.dotfiles.configDir}/ipython";
       };
       aliases = {
         po = "poetry";
@@ -52,15 +52,15 @@ in {
         ipylab = "ipython --pylab=qt5 --no-banner";
       };
     };
-    my.hm.dataFile."benv/python" = {
+    home.dataFile."benv/python" = {
       source = "${cenv}";
       recursive = true;
     };
     modules.dev.plugins = ["python"];
     modules.dev.pltext = optionalString (cfg.plugins != []) ''
-      export CFLAGS="-I${config.my.hm.dataHome}/benv/python/include"
-      export CPPFLAGS="-I${config.my.hm.dataHome}/benv/python/include"
-      export LDFLAGS="-L${config.my.hm.dataHome}/benv/python/lib"
+      export CFLAGS="-I${config.home.dataDir}/benv/python/include"
+      export CPPFLAGS="-I${config.home.dataDir}/benv/python/include"
+      export LDFLAGS="-L${config.home.dataDir}/benv/python/lib"
       ${asdfInPlugins "${cfm.dev.package}/bin/asdf" "python" cfg.plugins}
       unset CFLAGS LDFLAGS CPPFLAGS
     '';

@@ -9,7 +9,7 @@ with lib;
 with lib.my; let
   cfg = config.modules.service.alist;
   package = pkgs.alist.override {withZshCompletion = true;};
-  workdir = "${config.my.hm.cacheHome}/alist";
+  workdir = "${config.home.cacheDir}/alist";
 in {
   options.modules.service.alist = {
     enable = mkBoolOpt false;

@@ -12,7 +12,7 @@ with lib.my; let
 in {
   options.modules.media.netease-music = {
     enable = mkEnableOption "Whether or not you use the NetEase Cloud Music app";
-    enGui = mkBoolOpt config.modules.enGui;
+    enGui = mkBoolOpt config.modules.opt.enGui;
   };
   config = mkIf cfg.enable {
     user.packages = [

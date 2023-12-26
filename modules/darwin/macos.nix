@@ -43,7 +43,7 @@ in {
         '';
         desc = "Stopping the repon program when starting up after a system shutdown!";
       };
-      modules.shell.rcFiles = ["${configDir}/macos/macos.zsh"];
+      modules.shell.rcFiles = ["${config.dotfiles.configDir}/macos/macos.zsh"];
       user.packages = let
         mybid = pkgs.mybid.override {
           withZshCompletion = true;

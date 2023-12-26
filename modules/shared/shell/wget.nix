@@ -56,12 +56,12 @@ in {
       continue = "on";
       # Try to avoid `~/.wget-hsts`. Wget only supports absolute path, so be it.
       # (https://www.gnu.org/software/wget/manual/html_node/HTTPS-_0028SSL_002fTLS_0029-Options.html)
-      hsts-file = "${config.my.hm.cacheHome}/wget-hsts";
+      hsts-file = "${config.home.cacheDir}/wget-hsts";
     };
-    environment.variables.WGETRC = "${config.my.hm.configHome}/wget/wgetrc";
+    environment.variables.WGETRC = "${config.home.config.dotfiles.configDir}/wget/wgetrc";
 
-    my.hm.configFile."wget/wgetrc".text = toWgetConfig cfg.settings;
+    home.configFile."wget/wgetrc".text = toWgetConfig cfg.settings;
 
-    modules.shell.aliases.wget = "${wget}/bin/wget --hsts-file ${config.my.hm.cacheHome}/wget-hsts";
+    modules.shell.aliases.wget = "${wget}/bin/wget --hsts-file ${config.home.cacheDir}/wget-hsts";
   };
 }

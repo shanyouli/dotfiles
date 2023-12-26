@@ -50,14 +50,14 @@ in {
 
   config = mkIf cfg.enable {
     user.packages = [pkgs.yabai-zsh-completions];
-    my.hm.configFile."yabai" = {
-      source = "${configDir}/yabai";
+    home.configFile."yabai" = {
+      source = "${config.dotfiles.configDir}/yabai";
       recursive = true;
     };
     environment.systemPackages = [cfg.package];
     # https://github.com/LnL7/nix-darwin/blob/b8c286c82c6b47826a6c0377e7017052ad91353c/modules/services/yabai/default.nix#L79
     launchd.user.agents.yabai = {
-      serviceConfig.ProgramArguments = ["${cfg.package}/bin/yabai" "--config" "${config.my.hm.configHome}/yabai/yabairc"];
+      serviceConfig.ProgramArguments = ["${cfg.package}/bin/yabai" "--config" "${config.home.config.dotfiles.configDir}/yabai/yabairc"];
       serviceConfig.KeepAlive = false;
       serviceConfig.RunAtLoad = true;
       serviceConfig.EnvironmentVariables = {

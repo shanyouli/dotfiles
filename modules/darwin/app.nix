@@ -31,7 +31,7 @@ in {
     };
   in {
     # https://github.com/LnL7/nix-darwin/issues/214#issuecomment-1230730292
-    # hm.file."Applications/Myapps" = let
+    # home.file."Applications/Myapps" = let
     #   app = pkgs.buildEnv {
     #     name = "my-manager-applications";
     #     paths = config.user.packages ++ config.home.packages;

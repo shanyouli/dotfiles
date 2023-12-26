@@ -16,7 +16,7 @@ in {
     homebrew.casks = ["hammerspoon"];
     homebrew.brews = ["blueutil"];
     user.packages = [pkgs.defaultbrowser];
-    my.hm.configFile."hammerspoon/nixpath.lua".text = let
+    home.configFile."hammerspoon/nixpath.lua".text = let
       luaPaths = lib.optionalString (cfmLua.enable
         && ((pkgs.lib.take 2 (builtins.splitVersion cfmLua.package.version))
           == ["5" "4"])) ''
@@ -55,7 +55,7 @@ in {
     macos.userScript.setHMInitFile = {
       text = ''
         /usr/bin/defaults write org.hammerspoon.Hammerspoon MJConfigFile \
-          "${config.my.hm.configHome}/hammerspoon/init.lua"
+          "${config.home.config.dotfiles.configDir}/hammerspoon/init.lua"
       '';
       desc = "Init Hammerspoon File";
     };

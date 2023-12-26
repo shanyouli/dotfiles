@@ -12,7 +12,6 @@
     # maxJobs = 4;
     settings.cores = 4;
   };
-
   modules = {
     # shared
     shell.enZinit = true;

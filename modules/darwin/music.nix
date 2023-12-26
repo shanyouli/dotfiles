@@ -9,8 +9,8 @@ with lib;
 with lib.my; let
   cfg = config.modules.macos.music;
   netease = config.modules.media.netease-music;
-  mpdCmd = "${config.home.binDir}/mpd";
-  mpdDir = "${config.my.hm.cacheHome}/mpd";
+  mpdCmd = "${config.home.profileBinDir}/mpd";
+  mpdDir = "${config.home.cacheDir}/mpd";
   mpdfifo = "/private/tmp/mpd.fifo";
 in {
   options.modules.macos.music = {
@@ -50,7 +50,7 @@ in {
       '';
     };
     launchd.user.agents.mpd = {
-      serviceConfig.ProgramArguments = [mpdCmd "--no-daemon" "${config.my.hm.configHome}/mpd/mpd.conf"];
+      serviceConfig.ProgramArguments = [mpdCmd "--no-daemon" "${config.home.config.dotfiles.configDir}/mpd/mpd.conf"];
       path = [config.environment.systemPath];
       serviceConfig.RunAtLoad = true;
     };
@@ -73,7 +73,7 @@ in {
         enable = config.modules.media.mpd.ncmpcppEn;
         desc = "初始化ncmpcpp";
         text = let
-          ncmpcpp_dir = "${config.my.hm.cacheHome}/ncmpcpp";
+          ncmpcpp_dir = "${config.home.cacheDir}/ncmpcpp";
           lyrics_dir = "${config.user.home}/Music/LyricsX";
         in ''
           [[ -d ${lyrics_dir} ]] || mkdir -p ${lyrics_dir}

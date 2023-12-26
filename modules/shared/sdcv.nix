@@ -19,8 +19,8 @@ in {
     user.packages = with pkgs;
       [sdcv translate-shell]
       ++ optionals stdenvNoCC.isLinux [crow-translate];
-    modules.shell.env.STARDICT_DATA_DIR = "${config.my.hm.dataHome}/stardict";
+    modules.shell.env.STARDICT_DATA_DIR = "${config.home.dataDir}/stardict";
     modules.shell.env.SDCV_HISTSIZE = "100000";
-    modules.shell.env.SDCV_HISTFILE = "${config.my.hm.cacheHome}/sdcv_history";
+    modules.shell.env.SDCV_HISTFILE = "${config.home.cacheDir}/sdcv_history";
   };
 }

@@ -21,9 +21,9 @@ in {
       font_family ${config.modules.fonts.term.family}
       font_size ${toString config.modules.fonts.term.size}
     '';
-    my.hm.configFile = {
+    home.configFile = {
       "kitty" = {
-        source = "${configDir}/kitty";
+        source = "${config.dotfiles.configDir}/kitty";
         recursive = true;
       };
       "kitty/add.conf".text = ''

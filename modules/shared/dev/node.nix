@@ -15,7 +15,7 @@ with lib.my; let
   # NPM_CONFIG_TMP = "$XDG_RUNTIME_DIR/npm";
   npm_config_prefix = "${homeDir}/.local/share/npm";
   node_repl_history = "${homeDir}/.cache/node/repl_history";
-  pnpm_home = "${config.my.hm.dataHome}/pnpm";
+  pnpm_home = "${config.home.dataDir}/pnpm";
 in {
   options.modules.dev.node = {
     enable = mkEnableOption "Whether to use node";
@@ -29,7 +29,7 @@ in {
       stylelint
       js-beautify
     ];
-    my.hm.configFile."npm/config".text = ''
+    home.configFile."npm/config".text = ''
       cache=${npm_config_cache}
       prefix=${npm_config_prefix}
     '';

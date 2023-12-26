@@ -22,7 +22,7 @@ in {
     modules.dev.plugins = ["java"];
     modules.shell.rcInit =
       if (cfg.plugins != [])
-      then "_source ${config.my.hm.dataHome}/asdf/plugins/java/set-java-home.zsh"
+      then "_source ${config.home.dataDir}/asdf/plugins/java/set-java-home.zsh"
       else "";
     modules.dev.pltext = optionalString (cfg.plugins != []) (asdfInPlugins asdf_bin "java" cfg.plugins);
   };

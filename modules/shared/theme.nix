@@ -31,7 +31,7 @@ in {
       modules.shell.starship.settings.palette = "catppuccin_${cfg.name}";
     })
     (mkIf cm.editor.nvim.enable {
-      my.hm.configFile."nvim/lua/plugins/usetheme.lua".text = ''
+      home.configFile."nvim/lua/plugins/usetheme.lua".text = ''
         return {
           {
             "LazyVim/LazyVim",

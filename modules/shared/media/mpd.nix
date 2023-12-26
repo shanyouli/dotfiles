@@ -29,8 +29,8 @@ in {
       user.packages = [pkgs.mpd pkgs.mpc-cli];
       modules.shell.aliases.mpcs = "mpc search any";
       modules.shell.aliases.mpcsp = "mpc searchplay any";
-      my.hm = let
-        mpd_dir = "${config.my.hm.cacheHome}/mpd";
+      home = let
+        mpd_dir = "${config.home.cacheDir}/mpd";
       in {
         configFile."mpd/mpd.conf".text = ''
           music_directory "${cfg.musicDirectory}"
@@ -57,8 +57,8 @@ in {
     }
     (mkIf cfg.ncmpcppEn {
       user.packages = [(pkgs.ncmpcpp.override {visualizerSupport = true;})];
-      my.hm = let
-        ncmpcpp_dir = "${config.my.hm.cacheHome}/ncmpcpp";
+      home = let
+        ncmpcpp_dir = "${config.home.cacheDir}/ncmpcpp";
         lyrics_dir = "${config.user.home}/Music/LyricsX";
       in {
         configFile."ncmpcpp/config".text = ''
@@ -67,7 +67,7 @@ in {
           ncmpcpp_directory = ${ncmpcpp_dir}
           mpd_port = "${toString cfg.port}"
 
-          ${builtins.readFile "${configDir}/ncmpcpp/config"}
+          ${builtins.readFile "${config.dotfiles.configDir}/ncmpcpp/config"}
 
           ${cfg.ncmpcppConfig}
         '';

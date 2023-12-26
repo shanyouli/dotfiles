@@ -19,12 +19,12 @@ in {
     user.packages = with pkgs; [tmux];
 
     modules.shell = {
-      rcFiles = ["${configDir}/tmux/tmux.zsh"];
+      rcFiles = ["${config.dotfiles.configDir}/tmux/tmux.zsh"];
     };
 
-    my.hm.configFile = {
+    home.configFile = {
       "tmux" = {
-        source = "${configDir}/tmux";
+        source = "${config.dotfiles.configDir}/tmux";
         recursive = true;
       };
       "tmux/extraInit" = {
@@ -48,7 +48,7 @@ in {
             cfg.rcFiles}
           set -g @tmux_power_prefix_highlight_pos 'L'
           set -g @continuum-restore 'on'
-          set -g @resurrect-dir '${config.my.hm.cacheHome}/tmux-resurrect'
+          set -g @resurrect-dir '${config.home.cacheDir}/tmux-resurrect'
           set -g @resurrect-processes 'btm'
           ${theme}
           run-shell '${pkgs.tmuxPlugins.copycat}/share/tmux-plugins/copycat/copycat.tmux'

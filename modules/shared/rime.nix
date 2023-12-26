@@ -42,8 +42,8 @@ in {
           fi
 
           ${optionalString useEmacs ''
-            if [[ ! -d ${config.my.hm.configHome}/emacs-rime ]]; then
-              mkdir -p ${config.my.hm.configHome}/emacs-rime
+            if [[ ! -d ${config.home.config.dotfiles.configDir}/emacs-rime ]]; then
+              mkdir -p ${config.home.config.dotfiles.configDir}/emacs-rime
             fi
           ''}
           echo ${cfg.ice.dir}
@@ -51,7 +51,7 @@ in {
             git clone --depth 1 https://github.com/iDvel/rime-ice.git ${cfg.ice.dir}
             for i in ${cfg.ice.dir}/* ; do
               ln -sf $i ${rimedir}/
-              ${optionalString useEmacs "ln -sf $i ${config.my.hm.configHome}/emacs-rime/"}
+              ${optionalString useEmacs "ln -sf $i ${config.home.config.dotfiles.configDir}/emacs-rime/"}
             done
           fi
         ''}
@@ -76,13 +76,13 @@ in {
         }
         changeRimeSync ${rimedir} ${cfg.backupDir} ${cfg.backupid}
         ${optionalString useEmacs ''
-          changeRimeSync ${config.my.hm.configHome}/emacs-rime ${cfg.backupDir} "emacs-rime"
+          changeRimeSync ${config.home.config.dotfiles.configDir}/emacs-rime ${cfg.backupDir} "emacs-rime"
         ''}
         ${cfg.extraScript}
       '';
     }
     (mkIf useEmacs {
-      my.hm.configFile."emacs-rime/default.custom.yaml".source = "${configDir}/rime/default.custom.yaml";
+      home.configFile."emacs-rime/default.custom.yaml".source = "${config.dotfiles.configDir}/rime/default.custom.yaml";
     })
   ]);
 }

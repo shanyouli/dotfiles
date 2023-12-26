@@ -14,8 +14,8 @@ in {
   };
   config = mkIf cfg.enable {
     user.packages = [pkgs.wezterm];
-    my.hm.configFile."wezterm" = {
-      source = "${configDir}/wezterm";
+    home.configFile."wezterm" = {
+      source = "${config.dotfiles.configDir}/wezterm";
       recursive = true;
     };
   };

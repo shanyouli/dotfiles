@@ -8,7 +8,7 @@
 with lib;
 with lib.my; let
   cfg = config.modules.service.clash;
-  cfgFile = "${config.my.hm.configHome}/clash-meta/clash.yaml";
+  cfgFile = "${config.home.config.dotfiles.configDir}/clash-meta/clash.yaml";
   mclash = config.modules.tool.clash;
 in {
   options.modules.service.clash = {
@@ -19,7 +19,7 @@ in {
 
   config = mkIf cfg.enable (let
     clashCmd = "${mclash.package}/bin/${mclash.package.pname}";
-    workdir = "${config.my.hm.cacheHome}/clash";
+    workdir = "${config.home.cacheDir}/clash";
     log_file = "${config.user.home}/Library/Logs/clash-meta.log";
     # 为什么需要在启动clash前设置dns，
     # @seehttps://github.com/Dreamacro/clash/issues/2615

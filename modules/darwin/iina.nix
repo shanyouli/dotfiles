@@ -12,7 +12,7 @@ with lib.my; let
   bbdown-cmd = pkgs.writeScriptBin "bbdown" ''
     #!${pkgs.stdenv.shell}
 
-    _dir=${config.my.hm.cacheHome}/bbdown
+    _dir=${config.home.cacheDir}/bbdown
     if [[ ! -d $_dir ]]; then
       mkdir -p $_dir
     fi

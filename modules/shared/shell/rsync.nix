@@ -15,6 +15,6 @@ in {
 
   config = mkIf cfg.enable {
     user.packages = [pkgs.rsync];
-    modules.shell.rcFiles = ["${configDir}/rsync/rsync.zsh"];
+    modules.shell.rcFiles = ["${config.dotfiles.configDir}/rsync/rsync.zsh"];
   };
 }

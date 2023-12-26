@@ -9,9 +9,9 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.service.mysql;
-  chm = config.my.hm;
+  chm = config.home;
   workdir = cfg.workDir;
-  homebin = config.home.binDir;
+  homebin = config.home.profileBinDir;
   mysqlBase = "${cfm.db.mysql.package}";
   datadir = "${workdir}/data";
   mysqlSock = "${workdir}/mysql.sock";
@@ -48,7 +48,7 @@ with lib.my; let
 in {
   options.modules.service.mysql = {
     enable = mkEnableOption "Whether to enable mysql service";
-    workDir = mkOpt' types.path "${chm.cacheHome}/mysql" "mysql 服务工作目录";
+    workDir = mkOpt' types.path "${chm.cacheDir}/mysql" "mysql 服务工作目录";
     port = mkNumOpt 3306;
   };
   config = mkIf cfg.enable {

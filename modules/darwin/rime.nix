@@ -22,12 +22,12 @@ in {
     modules.rime.userDir = "${config.user.home}/Library/Rime";
     modules.rime.backupid = "macos";
     modules.rime.ice.enable = true;
-    modules.rime.ice.dir = "${config.my.hm.cacheHome}/rime-ice";
+    modules.rime.ice.dir = "${config.home.cacheDir}/rime-ice";
     macos.userScript.rime = {
       desc = "配置rime输入法";
       text = cfm.rime.script;
     };
-    my.hm.file."Library/Rime/squirrel.custom.yaml".source = "${configDir}/rime/squirrel.custom.yaml";
-    my.hm.file."Library/Rime/default.custom.yaml".source = "${configDir}/rime/default.custom.yaml";
+    home.file."Library/Rime/squirrel.custom.yaml".source = "${config.dotfiles.configDir}/rime/squirrel.custom.yaml";
+    home.file."Library/Rime/default.custom.yaml".source = "${config.dotfiles.configDir}/rime/default.custom.yaml";
   };
 }

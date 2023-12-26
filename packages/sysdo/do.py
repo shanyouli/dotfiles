@@ -32,10 +32,13 @@ class Dotfile:
     def value(self):
         for i in [
             os.getenv('DOTFILES'),
+            '/etc/dotfiles',
             '/etc/nixos',
-            os.path.expanduser('~/.nixpkgs'),
             os.path.expanduser('~/.config/dotfiles'),
             os.path.expanduser('~/.dotfiles'),
+            os.path.expanduser('~/.nixpkgs'),
+            os.getenv('ODOTFILES')
+
         ]:
             if (
                 os.path.isdir(i)

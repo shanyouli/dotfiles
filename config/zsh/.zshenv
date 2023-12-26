@@ -1,3 +1,12 @@
+#!/usr/bin/env zsh
+
+for i in "/etc/dotfiles" "/etc/nixos" "$HOME/.config/dotfiles" "$HOME/.dotfiles" "$HOME/.nixpkgs"; do
+    if [ -d $i ] && [[ -d $i/.git ]] && [[ -f $i/flake.nix ]]; then
+        export DOTFILES=$i
+        break
+    fi
+done
+
 # hash进行文件缩写，hash -d a=~/.a ==> ~a
 hash -d config=${XDG_CONFIG_HOME:=~/.config}
 hash -d cache=${XDG_CACHE_HOME:=~/.cache}

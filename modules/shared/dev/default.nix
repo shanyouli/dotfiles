@@ -30,7 +30,7 @@ in {
       user.packages = [pkgs.unstable.allure];
     })
     (mkIf (cfg.plugins != []) (let
-      cmh = config.my.hm;
+      cmh = config.home;
       senv = cfm.shell.env;
       asdf_bin = "${cfg.package}/bin/asdf";
       asdf_plugin_fn = v: ''
@@ -39,12 +39,12 @@ in {
           ${asdf_bin} plugin add ${v}
         fi
       '';
-      asdf_data_dir = "${cmh.dataHome}/asdf";
+      asdf_data_dir = "${cmh.dataDir}/asdf";
     in {
       user.packages = [cfg.package];
       modules.shell = mkMerge [
         (mkIf cfm.shell.direnv.enable {
-          env.ASDF_DIRENV_BIN = "${config.home.binDir}/direnv";
+          env.ASDF_DIRENV_BIN = "${config.home.profileBinDir}/direnv";
           env.PATH = mkOrder 100 ["${asdf_data_dir}/shims" "${cfg.package}/share/asdf-vm/bin"];
           env.ASDF_DIR = "${cfg.package}/share/asdf-vm";
           # HACK: https://github.com/asdf-community/asdf-direnv/issues/149
@@ -72,13 +72,13 @@ in {
         })
         {
           env = {
-            ASDF_CONFIG_FILE = "${cmh.configHome}/asdf/asdf.conf";
+            ASDF_CONFIG_FILE = "${cmh.config.dotfiles.configDir}/asdf/asdf.conf";
             ASDF_DATA_DIR = asdf_data_dir;
           };
-          rcFiles = ["${configDir}/asdf/asdf.zsh"];
+          rcFiles = ["${config.dotfiles.configDir}/asdf/asdf.zsh"];
         }
       ];
-      my.hm.configFile."asdf/asdf.conf".text = ''
+      home.configFile."asdf/asdf.conf".text = ''
         plugin_repository_last_check_duration = never
         legacy_version_file = yes
         always_keep_download = yes

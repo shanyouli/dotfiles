@@ -39,12 +39,12 @@ in {
         [install]
         root = "${homeDir}/.local"
         [build]
-        target-dir = "${config.my.hm.cacheHome}/cargo/target"
+        target-dir = "${config.home.cacheDir}/cargo/target"
       '';
     in "${pkgs.runCommandLocal "cargo-home" {inherit cargoConfig;} ''
       mkdir -p $out
-      ln -st $out "${config.my.hm.cacheHome}"/cargo/{registry,git}
-      ln -st $out "${config.my.hm.configHome}"/cargo/credentials.toml
+      ln -st $out "${config.home.cacheDir}"/cargo/{registry,git}
+      ln -st $out "${config.home.config.dotfiles.configDir}"/cargo/credentials.toml
       echo -n "$cargoConfig" >$out/config.toml
     ''}";
     modules.shell.aliases = {
@@ -67,13 +67,13 @@ in {
         fi
       ''
       + optionalString (!cfg.enSlsp) ''
-        if [[ -f ${config.my.hm.binHome}/rust-analyzer ]]; then
+        if [[ -f ${config.home.binDir}/rust-analyzer ]]; then
             echo "rust-analyzer alread installed."
         elif [ "$(${package}/bin/rustup component list | grep -i rust-analyzer )" != "" ]; then
              echo "start Install rust-analyzer"
             ${package}/bin/rustup component add rust-analyzer
-            [[ -f "${config.my.hm.binHome}/rust-analyzer" ]] || \
-              ln -st ${config.my.hm.binHome} $(${package}/bin/rustup which rust-analyzer)
+            [[ -f "${config.home.binDir}/rust-analyzer" ]] || \
+              ln -st ${config.home.binDir} $(${package}/bin/rustup which rust-analyzer)
         else
             echo "warn: Low version of rust"
             echo "warn: Please use cargo install or system command to install it"

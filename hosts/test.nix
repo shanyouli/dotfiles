@@ -1,5 +1,5 @@
 {...}: {
-  my.modules = {
+  modules = {
     shell.fzf.enable = true;
   };
 }

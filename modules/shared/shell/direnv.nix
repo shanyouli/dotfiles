@@ -16,12 +16,12 @@ in {
   config = mkIf cfg.enable {
     user.packages = [pkgs.direnv pkgs.nix-direnv];
     modules.shell.rcInit = ''_cache direnv hook zsh'';
-    my.hm.configFile = mkMerge [
+    home.configFile = mkMerge [
       (mkIf (config.modules.dev.plugins != []) {
-        "direnv/lib/use_asdf.sh".source = "${configDir}/direnv/lib/use_asdf.sh";
+        "direnv/lib/use_asdf.sh".source = "${config.dotfiles.configDir}/direnv/lib/use_asdf.sh";
       })
       (mkIf config.modules.dev.python.enable {
-        "direnv/lib/use_poetry.sh".source = "${configDir}/direnv/lib/use_poetry.sh";
+        "direnv/lib/use_poetry.sh".source = "${config.dotfiles.configDir}/direnv/lib/use_poetry.sh";
       })
       {
         "direnv/direnvrc".text = ''

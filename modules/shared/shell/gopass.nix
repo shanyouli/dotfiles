@@ -26,10 +26,10 @@ with lib.my; let
 in {
   options.modules.shell.gopass = with types; {
     enable = mkBoolOpt false;
-    enGui = mkBoolOpt config.modules.enGui;
+    enGui = mkBoolOpt config.modules.opt.enGui;
   };
   config = mkIf cfg.enable {
     user.packages = [package (mkIf cfg.enGui qtpass)];
-    env.PASSWORD_STORE_DIR = "${config.my.hm.dataHome}/password-store";
+    env.PASSWORD_STORE_DIR = "${config.home.dataDir}/password-store";
   };
 }
