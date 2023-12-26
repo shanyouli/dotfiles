@@ -26,10 +26,10 @@ in {
       };
       env.MANPAGER = "nvim +Man!";
       # @https://discourse.nixos.org/t/stuck-writing-my-first-package/19022/4
+      user.packages = [pkgs.unstable.neovim (mkIf (cfg.enGui && pkgs.stdenvNoCC.isLinux) pkgs.neovide)];
       my = let
         sc = pkgs.lazyvim-star.out;
       in {
-        user.packages = [pkgs.unstable.neovim (mkIf (cfg.enGui && pkgs.stdenvNoCC.isLinux) pkgs.neovide)];
         hm.configFile = {
           "nvim/init.lua".source = "${sc}/init.lua";
           "nvim/stylua.toml".source = "${sc}/stylua.toml";

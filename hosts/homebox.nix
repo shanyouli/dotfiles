@@ -13,9 +13,6 @@
     settings.cores = 4;
   };
 
-  my = {
-    terminal = "kitty";
-  };
   modules = {
     # shared
     shell.enZinit = true;

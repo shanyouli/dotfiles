@@ -48,7 +48,7 @@ in {
       # lib.mkIf cfg.enable (lib.mkMerge [{ users.defaultUserShell = pkgs.zsh; }]);
       # only nixos
       # users.defaultUserShell = pkgs.zsh;
-      my.user.shell = pkgs.zsh;
+      user.shell = pkgs.zsh;
       programs.zsh = {
         enable = true;
         # 我将自动启用bashcompinit 和compinit配置

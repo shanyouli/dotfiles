@@ -21,15 +21,10 @@ in {
       wesite = mkStrOpt "https://shanyouli.github.io";
       github_username = mkStrOpt "shanyouli";
       email = mkStrOpt "shanyouli6@gmail.com";
-      terminal = mkStrOpt "wezterm";
-      repodir = mkStrOpt "~/Repos"; # 一下第三方仓库管理
-      workdir = mkStrOpt "~/Workspace"; # 自己的仓库管理，和工作目录
       enGui = mkEnableOption "GUI Usage";
       nix_managed =
         mkStrOpt
         "vim: set nomodifiable : Nix managed - DO NOT EDIT - see source inside ~/.dotfiles or use `:set modifiable` to force.";
-      user = mkOption {type = options.users.users.type.functor.wrapped;};
-      hostConfigHome = mkStrOpt "";
       font = {
         term = mkStrOpt "Cascadia Code"; #
         term-size = mkNumOpt 10; #
@@ -62,8 +57,6 @@ in {
     };
   };
   config = {
-    my.repodir = "${home}/Repos";
-    my.workdir = "${home}/Workspace";
     my.hm = let
       prefix = config.home-manager.users."${config.my.username}".home;
     in {

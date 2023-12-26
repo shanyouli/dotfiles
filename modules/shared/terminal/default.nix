@@ -5,15 +5,17 @@
   ...
 }:
 with lib;
-with lib.my; {
+with lib.my; let
+  cfg = config.modules.terminal;
+in {
   options.modules.terminal = {
-    default = mkStrOpt config.my.terminal;
+    default = mkStrOpt "kitty";
   };
   config = mkMerge [
-    (mkIf (config.my.terminal == "kitty") {
+    (mkIf (cfg.default == "kitty") {
       modules.kitty.enable = true;
     })
-    (mkIf (config.my.terminal == "wezterm") {
+    (mkIf (cfg.default == "wezterm") {
       modules.wezterm.enable = true;
     })
   ];

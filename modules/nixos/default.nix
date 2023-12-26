@@ -27,7 +27,7 @@
     user = config.my.username;
     group = "users";
     openDefaultPorts = true;
-    dataDir = config.my.user.home;
+    dataDir = config.user.home;
   };
 
   environment.systemPackages = with pkgs; [vscode firefox gnome.gnome-tweaks];

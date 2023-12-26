@@ -14,7 +14,7 @@ in {
   options.modules.rime = {
     enable = mkBoolOpt false;
     backupDir =
-      mkOpt' types.path "${config.my.workdir}/rime-bak" "rime 词库同步文件";
+      mkOpt' types.path "${config.user.home}/.config/rime-bak" "rime 词库同步文件";
     userDir =
       mkOpt' types.path "${config.user.home}/.config/fcitx/rime"
       "rime 用户文件保存位置";
@@ -23,7 +23,7 @@ in {
     backupid = mkOpt' types.str "" "rime 同步id";
     ice = {
       enable = mkBoolOpt true;
-      dir = mkOpt' types.path "${config.my.workdir}/rime-ice" "保存雾凇拼音仓库位置";
+      dir = mkOpt' types.path "${config.user.home}/.cache/rime-ice" "保存雾凇拼音仓库位置";
     };
   };
   config = mkIf cfg.enable (mkMerge [
