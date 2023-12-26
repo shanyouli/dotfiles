@@ -26,7 +26,7 @@ with lib.my; let
 in {
   options.modules.shell.gopass = with types; {
     enable = mkBoolOpt false;
-    enGui = mkBoolOpt config.my.enGui;
+    enGui = mkBoolOpt config.modules.enGui;
   };
   config = mkIf cfg.enable {
     user.packages = [package (mkIf cfg.enGui qtpass)];

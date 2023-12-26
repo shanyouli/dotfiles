@@ -12,7 +12,7 @@ with lib.my; let
 in {
   options.modules.tool.qbittorrent = {
     enable = mkEnableOption "Whether to use qbittorrent";
-    enGui = mkBoolOpt config.my.enGui;
+    enGui = mkBoolOpt config.modules.enGui;
     package = mkPkgOpt pkgs.qbittorrent "qbittorrent use package";
   };
   config = mkIf cfg.enable {

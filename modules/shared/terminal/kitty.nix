@@ -18,8 +18,8 @@ in {
   config = mkIf cfg.enable {
     user.packages = [pkgs.kitty];
     modules.kitty.settings = ''
-      font_family ${config.my.font.term}
-      font_size ${toString config.my.font.term-size}
+      font_family ${config.modules.fonts.term.family}
+      font_size ${toString config.modules.fonts.term.size}
     '';
     my.hm.configFile = {
       "kitty" = {

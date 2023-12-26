@@ -9,7 +9,7 @@ with lib;
 with lib.my; let
   cfg = config.modules.macos.music;
   netease = config.modules.media.netease-music;
-  mpdCmd = "${config.my.hm.profileDirectory}/bin/mpd";
+  mpdCmd = "${config.home.binDir}/mpd";
   mpdDir = "${config.my.hm.cacheHome}/mpd";
   mpdfifo = "/private/tmp/mpd.fifo";
 in {

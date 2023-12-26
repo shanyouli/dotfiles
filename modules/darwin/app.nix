@@ -25,7 +25,7 @@ in {
       name = "my-manager-applications";
       paths =
         config.user.packages
-        ++ (optionals (config.my.hm ? pkgs) config.my.hm.pkgs)
+        ++ config.home.packages
         ++ config.environment.systemPackages;
       pathsToLink = "/Applications";
     };
@@ -34,7 +34,7 @@ in {
     # hm.file."Applications/Myapps" = let
     #   app = pkgs.buildEnv {
     #     name = "my-manager-applications";
-    #     paths = config.user.packages ++ config.my.hm.pkgs;
+    #     paths = config.user.packages ++ config.home.packages;
     #     pathsToLink = "/Applications";
     #   };
     # in { source = "${app}/Applications"; };

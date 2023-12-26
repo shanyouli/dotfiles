@@ -11,7 +11,7 @@ with lib.my; let
   cfg = cfm.service.mysql;
   chm = config.my.hm;
   workdir = cfg.workDir;
-  homebin = "${chm.profileDirectory}/bin";
+  homebin = config.home.binDir;
   mysqlBase = "${cfm.db.mysql.package}";
   datadir = "${workdir}/data";
   mysqlSock = "${workdir}/mysql.sock";

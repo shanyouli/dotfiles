@@ -11,14 +11,19 @@ with lib.my; let
   cfg = cfm.fonts;
 in {
   options.modules.fonts = {
-    enable = mkBoolOpt config.my.enGui;
+    enable = mkBoolOpt config.modules.enGui;
+    term = {
+      family = mkStrOpt "Cascadia Code";
+      size = mkNumOpt 10;
+      package = mkPkgOpt pkgs.cascadia-code "Cascadia Code font";
+    };
   };
   config = mkIf cfg.enable {
     fonts = {
       fontDir.enable = true;
       fonts = with pkgs; [
         fantasque-sans-mono
-        cascadia-code
+        cfg.term.package
         lxgw-wenkai
         unifont
         (nerdfonts.override {fonts = ["FantasqueSansMono" "NerdFontsSymbolsOnly"];})

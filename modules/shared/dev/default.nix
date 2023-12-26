@@ -44,7 +44,7 @@ in {
       user.packages = [cfg.package];
       modules.shell = mkMerge [
         (mkIf cfm.shell.direnv.enable {
-          env.ASDF_DIRENV_BIN = "${config.my.hm.profileDirectory}/bin/direnv";
+          env.ASDF_DIRENV_BIN = "${config.home.binDir}/direnv";
           env.PATH = mkOrder 100 ["${asdf_data_dir}/shims" "${cfg.package}/share/asdf-vm/bin"];
           env.ASDF_DIR = "${cfg.package}/share/asdf-vm";
           # HACK: https://github.com/asdf-community/asdf-direnv/issues/149

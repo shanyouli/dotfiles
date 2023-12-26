@@ -48,7 +48,7 @@ in {
     systemScript = mkOpt attrs {};
   };
   config = {
-    my.enGui = true;
+    modules.enGui = true;
     system.activationScripts.postActivation.text = ''
       echo "System script executed after system activation"
       ${systemScripts}

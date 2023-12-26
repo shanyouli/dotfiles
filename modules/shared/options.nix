@@ -36,12 +36,14 @@ in {
       configDir = mkOpt path "${config.dotfiles.dir}/config";
       modulesDir = mkOpt path "${config.dotfiles.dir}/modules";
     };
+    modules.enGui = mkBoolOpt false; # Whether to use GUI mode
     home = {
       file = mkOpt' attrs {} "Files to place directly in $HOME";
       configFile = mkOpt' attrs {} "Files to place directly in $XDG_CONFIG_HOME";
       dataFile = mkOpt' attrs {} "Files to place in $XDG_CONFIG_HOME";
-      pkgs = mkOpt' (listOf package) [] "home-manager packages alias";
+      packages = mkOpt' (listOf package) [] "home-manager packages alias";
       programs = mkOpt' attrs {} "home-manager programs";
+      binDir = mkOpt' path "${homedir}/.nix-profile/bin" "home-manager profile-directory bin";
       activation = mkOpt' attrs {} "home-manager activation script";
     };
     env = mkOption {
@@ -71,6 +73,9 @@ in {
     users.users.${config.user.name} = mkAliasDefinitions options.user;
 
     home.programs.home-manager.enable = true;
+    home.packages = config.home-manager.users."${config.user.name}".home.packages;
+    home.binDir = "${config.home-manager.users."${config.user.name}".home.profileDirectory}/bin";
+
     home-manager = {
       extraSpecialArgs = {inherit inputs;};
       useGlobalPkgs = true;

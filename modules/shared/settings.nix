@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  home-manager,
   options,
   ...
 }:
@@ -20,16 +19,7 @@ in {
       wesite = mkStrOpt "https://shanyouli.github.io";
       github_username = mkStrOpt "shanyouli";
       email = mkStrOpt "shanyouli6@gmail.com";
-      enGui = mkEnableOption "GUI Usage";
-      font = {
-        term = mkStrOpt "Cascadia Code"; #
-        term-size = mkNumOpt 10; #
-      };
       hm = {
-        profileDirectory =
-          mkOpt' path "${home}/.nix-profile"
-          "The profile directory where Home Manager generations are installed.";
-        dir = mkOpt' path "${home}" "The directory is HOME";
         file = mkOpt' attrs {} "Files to place directly in $HOME";
         cacheHome =
           mkOpt' path "${home}/.cache"
@@ -48,18 +38,7 @@ in {
         binHome =
           mkOpt' path "${home}/.local/bin"
           "Absolute path to directory holding application states.";
-        pkgs = mkOpt' (listOf package) [] "home-manager packages alias";
       };
-    };
-  };
-  config = {
-    my.hm = let
-      prefix = config.home-manager.users."${config.user.name}".home;
-    in {
-      pkgs = prefix.packages;
-      profileDirectory =
-        config.home-manager.users."${config.user.name}".home.profileDirectory;
-      dir = prefix.homeDirectory;
     };
   };
 }

@@ -12,7 +12,7 @@ in {
   options = with lib; {
     modules.editor.nvim = {
       enable = mkEnableOption "Whether to enable nvim module";
-      enGui = mkBoolOpt config.my.enGui;
+      enGui = mkBoolOpt config.modules.enGui;
       script = mkStrOpt "";
     };
   };
