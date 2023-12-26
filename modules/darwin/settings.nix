@@ -52,7 +52,7 @@ in {
     system.activationScripts.postActivation.text = ''
       echo "System script executed after system activation"
       ${systemScripts}
-      sudo -u ${config.my.username} --set-home ${userScripts}
+      sudo -u ${config.user.name} --set-home ${userScripts}
     '';
     macos.systemScript.removeNixApps = {
       enable = true;
@@ -66,7 +66,7 @@ in {
     macos.systemScript.zshell = {
       enable = true;
       text = ''
-        chsh -s /run/current-system/sw/bin/zsh ${config.my.username}
+        chsh -s /run/current-system/sw/bin/zsh ${config.user.name}
       '';
       desc = "setting Default Shell";
     };

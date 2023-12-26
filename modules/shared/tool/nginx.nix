@@ -23,7 +23,7 @@ in {
       sScript = ''
         [[ -d ${cfg.workDir} ]] || {
            mkdir -p ${cfg.workDir}
-           chown -R ${config.my.username} ${cfg.workDir}
+           chown -R ${config.user.name} ${cfg.workDir}
         }
       '';
       uScript = ''

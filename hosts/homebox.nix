@@ -5,7 +5,7 @@
 }: {
   # user.name = "lyeli";
   nix = {
-    gc = {user = config.my.username;};
+    gc = {user = config.user.name;};
     # Auto upgrade nix package and the daemon service.
     # services.nix-daemon.enable = true;
     # nix.package = pkgs.nix;

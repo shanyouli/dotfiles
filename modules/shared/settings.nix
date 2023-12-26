@@ -10,21 +10,17 @@ with lib;
 with lib.my; let
   home =
     if pkgs.stdenvNoCC.isDarwin
-    then "/Users/${config.my.username}"
-    else "/home/${config.my.username}";
+    then "/Users/${config.user.name}"
+    else "/home/${config.user.name}";
 in {
   options = with types; {
     my = {
       name = mkStrOpt "Shanyou Li";
       timezone = mkStrOpt "Asia/Shanghai";
-      username = mkStrOpt "lyeli";
       wesite = mkStrOpt "https://shanyouli.github.io";
       github_username = mkStrOpt "shanyouli";
       email = mkStrOpt "shanyouli6@gmail.com";
       enGui = mkEnableOption "GUI Usage";
-      nix_managed =
-        mkStrOpt
-        "vim: set nomodifiable : Nix managed - DO NOT EDIT - see source inside ~/.dotfiles or use `:set modifiable` to force.";
       font = {
         term = mkStrOpt "Cascadia Code"; #
         term-size = mkNumOpt 10; #
@@ -58,11 +54,11 @@ in {
   };
   config = {
     my.hm = let
-      prefix = config.home-manager.users."${config.my.username}".home;
+      prefix = config.home-manager.users."${config.user.name}".home;
     in {
       pkgs = prefix.packages;
       profileDirectory =
-        config.home-manager.users."${config.my.username}".home.profileDirectory;
+        config.home-manager.users."${config.user.name}".home.profileDirectory;
       dir = prefix.homeDirectory;
     };
   };

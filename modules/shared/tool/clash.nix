@@ -24,7 +24,7 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       environment.etc."sudoers.d/clash".text =
-        sudoNotPass config.my.username "${cfg.package}/bin/${cfg.package.pname}";
+        sudoNotPass config.user.name "${cfg.package}/bin/${cfg.package.pname}";
     }
     (mkIf cm.tool.aria2.enable {
       modules.shell.aliases.paria2 = "aria2c --all-proxy=${proxy}";

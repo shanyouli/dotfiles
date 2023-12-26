@@ -24,7 +24,7 @@
   services.power-profiles-daemon.enable = false;
   services.syncthing = {
     enable = true;
-    user = config.my.username;
+    user = config.user.name;
     group = "users";
     openDefaultPorts = true;
     dataDir = config.user.home;
@@ -41,7 +41,7 @@
     groups.localtimed = {};
     users = {
       localtimed.group = "localtimed";
-      "${config.my.username}" = {
+      "${config.user.name}" = {
         isNormalUser = true;
         createHome = true;
         useDefaultShell = true;

@@ -23,7 +23,7 @@ in {
       nurl # better nix-prefetch-xxx
     ];
     my.hm.configFile."nix-init/config.toml".text = ''
-      maintainers = [ "${config.my.username}" ]
+      maintainers = [ "${config.user.name}" ]
       nixpkgs = "<nixpkgs>"
     '';
   };
