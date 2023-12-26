@@ -9,7 +9,7 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.service.deeplx;
-  log_file = "${config.my.hm.dir}/Library/Logs/deeplx.log";
+  log_file = "${config.user.home}/Library/Logs/deeplx.log";
 in {
   options.modules.service.deeplx = {
     enable = mkEnableOption "Whether to deeplx service";

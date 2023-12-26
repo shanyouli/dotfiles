@@ -24,10 +24,10 @@ in {
     };
   };
   config = mkIf cfg.enable {
-    my.programs.browserpass.enable = true;
-    my.programs.browserpass.browsers = ["firefox" "chrome"];
+    home.programs.browserpass.enable = true;
+    home.programs.browserpass.browsers = ["firefox" "chrome"];
     user.packages = [pkgs.geckodriver];
-    my.programs.firefox = {
+    home.programs.firefox = {
       enable = true;
       package = cfg.package;
       profiles = {

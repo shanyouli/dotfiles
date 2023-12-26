@@ -139,7 +139,7 @@ in {
               cfg.env;
             dotfiles =
               if pkgs.stdenvNoCC.isDarwin
-              then "${config.my.hm.dir}/.nixpkgs"
+              then "${config.user.home}/.nixpkgs"
               else "/etc/nixos";
           in ''
             typeset -U path

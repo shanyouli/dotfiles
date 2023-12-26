@@ -42,12 +42,12 @@ in {
         };
       };
       modules.editor.nvim.script = ''
-        [[ -d ${config.my.hm.dir}/.config/nvim/lua/config ]] || mkdir -p ${config.my.hm.dir}/.config/nvim/lua/config
+        [[ -d ${config.user.home}/.config/nvim/lua/config ]] || mkdir -p ${config.user.home}/.config/nvim/lua/config
         for i in "autocmds" "keymaps" "options" ; do
           if [[ -f ${configDir}/nvim/$i.lua ]]; then
-            ln -sf ${configDir}/nvim/$i.lua ${config.my.hm.dir}/.config/nvim/lua/config/$i.lua
-          elif [[ ! -f ${config.my.hm.dir}/.config/nvim/lua/config/$i.lua ]]; then
-            touch ${config.my.hm.dir}/.config/nvim/lua/config/$i.lua
+            ln -sf ${configDir}/nvim/$i.lua ${config.user.home}/.config/nvim/lua/config/$i.lua
+          elif [[ ! -f ${config.user.home}/.config/nvim/lua/config/$i.lua ]]; then
+            touch ${config.user.home}/.config/nvim/lua/config/$i.lua
           fi
         done
       '';

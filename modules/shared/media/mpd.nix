@@ -17,7 +17,7 @@ in {
     port = mkOpt' number 6600 ''
       Listen on port
     '';
-    musicDirectory = mkOpt' path "${config.my.hm.dir}/Music" "MPD read music file";
+    musicDirectory = mkOpt' path "${config.user.home}/Music" "MPD read music file";
 
     ncmpcppEn = mkBoolOpt true;
     ncmpcppConfig = mkOpt' lines "" ''
@@ -59,7 +59,7 @@ in {
       user.packages = [(pkgs.ncmpcpp.override {visualizerSupport = true;})];
       my.hm = let
         ncmpcpp_dir = "${config.my.hm.cacheHome}/ncmpcpp";
-        lyrics_dir = "${config.my.hm.dir}/Music/LyricsX";
+        lyrics_dir = "${config.user.home}/Music/LyricsX";
       in {
         configFile."ncmpcpp/config".text = ''
           mpd_music_dir = ${cfg.musicDirectory}

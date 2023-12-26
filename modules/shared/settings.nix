@@ -57,14 +57,11 @@ in {
         binHome =
           mkOpt' path "${home}/.local/bin"
           "Absolute path to directory holding application states.";
-        activation = mkOpt' attrs {} "home activation";
         pkgs = mkOpt' (listOf package) [] "home-manager packages alias";
       };
-      programs = mkOpt' attrs {} "home-manager programs";
     };
   };
   config = {
-    my.programs.home-manager.enable = true;
     my.repodir = "${home}/Repos";
     my.workdir = "${home}/Workspace";
     my.hm = let
@@ -74,16 +71,6 @@ in {
       profileDirectory =
         config.home-manager.users."${config.my.username}".home.profileDirectory;
       dir = prefix.homeDirectory;
-    };
-    home-manager.users."${config.user.name}" = {
-      xdg = {
-        enable = true;
-      };
-
-      home = {
-        activation = mkAliasDefinitions options.my.hm.activation;
-      };
-      programs = config.my.programs;
     };
   };
 }

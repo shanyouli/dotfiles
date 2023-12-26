@@ -74,7 +74,7 @@ in {
         desc = "初始化ncmpcpp";
         text = let
           ncmpcpp_dir = "${config.my.hm.cacheHome}/ncmpcpp";
-          lyrics_dir = "${config.my.hm.dir}/Music/LyricsX";
+          lyrics_dir = "${config.user.home}/Music/LyricsX";
         in ''
           [[ -d ${lyrics_dir} ]] || mkdir -p ${lyrics_dir}
           [[ -d ${ncmpcpp_dir} ]] || mkdir -p ${ncmpcpp_dir}

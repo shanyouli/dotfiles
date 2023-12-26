@@ -12,14 +12,14 @@ in {
   options.modules.macos.rime = {
     enable = mkBoolOpt false;
     backupDir =
-      mkOpt' types.path "${config.my.hm.dir}/Repos/Rime-bak" "rime 词库同步文件";
+      mkOpt' types.path "${config.user.home}/Repos/Rime-bak" "rime 词库同步文件";
   };
 
   config = mkIf cfg.enable {
     # 输入法
     homebrew.casks = ["squirrel"];
     modules.rime.enable = true;
-    modules.rime.userDir = "${config.my.hm.dir}/Library/Rime";
+    modules.rime.userDir = "${config.user.home}/Library/Rime";
     modules.rime.backupid = "macos";
     modules.rime.ice.enable = true;
     modules.rime.ice.dir = "${config.my.hm.cacheHome}/rime-ice";

@@ -24,7 +24,7 @@ in {
       path = [config.environment.systemPath];
       serviceConfig.RunAtLoad = true;
       # serviceConfig.KeepAlive.NetworkState = true;
-      serviceConfig.StandardOutPath = "${config.my.hm.dir}/Library/Logs/qbittorrent-nox.log";
+      serviceConfig.StandardOutPath = "${config.user.home}/Library/Logs/qbittorrent-nox.log";
     };
   };
 }

@@ -8,7 +8,7 @@
 with lib;
 with lib.my; let
   cfg = config.modules.macos.iina;
-  homeDir = config.my.hm.dir;
+  homeDir = config.user.home;
   bbdown-cmd = pkgs.writeScriptBin "bbdown" ''
     #!${pkgs.stdenv.shell}
 

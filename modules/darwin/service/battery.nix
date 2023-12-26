@@ -45,8 +45,8 @@ in {
     launchd.user.agents.battery = {
       serviceConfig.ProgramArguments = ["${batter-script}/bin/battery-service"];
       serviceConfig.RunAtLoad = true;
-      # serviceConfig.StandardOutPath = "${config.my.hm.dir}/Library/Logs/mybatter.log";
-      serviceConfig.StandardErrorPath = "${config.my.hm.dir}/Library/Logs/mybatter.error.log";
+      # serviceConfig.StandardOutPath = "${config.user.home}/Library/Logs/mybatter.log";
+      serviceConfig.StandardErrorPath = "${config.user.home}/Library/Logs/mybatter.error.log";
       path = [config.environment.systemPath];
       serviceConfig.StartCalendarInterval = [{Minute = 10;}];
     };

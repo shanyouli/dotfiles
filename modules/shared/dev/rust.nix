@@ -9,7 +9,7 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.dev.rust;
-  homeDir = config.my.hm.dir;
+  homeDir = config.user.home;
   rustup_dir = "${homeDir}/.local/share/rustup";
   package = pkgs.unstable.rustup;
 in {

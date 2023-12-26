@@ -14,7 +14,7 @@ in {
     enable = mkEnableOption "Whether using vscode";
   };
   config = mkIf cfg.enable {
-    my.programs.vscode = {
+    home.programs.vscode = {
       enable = true;
       package = pkgs.unstable.vscode;
       enableUpdateCheck = false;

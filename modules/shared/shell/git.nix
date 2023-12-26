@@ -19,7 +19,7 @@ in {
       # pre-commit # git 提交前自检, 使用 pipx安装
       (mkIf (cfg.enGui && stdenvNoCC.isLinux) github-desktop)
     ];
-    my.programs.git = {
+    home.programs.git = {
       enable = true;
       userName = config.my.name;
       userEmail = config.my.email;

@@ -20,7 +20,7 @@ in {
   config = mkIf cfg.enable (let
     clashCmd = "${mclash.package}/bin/${mclash.package.pname}";
     workdir = "${config.my.hm.cacheHome}/clash";
-    log_file = "${config.my.hm.dir}/Library/Logs/clash-meta.log";
+    log_file = "${config.user.home}/Library/Logs/clash-meta.log";
     # 为什么需要在启动clash前设置dns，
     # @seehttps://github.com/Dreamacro/clash/issues/2615
     clashService = pkgs.writeScriptBin "clash-service" ''

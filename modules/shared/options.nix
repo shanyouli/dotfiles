@@ -22,6 +22,7 @@ with lib.my; let
 in {
   options = with types; {
     user = mkOpt attrs {};
+    #       user = mkOption {type = options.users.users.type.functor.wrapped;};
     dotfiles = {
       dir = mkOpt path (removePrefix "/mnt" (findFirst pathExists (toString ../.) [
         "/mnt/etc/dotfiles"
@@ -41,6 +42,7 @@ in {
       dataFile = mkOpt' attrs {} "Files to place in $XDG_CONFIG_HOME";
       pkgs = mkOpt' (listOf package) [] "home-manager packages alias";
       programs = mkOpt' attrs {} "home-manager programs";
+      activation = mkOpt' attrs {} "home-manager activation script";
     };
     env = mkOption {
       type = attrsOf (oneOf [str path (listOf (either str path))]);
@@ -68,6 +70,7 @@ in {
     ];
     users.users.${config.user.name} = mkAliasDefinitions options.user;
 
+    home.programs.home-manager.enable = true;
     home-manager = {
       extraSpecialArgs = {inherit inputs;};
       useGlobalPkgs = true;
@@ -84,6 +87,8 @@ in {
             then "23.11"
             else config.system.stateVersion;
           username = config.user.name;
+
+          activation = mkAliasDefinitions options.home.activation;
         };
         xdg = {
           cacheHome = mkAliasDefinitions options.my.hm.cacheHome;
@@ -93,8 +98,10 @@ in {
           # dataHome = mkAliasDefinitions options.my.hm.dataHome;
           # stateHome = mkAliasDefinitions options.my.hm.stateHome;
         };
+        programs = config.home.programs;
       };
     };
+
     nix.settings = let
       users = ["root" config.user.name "@admin" "@wheel"];
     in {

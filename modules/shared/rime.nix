@@ -16,7 +16,7 @@ in {
     backupDir =
       mkOpt' types.path "${config.my.workdir}/rime-bak" "rime 词库同步文件";
     userDir =
-      mkOpt' types.path "${config.my.hm.dir}/.config/fcitx/rime"
+      mkOpt' types.path "${config.user.home}/.config/fcitx/rime"
       "rime 用户文件保存位置";
     script = mkOpt' types.str "" "执行脚本";
     extraScript = mkOpt' types.lines "" "额外的执行内容";

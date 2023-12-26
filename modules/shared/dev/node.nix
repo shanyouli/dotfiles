@@ -9,7 +9,7 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.dev.node;
-  homeDir = config.my.hm.dir;
+  homeDir = config.user.home;
   npm_config_userconfig = "${homeDir}/.config/npm/config";
   npm_config_cache = "${homeDir}/.cache/npm";
   # NPM_CONFIG_TMP = "$XDG_RUNTIME_DIR/npm";

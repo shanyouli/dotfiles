@@ -67,7 +67,7 @@
     service.clash.enable = true;
     service.clash.package = pkgs.mihomo;
     tool.clash.enSingbox = true;
-    service.clash.configFile = "${config.my.hm.dir}/Nutstore Files/我的坚果云/clash/meta.yaml";
+    service.clash.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/meta.yaml";
 
     macos.music.enable = true;
     macos.games.enable = true;

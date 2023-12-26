@@ -19,7 +19,7 @@ in {
   config = mkIf cfg.enable (let
     workdir =
       if cfg.enUser
-      then "${config.my.hm.dir}/Applications/${cfg.name}"
+      then "${config.user.home}/Applications/${cfg.name}"
       else "/Applications/${cfg.name}";
     apps = pkgs.buildEnv {
       name = "my-manager-applications";
