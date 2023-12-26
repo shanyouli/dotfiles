@@ -16,7 +16,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    my.user.packages = with pkgs; [tmux];
+    user.packages = with pkgs; [tmux];
 
     modules.shell = {
       rcFiles = ["${configDir}/tmux/tmux.zsh"];

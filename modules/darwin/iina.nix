@@ -29,7 +29,7 @@ in {
 
   config = mkIf cfg.enable {
     modules.media.mpv.enable = true;
-    my.user.packages = with pkgs; [
+    user.packages = with pkgs; [
       iina-app
       (mkIf cfg.isStream iinaplus-app)
       seam

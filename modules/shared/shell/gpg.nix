@@ -18,7 +18,7 @@ in {
     environment.variables.GNUPGHOME = "${config.my.hm.configHome}/gnupg";
 
     programs.gnupg.agent.enable = true;
-    my.user.packages = [(mkIf pkgs.stdenvNoCC.isLinux pkgs.tomb) pkgs.gnupg];
+    user.packages = [(mkIf pkgs.stdenvNoCC.isLinux pkgs.tomb) pkgs.gnupg];
     # HACK Without this config file you get "No pinentry program" on 20.03.
     #      programs.gnupg.agent.pinentryFlavor doesn't appear to work, and this
     #      is cleaner than overriding the systemd unit.

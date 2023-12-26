@@ -37,7 +37,7 @@ in {
     modules.dev.lua.extraPkgs = ps: with ps; [luarocks-nix lua-cjson luacheck];
     modules.dev.lua.package = pkgs.lua5_4;
     modules.dev.lua.finalPkg = cfg.package.withPackages cfg.extraPkgs;
-    my.user.packages = with pkgs; [
+    user.packages = with pkgs; [
       cfg.finalPkg
       # lua54Packages.luarocks-nix
       stylua # fmt

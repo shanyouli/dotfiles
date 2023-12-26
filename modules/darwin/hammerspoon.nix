@@ -15,7 +15,7 @@ in {
   config = mkIf cfg.enable {
     homebrew.casks = ["hammerspoon"];
     homebrew.brews = ["blueutil"];
-    my.user.packages = [pkgs.defaultbrowser];
+    user.packages = [pkgs.defaultbrowser];
     my.hm.configFile."hammerspoon/nixpath.lua".text = let
       luaPaths = lib.optionalString (cfmLua.enable
         && ((pkgs.lib.take 2 (builtins.splitVersion cfmLua.package.version))

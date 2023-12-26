@@ -14,7 +14,7 @@ in {
     enable = mkEnableOption "Whether to c/c++ dev";
   };
   config = mkIf cfg.enable {
-    my.user.packages = with pkgs.unstable;
+    user.packages = with pkgs.unstable;
       [
         clang
         # gcc

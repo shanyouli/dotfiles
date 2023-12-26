@@ -22,7 +22,7 @@ in {
       "vox"
       "lx-music" # 可下载无损音乐
     ];
-    my.user.packages = [pkgs.lyricx-app];
+    user.packages = [pkgs.lyricx-app];
 
     modules.media.mpd.enable = true;
     modules.media.mpd = {

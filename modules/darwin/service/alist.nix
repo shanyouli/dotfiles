@@ -16,7 +16,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    my.user.packages = [package];
+    user.packages = [package];
     launchd.user.agents.alist = {
       serviceConfig.ProgramArguments = [
         "${package}/bin/alist"

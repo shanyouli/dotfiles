@@ -56,7 +56,7 @@ in {
         enableBashCompletion = false;
         promptInit = "";
       };
-      my.user.packages = with pkgs; [
+      user.packages = with pkgs; [
         bottom
         fd
         eza
@@ -155,20 +155,20 @@ in {
       };
     }
     (mkIf cfg.enZoxide {
-      my.user.packages = [pkgs.zoxide];
+      user.packages = [pkgs.zoxide];
       modules.shell.rcInit = ''
         _cache zoxide init zsh
       '';
     })
     (mkIf cfg.enNavi {
-      my.user.packages = [pkgs.navi];
+      user.packages = [pkgs.navi];
     })
     # 一个更好的LS_COLORS 工具: https://github.com/sharkdp/vivid
     (mkIf cfg.enVivid {
-      my.user.packages = [pkgs.vivid];
+      user.packages = [pkgs.vivid];
     })
     (mkIf cfg.enZinit {
-      my.user.packages = [pkgs.zinit];
+      user.packages = [pkgs.zinit];
       modules.shell.env.ZINIT_HOME = "${pkgs.zinit}/share/zinit";
     })
   ];

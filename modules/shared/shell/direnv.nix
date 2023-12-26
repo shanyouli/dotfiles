@@ -14,7 +14,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    my.user.packages = [pkgs.direnv pkgs.nix-direnv];
+    user.packages = [pkgs.direnv pkgs.nix-direnv];
     modules.shell.rcInit = ''_cache direnv hook zsh'';
     my.hm.configFile = mkMerge [
       (mkIf (config.modules.dev.plugins != []) {

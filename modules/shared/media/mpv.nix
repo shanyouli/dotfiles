@@ -18,7 +18,7 @@ in {
   config = with lib;
     mkIf cfg.enable (mkMerge [
       {
-        my.user.packages = with pkgs; [mpv mpvc ffmpeg];
+        user.packages = with pkgs; [mpv mpvc ffmpeg];
       }
     ]);
 }

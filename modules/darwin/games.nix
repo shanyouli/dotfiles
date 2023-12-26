@@ -14,6 +14,6 @@ in {
 
   config = mkIf cfg.enable {
     homebrew.casks = ["openemu"];
-    # my.user.packages = [ pkgs.rpcs3-app ];
+    # user.packages = [ pkgs.rpcs3-app ];
   };
 }

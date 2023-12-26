@@ -214,7 +214,7 @@ in {
       #     (setq treesit-extra-load-path (list "${builtins.head resultList}"))
       #   '';
     };
-    my.user.packages = let
+    user.packages = let
       # Pasting images to Emacs on macOS.
       pngpaste = with pkgs;
         stdenv.mkDerivation rec {

@@ -30,6 +30,6 @@ in {
     enable = mkEnableOption "Whether to use Flameshot";
   };
   config = mkIf cfg.enable {
-    my.user.packages = [package];
+    user.packages = [package];
   };
 }

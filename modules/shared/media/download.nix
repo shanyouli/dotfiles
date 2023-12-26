@@ -17,10 +17,10 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.enAudio {
-      my.user.packages = [pkgs.musicn pkgs.python3.pkgs.musicdl];
+      user.packages = [pkgs.musicn pkgs.python3.pkgs.musicdl];
     })
     (mkIf cfg.enVideo {
-      my.user.packages = [pkgs.unstable.yt-dlp pkgs.yutto]; # yutto 下载bilibili
+      user.packages = [pkgs.unstable.yt-dlp pkgs.yutto]; # yutto 下载bilibili
       my.hm.configFile."yt-dlp/config".text = ''
         # 下载默认保存目录
         --paths $HOME/Downloads/Youtube

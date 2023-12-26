@@ -26,7 +26,7 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      my.user.packages = [pkgs.mpd pkgs.mpc-cli];
+      user.packages = [pkgs.mpd pkgs.mpc-cli];
       modules.shell.aliases.mpcs = "mpc search any";
       modules.shell.aliases.mpcsp = "mpc searchplay any";
       my.hm = let
@@ -56,7 +56,7 @@ in {
       };
     }
     (mkIf cfg.ncmpcppEn {
-      my.user.packages = [(pkgs.ncmpcpp.override {visualizerSupport = true;})];
+      user.packages = [(pkgs.ncmpcpp.override {visualizerSupport = true;})];
       my.hm = let
         ncmpcpp_dir = "${config.my.hm.cacheHome}/ncmpcpp";
         lyrics_dir = "${config.my.hm.dir}/Music/LyricsX";

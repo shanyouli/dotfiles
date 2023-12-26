@@ -49,7 +49,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    my.user.packages = [pkgs.yabai-zsh-completions];
+    user.packages = [pkgs.yabai-zsh-completions];
     my.hm.configFile."yabai" = {
       source = "${configDir}/yabai";
       recursive = true;

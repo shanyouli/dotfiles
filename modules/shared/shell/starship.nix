@@ -51,7 +51,7 @@ in {
     enableBash = mkBoolOpt true;
   };
   config = mkIf cfg.enable {
-    my.user.packages = [pkgs.starship];
+    user.packages = [pkgs.starship];
     my.hm.configFile."starship.toml" =
       if (cfg.settings != {})
       then {

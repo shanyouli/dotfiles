@@ -22,7 +22,7 @@ in {
     package = mkOpt' types.package pkgs.nodejs "nodejs package";
   };
   config = mkIf cfg.enable {
-    my.user.packages = with pkgs.nodePackages; [
+    user.packages = with pkgs.nodePackages; [
       cfg.package
       pnpm
       typescript-language-server

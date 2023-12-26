@@ -16,7 +16,7 @@ in {
     fmtPkg = mkPkgOpt pkgs.unstable.alejandra "Nix Format";
   };
   config = mkIf cfg.enable {
-    my.user.packages = with pkgs.unstable; [
+    user.packages = with pkgs.unstable; [
       cfg.lspPkg
       cfg.fmtPkg
       nix-init

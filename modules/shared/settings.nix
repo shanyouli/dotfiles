@@ -4,7 +4,6 @@
   lib,
   home-manager,
   options,
-  inputs,
   ...
 }:
 with lib;
@@ -63,22 +62,8 @@ in {
       };
       programs = mkOpt' attrs {} "home-manager programs";
     };
-    env = mkOption {
-      type = attrsOf (oneOf [str path (listOf (either str path))]);
-      apply = mapAttrs (n: v:
-        if isList v
-        then concatMapStringsSep ":" toString v
-        else (toString v));
-      default = {};
-      description = "TODO";
-    };
   };
   config = {
-    users.users."${config.my.username}" = mkAliasDefinitions options.my.user;
-    my.user = {
-      inherit home;
-      description = "Primary user account";
-    };
     my.programs.home-manager.enable = true;
     my.repodir = "${home}/Repos";
     my.workdir = "${home}/Workspace";
@@ -90,64 +75,15 @@ in {
         config.home-manager.users."${config.my.username}".home.profileDirectory;
       dir = prefix.homeDirectory;
     };
-    home-manager = {
-      extraSpecialArgs = {inherit inputs;};
-      useGlobalPkgs = true;
-      useUserPackages = true;
-      backupFileExtension = "backup";
-    };
-    home-manager.users."${config.my.username}" = {
+    home-manager.users."${config.user.name}" = {
       xdg = {
         enable = true;
-        cacheHome = mkAliasDefinitions options.my.hm.cacheHome;
-        configFile = mkAliasDefinitions options.my.hm.configFile;
-        # configHome = mkAliasDefinitions options.my.hm.configHome;
-        dataFile = mkAliasDefinitions options.my.hm.dataFile;
-        # dataHome = mkAliasDefinitions options.my.hm.dataHome;
-        # stateHome = mkAliasDefinitions options.my.hm.stateHome;
       };
 
       home = {
-        # Necessary for home-manager to work with flakes, otherwise it will
-        # look for a nixpkgs channel.
-        stateVersion =
-          if pkgs.stdenv.isDarwin
-          then "23.11"
-          else config.system.stateVersion;
-        inherit (config.my) username;
-        file = mkAliasDefinitions options.my.hm.file;
         activation = mkAliasDefinitions options.my.hm.activation;
-        # packages = mkAliasDefinitions options.my.hm.pkgs;
-        # packages = config.my.hm.pkgs;
       };
       programs = config.my.programs;
     };
-
-    environment.extraInit = let
-      inherit (pkgs.stdenvNoCC) isAarch64 isAarch32 isDarwin;
-      brewHome =
-        if isAarch64 || isAarch32
-        then "/opt/homebrew/bin"
-        else "/usr/local/bin";
-      darwinPath = optionalString isDarwin ''
-        PATH=""
-        eval $(/usr/libexec/path_helper -s)
-        [[ -d ${brewHome} ]] && eval $(${brewHome}/brew shellenv)
-        PATH=${pkgs.lib.makeBinPath
-          (builtins.filter (x: x != "/nix/var/nix/profiles/default") config.environment.profiles)}:$PATH
-      '';
-    in
-      ''
-        ${darwinPath}
-      ''
-      + concatStringsSep "\n" (mapAttrsToList (n: v: (
-          if "${n}" == "PATH"
-          then ''export ${n}="${v}:$PATH"''
-          else ''export ${n}="${v}"''
-        ))
-        config.env)
-      + optionalString (config.nix.envVars != {}) ''
-        unset all_proxy http_proxy https_proxy
-      '';
   };
 }

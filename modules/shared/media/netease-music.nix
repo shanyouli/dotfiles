@@ -15,7 +15,7 @@ in {
     enGui = mkBoolOpt config.my.enGui;
   };
   config = mkIf cfg.enable {
-    my.user.packages = [
+    user.packages = [
       pkgs.go-musicfox
       (mkIf (pkgs.stdenvNoCC.isLinux && cfg.enGui) pkgs.netease-cloud-music-gtk)
     ];

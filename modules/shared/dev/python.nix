@@ -33,7 +33,7 @@ in {
         pylint
         pylint-venv
       ];
-    my.user.packages = [
+    user.packages = [
       pkgs.ruff
       pkgs.python3.pkgs.ruff-lsp
       pkgs.poetry

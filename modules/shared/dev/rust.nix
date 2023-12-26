@@ -20,7 +20,7 @@ in {
     initScript = mkOpt' types.lines "" "init script";
   };
   config = mkIf cfg.enable {
-    my.user.packages = with pkgs.unstable; [
+    user.packages = with pkgs.unstable; [
       package
       (mkIf cfg.enSlsp rust-analyzer)
       cargo-update

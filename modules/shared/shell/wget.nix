@@ -27,7 +27,7 @@ in {
       };
   };
   config = mkIf cfg.enable {
-    my.user.packages = [wget];
+    user.packages = [wget];
     modules.shell.wget.settings = {
       # Use the server-provided last modification date, if available
       timestamping = "on";

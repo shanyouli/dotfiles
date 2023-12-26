@@ -30,7 +30,7 @@ in {
       modules.shell.aliases.paria2 = "aria2c --all-proxy=${proxy}";
     })
     (mkIf cfg.enSingbox {
-      my.user.packages = [pkgs.clash2singbox];
+      user.packages = [pkgs.clash2singbox];
     })
   ]);
 }

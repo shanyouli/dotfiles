@@ -24,10 +24,10 @@ in {
   };
   config = mkMerge [
     (mkIf cfg.toml.fmt {
-      my.user.packages = [pkgs.unstable.taplo];
+      user.packages = [pkgs.unstable.taplo];
     })
     (mkIf cfg.enWebReport {
-      my.user.packages = [pkgs.unstable.allure];
+      user.packages = [pkgs.unstable.allure];
     })
     (mkIf (cfg.plugins != []) (let
       cmh = config.my.hm;
@@ -41,7 +41,7 @@ in {
       '';
       asdf_data_dir = "${cmh.dataHome}/asdf";
     in {
-      my.user.packages = [cfg.package];
+      user.packages = [cfg.package];
       modules.shell = mkMerge [
         (mkIf cfm.shell.direnv.enable {
           env.ASDF_DIRENV_BIN = "${config.my.hm.profileDirectory}/bin/direnv";

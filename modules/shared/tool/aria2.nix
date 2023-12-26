@@ -18,7 +18,7 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      my.user.packages = [cfg.package];
+      user.packages = [cfg.package];
       modules.shell.aliases.aria2 = "aria2c -x 16 -s 5 --min-split-size 4M";
     }
     (mkIf cfg.aria2p {

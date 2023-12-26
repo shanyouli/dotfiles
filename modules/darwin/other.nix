@@ -10,7 +10,7 @@ with lib.my; let
 in {
   config = mkMerge [
     {
-      my.user.packages = [
+      user.packages = [
         # pkgs.qbittorrent-app
         pkgs.xbydriver-app
         # pkgs.chatgpt-app

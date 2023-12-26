@@ -13,7 +13,7 @@ in {
     enGui = mkBoolOpt config.my.enGui;
   };
   config = mkIf cfg.enable {
-    my.user.packages = with pkgs; [
+    user.packages = with pkgs; [
       github-cli
       git-crypt
       # pre-commit # git 提交前自检, 使用 pipx安装

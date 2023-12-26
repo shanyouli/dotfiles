@@ -36,6 +36,6 @@ in {
             [[ -d $out/$APP_NAME.app ]] && rm -rf $out/$APP_NAME.app
           '';
       });
-    my.user.packages = [cfg.package];
+    user.packages = [cfg.package];
   };
 }

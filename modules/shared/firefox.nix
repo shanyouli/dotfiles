@@ -26,7 +26,7 @@ in {
   config = mkIf cfg.enable {
     my.programs.browserpass.enable = true;
     my.programs.browserpass.browsers = ["firefox" "chrome"];
-    my.user.packages = [pkgs.geckodriver];
+    user.packages = [pkgs.geckodriver];
     my.programs.firefox = {
       enable = true;
       package = cfg.package;

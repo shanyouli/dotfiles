@@ -143,7 +143,7 @@ in {
       modules.editor.emacs.pkg = emacsWithPackages cfg.extraPkgs;
     }
     {
-      my.user.packages = [
+      user.packages = [
         pkgs.graphviz
         cfg.pkg
         pkgs.pandoc

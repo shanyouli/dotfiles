@@ -18,7 +18,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    my.user.packages = [cfg.package];
+    user.packages = [cfg.package];
     modules.tool.nginx = {
       sScript = ''
         [[ -d ${cfg.workDir} ]] || {

@@ -21,7 +21,7 @@ in {
   };
   config = mkIf (cfg.extraPkgs != null) {
     modules.shell.python.finalPkg = pkgs.python3.withPackages cfg.extraPkgs;
-    my.user.packages = [
+    user.packages = [
       cfg.finalPkg
       pkgs.pipx # A better python command line installation tool
     ];

@@ -15,6 +15,6 @@ in {
     package = mkPkgOpt pkgs.mysql "mysql package";
   };
   config = mkIf cfg.enable {
-    my.user.packages = [cfg.package];
+    user.packages = [cfg.package];
   };
 }
