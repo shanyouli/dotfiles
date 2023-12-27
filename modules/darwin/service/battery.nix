@@ -19,7 +19,7 @@ with lib.my; let
         fi
     }
     current_setting=$(get_battery)
-    current_battery=$(pmset -g batt | grep -Eo "\d+%" | cut -d% f1)
+    current_battery=$(pmset -g batt | grep -Eo "\d+%" | cut -d% -f1)
 
     function maintain() {
         if [[ -n $current_setting ]] && [[ "$current_setting" != "$1" ]]; then
@@ -28,9 +28,9 @@ with lib.my; let
     }
 
     if [[ $current_battery -ge $low ]]; then
-        maintain $high
-    elif [[ $current_battery -le $high ]]; then
         maintain $low
+    elif [[ $current_battery -le $high ]]; then
+        maintain $high
     fi
   '';
 in {
@@ -48,7 +48,8 @@ in {
       # serviceConfig.StandardOutPath = "${config.user.home}/Library/Logs/mybatter.log";
       serviceConfig.StandardErrorPath = "${config.user.home}/Library/Logs/mybatter.error.log";
       path = [config.environment.systemPath];
-      serviceConfig.StartCalendarInterval = [{Minute = 10;}];
+      serviceConfig.StartInterval = 600;
+      # serviceConfig.StartCalendarInterval = [{Minute = 10;}];
     };
   };
 }
