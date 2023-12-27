@@ -27,10 +27,10 @@ with lib.my; let
         fi
     }
 
-    if [[ $current_battery -ge $low ]]; then
-        maintain $low
-    elif [[ $current_battery -le $high ]]; then
+    if [[ $current_battery -le $low ]]; then
         maintain $high
+    elif [[ $current_battery -ge $high ]]; then
+        maintain $low
     fi
   '';
 in {

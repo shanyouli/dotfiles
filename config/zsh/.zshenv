@@ -11,7 +11,7 @@ done
 hash -d config=${XDG_CONFIG_HOME:=~/.config}
 hash -d cache=${XDG_CACHE_HOME:=~/.cache}
 hash -d data=${XDG_DATA_HOME:=~/.local/share}
-hash -d zdot=$ZDOTDIR
+hash -d zdot=${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}
 hash -d dot=$DOTFILES
 
 hash -d Downloads=~/Downloads
@@ -63,7 +63,7 @@ export XDG_DATA_HOME
 export XDG_CONFIG_HOME
 export XDG_CACHE_HOME
 
-_source ${ZDOTDIR:-${XDG_CONFIG_HOME}}/extra.zshenv
+_source ~zdot/extra.zshenv
 # [ -f "${0:a:h}/extra.zshenv" ] && source "${0:a:h}/extra.zshenv"
 
 # If you have host-local configuration, this is where you'd put it
