@@ -19,7 +19,7 @@ in {
     # user.packages = [pkgs.deeplx];
     launchd.user.agents.deeplx = {
       serviceConfig.ProgramArguments = ["${pkgs.deeplx}/bin/deeplx" "-p" "${toString cfg.port}"];
-      path = [config.environment.systemPath];
+      path = [config.modules.service.path];
       serviceConfig.RunAtLoad = true;
       # serviceConfig.KeepAlive.NetworkState = true;
       serviceConfig.StandardOutPath = log_file;

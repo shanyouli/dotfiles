@@ -79,7 +79,7 @@
     service.deeplx.enable = true;
     service.alist.enable = true;
     service.emacs.enable = true;
-    service.battery.enable = true;
+    service.battery.enable = false;
     service.yabai.enable = true;
     service.aria2.enable = true;
     service.qbittorrent.enable = true;

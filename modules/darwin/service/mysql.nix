@@ -56,7 +56,7 @@ in {
     modules.shell.env.MYSQL_UNIX_PORT = mysqlSock;
     modules.shell.rcInit = prevScirt;
     launchd.user.agents.mysql = {
-      path = [config.environment.systemPath homebin];
+      path = [config.modules.service.path homebin];
       serviceConfig.RunAtLoad = false;
       serviceConfig.WorkingDirectory = datadir;
       serviceConfig.ProcessType = "Background";

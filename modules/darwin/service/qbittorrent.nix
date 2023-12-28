@@ -21,7 +21,7 @@ in {
         "${cfm.tool.qbittorrent.package}/bin/qbittorrent-nox"
         "--webui-port=${toString cfg.port}"
       ];
-      path = [config.environment.systemPath];
+      path = [config.modules.service.path];
       serviceConfig.RunAtLoad = true;
       # serviceConfig.KeepAlive.NetworkState = true;
       serviceConfig.StandardOutPath = "${config.user.home}/Library/Logs/qbittorrent-nox.log";

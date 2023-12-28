@@ -77,6 +77,8 @@ in {
           withZshCompletion = true;
           withRich = true;
         })
+
+        tailspin # 支持高亮的语法查看工具
       ];
       env = {
         PATH = ["${config.home.binDir}"];
@@ -94,6 +96,7 @@ in {
         aliases.cat = "bat -p"; #or  bat -pp
         aliases.unzip = "atool --extract --explain";
         aliases.zip = "atool --add";
+        aliases.log = "tspin";
       };
 
       home = {

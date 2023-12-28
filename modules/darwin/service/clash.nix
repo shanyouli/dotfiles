@@ -8,7 +8,7 @@
 with lib;
 with lib.my; let
   cfg = config.modules.service.clash;
-  cfgFile = "${config.home.config.dotfiles.configDir}/clash-meta/clash.yaml";
+  cfgFile = "${config.dotfiles.configDir}/clash-meta/clash.yaml";
   mclash = config.modules.tool.clash;
 in {
   options.modules.service.clash = {
@@ -88,7 +88,7 @@ in {
     '';
 
     launchd.user.agents.clash = {
-      path = [config.environment.systemPath];
+      path = [config.modules.service.path];
       serviceConfig.WorkingDirectory = workdir;
       serviceConfig.RunAtLoad = true;
       serviceConfig.StandardOutPath = log_file;

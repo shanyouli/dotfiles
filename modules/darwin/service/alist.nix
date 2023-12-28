@@ -24,7 +24,7 @@ in {
         "--data"
         "${workdir}"
       ];
-      path = [config.environment.systemPath];
+      path = [config.modules.service.path];
       serviceConfig.RunAtLoad = true;
       # serviceConfig.KeepAlive.NetworkState = true;
       # serviceConfig.StandardErrorPath = log_file;

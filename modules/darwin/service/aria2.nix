@@ -17,7 +17,7 @@ in {
     modules.tool.aria2.enable = true;
     modules.tool.aria2.aria2p = true;
     launchd.user.agents.aria2 = {
-      path = ["${config.modules.tool.aria2.package}/bin" config.environment.systemPath];
+      path = ["${config.modules.tool.aria2.package}/bin" config.modules.service.path];
       serviceConfig.ProgramArguments = [
         "${config.modules.tool.aria2.package}/bin/aria2c"
         (mkIf config.modules.tool.clash.enable "--all-proxy=http://127.0.0.1:10801")

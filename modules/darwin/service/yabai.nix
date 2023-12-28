@@ -60,9 +60,7 @@ in {
       serviceConfig.ProgramArguments = ["${cfg.package}/bin/yabai" "--config" "${config.home.config.dotfiles.configDir}/yabai/yabairc"];
       serviceConfig.KeepAlive = false;
       serviceConfig.RunAtLoad = true;
-      serviceConfig.EnvironmentVariables = {
-        PATH = "${cfg.package}/bin:${config.environment.systemPath}";
-      };
+      serviceConfig.EnvironmentVariables.PATH = "${cfg.package}/bin:${config.modules.service.path}";
     };
     # The scripting addition needs root access to load, which we want to do automatically when logging in.
     # Disable the password requirement for it so that a service can do so without user interaction.

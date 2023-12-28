@@ -19,7 +19,7 @@ in {
       serviceConfig.RunAtLoad = true;
       serviceConfig.KeepAlive = cfg.keepAlive;
       serviceConfig.EnvironmentVariables = {
-        PATH = "${emacsPkg}/bin:${config.environment.systemPath}";
+        PATH = "${emacsPkg}/bin:${config.modules.service.path}";
       };
       serviceConfig.ProgramArguments = ["${emacsPkg}/Applications/Emacs.app/Contents/MacOS/Emacs" "--fg-daemon=main"];
     };

@@ -22,12 +22,20 @@ in {
         default = {};
         description = "use launchctl set environment variable";
       };
+    path = mkStrOpt "";
   };
-  config = mkIf (cfg.env != []) {
-    launchd.user.agents.env = {
-      path = [config.environment.systemPath];
-      serviceConfig.RunAtLoad = true;
-      serviceConfig.ProgramArguments = ["${envScript}/bin/launchdenv-service"];
-    };
-  };
+  config = mkMerge [
+    (mkIf (cfg.env != []) {
+      launchd.user.agents.env = {
+        path = [config.environment.systemPath];
+        serviceConfig.RunAtLoad = true;
+        serviceConfig.ProgramArguments = ["${envScript}/bin/launchdenv-service"];
+      };
+    })
+    {
+      modules.service.path =
+        builtins.replaceStrings ["$USER" "$HOME"] [config.user.name config.user.home]
+        config.environment.systemPath;
+    }
+  ];
 }

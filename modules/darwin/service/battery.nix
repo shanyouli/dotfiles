@@ -47,7 +47,7 @@ in {
       serviceConfig.RunAtLoad = true;
       # serviceConfig.StandardOutPath = "${config.user.home}/Library/Logs/mybatter.log";
       serviceConfig.StandardErrorPath = "${config.user.home}/Library/Logs/mybatter.error.log";
-      path = [config.environment.systemPath];
+      path = [config.modules.service.path];
       serviceConfig.StartInterval = 600;
       # serviceConfig.StartCalendarInterval = [{Minute = 10;}];
     };
