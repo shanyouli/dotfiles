@@ -12,36 +12,20 @@ with lib.my; let
 in {
   options.modules.editor.vscode = {
     enable = mkEnableOption "Whether using vscode";
+    extensions = mkOpt' (types.listOf types.package) [] "VScode extensions";
   };
   config = mkIf cfg.enable {
+    modules.editor.vscode.extensions = with pkgs.unstable.vscode-extensions; [
+      vscodevim.vim
+      jnoortheen.nix-ide
+      formulahendry.code-runner
+    ];
     home.programs.vscode = {
       enable = true;
       package = pkgs.unstable.vscode;
       enableUpdateCheck = false;
       enableExtensionUpdateCheck = false;
-      extensions = with pkgs.unstable.vscode-extensions; let
-        cpp =
-          if pkgs.stdenvNoCC.isLinux
-          then ms-vscode.cpptools
-          else
-            pkgs.unstable.vscode-utils.extensionFromVscodeMarketplace {
-              name = "cpptools";
-              publisher = "ms-vscode";
-              version = "1.18.5";
-              sha256 = "sha256-Ke0PCq9vJtqi1keqzTbVlils8g5UVvMw14b8Y0Rb49Y=";
-            };
-      in
-        [
-          vscodevim.vim
-          jnoortheen.nix-ide
-          formulahendry.code-runner
-        ]
-        ++ optionals cfm.shell.direnv.enable [
-          mkhl.direnv
-        ]
-        ++ optionals cfm.dev.cc.enable [
-          cpp
-        ];
+      extensions = cfg.extensions;
       userSettings = {
         "nix.serverPath" = "rnix-lsp";
         "nix.enableLanguageServer" = true;
