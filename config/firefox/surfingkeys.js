@@ -1,3 +1,4 @@
+// Encoding: UTF-8
 const {
   aceVimMap,
   mapkey,
@@ -99,10 +100,6 @@ mapkey('ot', '打开onetab页面', function() {
   }
 });
 
-mapkey(",os", "打开surfingkeys配置", function() {
-  tabOpenLink("moz-extension://25d9ceb3-9697-4a26-9026-a2c58fa8ba14/pages/options.html");
-});
-
 mapkey(",ps", "打开浏览器设置", function() {
   tabOpenLink("about:preferences")
 });
@@ -114,17 +111,41 @@ mapkey(',op', '打开pocket', function() {
 mapkey('ymo', '以org格式复制链接', () => {
   let url = document.URL;
   let title = document.title;
-  if (url.startsWith("https://github.com/")) {
-    let urlEnd = url.replace("https://github.com/", "")
+  let domain = document.domain;
+  let message;
+  if (domain === "github.com") {
+    let urlEnd = url.replace("https://github.,com", "")
     if (title.startsWith(urlEnd, "")) {
       title = urlEnd.replace("/", "--");
-    } else {
-      console.log(urlEnd);
     }
-  } else {
-    console.log(url);
+  } else if (domain === "movie.douban.com") {
+    title = title.replace(" (豆瓣)","");
+    let score = "",
+        info = "";
+    try {
+      score = document.querySelector("div.rating_wrap:nth-child(1) > div:nth-child(2) > strong:nth-child(1)").textContent;
+    } catch (err) {
+      console.log("There's no way to find out the ratings.");
+    }
+
+    try {
+      info = document.querySelector("#link-report-intra > span:nth-child(1)").textContent;
+      info = info.replaceAll(" ", "").replace("\n", "");
+    } catch (err) {
+      console.log("No video information was found");
+    }
+    message = [
+      "#+begin_quote",
+      info,
+      "#+end_quote",
+      `- [[${url}][${title} 豆瓣评分:]] ${score}`,
+      "- 我的评分:"
+    ].join("\n")
   }
-  Clipboard.write(`[[${url}][${title}]]`)
+  if (message === undefined) {
+    message = `[[${url}][${title}]]`
+  }
+  Clipboard.write(message)
 });
 
 mapkey('ymm', '以md格式复制链接', () => {
@@ -142,6 +163,40 @@ mapkey('ymm', '以md格式复制链接', () => {
   }
   Clipboard.write(`[${title}](${url})`)
 });
+
+function  UrlExists(url){
+  var  http = new  XMLHttpRequest();
+  http.open('GET', url, false);
+  http.send();
+  return  http.status === 200;
+}
+
+mapkey("ymf", "复制网站ico", function() {
+  let a = 0;
+  let b = document.getElementsByTagName("link");
+  let c = "";
+  if (0 < b.length) {
+    for (a = 0; a < b.length; a++) {
+      if ("undefined" !== typeof b[a].rel && -1 < b[a].rel.indexOf("icon")) {
+        c = b[a].href;
+        break;
+      }
+    }
+  }
+  if ("" === c) {
+    let url = "http://"+ window.location.host + "/favicon.ico"
+    if (UrlExists(url)) {
+      c = url;
+    }
+  }
+  // https://www.google.com/s2/favicons?domain=domain
+  if ("" === c) {
+    console.log("Not Find favicon.ico");
+    Front.showBanner("Not Find favicon.ico");
+  } else {
+    Clipboard.write(c)
+  }
+})
 
 mapkey(',wv', "解除网页限制", function() {
   function t(e) {

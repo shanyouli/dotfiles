@@ -1,38 +1,29 @@
 #!/usr/bin/env zsh
 
-function setDNS() {
-    # 使用 阿里云，百度云，114DNS，CNNIC DNS， 腾讯，红鱼
-    dns_servers=("223.5.5.5" "223.6.6.6" "180.76.76.76" "114.114.114.114" \
-    "114.114.115.115" "1.2.4.8" "210.2.4.8" "119.29.29.29" \
-    "119.28.28.28" "47.75.192.94" "47.91.64.33")
-    # Get the number of DNS servers
-    num_dns_servers=${#dns_servers[@]}
+function random_el_in_arr() {
+    local arr=("$@")
+    printf '%s' "''${arr[RANDOM % $#]}"
+}
 
-    # Generate two random indexes
-    index1=$(( $((RANDOM%num_dns_servers)) + 1))
-    index2=$(( $((RANDOM%num_dns_servers)) + 1))
-    # dns1, dns2
-    dns1=${dns_servers[$index1]}
-    dns2=${dns_servers[$index2]}
-
-    old_IFS=$IFS
-    IFS=$'\n'
-    NETWORK_SERVICES=( $(networksetup -listallnetworkservices | tail -n +2) )
-    IFS=$old_IFS
-    for SERVICE in $NETWORK_SERVICES; do
-        networksetup -setdnsservers "$SERVICE" $dns1 $dns2
+function _setDNS() {
+    local IFS=$'\n'
+    for i in $(networksetup -listallnetworkservices | tail -n +2); do
+        networksetup -setdnsservers "$i" "$@"
     done
 }
 
-function unsetDNS() {
-    old_IFS=$IFS
-    IFS=$'\n'
-    NETWORK_SERVICES=( $(networksetup -listallnetworkservices | tail -n +2) )
-    IFS=$old_IFS
+function clear_dns() { _setDNS 'Empty'; }
 
-    for SERVICE in $NETWORK_SERVICES; do
-        networksetup -setdnsservers "$SERVICE" Empty
-    done
+function set_dns() {
+  # 使用 阿里云，百度云，114DNS，CNNIC DNS， 腾讯
+    local all_dns=("223.5.5.5" "223.6.6.6" \
+        "114.114.114.114" "114.114.115.115" \
+        "1.2.4.8" "210.2.4.8" \
+        "119.29.29.29" "119.28.28.28" \
+        "101.226.4.6" "180.184.1.1")
+    local dns1=$(random_el_in_arr "''${all_dns[@]}")
+    local dns2=$(random_el_in_arr "''${all_dns[@]}")
+    _setDNS "$dns1" "$dns2"
 }
 
 # 清理dns缓存

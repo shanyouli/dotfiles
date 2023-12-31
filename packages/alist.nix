@@ -8,11 +8,11 @@
   withFishCompletion ? false,
 }:
 stdenv.mkDerivation rec {
-  name = "alist";
+  pname = "alist";
   version = "3.29.1";
   src = fetchurl {
     url = "https://github.com/alist-org/alist/releases/download/v${version}/alist-darwin-arm64.tar.gz";
-    sha256 = "sha256-t01TeEOJAw4DqkPgkTMX4bw0/E2kYR+Hc46wlrsY9Is=";
+    sha256 = "sha256-eLbTBxtu+K+7jSw8T9yIYn8eDh+mHnZnX9RzFZbCyWU=";
   };
   sourceRoot = ".";
   buildInputs = [installShellFiles];

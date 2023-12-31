@@ -28,6 +28,7 @@ in {
       typescript-language-server
       stylelint
       js-beautify
+      pkgs.bun
     ];
     home.configFile."npm/config".text = ''
       cache=${npm_config_cache}
