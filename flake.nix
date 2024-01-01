@@ -43,7 +43,7 @@
   }: let
     inherit (flake-utils.lib) eachSystemMap;
     inherit (lib) attrValues;
-    inherit (lib.my) defaultSystems mkPkgs mkPkg;
+    inherit (lib.my) defaultSystems mkPkgs mkPkg mapModule;
     allPkgs = mkPkgs {
       nixpkgs = [nixos-stable darwin-stable];
       cfg = {allowUnfree = true;};
@@ -264,21 +264,22 @@
         python310 =
           prev.python310.override {inherit packageOverrides;};
       };
-      my = final: prev: {
-        maple-mono = prev.callPackage ./packages/maple-mono.nix {};
-        maple-sc = prev.callPackage ./packages/maple-sc.nix {};
-        codicons = prev.callPackage ./packages/codicons.nix {};
-        xray-asset = prev.callPackage ./packages/xray-asset.nix {};
-        my-nix-scripts = prev.callPackage ./packages/nix-script.nix {};
-        deeplx = prev.callPackage ./packages/deeplx.nix {};
-        musicn = prev.callPackage ./packages/musicn {};
-        go-musicfox = prev.callPackage ./packages/go-musicfox.nix {};
-        lazyvim-star = prev.callPackage ./packages/lazyvim-star.nix {};
-        sysdo = prev.callPackage ./packages/sysdo {};
-        yutto = prev.callPackage ./packages/yutto.nix {};
-        mihomo = prev.callPackage ./packages/mihomo.nix {};
-        clash2singbox = prev.callPackage ./packages/clash2singbox.nix {};
-      };
+      my = final: prev:
+        mapModule ./packages/common (p: prev.callPackage p {}) {};
+      # {
+      #   maple-mono = prev.callPackage ./packages/maple-mono.nix {};
+      #   maple-sc = prev.callPackage ./packages/maple-sc.nix {};
+      #   codicons = prev.callPackage ./packages/codicons.nix {};
+      #   my-nix-scripts = prev.callPackage ./packages/nix-script.nix {};
+      #   deeplx = prev.callPackage ./packages/deeplx.nix {};
+      #   musicn = prev.callPackage ./packages/musicn {};
+      #   go-musicfox = prev.callPackage ./packages/go-musicfox.nix {};
+      #   lazyvim-star = prev.callPackage ./packages/lazyvim-star.nix {};
+      #   sysdo = prev.callPackage ./packages/sysdo {};
+      #   yutto = prev.callPackage ./packages/yutto.nix {};
+      #   mihomo = prev.callPackage ./packages/mihomo.nix {};
+      #   clash2singbox = prev.callPackage ./packages/clash2singbox.nix {};
+      # };
       macos = final: prev: {
         yabai-zsh-completions =
           prev.callPackage ./packages/yabai-zsh-completions.nix {};
