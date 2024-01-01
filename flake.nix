@@ -266,20 +266,6 @@
       };
       my = final: prev:
         mapModule ./packages/common (p: prev.callPackage p {}) {};
-      # {
-      #   maple-mono = prev.callPackage ./packages/maple-mono.nix {};
-      #   maple-sc = prev.callPackage ./packages/maple-sc.nix {};
-      #   codicons = prev.callPackage ./packages/codicons.nix {};
-      #   my-nix-scripts = prev.callPackage ./packages/nix-script.nix {};
-      #   deeplx = prev.callPackage ./packages/deeplx.nix {};
-      #   musicn = prev.callPackage ./packages/musicn {};
-      #   go-musicfox = prev.callPackage ./packages/go-musicfox.nix {};
-      #   lazyvim-star = prev.callPackage ./packages/lazyvim-star.nix {};
-      #   sysdo = prev.callPackage ./packages/sysdo {};
-      #   yutto = prev.callPackage ./packages/yutto.nix {};
-      #   mihomo = prev.callPackage ./packages/mihomo.nix {};
-      #   clash2singbox = prev.callPackage ./packages/clash2singbox.nix {};
-      # };
       macos = final: prev: {
         yabai-zsh-completions =
           prev.callPackage ./packages/yabai-zsh-completions.nix {};
