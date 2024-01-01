@@ -266,14 +266,8 @@
       };
       my = final: prev:
         mapModule ./packages/common (p: prev.callPackage p {}) {};
-      macos = final: prev: {
-        yabai-zsh-completions =
-          prev.callPackage ./packages/yabai-zsh-completions.nix {};
-        alist = prev.callPackage ./packages/alist.nix {};
-        seam = prev.callPackage ./packages/seam.nix {};
-        bbdown = prev.callPackage ./packages/bbdown.nix {};
-        mybid = prev.callPackage ./packages/mybid {};
-      };
+      macos = final: prev:
+        mapModule ./packages/darwin (p: prev.callPackage p {}) {};
       darwinApp = import ./packages/darwinApp;
 
       nur = inputs.nur.overlay;
