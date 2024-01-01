@@ -245,29 +245,9 @@
         # small = import inputs.small {system = prev.system;};
         devenv = inputs.devenv.defaultPackage.${prev.system};
       };
-      python = final: prev: let
-        packageOverrides = pfinal: pprev:
-          prev.callPackage ./packages/python-modes.nix {python3Packages = pprev;}
-          // {
-            # pyopenssl = pprev.pyopenssl.overrideAttrs
-            #   (old: { meta = old.meta // { broken = false; }; });
-            # poetry =
-            #   pprev.poetry.overridePythonAttrs (old: { doCheck = false; });
-            musicdl = pprev.toPythonModule (prev.callPackage ./packages/musicdl.nix {python3Packages = pprev;});
-            websocket-bridge-python =
-              pprev.toPythonModule (prev.callPackage ./packages/websocket-bridge-python.nix {python3Packages = pprev;});
-          };
-      in {
-        python3 = prev.python3.override {inherit packageOverrides;};
-        pypy3 = prev.pypy3.override {inherit packageOverrides;};
-        python39 = prev.python39.override {inherit packageOverrides;};
-        python310 =
-          prev.python310.override {inherit packageOverrides;};
-      };
-      my = final: prev:
-        mapModule ./packages/common (p: prev.callPackage p {}) {};
-      macos = final: prev:
-        mapModule ./packages/darwin (p: prev.callPackage p {}) {};
+      python = import ./packages/python;
+      my = final: prev: mapModule ./packages/common (p: prev.callPackage p {}) {};
+      macos = final: prev: mapModule ./packages/darwin (p: prev.callPackage p {}) {};
       darwinApp = import ./packages/darwinApp;
 
       nur = inputs.nur.overlay;

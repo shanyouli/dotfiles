@@ -17,7 +17,7 @@ in {
     # 使用 exa 取代 tree, tree -C
     tree = "eza -T";
   in {
-    user.packages = [pkg pkgs.my-nix-script];
+    user.packages = [pkg pkgs.my-nix-script pkgs.python3Packages.alive-progress];
     modules.shell = {
       prevInit = ''
         FZF_DEFAULT_COMMAND="fd -H -I --type f"
