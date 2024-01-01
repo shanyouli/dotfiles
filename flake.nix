@@ -274,11 +274,7 @@
         bbdown = prev.callPackage ./packages/bbdown.nix {};
         mybid = prev.callPackage ./packages/mybid {};
       };
-      darwinApp = import ./packages/darwinApp {
-        # inherit (inputs.nixpkgs) lib;
-        inherit (lib.my) mapModule;
-      };
-      # import ./packages/darwinApp {inherit lib;};
+      darwinApp = import ./packages/darwinApp;
 
       nur = inputs.nur.overlay;
     };

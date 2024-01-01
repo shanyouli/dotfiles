@@ -1,6 +1,4 @@
-{...}: final: prev:
-# with lib;
-let
+final: prev: let
   pkgs = prev;
   lib = pkgs.lib;
   # https://discourse.nixos.org/t/help-with-error-only-hfs-file-systems-are-supported-on-ventura/25873
@@ -57,21 +55,25 @@ let
         '';
         meta = with lib; appMeta // {platforms = platforms.darwin;};
       };
+  mapCurrentDir = {
+    namefn ? (n: (lib.removeSuffix ".nix" n) + "-app"),
+    fn,
+  }:
+    lib.mapAttrs' (name: type: {
+      name = namefn name;
+      value = let
+        file = ./. + "/${name}";
+      in
+        fn file;
+    }) (lib.filterAttrs (name: type:
+      (type
+        == "directory"
+        && builtins.pathExists "${toString ./.}/${name}/default.nix")
+      || (type
+        == "regular"
+        && lib.hasSuffix ".nix" name
+        && !(name == "default.nix")))
+    (builtins.readDir ./.));
+  fn = f: lib.callPackageWith (pkgs // {inherit mkDarwinApp;}) f {};
 in
-  lib.mapAttrs' (name: type: {
-    name = (lib.removeSuffix ".nix" name) + "-app";
-    value = let
-      file = ./. + "/${name}";
-    in
-      lib.callPackageWith
-      (pkgs // {inherit mkDarwinApp;})
-      file {};
-  }) (lib.filterAttrs (name: type:
-    (type
-      == "directory"
-      && builtins.pathExists "${toString ./.}/${name}/default.nix")
-    || (type
-      == "regular"
-      && lib.hasSuffix ".nix" name
-      && !(name == "default.nix")))
-  (builtins.readDir ./.))
+  mapCurrentDir {inherit fn;}

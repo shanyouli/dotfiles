@@ -31,13 +31,7 @@ in {
     };
   in {
     # https://github.com/LnL7/nix-darwin/issues/214#issuecomment-1230730292
-    # home.file."Applications/Myapps" = let
-    #   app = pkgs.buildEnv {
-    #     name = "my-manager-applications";
-    #     paths = config.user.packages ++ config.home.packages;
-    #     pathsToLink = "/Applications";
-    #   };
-    # in { source = "${app}/Applications"; };
+    # home.file."Applications/Myapps" = { source = "${apps}/Applications"; };
     macos.userScript.settingApplications = {
       enable = true;
       desc = "My method is used to manage applications";
