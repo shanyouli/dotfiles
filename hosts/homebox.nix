@@ -51,7 +51,7 @@
     dev.enWebReport = true;
     dev.rust.enable = true;
 
-    sdcv.enable = true;
+    tool.sdcv.enable = true;
     firefox.enable = true;
     theme.enable = true;
 

@@ -7,9 +7,11 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.sdcv;
+  cfg = config.modules.tool.sdcv;
 in {
-  options.modules.sdcv = {enable = mkBoolOpt false;};
+  options.modules.tool.sdcv = {
+    enable = mkBoolOpt false;
+  };
 
   config = mkIf cfg.enable {
     # 主要使用了 sdcv 本地翻译工具
