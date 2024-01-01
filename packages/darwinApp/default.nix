@@ -1,7 +1,8 @@
-{lib, ...}: final: prev:
+{...}: final: prev:
 # with lib;
 let
   pkgs = prev;
+  lib = pkgs.lib;
   # https://discourse.nixos.org/t/help-with-error-only-hfs-file-systems-are-supported-on-ventura/25873
   # https://stackoverflow.com/questions/11679475/extract-from-dmg/28641849#28641849
   mkDarwinApp = {
