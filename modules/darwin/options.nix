@@ -76,30 +76,40 @@ in {
     userScript = mkOpt attrs {};
     systemScript = mkOpt attrs {};
   };
-  config = {
-    modules.opt.enGui = true;
-    system.activationScripts.postActivation.text = ''
-      echo "System script executed after system activation"
-      ${systemScripts}
-      sudo -u ${config.user.name} --set-home ${userScripts}
-    '';
-    macos.systemScript.removeNixApps = {
-      text = ''
+  config = mkMerge [
+    {
+      user.packages = [
+        # pkgs.qbittorrent-app
+        pkgs.xbydriver-app
+        # pkgs.chatgpt-app
+        pkgs.chatgpt-next-web-app
+        pkgs.localsend-app
+        (lib.mkIf cfg.editor.nvim.enGui pkgs.neovide-app)
+        # qutebrowser-app # 不再需要
+        pkgs.upic-app
+      ];
+
+      modules.xdg.enable = true;
+      environment.variables = config.modules.xdg.value;
+
+      modules.opt.enGui = true;
+      system.activationScripts.postActivation.text = ''
+        echo "System script executed after system activation"
+        ${systemScripts}
+        echo "User script excuted after system activation"
+        sudo -u ${config.user.name} --set-home ${userScripts}
+      '';
+      macos.systemScript.removeNixApps.text = ''
+        echo-info "Remove /Applications/Nix\ Apps ..."
         if [[ -e '/Applications/Nix Apps' ]]; then
           $DRY_RUN_CMD rm -rf '/Applications/Nix Apps'
         fi
       '';
-      desc = "Remove /Applications/Nix\ Apps ...";
-    };
-    macos.systemScript.zshell = {
-      text = ''
+      macos.systemScript.zshell.text = ''
+        echo-info "setting Default Shell"
         chsh -s /run/current-system/sw/bin/zsh ${config.user.name}
       '';
-      desc = "setting Default Shell";
-    };
-    macos.userScript.clear_zsh = {
-      enable = true;
-      text = ''
+      macos.userScript.clear_zsh.text = ''
         echo-info "Clear zsh ..."
         if [[ -d ${config.env.ZSH_CACHE}/cache ]]; then
           $DRY_RUN_CMD rm -rf ${config.env.ZSH_CACHE}/cache
@@ -111,16 +121,34 @@ in {
         # 禁止在网络卷创建元数据文件
         defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
       '';
-    };
-    macos.userScript.initRust = {
-      enable = config.modules.dev.rust.enable;
-      desc = "init rust";
-      text = config.modules.dev.rust.initScript;
-    };
-    macos.userScript.initNvim = {
-      enable = config.modules.editor.nvim.enable;
-      desc = "Init nvim";
-      text = config.modules.editor.nvim.script;
-    };
-  };
+      macos.userScript.initRust = {
+        enable = config.modules.dev.rust.enable;
+        desc = "init rust";
+        text = config.modules.dev.rust.initScript;
+      };
+      macos.userScript.initNvim = {
+        enable = config.modules.editor.nvim.enable;
+        desc = "Init nvim";
+        text = config.modules.editor.nvim.script;
+      };
+    }
+    (mkIf cfg.firefox.enable {
+      home.file."Library/Application Support/Firefox/Profiles/default/chrome" = {
+        source = "${config.dotfiles.configDir}/firefox/chrome";
+        recursive = true;
+      };
+    })
+    (mkIf cfg.shell.gpg.enable {
+      modules.service.env.GNUPGHOME = config.environment.variables.GNUPGHOME;
+    })
+    (mkIf cfg.shell.gopass.enable {
+      modules.service.env.PASSWORD_STORE_DIR = config.env.PASSWORD_STORE_DIR;
+    })
+    (mkIf (cfg.dev.plugins != []) {
+      macos.userScript.initAsdf = {
+        desc = "Init asdf ...";
+        text = cfg.dev.text;
+      };
+    })
+  ];
 }
