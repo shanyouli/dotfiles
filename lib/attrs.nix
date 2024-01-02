@@ -38,29 +38,33 @@ with lib; rec {
   );
 
   asdfInPlugins = bin: plugin: versions: ''
-    version_exist=( $(${bin} list ${plugin}) )
-    all_versions=$(${bin} list all ${plugin})
-    ${concatStrings (map (v: ''
-        is_install_p=1
-        for i in ''${version_exist[@]}; do
-          if [[ $i == "${v}" ]] || [[ $i == "*${v}" ]]; then
-            is_install_p=0
-            break
-          fi
-        done
-        if [[ $is_install_p == 1 ]]; then
-          for i in ''${all_versions[@]}; do
-            if [[ $i == "${v}" ]]; then
-              is_install_p=0
-              ${bin} install ${plugin} ${v}
-              break
-            fi
-          done
+    function asdf_${plugin}_init() {
+      local exist_ver=""
+      local all_ver=""
+      local is_install_p=0
+      exist_ver=$(mktemp)
+      ${bin} list ${plugin} > "$exist_ver"
+      ${concatStrings (map (v: ''
+        is_install_p=0
+        if grep ' ${v}\|*${v}$' "$exist_ver" >/dev/null 2>&1; then
+          is_install_p=1
+          echo-debug "${v} version has been installed."
         fi
-        if [[ $is_install_p == 1 ]]; then
-          echo "Warning: ${plugin} No ${v} version!!!"
+        if [[ $is_install_p == 0 ]]; then
+          if [[ $all_ver == "" ]]; then
+            all_ver=$(mktemp)
+            ${bin} list all ${plugin} > "$all_ver"
+          fi
+          if ! grep '^${v}$' "$all_ver" >/dev/null 2>&1; then
+            echo-info "Install ${plugin} ${v} ..."
+            asdf install ${plugin} ${v}
+          else
+            echo-error "${plugin} version ${v} not found!"
+          fi
         fi
       '')
       versions)}
+    }
+    asdf_${plugin}_init
   '';
 }

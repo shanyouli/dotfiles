@@ -57,7 +57,7 @@ in {
           _setDNS "$dns1" "$dns2"
       }
       trap clear_dns EXIT SIGKILL SIGQUIT ERR
-      setDNS
+      set_dns
       sudo ${clashCmd} -f "${cfg.configFile}" -d "${workdir}"
     '';
   in {

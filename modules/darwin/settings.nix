@@ -58,12 +58,10 @@ with lib.my; let
         BOLD=""
         NORMAL=""
     fi
-
-
-    echo-debug() { printf "''${BLUE}''${BOLD} $* ''${NORMAL}\n"; }
-    echo-info() { printf "''${GREEN}''${BOLD} $* ''${NORMAL}\n"; }
-    echo-warn() { printf "''${YELLOW}''${BOLD} $* ''${NORMAL}\n"; }
-    echo-error() { printf "''${RED}''${BOLD} $* ''${NORMAL}\n"; }
+    echo-debug() { printf "''${BLUE}''${BOLD}$*''${NORMAL}\n"; }
+    echo-info() { printf "''${GREEN}''${BOLD}$*''${NORMAL}\n"; }
+    echo-warn() { printf "''${YELLOW}''${BOLD}$*''${NORMAL}\n"; }
+    echo-error() { printf "''${RED}''${BOLD}$*''${NORMAL}\n"; }
   '';
   userScripts = pkgs.writeScript "postUserScript" ''
     ${prevtext}

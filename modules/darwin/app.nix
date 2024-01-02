@@ -81,7 +81,8 @@ in {
             fi
             echo "$_app_readlink_path" >> $nix_app_linktxt
           done
-          while IFS= read -r line; do
+          local IFS=$'\n'
+          while read -r line; do
             local app_name="$(echo "$line" | awk -F/ '{print $(NF)}')"
             local old_app_path="$nix_apps/$app_name"
             if [[ -e $old_app_path ]]; then
