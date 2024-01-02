@@ -15,7 +15,7 @@ in {
   options.modules.tool.clash = {
     enable = mkBoolOpt false;
     enSingbox = mkBoolOpt false;
-    configFile = mkOpt' types.path "${config.home.config.dotfiles.configDir}/clash-meta/clash.yaml" ''
+    configFile = mkOpt' types.path "${config.home.configDir}/clash-meta/clash.yaml" ''
       clash 配置文件保存位置
     '';
     package = mkPkgOpt pkgs.clash-meta "clash service";

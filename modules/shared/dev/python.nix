@@ -43,8 +43,8 @@ in {
     modules.shell = {
       env = {
         PYLINTHOME = "${config.home.dataDir}/pylint";
-        PYLINTRC = "${config.home.config.dotfiles.configDir}/pylint/pylintrc";
-        IPYTHONDIR = "${config.home.config.dotfiles.configDir}/ipython";
+        PYLINTRC = "${config.home.configDir}/pylint/pylintrc";
+        IPYTHONDIR = "${config.home.configDir}/ipython";
       };
       aliases = {
         po = "poetry";

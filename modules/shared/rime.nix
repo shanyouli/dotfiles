@@ -42,8 +42,8 @@ in {
           fi
 
           ${optionalString useEmacs ''
-            if [[ ! -d ${config.home.config.dotfiles.configDir}/emacs-rime ]]; then
-              mkdir -p ${config.home.config.dotfiles.configDir}/emacs-rime
+            if [[ ! -d ${config.home.configDir}/emacs-rime ]]; then
+              mkdir -p ${config.home.configDir}/emacs-rime
             fi
           ''}
           echo ${cfg.ice.dir}
@@ -51,7 +51,7 @@ in {
             git clone --depth 1 https://github.com/iDvel/rime-ice.git ${cfg.ice.dir}
             for i in ${cfg.ice.dir}/* ; do
               ln -sf $i ${rimedir}/
-              ${optionalString useEmacs "ln -sf $i ${config.home.config.dotfiles.configDir}/emacs-rime/"}
+              ${optionalString useEmacs "ln -sf $i ${config.home.configDir}/emacs-rime/"}
             done
           fi
         ''}
@@ -76,7 +76,7 @@ in {
         }
         changeRimeSync ${rimedir} ${cfg.backupDir} ${cfg.backupid}
         ${optionalString useEmacs ''
-          changeRimeSync ${config.home.config.dotfiles.configDir}/emacs-rime ${cfg.backupDir} "emacs-rime"
+          changeRimeSync ${config.home.configDir}/emacs-rime ${cfg.backupDir} "emacs-rime"
         ''}
         ${cfg.extraScript}
       '';

@@ -29,17 +29,48 @@ with lib.my; let
   in
     lib.concatMapStrings (enableText: ''
       ${lib.optionalString (hasAttr "desc" enableText)
-        "echo '${enableText.desc}' "}
+        "echo-info '${enableText.desc}' "}
       ${enableText.text}
     '') (sortFn (lib.filter filterLambda attrList));
-  userScripts = pkgs.writeScript "postUserScript" ''
+  prevtext = ''
     #!${pkgs.stdenv.shell}
+
+    # HACK: Unable to use nix installed git in scripts
     export PATH=/usr/bin:$PATH
+
+    # 一些echo 函数
+    if command -v tput >/dev/null 2>&1; then
+        ncolors=$(tput colors)
+    fi
+
+    if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
+        RED="$(tput setaf 1)"
+        GREEN="$(tput setaf 2)"
+        YELLOW="$(tput setaf 3)"
+        BLUE="$(tput setaf 4)"
+        BOLD="$(tput bold)"
+        NORMAL="$(tput sgr0)"
+    else
+        RED=""
+        GREEN=""
+        YELLOW=""
+        BLUE=""
+        BOLD=""
+        NORMAL=""
+    fi
+
+
+    echo-debug() { printf "''${BLUE}''${BOLD} $* ''${NORMAL}\n"; }
+    echo-info() { printf "''${GREEN}${BOLD} $* ''${NORMAL}\n"; }
+    echo-warn() { printf "''${YELLOW}${BOLD} $* ''${NORMAL}\n"; }
+    echo-error() { printf "''${RED}${BOLD} $* ''${NORMAL}\n"; }
+  '';
+  userScripts = pkgs.writeScript "postUserScript" ''
+    ${prevtext}
     ${filterEnabledTexts cfg.userScript}
   '';
   systemScripts = pkgs.writeScript "postSystemScript" ''
-    #!${pkgs.stdenv.shell}
-    export PATH=/usr/bin:$PATH
+    ${prevtext}
     ${filterEnabledTexts cfg.systemScript}
   '';
 in {
@@ -73,7 +104,7 @@ in {
     macos.userScript.clear_zsh = {
       enable = true;
       text = ''
-        echo "Clear zsh ..."
+        echo-info "Clear zsh ..."
         if [[ -d ${config.env.ZSH_CACHE}/cache ]]; then
           $DRY_RUN_CMD rm -rf ${config.env.ZSH_CACHE}/cache
         fi

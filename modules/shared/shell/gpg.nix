@@ -15,7 +15,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    environment.variables.GNUPGHOME = "${config.home.config.dotfiles.configDir}/gnupg";
+    environment.variables.GNUPGHOME = "${config.home.configDir}/gnupg";
 
     programs.gnupg.agent.enable = true;
     user.packages = [(mkIf pkgs.stdenvNoCC.isLinux pkgs.tomb) pkgs.gnupg];

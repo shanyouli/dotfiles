@@ -21,7 +21,7 @@ in {
       serviceConfig.ProgramArguments = [
         "${config.modules.tool.aria2.package}/bin/aria2c"
         (mkIf config.modules.tool.clash.enable "--all-proxy=http://127.0.0.1:10801")
-        "--conf-path=${config.home.config.dotfiles.configDir}/aria2/config"
+        "--conf-path=${config.home.configDir}/aria2/config"
         "--rpc-listen-port=${toString cfg.port}"
       ];
       serviceConfig.KeepAlive = true;

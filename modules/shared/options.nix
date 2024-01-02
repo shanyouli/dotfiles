@@ -55,7 +55,7 @@ in {
       dataDir = mkOpt' path "${homedir}/.local/share" "xdg_data_home";
       stateDir = mkOpt' path "${homedir}/.local/state" "xdg_state_home";
       binDir = mkOpt' path "${homedir}/.local/bin" "xdg_bin_home";
-      config.dotfiles.configDir = mkOpt' path "${homedir}/.config" "xdg_config_home";
+      configDir = mkOpt' path "${homedir}/.config" "xdg_config_home";
       cacheDir = mkOpt' path "${homedir}/.cache" "xdg_cache_home";
     };
     env = mkOption {
@@ -111,7 +111,7 @@ in {
 
           dataHome = mkAliasDefinitions options.home.dataDir;
           cacheHome = mkAliasDefinitions options.home.cacheDir;
-          configHome = mkAliasDefinitions options.home.config.dotfiles.configDir;
+          configHome = mkAliasDefinitions options.home.configDir;
           stateHome = mkAliasDefinitions options.home.stateDir;
         };
         programs = config.home.programs;

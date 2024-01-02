@@ -21,7 +21,7 @@ in {
       # order, they're not set before environment.variables are set, which could
       # cause race conditions.
       XDG_CACHE_HOME = "${config.home.cacheDir}";
-      XDG_CONFIG_HOME = "${config.home.config.dotfiles.configDir}";
+      XDG_CONFIG_HOME = "${config.home.configDir}";
       XDG_DATA_HOME = "${config.home.dataDir}";
       XDG_BIN_HOME = "${config.home.binDir}";
       XDG_STATE_HOME = "${config.home.stateDir}";
@@ -29,18 +29,18 @@ in {
       # respective modules.
       __GL_SHADER_DISK_CACHE_PATH = "${config.home.cacheDir}/nv";
       ASPELL_CONF = ''
-        per-conf ${config.home.config.dotfiles.configDir}/aspell/aspell.conf;
-        personal ${config.home.config.dotfiles.configDir}/aspell/en_US.pws;
-        repl ${config.home.config.dotfiles.configDir}/aspell/en.prepl;
+        per-conf ${config.home.configDir}/aspell/aspell.conf;
+        personal ${config.home.configDir}/aspell/en_US.pws;
+        repl ${config.home.configDir}/aspell/en.prepl;
       '';
       CUDA_CACHE_PATH = "${config.home.cacheDir}/nv";
       HISTFILE = "${config.home.dataDir}/bash/history";
-      INPUTRC = "${config.home.config.dotfiles.configDir}/readline/inputrc";
+      INPUTRC = "${config.home.configDir}/readline/inputrc";
       LESSHISTFILE = "${config.home.cacheDir}/lesshst";
 
       # Tools I don't use
-      # SUBVERSION_HOME = "${config.home.config.dotfiles.configDir}/subversion";
-      # BZRPATH         = "${config.home.config.dotfiles.configDir}/bazaar";
+      # SUBVERSION_HOME = "${config.home.configDir}/subversion";
+      # BZRPATH         = "${config.home.configDir}/bazaar";
       # BZR_PLUGIN_PATH = "${config.home.dataDir}/bazaar";
       # BZR_HOME        = "${config.home.cacheDir}/bazaar";
       # ICEAUTHORITY    = "${config.home.cacheDir}/ICEauthority";

@@ -27,9 +27,9 @@ in {
     ];
     modules.shell = {
       env = {
-        PIP_CONFIG_FILE = "${config.home.config.dotfiles.configDir}/pip/pip.conf";
+        PIP_CONFIG_FILE = "${config.home.configDir}/pip/pip.conf";
         PIP_LOG_FILE = "${config.home.dataDir}/pip/log";
-        PYTHONSTARTUP = "${config.home.config.dotfiles.configDir}/python/config.py";
+        PYTHONSTARTUP = "${config.home.configDir}/python/config.py";
         PYTHON_EGG_CACHE = "${config.home.cacheDir}/python-eggs";
         JUPYTER_CONFIG_DIR = "${config.home.dataDir}/jupyter";
       };
