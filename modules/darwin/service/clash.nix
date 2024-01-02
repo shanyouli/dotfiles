@@ -69,7 +69,7 @@ in {
     };
 
     macos.userScript.clashUI.text = ''
-      echo "init clash UI"
+      echo-info "init clash UI"
       [[ -d ${workdir} ]] || mkdir -p ${workdir}
       [[ -d ${workdir}/ui ]] || {
         echo "init Clash Web UI"

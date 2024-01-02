@@ -61,9 +61,9 @@ with lib.my; let
 
 
     echo-debug() { printf "''${BLUE}''${BOLD} $* ''${NORMAL}\n"; }
-    echo-info() { printf "''${GREEN}${BOLD} $* ''${NORMAL}\n"; }
-    echo-warn() { printf "''${YELLOW}${BOLD} $* ''${NORMAL}\n"; }
-    echo-error() { printf "''${RED}${BOLD} $* ''${NORMAL}\n"; }
+    echo-info() { printf "''${GREEN}''${BOLD} $* ''${NORMAL}\n"; }
+    echo-warn() { printf "''${YELLOW}''${BOLD} $* ''${NORMAL}\n"; }
+    echo-error() { printf "''${RED}''${BOLD} $* ''${NORMAL}\n"; }
   '';
   userScripts = pkgs.writeScript "postUserScript" ''
     ${prevtext}
@@ -86,7 +86,6 @@ in {
       sudo -u ${config.user.name} --set-home ${userScripts}
     '';
     macos.systemScript.removeNixApps = {
-      enable = true;
       text = ''
         if [[ -e '/Applications/Nix Apps' ]]; then
           $DRY_RUN_CMD rm -rf '/Applications/Nix Apps'
@@ -95,7 +94,6 @@ in {
       desc = "Remove /Applications/Nix\ Apps ...";
     };
     macos.systemScript.zshell = {
-      enable = true;
       text = ''
         chsh -s /run/current-system/sw/bin/zsh ${config.user.name}
       '';
