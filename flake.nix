@@ -24,7 +24,6 @@
 
     # shell stuff
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs-firefox-darwin.url = "github:bandithedoge/nixpkgs-firefox-darwin";
     nur.url = "github:nix-community/NUR";
     devenv.url = "github:cachix/devenv/latest";
     treefmt-nix.url = "github:numtide/treefmt-nix";
@@ -131,8 +130,7 @@
         baseModules = [
           {
             nixpkgs.config.allowUnfree = true;
-            nixpkgs.overlays =
-              (builtins.attrValues self.overlays) ++ [inputs.nixpkgs-firefox-darwin.overlay];
+            nixpkgs.overlays = builtins.attrValues self.overlays;
           }
           home-manager.darwinModules.home-manager
           sharedHostsConfig
@@ -148,8 +146,7 @@
         baseModules = [
           {
             nixpkgs.config.allowUnfree = true;
-            nixpkgs.overlays =
-              (builtins.attrValues self.overlays) ++ [inputs.nixpkgs-firefox-darwin.overlay];
+            nixpkgs.overlays = builtins.attrValues self.overlays;
           }
           home-manager.darwinModules.home-manager
           sharedHostsConfig
@@ -165,8 +162,7 @@
         baseModules = [
           {
             nixpkgs.config.allowUnfree = true;
-            nixpkgs.overlays =
-              (builtins.attrValues self.overlays) ++ [inputs.nixpkgs-firefox-darwin.overlay];
+            nixpkgs.overlays = builtins.attrValues self.overlays;
           }
           home-manager.darwinModules.home-manager
           sharedHostsConfig

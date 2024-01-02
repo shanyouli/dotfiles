@@ -71,7 +71,7 @@
     macos.hammerspoon.enable = true;
     macos.rime.enable = true;
     macos.iina.enable = true;
-    firefox.package = pkgs.firefox-esr-bin;
+    firefox.package = pkgs.firefox-app;
     macos.brew.mirror = "tuna";
 
     service.nginx.enable = true;

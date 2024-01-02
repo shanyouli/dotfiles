@@ -84,7 +84,7 @@ in {
         # pkgs.chatgpt-app
         pkgs.chatgpt-next-web-app
         pkgs.localsend-app
-        (lib.mkIf cfg.editor.nvim.enGui pkgs.neovide-app)
+        (lib.mkIf config.modules.editor.nvim.enGui pkgs.neovide-app)
         # qutebrowser-app # 不再需要
         pkgs.upic-app
       ];
@@ -132,22 +132,22 @@ in {
         text = config.modules.editor.nvim.script;
       };
     }
-    (mkIf cfg.firefox.enable {
+    (mkIf config.modules.firefox.enable {
       home.file."Library/Application Support/Firefox/Profiles/default/chrome" = {
         source = "${config.dotfiles.configDir}/firefox/chrome";
         recursive = true;
       };
     })
-    (mkIf cfg.shell.gpg.enable {
+    (mkIf config.modules.shell.gpg.enable {
       modules.service.env.GNUPGHOME = config.environment.variables.GNUPGHOME;
     })
-    (mkIf cfg.shell.gopass.enable {
+    (mkIf config.modules.shell.gopass.enable {
       modules.service.env.PASSWORD_STORE_DIR = config.env.PASSWORD_STORE_DIR;
     })
-    (mkIf (cfg.dev.plugins != []) {
+    (mkIf (config.modules.dev.plugins != []) {
       macos.userScript.initAsdf = {
         desc = "Init asdf ...";
-        text = cfg.dev.text;
+        text = config.modules.dev.text;
       };
     })
   ];
