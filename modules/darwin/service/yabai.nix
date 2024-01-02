@@ -57,7 +57,7 @@ in {
     environment.systemPackages = [cfg.package];
     # https://github.com/LnL7/nix-darwin/blob/b8c286c82c6b47826a6c0377e7017052ad91353c/modules/services/yabai/default.nix#L79
     launchd.user.agents.yabai = {
-      serviceConfig.ProgramArguments = ["${cfg.package}/bin/yabai" "--config" "${config.home.config.dotfiles.configDir}/yabai/yabairc"];
+      serviceConfig.ProgramArguments = ["${cfg.package}/bin/yabai" "--config" "${config.home.configDir}/yabai/yabairc"];
       serviceConfig.KeepAlive = false;
       serviceConfig.RunAtLoad = true;
       serviceConfig.EnvironmentVariables.PATH = "${cfg.package}/bin:${config.modules.service.path}";

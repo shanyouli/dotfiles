@@ -44,7 +44,7 @@ in {
     in "${pkgs.runCommandLocal "cargo-home" {inherit cargoConfig;} ''
       mkdir -p $out
       ln -st $out "${config.home.cacheDir}"/cargo/{registry,git}
-      ln -st $out "${config.home.config.dotfiles.configDir}"/cargo/credentials.toml
+      ln -st $out "${config.home.configDir}"/cargo/credentials.toml
       echo -n "$cargoConfig" >$out/config.toml
     ''}";
     modules.shell.aliases = {

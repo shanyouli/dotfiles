@@ -181,7 +181,7 @@ in {
             (setq rime-emacs-module-header-root "${cfg.package}/include")
             (setq rime-librime-root "${pkgs.librime}")
             (setq rime-share-data-dir "${data-dir}")
-            (setq rime-user-data-dir "${config.home.config.dotfiles.configDir}/emacs-rime")
+            (setq rime-user-data-dir "${config.home.configDir}/emacs-rime")
           ''}
           (setq lsp-bridge-python-command "${config.modules.shell.python.finalPkg}/bin/python3")
           ${cfg.doom.confInit}

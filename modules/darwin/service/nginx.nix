@@ -23,12 +23,12 @@ in {
     macos.userScript.initNginx = {
       enable = cfg.enable;
       text = cfb.uScript;
-      desc = "init nginx";
+      desc = "init nginx user settings";
     };
     macos.systemScript.initNginx = {
       enable = cfg.enable;
       text = cfb.sScript;
-      desc = "init nginx";
+      desc = "init nginx System Privilege Configuration";
     };
 
     launchd.user.agents.nginx = {

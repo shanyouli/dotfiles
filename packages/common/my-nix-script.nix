@@ -4,7 +4,7 @@
 }:
 stdenv.mkDerivation rec {
   name = "nix-scripts";
-  src = ../bin;
+  src = ../../bin;
   buildInputs = [];
   installPhase = ''
     mkdir -p $out/bin

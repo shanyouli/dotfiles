@@ -9,7 +9,6 @@ with lib;
 with lib.my; let
   cfg = config.modules.macos.music;
   netease = config.modules.media.netease-music;
-  mpdCmd = "${config.home.profileBinDir}/mpd";
   mpdDir = "${config.home.cacheDir}/mpd";
   mpdfifo = "/private/tmp/mpd.fifo";
 in {
@@ -20,7 +19,7 @@ in {
     homebrew.casks = [
       (mkIf (netease.enable && netease.enGui) "yesplaymusic") # or neteasemusic
       "vox"
-      "lx-music" # 可下载无损音乐
+      # "lx-music" # 可下载无损音乐,没有合适的音源
     ];
     user.packages = [pkgs.lyricx-app];
 
@@ -48,11 +47,6 @@ in {
       ncmpcppConfig = ''
         visualizer_data_source = "${mpdfifo}"
       '';
-    };
-    launchd.user.agents.mpd = {
-      serviceConfig.ProgramArguments = [mpdCmd "--no-daemon" "${config.home.config.dotfiles.configDir}/mpd/mpd.conf"];
-      path = [config.environment.systemPath];
-      serviceConfig.RunAtLoad = true;
     };
     macos.userScript = {
       mpd = {

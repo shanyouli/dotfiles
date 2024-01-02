@@ -1,5 +1,8 @@
-{ lib, fetchurl, stdenv}:
-
+{
+  lib,
+  fetchurl,
+  stdenv,
+}:
 stdenv.mkDerivation rec {
   name = "seam";
   version = "0.1.23";
@@ -7,7 +10,7 @@ stdenv.mkDerivation rec {
     url = "https://github.com/Borber/seam/releases/download/v${version}/seam-v${version}.aarch64-apple-darwin.tar.xz";
     sha256 = "1nx9mgj51f50nv4zagrbfbr1gs8by9n0hk4pan3zjbwdykb28321";
   };
-    sourceRoot = ".";
+  sourceRoot = ".";
   # dontInstall = true;
   installPhase = ''
     install -D -m755 -t $out/bin seam
@@ -20,7 +23,7 @@ stdenv.mkDerivation rec {
     '';
     homepage = "https://github.com/Borber/seam";
     platforms = platforms.darwin;
-    maintainers = with maintainers; [ shanyouli ];
+    maintainers = with maintainers; [shanyouli];
     license = licenses.gpl3;
   };
 }

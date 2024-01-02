@@ -58,7 +58,7 @@ in {
       # (https://www.gnu.org/software/wget/manual/html_node/HTTPS-_0028SSL_002fTLS_0029-Options.html)
       hsts-file = "${config.home.cacheDir}/wget-hsts";
     };
-    environment.variables.WGETRC = "${config.home.config.dotfiles.configDir}/wget/wgetrc";
+    environment.variables.WGETRC = "${config.home.configDir}/wget/wgetrc";
 
     home.configFile."wget/wgetrc".text = toWgetConfig cfg.settings;
 

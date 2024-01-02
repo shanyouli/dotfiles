@@ -72,7 +72,7 @@ in {
         })
         {
           env = {
-            ASDF_CONFIG_FILE = "${cmh.config.dotfiles.configDir}/asdf/asdf.conf";
+            ASDF_CONFIG_FILE = "${cmh.configDir}/asdf/asdf.conf";
             ASDF_DATA_DIR = asdf_data_dir;
           };
           rcFiles = ["${config.dotfiles.configDir}/asdf/asdf.zsh"];
