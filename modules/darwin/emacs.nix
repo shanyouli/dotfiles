@@ -232,6 +232,11 @@ in {
           '';
         };
     in [pngpaste emacsClient];
-    modules.shell.aliases.emacs = "${emacsPkg}/Applications/Emacs.app/Contents/MacOS/Emacs";
+    modules.shell.aliases.emacs = let
+      baseDir =
+        if config.modules.macos.app.enable
+        then config.modules.macos.app.path
+        else emacsPkg;
+    in "${baseDir}/Applications/Emacs.app/Contents/MacOS/Emacs";
   };
 }

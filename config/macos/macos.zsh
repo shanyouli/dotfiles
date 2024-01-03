@@ -2,7 +2,7 @@
 
 function random_el_in_arr() {
     local arr=("$@")
-    printf '%s' "''${arr[RANDOM % $#]}"
+    printf '%s' "${arr[RANDOM % $#]}"
 }
 
 function _setDNS() {
@@ -21,8 +21,8 @@ function set_dns() {
         "1.2.4.8" "210.2.4.8" \
         "119.29.29.29" "119.28.28.28" \
         "101.226.4.6" "180.184.1.1")
-    local dns1=$(random_el_in_arr "''${all_dns[@]}")
-    local dns2=$(random_el_in_arr "''${all_dns[@]}")
+    local dns1=$(random_el_in_arr "${all_dns[@]}")
+    local dns2=$(random_el_in_arr "${all_dns[@]}")
     _setDNS "$dns1" "$dns2"
 }
 
