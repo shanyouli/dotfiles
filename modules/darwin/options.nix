@@ -132,12 +132,21 @@ in {
         text = config.modules.editor.nvim.script;
       };
     }
-    (mkIf config.modules.firefox.enable {
-      home.file."Library/Application Support/Firefox/Profiles/default/chrome" = {
-        source = "${config.dotfiles.configDir}/firefox/chrome";
-        recursive = true;
-      };
-    })
+    (mkIf config.modules.firefox.enable (
+      let
+        base = "Library/Application Support/Firefox/Profiles/default/chrome";
+        configDir = config.dotfiles.configDir;
+      in {
+        home.file."${base}/utils" = {
+          source = "${pkgs.firefox-utils}/share/utils";
+          recursive = true;
+        };
+        home.file."${base}/css" = {
+          source = "${configDir}/firefox/css";
+          recursive = true;
+        };
+      }
+    ))
     (mkIf config.modules.shell.gpg.enable {
       modules.service.env.GNUPGHOME = config.environment.variables.GNUPGHOME;
     })

@@ -198,6 +198,14 @@ mapkey("ymf", "复制网站ico", function() {
   }
 })
 
+mapkey("yy", "复制URL", () => {
+  let url = document.URL;
+  if (document.domain === "github.com") {
+    url = url.replace("\/blob\/", "\/raw\/")
+  }
+  Clipboard.write(url)
+})
+
 mapkey(',wv', "解除网页限制", function() {
   function t(e) {
     e.stopPropagation()

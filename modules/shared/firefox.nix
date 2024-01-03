@@ -56,9 +56,9 @@ in {
           #   url = "https://github.com/betterbrowser/arcfox/releases/download/2.4.3/userChrome.css";
           #   sha256 = "0x7ssvhiw843aff6xc462m90mqah6a6hzkqdnslw2q3aw121fkb6";
           # });
-          # userChrome = builtins.readFile "${config.dotfiles.configDir}/firefox/userChrome.css";
-          # userContent =
-          #   builtins.readFile "${config.dotfiles.configDir}/firefox/userContent.css";
+          userChrome = builtins.readFile "${config.dotfiles.configDir}/firefox/userChrome.css";
+          userContent =
+            builtins.readFile "${config.dotfiles.configDir}/firefox/userContent.css";
           extensions = with pkgs.nur.repos.rycee.firefox-addons; [
             browserpass
             (buildFirefoxXpiAddon rec {
