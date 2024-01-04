@@ -132,7 +132,7 @@ in {
 
         "charles" # "proxyman", 抓包
         "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
-        "background-music"
+        # "background-music" 和一些工具冲突，eg mpd， yesplaymusic
 
         "postman" # "rapidapi" "httpie"
         # "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
