@@ -19,7 +19,6 @@ in {
     homebrew.casks = [
       (mkIf (netease.enable && netease.enGui) "yesplaymusic") # or neteasemusic
       "vox"
-      # "lx-music" # 可下载无损音乐,没有合适的音源
     ];
     user.packages = [pkgs.lyricx-app];
 
@@ -30,6 +29,8 @@ in {
           type "osx"
           name "CoreAudio"
           mixer_type "software"
+          audio_buffer_size "8192"
+          buffer_before_play "25%"
         }
         # Visualizer
         audio_output {

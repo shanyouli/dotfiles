@@ -63,7 +63,7 @@ yabai -m rule --add app="^Safari$" \
 yabai -m rule --add app="^(Nutstore|Karabiner-|GPG [Kk]eychain|IINA|Raycast).*$" manage=off
 
 # 视频播放程序,不透明度设置为1
-yabai -m rule --add app="^([Mm]pv|IINA|VidHub)$" opacity=1
+yabai -m rule --add app="^([Mm]pv|IINA|VidHub|BaiduNetdisk)$" opacity=1
 
 # yabai -m rule --add app="^[Ee]macs$" title="^Edit File.*" manage=off
 

@@ -15,6 +15,7 @@ in {
     name = mkOpt' types.str "Myapps" "存放位置目录名";
     enUser = mkBoolOpt true;
     enBackup = mkBoolOpt true;
+    path = mkOpt' (types.nullOr types.path) null "不要修改它";
   };
   config = mkIf cfg.enable (let
     workdir =
@@ -30,6 +31,7 @@ in {
       pathsToLink = "/Applications";
     };
   in {
+    modules.macos.app.path = workdir;
     # https://github.com/LnL7/nix-darwin/issues/214#issuecomment-1230730292
     # home.file."Applications/Myapps" = { source = "${apps}/Applications"; };
     macos.userScript.settingApplications = {
