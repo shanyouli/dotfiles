@@ -236,7 +236,7 @@ in {
       baseDir =
         if config.modules.macos.app.enable
         then config.modules.macos.app.path
-        else emacsPkg;
-    in "${baseDir}/Applications/Emacs.app/Contents/MacOS/Emacs";
+        else "${emacsPkg}/Applications";
+    in "${baseDir}/Emacs.app/Contents/MacOS/Emacs";
   };
 }

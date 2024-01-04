@@ -76,7 +76,7 @@ in {
         }
         changeRimeSync ${rimedir} ${cfg.backupDir} ${cfg.backupid}
         ${optionalString useEmacs ''
-          changeRimeSync ${config.home.configDir}/emacs-rime ${cfg.backupDir} "emacs-rime"
+          changeRimeSync ${config.home.configDir}/emacs-rime ${cfg.backupDir} ${cfg.backupid}
         ''}
         ${cfg.extraScript}
       '';

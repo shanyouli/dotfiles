@@ -42,7 +42,6 @@ with lib.my; let
     if command -v tput >/dev/null 2>&1; then
         ncolors=$(tput colors)
     fi
-
     if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
         RED="$(tput setaf 1)"
         GREEN="$(tput setaf 2)"
@@ -51,12 +50,12 @@ with lib.my; let
         BOLD="$(tput bold)"
         NORMAL="$(tput sgr0)"
     else
-        RED=""
-        GREEN=""
-        YELLOW=""
-        BLUE=""
-        BOLD=""
-        NORMAL=""
+        RED="\e[31m"
+        GREEN="\e[32m"
+        YELLOW="\e[33m"
+        BLUE="\e[34m"
+        BOLD="\e[1m"
+        NORMAL="\e[0m"
     fi
     echo-debug() { printf "''${BLUE}''${BOLD}$*''${NORMAL}\n"; }
     echo-info() { printf "''${GREEN}''${BOLD}$*''${NORMAL}\n"; }
