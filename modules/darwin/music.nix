@@ -20,7 +20,10 @@ in {
       (mkIf (netease.enable && netease.enGui) "yesplaymusic") # or neteasemusic
       "vox"
     ];
-    user.packages = [pkgs.lyricx-app];
+    user.packages = [
+      pkgs.lyricx-app
+      # pkgs.radishes-app
+    ];
 
     modules.media.mpd.enable = true;
     modules.media.mpd = {

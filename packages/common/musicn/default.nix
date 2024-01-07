@@ -7,16 +7,15 @@
 }:
 buildNpmPackage rec {
   pname = "musicn";
-  version = "1.4.65";
+  version = "1.5.0";
 
   src = fetchFromGitHub {
     owner = "zonemeen";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-mx0ElreuHZULdvgEfCxRgOeFDLtlvUTdIU3XaC3deuc=";
+    hash = "sha256-jnS3NwxguAu4SJNFTvk6HgYF0eVw8/L7qC4o1K+WVwE=";
   };
-
-  npmDepsHash = "sha256-jsyOJr7nm95CYJa/NW2X5p0JP56TX5cnYmPONl/xD/I=";
+  npmDepsHash = "sha256-LDCHODja5wMSy+03IzqoVTmHDEsqOSZtSdbyQEWlbb4=";
 
   nativeBuildInputs = [nodePackages.node-gyp python3];
   postPatch = ''

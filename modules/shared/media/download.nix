@@ -17,7 +17,10 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.enAudio {
-      user.packages = [pkgs.musicn pkgs.python3.pkgs.musicdl];
+      user.packages = [
+        pkgs.musicn
+        # pkgs.python3.pkgs.musicdl # 无法下载
+      ];
     })
     (mkIf cfg.enVideo {
       user.packages = [pkgs.unstable.yt-dlp pkgs.python3Packages.yutto]; # yutto 下载bilibili
