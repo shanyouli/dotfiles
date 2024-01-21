@@ -27,6 +27,9 @@
     nur.url = "github:nix-community/NUR";
     devenv.url = "github:cachix/devenv/latest";
     treefmt-nix.url = "github:numtide/treefmt-nix";
+
+    nix-index-database.url = "github:Mic92/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ {
@@ -38,6 +41,7 @@
     devenv,
     darwin-stable,
     nixos-stable,
+    nix-index-database,
     ...
   }: let
     inherit (flake-utils.lib) eachSystemMap;
@@ -148,6 +152,7 @@
             nixpkgs.config.allowUnfree = true;
             nixpkgs.overlays = builtins.attrValues self.overlays;
           }
+          nix-index-database.darwinModules.nix-index
           home-manager.darwinModules.home-manager
           sharedHostsConfig
         ];
@@ -164,6 +169,7 @@
             nixpkgs.config.allowUnfree = true;
             nixpkgs.overlays = builtins.attrValues self.overlays;
           }
+          nix-index-database.darwinModules.nix-index
           home-manager.darwinModules.home-manager
           sharedHostsConfig
         ];
@@ -184,6 +190,7 @@
         ];
         baseModules = [
           home-manager.nixosModules.home-manager
+          nix-index-database.nixosModules.nix-index
           sharedHostsConfig
         ];
         specialArgs = {inherit inputs nixpkgs lib self;};

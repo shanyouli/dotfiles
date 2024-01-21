@@ -86,6 +86,7 @@ in {
         (lib.mkIf config.modules.editor.nvim.enGui pkgs.neovide-app)
         # qutebrowser-app # 不再需要
         pkgs.upic-app
+        pkgs.calibre-app
       ];
 
       modules.xdg.enable = true;

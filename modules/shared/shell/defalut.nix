@@ -60,7 +60,6 @@ in {
         bottom
         fd
         eza
-        nix-index
         bat
         any-nix-shell
         duf
@@ -89,7 +88,6 @@ in {
         prevInit = ''
           # starship和p10有自己的提示方法；--info-right
           _cache ${pkgs.any-nix-shell}/bin/any-nix-shell zsh
-          source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
         '';
         aliases.htop = "btm --basic --mem_as_value";
         aliases.df = "duf";

@@ -99,7 +99,7 @@ in {
         "wpsoffice-cn"
         "mactex"
 
-        "calibre" #"koodo-reader", 书籍管理和阅读
+        # "calibre" #"koodo-reader", 书籍管理和阅读
         "skim" # PDF
 
         "imageoptim" # 图片压缩

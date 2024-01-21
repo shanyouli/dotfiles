@@ -5,13 +5,13 @@
 }:
 mkDarwinApp rec {
   appName = "xbydriver";
-  version = "3.12.2";
+  version = "3.12.3";
   pathdir = "小白羊云盘 ${version}-arm64";
   useSystemCmd = true;
   useDmg = false;
   src = fetchurl {
     url = "https://github.com/gaozhangmin/aliyunpan/releases/download/v${version}/XBYDriver-${version}-mac-arm64.dmg";
-    sha256 = "sha256-0Wgrei3QyrdlfLdpCnp53XCp2IKYm65ldeOKiU/P3w0=";
+    sha256 = "sha256-SKDkDu9gEgghTUZ7ku7qsa2KMkaMvyNTvtx77CM0VDg=";
   };
   appMeta = {
     description = "小白羊网盘 - Powered by 阿里云盘。";
