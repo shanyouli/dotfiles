@@ -21,6 +21,8 @@ with lib.my; {
       bat
       fzf
       (pkgs.ripgrep.override {withPCRE2 = true;})
+      #
+      curl
     ];
     etc = {
       home-manager.source = "${inputs.home-manager}";

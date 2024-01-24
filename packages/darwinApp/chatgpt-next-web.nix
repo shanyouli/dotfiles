@@ -4,11 +4,11 @@
   ...
 }:
 mkDarwinApp rec {
-  appName = "chatgpt-next-web";
-  version = "2.9.13";
+  appName = "NextChat";
+  version = "2.10.1";
   src = fetchurl {
-    url = "https://github.com/Yidadaa/ChatGPT-Next-Web/releases/download/v${version}/ChatGPT.Next.Web_${version}_x64.dmg";
-    sha256 = "09qpd0bq4x1vzm2b4pgjk7srj9rxdba6l027wkyp3kikd21h31h1";
+    url = "https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web/releases/download/v${version}/NextChat_${version}_x64.dmg";
+    sha256 = "1706qbgq79r29y18nc962vvilk3yx2cy101xd6sziic3wc1nfdc3";
   };
   appMeta = {
     description = "ChatGpt Next Web";

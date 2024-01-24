@@ -152,6 +152,8 @@ in rec {
             nixpkgs.pkgs = allPkgs."${system}";
             networking.hostName = "${name}";
             system.stateVersion = "23.11";
+            nix.readOnlyStore = true;
+            documentation.man.generateCaches = true;
           }
         ]
         ++ baseModules

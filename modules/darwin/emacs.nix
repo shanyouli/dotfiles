@@ -69,7 +69,13 @@ in {
           # version = inputs.emacs-src.shortRev;
         });
     };
-    user.packages = [pkgs.pngpaste (pkgs.emacsclient.override {emacsClientBin = "${emacsPkg}/bin/emacsclient";})];
+    user.packages = [
+      pkgs.pngpaste
+      (pkgs.emacsclient.override {
+        emacsClientBin = "${emacsPkg}/bin/emacsclient";
+        withNotify = true;
+      })
+    ];
     modules.shell.aliases.emacs = let
       baseDir =
         if config.modules.macos.app.enable

@@ -73,6 +73,9 @@
     macos.iina.enable = true;
     firefox.package = pkgs.firefox-app;
     macos.brew.mirror = "tuna";
+    macos.chrome.enable = true;
+    macos.chrome.dev.enable = true;
+    macos.duti.enable = true;
 
     service.nginx.enable = true;
     service.mysql.enable = true;

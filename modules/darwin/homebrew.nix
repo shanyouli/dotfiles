@@ -132,7 +132,7 @@ in {
 
         "charles" # "proxyman", 抓包
         "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
-        # "background-music" 和一些工具冲突，eg mpd， yesplaymusic
+        "background-music" # 和一些工具冲突，eg mpd， yesplaymusic
 
         "postman" # "rapidapi" "httpie"
         # "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
@@ -142,12 +142,6 @@ in {
         # "maccy" # clip 剪切薄，使用raycast取代
         # "visual-studio-code" # other editors nix 管理
         (mkIf config.modules.shell.git.enGui "github") # github客户端
-
-        "chromedriver" # brave 浏览器的driver
-
-        # "google-chrome"
-        # "arc" # next browser
-        "brave-browser"
       ];
       homebrew.brews = [
         "macos-trash" # trash-cli

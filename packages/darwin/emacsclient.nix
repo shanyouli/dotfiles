@@ -4,15 +4,24 @@
   stdenv,
   fetchurl,
   writeText,
+  terminal-notifier,
   emacsClientBin ? "/usr/bin/emacsclient",
+  withNotify ? false,
   ...
 }: let
+  messageCmd =
+    if withNotify
+    then "${terminal-notifier}/bin/terminal-notifier"
+    else "";
   EmacsClientAppleScript = writeText "emacsclient" ''
     on emacsclient(input)
       set cmd to "${emacsClientBin}"
+      -- set cmd to "/etc/profiles/per-user/lyeli/bin/emacsclient"
+      set messageCmd to "${messageCmd}"
+
       set daemonFile to getDaemon(cmd)
       if daemonFile is "" then
-        display notification "请运行 emacs --fg-daemon=main or Emacs 启动服务" with title "emacsDaemon 没有运行" subtitle "emacs"
+        sendNotify(messageCmd, "EmacsClient", "emacsDaemon 没有运行", "请运行 emacs --fg-daemon=main or Emacs 启动服务")
         my logit("OOPs: Emacs Daemon has not started", "Emacsclient")
         return false
       end if
@@ -33,7 +42,7 @@
           do shell script base_cmd & "-c --frame-parameters='(quote (name . \"EmacsClient\"))' '" & input & "'"
         end if
       on error e number n
-        display notification e with title "Error" subtitle "emacs"
+        sendNotify(messageCmd, "EmacsClient Error", "", e)
         my logit("OOPs: " & e & " " & n, "Emacsclient")
       end try
     end emacsclient
@@ -64,6 +73,27 @@
       end repeat
       return ""
     end getDaemon
+
+    on sendNotify(cmd, titleText, subtitleText, messageText)
+      if cmd is "" then
+        if titleText is "" then
+          set titleText to "EmacsClient"
+        end if
+        if subtitleText is "" then
+          set subtitleText to "EmacsClient"
+        end if
+        display notification messageText with title titleText subtitle subtitleText
+      else
+        set cmd to cmd & " -message \"" & messageText & "\""
+        if titleText is not equal to "" then
+          set cmd to cmd & " -title \"" & titleText & "\""
+        end if
+        if subtitleText is not equal to "" then
+          set cmd to cmd & " -subtitle \"" & subtitleText & "\""
+        end if
+        do shell script cmd
+      end if
+    end sendNotify
 
     on runMyFunction(cmd, func)
       try
@@ -103,7 +133,7 @@
 in
   stdenv.mkDerivation rec {
     pname = "EmacsClient";
-    version = "29.1";
+    version = "29.2";
     srcs = [EmacsClientAppleScript icns];
     phases = ["installPhase"];
     buildInputs = [buildEnv];
@@ -128,6 +158,7 @@ in
       plutil -insert CFBundleURLTypes -json ${
         lib.escapeShellArg infoPlist
       } EmacsClient.app/Contents/Info.plist
+
       cp -R ${icns} EmacsClient.app/Contents/Resources/EmacsClient.icns
       rm -rf EmacsClient.app/Contents/Resources/droplet.icns
       mv -f EmacsClient.app/Contents/MacOS/droplet EmacsClient.app/Contents/MacOS/EmacsClient
