@@ -1,13 +1,12 @@
-{python3Packages, ...}: let
-  inherit (python3Packages) buildPythonPackage fetchPypi grapheme about-time;
+{
+  python3Packages,
+  source,
+  ...
+}: let
+  inherit (python3Packages) buildPythonPackage grapheme about-time;
 in
   buildPythonPackage rec {
-    pname = "alive-progress";
-    version = "3.1.4";
-    src = fetchPypi {
-      inherit pname version;
-      sha256 = "sha256-dKldjQ1CvJnTo3JdvQbruFIkXxtk4wGnw3W5KyJmP3s=";
-    };
+    inherit (source) pname version src;
     propagatedBuildInputs = [grapheme about-time];
     doCheck = false;
   }

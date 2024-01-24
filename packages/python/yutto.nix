@@ -1,7 +1,7 @@
 {
   lib,
   python3Packages,
-  fetchFromGitHub,
+  source,
 }: let
   inherit
     (python3Packages)
@@ -16,16 +16,8 @@
     ;
 in
   buildPythonApplication rec {
-    pname = "yutto";
-    version = "2.0.0-beta.31";
+    inherit (source) pname version src;
     pyproject = true;
-
-    src = fetchFromGitHub {
-      owner = "yutto-dev";
-      repo = "yutto";
-      rev = "v${version}";
-      hash = "sha256-Htw0Omgsy5C8y9HsXCuPOBRtPmuZ+WmZ45BcXsDt/CE=";
-    };
 
     nativeBuildInputs = [poetry-core];
 

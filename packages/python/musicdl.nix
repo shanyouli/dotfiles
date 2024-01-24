@@ -1,7 +1,7 @@
 {
   lib,
   python3Packages,
-  fetchFromGitHub,
+  source,
 }: let
   inherit
     (python3Packages)
@@ -14,16 +14,7 @@
     ;
 in
   buildPythonPackage rec {
-    pname = "musicdl";
-    version = "2.3.6";
-    # https://discourse.nixos.org/t/installing-a-python-package-from-pypi/24553/2
-    # 不使用 fetchPypi，原因见上面链接
-    src = fetchFromGitHub {
-      owner = "CharlesPikachu";
-      repo = "musicdl";
-      rev = "ae213b2e5867fa12a6fa2789e24ea792aab38540";
-      sha256 = "sha256-AoMtlyRiceDzNXKz1K/EH5+/yU2B+UlEso5kjL5ojlI=";
-    };
+    inherit (source) pname version src;
     propagatedBuildInputs = [click pycryptodome requests prettytable alive-progress];
     doCheck = false;
 

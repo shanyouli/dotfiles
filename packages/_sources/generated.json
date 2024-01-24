@@ -1,0 +1,87 @@
+{
+    "about-time": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "about-time",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-alOIYtM85n2ZdCnRSZgxDh2/2my32bv795nEcJhH/s4=",
+            "type": "url",
+            "url": "https://pypi.org/packages/source/a/about-time/about-time-4.2.1.tar.gz"
+        },
+        "version": "4.2.1"
+    },
+    "alive-progress": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "alive-progress",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-QuOZpmyBUNxQdgLf97eVPxBe8R+vl92qbSexy/RcTJg=",
+            "type": "url",
+            "url": "https://pypi.org/packages/source/a/alive-progress/alive-progress-3.1.5.tar.gz"
+        },
+        "version": "3.1.5"
+    },
+    "musicdl": {
+        "cargoLocks": null,
+        "date": "2023-02-22",
+        "extract": null,
+        "name": "musicdl",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "CharlesPikachu",
+            "repo": "musicdl",
+            "rev": "ae213b2e5867fa12a6fa2789e24ea792aab38540",
+            "sha256": "sha256-AoMtlyRiceDzNXKz1K/EH5+/yU2B+UlEso5kjL5ojlI=",
+            "type": "github"
+        },
+        "version": "ae213b2e5867fa12a6fa2789e24ea792aab38540"
+    },
+    "websocket-bridge-python": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "websocket-bridge-python",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-J9HGD3PSavZQwh2eZPbM6isdknZ1M2nkL5WHlYjRju8=",
+            "type": "url",
+            "url": "https://pypi.org/packages/source/w/websocket_bridge_python/websocket_bridge_python-0.0.2.tar.gz"
+        },
+        "version": "0.0.2"
+    },
+    "yutto": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "yutto",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "yutto-dev",
+            "repo": "yutto",
+            "rev": "v2.0.0-beta.33",
+            "sha256": "sha256-6uQFVvVNAx9+cgmOG4U8i0UQKnpz2r8FS4mvbpZMMnQ=",
+            "type": "github"
+        },
+        "version": "v2.0.0-beta.33"
+    }
+}

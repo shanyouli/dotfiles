@@ -1,0 +1,22 @@
+[yutto]
+fetch.github = "yutto-dev/yutto"
+src.github_tag = "yutto-dev/yutto"
+
+
+# https://discourse.nixos.org/t/installing-a-python-package-from-pypi/24553/2
+# 不使用 fetchPypi，原因见上面链接
+[musicdl]
+fetch.github = "CharlesPikachu/musicdl"
+src.git = "https://github.com/CharlesPikachu/musicdl"
+
+[about-time]
+src.pypi = "about-time"
+fetch.pypi = "about-time"
+
+[alive-progress]
+fetch.pypi = "alive-progress"
+src.pypi = "alive-progress"
+
+[websocket-bridge-python]
+fetch.pypi = "websocket_bridge_python"
+src.pypi = "websocket_bridge_python"
