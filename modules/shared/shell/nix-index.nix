@@ -5,7 +5,6 @@
   options,
   ...
 }:
-# Use https://github.com/nix-community/nix-index-database instead of
 with lib;
 with lib.my; let
   cfm = config.modules;
