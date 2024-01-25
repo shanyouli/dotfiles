@@ -11,6 +11,14 @@
       sha256 = "sha256-alOIYtM85n2ZdCnRSZgxDh2/2my32bv795nEcJhH/s4=";
     };
   };
+  alist-darwin-a64 = {
+    pname = "alist-darwin-a64";
+    version = "3.30.0";
+    src = fetchurl {
+      url = "https://github.com/alist-org/alist/releases/download/v3.30.0/alist-darwin-arm64.tar.gz";
+      sha256 = "sha256-a/H+HX/YBUVmYmkwFSjS84LzsVX9EOVsh71BoWspGWg=";
+    };
+  };
   alive-progress = {
     pname = "alive-progress";
     version = "3.1.5";
@@ -18,6 +26,121 @@
       url = "https://pypi.org/packages/source/a/alive-progress/alive-progress-3.1.5.tar.gz";
       sha256 = "sha256-QuOZpmyBUNxQdgLf97eVPxBe8R+vl92qbSexy/RcTJg=";
     };
+  };
+  clash2singbox = {
+    pname = "clash2singbox";
+    version = "v0.0.2";
+    src = fetchFromGitHub {
+      owner = "xmdhs";
+      repo = "clash2singbox";
+      rev = "v0.0.2";
+      fetchSubmodules = false;
+      sha256 = "sha256-XnjsRi5G+i6Bfh3Pq7uQYZmN2IOIrVjz74D4mmXq6zY=";
+    };
+    vendorHash = "sha256-0HpjgvxhhZ7pb5Z+K78hxdaddb/H7Sc3l1xEz4FDKaA=";
+  };
+  codicons = {
+    pname = "codicons";
+    version = "6ceb091d5c40da3e5836e3d80b08d3f74efc4cbf";
+    src = fetchurl {
+      url = "https://github.com/microsoft/vscode-codicons/raw/6ceb091d5c40da3e5836e3d80b08d3f74efc4cbf/dist/codicon.ttf";
+      sha256 = "sha256-YAjrSd1ospTk4UtrKS2rkYDcBjzXk0/mlpIaCVjilXs=";
+    };
+    date = "2024-01-18";
+  };
+  deeplx = {
+    pname = "deeplx";
+    version = "v0.8.8";
+    src = fetchFromGitHub {
+      owner = "OwO-Network";
+      repo = "DeepLX";
+      rev = "v0.8.8";
+      fetchSubmodules = false;
+      sha256 = "sha256-4/sfePuNS67tlyt0KGqLiYXfTu5uvHS2+XD8X5IrROo=";
+    };
+    vendorHash = "sha256-x4Z8fTrgXOH+9Ixj9NKr2G3BuQPm7/CqNGoIVbXmMOE=";
+  };
+  dutis = {
+    pname = "dutis";
+    version = "e8f8d6176fff1b42e7e68a552fcfd2923f9c27a2";
+    src = fetchFromGitHub {
+      owner = "tsonglew";
+      repo = "dutis";
+      rev = "e8f8d6176fff1b42e7e68a552fcfd2923f9c27a2";
+      fetchSubmodules = false;
+      sha256 = "sha256-mwIBWLKUbqINPc1SnsMHVaN+5sXlRvC20M6kv9DAa5I=";
+    };
+    vendorHash = "sha256-lUBSQq4ac/Vc76gmSaKFkfCrO/BmhQU+3UyA+URb8l8=";
+    date = "2023-09-27";
+  };
+  emacsclient = {
+    pname = "emacsclient";
+    version = "917f2f2694019d534098f5e2e365b5f6e5ddbd37";
+    src = fetchurl {
+      url = "https://github.com/nashamri/spacemacs-logo/raw/917f2f2694019d534098f5e2e365b5f6e5ddbd37/spacemacs.icns";
+      sha256 = "sha256-s9uLfPpLxbziS8TcHt47dSxxhse1TAmZTqtexOqkiQA=";
+    };
+    date = "2018-08-26";
+  };
+  firefox-utils = {
+    pname = "firefox-utils";
+    version = "b013243f1916576166a02d816651c2cc6416f63e";
+    src = fetchurl {
+      url = "https://github.com/xiaoxiaoflood/firefox-scripts/raw/b013243f1916576166a02d816651c2cc6416f63e/utils.zip";
+      sha256 = "sha256-2LK3BGKSsFeMKLsXnMNz2ONJ/Wb07VTLSu4TwemYNOQ=";
+    };
+    date = "2023-02-24";
+  };
+  go-musicfox = {
+    pname = "go-musicfox";
+    version = "v4.3.0";
+    src = fetchFromGitHub {
+      owner = "go-musicfox";
+      repo = "go-musicfox";
+      rev = "v4.3.0";
+      fetchSubmodules = false;
+      sha256 = "sha256-JDR3D3tILT0q9jqcZmbfQC3yn7cmaSL/GEpCguqCFXI=";
+    };
+  };
+  lazyvim-star = {
+    pname = "lazyvim-star";
+    version = "741ff3aa70336abb6c76ee4c49815ae589a1b852";
+    src = fetchFromGitHub {
+      owner = "LazyVim";
+      repo = "starter";
+      rev = "741ff3aa70336abb6c76ee4c49815ae589a1b852";
+      fetchSubmodules = false;
+      sha256 = "sha256-EkDWEwXTqQIIRWmnqBMVBZ970QBbPmBW6X7n7xzYmzc=";
+    };
+    date = "2024-01-19";
+  };
+  maple-mono = {
+    pname = "maple-mono";
+    version = "6.4";
+    src = fetchurl {
+      url = "https://github.com/subframe7536/maple-font/releases/download/v6.4/MapleMono-ttf.zip";
+      sha256 = "sha256-a06JLIP5aVb9SeEz6kw+LqKy0ydCgaUlPDFWA2Y0G8Q=";
+    };
+  };
+  maple-sc-nf = {
+    pname = "maple-sc-nf";
+    version = "6.4";
+    src = fetchurl {
+      url = "https://github.com/subframe7536/Maple-font/releases/download/v6.4/MapleMono-SC-NF.zip";
+      sha256 = "sha256-SbXWkrpLJUrq+Jt1h3GBP9md5TbYpPchdiR0oEDMAgY=";
+    };
+  };
+  mihomo = {
+    pname = "mihomo";
+    version = "v1.18.0";
+    src = fetchFromGitHub {
+      owner = "MetaCubeX";
+      repo = "mihomo";
+      rev = "v1.18.0";
+      fetchSubmodules = false;
+      sha256 = "sha256-lxiPrFPOPNppxdm2Ns4jaMHMRCYFlMz2h2rf7x0gv9c=";
+    };
+    vendorHash = "sha256-b7q0e3HHolVhwNJF0kwvwuVy8ndJLc0ITMl+0/YtSjA=";
   };
   musicdl = {
     pname = "musicdl";
@@ -31,6 +154,37 @@
     };
     date = "2023-02-22";
   };
+  musicn = {
+    pname = "musicn";
+    version = "v1.5.0";
+    src = fetchFromGitHub {
+      owner = "zonemeen";
+      repo = "musicn";
+      rev = "v1.5.0";
+      fetchSubmodules = false;
+      sha256 = "sha256-jnS3NwxguAu4SJNFTvk6HgYF0eVw8/L7qC4o1K+WVwE=";
+    };
+    npmDepsHash = "sha256-LDCHODja5wMSy+03IzqoVTmHDEsqOSZtSdbyQEWlbb4=";
+  };
+  pngpaste = {
+    pname = "pngpaste";
+    version = "0.2.3";
+    src = fetchFromGitHub {
+      owner = "jcsalterego";
+      repo = "pngpaste";
+      rev = "0.2.3";
+      fetchSubmodules = false;
+      sha256 = "sha256-uvajxSelk1Wfd5is5kmT2fzDShlufBgC0PDCeabEOSE=";
+    };
+  };
+  seam-darwin-a64 = {
+    pname = "seam-darwin-a64";
+    version = "0.1.39";
+    src = fetchurl {
+      url = "https://github.com/borber/seam/releases/download/v_cli.0.1.39/seam-v0.1.39.aarch64-apple-darwin.tar.xz";
+      sha256 = "sha256-RoziXRXIuYOfJkJzK7xhZWneeKd1+zsxYCx0FgN7CXo=";
+    };
+  };
   websocket-bridge-python = {
     pname = "websocket-bridge-python";
     version = "0.0.2";
@@ -39,15 +193,27 @@
       sha256 = "sha256-J9HGD3PSavZQwh2eZPbM6isdknZ1M2nkL5WHlYjRju8=";
     };
   };
+  yabai-zsh-completions = {
+    pname = "yabai-zsh-completions";
+    version = "6e38681a002e13bdcd43f461f73c53b7c11fd4e5";
+    src = fetchFromGitHub {
+      owner = "Amar1729";
+      repo = "yabai-zsh-completions";
+      rev = "6e38681a002e13bdcd43f461f73c53b7c11fd4e5";
+      fetchSubmodules = false;
+      sha256 = "sha256-II00E32Pnt7PO+PcTtWp4NzSUDhQJTgAPw9HdlItbhQ=";
+    };
+    date = "2023-11-13";
+  };
   yutto = {
     pname = "yutto";
-    version = "v2.0.0-beta.33";
+    version = "v2.0.0-beta.34";
     src = fetchFromGitHub {
       owner = "yutto-dev";
       repo = "yutto";
-      rev = "v2.0.0-beta.33";
+      rev = "v2.0.0-beta.34";
       fetchSubmodules = false;
-      sha256 = "sha256-6uQFVvVNAx9+cgmOG4U8i0UQKnpz2r8FS4mvbpZMMnQ=";
+      sha256 = "sha256-laliYsrcnvYSvpYRH4IgTGuJxEdx92Lb1urB02ozfaY=";
     };
   };
 }

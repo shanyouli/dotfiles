@@ -6,10 +6,10 @@
 }:
 stdenv.mkDerivation {
   inherit (source) src pname version;
-  # name = "Maple-mono-${version}";
+  # name = "Maple-SC-NF-${version}";
   # src = fetchurl {
-  #   url = "https://github.com/subframe7536/Maple-font/releases/download/v${version}/MapleMono.zip";
-  #   sha256 = "1in5vhjncrp63zzgnrki0jkpzbc9ljvxmx8rzgymq66hzz00x7h2";
+  #   url = "https://github.com/subframe7536/Maple-font/releases/download/v${version}/MapleMono-SC-NF.zip";
+  #   sha256 = "1h0xf2scaidif89x9blpyfjpkjqfgf10vc0wnln4r315cf91vanv";
   # };
   nativeBuildInputs = [p7zip];
   dontInstall = true;
@@ -24,6 +24,8 @@ stdenv.mkDerivation {
     popd
     rm -rf $out/tmp
   '';
+  # installPhase = ''
+  # '';
 
   meta = with lib; {
     description = "Open source monospace/Nerd Font ";

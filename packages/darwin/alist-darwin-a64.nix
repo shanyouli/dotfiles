@@ -35,7 +35,7 @@ stdenv.mkDerivation rec {
       🗂️A file list program that supports multiple storage, powered by Gin and Solidjs.
     '';
     homepage = "https://github.com/alist-org/alist";
-    platforms = platforms.darwin;
+    platforms = ["aarch64-darwin"];
     maintainers = with maintainers; [shanyouli];
     license = licenses.gpl3;
   };

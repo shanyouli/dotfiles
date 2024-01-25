@@ -1,21 +1,12 @@
 {
   lib,
   buildNpmPackage,
-  fetchFromGitHub,
   nodePackages,
   python3,
+  source,
 }:
 buildNpmPackage rec {
-  pname = "musicn";
-  version = "1.5.0";
-
-  src = fetchFromGitHub {
-    owner = "zonemeen";
-    repo = pname;
-    rev = "v${version}";
-    hash = "sha256-jnS3NwxguAu4SJNFTvk6HgYF0eVw8/L7qC4o1K+WVwE=";
-  };
-  npmDepsHash = "sha256-LDCHODja5wMSy+03IzqoVTmHDEsqOSZtSdbyQEWlbb4=";
+  inherit (source) pname version src npmDepsHash;
 
   nativeBuildInputs = [nodePackages.node-gyp python3];
   postPatch = ''

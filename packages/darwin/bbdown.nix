@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
       一款命令行式哔哩哔哩下载器. Bilibili Downloader.
     '';
     homepage = "https://github.com/nilaoda/BBDown";
-    platforms = platforms.darwin;
+    platforms = ["aarch64-darwin"];
     maintainers = with maintainers; [shanyouli];
     license = licenses.mit;
   };

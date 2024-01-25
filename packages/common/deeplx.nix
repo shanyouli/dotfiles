@@ -1,20 +1,11 @@
 {
   lib,
   buildGoModule,
-  fetchFromGitHub,
+  source,
 }:
 buildGoModule rec {
-  pname = "deeplx";
-  version = "0.8.8";
+  inherit (source) pname version src vendorHash;
 
-  src = fetchFromGitHub {
-    owner = "OwO-Network";
-    repo = "DeepLX";
-    rev = "v${version}";
-    hash = "sha256-4/sfePuNS67tlyt0KGqLiYXfTu5uvHS2+XD8X5IrROo=";
-  };
-
-  vendorHash = "sha256-x4Z8fTrgXOH+9Ixj9NKr2G3BuQPm7/CqNGoIVbXmMOE=";
   ldflags = ["-s" "-w"];
   postInstall = ''
     mv $out/bin/DeepLX $out

@@ -7,18 +7,10 @@
   alsa-lib,
   flac,
   pkg-config,
-  fetchFromGitHub,
+  source,
 }:
 buildGo121Module rec {
-  pname = "go-musicfox";
-  version = "4.3.0";
-  src = fetchFromGitHub {
-    owner = "go-musicfox";
-    repo = "go-musicfox";
-    rev = "v${version}";
-    fetchSubmodules = false;
-    sha256 = "sha256-jIDkF2IdtNqlRB12zGSrk8dOBZM6O7uXFZwfAXIZZwU=";
-  };
+  inherit (source) pname version src;
   vendorHash = null;
   subPackages = ["cmd/musicfox.go"];
   buildInputs =

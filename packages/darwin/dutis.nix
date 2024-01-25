@@ -32,6 +32,7 @@ buildGoModule rec {
     homepage = "https://github.com/tsonglew/dutis";
     license = licenses.mit;
     maintainers = with maintainers; [lyeli];
+    platforms = platforms.darwin;
     mainProgram = "dutis";
   };
 }

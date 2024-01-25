@@ -7,7 +7,7 @@ stdenv.mkDerivation rec {
   name = "seam";
   version = "0.1.23";
   src = fetchurl {
-    url = "https://github.com/Borber/seam/releases/download/v${version}/seam-v${version}.aarch64-apple-darwin.tar.xz";
+    url = "https://github.com/borber/seam/releases/download/v${version}/seam-v${version}.aarch64-apple-darwin.tar.xz";
     sha256 = "1nx9mgj51f50nv4zagrbfbr1gs8by9n0hk4pan3zjbwdykb28321";
   };
   sourceRoot = ".";
@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
       可在mpv，PotPlayer、flv.js等播放器中播放。将针对性推出不同侧重点的 cli， gui， server 程序.
     '';
     homepage = "https://github.com/Borber/seam";
-    platforms = platforms.darwin;
+    platforms = ["aarch64-darwin"];
     maintainers = with maintainers; [shanyouli];
     license = licenses.gpl3;
   };

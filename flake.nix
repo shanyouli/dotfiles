@@ -248,7 +248,7 @@
         devenv = inputs.devenv.defaultPackage.${prev.system};
       };
       python = (import ./packages).overlay;
-      my = final: prev: mapModule ./packages/common (p: prev.callPackage p {}) {};
+      # my = final: prev: mapModule ./packages/common (p: prev.callPackage p {}) {};
       macos = final: prev: mapModule ./packages/darwin (p: prev.callPackage p {}) {};
       darwinApp = import ./packages/darwinApp;
 

@@ -1,7 +1,9 @@
+
+#### python packages
+
 [yutto]
 fetch.github = "yutto-dev/yutto"
 src.github_tag = "yutto-dev/yutto"
-
 
 # https://discourse.nixos.org/t/installing-a-python-package-from-pypi/24553/2
 # 不使用 fetchPypi，原因见上面链接
@@ -20,3 +22,86 @@ src.pypi = "alive-progress"
 [websocket-bridge-python]
 fetch.pypi = "websocket_bridge_python"
 src.pypi = "websocket_bridge_python"
+
+### common
+[maple-sc-nf]
+src.github = "subframe7536/Maple-font"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/subframe7536/Maple-font/releases/download/v$ver/MapleMono-SC-NF.zip"
+
+[maple-mono]
+src.github = "subframe7536/Maple-font"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/subframe7536/maple-font/releases/download/v$ver/MapleMono-ttf.zip"
+
+[lazyvim-star]
+src.git = "https://github.com/LazyVim/starter"
+fetch.github = "LazyVim/starter"
+
+[go-musicfox]
+src.github = "go-musicfox/go-musicfox"
+fetch.github = "go-musicfox/go-musicfox"
+git.fetchSubmodules = false
+# passthru = { vendorHash = null }
+
+[deeplx]
+src.github = "OwO-Network/DeepLX"
+fetch.github = "OwO-Network/DeepLX"
+passthru = { vendorHash = "sha256-x4Z8fTrgXOH+9Ixj9NKr2G3BuQPm7/CqNGoIVbXmMOE=" }
+
+[codicons]
+src.git = "https://github.com/microsoft/vscode-codicons"
+fetch.url = "https://github.com/microsoft/vscode-codicons/raw/$ver/dist/codicon.ttf"
+
+[clash2singbox]
+src.github = "xmdhs/clash2singbox"
+fetch.github = "xmdhs/clash2singbox"
+passthru = { vendorHash = "sha256-0HpjgvxhhZ7pb5Z+K78hxdaddb/H7Sc3l1xEz4FDKaA=" }
+
+
+[mihomo]
+src.github = "MetaCubeX/mihomo"
+fetch.github = "MetaCubeX/mihomo"
+passthru = { vendorHash = "sha256-b7q0e3HHolVhwNJF0kwvwuVy8ndJLc0ITMl+0/YtSjA=" }
+
+[musicn]
+src.github = "zonemeen/musicn"
+fetch.github = "zonemeen/musicn"
+passthru = { npmDepsHash = "sha256-LDCHODja5wMSy+03IzqoVTmHDEsqOSZtSdbyQEWlbb4=" }
+
+[firefox-utils]
+src.git = "https://github.com/xiaoxiaoflood/firefox-scripts"
+fetch.url = "https://github.com/xiaoxiaoflood/firefox-scripts/raw/$ver/utils.zip"
+
+### darwin
+[yabai-zsh-completions]
+src.git = "https://github.com/Amar1729/yabai-zsh-completions"
+fetch.github = "Amar1729/yabai-zsh-completions"
+
+[alist-darwin-a64]
+src.github = "alist-org/alist"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/alist-org/alist/releases/download/v$ver/alist-darwin-arm64.tar.gz"
+
+[seam-darwin-a64]
+src.github = "Borber/seam"
+src.from_pattern = "v_cli.(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/borber/seam/releases/download/v_cli.$ver/seam-v$ver.aarch64-apple-darwin.tar.xz"
+
+[pngpaste]
+src.github_tag = "jcsalterego/pngpaste"
+fetch.github = "jcsalterego/pngpaste"
+
+[dutis]
+src.git = "https://github.com/tsonglew/dutis"
+fetch.github = "tsonglew/dutis"
+passthru = { vendorHash = "sha256-lUBSQq4ac/Vc76gmSaKFkfCrO/BmhQU+3UyA+URb8l8=" }
+git.fetchSubmodules = false
+
+[emacsclient]
+src.git = "https://github.com/nashamri/spacemacs-logo"
+fetch.url = "https://github.com/nashamri/spacemacs-logo/raw/$ver/spacemacs.icns"
