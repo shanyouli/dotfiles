@@ -22,6 +22,7 @@
     settings = {
       deadnix.edit = true;
       deadnix.noLambdaArg = true;
+      alejandra.exclude = ["generated.nix"];
     };
   };
 }

@@ -29,7 +29,7 @@
     shell.direnv.enable = true;
     shell.git.enable = true;
     shell.gopass.enable = true;
-    shell.nix-index = true;
+    shell.nix-index.enable = true;
 
     editor.nvim.enable = true;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs
@@ -46,7 +46,7 @@
     dev.java.enable = true;
     dev.java.plugins = ["oracle-21.0.1" "liberica-8u392+9"];
     dev.lua.enable = true;
-    dev.cc.enable = true;
+    # dev.cc.enable = true;
     dev.node.enable = true;
     dev.toml.fmt = true;
     dev.enWebReport = true;

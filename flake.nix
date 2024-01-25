@@ -88,7 +88,7 @@
         };
       };
       nixpkgs.config = {
-        allowUnsupportedSystem = true;
+        allowUnsupportedSystem = false;
         allowUnfree = true;
         allowBroken = false;
       };
