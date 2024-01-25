@@ -10,6 +10,7 @@
   ];
 
   pre-commit = {
+    excludes = ["generated.nix"];
     hooks = {
       shellcheck.enable = true;
       alejandra.enable = true;
@@ -22,8 +23,6 @@
     settings = {
       deadnix.edit = true;
       deadnix.noLambdaArg = true;
-      deadnix.exclude = "**/generated.nix";
-      alejandra.exclude = ["**/generated.nix"];
     };
   };
 }
