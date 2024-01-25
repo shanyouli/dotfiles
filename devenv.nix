@@ -22,7 +22,8 @@
     settings = {
       deadnix.edit = true;
       deadnix.noLambdaArg = true;
-      alejandra.exclude = ["generated.nix"];
+      deadnix.exclude = "**/generated.nix";
+      alejandra.exclude = ["**/generated.nix"];
     };
   };
 }
