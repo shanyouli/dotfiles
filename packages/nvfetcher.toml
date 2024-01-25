@@ -23,6 +23,10 @@ src.pypi = "alive-progress"
 fetch.pypi = "websocket_bridge_python"
 src.pypi = "websocket_bridge_python"
 
+[httpx]
+src.github = "encode/httpx"
+fetch.github = "encode/httpx"
+
 ### common
 [maple-sc-nf]
 src.github = "subframe7536/Maple-font"
@@ -75,6 +79,11 @@ passthru = { npmDepsHash = "sha256-LDCHODja5wMSy+03IzqoVTmHDEsqOSZtSdbyQEWlbb4="
 src.git = "https://github.com/xiaoxiaoflood/firefox-scripts"
 fetch.url = "https://github.com/xiaoxiaoflood/firefox-scripts/raw/$ver/utils.zip"
 
+[seam]
+src.github = "Borber/seam"
+fetch.github = "Borber/seam"
+passthru = { cargoHash = "sha256-58Mwg1wSC5snL6NY5cepQ14LD1TMrbDxYlBagPXSoUg=" }
+
 ### darwin
 [yabai-zsh-completions]
 src.git = "https://github.com/Amar1729/yabai-zsh-completions"
@@ -85,12 +94,6 @@ src.github = "alist-org/alist"
 src.from_pattern = "v(.*)"
 src.to_pattern = "\\1"
 fetch.url = "https://github.com/alist-org/alist/releases/download/v$ver/alist-darwin-arm64.tar.gz"
-
-[seam-darwin-a64]
-src.github = "Borber/seam"
-src.from_pattern = "v_cli.(.*)"
-src.to_pattern = "\\1"
-fetch.url = "https://github.com/borber/seam/releases/download/v_cli.$ver/seam-v$ver.aarch64-apple-darwin.tar.xz"
 
 [pngpaste]
 src.github_tag = "jcsalterego/pngpaste"

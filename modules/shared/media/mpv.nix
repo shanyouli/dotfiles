@@ -12,13 +12,19 @@ in {
   options = with lib; {
     modules.media.mpv = {
       enable = mkEnableOption "Whether to enable mpv module ";
+      streamEnable = mkEnableOption "Whether to enable stream live ";
     };
   };
 
   config = with lib;
     mkIf cfg.enable (mkMerge [
       {
-        user.packages = with pkgs; [mpv (mkIf pkgs.stdenvNoCC.isLinux mpvc) ffmpeg];
+        user.packages = with pkgs; [
+          mpv
+          (mkIf pkgs.stdenvNoCC.isLinux mpvc)
+          ffmpeg
+          (mkIf cfg.streamEnable seam)
+        ];
       }
     ]);
 }

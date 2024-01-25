@@ -100,6 +100,17 @@
       sha256 = "sha256-JDR3D3tILT0q9jqcZmbfQC3yn7cmaSL/GEpCguqCFXI=";
     };
   };
+  httpx = {
+    pname = "httpx";
+    version = "0.26.0";
+    src = fetchFromGitHub {
+      owner = "encode";
+      repo = "httpx";
+      rev = "0.26.0";
+      fetchSubmodules = false;
+      sha256 = "sha256-qMMx1CYu2/yH4NRvZFzJOflAPIbcvMYJqU4r+chuzl0=";
+    };
+  };
   lazyvim-star = {
     pname = "lazyvim-star";
     version = "741ff3aa70336abb6c76ee4c49815ae589a1b852";
@@ -175,13 +186,17 @@
       sha256 = "sha256-uvajxSelk1Wfd5is5kmT2fzDShlufBgC0PDCeabEOSE=";
     };
   };
-  seam-darwin-a64 = {
-    pname = "seam-darwin-a64";
-    version = "0.1.39";
-    src = fetchurl {
-      url = "https://github.com/borber/seam/releases/download/v_cli.0.1.39/seam-v0.1.39.aarch64-apple-darwin.tar.xz";
-      sha256 = "sha256-RoziXRXIuYOfJkJzK7xhZWneeKd1+zsxYCx0FgN7CXo=";
+  seam = {
+    pname = "seam";
+    version = "v_cli.0.1.39";
+    src = fetchFromGitHub {
+      owner = "Borber";
+      repo = "seam";
+      rev = "v_cli.0.1.39";
+      fetchSubmodules = false;
+      sha256 = "sha256-rWbswgVQNA006gi9G+Vma+y0NbMDC0/P6SqHwxxvky8=";
     };
+    cargoHash = "sha256-58Mwg1wSC5snL6NY5cepQ14LD1TMrbDxYlBagPXSoUg=";
   };
   websocket-bridge-python = {
     pname = "websocket-bridge-python";

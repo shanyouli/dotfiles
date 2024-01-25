@@ -32,7 +32,6 @@ in {
     user.packages = with pkgs; [
       iina-app
       (mkIf cfg.isStream iinaplus-app)
-      seam-darwin-a64
       bbdown-cmd
       zy-player-app
     ];

@@ -11,7 +11,7 @@
     # small.url = "github:nixos/nixpkgs/nixos-unstable-small";
     darwin = {
       url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "darwin-stable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
       url = "github:rycee/home-manager";

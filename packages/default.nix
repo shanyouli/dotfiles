@@ -61,7 +61,12 @@ in rec {
     sources = (import ./_sources/generated.nix) {inherit (final) fetchurl fetchFromGitHub fetchgit dockerTools;};
     callPkg = package: args: final.callPackage package args;
     packageOverrides = pfinal: pprev:
-      mapPythonPkgs (package: args: (pfinal.toPythonModule (callPkg package args))) sources pfinal;
+      {
+        httpx = pprev.httpx.overrideAttrs (old: {
+          inherit (sources.httpx) pname version src;
+        });
+      }
+      // mapPythonPkgs (package: args: (pfinal.toPythonModule (callPkg package args))) sources pfinal;
   in
     rec
     {

@@ -46,7 +46,7 @@
     dev.java.enable = true;
     dev.java.plugins = ["oracle-21.0.1" "liberica-8u392+9"];
     dev.lua.enable = true;
-    # dev.cc.enable = true;
+    dev.cc.enable = true;
     dev.node.enable = true;
     dev.toml.fmt = true;
     dev.enWebReport = true;
@@ -54,9 +54,10 @@
 
     tool.sdcv.enable = true;
     firefox.enable = true;
+    firefox.package = pkgs.firefox-app;
     theme.enable = true;
 
-    # macos
+    # # macos
     macos.enable = true;
     macos.app.enable = true;
     macos.karabiner.enable = true;
@@ -72,7 +73,6 @@
     macos.hammerspoon.enable = true;
     macos.rime.enable = true;
     macos.iina.enable = true;
-    firefox.package = pkgs.firefox-app;
     macos.brew.mirror = "tuna";
     macos.chrome.enable = true;
     macos.chrome.dev.enable = true;
@@ -87,13 +87,6 @@
     service.yabai.enable = true;
     service.aria2.enable = true;
     service.qbittorrent.enable = true;
-    #    mail                                 = { enable = true; };
-    # aerc                                 = { enable = true; };
-    # irc.enable                           = true;
-    # rescript.enable                      = false;
-    # clojure.enable                       = true;
-    # discord.enable                       = true;
-    # hledger.enable                       = true;
   };
   # 如果你想使用macos别名请查看
   # https://github.com/LnL7/nix-darwin/issues/139#issuecomment-1230728610

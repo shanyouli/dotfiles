@@ -8,11 +8,11 @@
     buildPythonApplication
     poetry-core
     aiofiles
-    aiohttp
     biliass
     colorama
     dict2xml
     typing-extensions
+    httpx
     ;
 in
   buildPythonApplication rec {
@@ -23,11 +23,11 @@ in
 
     propagatedBuildInputs = [
       aiofiles
-      aiohttp
       biliass
       colorama
       dict2xml
       typing-extensions
+      httpx
     ];
 
     pythonImportsCheck = ["yutto"];

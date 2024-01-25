@@ -175,6 +175,26 @@
         },
         "version": "v4.3.0"
     },
+    "httpx": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "httpx",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "encode",
+            "repo": "httpx",
+            "rev": "0.26.0",
+            "sha256": "sha256-qMMx1CYu2/yH4NRvZFzJOflAPIbcvMYJqU4r+chuzl0=",
+            "type": "github"
+        },
+        "version": "0.26.0"
+    },
     "lazyvim-star": {
         "cargoLocks": null,
         "date": "2024-01-19",
@@ -309,20 +329,27 @@
         },
         "version": "0.2.3"
     },
-    "seam-darwin-a64": {
+    "seam": {
         "cargoLocks": null,
         "date": null,
         "extract": null,
-        "name": "seam-darwin-a64",
-        "passthru": null,
+        "name": "seam",
+        "passthru": {
+            "cargoHash": "sha256-58Mwg1wSC5snL6NY5cepQ14LD1TMrbDxYlBagPXSoUg="
+        },
         "pinned": false,
         "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
             "name": null,
-            "sha256": "sha256-RoziXRXIuYOfJkJzK7xhZWneeKd1+zsxYCx0FgN7CXo=",
-            "type": "url",
-            "url": "https://github.com/borber/seam/releases/download/v_cli.0.1.39/seam-v0.1.39.aarch64-apple-darwin.tar.xz"
+            "owner": "Borber",
+            "repo": "seam",
+            "rev": "v_cli.0.1.39",
+            "sha256": "sha256-rWbswgVQNA006gi9G+Vma+y0NbMDC0/P6SqHwxxvky8=",
+            "type": "github"
         },
-        "version": "0.1.39"
+        "version": "v_cli.0.1.39"
     },
     "websocket-bridge-python": {
         "cargoLocks": null,
