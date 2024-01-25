@@ -38,8 +38,8 @@ in {
 
         [install]
         root = "${homeDir}/.local"
-        [build]
-        target-dir = "${config.home.cacheDir}/cargo/target"
+        # [build]
+        # target-dir = "${config.home.cacheDir}/cargo/target"
       '';
     in "${pkgs.runCommandLocal "cargo-home" {inherit cargoConfig;} ''
       mkdir -p $out
