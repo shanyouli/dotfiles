@@ -29,6 +29,7 @@
     shell.direnv.enable = true;
     shell.git.enable = true;
     shell.gopass.enable = true;
+    shell.nix-index.enable = true;
 
     editor.nvim.enable = true;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs
