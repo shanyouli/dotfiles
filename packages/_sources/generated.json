@@ -14,6 +14,28 @@
         },
         "version": "4.2.1"
     },
+    "alist": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "alist",
+        "passthru": {
+            "vendorHash": "sha256-5APKL65KKvpOJ6KE5ccA4S/AAy1fhdovc1d+L0rq0Ks="
+        },
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "alist-org",
+            "repo": "alist",
+            "rev": "v3.30.0",
+            "sha256": "sha256-MW9QtH7nR1Zaepi1snwgbzPK7XjFDKlFoKG/KYjH9dM=",
+            "type": "github"
+        },
+        "version": "v3.30.0"
+    },
     "alist-darwin-a64": {
         "cargoLocks": null,
         "date": null,
@@ -26,6 +48,21 @@
             "sha256": "sha256-a/H+HX/YBUVmYmkwFSjS84LzsVX9EOVsh71BoWspGWg=",
             "type": "url",
             "url": "https://github.com/alist-org/alist/releases/download/v3.30.0/alist-darwin-arm64.tar.gz"
+        },
+        "version": "3.30.0"
+    },
+    "alist-web": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "alist-web",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-BOFg78bnFpEDzUJKOd4PFyDnaarMSdwKL8w/H8xtD+4=",
+            "type": "url",
+            "url": "https://github.com/alist-org/alist-web/releases/download/3.30.0/dist.tar.gz"
         },
         "version": "3.30.0"
     },
@@ -43,6 +80,26 @@
             "url": "https://pypi.org/packages/source/a/alive-progress/alive-progress-3.1.5.tar.gz"
         },
         "version": "3.1.5"
+    },
+    "bbdown": {
+        "cargoLocks": null,
+        "date": "2023-11-13",
+        "extract": null,
+        "name": "bbdown",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "nilaoda",
+            "repo": "BBDown",
+            "rev": "1196918e709f883eabfe3122ccad824b8f551381",
+            "sha256": "sha256-foTgCQKzYZc4aDxiAeoXR4jdEytqnkCt1Rwr2ztostM=",
+            "type": "github"
+        },
+        "version": "1196918e709f883eabfe3122ccad824b8f551381"
     },
     "clash2singbox": {
         "cargoLocks": null,
@@ -303,11 +360,11 @@
             "name": null,
             "owner": "zonemeen",
             "repo": "musicn",
-            "rev": "v1.5.0",
-            "sha256": "sha256-jnS3NwxguAu4SJNFTvk6HgYF0eVw8/L7qC4o1K+WVwE=",
+            "rev": "v1.5.2",
+            "sha256": "sha256-X2s1K8Cap7i+nGF2qlrpnoCikIhwtz8ebgpfY3G+JiA=",
             "type": "github"
         },
-        "version": "v1.5.0"
+        "version": "v1.5.2"
     },
     "pngpaste": {
         "cargoLocks": null,
@@ -335,7 +392,7 @@
         "extract": null,
         "name": "seam",
         "passthru": {
-            "cargoHash": "sha256-58Mwg1wSC5snL6NY5cepQ14LD1TMrbDxYlBagPXSoUg="
+            "cargoHash": "sha256-fh6JkUIUHHVpl5Taxoa3b9VJIjq3xQBB9wB7V08s/ZU="
         },
         "pinned": false,
         "src": {

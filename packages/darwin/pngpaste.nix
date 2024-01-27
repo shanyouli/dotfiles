@@ -1,18 +1,11 @@
 {
   stdenv,
   darwin,
-  fetchFromGitHub,
   lib,
+  source,
 }:
 stdenv.mkDerivation rec {
-  version = "0.2.3";
-  pname = "pngpaste";
-  src = fetchFromGitHub {
-    owner = "jcsalterego";
-    repo = "pngpaste";
-    rev = "${version}";
-    hash = "sha256-uvajxSelk1Wfd5is5kmT2fzDShlufBgC0PDCeabEOSE=";
-  };
+  inherit (source) pname version src;
   buildInputs = [darwin.apple_sdk.frameworks.Cocoa];
   installPhase = ''
     mkdir -p $out/bin

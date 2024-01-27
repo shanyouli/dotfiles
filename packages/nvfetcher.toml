@@ -1,6 +1,4 @@
-
 #### python packages
-
 [yutto]
 fetch.github = "yutto-dev/yutto"
 src.github_tag = "yutto-dev/yutto"
@@ -82,7 +80,20 @@ fetch.url = "https://github.com/xiaoxiaoflood/firefox-scripts/raw/$ver/utils.zip
 [seam]
 src.github = "Borber/seam"
 fetch.github = "Borber/seam"
-passthru = { cargoHash = "sha256-58Mwg1wSC5snL6NY5cepQ14LD1TMrbDxYlBagPXSoUg=" }
+passthru = { cargoHash = "sha256-fh6JkUIUHHVpl5Taxoa3b9VJIjq3xQBB9wB7V08s/ZU=" }
+
+[bbdown]
+src.git = "https://github.com/nilaoda/BBDown"
+fetch.github = "nilaoda/BBDown"
+
+[alist]
+src.github = "alist-org/alist"
+fetch.github = "alist-org/alist"
+passthru = { vendorHash = "sha256-5APKL65KKvpOJ6KE5ccA4S/AAy1fhdovc1d+L0rq0Ks=" }
+
+[alist-web]
+src.github = "alist-org/alist-web"
+fetch.url = "https://github.com/alist-org/alist-web/releases/download/$ver/dist.tar.gz"
 
 ### darwin
 [yabai-zsh-completions]
@@ -108,3 +119,5 @@ git.fetchSubmodules = false
 [emacsclient]
 src.git = "https://github.com/nashamri/spacemacs-logo"
 fetch.url = "https://github.com/nashamri/spacemacs-logo/raw/$ver/spacemacs.icns"
+
+# 多源文件

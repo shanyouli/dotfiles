@@ -38,6 +38,8 @@
     media.netease-music.enable = true;
     media.download.enable = true;
     media.flameshot.enable = true;
+    media.mpv.enable = true;
+    media.mpv.streamEnable = true;
 
     dev.bash.enable = true;
     dev.python.enable = true;
@@ -72,7 +74,6 @@
     macos.emacs.enable = true;
     macos.hammerspoon.enable = true;
     macos.rime.enable = true;
-    macos.iina.enable = true;
     macos.brew.mirror = "tuna";
     macos.chrome.enable = true;
     macos.chrome.dev.enable = true;

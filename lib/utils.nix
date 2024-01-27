@@ -166,6 +166,7 @@ in rec {
     name,
     darwin,
     system ? "aarch64-darwin",
+    allPkgs,
     baseModules ? [{nixpkgs.config.allowUnfree = true;}],
     extraModules ? [],
     specialArgs ? {},
@@ -177,7 +178,7 @@ in rec {
         [
           {
             networking.hostName = "${name}";
-            # nixpkgs.pkgs = allPkgs."${system}"; # BUG: 无法构建成功
+            nixpkgs.pkgs = allPkgs."${system}"; # BUG: 无法构建成功
           }
         ]
         ++ baseModules

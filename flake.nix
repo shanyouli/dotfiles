@@ -46,7 +46,7 @@
   }: let
     inherit (flake-utils.lib) eachSystemMap;
     inherit (lib) attrValues;
-    inherit (lib.my) defaultSystems mkPkgs mkPkg mapModule;
+    inherit (lib.my) defaultSystems mkPkgs mkPkg;
     allPkgs = mkPkgs {
       nixpkgs = [nixos-stable darwin-stable];
       cfg = {allowUnfree = true;};
@@ -249,7 +249,7 @@
       };
       python = (import ./packages).overlay;
       # my = final: prev: mapModule ./packages/common (p: prev.callPackage p {}) {};
-      macos = final: prev: mapModule ./packages/darwin (p: prev.callPackage p {}) {};
+      # macos = final: prev: mapModule ./packages/darwin (p: prev.callPackage p {}) {};
       darwinApp = import ./packages/darwinApp;
 
       nur = inputs.nur.overlay;

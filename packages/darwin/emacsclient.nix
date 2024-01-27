@@ -2,11 +2,11 @@
   lib,
   runCommandLocal,
   stdenv,
-  fetchurl,
   writeText,
   terminal-notifier,
   emacsClientBin ? "/usr/bin/emacsclient",
   withNotify ? false,
+  source,
   ...
 }: let
   messageCmd =
@@ -115,10 +115,7 @@
       emacsclient("")
     end run
   '';
-  icns = fetchurl {
-    url = "https://github.com/nashamri/spacemacs-logo/raw/master/spacemacs.icns";
-    sha256 = "sha256-s9uLfPpLxbziS8TcHt47dSxxhse1TAmZTqtexOqkiQA=";
-  };
+  icns = source.src;
   infoPlist = builtins.toJSON [
     {
       CFBundleURLName = "org-protocol handler";

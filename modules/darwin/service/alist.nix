@@ -8,7 +8,7 @@
 with lib;
 with lib.my; let
   cfg = config.modules.service.alist;
-  package = pkgs.alist-darwin-a64.override {withZshCompletion = true;};
+  package = pkgs.alist.override {withZshCompletion = true;};
   workdir = "${config.home.cacheDir}/alist";
 in {
   options.modules.service.alist = {

@@ -49,6 +49,7 @@ let
     fn = name: let
       package = import "${builtins.toString dir}/${name}";
       args = builtins.intersectAttrs (builtins.functionArgs package) {
+        inherit sources;
         source = sources.${namefn name};
       };
     in
@@ -82,5 +83,6 @@ in rec {
       python310 = prev.python310.override {inherit packageOverrides;};
       python310Packages = python310.pkgs;
     }
-    // (mapPkgs ./common callPkg sources);
+    // (mapPkgs ./common callPkg sources)
+    // (mapPkgs ./darwin callPkg sources);
 }

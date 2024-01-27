@@ -9,12 +9,32 @@
       sha256 = "sha256-alOIYtM85n2ZdCnRSZgxDh2/2my32bv795nEcJhH/s4=";
     };
   };
+  alist = {
+    pname = "alist";
+    version = "v3.30.0";
+    src = fetchFromGitHub {
+      owner = "alist-org";
+      repo = "alist";
+      rev = "v3.30.0";
+      fetchSubmodules = false;
+      sha256 = "sha256-MW9QtH7nR1Zaepi1snwgbzPK7XjFDKlFoKG/KYjH9dM=";
+    };
+    vendorHash = "sha256-5APKL65KKvpOJ6KE5ccA4S/AAy1fhdovc1d+L0rq0Ks=";
+  };
   alist-darwin-a64 = {
     pname = "alist-darwin-a64";
     version = "3.30.0";
     src = fetchurl {
       url = "https://github.com/alist-org/alist/releases/download/v3.30.0/alist-darwin-arm64.tar.gz";
       sha256 = "sha256-a/H+HX/YBUVmYmkwFSjS84LzsVX9EOVsh71BoWspGWg=";
+    };
+  };
+  alist-web = {
+    pname = "alist-web";
+    version = "3.30.0";
+    src = fetchurl {
+      url = "https://github.com/alist-org/alist-web/releases/download/3.30.0/dist.tar.gz";
+      sha256 = "sha256-BOFg78bnFpEDzUJKOd4PFyDnaarMSdwKL8w/H8xtD+4=";
     };
   };
   alive-progress = {
@@ -24,6 +44,18 @@
       url = "https://pypi.org/packages/source/a/alive-progress/alive-progress-3.1.5.tar.gz";
       sha256 = "sha256-QuOZpmyBUNxQdgLf97eVPxBe8R+vl92qbSexy/RcTJg=";
     };
+  };
+  bbdown = {
+    pname = "bbdown";
+    version = "1196918e709f883eabfe3122ccad824b8f551381";
+    src = fetchFromGitHub {
+      owner = "nilaoda";
+      repo = "BBDown";
+      rev = "1196918e709f883eabfe3122ccad824b8f551381";
+      fetchSubmodules = false;
+      sha256 = "sha256-foTgCQKzYZc4aDxiAeoXR4jdEytqnkCt1Rwr2ztostM=";
+    };
+    date = "2023-11-13";
   };
   clash2singbox = {
     pname = "clash2singbox";
@@ -165,13 +197,13 @@
   };
   musicn = {
     pname = "musicn";
-    version = "v1.5.0";
+    version = "v1.5.2";
     src = fetchFromGitHub {
       owner = "zonemeen";
       repo = "musicn";
-      rev = "v1.5.0";
+      rev = "v1.5.2";
       fetchSubmodules = false;
-      sha256 = "sha256-jnS3NwxguAu4SJNFTvk6HgYF0eVw8/L7qC4o1K+WVwE=";
+      sha256 = "sha256-X2s1K8Cap7i+nGF2qlrpnoCikIhwtz8ebgpfY3G+JiA=";
     };
     npmDepsHash = "sha256-LDCHODja5wMSy+03IzqoVTmHDEsqOSZtSdbyQEWlbb4=";
   };
@@ -196,7 +228,7 @@
       fetchSubmodules = false;
       sha256 = "sha256-rWbswgVQNA006gi9G+Vma+y0NbMDC0/P6SqHwxxvky8=";
     };
-    cargoHash = "sha256-58Mwg1wSC5snL6NY5cepQ14LD1TMrbDxYlBagPXSoUg=";
+    cargoHash = "sha256-fh6JkUIUHHVpl5Taxoa3b9VJIjq3xQBB9wB7V08s/ZU=";
   };
   websocket-bridge-python = {
     pname = "websocket-bridge-python";
