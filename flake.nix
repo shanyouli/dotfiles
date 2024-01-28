@@ -11,7 +11,7 @@
     # small.url = "github:nixos/nixpkgs/nixos-unstable-small";
     darwin = {
       url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "darwin-stable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
       url = "github:rycee/home-manager";
@@ -46,7 +46,7 @@
   }: let
     inherit (flake-utils.lib) eachSystemMap;
     inherit (lib) attrValues;
-    inherit (lib.my) defaultSystems mkPkgs mkPkg mapModule;
+    inherit (lib.my) defaultSystems mkPkgs mkPkg;
     allPkgs = mkPkgs {
       nixpkgs = [nixos-stable darwin-stable];
       cfg = {allowUnfree = true;};
@@ -88,7 +88,7 @@
         };
       };
       nixpkgs.config = {
-        allowUnsupportedSystem = true;
+        allowUnsupportedSystem = false;
         allowUnfree = true;
         allowBroken = false;
       };
@@ -247,10 +247,10 @@
         # small = import inputs.small {system = prev.system;};
         devenv = inputs.devenv.defaultPackage.${prev.system};
       };
-      python = import ./packages/python;
-      my = final: prev: mapModule ./packages/common (p: prev.callPackage p {}) {};
-      macos = final: prev: mapModule ./packages/darwin (p: prev.callPackage p {}) {};
-      darwinApp = import ./packages/darwinApp;
+      python = (import ./packages).overlay;
+      # my = final: prev: mapModule ./packages/common (p: prev.callPackage p {}) {};
+      # macos = final: prev: mapModule ./packages/darwin (p: prev.callPackage p {}) {};
+      # darwinApp = import ./packages/darwinApp;
 
       nur = inputs.nur.overlay;
     };

@@ -9,6 +9,28 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.media.download;
+  bbdown = let
+    cmd = pkgs.writeScript "bbdown" ''
+      #!${pkgs.stdenv.shell}
+        _dir=${config.home.cacheDir}/bbdown
+        [[ -d $_dir ]] || mkdir -p $_dir
+        get_shasum() { shasum $1 | cut -d" " -f1 ; }
+        copy_source() {
+          local file1=$_dir/bbdown
+          local file2=${pkgs.bbdown}/lib/BBDown/BBDown
+          local hash2=$(get_shasum $file2)
+          [[ -f $file1 ]] && [[ $(get_shasum $file1) == $hash2 ]] || cp -r $file2 $file1
+        }
+        copy_source
+        exec -a "$0" "$_dir/bbdown"  "$@"
+    '';
+  in
+    pkgs.runCommandLocal "bbdown" {nativeBuildInputs = [pkgs.makeWrapper];} ''
+      mkdir -p $out/bin
+      makeWrapper ${cmd} $out/bin/bbdown \
+        --set PATH  "${pkgs.ffmpeg}/bin" \
+        --set LD_LIBRARY_PATH  "${pkgs.icu}/lib"
+    '';
 in {
   options.modules.media.download = {
     enable = mkEnableOption "Whether to download media";
@@ -18,12 +40,12 @@ in {
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.enAudio {
       user.packages = [
-        pkgs.musicn
+        # pkgs.musicn
         # pkgs.python3.pkgs.musicdl # 无法下载
       ];
     })
     (mkIf cfg.enVideo {
-      user.packages = [pkgs.unstable.yt-dlp pkgs.python3Packages.yutto]; # yutto 下载bilibili
+      user.packages = [pkgs.unstable.yt-dlp pkgs.python3Packages.yutto bbdown pkgs.lux]; # yutto 下载bilibili
       home.configFile."yt-dlp/config".text = ''
         # 下载默认保存目录
         --paths $HOME/Downloads/Youtube

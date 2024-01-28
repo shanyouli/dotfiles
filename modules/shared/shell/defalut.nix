@@ -78,6 +78,7 @@ in {
         })
 
         tailspin # 支持高亮的语法查看工具
+        nvfetcher # 管理自己构建包的升级
       ];
       env = {
         PATH = ["${config.home.binDir}"];

@@ -19,12 +19,13 @@ with lib.my; let
     #   rev = "df5b037108c4a70dc5e854bb60ccbff9701da4f5";
     #   hash = "sha256-xMOwte/nuJdrwMWNLxfHikxA3btuyDyle6aLm5TD8ac=";
     # };
-    version = "6.0.4";
+    version = "6.0.7";
     src = pkgs.fetchFromGitHub {
       owner = "koekeishiya";
       repo = "yabai";
       rev = "v${version}";
-      hash = "sha256-U2YGgfTfhpmiBiO+S6xpsLrgI+kVUYYGLGjt8KHcBrc=";
+      hash = "sha256-vWL2KA+Rhj78I2J1kGItJK+OdvhVo1ts0NoOHIK65Hg=";
+      # hash = "sha256-U2YGgfTfhpmiBiO+S6xpsLrgI+kVUYYGLGjt8KHcBrc=";
     };
     nativeBuildInputs = (prev.nativeBuildInputes or []) ++ [buildSymlinks];
     dontBuild = false;

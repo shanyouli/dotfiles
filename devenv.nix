@@ -10,6 +10,7 @@
   ];
 
   pre-commit = {
+    excludes = ["generated.nix"];
     hooks = {
       shellcheck.enable = true;
       alejandra.enable = true;

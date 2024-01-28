@@ -19,6 +19,7 @@ in {
       vscodevim.vim
       jnoortheen.nix-ide
       formulahendry.code-runner
+      arrterian.nix-env-selector
     ];
     home.programs.vscode = {
       enable = true;

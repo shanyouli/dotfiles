@@ -1,22 +1,10 @@
 {
   lib,
   buildGoModule,
-  fetchFromGitHub,
+  source,
 }:
-# with import <nixpkgs> {};
-# with pkgs;
 buildGoModule rec {
-  pname = "clash2singbox";
-  version = "0.0.2";
-
-  src = fetchFromGitHub {
-    owner = "xmdhs";
-    repo = "clash2singbox";
-    rev = "v${version}";
-    hash = "sha256-XnjsRi5G+i6Bfh3Pq7uQYZmN2IOIrVjz74D4mmXq6zY=";
-  };
-
-  vendorHash = "sha256-0HpjgvxhhZ7pb5Z+K78hxdaddb/H7Sc3l1xEz4FDKaA=";
+  inherit (source) pname version src vendorHash;
 
   ldflags = ["-s" "-w"];
 

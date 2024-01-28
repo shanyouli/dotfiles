@@ -3,7 +3,7 @@
 # shellcheck shell=bash
 # copy from https://github.com/bandithedoge/nixpkgs-firefox-darwin/blob/main/update.sh
 BASE_URL="https://download-installer.cdn.mozilla.net/pub"
-SCRIPT_PATH=$(dirname "\$0")
+SCRIPT_PATH=$(dirname "$0")
 
 function get_version() {
     curl -s "https://product-details.mozilla.org/1.0/firefox_versions.json" |

@@ -81,7 +81,7 @@ in {
         # pkgs.qbittorrent-app
         pkgs.xbydriver-app
         # pkgs.chatgpt-app
-        pkgs.chatgpt-next-web-app
+        pkgs.next-chat-app
         pkgs.localsend-app
         (lib.mkIf config.modules.editor.nvim.enGui pkgs.neovide-app)
         # qutebrowser-app # 不再需要
