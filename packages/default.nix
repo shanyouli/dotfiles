@@ -56,11 +56,31 @@ let
       callFn package args;
   in
     mapPackages {inherit dir fn namefn;};
+  mapDarwinApps = fn:
+    mapPackages {
+      inherit fn;
+      dir = ./darwinApp;
+      namefn = n: (removeNixSuffix n) + "-app";
+    };
 in rec {
   # packages = pkgs: mapPkgs (name: pkgs.${name});
   overlay = final: prev: let
     sources = (import ../_sources/generated.nix) {inherit (final) fetchurl fetchFromGitHub fetchgit dockerTools;};
     callPkg = package: args: final.callPackage package args;
+    mkDarwinApp = import ./lib/darwinApp.nix {pkgs = prev;};
+    callDarwinApp = name: let
+      package = import ./darwinApp/${name};
+      source = let
+        n = removeNixSuffix name;
+      in
+        if (builtins.hasAttr n sources)
+        then sources.${n}
+        else null;
+      args = builtins.intersectAttrs (builtins.functionArgs package) {
+        inherit sources source mkDarwinApp;
+      };
+    in
+      final.callPackage package args;
     packageOverrides = pfinal: pprev:
       {
         httpx = pprev.httpx.overrideAttrs (old: {
@@ -84,5 +104,17 @@ in rec {
       python310Packages = python310.pkgs;
     }
     // (mapPkgs ./common callPkg sources)
-    // (mapPkgs ./darwin callPkg sources);
+    // (mapPkgs ./darwin callPkg sources)
+    // {
+      iina-app = let
+        package = import ./darwinApp/iina.nix;
+        args = builtins.intersectAttrs (builtins.functionArgs package) {
+          inherit sources;
+          source = sources.iina;
+          mkDarwinApp = import ./lib/darwinApp.nix {pkgs = prev;};
+        };
+      in
+        prev.callPackage package args;
+    }
+    // mapDarwinApps callDarwinApp;
 }

@@ -1,4 +1,5 @@
 {pkgs}: let
+  # 文件来源 @see https://github.com/ldeck/nix-home/raw/09bf1a8a00608084b8bc075086111c5a7e89151d/lib/defaults/apps/macOS/lib/app.nix
   inherit (pkgs) unzip undmg stdenv lib;
 in
   {
@@ -29,8 +30,8 @@ in
           fi
           if [[ "$curSrc" =~ \.zip$ ]]; then
             unzip  $src
-            _pathDmg=$(find . -maxdepth 2 -name "*.dmg" | head 1)
-            _app=$(find . -maxdepth 2 -name "*.app" | head 1)
+            _pathDmg=$(find . -maxdepth 2 -name "*.dmg" | head -n 1)
+            _app=$(find . -maxdepth 2 -name "*.app" | head -n 1)
           fi
           if [[ "" == $_app ]]; then
             echo $_pathDmg will undmg
@@ -46,7 +47,9 @@ in
             fi
           fi
           echo "Copying contents"
-          cp -a "$_app" "$PWD/"
+          if [[ $(dirname "$_app") != "." ]] && [[ $(dirname "$_app") != $PWD ]]; then
+            cp -a "$_app" "$PWD/"
+          fi
           ls -al $PWD
           if [[ -n $_mnt ]]; then
             echo "Detaching $_mnt"
@@ -60,7 +63,7 @@ in
         installPhase =
           ''
             mkdir -p "$out/Applications/${appname}.app"
-            cp -a *.app/. $out/Applications/${appname}.app
+            cp -a *.app/. "$out/Applications/${appname}.app"
           ''
           + postInstall;
         meta = {platforms = lib.platforms.darwin;} // meta;

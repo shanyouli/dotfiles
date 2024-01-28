@@ -120,4 +120,88 @@ git.fetchSubmodules = false
 src.git = "https://github.com/nashamri/spacemacs-logo"
 fetch.url = "https://github.com/nashamri/spacemacs-logo/raw/$ver/spacemacs.icns"
 
-# 多源文件
+### DarwinAPP
+
+[chatgpt]
+src.github="lencx/ChatGPT"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/lencx/ChatGPT/releases/download/v$ver/ChatGPT_$ver_macos_aarch64.dmg"
+
+[next-chat]
+src.github="ChatGPTNextWeb/ChatGPT-Next-Web"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web/releases/download/v$ver/NextChat_$ver_x64.dmg"
+
+[clash-nyanpasu]
+src.github="keiko233/clash-nyanpasu"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/keiko233/clash-nyanpasu/releases/download/v$ver/Clash.Nyanpasu_$ver_aarch64.dmg"
+
+[clash-verge]
+src.github="zzzgydi/clash-verge"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/zzzgydi/clash-verge/releases/download/v$ver/Clash.Verge_$ver_aarch64.dmg"
+
+[iina]
+src.github="iina/iina"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/iina/iina/releases/download/v$ver/IINA.v$ver.dmg"
+
+[iinaplus]
+src.github="xjbeta/iina-plus"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/xjbeta/iina-plus/releases/download/$ver/IINA+.$ver.dmg"
+
+[localsend]
+src.github="localsend/localsend"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/localsend/localsend/releases/download/v$ver/LocalSend-$ver.dmg"
+
+[lyricx]
+src.github="go-musicfox/LyricsX"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/go-musicfox/LyricsX/releases/download/v$ver/LyricsX_$ver.zip"
+
+[neovide]
+src.github="neovide/neovide"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/neovide/neovide/releases/download/$ver/neovide.dmg.zip"
+
+[qutebrowser]
+src.github="qutebrowser/qutebrowser"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/qutebrowser/qutebrowser/releases/download/v$ver/qutebrowser-$ver.dmg"
+
+# [rpcs3]
+# src.github="xjbeta/iina-plus"
+# src.from_pattern = "v(.*)"
+# src.to_pattern = "\\1"
+# fetch.url = "https://github.com/xjbeta/iina-plus/releases/download/$ver/IINA+.$ver.dmg"
+
+[upic]
+src.github="gee1k/uPic"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/gee1k/uPic/releases/download/v$ver/uPic.zip"
+
+[xbydriver]
+src.github="gaozhangmin/aliyunpan"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/gaozhangmin/aliyunpan/releases/download/v$ver/XBYDriver-$ver-mac-arm64.dmg"
+
+[zy-player]
+src.github="Hiram-Wong/ZyPlayer"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/Hiram-Wong/ZyPlayer/releases/download/v$ver/zyplayer-mac-$ver-arm64.dmg"
