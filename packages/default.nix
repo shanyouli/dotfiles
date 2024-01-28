@@ -59,7 +59,7 @@ let
 in rec {
   # packages = pkgs: mapPkgs (name: pkgs.${name});
   overlay = final: prev: let
-    sources = (import ./_sources/generated.nix) {inherit (final) fetchurl fetchFromGitHub fetchgit dockerTools;};
+    sources = (import ../_sources/generated.nix) {inherit (final) fetchurl fetchFromGitHub fetchgit dockerTools;};
     callPkg = package: args: final.callPackage package args;
     packageOverrides = pfinal: pprev:
       {
