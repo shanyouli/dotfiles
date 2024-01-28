@@ -205,3 +205,28 @@ src.github="Hiram-Wong/ZyPlayer"
 src.from_pattern = "v(.*)"
 src.to_pattern = "\\1"
 fetch.url = "https://github.com/Hiram-Wong/ZyPlayer/releases/download/v$ver/zyplayer-mac-$ver-arm64.dmg"
+
+[calibrepath]
+src.github = "Cirn09/calibre-do-not-translate-my-path"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/Cirn09/calibre-do-not-translate-my-path/releases/download/v$ver/mac-patch-backend+update-v$ver.zip"
+
+[calibre]
+src.github = "Cirn09/calibre-do-not-translate-my-path"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://download.calibre-ebook.com/$ver/calibre-$ver.dmg"
+
+[fx-folder]
+src.git = "https://github.com/xiaoxiaoflood/firefox-scripts"
+fetch.url = "https://github.com/xiaoxiaoflood/firefox-scripts/raw/$ver/fx-folder.zip"
+# [firefox-esr]
+# src.webpage = "https://product-details.mozilla.org/1.0/firefox_versions.json"
+# src.regex = " \"FIREFOX_ESR\": \"([^\"]+)esr\","
+# fetch.url = "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$veresr/mac/en-US/Firefox%20$veresr.dmg"
+# passthru = { name = "firefox-esr" }
+# [firefox]
+# src.webpage = "https://product-details.mozilla.org/1.0/firefox_versions.json"
+# src.regex = " \"LATEST_FIREFOX_VERSION\": \"([^\"]+)\","
+# fetch.rul = "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$ver/mac/en-US/Firefox%20$ver.dmg"

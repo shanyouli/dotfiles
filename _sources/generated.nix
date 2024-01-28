@@ -57,6 +57,22 @@
     };
     date = "2023-11-13";
   };
+  calibre = {
+    pname = "calibre";
+    version = "7.4.0";
+    src = fetchurl {
+      url = "https://download.calibre-ebook.com/7.4.0/calibre-7.4.0.dmg";
+      sha256 = "sha256-ON3NG6F7dSaie4t31ALd2V2DX34TZu6VqMMXJi4cwic=";
+    };
+  };
+  calibrepath = {
+    pname = "calibrepath";
+    version = "7.4.0";
+    src = fetchurl {
+      url = "https://github.com/Cirn09/calibre-do-not-translate-my-path/releases/download/v7.4.0/mac-patch-backend+update-v7.4.0.zip";
+      sha256 = "sha256-VkOHhDtiA2jANSSDV5nROdIIet56oz0gqgnpy87g+5k=";
+    };
+  };
   chatgpt = {
     pname = "chatgpt";
     version = "1.1.0";
@@ -142,6 +158,15 @@
     src = fetchurl {
       url = "https://github.com/xiaoxiaoflood/firefox-scripts/raw/b013243f1916576166a02d816651c2cc6416f63e/utils.zip";
       sha256 = "sha256-2LK3BGKSsFeMKLsXnMNz2ONJ/Wb07VTLSu4TwemYNOQ=";
+    };
+    date = "2023-02-24";
+  };
+  fx-folder = {
+    pname = "fx-folder";
+    version = "b013243f1916576166a02d816651c2cc6416f63e";
+    src = fetchurl {
+      url = "https://github.com/xiaoxiaoflood/firefox-scripts/raw/b013243f1916576166a02d816651c2cc6416f63e/fx-folder.zip";
+      sha256 = "sha256-IAiHzJ/9YBuChVTePMmXFYtx69jX+crDe1GcAcfZ+OI=";
     };
     date = "2023-02-24";
   };

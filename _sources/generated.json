@@ -101,6 +101,36 @@
         },
         "version": "1196918e709f883eabfe3122ccad824b8f551381"
     },
+    "calibre": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "calibre",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-ON3NG6F7dSaie4t31ALd2V2DX34TZu6VqMMXJi4cwic=",
+            "type": "url",
+            "url": "https://download.calibre-ebook.com/7.4.0/calibre-7.4.0.dmg"
+        },
+        "version": "7.4.0"
+    },
+    "calibrepath": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "calibrepath",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-VkOHhDtiA2jANSSDV5nROdIIet56oz0gqgnpy87g+5k=",
+            "type": "url",
+            "url": "https://github.com/Cirn09/calibre-do-not-translate-my-path/releases/download/v7.4.0/mac-patch-backend+update-v7.4.0.zip"
+        },
+        "version": "7.4.0"
+    },
     "chatgpt": {
         "cargoLocks": null,
         "date": null,
@@ -254,6 +284,21 @@
             "sha256": "sha256-2LK3BGKSsFeMKLsXnMNz2ONJ/Wb07VTLSu4TwemYNOQ=",
             "type": "url",
             "url": "https://github.com/xiaoxiaoflood/firefox-scripts/raw/b013243f1916576166a02d816651c2cc6416f63e/utils.zip"
+        },
+        "version": "b013243f1916576166a02d816651c2cc6416f63e"
+    },
+    "fx-folder": {
+        "cargoLocks": null,
+        "date": "2023-02-24",
+        "extract": null,
+        "name": "fx-folder",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-IAiHzJ/9YBuChVTePMmXFYtx69jX+crDe1GcAcfZ+OI=",
+            "type": "url",
+            "url": "https://github.com/xiaoxiaoflood/firefox-scripts/raw/b013243f1916576166a02d816651c2cc6416f63e/fx-folder.zip"
         },
         "version": "b013243f1916576166a02d816651c2cc6416f63e"
     },
