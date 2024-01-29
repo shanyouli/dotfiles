@@ -177,7 +177,7 @@
           home-manager.darwinModules.home-manager
           sharedHostsConfig
         ];
-        extraModules = [./host/test.nix];
+        extraModules = [./hosts/test.nix];
         specialArgs = {inherit inputs self nixpkgs lib;};
       };
     };
