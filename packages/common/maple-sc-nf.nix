@@ -5,12 +5,11 @@
   source,
 }:
 stdenv.mkDerivation {
-  inherit (source) src pname version;
-  # name = "Maple-SC-NF-${version}";
-  # src = fetchurl {
-  #   url = "https://github.com/subframe7536/Maple-font/releases/download/v${version}/MapleMono-SC-NF.zip";
-  #   sha256 = "1h0xf2scaidif89x9blpyfjpkjqfgf10vc0wnln4r315cf91vanv";
-  # };
+  inherit (source) src pname;
+  version =
+    if (builtins.hasAttr "date" source)
+    then source.date
+    else lib.removePrefix "v" source.version;
   nativeBuildInputs = [p7zip];
   dontInstall = true;
   unpackPhase = ''

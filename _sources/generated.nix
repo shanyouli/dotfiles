@@ -333,7 +333,7 @@
       fetchSubmodules = false;
       sha256 = "sha256-rWbswgVQNA006gi9G+Vma+y0NbMDC0/P6SqHwxxvky8=";
     };
-    cargoHash = "sha256-fh6JkUIUHHVpl5Taxoa3b9VJIjq3xQBB9wB7V08s/ZU=";
+    cargoHash = "sha256-SFwNYyZ/qzWlIwV2c8Tot+RyQtTNb559jK4GCGtWjNk=";
   };
   upic = {
     pname = "upic";

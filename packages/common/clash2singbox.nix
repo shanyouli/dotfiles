@@ -4,7 +4,11 @@
   source,
 }:
 buildGoModule rec {
-  inherit (source) pname version src vendorHash;
+  inherit (source) pname src vendorHash;
+  version =
+    if (builtins.hasAttr "date" source)
+    then source.date
+    else lib.removePrefix "v" source.version;
 
   ldflags = ["-s" "-w"];
 

@@ -587,7 +587,7 @@
         "extract": null,
         "name": "seam",
         "passthru": {
-            "cargoHash": "sha256-fh6JkUIUHHVpl5Taxoa3b9VJIjq3xQBB9wB7V08s/ZU="
+            "cargoHash": "sha256-SFwNYyZ/qzWlIwV2c8Tot+RyQtTNb559jK4GCGtWjNk="
         },
         "pinned": false,
         "src": {

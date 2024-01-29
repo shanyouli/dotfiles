@@ -80,7 +80,8 @@ fetch.url = "https://github.com/xiaoxiaoflood/firefox-scripts/raw/$ver/utils.zip
 [seam]
 src.github = "Borber/seam"
 fetch.github = "Borber/seam"
-passthru = { cargoHash = "sha256-fh6JkUIUHHVpl5Taxoa3b9VJIjq3xQBB9wB7V08s/ZU=" }
+passthru = { cargoHash = "sha256-SFwNYyZ/qzWlIwV2c8Tot+RyQtTNb559jK4GCGtWjNk=" }
+# cargo_locks = ["Cargo.lock"]
 
 [bbdown]
 src.git = "https://github.com/nilaoda/BBDown"

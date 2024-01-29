@@ -4,12 +4,17 @@
   sources,
   p7zip,
   makeWrapper,
+  lib,
   ...
 }: let
   realSrc = sources.calibrepath.src;
 in
   mkDarwinApp rec {
-    inherit (source) pname version src;
+    inherit (source) pname src;
+    version =
+      if (builtins.hasAttr "date" source)
+      then source.date
+      else lib.removePrefix "v" source.version;
     nativeBuildInputs = [p7zip makeWrapper];
     postInstall = ''
       mkdir -p $out/tmp

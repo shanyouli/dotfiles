@@ -4,7 +4,11 @@
   source,
 }:
 stdenv.mkDerivation {
-  inherit (source) version pname src;
+  inherit (source) pname src;
+  version =
+    if (builtins.hasAttr "date" source)
+    then source.date
+    else lib.removePrefix "v" source.version;
   dontInstall = true;
   unpackPhase = ''
     _src=$(stripHash "$src")

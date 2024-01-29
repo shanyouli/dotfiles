@@ -13,7 +13,7 @@ buildDotnetModule rec {
   version =
     if (builtins.hasAttr "date" source)
     then source.date
-    else source.version;
+    else lib.removePrefix "v" source.version;
   projectFile = "BBDown.sln";
   nugetDeps = ./deps.nix;
   dotnet-sdk = with dotnetCorePackages; combinePackages [sdk_7_0 sdk_8_0];
@@ -22,9 +22,9 @@ buildDotnetModule rec {
     [stdenv.cc zlib]
     ++ lib.optionals stdenv.isLinux [icu]
     ++ lib.optionals stdenv.isDarwin [
-      darwin.apple_sdk.MacOSX-SDK
-      darwin.apple_sdk.frameworks.CryptoKit
-      darwin.apple_sdk.frameworks.GSS
+      darwin.apple_sdk_11_0.MacOSX-SDK
+      darwin.apple_sdk_11_0.frameworks.CryptoKit
+      darwin.apple_sdk_11_0.frameworks.GSS
     ];
   # 仅在macos上测试
   preConfigure =
@@ -32,7 +32,7 @@ buildDotnetModule rec {
     ''
     + lib.optionalString stdenv.isDarwin ''
       export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=0
-      export LIBRARY_PATH=$LIBRARY_PATH:${darwin.apple_sdk.MacOSX-SDK}/usr/lib/swift:${darwin.apple_sdk.MacOSX-SDK}/usr/lib
+      export LIBRARY_PATH=$LIBRARY_PATH:${darwin.apple_sdk_11_0.MacOSX-SDK}/usr/lib/swift:${darwin.apple_sdk_11_0.MacOSX-SDK}/usr/lib
     '';
   preBuild = ''
     export projectFile=(BBDown)

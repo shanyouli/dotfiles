@@ -5,7 +5,12 @@
   source,
 }:
 runCommand "yabai-zsh-completions" {
-  inherit (source) pname version src;
+  inherit (source) pname src;
+  version =
+    if (builtins.hasAttr "date" source)
+    then source.date
+    else lib.removePrefix "v" source.version;
+
   nativeBuildInputs = [installShellFiles];
 
   meta = with lib; {

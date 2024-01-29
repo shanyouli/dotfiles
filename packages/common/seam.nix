@@ -8,8 +8,11 @@
   source,
 }:
 rustPlatform.buildRustPackage rec {
-  inherit (source) pname version src cargoHash;
-
+  inherit (source) pname src cargoHash;
+  version =
+    if (builtins.hasAttr "date" source)
+    then source.date
+    else lib.removePrefix "v" source.version;
   nativeBuildInputs = [
     pkg-config
     # wrapGAppsHook

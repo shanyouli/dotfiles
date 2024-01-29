@@ -140,9 +140,7 @@
         nixos = inputs.nixos-stable;
         allPkgs = allPkgs;
         extraModules = [
-          ./modules/hardware/phil.nix
-          inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t460s
-          # ./host/personal.nix
+          ./hosts/linux-test
         ];
         baseModules = [
           home-manager.nixosModules.home-manager
