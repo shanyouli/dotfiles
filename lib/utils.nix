@@ -86,13 +86,7 @@ in rec {
     import nixpkgs {
       inherit system;
       config = cfg;
-      overlays =
-        attrValues
-        (
-          if isDarwin system
-          then overlays
-          else removeAttrs overlays ["macos" "darwinApp" "firefoxDarwin"]
-        );
+      overlays = attrValues overlays;
     };
   mkPkgs = {
     nixpkgs,
@@ -139,7 +133,7 @@ in rec {
     name,
     nixos,
     allPkgs,
-    system ? "aarch64-darwin",
+    system ? "x86_64-linux",
     baseModules ? [{nixpkgs.config.allowUnfree = true;}],
     extraModules ? [],
     specialArgs ? {},

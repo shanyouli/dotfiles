@@ -228,6 +228,15 @@
     });
 
     overlays = {
+      default = final: prev: (
+        nixpkgs.lib.composeExtensions this.overlay
+        (final: prev: {
+          devenv = inputs.devenv.defaultPackage.${prev.system};
+        })
+        final
+        prev
+      );
+      nur = inputs.nur.overlay;
       channels = final: prev: {
         # expose other channels via overlays
         unstable = mkPkg {
@@ -235,11 +244,7 @@
           cfg = {allowUnfree = true;};
           nixpkgs = inputs.nixpkgs;
         };
-        devenv = inputs.devenv.defaultPackage.${prev.system};
       };
-      python = (import ./packages).overlay;
-
-      nur = inputs.nur.overlay;
     };
   };
 }
