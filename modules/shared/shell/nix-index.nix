@@ -14,9 +14,9 @@ in {
     enable = mkEnableOption "Whether to nix-index";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.nix-index];
-    modules.shell.prevInit = ''
-      source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
-    '';
+    programs.nix-index = {
+      enable = true;
+      package = pkgs.nix-index-with-db;
+    };
   };
 }

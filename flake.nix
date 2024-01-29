@@ -41,7 +41,6 @@
     devenv,
     darwin-stable,
     nixos-stable,
-    nix-index-database,
     ...
   }: let
     inherit (flake-utils.lib) eachSystemMap;
@@ -108,7 +107,6 @@
             nixpkgs.config.allowUnfree = true;
             nixpkgs.overlays = builtins.attrValues self.overlays;
           }
-          nix-index-database.darwinModules.nix-index
           home-manager.darwinModules.home-manager
         ];
         extraModules = [./hosts/homebox.nix];
@@ -124,7 +122,6 @@
             nixpkgs.config.allowUnfree = true;
             nixpkgs.overlays = builtins.attrValues self.overlays;
           }
-          nix-index-database.darwinModules.nix-index
           home-manager.darwinModules.home-manager
         ];
         extraModules = [./hosts/test.nix];
@@ -144,7 +141,6 @@
         ];
         baseModules = [
           home-manager.nixosModules.home-manager
-          nix-index-database.nixosModules.nix-index
         ];
         specialArgs = {inherit inputs nixpkgs lib self;};
       };
@@ -237,6 +233,7 @@
         prev
       );
       nur = inputs.nur.overlay;
+      nix-index-database = inputs.nix-index-database.overlays.nix-index;
       channels = final: prev: {
         # expose other channels via overlays
         unstable = mkPkg {
