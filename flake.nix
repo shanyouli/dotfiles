@@ -116,12 +116,12 @@
         inherit self;
         arch = "aarch64";
         os = "darwin";
-        # })
-        # // (lib.my.mkChecks {
-        #   inherit self;
-        #   arch = "x86_64";
-        #   os = "linux";
-        #   username = "shanyouli";
+      })
+      // (lib.my.mkChecks {
+        inherit self;
+        arch = "x86_64";
+        os = "linux";
+        username = "shanyouli";
       });
 
     darwinConfigurations = {
@@ -212,6 +212,28 @@
       pkgs = allPkgs."${system}";
     in rec {
       sysdo = pkgs.sysdo;
+      # devenv = inputs.devenv.defaultPackage.${system};
+    });
+
+    apps = lib.my.withDefaultSystems (system: let
+      pkgs = allPkgs."${system}";
+    in rec {
+      sysdo = {
+        type = "app";
+        program = "${self.packages.${system}.sysdo}/bin/sysdo";
+      };
+      # 加载配置, nix run .#repl
+      # @see https://github.com/NixOS/nix/issues/3803#issuecomment-748612294
+      repl = flake-utils.lib.mkApp {
+        drv = pkgs.writeScriptBin "repl" ''
+          confnix=$(mktemp)
+          echo "import <nixpkgs> {} // (builtins.getFlake (toString $(git rev-parse --show-toplevel)))" >$confnix
+          trap "rm $confnix" EXIT
+          nix repl --file $confnix
+        '';
+      };
+      # Since the `nix flake check` command is currently unable to check only the current operating system
+      # @see https://github.com/NixOS/nix/issues/4265
       checks = let
         bin = pkgs.writeScript "checkok" ''
           #! ${pkgs.lib.getExe pkgs.bash}
@@ -225,27 +247,6 @@
           mkdir -p $out/bin
           cp ${bin} $out/bin/checks-combined
         '';
-      # devenv = inputs.devenv.defaultPackage.${system};
-    });
-
-    apps = lib.my.withDefaultSystems (system: rec {
-      sysdo = {
-        type = "app";
-        program = "${self.packages.${system}.sysdo}/bin/sysdo";
-      };
-      # 加载配置, nix run .#repl
-      # @see https://github.com/NixOS/nix/issues/3803#issuecomment-748612294
-      repl = flake-utils.lib.mkApp {
-        drv = let
-          pkgs = allPkgs."${system}";
-        in
-          pkgs.writeScriptBin "repl" ''
-            confnix=$(mktemp)
-            echo "import <nixpkgs> {} // (builtins.getFlake (toString $(git rev-parse --show-toplevel)))" >$confnix
-            trap "rm $confnix" EXIT
-            nix repl --file $confnix
-          '';
-      };
       default = sysdo;
     });
 
