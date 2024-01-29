@@ -122,6 +122,11 @@
         arch = "x86_64";
         os = "linux";
         username = "shanyouli";
+      })
+      // (lib.my.mkChecks {
+        inherit self;
+        arch = "x86_64";
+        os = "darwin";
       });
 
     darwinConfigurations = {
