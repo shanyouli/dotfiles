@@ -75,7 +75,7 @@ in {
             ASDF_CONFIG_FILE = "${cmh.configDir}/asdf/asdf.conf";
             ASDF_DATA_DIR = asdf_data_dir;
           };
-          rcFiles = ["${config.dotfiles.configDir}/asdf/asdf.zsh"];
+          rcFiles = ["asdf/asdf.zsh"];
         }
       ];
       home.configFile."asdf/asdf.conf".text = ''

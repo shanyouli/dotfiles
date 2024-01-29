@@ -19,7 +19,7 @@ in {
     user.packages = with pkgs; [tmux];
 
     modules.shell = {
-      rcFiles = ["${config.dotfiles.configDir}/tmux/tmux.zsh"];
+      rcFiles = ["tmux/tmux.zsh"];
     };
 
     home.configFile = {

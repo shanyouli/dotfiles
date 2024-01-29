@@ -56,7 +56,7 @@ in {
       lfs.enable = true;
     };
     modules.shell = {
-      rcFiles = ["${config.dotfiles.configDir}/git/git.zsh"];
+      rcFiles = ["git/git.zsh"];
     };
   };
 }
