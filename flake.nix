@@ -116,12 +116,12 @@
         inherit self;
         arch = "aarch64";
         os = "darwin";
-      })
-      // (lib.my.mkChecks {
-        inherit self;
-        arch = "x86_64";
-        os = "linux";
-        username = "shanyouli";
+        # })
+        # // (lib.my.mkChecks {
+        #   inherit self;
+        #   arch = "x86_64";
+        #   os = "linux";
+        #   username = "shanyouli";
       });
 
     darwinConfigurations = {
@@ -185,7 +185,7 @@
         extraModules = [
           ./modules/hardware/phil.nix
           inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t460s
-          ./pofiles/personal.nix
+          # ./host/personal.nix
         ];
         baseModules = [
           home-manager.nixosModules.home-manager
@@ -212,6 +212,19 @@
       pkgs = allPkgs."${system}";
     in rec {
       sysdo = pkgs.sysdo;
+      checks = let
+        bin = pkgs.writeScript "checkok" ''
+          #! ${pkgs.lib.getExe pkgs.bash}
+          echo check ok
+        '';
+      in
+        pkgs.runCommand "checks-combined" {
+          checksss = builtins.attrValues self.checks.${system};
+          buildInputs = [bin];
+        } ''
+          mkdir -p $out/bin
+          cp ${bin} $out/bin/checks-combined
+        '';
       # devenv = inputs.devenv.defaultPackage.${system};
     });
 
@@ -248,9 +261,6 @@
         devenv = inputs.devenv.defaultPackage.${prev.system};
       };
       python = (import ./packages).overlay;
-      # my = final: prev: mapModule ./packages/common (p: prev.callPackage p {}) {};
-      # macos = final: prev: mapModule ./packages/darwin (p: prev.callPackage p {}) {};
-      # darwinApp = import ./packages/darwinApp;
 
       nur = inputs.nur.overlay;
     };

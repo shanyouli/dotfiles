@@ -31,9 +31,10 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
       - name: Run Flake Checks
         run: |
-          if [[ $(uname) == "Linux" ]] && [[ $(uname -m) == "x86_64" ]]; then
-            nix flake check -j auto --system "x86_64-linux" --show-trace --accept-flake-config
-          else
-            nix flake check -j auto --system "aarch64-darwin" --show-trace --accept-flake-config
-          fi
+          nix run .#checks
+          # if [[ $(uname) == "Linux" ]] && [[ $(uname -m) == "x86_64" ]]; then
+          #   nix flake check -j auto --system "x86_64-linux" --show-trace --accept-flake-config
+          # else
+          #   nix flake check -j auto --system "aarch64-darwin" --show-trace --accept-flake-config
+          # fi
         timeout-minutes: 240

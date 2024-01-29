@@ -158,7 +158,7 @@ in rec {
         ]
         ++ baseModules
         ++ (mapModulesRec' (toString ../modules/shared) import)
-        ++ (mapModulesRec' (toString ../modules/darwin) import)
+        ++ (mapModulesRec' (toString ../modules/nixos) import)
         ++ extraModules;
     };
 
@@ -178,7 +178,7 @@ in rec {
         [
           {
             networking.hostName = "${name}";
-            nixpkgs.pkgs = allPkgs."${system}"; # BUG: 无法构建成功
+            nixpkgs.pkgs = allPkgs."${system}";
           }
         ]
         ++ baseModules
