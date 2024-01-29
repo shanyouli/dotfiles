@@ -79,6 +79,11 @@
         inherit self;
         arch = "x86_64";
         os = "darwin";
+      })
+      // (lib.my.mkChecks {
+        inherit self;
+        arch = "aarch64";
+        os = "linux";
       });
 
     darwinConfigurations = {
@@ -138,6 +143,20 @@
           ./modules/hardware/phil.nix
           inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t460s
           # ./host/personal.nix
+        ];
+        baseModules = [
+          home-manager.nixosModules.home-manager
+        ];
+        specialArgs = {inherit inputs nixpkgs lib self;};
+      };
+      "lyeli@aarch64-linux" = lib.my.mkNixosConfig {
+        name = "nixos";
+        nixos = inputs.nixos-stable;
+        allPkgs = allPkgs;
+        extraModules = [
+          # ./modules/hardware/phil.nix
+          # inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t460s
+          ./hosts/orbvm
         ];
         baseModules = [
           home-manager.nixosModules.home-manager

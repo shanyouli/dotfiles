@@ -35,11 +35,11 @@ with lib.my; {
     # list of acceptable shells in /etc/shells
     shells = with pkgs; [bash zsh];
   };
-  nixpkgs.config = {
-    allowUnsupportedSystem = false;
-    allowUnfree = true;
-    allowBroken = false;
-  };
+  # nixpkgs.config = {
+  #   allowUnsupportedSystem = false;
+  #   allowUnfree = true;
+  #   allowBroken = false;
+  # };
   documentation.man.enable = true;
   nix = {
     # envVars = {
