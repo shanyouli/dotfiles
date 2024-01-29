@@ -6,8 +6,11 @@
   source,
 }:
 buildNpmPackage rec {
-  inherit (source) pname version src npmDepsHash;
-
+  inherit (source) pname src npmDepsHash;
+  version =
+    if (builtins.hasAttr "date" source)
+    then source.date
+    else lib.removePrefix "v" source.version;
   nativeBuildInputs = [nodePackages.node-gyp python3];
   postPatch = ''
     cp ${./package-lock.json} ./package-lock.json

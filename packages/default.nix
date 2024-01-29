@@ -34,6 +34,8 @@ let
 
   mapPkgs = dir: callFn: mapPackages dir (name: callFn dir name);
   mapPkgs' = dir: callFn: namefn: mapPackages' dir (name: callFn dir name) namefn;
+
+  darwinNameFn = name: (removeNixSuffix name) + "-app";
 in rec {
   overlay = final: prev: let
     sources = (import ../_sources/generated.nix) {inherit (final) fetchurl fetchFromGitHub fetchgit dockerTools;};
@@ -91,16 +93,17 @@ in rec {
     }
     // (mapPkgs ./common callPkg)
     // (mapPkgs ./darwin callPkg)
-    // (mapPkgs' ./darwinApp callDarwinApp (n: (removeNixSuffix n) + "-app"));
+    // (mapPkgs' ./darwinApp callDarwinApp darwinNameFn);
   packages = pkgs: (
     let
-      darwinNameFn = name: (removeNixSuffix name) + "-app";
       darwinPkg = n: pkgs.${darwinNameFn n};
+      darwinPkgs =
+        if pkgs.stdenvNoCC.isDarwin
+        then (mapPackages ./darwin (n: pkgs.${removeNixSuffix n})) // (mapPackages' ./darwinApp darwinPkg darwinNameFn)
+        else {};
     in
-      rec {}
-      // (mapPackages ./common (n: pkgs.${removeNixSuffix n}))
-      // (mapPackages ./darwin (n: pkgs.${removeNixSuffix n}))
+      (mapPackages ./common (n: pkgs.${removeNixSuffix n}))
       // (mapPackages ./python (n: pkgs.python3.pkgs.${removeNixSuffix n}))
-      // (mapPackages' ./darwinApp darwinPkg darwinNameFn)
+      // darwinPkgs
   );
 }

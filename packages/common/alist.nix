@@ -10,7 +10,10 @@
   source,
   sources,
 }: let
-  version = lib.removePrefix "v" source.version;
+  version =
+    if (builtins.hasAttr "date" source)
+    then source.date
+    else lib.removePrefix "v" source.version;
   alist-web = sources.alist-web.src;
 in
   buildGoModule rec {

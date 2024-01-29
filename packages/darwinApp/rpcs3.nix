@@ -4,6 +4,10 @@
   ...
 }:
 mkDarwinApp rec {
+  # version =
+  # if (builtins.hasAttr "date" source)
+  # then source.date
+  # else lib.removePrefix "v" source.version;
   pname = "rpcs3";
   version = "0.025";
   src = fetchurl {

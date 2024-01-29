@@ -1,18 +1,14 @@
 {
   lib,
   stdenv,
-  fetchFromGitHub,
+  source,
 }:
 stdenv.mkDerivation rec {
-  pname = "lazyvim-star";
-  version = "2023-08";
-  src = fetchFromGitHub {
-    owner = "LazyVim";
-    repo = "starter";
-    rev = "92b2689e6f11004e65376e84912e61b9e6c58827";
-    sha256 = "sha256-gE2tRpglA0SxxjGN+uKwkwdR5YurvjVGf8SRKkW0E1U=";
-  };
-
+  inherit (source) pname src;
+  version =
+    if (builtins.hasAttr "date" source)
+    then source.date
+    else lib.removePrefix "v" source.version;
   # https://github.com/tdlib/td/issues/1974
   postPatch = ''
     substituteInPlace ./lua/config/lazy.lua \
