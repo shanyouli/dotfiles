@@ -91,6 +91,7 @@ in {
 
       modules.xdg.enable = true;
       environment.variables = config.modules.xdg.value;
+      time.timeZone = config.modules.opt.timezone;
 
       modules.opt.enGui = true;
       system.activationScripts.postActivation.text = ''

@@ -53,54 +53,6 @@
       overlays = self.overlays // {};
     };
 
-    sharedHostsConfig = {
-      config,
-      pkgs,
-      ...
-    }: {
-      nix = {
-        package = pkgs.nix;
-        gc = {
-          automatic = true;
-          options = "--delete-older-than 7d";
-        };
-        extraOptions = ''
-          keep-outputs = true
-          keep-derivations = true
-          experimental-features = nix-command flakes
-        '';
-        settings = {
-          max-jobs = 4;
-          substituters = pkgs.lib.mkBefore [
-            "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-            "https://mirror.sjtu.edu.cn/nix-channels/store"
-            # "https://mirrors.cernet.edu.cn/nix-channels/store"
-            # "https://cache.nixos.org"
-            "https://nix-community.cachix.org"
-            "https://shanyouli.cachix.org"
-          ];
-          # Using hard links
-          auto-optimise-store = true;
-          trusted-public-keys = [
-            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-            "shanyouli.cachix.org-1:19ndCE7zQfn5vIVLbBZk6XG0D7Ago7oRNNgIRV/Oabw="
-          ];
-        };
-      };
-      nixpkgs.config = {
-        allowUnsupportedSystem = false;
-        allowUnfree = true;
-        allowBroken = false;
-      };
-      time.timeZone = config.modules.opt.timezone;
-
-      documentation.man = {
-        enable = true;
-        # Currently doesn't work in nix-darwin
-        # https://discourse.nixos.org/t/man-k-apropos-return-nothing-appropriate/15464
-        # generateCaches = true;
-      };
-    };
     # with overlays and any extraModules applied
     lib = nixpkgs.lib.extend (self: super: {
       my = import ./lib {
@@ -108,6 +60,7 @@
         lib = self;
       };
     });
+    this = import ./packages;
   in {
     lib = lib.my;
     checks =
@@ -141,7 +94,6 @@
             nixpkgs.overlays = builtins.attrValues self.overlays;
           }
           home-manager.darwinModules.home-manager
-          sharedHostsConfig
         ];
         extraModules = [./hosts/homebox.nix];
         specialArgs = {inherit inputs self nixpkgs lib;};
@@ -158,7 +110,6 @@
           }
           nix-index-database.darwinModules.nix-index
           home-manager.darwinModules.home-manager
-          sharedHostsConfig
         ];
         extraModules = [./hosts/homebox.nix];
         specialArgs = {inherit inputs self nixpkgs lib;};
@@ -175,7 +126,6 @@
           }
           nix-index-database.darwinModules.nix-index
           home-manager.darwinModules.home-manager
-          sharedHostsConfig
         ];
         extraModules = [./hosts/test.nix];
         specialArgs = {inherit inputs self nixpkgs lib;};
@@ -195,7 +145,6 @@
         baseModules = [
           home-manager.nixosModules.home-manager
           nix-index-database.nixosModules.nix-index
-          sharedHostsConfig
         ];
         specialArgs = {inherit inputs nixpkgs lib self;};
       };
@@ -215,10 +164,11 @@
     });
     packages = lib.my.withDefaultSystems (system: let
       pkgs = allPkgs."${system}";
-    in rec {
-      sysdo = pkgs.sysdo;
-      # devenv = inputs.devenv.defaultPackage.${system};
-    });
+    in
+      (this.packages pkgs)
+      // {
+        # devenv = inputs.devenv.defaultPackage.${system};
+      });
 
     apps = lib.my.withDefaultSystems (system: let
       pkgs = allPkgs."${system}";
@@ -285,7 +235,6 @@
           cfg = {allowUnfree = true;};
           nixpkgs = inputs.nixpkgs;
         };
-        # small = import inputs.small {system = prev.system;};
         devenv = inputs.devenv.defaultPackage.${prev.system};
       };
       python = (import ./packages).overlay;

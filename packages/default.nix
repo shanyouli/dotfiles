@@ -8,11 +8,12 @@ let
     if (sLen > 4 && builtins.substring (sLen - 4) sLen str == ".nix")
     then builtins.substring 0 (sLen - 4) str
     else str;
-  mapPackages = {
-    dir,
-    fn,
-    namefn,
-  }:
+
+  getAttr = key: attr:
+    if (builtins.hasAttr key attr)
+    then builtins.getAttr key attr
+    else null;
+  mapPackages' = dir: fn: namefn:
     with builtins;
       listToAttrs (map (n: {
           name = namefn n;
@@ -29,65 +30,50 @@ let
             then k
             else null
         ) (readDir dir)))));
+  mapPackages = dir: fn: mapPackages' dir fn removeNixSuffix;
 
-  mapPythonPkgs = callFn: sources: python3Packages: let
-    dir = ./python;
-    namefn = removeNixSuffix;
-    fn = name: let
-      package = import ./python/${name};
-      args = builtins.intersectAttrs (builtins.functionArgs package) {
-        inherit python3Packages;
-        source = sources.${namefn name};
-      };
-    in
-      callFn package args;
-  in
-    mapPackages {inherit dir fn namefn;};
-
-  mapPkgs = dir: callFn: sources: let
-    namefn = removeNixSuffix;
-    fn = name: let
-      package = import "${builtins.toString dir}/${name}";
-      args = builtins.intersectAttrs (builtins.functionArgs package) {
-        inherit sources;
-        source = sources.${namefn name};
-      };
-    in
-      callFn package args;
-  in
-    mapPackages {inherit dir fn namefn;};
-  mapDarwinApps = fn:
-    mapPackages {
-      inherit fn;
-      dir = ./darwinApp;
-      namefn = n: (removeNixSuffix n) + "-app";
-    };
+  mapPkgs = dir: callFn: mapPackages dir (name: callFn dir name);
+  mapPkgs' = dir: callFn: namefn: mapPackages' dir (name: callFn dir name) namefn;
 in rec {
-  # packages = pkgs: mapPkgs (name: pkgs.${name});
   overlay = final: prev: let
     sources = (import ../_sources/generated.nix) {inherit (final) fetchurl fetchFromGitHub fetchgit dockerTools;};
-    callPkg = package: args: final.callPackage package args;
     mkDarwinApp = import ./lib/darwinApp.nix {pkgs = prev;};
-    callDarwinApp = name: let
-      package = import ./darwinApp/${name};
-      source = let
-        n = removeNixSuffix name;
-      in
-        if (builtins.hasAttr n sources)
-        then sources.${n}
-        else null;
+    # callPkg = package: args: final.callPackage package args;
+    callPkg = dir: name: let
+      package = import "${builtins.toString dir}/${name}";
+      source = getAttr (removeNixSuffix name) sources;
+      args = builtins.intersectAttrs (builtins.functionArgs package) {
+        inherit sources source;
+      };
+    in
+      final.callPackage package args;
+
+    callDarwinApp = dir: name: let
+      package = import "${builtins.toString dir}/${name}";
+      source = getAttr (removeNixSuffix name) sources;
       args = builtins.intersectAttrs (builtins.functionArgs package) {
         inherit sources source mkDarwinApp;
       };
     in
       final.callPackage package args;
-    packageOverrides = pfinal: pprev:
+
+    packageOverrides = pfinal: pprev: let
+      callPyPkg = dir: name: let
+        package = import "${builtins.toString dir}/${name}";
+        args = builtins.intersectAttrs (builtins.functionArgs package) {
+          inherit sources;
+          source = getAttr (removeNixSuffix name) sources;
+          python3Packages = pfinal;
+        };
+      in
+        pfinal.toPythonModule (final.callPackage package args);
+    in
       {
         httpx = pprev.httpx.overrideAttrs (old: {
           inherit (sources.httpx) pname version src;
         });
       }
-      // mapPythonPkgs (package: args: (pfinal.toPythonModule (callPkg package args))) sources pfinal;
+      // mapPkgs ./python callPyPkg;
   in
     rec
     {
@@ -103,18 +89,18 @@ in rec {
       python310 = prev.python310.override {inherit packageOverrides;};
       python310Packages = python310.pkgs;
     }
-    // (mapPkgs ./common callPkg sources)
-    // (mapPkgs ./darwin callPkg sources)
-    // {
-      iina-app = let
-        package = import ./darwinApp/iina.nix;
-        args = builtins.intersectAttrs (builtins.functionArgs package) {
-          inherit sources;
-          source = sources.iina;
-          mkDarwinApp = import ./lib/darwinApp.nix {pkgs = prev;};
-        };
-      in
-        prev.callPackage package args;
-    }
-    // mapDarwinApps callDarwinApp;
+    // (mapPkgs ./common callPkg)
+    // (mapPkgs ./darwin callPkg)
+    // (mapPkgs' ./darwinApp callDarwinApp (n: (removeNixSuffix n) + "-app"));
+  packages = pkgs: (
+    let
+      darwinNameFn = name: (removeNixSuffix name) + "-app";
+      darwinPkg = n: pkgs.${darwinNameFn n};
+    in
+      rec {}
+      // (mapPackages ./common (n: pkgs.${removeNixSuffix n}))
+      // (mapPackages ./darwin (n: pkgs.${removeNixSuffix n}))
+      // (mapPackages ./python (n: pkgs.python3.pkgs.${removeNixSuffix n}))
+      // (mapPackages' ./darwinApp darwinPkg darwinNameFn)
+  );
 }

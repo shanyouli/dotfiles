@@ -153,6 +153,8 @@ in rec {
             networking.hostName = "${name}";
             system.stateVersion = "23.11";
             nix.readOnlyStore = true;
+            # Currently doesn't work in nix-darwin
+            # https://discourse.nixos.org/t/man-k-apropos-return-nothing-appropriate/15464
             documentation.man.generateCaches = true;
           }
         ]
