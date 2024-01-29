@@ -234,19 +234,21 @@
       };
       # Since the `nix flake check` command is currently unable to check only the current operating system
       # @see https://github.com/NixOS/nix/issues/4265
-      checks = let
-        bin = pkgs.writeScript "checkok" ''
-          #! ${pkgs.lib.getExe pkgs.bash}
-          echo check ok
-        '';
-      in
-        pkgs.runCommand "checks-combined" {
-          checksss = builtins.attrValues self.checks.${system};
-          buildInputs = [bin];
-        } ''
-          mkdir -p $out/bin
-          cp ${bin} $out/bin/checks-combined
-        '';
+      checks = flake-utils.lib.mkApp {
+        drv = let
+          bin = pkgs.writeScript "checkok" ''
+            #! ${pkgs.lib.getExe pkgs.bash}
+            echo check ok
+          '';
+        in
+          pkgs.runCommand "checks-combined" {
+            checksss = builtins.attrValues self.checks.${system};
+            buildInputs = [bin];
+          } ''
+            mkdir -p $out/bin
+            cp ${bin} $out/bin/checks-combined
+          '';
+      };
       default = sysdo;
     });
 
