@@ -30,15 +30,15 @@ jobs:
           git checkout -B flakebot
       - name: Update and commit lockfile
         run: nix flake update --commit-lock-file
-      - name: Update my pkgs src
-        run: |
-          cat > secrets.toml <<EOF
-          [keys]
-          github = "{{ secrets.GITHUB_TOKEN }}"
-          EOF
-          nix-shell -p nvfetcher
-          nvfetcher -k ./secrets.toml
-          rm -rf secrets.toml
+      # - name: Update my pkgs src
+      #   run: |
+      #     cat > secrets.toml <<EOF
+      #     [keys]
+      #     github = "{{ secrets.GITHUB_TOKEN }}"
+      #     EOF
+      #     nix-shell -p nvfetcher
+      #     nvfetcher -k ./secrets.toml
+      #     rm -rf secrets.toml
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
