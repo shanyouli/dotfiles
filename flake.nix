@@ -254,6 +254,26 @@
             cp ${bin} $out/bin/checks-combined
           '';
       };
+      update = flake-utils.lib.mkApp {
+        drv = let
+          buildPath = pkgs.buildEnv {
+            name = "home-manager-applications";
+            paths = with pkgs; [nvfetcher jq curl];
+            pathsToLink = "/bin";
+          };
+        in
+          pkgs.writeScriptBin "repl" ''
+            #! ${pkgs.lib.getExe pkgs.bash}
+            PATH=$PATH:${buildPath}/bin
+            keys_args=""
+            echo $HOME
+            [[ -f $HOME/.config/nvfetcher.toml ]] && keys_args="-k $HOME/.config/nvfetcher.toml"
+            [[ -f ./secrets.toml ]] && keys_args="-k ./secrets.toml"
+            nvfetcher $keys_args
+            echo update firefox ....
+            bash packages/darwinApp/firefox/update.sh
+          '';
+      };
       default = sysdo;
     });
 

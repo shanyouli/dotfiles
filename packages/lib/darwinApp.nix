@@ -40,7 +40,7 @@ in
             else
               _mnt=$(mktemp -d -t ci-XXXXXXXXXX)
               echo "Attahing $_mnt"
-              /usr/bin/hdiutil attach -nobrowse -readonly $src -mountpoint $_mnt
+              /usr/bin/hdiutil attach -nobrowse -readonly $_pathDmg -mountpoint $_mnt
               echo "What's in the mount dir"?
               ls -la $_mnt/
               _app=$(find $_mnt/ -maxdepth 1 -name "*.app")
