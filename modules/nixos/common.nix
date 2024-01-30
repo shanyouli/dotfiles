@@ -1,5 +1,6 @@
 {
   inputs,
+  config,
   lib,
   pkgs,
   ...
@@ -19,4 +20,13 @@ with lib.my; {
 
   # Change me later!
   user.initialPassword = "nixos";
+  users.users.root.initialPassword = "nixos";
+
+  #  xdg
+  modules.xdg.enhable = true;
+  environment.sessionVariables = config.modules.xdg.value;
+  environment.extraInit = ''
+    export XAUTHORITY=/tmp/Xauthority
+    [ -e ~/.Xauthority ] && mv -f ~/.Xauthority "$XAUTHORITY"
+  '';
 }
