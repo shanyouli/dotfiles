@@ -9,6 +9,7 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.media.download;
+  cfp = cfm.media;
   bbdown = let
     cmd = pkgs.writeScript "bbdown" ''
       #!${pkgs.stdenv.shell}
@@ -33,16 +34,13 @@ with lib.my; let
     '';
 in {
   options.modules.media.download = {
-    enable = mkEnableOption "Whether to download media";
-    enAudio = mkBoolOpt true;
-    enVideo = mkBoolOpt true;
+    enAudio = mkBoolOpt cfp.music.enable;
+    enVideo = mkBoolOpt cfp.video.enable;
   };
-  config = mkIf cfg.enable (mkMerge [
+  config = mkMerge [
     (mkIf cfg.enAudio {
-      user.packages = [
-        # pkgs.musicn
-        # pkgs.python3.pkgs.musicdl # 无法下载
-      ];
+      # pkgs.python3.pkgs.musicdl # 无法下载
+      user.packages = [pkgs.musicn];
     })
     (mkIf cfg.enVideo {
       user.packages = [pkgs.unstable.yt-dlp pkgs.python3Packages.yutto bbdown pkgs.lux]; # yutto 下载bilibili
@@ -72,5 +70,5 @@ in {
       '';
       # TODO: alias
     })
-  ]);
+  ];
 }

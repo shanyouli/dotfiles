@@ -286,7 +286,7 @@
       fetchSubmodules = false;
       sha256 = "sha256-X2s1K8Cap7i+nGF2qlrpnoCikIhwtz8ebgpfY3G+JiA=";
     };
-    npmDepsHash = "sha256-LDCHODja5wMSy+03IzqoVTmHDEsqOSZtSdbyQEWlbb4=";
+    npmDepsHash = "sha256-Yr0zgQBP/ocJ/ThbFhidPnkP4C8/lWufxkd3sJnqErA=";
   };
   neovide = {
     pname = "neovide";

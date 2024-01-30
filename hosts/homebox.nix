@@ -35,11 +35,9 @@
     editor.nvim.enGui = false; # GUI 编辑工具为emacs
     editor.vscode.enable = true;
 
-    media.netease-music.enable = true;
-    media.download.enable = true;
+    media.music.enable = true;
     media.flameshot.enable = true;
-    media.mpv.enable = true;
-    media.mpv.streamEnable = true;
+    media.video.enable = true;
 
     dev.bash.enable = true;
     dev.python.enable = true;
@@ -69,7 +67,6 @@
     tool.clash.enSingbox = true;
     service.clash.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/meta.yaml";
 
-    macos.music.enable = true;
     macos.games.enable = true;
     macos.emacs.enable = true;
     macos.hammerspoon.enable = true;

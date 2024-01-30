@@ -71,7 +71,7 @@ passthru = { vendorHash = "sha256-b7q0e3HHolVhwNJF0kwvwuVy8ndJLc0ITMl+0/YtSjA=" 
 [musicn]
 src.github = "zonemeen/musicn"
 fetch.github = "zonemeen/musicn"
-passthru = { npmDepsHash = "sha256-LDCHODja5wMSy+03IzqoVTmHDEsqOSZtSdbyQEWlbb4=" }
+passthru = { npmDepsHash = "sha256-Yr0zgQBP/ocJ/ThbFhidPnkP4C8/lWufxkd3sJnqErA=" }
 
 [firefox-utils]
 src.git = "https://github.com/xiaoxiaoflood/firefox-scripts"

@@ -500,7 +500,7 @@
         "extract": null,
         "name": "musicn",
         "passthru": {
-            "npmDepsHash": "sha256-LDCHODja5wMSy+03IzqoVTmHDEsqOSZtSdbyQEWlbb4="
+            "npmDepsHash": "sha256-Yr0zgQBP/ocJ/ThbFhidPnkP4C8/lWufxkd3sJnqErA="
         },
         "pinned": false,
         "src": {

@@ -7,12 +7,12 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.media.mpv;
+  cfg = config.modules.media.video;
 in {
   options = with lib; {
-    modules.media.mpv = {
+    modules.media.video = {
       enable = mkEnableOption "Whether to enable mpv module ";
-      streamEnable = mkEnableOption "Whether to enable stream live ";
+      stream.enable = mkBoolOpt true;
     };
   };
 
@@ -22,8 +22,7 @@ in {
         user.packages = with pkgs; [
           mpv
           (mkIf pkgs.stdenvNoCC.isLinux mpvc)
-          ffmpeg
-          (mkIf cfg.streamEnable seam)
+          (mkIf cfg.stream.enable seam)
         ];
       }
     ]);
