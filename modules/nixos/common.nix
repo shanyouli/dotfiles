@@ -23,7 +23,7 @@ with lib.my; {
   users.users.root.initialPassword = "nixos";
 
   #  xdg
-  modules.xdg.enhable = true;
+  modules.xdg.enable = true;
   environment.sessionVariables = config.modules.xdg.value;
   environment.extraInit = ''
     export XAUTHORITY=/tmp/Xauthority

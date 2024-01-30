@@ -150,6 +150,7 @@
       "lyeli@aarch64-linux" = lib.my.mkNixosConfig {
         name = "nixos";
         nixos = inputs.nixos-stable;
+        system = "aarch64-linux";
         allPkgs = allPkgs;
         extraModules = [
           # ./modules/hardware/phil.nix
