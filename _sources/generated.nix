@@ -333,7 +333,12 @@
       fetchSubmodules = false;
       sha256 = "sha256-rWbswgVQNA006gi9G+Vma+y0NbMDC0/P6SqHwxxvky8=";
     };
-    cargoHash = "sha256-SFwNYyZ/qzWlIwV2c8Tot+RyQtTNb559jK4GCGtWjNk=";
+    cargoLock."Cargo.lock" = {
+      lockFile = ./seam-v_cli.0.1.39/Cargo.lock;
+      outputHashes = {
+        
+      };
+    };
   };
   upic = {
     pname = "upic";

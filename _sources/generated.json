@@ -582,13 +582,16 @@
         "version": "3.1.0"
     },
     "seam": {
-        "cargoLocks": null,
+        "cargoLocks": {
+            "Cargo.lock": [
+                "./seam-v_cli.0.1.39/Cargo.lock",
+                {}
+            ]
+        },
         "date": null,
         "extract": null,
         "name": "seam",
-        "passthru": {
-            "cargoHash": "sha256-SFwNYyZ/qzWlIwV2c8Tot+RyQtTNb559jK4GCGtWjNk="
-        },
+        "passthru": null,
         "pinned": false,
         "src": {
             "deepClone": false,
