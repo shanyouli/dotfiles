@@ -12,8 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          # - ubuntu-latest
-          # NOTE: Remove the check for linux
+          - ubuntu-latest
           - macos-latest
     runs-on: ${{ matrix.os }}
     steps:

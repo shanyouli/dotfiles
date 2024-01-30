@@ -80,8 +80,8 @@ fetch.url = "https://github.com/xiaoxiaoflood/firefox-scripts/raw/$ver/utils.zip
 [seam]
 src.github = "Borber/seam"
 fetch.github = "Borber/seam"
-passthru = { cargoHash = "sha256-SFwNYyZ/qzWlIwV2c8Tot+RyQtTNb559jK4GCGtWjNk=" }
-# cargo_locks = ["Cargo.lock"]
+# passthru = { cargoHash = "sha256-SFwNYyZ/qzWlIwV2c8Tot+RyQtTNb559jK4GCGtWjNk=" }
+cargo_locks = ["Cargo.lock"]
 
 [bbdown]
 src.git = "https://github.com/nilaoda/BBDown"
@@ -222,6 +222,7 @@ fetch.url = "https://download.calibre-ebook.com/$ver/calibre-$ver.dmg"
 [fx-folder]
 src.git = "https://github.com/xiaoxiaoflood/firefox-scripts"
 fetch.url = "https://github.com/xiaoxiaoflood/firefox-scripts/raw/$ver/fx-folder.zip"
+
 # [firefox-esr]
 # src.webpage = "https://product-details.mozilla.org/1.0/firefox_versions.json"
 # src.regex = " \"FIREFOX_ESR\": \"([^\"]+)esr\","
