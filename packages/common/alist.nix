@@ -35,7 +35,7 @@ in
     buildInputs = [fuse installShellFiles];
     postInstall = ''
       for i in $out/bin/* ; do
-        if [[ $i != $out/alist* ]]; then
+        if [[ $i != $out/bin/alist* ]]; then
           rm -rf $i
         fi
       done
