@@ -15,11 +15,11 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
+  i18n.defaultLocale = "en_US.UTF-8";
+  console = {
+    font = "Lat2-Terminus16";
+    keyMap = "us";
+  };
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
@@ -44,24 +44,6 @@
   #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   # };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  # environment.systemPackages = with pkgs; [
-  #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #   wget
-  #   firefox
-  # ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
@@ -83,4 +65,19 @@
   # documentation.enable = true;
   documentation.nixos.enable = true;
   environment.noXlibs = false;
+
+  # modules config
+  modules = {
+    shell.enZinit = true;
+    shell.enVivid = true;
+    shell.enZoxide = true;
+    shell.wget.enable = true;
+    shell.tmux.enable = true;
+    shell.fzf.enable = true;
+    shell.rsync.enable = true;
+    shell.direnv.enable = true;
+    shell.git.enable = true;
+    shell.nix-index.enable = true;
+    editor.nvim.enable = true;
+  };
 }
