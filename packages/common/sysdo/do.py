@@ -341,6 +341,7 @@ def bootstrap(
         'nix-command flakes',
         '--extra-substituters',
         'https://shanyouli.cachix.org',
+        "--impure",
     ]
     bootstrap_flake = REMOTE_FLAKE if remote else DOTFILE.get_flake(True)
     if host is None:
@@ -414,7 +415,7 @@ def build(
         typer.secho('could not infer system type.', fg=Colors.ERROR.value)
         raise typer.Abort()
     flake = f'{REMOTE_FLAKE if remote else DOTFILE.get_flake()}#{host}'
-    flags = ['--show-trace']
+    flags = ['--show-trace' '--impure']
     run_cmd(cmd + [flake] + flags)
 
 
@@ -589,7 +590,7 @@ def switch(
         typer.secho('could not infer system type.', fg=Colors.ERROR.value)
         raise typer.Abort()
     flake = [f'{REMOTE_FLAKE}#{host}'] if remote else [f'{DOTFILE.get_flake()}#{host}']
-    flags = ['--show-trace']
+    flags = ['--show-trace' '--impure']
     run_cmd(cmd.split() + flake + flags)
 
 
