@@ -37,7 +37,6 @@ class Dotfile:
             os.path.expanduser('~/.config/dotfiles'),
             os.path.expanduser('~/.dotfiles'),
             os.path.expanduser('~/.nixpkgs'),
-            os.getenv('ODOTFILES')
 
         ]:
             if (

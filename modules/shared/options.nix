@@ -33,8 +33,6 @@ in {
         dotfilesList = [
           "/mnt/etc/dotfiles"
           "/etc/dotfiles"
-          "/private/etc/dotfiles"
-          "/private/ect/nixos"
           "/etc/nixos"
           "${homedir}/.config/dotfiles"
           "${homedir}/.dotfiles"

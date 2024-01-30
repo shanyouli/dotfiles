@@ -8,7 +8,7 @@
 with lib;
 with lib.my; {
   environment = {
-    variables.ODOTFILES = config.dotfiles.dir;
+    variables.DOTFILES = config.dotfiles.dir;
     systemPackages = with pkgs; [
       # standard toolset
       coreutils-full
