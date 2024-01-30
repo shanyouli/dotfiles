@@ -82,7 +82,7 @@ in {
         inherit name;
         description = "The primary user account";
         home = homedir;
-        uid = 1000;
+        uid = mkDefault 1000;
       }
       (mkIf pkgs.stdenvNoCC.isLinux {
         extraGroups = ["wheel"];

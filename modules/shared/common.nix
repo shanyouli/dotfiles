@@ -9,6 +9,9 @@ with lib;
 with lib.my; {
   environment = {
     variables.DOTFILES = config.dotfiles.dir;
+
+    variables.NIXPKGS_ALLOW_UNFREE = "1";
+
     systemPackages = with pkgs; [
       # standard toolset
       coreutils-full
@@ -74,7 +77,7 @@ with lib.my; {
         "https://shanyouli.cachix.org"
       ];
       # Using hard links
-      auto-optimise-store = true;
+      auto-optimise-store = mkDefault true;
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "shanyouli.cachix.org-1:19ndCE7zQfn5vIVLbBZk6XG0D7Ago7oRNNgIRV/Oabw="

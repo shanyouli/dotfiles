@@ -1,15 +1,14 @@
 {modulesPath, ...}: {
   imports = [
     "${modulesPath}/virtualisation/lxc-container.nix"
-    ./lxd.nix
-    ./orbstack.nix
+    /etc/nixos/lxd.nix
+    /etc/nixos/orbstack.nix
   ];
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
   networking.interfaces.eth0.useDHCP = true;
-
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
