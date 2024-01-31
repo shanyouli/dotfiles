@@ -53,8 +53,8 @@
     dev.rust.enable = true;
 
     tool.sdcv.enable = true;
-    firefox.enable = true;
-    firefox.package = pkgs.firefox-app;
+    browser.firefox.enable = true;
+    browser.firefox.package = pkgs.firefox-app;
     theme.enable = true;
 
     # # macos

@@ -133,7 +133,7 @@ in {
         text = config.modules.editor.nvim.script;
       };
     }
-    (mkIf config.modules.firefox.enable (
+    (mkIf config.modules.browser.firefox.enable (
       let
         base = "Library/Application Support/Firefox/Profiles/default/chrome";
         configDir = config.dotfiles.configDir;

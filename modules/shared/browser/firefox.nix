@@ -8,9 +8,9 @@
 with lib;
 with lib.my; let
   merge = lib.foldr (a: b: a // b) {};
-  cfg = config.modules.firefox;
+  cfg = config.modules.browser.firefox;
 in {
-  options.modules.firefox = with types; {
+  options.modules.browser.firefox = with types; {
     enable = mkBoolOpt false;
     package = mkOption {
       type = types.package;
