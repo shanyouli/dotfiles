@@ -29,7 +29,7 @@ with lib.my; {
     ];
     etc = {
       home-manager.source = "${inputs.home-manager}";
-      nixpkgs.source = "${pkgs.path}";
+      nixpkgs.source = "${inputs.nixpkgs}";
       stable.source =
         if pkgs.stdenvNoCC.isDarwin
         then "${inputs.darwin-stable}"
@@ -38,12 +38,7 @@ with lib.my; {
     # list of acceptable shells in /etc/shells
     shells = with pkgs; [bash zsh];
   };
-  # nixpkgs.config = {
-  #   allowUnsupportedSystem = false;
-  #   allowUnfree = true;
-  #   allowBroken = false;
-  # };
-  documentation.man.enable = true;
+  documentation.man.enable = mkDefault true;
   nix = let
     filterFn =
       if pkgs.stdenvNoCC.isLinux

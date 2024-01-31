@@ -30,6 +30,9 @@
 
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
+    nvfetcher.url = "github:berberman/nvfetcher";
+    nvfetcher.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ {
@@ -221,8 +224,8 @@
       update = flake-utils.lib.mkApp {
         drv = let
           buildPath = pkgs.buildEnv {
-            name = "home-manager-applications";
-            paths = with pkgs; [nvfetcher jq curl];
+            name = "update-nix-pkgs-env";
+            paths = with pkgs; [nvfetcher-bin jq curl];
             pathsToLink = "/bin";
           };
         in
@@ -252,6 +255,7 @@
       );
       nur = inputs.nur.overlay;
       nix-index-database = inputs.nix-index-database.overlays.nix-index;
+      nvfetcher = inputs.nvfetcher.overlays.default;
       channels = final: prev: {
         # expose other channels via overlays
         unstable = mkPkg {
