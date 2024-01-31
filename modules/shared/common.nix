@@ -44,22 +44,36 @@ with lib.my; {
   #   allowBroken = false;
   # };
   documentation.man.enable = true;
-  nix = {
+  nix = let
+    filterFn =
+      if pkgs.stdenvNoCC.isLinux
+      then (n: _: n != "self" && n != "darwin-stable")
+      else (n: _: n != "self" && n != "nixos-stable");
+    filteredInputs = filterAttrs filterFn inputs;
+    nixPathInputs = mapAttrsToList (n: v:
+      if (hasSuffix "stable" n)
+      then "stable=${v}"
+      else "${n}=${v}")
+    filteredInputs;
+    registryInputs = mapAttrs (_: v: {flake = v;}) filteredInputs;
+  in {
     # envVars = {
     #   https_proxy = "http://127.0.0.1:7890";
     #   http_proxy = "http://127.0.0.1:7890";
     #   all_proxy = "http://127.0.0.1:7890";
 
     # };
+    registry = registryInputs // {dotfiles.flake = inputs.self;};
+    nixPath =
+      nixPathInputs
+      ++ [
+        # "nixpkgs-overlays=${config.dotfiles.dir}/overlays"
+        "dotfiles=${config.dotfiles.dir}"
+      ];
     package = pkgs.nix;
-    nixPath = builtins.map (source: "${source}=/etc/${config.environment.etc.${source}.target}") [
-      "home-manager"
-      "nixpkgs"
-      "stable"
-    ];
     gc = {
-      automatic = true;
-      options = "--delete-older-than 7d";
+      automatic = mkDefault true;
+      options = mkDefault "--delete-older-than 7d";
     };
     extraOptions = ''
       keep-outputs = true

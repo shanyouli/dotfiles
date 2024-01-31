@@ -222,13 +222,3 @@ fetch.url = "https://download.calibre-ebook.com/$ver/calibre-$ver.dmg"
 [fx-folder]
 src.git = "https://github.com/xiaoxiaoflood/firefox-scripts"
 fetch.url = "https://github.com/xiaoxiaoflood/firefox-scripts/raw/$ver/fx-folder.zip"
-
-# [firefox-esr]
-# src.webpage = "https://product-details.mozilla.org/1.0/firefox_versions.json"
-# src.regex = " \"FIREFOX_ESR\": \"([^\"]+)esr\","
-# fetch.url = "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$veresr/mac/en-US/Firefox%20$veresr.dmg"
-# passthru = { name = "firefox-esr" }
-# [firefox]
-# src.webpage = "https://product-details.mozilla.org/1.0/firefox_versions.json"
-# src.regex = " \"LATEST_FIREFOX_VERSION\": \"([^\"]+)\","
-# fetch.rul = "https://download-installer.cdn.mozilla.net/pub/firefox/releases/$ver/mac/en-US/Firefox%20$ver.dmg"

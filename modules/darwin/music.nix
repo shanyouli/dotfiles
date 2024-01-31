@@ -18,9 +18,7 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      homebrew.casks =
-        ["vox"] # or neteasemusic
-        ++ lib.optionals (netease.enable && netease.enGui) ["yesplaymusic"];
+      homebrew.casks = ["vox"] ++ lib.optionals (netease.enable && netease.enGui) ["neteasemusic"];
       user.packages = [pkgs.lyricx-app];
     }
     (mkIf scfg.mpd.enable {
