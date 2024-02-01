@@ -146,6 +146,36 @@
         },
         "version": "1.1.0"
     },
+    "chrome.arm64": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "chrome.arm64",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-ZtkZoJxLVBf3Mu1XQtNAHNM9LgYAs2INKOZIZ1/t1Wc=",
+            "type": "url",
+            "url": "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/121.0.6167.85/mac-arm64/chrome-mac-arm64.zip"
+        },
+        "version": "121.0.6167.85"
+    },
+    "chrome.x64": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "chrome.x64",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-4VAxmg+14TrbxwN3JUXHyfogsEdLVmZ/mfeWf17v4Lg=",
+            "type": "url",
+            "url": "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/121.0.6167.85/mac-x64/chrome-mac-x64.zip"
+        },
+        "version": "121.0.6167.85"
+    },
     "clash-nyanpasu": {
         "cargoLocks": null,
         "date": null,
@@ -620,6 +650,21 @@
             "url": "https://github.com/gee1k/uPic/releases/download/v0.21.1/uPic.zip"
         },
         "version": "0.21.1"
+    },
+    "vivaldi": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "vivaldi",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-rsTNLoaXkd/I24Agmf/vU4U4PTrHx44oE0vY2V6fchA=",
+            "type": "url",
+            "url": "https://downloads.vivaldi.com/stable/Vivaldi.6.5.3206.57.universal.dmg"
+        },
+        "version": "6.5.3206.57"
     },
     "websocket-bridge-python": {
         "cargoLocks": null,

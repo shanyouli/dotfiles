@@ -160,5 +160,13 @@ in {
         text = config.modules.dev.text;
       };
     })
+    (mkIf (config.modules.browser.chrome.enable && config.modules.browser.chrome.dev.enable) {
+      macos.userScript.linkChromeApp = {
+        desc = "将Chrome链接到/Applications";
+        level = 100;
+        enable = ! config.modules.browser.chrome.useBrew;
+        text = ''$DRY_RUN_CMD ln -sf "${config.user.home}/Applications/Myapps/Google Chrome.app" /Applications/ '';
+      };
+    })
   ];
 }

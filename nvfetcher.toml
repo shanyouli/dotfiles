@@ -222,3 +222,19 @@ fetch.url = "https://download.calibre-ebook.com/$ver/calibre-$ver.dmg"
 [fx-folder]
 src.git = "https://github.com/xiaoxiaoflood/firefox-scripts"
 fetch.url = "https://github.com/xiaoxiaoflood/firefox-scripts/raw/$ver/fx-folder.zip"
+
+[vivaldi]
+src.webpage = "https://vivaldi.com/download"
+src.regex = "\"https://downloads.vivaldi.com/stable/Vivaldi.([0-9.]+).universal.dmg\""
+fetch.url = "https://downloads.vivaldi.com/stable/Vivaldi.$ver.universal.dmg"
+
+["chrome.arm64"]
+src.webpage = "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json"
+src.regex = "\"channel\":\"Stable\",\"version\":\"([0-9.]+)\""
+fetch.url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$ver/mac-arm64/chrome-mac-arm64.zip"
+# "https://registry.npmmirror.com/-/binary/chrome-for-testing/121.0.6167.85/mac-x64/chrome-mac-x64.zip"
+
+["chrome.x64"]
+src.webpage = "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json"
+src.regex = "\"channel\":\"Stable\",\"version\":\"([0-9.]+)\""
+fetch.url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$ver/mac-x64/chrome-mac-x64.zip"

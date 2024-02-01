@@ -81,6 +81,22 @@
       sha256 = "sha256-+HC6E1rZkHFUdMuwOLWzisuNCGQIA+LHnIeOIQ9IAPY=";
     };
   };
+  "chrome.arm64" = {
+    pname = "chrome.arm64";
+    version = "121.0.6167.85";
+    src = fetchurl {
+      url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/121.0.6167.85/mac-arm64/chrome-mac-arm64.zip";
+      sha256 = "sha256-ZtkZoJxLVBf3Mu1XQtNAHNM9LgYAs2INKOZIZ1/t1Wc=";
+    };
+  };
+  "chrome.x64" = {
+    pname = "chrome.x64";
+    version = "121.0.6167.85";
+    src = fetchurl {
+      url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/121.0.6167.85/mac-x64/chrome-mac-x64.zip";
+      sha256 = "sha256-4VAxmg+14TrbxwN3JUXHyfogsEdLVmZ/mfeWf17v4Lg=";
+    };
+  };
   clash-nyanpasu = {
     pname = "clash-nyanpasu";
     version = "1.4.3";
@@ -346,6 +362,14 @@
     src = fetchurl {
       url = "https://github.com/gee1k/uPic/releases/download/v0.21.1/uPic.zip";
       sha256 = "sha256-EVLi85lcwz0W12Q0hhinCp+wZ/Kxf1SKgTZGgJqhFUw=";
+    };
+  };
+  vivaldi = {
+    pname = "vivaldi";
+    version = "6.5.3206.57";
+    src = fetchurl {
+      url = "https://downloads.vivaldi.com/stable/Vivaldi.6.5.3206.57.universal.dmg";
+      sha256 = "sha256-rsTNLoaXkd/I24Agmf/vU4U4PTrHx44oE0vY2V6fchA=";
     };
   };
   websocket-bridge-python = {

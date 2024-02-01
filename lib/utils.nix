@@ -7,10 +7,11 @@
 let
   inherit (builtins) elem foldl' attrValues typeOf elemAt head tryEval filter getAttr attrNames;
   inherit (self.modules) mapModulesRec';
-in rec {
   defaultSystems = ["aarch64-linux" "aarch64-darwin" "x86_64-darwin" "x86_64-linux"];
   darwinSystem = ["x86_64-darwin" "aarch64-darwin"];
   isDarwin = system: elem system darwinSystem;
+in rec {
+  inherit defaultSystems darwinSystem;
   # Package names to exclude from search
   # Use to exclude packages that cause errors during search.
   searchBlackList = ["hyper-haskell-server-with-packages"];
@@ -82,11 +83,12 @@ in rec {
     system ? "x86_64-linux",
     cfg ? {},
     overlays ? {},
+    extraOverlays ? [],
   }:
     import nixpkgs {
       inherit system;
       config = cfg;
-      overlays = attrValues overlays;
+      overlays = (attrValues overlays) ++ extraOverlays;
     };
   mkPkgs = {
     nixpkgs,

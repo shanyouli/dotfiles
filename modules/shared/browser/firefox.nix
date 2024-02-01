@@ -17,7 +17,7 @@ in {
       default =
         if pkgs.stdenv.isLinux
         then pkgs.firefox
-        else pkgs.firefox-esr-bin;
+        else pkgs.firefox-app;
       defaultText = literalExample "pkgs.firefox";
       example = literalExample "pkgs.firefox";
       description = "The Firefox using";

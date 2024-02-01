@@ -142,6 +142,7 @@ in {
         # "maccy" # clip 剪切薄，使用raycast取代
         # "visual-studio-code" # other editors nix 管理
         (mkIf config.modules.shell.git.enGui "github") # github客户端
+        (mkIf config.modules.browser.chrome.useBrew "google chrome")
       ];
       homebrew.brews = [
         "macos-trash" # trash-cli

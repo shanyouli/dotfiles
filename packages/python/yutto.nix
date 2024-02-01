@@ -32,6 +32,8 @@ in
       dict2xml
       typing-extensions
       httpx
+      httpx.optional-dependencies.http2
+      httpx.optional-dependencies.socks
     ];
 
     pythonImportsCheck = ["yutto"];

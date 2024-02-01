@@ -53,8 +53,10 @@
     dev.rust.enable = true;
 
     tool.sdcv.enable = true;
-    browser.firefox.enable = true;
-    browser.firefox.package = pkgs.firefox-app;
+    browser.default = "firefox";
+    browser.fallback = pkgs.vivaldi-app;
+    browser.chrome.enable = true;
+
     theme.enable = true;
 
     # # macos
@@ -72,8 +74,6 @@
     macos.hammerspoon.enable = true;
     macos.rime.enable = true;
     macos.brew.mirror = "tuna";
-    macos.chrome.enable = true;
-    macos.chrome.dev.enable = true;
     macos.duti.enable = true;
 
     service.nginx.enable = true;
