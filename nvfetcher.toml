@@ -237,3 +237,13 @@ fetch.url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$ver/ma
 src.webpage = "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json"
 src.regex = "\"channel\":\"Stable\",\"version\":\"([0-9.]+)\""
 fetch.url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$ver/mac-x64/chrome-mac-x64.zip"
+
+[ryujinx]
+src.github = "Ryujinx/release-channel-master"
+fetch.url = "https://github.com/Ryujinx/release-channel-master/releases/download/$ver/test-ava-ryujinx-$ver-macos_universal.app.tar.gz"
+
+[ryusak]
+src.github = "FennyFatal/RyuSAK"
+src.from_pattern = "v(.*)-experimental"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/FennyFatal/RyuSAK/releases/download/v$ver-experimental/RyuSAK-darwin-arm64-$ver.zip"

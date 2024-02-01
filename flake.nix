@@ -225,7 +225,7 @@
         drv = let
           buildPath = pkgs.buildEnv {
             name = "update-nix-pkgs-env";
-            paths = with pkgs; [nvfetcher-bin jq curl];
+            paths = with pkgs; [nvfetcher-bin jq curl gawk];
             pathsToLink = "/bin";
           };
         in
@@ -239,6 +239,7 @@
             nvfetcher $keys_args
             echo update firefox ....
             bash packages/darwinApp/firefox/update.sh
+            bash packages/darwinApp/rpcs3/update.sh
           '';
       };
       default = sysdo;

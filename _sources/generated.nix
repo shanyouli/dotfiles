@@ -343,6 +343,22 @@
       sha256 = "sha256-AvuuwUnxMcr2ekZ/O1FL/4IizV1aTMhXNrbf1SwNY7U=";
     };
   };
+  ryujinx = {
+    pname = "ryujinx";
+    version = "1.1.1154";
+    src = fetchurl {
+      url = "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1154/test-ava-ryujinx-1.1.1154-macos_universal.app.tar.gz";
+      sha256 = "sha256-m59fS4MtZZSmQ2D4D0xaOTdSGpxAsIDYm8Zs81pqzRk=";
+    };
+  };
+  ryusak = {
+    pname = "ryusak";
+    version = "1.6.3";
+    src = fetchurl {
+      url = "https://github.com/FennyFatal/RyuSAK/releases/download/v1.6.3-experimental/RyuSAK-darwin-arm64-1.6.3.zip";
+      sha256 = "sha256-iohH/P56qaFnrS/WhoNxZr66h8cdwCuFfCUDfHF1tho=";
+    };
+  };
   seam = {
     pname = "seam";
     version = "v_cli.0.1.39";

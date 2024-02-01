@@ -38,6 +38,7 @@ with lib; rec {
   );
 
   asdfInPlugins = bin: plugin: versions: ''
+    echo-info "Use asdf initialization development ${plugin}"
     function asdf_${plugin}_init() {
       local exist_ver=""
       local all_ver=""

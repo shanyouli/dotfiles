@@ -1,6 +1,6 @@
 {pkgs}: let
   # 文件来源 @see https://github.com/ldeck/nix-home/raw/09bf1a8a00608084b8bc075086111c5a7e89151d/lib/defaults/apps/macOS/lib/app.nix
-  inherit (pkgs) unzip undmg stdenv lib;
+  inherit (pkgs) unzip undmg stdenv lib p7zip;
 in
   {
     pname,
@@ -16,7 +16,7 @@ in
     assert stdenv.isDarwin;
       stdenv.mkDerivation {
         inherit version src postInstall sourceRoot nativeBuildInputs;
-        buildInputs = [unzip undmg];
+        buildInputs = [unzip undmg p7zip];
         name = "${
           builtins.replaceStrings [" "] ["_"] (lib.toLower pname)
         }-darwin-${version}";
@@ -33,6 +33,17 @@ in
             _pathDmg=$(find . -maxdepth 2 -name "*.dmg" | head -n 1)
             _app=$(find . -maxdepth 2 -name "*.app" | head -n 1)
           fi
+          if [[ "$curSrc" =~ \.7z$ ]]; then
+            7z x $src
+            _pathDmg=$(find . -maxdepth 2 -name "*.dmg" | head -n 1)
+            _app=$(find . -maxdepth 2 -name "*.app" | head -n 1)
+          fi
+          if [[ "$curSrc" =~ \.tar.gz$ ]]; then
+            tar -zxvf $src
+            _pathDmg=$(find . -maxdepth 2 -name "*.dmg" | head -n 1)
+            _app=$(find . -maxdepth 2 -name "*.app" | head -n 1)
+          fi
+
           if [[ "" == $_app ]]; then
             echo $_pathDmg will undmg
             if undmg $_pathDmg >/dev/null 2>&1; then

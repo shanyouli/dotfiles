@@ -618,6 +618,36 @@
         },
         "version": "3.1.0"
     },
+    "ryujinx": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "ryujinx",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-m59fS4MtZZSmQ2D4D0xaOTdSGpxAsIDYm8Zs81pqzRk=",
+            "type": "url",
+            "url": "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1154/test-ava-ryujinx-1.1.1154-macos_universal.app.tar.gz"
+        },
+        "version": "1.1.1154"
+    },
+    "ryusak": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "ryusak",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-iohH/P56qaFnrS/WhoNxZr66h8cdwCuFfCUDfHF1tho=",
+            "type": "url",
+            "url": "https://github.com/FennyFatal/RyuSAK/releases/download/v1.6.3-experimental/RyuSAK-darwin-arm64-1.6.3.zip"
+        },
+        "version": "1.6.3"
+    },
     "seam": {
         "cargoLocks": {
             "Cargo.lock": [
