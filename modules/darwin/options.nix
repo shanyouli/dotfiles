@@ -87,6 +87,8 @@ in {
         # qutebrowser-app # 不再需要
         pkgs.upic-app
         pkgs.calibre-app
+
+        pkgs.lporg
       ];
 
       modules.xdg.enable = true;

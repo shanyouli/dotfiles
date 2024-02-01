@@ -21,14 +21,6 @@
     };
     vendorHash = "sha256-5APKL65KKvpOJ6KE5ccA4S/AAy1fhdovc1d+L0rq0Ks=";
   };
-  alist-darwin-a64 = {
-    pname = "alist-darwin-a64";
-    version = "3.30.0";
-    src = fetchurl {
-      url = "https://github.com/alist-org/alist/releases/download/v3.30.0/alist-darwin-arm64.tar.gz";
-      sha256 = "sha256-a/H+HX/YBUVmYmkwFSjS84LzsVX9EOVsh71BoWspGWg=";
-    };
-  };
   alist-web = {
     pname = "alist-web";
     version = "3.30.0";
@@ -243,6 +235,18 @@
       url = "https://github.com/localsend/localsend/releases/download/v1.13.1/LocalSend-1.13.1.dmg";
       sha256 = "sha256-YCy6NlmEPsOFtIZ27mOYDnMPd1tj3YO2bwNDdM3K/uY=";
     };
+  };
+  lporg = {
+    pname = "lporg";
+    version = "v20.4.31";
+    src = fetchFromGitHub {
+      owner = "blacktop";
+      repo = "lporg";
+      rev = "v20.4.31";
+      fetchSubmodules = false;
+      sha256 = "sha256-A/OE67qAn9RHSCveiRwG5lPYNTMdrbUWVfQOP3XjkdU=";
+    };
+    vendorHash = "sha256-GQaIfUtM3iDQ9jmrSMqYvcPysigdu7w10xGDIYv4OY8=";
   };
   lyricx = {
     pname = "lyricx";

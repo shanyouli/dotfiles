@@ -157,3 +157,13 @@ mmac-reopen() {
 }
 
 function poweroff() { sudo /sbin/shutdown -h now ; }
+
+function sbackup() {
+    case $1 in
+        start) tmutil startbackup;;
+        stop) tmutil stopbackup;;
+        info) tmutil help;;
+        list) tmutil listbackups;;
+        *) tmutil "$@";;
+    esac
+}

@@ -36,21 +36,6 @@
         },
         "version": "v3.30.0"
     },
-    "alist-darwin-a64": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "alist-darwin-a64",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-a/H+HX/YBUVmYmkwFSjS84LzsVX9EOVsh71BoWspGWg=",
-            "type": "url",
-            "url": "https://github.com/alist-org/alist/releases/download/v3.30.0/alist-darwin-arm64.tar.gz"
-        },
-        "version": "3.30.0"
-    },
     "alist-web": {
         "cargoLocks": null,
         "date": null,
@@ -436,6 +421,28 @@
             "url": "https://github.com/localsend/localsend/releases/download/v1.13.1/LocalSend-1.13.1.dmg"
         },
         "version": "1.13.1"
+    },
+    "lporg": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "lporg",
+        "passthru": {
+            "vendorHash": "sha256-GQaIfUtM3iDQ9jmrSMqYvcPysigdu7w10xGDIYv4OY8="
+        },
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "blacktop",
+            "repo": "lporg",
+            "rev": "v20.4.31",
+            "sha256": "sha256-A/OE67qAn9RHSCveiRwG5lPYNTMdrbUWVfQOP3XjkdU=",
+            "type": "github"
+        },
+        "version": "v20.4.31"
     },
     "lyricx": {
         "cargoLocks": null,

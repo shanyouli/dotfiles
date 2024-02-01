@@ -101,12 +101,6 @@ fetch.url = "https://github.com/alist-org/alist-web/releases/download/$ver/dist.
 src.git = "https://github.com/Amar1729/yabai-zsh-completions"
 fetch.github = "Amar1729/yabai-zsh-completions"
 
-[alist-darwin-a64]
-src.github = "alist-org/alist"
-src.from_pattern = "v(.*)"
-src.to_pattern = "\\1"
-fetch.url = "https://github.com/alist-org/alist/releases/download/v$ver/alist-darwin-arm64.tar.gz"
-
 [pngpaste]
 src.github_tag = "jcsalterego/pngpaste"
 fetch.github = "jcsalterego/pngpaste"
@@ -120,6 +114,11 @@ git.fetchSubmodules = false
 [emacsclient]
 src.git = "https://github.com/nashamri/spacemacs-logo"
 fetch.url = "https://github.com/nashamri/spacemacs-logo/raw/$ver/spacemacs.icns"
+
+[lporg]
+src.github = "blacktop/lporg"
+fetch.github = "blacktop/lporg"
+passthru = { vendorHash = "sha256-GQaIfUtM3iDQ9jmrSMqYvcPysigdu7w10xGDIYv4OY8=" }
 
 ### DarwinAPP
 
