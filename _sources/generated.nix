@@ -410,10 +410,10 @@
   };
   xbydriver = {
     pname = "xbydriver";
-    version = "3.12.3";
+    version = "3.24.12922";
     src = fetchurl {
-      url = "https://github.com/gaozhangmin/aliyunpan/releases/download/v3.12.3/XBYDriver-3.12.3-mac-arm64.dmg";
-      sha256 = "sha256-SKDkDu9gEgghTUZ7ku7qsa2KMkaMvyNTvtx77CM0VDg=";
+      url = "https://github.com/odomu/aliyunpan/releases/download/v3.24.12922/alixby-3.24.12922-mac-arm64.dmg";
+      sha256 = "sha256-TZt3ufH5L7l3WE0/ZNDt82pYKS3GnV436m0i9kcgnxc=";
     };
   };
   yabai-zsh-completions = {
