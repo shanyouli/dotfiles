@@ -24,8 +24,7 @@ in {
     };
   };
   config = mkIf cfg.enable {
-    home.programs.browserpass.enable = true;
-    home.programs.browserpass.browsers = ["firefox" "chrome"];
+    modules.shell.gopass.browsers = ["firefox"];
     user.packages = [pkgs.geckodriver];
     home.programs.firefox = {
       enable = true;

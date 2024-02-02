@@ -414,7 +414,7 @@ def build(
         typer.secho('could not infer system type.', fg=Colors.ERROR.value)
         raise typer.Abort()
     flake = f'{REMOTE_FLAKE if remote else DOTFILE.get_flake()}#{host}'
-    flags = ['--show-trace', '--impure']
+    flags = ['--show-trace', '--impure', '-L']
     run_cmd(cmd + [flake] + flags)
 
 

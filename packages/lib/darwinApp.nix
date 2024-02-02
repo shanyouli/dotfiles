@@ -15,7 +15,7 @@ in
   }:
     assert stdenv.isDarwin;
       stdenv.mkDerivation {
-        inherit version src postInstall sourceRoot nativeBuildInputs;
+        inherit version src postInstall sourceRoot nativeBuildInputs pname;
         buildInputs = [unzip undmg p7zip];
         name = "${
           builtins.replaceStrings [" "] ["_"] (lib.toLower pname)

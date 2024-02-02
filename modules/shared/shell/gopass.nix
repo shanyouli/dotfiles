@@ -27,9 +27,52 @@ in {
   options.modules.shell.gopass = with types; {
     enable = mkBoolOpt false;
     enGui = mkBoolOpt config.modules.opt.enGui;
+    browsers = let
+      browsers = ["firefox" "chrome" "chromium" "brave" "librewolf" "vivaldi"];
+    in
+      mkOption {
+        type = types.listOf (types.enum browsers);
+        default = [];
+        example = ["firefox"];
+        description = "Which browsers to install browserpass for";
+      };
   };
-  config = mkIf cfg.enable {
-    user.packages = [package (mkIf cfg.enGui qtpass)];
-    env.PASSWORD_STORE_DIR = "${config.home.dataDir}/password-store";
-  };
+  config = mkIf cfg.enable (mkMerge [
+    {
+      user.packages = [package (mkIf cfg.enGui qtpass)];
+      env.PASSWORD_STORE_DIR = "${config.home.dataDir}/password-store";
+    }
+    (mkIf (cfg.browsers != []) {
+      home.file = let
+        cfbrowser = config.modules.browser.nativeHosts;
+        jsonFile = "com.github.browserpass.native.json";
+        passJsonFn = n: (
+          let
+            browserName =
+              if builtins.elem n ["firefox" "librewolf"]
+              then "firefox"
+              else "chromium";
+          in "${pkgs.browserpass}/lib/browserpass/hosts/${browserName}/${jsonFile}"
+        );
+      in
+        foldl' (a: b: a // b) {} (concatMap (
+            x:
+              if builtins.elem x ["chrome" "chromium" "vivaldi"]
+              then [
+                {
+                  "${cfbrowser."${x}"}/${jsonFile}".source = passJsonFn x;
+                  "${cfbrowser."${x}"}/../policies/managed/${jsonFile}".source = "${pkgs.browserpass}/lib/browserpass/policies/chromium/${jsonFile}";
+                }
+              ]
+              else if builtins.elem x ["firefox" "librewolf" "brave"]
+              then [
+                {
+                  "${cfbrowser."${x}"}/${jsonFile}".source = passJsonFn x;
+                }
+              ]
+              else throw "unknown browser ${x}"
+          )
+          cfg.browsers);
+    })
+  ]);
 }

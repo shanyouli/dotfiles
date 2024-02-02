@@ -19,10 +19,13 @@ in {
     dev.enable = mkBoolOpt true;
     useBrew = mkBoolOpt false;
   };
-  config = mkIf cfg.enable {
-    user.packages = [
-      (mkIf (! cfg.useBrew) cfgPkg)
-      (mkIf cfg.dev.enable pkgs.chromedriver)
-    ];
-  };
+  config = mkIf cfg.enable (mkMerge [
+    (mkIf cfg.dev.enable {
+      user.packages = [pkgs.chromedriver];
+    })
+    (mkIf (! cfg.useBrew) {
+      user.packages = [cfgPkg];
+      modules.shell.gopass.browsers = ["chrome"];
+    })
+  ]);
 }
