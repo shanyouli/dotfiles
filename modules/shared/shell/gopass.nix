@@ -44,12 +44,17 @@ in {
     }
     (mkIf (cfg.browsers != []) {
       home.file = let
-        cfbrowser = config.modules.browser.nativeHosts;
+        cfbrowser = config.modules.browser.configDir;
+        isFirefox = n: builtins.elem n ["firefox" "librewolf"];
+        nativeHostsName = n:
+          if pkgs.stdenvNoCC.isLinux && (isFirefox n)
+          then "native-messaging-hosts"
+          else "NativeMessagingHosts";
         jsonFile = "com.github.browserpass.native.json";
         passJsonFn = n: (
           let
             browserName =
-              if builtins.elem n ["firefox" "librewolf"]
+              if isFirefox n
               then "firefox"
               else "chromium";
           in "${pkgs.browserpass}/lib/browserpass/hosts/${browserName}/${jsonFile}"
@@ -57,17 +62,23 @@ in {
       in
         foldl' (a: b: a // b) {} (concatMap (
             x:
-              if builtins.elem x ["chrome" "chromium" "vivaldi"]
+              if isFirefox x
               then [
                 {
-                  "${cfbrowser."${x}"}/${jsonFile}".source = passJsonFn x;
-                  "${cfbrowser."${x}"}/../policies/managed/${jsonFile}".source = "${pkgs.browserpass}/lib/browserpass/policies/chromium/${jsonFile}";
+                  "${cfbrowser."${x}"}/${nativeHostsName x}/${jsonFile}".source = passJsonFn x;
                 }
               ]
-              else if builtins.elem x ["firefox" "librewolf" "brave"]
+              else if x == "brave"
               then [
                 {
-                  "${cfbrowser."${x}"}/${jsonFile}".source = passJsonFn x;
+                  "${cfbrowser.brave}/${nativeHostsName x}/${jsonFile}".source = passJsonFn x;
+                }
+              ]
+              else if builtins.elem x ["chrome" "chromium" "vivaldi"]
+              then [
+                {
+                  "${cfbrowser."${x}"}/${nativeHostsName x}/${jsonFile}".source = passJsonFn x;
+                  "${cfbrowser."${x}"}/policies/managed/${jsonFile}".source = "${pkgs.browserpass}/lib/browserpass/policies/chromium/${jsonFile}";
                 }
               ]
               else throw "unknown browser ${x}"

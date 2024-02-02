@@ -30,43 +30,43 @@ in {
         else v;
       description = "FallBack browser";
     };
-    nativeHosts = with types; mkOpt (attrsOf (either str path)) {};
+    configDir = with types; mkOpt (attrsOf (either str path)) {};
   };
   config = mkMerge [
     {
-      modules.browser.nativeHosts = builtins.listToAttrs (map (n: {
+      modules.browser.configDir = builtins.listToAttrs (map (n: {
           name = n;
           value =
             if n == "brave"
             then
               if pkgs.stdenv.isDarwin
-              then "Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts"
-              else ".config/BraveSoftware/Brave-Browser/NativeMessagingHosts"
+              then "Library/Application Support/BraveSoftware/Brave-Browser"
+              else ".config/BraveSoftware/Brave-Browser"
             else if n == "chrome"
             then
               if pkgs.stdenv.isDarwin
-              then "Library/Application Support/Google/Chrome/NativeMessagingHosts"
-              else ".config/google-chrome/NativeMessagingHosts"
+              then "Library/Application Support/Google/Chrome"
+              else ".config/google-chrome"
             else if n == "chromium"
             then
               if pkgs.stdenv.isDarwin
-              then "Library/Application Support/Chromium/NativeMessagingHosts"
-              else ".config/chromium/NativeMessagingHosts"
+              then "Library/Application Support/Chromium"
+              else ".config/chromium"
             else if n == "firefox"
             then
               if pkgs.stdenv.isDarwin
-              then "Library/Application Support/Mozilla/NativeMessagingHosts"
-              else ".mozilla/native-messaging-hosts"
+              then "Library/Application Support/Mozilla"
+              else ".mozilla"
             else if n == "librewolf"
             then
               if pkgs.stdenv.isDarwin
-              then "Library/Application Support/LibreWolf/NativeMessagingHosts"
-              else ".librewolf/native-messaging-hosts"
+              then "Library/Application Support/LibreWolf"
+              else ".librewolf"
             else if n == "vivaldi"
             then
               if pkgs.stdenv.isDarwin
-              then "Library/Application Support/Vivaldi/NativeMessagingHosts"
-              else ".config/vivaldi/NativeMessagingHosts"
+              then "Library/Application Support/Vivaldi"
+              else ".config/vivaldi"
             else throw "unknown browser ${n}";
         })
         browsers);
