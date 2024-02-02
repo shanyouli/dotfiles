@@ -123,6 +123,9 @@ in {
         defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
         # 禁止在网络卷创建元数据文件
         defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+        # https://github.com/nikitabobko/AeroSpace?tab=readme-ov-file
+        #  you can move windows by holding ctrl+cmd and dragging any part of the window (not necessarily the window title)
+        defaults write -g NSWindowShouldDragOnGesture YES
       '';
       macos.userScript.initRust = {
         enable = config.modules.dev.rust.enable;

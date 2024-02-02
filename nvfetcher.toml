@@ -247,3 +247,9 @@ src.github = "FennyFatal/RyuSAK"
 src.from_pattern = "v(.*)-experimental"
 src.to_pattern = "\\1"
 fetch.url = "https://github.com/FennyFatal/RyuSAK/releases/download/v$ver-experimental/RyuSAK-darwin-arm64-$ver.zip"
+
+[spotube]
+src.github = "KRTirtho/spotube"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/KRTirtho/spotube/releases/download/v$ver/Spotube-macos-universal.dmg"

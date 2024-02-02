@@ -24,22 +24,17 @@ in
         unpackCmd = ''
           _pathDmg=""
           _app=""
+          function lower() { printf '%s\n' "''${1,,}"; }
           echo "File to unpack: $curSrc"
           if [[ "$curSrc" =~ \.dmg$ ]]; then
             _pathDmg=$src
           fi
-          if [[ "$curSrc" =~ \.zip$ ]]; then
-            unzip  $src
-            _pathDmg=$(find . -maxdepth 2 -name "*.dmg" | head -n 1)
-            _app=$(find . -maxdepth 2 -name "*.app" | head -n 1)
-          fi
-          if [[ "$curSrc" =~ \.7z$ ]]; then
-            7z x $src
-            _pathDmg=$(find . -maxdepth 2 -name "*.dmg" | head -n 1)
-            _app=$(find . -maxdepth 2 -name "*.app" | head -n 1)
-          fi
-          if [[ "$curSrc" =~ \.tar.gz$ ]]; then
-            tar -zxvf $src
+          if [[ "$_pathDmg" == "" ]]; then
+            case "$(lower "$curSrc")" in
+              *.zip) unzip $src;;
+              *.7z) 7z x $src;;
+              *.tar.gz|*.tgz) tar -zxvf $src ;;
+            esac
             _pathDmg=$(find . -maxdepth 2 -name "*.dmg" | head -n 1)
             _app=$(find . -maxdepth 2 -name "*.app" | head -n 1)
           fi

@@ -2,12 +2,12 @@
 # shellcheck shell=bash
 
 SCRIPT_PATH=$(dirname "$0")
-repo_name="RPCS3/rpcs3-binaries-mac"
-TEXT=$(curl -s https://api.github.com/repos/${repo_name}/releases/latest)
-URL=$(echo -n $TEXT | jq  | grep browser_download_url | grep macos  | awk -F '"' '{ print $(NF-1) }')
-VERSION=$(echo -n $TEXT | jq -r .name)
-
-function get_hash { nix-prefetch-url $1 | head -n 1 ; }
+repo_name="xiaoyaocz/dart_simple_live"
+TMP_JSON=$(mktemp -t source.XXXXXX.json)
+curl -s https://api.github.com/repos/${repo_name}/releases/latest > $TMP_JSON
+VERSION=$(jq -r .name $TMP_JSON)
+URL=$(cat $TMP_JSON | grep browser_download_url | grep macos\.dmg | awk -F '"' '{ print $(NF-1) }' | sed 's/%2B/+/g')
+function get_hash { nix-prefetch-url $1 --name "simple_live_app_$VERSION.dmg" | head -n 1 ; }
 
 function generate_json() {
     local url=$1
@@ -28,13 +28,14 @@ function main() {
     local json=$(
         cat <<EOF
 {
-    "rpcs3": $(generate_json "$URL" "$version")
+    "simpleLive": $(generate_json "$URL" "$version")
 }
 EOF
           )
     echo "$json" | jq . >${SCRIPT_PATH}/source.json
 }
 if [[ ! -f "${SCRIPT_PATH}/source.json" ]] ||
-       [[ $(jq -r '.rpcs3.version' "${SCRIPT_PATH}"/source.json) != "$VERSION" ]]; then
+       [[ $(jq -r '.simpleLive.version' "${SCRIPT_PATH}"/source.json) != "$VERSION" ]]; then
     main
 fi
+[[ -f $TMP_JSON ]] && rm -rf $TMP_JSON

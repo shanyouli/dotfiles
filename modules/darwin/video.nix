@@ -16,11 +16,15 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
-      iina-app
-      zy-player-app
-      (mkIf mpvcfg.stream.enable iinaplus-app)
-    ];
+    user.packages = with pkgs;
+      [
+        iina-app
+        zy-player-app
+      ]
+      ++ optionals mpvcfg.stream.enable [
+        iinaplus-app
+        pkgs.simple-live-app
+      ];
     # 视频压缩工具, 使用 ffmpeg 取代
     # homebrew.casks = ["handbrake"];
     macos.userScript.setingIinaApp = {

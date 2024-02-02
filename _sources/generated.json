@@ -673,6 +673,21 @@
         },
         "version": "v_cli.0.1.39"
     },
+    "spotube": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "spotube",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-VobLCxsmE5kGIlDDa3v5xIHkw2x2YV14fgHHcDb+bLo=",
+            "type": "url",
+            "url": "https://github.com/KRTirtho/spotube/releases/download/v3.4.1/Spotube-macos-universal.dmg"
+        },
+        "version": "3.4.1"
+    },
     "upic": {
         "cargoLocks": null,
         "date": null,

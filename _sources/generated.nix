@@ -376,6 +376,14 @@
       };
     };
   };
+  spotube = {
+    pname = "spotube";
+    version = "3.4.1";
+    src = fetchurl {
+      url = "https://github.com/KRTirtho/spotube/releases/download/v3.4.1/Spotube-macos-universal.dmg";
+      sha256 = "sha256-VobLCxsmE5kGIlDDa3v5xIHkw2x2YV14fgHHcDb+bLo=";
+    };
+  };
   upic = {
     pname = "upic";
     version = "0.21.1";
