@@ -344,7 +344,7 @@ def bootstrap(
         "--impure",
     ]
     if debug:
-        flags.append('--shaw-trace')
+        flags.append('--show-trace')
         flags.append('-L')
     bootstrap_flake = REMOTE_FLAKE if remote else DOTFILE.get_flake(True)
     if host is None:
@@ -421,7 +421,7 @@ def build(
     flake = f'{REMOTE_FLAKE if remote else DOTFILE.get_flake()}#{host}'
     flags = ['--impure']
     if debug:
-        flags.append('--shaw-trace')
+        flags.append('--show-trace')
         flags.append('-L')
     run_cmd(cmd + [flake] +   flags)
 
@@ -600,7 +600,7 @@ def switch(
     flake = [f'{REMOTE_FLAKE}#{host}'] if remote else [f'{DOTFILE.get_flake()}#{host}']
     flags = ['--impure']
     if debug:
-        flags.append('--shaw-trace')
+        flags.append('--show-trace')
         flags.append('-L')
     run_cmd(cmd.split() + flake + flags)
 
