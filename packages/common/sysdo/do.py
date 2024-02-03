@@ -332,6 +332,7 @@ def bootstrap(
     remote: bool = typer.Option(
         default=False, help='whether to fetch current changes from the remote'
     ),
+    debug: bool = False,
 ):
     cfg = select(nixos=nixos, darwin=darwin, home_manager=home_manager)
     flags = [
@@ -342,6 +343,9 @@ def bootstrap(
         'https://shanyouli.cachix.org',
         "--impure",
     ]
+    if debug:
+        flags.append('--show-trace')
+        flags.append('-L')
     bootstrap_flake = REMOTE_FLAKE if remote else DOTFILE.get_flake(True)
     if host is None:
         typer.secho('Host unspecified', fg=Colors.ERROR.value)
@@ -400,6 +404,7 @@ def build(
     nixos: bool = False,
     darwin: bool = False,
     home_manager: bool = False,
+    debug: bool = True,
 ):
     cfg = select(nixos=nixos, darwin=darwin, home_manager=home_manager)
     if cfg is None:
@@ -414,8 +419,11 @@ def build(
         typer.secho('could not infer system type.', fg=Colors.ERROR.value)
         raise typer.Abort()
     flake = f'{REMOTE_FLAKE if remote else DOTFILE.get_flake()}#{host}'
-    flags = ['--show-trace', '--impure']
-    run_cmd(cmd + [flake] + flags)
+    flags = ['--impure']
+    if debug:
+        flags.append('--show-trace')
+        flags.append('-L')
+    run_cmd(cmd + [flake] +   flags)
 
 
 @app.command(
@@ -570,6 +578,7 @@ def switch(
     nixos: bool = False,
     darwin: bool = False,
     home_manager: bool = False,
+    debug: bool = False,
 ):
     if not host:
         typer.secho('Error: host configuration not specified.', fg=Colors.ERROR.value)
@@ -589,7 +598,10 @@ def switch(
         typer.secho('could not infer system type.', fg=Colors.ERROR.value)
         raise typer.Abort()
     flake = [f'{REMOTE_FLAKE}#{host}'] if remote else [f'{DOTFILE.get_flake()}#{host}']
-    flags = ['--show-trace', '--impure']
+    flags = ['--impure']
+    if debug:
+        flags.append('--show-trace')
+        flags.append('-L')
     run_cmd(cmd.split() + flake + flags)
 
 
