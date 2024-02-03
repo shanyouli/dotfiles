@@ -91,10 +91,10 @@
   };
   clash-nyanpasu = {
     pname = "clash-nyanpasu";
-    version = "1.4.3";
+    version = "1.4.4";
     src = fetchurl {
-      url = "https://github.com/keiko233/clash-nyanpasu/releases/download/v1.4.3/Clash.Nyanpasu_1.4.3_aarch64.dmg";
-      sha256 = "sha256-UmwCBLK3u6+Tuxd2MGnHFEr2jUaC71dMP+wIcsaZRTY=";
+      url = "https://github.com/keiko233/clash-nyanpasu/releases/download/v1.4.4/Clash.Nyanpasu_1.4.4_aarch64.dmg";
+      sha256 = "sha256-hE9DKwv7dVK4zYpRvI5i5pTLWIET/bQ5FKq12uce/00=";
     };
   };
   clash-verge = {
@@ -298,22 +298,22 @@
   };
   musicn = {
     pname = "musicn";
-    version = "v1.5.2";
+    version = "v1.5.0";
     src = fetchFromGitHub {
       owner = "zonemeen";
       repo = "musicn";
-      rev = "v1.5.2";
+      rev = "v1.5.0";
       fetchSubmodules = false;
-      sha256 = "sha256-X2s1K8Cap7i+nGF2qlrpnoCikIhwtz8ebgpfY3G+JiA=";
+      sha256 = "sha256-jnS3NwxguAu4SJNFTvk6HgYF0eVw8/L7qC4o1K+WVwE=";
     };
     npmDepsHash = "sha256-Yr0zgQBP/ocJ/ThbFhidPnkP4C8/lWufxkd3sJnqErA=";
   };
   neovide = {
     pname = "neovide";
-    version = "0.12.1";
+    version = "0.12.2";
     src = fetchurl {
-      url = "https://github.com/neovide/neovide/releases/download/0.12.1/neovide.dmg.zip";
-      sha256 = "sha256-NRTLoTaFKueBMLjuXcfbiZTX3hoHT9CwKfClhDXt/3U=";
+      url = "https://github.com/neovide/neovide/releases/download/0.12.2/neovide.dmg.zip";
+      sha256 = "sha256-cCLswmyKXMwG0RTJWMFFcgdfWyaU9saTgrsZwJuFA1A=";
     };
   };
   next-chat = {
@@ -345,10 +345,10 @@
   };
   ryujinx = {
     pname = "ryujinx";
-    version = "1.1.1154";
+    version = "1.1.1155";
     src = fetchurl {
-      url = "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1154/test-ava-ryujinx-1.1.1154-macos_universal.app.tar.gz";
-      sha256 = "sha256-m59fS4MtZZSmQ2D4D0xaOTdSGpxAsIDYm8Zs81pqzRk=";
+      url = "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1155/test-ava-ryujinx-1.1.1155-macos_universal.app.tar.gz";
+      sha256 = "sha256-WDiYP0pE3d64SKj159DGntTdCxmjY1wENwUtusa7c2I=";
     };
   };
   ryusak = {
@@ -394,10 +394,10 @@
   };
   vivaldi = {
     pname = "vivaldi";
-    version = "6.5.3206.57";
+    version = "6.5.3206.59";
     src = fetchurl {
-      url = "https://downloads.vivaldi.com/stable/Vivaldi.6.5.3206.57.universal.dmg";
-      sha256 = "sha256-rsTNLoaXkd/I24Agmf/vU4U4PTrHx44oE0vY2V6fchA=";
+      url = "https://downloads.vivaldi.com/stable/Vivaldi.6.5.3206.59.universal.dmg";
+      sha256 = "sha256-2ldrznH6krKcwgEHyI/wNGQsVoqxPmcC3a68XJTQiRk=";
     };
   };
   websocket-bridge-python = {
