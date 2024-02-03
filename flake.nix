@@ -225,21 +225,25 @@
         drv = let
           buildPath = pkgs.buildEnv {
             name = "update-nix-pkgs-env";
-            paths = with pkgs; [nvfetcher-bin jq curl gawk];
+            paths = with pkgs; [nix-prefetch-scripts jq curl gawk];
             pathsToLink = "/bin";
           };
         in
           pkgs.writeScriptBin "repl" ''
             #! ${pkgs.lib.getExe pkgs.bash}
-            PATH=$PATH:${buildPath}/bin
+            export PATH=$PATH:${buildPath}/bin
+            export NIX_PATH="nixpkgs=${inputs.nixpkgs}:$NIX_PATH"
             keys_args=""
             echo $HOME
             [[ -f $HOME/.config/nvfetcher.toml ]] && keys_args="-k $HOME/.config/nvfetcher.toml"
             [[ -f ./secrets.toml ]] && keys_args="-k ./secrets.toml"
-            nvfetcher $keys_args
-            echo update firefox ....
+            echo $keys_args
+            echo "111111111111111111111111"
+            ${inputs.nvfetcher.packages."${system}".default}/bin/nvfetcher $keys_args -r 10
+            echo "update firefox, rpcs3, simple-live ..."
             bash packages/darwinApp/firefox/update.sh
             bash packages/darwinApp/rpcs3/update.sh
+            bash packages/darwinApp/simple-live/update.sh
           '';
       };
       default = sysdo;
