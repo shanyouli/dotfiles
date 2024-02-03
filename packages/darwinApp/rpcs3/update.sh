@@ -32,9 +32,10 @@ function main() {
 }
 EOF
           )
-    echo "$json" | jq . >${SCRIPT_PATH}/source.json
+    echo "$json" | jq . > "${SCRIPT_PATH}/source.json"
 }
 if [[ ! -f "${SCRIPT_PATH}/source.json" ]] ||
        [[ $(jq -r '.rpcs3.version' "${SCRIPT_PATH}"/source.json) != "$VERSION" ]]; then
+    echo "update ${SCRIPT_PATH}/source.json"
     main
 fi

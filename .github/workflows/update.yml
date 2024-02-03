@@ -34,9 +34,10 @@ jobs:
         run: |
           cat > secrets.toml <<EOF
           [keys]
-          github = "{{ secrets.GITHUB_TOKEN }}"
+          github = "${{ secrets.GITHUB_TOKEN }}"
           EOF
           nix run .#update
+          git commit -a -m "update my pkgs src"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
@@ -52,4 +53,5 @@ jobs:
           MAINTAINER_CANT_MODIFY: true
           PASS_IF_EXISTS: true
           PASS_ON_ERROR: true
+          PULL_REQUEST_UPDATE: true
           PULL_REQUEST_TITLE: 'Update Flake Inputs'
