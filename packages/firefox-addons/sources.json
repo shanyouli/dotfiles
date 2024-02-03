@@ -1,0 +1,12 @@
+{
+  "ublock-origin": {
+    "url": "https://addons.mozilla.org/firefox/downloads/file/4216633/ublock_origin-1.55.0.xpi",
+    "version": "1.55.0",
+    "sha256": "0ivn1jxsdkq69awg73qzmik9liynxam5qgjmjxzl7hrp4z9s2b50"
+  },
+  "noscript": {
+    "url": "https://addons.mozilla.org/firefox/downloads/file/4206186/noscript-11.4.29.xpi",
+    "version": "11.4.29",
+    "sha256": "1k94zvv2ypmhc29f5d2zrvigwh1xgi5kwm1kqfxarwjyn108if85"
+  }
+}

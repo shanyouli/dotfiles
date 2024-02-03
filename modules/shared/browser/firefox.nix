@@ -1,110 +1,132 @@
 {
-  config,
   pkgs,
   lib,
+  config,
   options,
   ...
 }:
 with lib;
 with lib.my; let
-  merge = lib.foldr (a: b: a // b) {};
-  cfg = config.modules.browser.firefox;
+  cfm = config.modules;
+  cfg = cfm.browser.firefox;
+  cfgConfDir = cfm.browser.configDir.firefox;
+  wrapPackage = package: let
+    fcfg = {enableGnomeExtensions = cfg.enableGnomeExtensions;};
+  in
+    if package == null
+    then null
+    else if pkgs.stdenvNoCC isDarwin
+    then package
+    else package.override (old: {cfg = old.cfg or {} // fcfg;});
 in {
-  options.modules.browser.firefox = with types; {
-    enable = mkBoolOpt false;
+  options.modules.browser.firefox = {
+    enable = mkEnableOption "Whether to using firefox";
     package = mkOption {
-      type = types.package;
+      type = with types; nullOr package;
       default =
-        if pkgs.stdenv.isLinux
+        if pkgs.stdenvNoCC.isLinux
         then pkgs.firefox
         else pkgs.firefox-app;
-      defaultText = literalExample "pkgs.firefox";
-      example = literalExample "pkgs.firefox";
-      description = "The Firefox using";
+      description = "The Firefox package to use. ";
     };
+    finalPackage = mkOption {
+      type = with types; nullOr package;
+      readOnly = true;
+      description = "Resulting Firefox package.";
+    };
+    profileName = mkOpt types.str "Default";
+    settings = with types;
+      mkOpt' (attrsOf (oneOf [bool int str])) {} ''
+        Firefox preferences to set in <filename>user.js</filename> or "mozilla.cfg"
+      '';
+    extraConfig = with types;
+      mkOpt' lines "" ''
+        Extra Lines to add to user.js or mozilla.cfg
+      '';
+    userChrome = with types; mkOpt' lines "" "CSS styles for Firefox's interface";
+    userContent = with types; mkOpt' lines "" "Global CSS styles for websites";
+    extensions = mkOption {
+      type = with types; nullOr (listOf package);
+      default = null;
+      description = "Firefox addons packages.";
+    };
+    enableGnomeExtensions = mkOpt' types.bool false ''
+      GnomeShell extensions, Note, you also need to set the NixOS option
+      `services.gnome.gnome-browser-connector.enable` to `true`.
+    '';
   };
-  config = mkIf cfg.enable {
-    modules.shell.gopass.browsers = ["firefox"];
-    user.packages = [pkgs.geckodriver];
-    home.programs.firefox = {
-      enable = true;
-      package = cfg.package;
-      profiles = {
-        default = {
-          name = "Default";
-          settings = merge [
-            (import (config.dotfiles.configDir + "/firefox/annoyances.nix"))
-            (import (config.dotfiles.configDir + "/firefox/browser-features.nix"))
-            (import (config.dotfiles.configDir + "/firefox/privacy.nix"))
-            (import (config.dotfiles.configDir + "/firefox/tracking.nix"))
-            (import (config.dotfiles.configDir + "/firefox/security.nix"))
-            {
-              "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-              "svg.context-properties.content.enabled" = true;
-              "extensions.htmlaboutaddons.recommendations.enabled" = false; # 扩展页浏览器推荐
-              # "image.mem.max_decoded_image_kb" = 51200;
-              # "image.mem.min_discard_timeout_ms" =  10000;
-              # "image.mem.surfacecache.max_size_kb" = 51200;
-              # "image.mem.surfacecache.size_factor" = 32;
-              # "javascript.options.mem.max" = 51200;
-              # "javascript.options.mem.gc_frequency" = 10;
-              # "javascript.options.mem.high_water_mark" = 16;
-            }
-          ];
-          # userChrome = builtins.readFile (pkgs.fetchurl {
-          #   url = "https://github.com/betterbrowser/arcfox/releases/download/2.4.3/userChrome.css";
-          #   sha256 = "0x7ssvhiw843aff6xc462m90mqah6a6hzkqdnslw2q3aw121fkb6";
-          # });
-          userChrome = builtins.readFile "${config.dotfiles.configDir}/firefox/userChrome.css";
-          userContent =
-            builtins.readFile "${config.dotfiles.configDir}/firefox/userContent.css";
-          extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-            browserpass
-            (buildFirefoxXpiAddon rec {
-              pname = "sidebery";
-              version = "5.0.0";
-              url = "https://github.com/mbnuqw/sidebery/releases/download/v${version}/sidebery-${version}.1.xpi";
-              addonId = "{3c078156-979c-498b-8990-85f7987dd929}";
-              sha256 = "1ppvmg37734cdk44mx8bjd88la5gwjhd9ml86p352ajk4zgb2mwp";
-              meta = {
-                homepage = "https://github.com/mbnuqw/sidebery";
-                description = "Firefox extension for managing tabs and bookmarks in sidebar.";
-                license = licenses.mit;
-              };
-              platforms = platforms.all;
-            })
-            (buildFirefoxXpiAddon rec {
-              pname = "download_with_aria2";
-              version = "4.6.0";
-              url = "https://addons.mozilla.org/firefox/downloads/file/4208616/download_with_aria2-4.6.0.2278.xpi";
-              addonId = "firefox@downloadWithAria2";
-              sha256 = "02im79290md7amrcycw7jay97w7sdhhc7b2048jsj648jjn01hyy";
-              meta = {
-                homepage = "https://github.com/jc3213/download_with_aria2";
-                description = "Browser extension for aria2c json-rpc";
-                license = licenses.mit;
-              };
-              platforms = platforms.all;
-            })
-            surfingkeys
-            darkreader
-            auto-tab-discard
-            user-agent-string-switcher
-            violentmonkey
-            switchyomega
-            stylus
-            ublock-origin
-          ];
-        };
+  config = mkIf cfg.enable (mkMerge [
+    {
+      modules.browser.firefox.settings = mkMerge [
+        (import (config.dotfiles.configDir + "/firefox/annoyances.nix"))
+        (import (config.dotfiles.configDir + "/firefox/browser-features.nix"))
+        (import (config.dotfiles.configDir + "/firefox/privacy.nix"))
+        (import (config.dotfiles.configDir + "/firefox/tracking.nix"))
+        (import (config.dotfiles.configDir + "/firefox/security.nix"))
+        {
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+          "svg.context-properties.content.enabled" = true;
+          "extensions.htmlaboutaddons.recommendations.enabled" = false; # 扩展页浏览器推荐
+          # "image.mem.max_decoded_image_kb" = 51200;
+          # "image.mem.min_discard_timeout_ms" =  10000;
+          # "image.mem.surfacecache.max_size_kb" = 51200;
+          # "image.mem.surfacecache.size_factor" = 32;
+          # "javascript.options.mem.max" = 51200;
+          # "javascript.options.mem.gc_frequency" = 10;
+          # "javascript.options.mem.high_water_mark" = 16;
+        }
+      ];
+      modules.browser.firefox.extensions = mkDefault [];
+      modules.browser.firefox.finalPackage = wrapPackage cfg.package;
+    }
+    {
+      home.file = let
+        profilePath = "${cfgConfDir}/Profiles/${lib.toLower cfg.profileName}";
+      in
+        mkMerge [
+          {
+            "${cfgConfDir}/profiles.ini".text = ''
+              [General]
+              StartWithLastProfile=1
 
-        # This does not have as strict privacy settings as the default profile.
-        # It uses the default firefox settings. Useful when something is not
-        # working using the default profile
-        shit = {
-          name = "crap";
-          id = 1;
-        };
-      };
-    };
-  };
+              [Profile0]
+              Default=1
+              IsRelative=1
+              Name=${cfg.profileName}
+              Path=Profiles/${lib.toLower cfg.profileName}
+
+              [Profile1]
+              Default=0
+              IsRelative=1
+              Name=shit
+              Path=Profiles/shit
+            '';
+            "${profilePath}/.keep".text = "";
+            "${profilePath}/chrome/userChrome.css" = mkIf (cfg.userChrome != "") {text = cfg.userChrome;};
+            "${profilePath}/chrome/userContent.css" = mkIf (cfg.userContent != "") {text = cfg.userContent;};
+            "${profilePath}/user.js" = mkIf (cfg.settings != {} || cfg.extraConfig != "") {
+              text = ''
+                // Auto-generated by my configuration
+                ${concatStrings (mapAttrsToList (name: value: ''
+                    user_pref("${name}", ${builtins.toJSON value});
+                  '')
+                  cfg.settings)}
+
+                ${cfg.extraConfig}
+              '';
+            };
+          }
+          (mkIf (cfg.userContent == "" || cfg.userChrome == "") {
+            "${profilePath}/chrome" = {
+              source = "${config.dotfiles.configDir}/firefox/chrome";
+              recursive = true;
+            };
+            "${profilePath}/chrome/utils" = {
+              source = "${pkgs.firefox-utils}/share/utils";
+              recursive = true;
+            };
+          })
+        ];
+    }
+  ]);
 }
