@@ -34,7 +34,7 @@ jobs:
         run: |
           cat > secrets.toml <<EOF
           [keys]
-          github = "{{ secrets.GITHUB_TOKEN }}"
+          github = "${{ secrets.GITHUB_TOKEN }}"
           EOF
           nix run .#update
       - name: Push changes
