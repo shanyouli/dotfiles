@@ -228,6 +228,7 @@
             paths = with pkgs; [nix-prefetch-scripts jq curl gawk];
             pathsToLink = "/bin";
           };
+          py = pkgs.python3.withPackages (p: with p; [requests beautifulsoup4]);
         in
           pkgs.writeScriptBin "repl" ''
             #! ${pkgs.lib.getExe pkgs.bash}
@@ -241,6 +242,7 @@
             bash packages/darwinApp/firefox/update.sh
             bash packages/darwinApp/rpcs3/update.sh
             bash packages/darwinApp/simple-live/update.sh
+            ${py}/bin/python3 packages/firefox-addons/update.py
           '';
       };
       default = sysdo;
