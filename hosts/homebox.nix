@@ -54,6 +54,7 @@
 
     tool.sdcv.enable = true;
     browser.default = "firefox";
+    # browser.firefox.extensions = lib.mkForce [];
     browser.fallback = pkgs.vivaldi-app;
     browser.chrome.enable = true;
 

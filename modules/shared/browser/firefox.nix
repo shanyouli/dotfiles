@@ -9,18 +9,25 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.browser.firefox;
-  cfgConfDir = cfm.browser.configDir.firefox;
+  mozillaConfDir = cfm.browser.configDir.firefox;
+  cfgConfDir =
+    if pkgs.stdenvNoCC.isDarwin
+    then "Library/Application Support/Firefox"
+    else "${mozillaConfDir}/firefox";
+
   wrapPackage = package: let
     fcfg = {enableGnomeExtensions = cfg.enableGnomeExtensions;};
   in
     if package == null
     then null
-    else if pkgs.stdenvNoCC isDarwin
+    else if pkgs.stdenvNoCC.isDarwin
     then package
     else package.override (old: {cfg = old.cfg or {} // fcfg;});
+  extensionPath = "extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}";
 in {
   options.modules.browser.firefox = {
     enable = mkEnableOption "Whether to using firefox";
+    dev.enable = mkBoolOpt true;
     package = mkOption {
       type = with types; nullOr package;
       default =
@@ -76,10 +83,25 @@ in {
           # "javascript.options.mem.high_water_mark" = 16;
         }
       ];
-      modules.browser.firefox.extensions = mkDefault [];
+      modules.shell.gopass.browsers = ["firefox"];
+      modules.browser.firefox.extensions = mkDefault (with pkgs.firefox-addons; [
+        (mkIf cfm.shell.gopass.enable browserpass-ce)
+        noscript
+        ublock-origin
+        download-with-aria2
+        sidebery
+        darkreader
+        surfingkeys_ff
+        auto-tab-discard
+        user-agent-string-switcher
+        violentmonkey
+        switchyomega
+        styl-us
+      ]);
       modules.browser.firefox.finalPackage = wrapPackage cfg.package;
     }
     {
+      user.packages = [cfg.finalPackage] ++ optionals cfg.dev.enable [pkgs.geckodriver];
       home.file = let
         profilePath = "${cfgConfDir}/Profiles/${lib.toLower cfg.profileName}";
       in
@@ -114,6 +136,19 @@ in {
 
                 ${cfg.extraConfig}
               '';
+            };
+            "${profilePath}/extensions" = mkIf (cfg.extensions
+              != null
+              || cfg.extensions != []
+              || ((builtins.typeOf cfg.extensions) == "set") && (! builtins.elem cfg.extensions.content [null []])) {
+              source = let
+                extensionsEnvPkg = pkgs.buildEnv {
+                  name = "my-firefox-extensions";
+                  paths = cfg.extensions;
+                };
+              in "${extensionsEnvPkg}/share/mozilla/${extensionPath}";
+              recursive = true;
+              force = true;
             };
           }
           (mkIf (cfg.userContent == "" || cfg.userChrome == "") {

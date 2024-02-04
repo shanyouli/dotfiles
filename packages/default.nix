@@ -40,7 +40,9 @@ in rec {
   overlay = final: prev: let
     sources = (import ../_sources/generated.nix) {inherit (final) fetchurl fetchFromGitHub fetchgit dockerTools;};
     mkDarwinApp = import ./lib/darwinApp.nix {pkgs = prev;};
-    # callPkg = package: args: final.callPackage package args;
+    buildFirefoxXpiAddon = import ./lib/firefox-addons.nix {pkgs = prev;};
+    fsources = builtins.fromJSON (builtins.readFile ./firefox-addons/sources.json);
+
     callPkg = dir: name: let
       package = import "${builtins.toString dir}/${name}";
       source = getAttr (removeNixSuffix name) sources;
@@ -55,6 +57,21 @@ in rec {
       source = getAttr (removeNixSuffix name) sources;
       args = builtins.intersectAttrs (builtins.functionArgs package) {
         inherit sources source mkDarwinApp;
+      };
+    in
+      final.callPackage package args;
+
+    callFirefoxAdd = dir: name: let
+      package = import "${builtins.toString dir}/${name}";
+      source = let
+        basename = removeNixSuffix name;
+        bsource = getAttr basename sources;
+      in
+        if bsource == null
+        then (getAttr basename fsources)
+        else bsource;
+      args = builtins.intersectAttrs (builtins.functionArgs package) {
+        inherit sources source buildFirefoxXpiAddon;
       };
     in
       final.callPackage package args;
@@ -93,6 +110,7 @@ in rec {
     }
     // (mapPkgs ./common callPkg)
     // (mapPkgs ./darwin callPkg)
+    // {firefox-addons = mapPkgs ./firefox-addons callFirefoxAdd;}
     // (mapPkgs' ./darwinApp callDarwinApp darwinNameFn);
   packages = pkgs: (
     let

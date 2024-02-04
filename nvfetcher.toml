@@ -247,3 +247,18 @@ src.github = "KRTirtho/spotube"
 src.from_pattern = "v(.*)"
 src.to_pattern = "\\1"
 fetch.url = "https://github.com/KRTirtho/spotube/releases/download/v$ver/Spotube-macos-universal.dmg"
+
+### firefox-addons
+[ublock-origin]
+src.github_tag = "gorhill/uBlock"
+fetch.url = "https://github.com/gorhill/uBlock/releases/download/$ver/uBlock0_$ver.firefox.signed.xpi"
+
+[sidebery]
+src.github = "mbnuqw/sidebery"
+fetch.github = "mbnuqw/sidebery"
+
+[darkreader]
+src.github = "darkreader/darkreader"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/darkreader/darkreader/releases/download/v$ver/darkreader-firefox.xpi"

@@ -126,6 +126,14 @@
     };
     date = "2024-01-18";
   };
+  darkreader = {
+    pname = "darkreader";
+    version = "4.9.76";
+    src = fetchurl {
+      url = "https://github.com/darkreader/darkreader/releases/download/v4.9.76/darkreader-firefox.xpi";
+      sha256 = "sha256-lz9mQmPcxyHRDmK12bKmHIyW/iHtPI4WDC769XTrSC0=";
+    };
+  };
   deeplx = {
     pname = "deeplx";
     version = "v0.8.8";
@@ -376,12 +384,31 @@
       };
     };
   };
+  sidebery = {
+    pname = "sidebery";
+    version = "v5.1.1";
+    src = fetchFromGitHub {
+      owner = "mbnuqw";
+      repo = "sidebery";
+      rev = "v5.1.1";
+      fetchSubmodules = false;
+      sha256 = "sha256-zK1kZeI6eyO3z+LyRQuvEncO1kx31UvNK1RrzwYWxWA=";
+    };
+  };
   spotube = {
     pname = "spotube";
     version = "3.4.1";
     src = fetchurl {
       url = "https://github.com/KRTirtho/spotube/releases/download/v3.4.1/Spotube-macos-universal.dmg";
       sha256 = "sha256-VobLCxsmE5kGIlDDa3v5xIHkw2x2YV14fgHHcDb+bLo=";
+    };
+  };
+  ublock-origin = {
+    pname = "ublock-origin";
+    version = "1.55.1b28";
+    src = fetchurl {
+      url = "https://github.com/gorhill/uBlock/releases/download/1.55.1b28/uBlock0_1.55.1b28.firefox.signed.xpi";
+      sha256 = "sha256-QHVcVymrQ3MxfOJr+skZrWEM9A+CliiyL7xIQskwdGY=";
     };
   };
   upic = {

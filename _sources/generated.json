@@ -228,6 +228,21 @@
         },
         "version": "6ceb091d5c40da3e5836e3d80b08d3f74efc4cbf"
     },
+    "darkreader": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "darkreader",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-lz9mQmPcxyHRDmK12bKmHIyW/iHtPI4WDC769XTrSC0=",
+            "type": "url",
+            "url": "https://github.com/darkreader/darkreader/releases/download/v4.9.76/darkreader-firefox.xpi"
+        },
+        "version": "4.9.76"
+    },
     "deeplx": {
         "cargoLocks": null,
         "date": null,
@@ -673,6 +688,26 @@
         },
         "version": "v_cli.0.1.39"
     },
+    "sidebery": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "sidebery",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "mbnuqw",
+            "repo": "sidebery",
+            "rev": "v5.1.1",
+            "sha256": "sha256-zK1kZeI6eyO3z+LyRQuvEncO1kx31UvNK1RrzwYWxWA=",
+            "type": "github"
+        },
+        "version": "v5.1.1"
+    },
     "spotube": {
         "cargoLocks": null,
         "date": null,
@@ -687,6 +722,21 @@
             "url": "https://github.com/KRTirtho/spotube/releases/download/v3.4.1/Spotube-macos-universal.dmg"
         },
         "version": "3.4.1"
+    },
+    "ublock-origin": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "ublock-origin",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-QHVcVymrQ3MxfOJr+skZrWEM9A+CliiyL7xIQskwdGY=",
+            "type": "url",
+            "url": "https://github.com/gorhill/uBlock/releases/download/1.55.1b28/uBlock0_1.55.1b28.firefox.signed.xpi"
+        },
+        "version": "1.55.1b28"
     },
     "upic": {
         "cargoLocks": null,

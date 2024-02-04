@@ -6,10 +6,12 @@ in
     version,
     meta ? {},
     addonId,
+    src,
   }:
     stdenv.mkDerivation {
+      inherit pname version;
       name = "${pname}-${version}";
-      inherit meta;
+      inherit meta src;
       preferLocalBuild = true;
       allowSubstitutes = true;
       passthru = {inherit addonId;};
