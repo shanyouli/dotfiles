@@ -11,6 +11,7 @@ with lib.my; let
 in {
   options.modules.shell.direnv = {
     enable = mkBoolOpt false;
+    stdlib = with types; mkOpt' (attrsOf (oneOf [str path setType])) {} "Libs used by direnv";
   };
 
   config = mkIf cfg.enable {
@@ -18,17 +19,24 @@ in {
     modules.shell.rcInit = ''_cache direnv hook zsh'';
     modules.editor.vscode.extensions = [pkgs.unstable.vscode-extensions.mkhl.direnv];
     home.configFile = mkMerge [
-      (mkIf (config.modules.dev.plugins != []) {
-        "direnv/lib/use_asdf.sh".source = "${config.dotfiles.configDir}/direnv/lib/use_asdf.sh";
-      })
-      (mkIf config.modules.dev.python.enable {
-        "direnv/lib/use_poetry.sh".source = "${config.dotfiles.configDir}/direnv/lib/use_poetry.sh";
-      })
       {
         "direnv/direnvrc".text = ''
           source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc
         '';
       }
+      (mkIf (cfg.stdlib != {}) (concatMapAttrs (name: value: (
+          let
+            newname =
+              if hasPrefix "use_" name
+              then name
+              else "use_" + name;
+            newvalue =
+              if (builtins.typeOf value) == "set"
+              then value.outPath
+              else value;
+          in {"direnv/lib/${newname}.sh".source = newvalue;}
+        ))
+        cfg.stdlib))
     ];
   };
 }

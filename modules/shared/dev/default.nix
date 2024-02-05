@@ -44,6 +44,18 @@ in {
       user.packages = [cfg.package];
       modules.shell = mkMerge [
         (mkIf cfm.shell.direnv.enable {
+          direnv.stdlib.asdf = pkgs.writeScript "use_asdf" ''
+            #!/usr/bin/env sh
+
+            use_asdf() {
+                if asdf plugin list | grep direnv >/dev/null 2>&1; then
+                    source_env "$(asdf direnv envrc "$@")"
+                else
+                    log_status "No direnv plug-ins are installed. Please run command 'asdf plugin add direnv'!!"
+                    exit 1
+                fi
+            }
+          '';
           env.ASDF_DIRENV_BIN = "${config.home.profileBinDir}/direnv";
           env.PATH = mkOrder 100 ["${asdf_data_dir}/shims" "${cfg.package}/share/asdf-vm/bin"];
           env.ASDF_DIR = "${cfg.package}/share/asdf-vm";
