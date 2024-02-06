@@ -117,8 +117,6 @@ in {
         if [[ -d ${config.env.ZSH_CACHE}/cache ]]; then
           $DRY_RUN_CMD rm -rf ${config.env.ZSH_CACHE}/cache
         fi
-        command -v bat >/dev/null && bat cache --build >/dev/null
-
         # 禁止在 USB 卷创建元数据文件, .DS_Store
         defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
         # 禁止在网络卷创建元数据文件
@@ -136,6 +134,11 @@ in {
         enable = config.modules.editor.nvim.enable;
         desc = "Init nvim";
         text = config.modules.editor.nvim.script;
+      };
+      macos.userScript.initTheme = {
+        enable = config.modules.theme.default != "";
+        desc = "init themes";
+        text = config.modules.theme.script;
       };
     }
     (mkIf config.modules.shell.gpg.enable {

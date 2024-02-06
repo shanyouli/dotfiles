@@ -52,20 +52,22 @@ in {
   };
   config = mkIf cfg.enable {
     user.packages = [pkgs.starship];
-    home.configFile."starship.toml" =
-      if (cfg.settings != {})
-      then {
-        source = let
-          default =
-            builtins.fromTOML
-            (builtins.readFile "${config.dotfiles.configDir}/starship/starship.toml");
-          allSettings = default // cfg.settings;
-        in
-          tomlFormat.generate "starship-config" allSettings;
-      }
-      else {
-        source = "${config.dotfiles.configDir}/starship/starship.toml";
+    modules.shell.starship.settings = {
+      add_newline = false;
+      character = {
+        success_symbol = "[[♥](green) ❯](maroon)";
+        error_symbol = "[❯](red)";
+        vicmd_symbol = "[❮](green)";
       };
+      directory = {
+        truncation_length = 4;
+        # Catppuccin 'lavender'
+        style = "bold lavender";
+      };
+    };
+    home.configFile."starship.toml" = mkIf ((cfg.settings != {}) && (config.modules.themes.default == "")) {
+      source = tomlFormat.generate "starship-config" cfg.settings;
+    };
     programs.bash.interactiveShellInit = mkIf cfg.enableBash ''
       if [[ $TERM != "dumb" && (-z $INSIDE_EMACS || $INSIDE_EMACS == "vterm") ]]; then
         eval "$(${starshipCmd} init bash --print-full-init)"

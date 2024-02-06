@@ -58,7 +58,7 @@
     browser.fallback = pkgs.vivaldi-app;
     browser.chrome.enable = true;
 
-    theme.enable = true;
+    # theme.enable = true;
 
     # # macos
     macos.enable = true;
