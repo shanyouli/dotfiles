@@ -140,6 +140,10 @@ in {
         desc = "init themes";
         text = config.modules.theme.script;
       };
+      macos.userScript.initQbWebUI = {
+        enable = config.modules.tool.qbittorrent.webScript != "";
+        text = config.modules.tool.qbittorrent.webScript;
+      };
     }
     (mkIf config.modules.shell.gpg.enable {
       modules.service.env.GNUPGHOME = config.environment.variables.GNUPGHOME;
