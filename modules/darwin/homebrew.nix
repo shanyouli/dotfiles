@@ -145,7 +145,7 @@ in {
         (mkIf config.modules.browser.chrome.useBrew "google chrome")
       ];
       homebrew.brews = [
-        "macos-trash" # trash-cli
+        # "macos-trash" # trash-cli
         # "mysql"
       ];
       homebrew.masApps = {

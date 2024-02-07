@@ -144,7 +144,7 @@ in {
 
     home.configFile."nvim/lua/plugins/usetheme.lua" = mkIf cm.editor.nvim.enable {
       text = ''
-        local name = dofile("${defaultDir}/neovim")
+        local name = dofile("${defaultDir}/neovim.lua")
         return {
           {
             "LazyVim/LazyVim",
