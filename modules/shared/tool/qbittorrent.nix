@@ -42,11 +42,11 @@ in {
     user.packages = [cfg.package];
 
     modules.tool.qbittorrent.webScript = optionalString cfg.webui ''
-      [[ -d ${config.home.cacheDir}/qbittorrent/ui ]] || {
+      [[ -d ${config.home.cacheDir}/qbittorrent/ui/public ]] || {
         echo-info "init qb Web UI"
-        mkdir -p "${config.home.cacheDir}/qbittorrent"
+        mkdir -p "${config.home.cacheDir}/qbittorrent/ui"
         git clone --depth 1 -b gh-pages https://github.com/CzBiX/qb-web.git \
-          ${config.home.cacheDir}/qbittorrent/ui
+          ${config.home.cacheDir}/qbittorrent/ui/public
         echo-info "Please configure the webUI path manually..."
         echo Open Web UI Options dialog, Set "Files location" of "alternative Web UI" to this folder
       }
