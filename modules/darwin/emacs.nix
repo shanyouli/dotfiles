@@ -21,7 +21,7 @@ in {
           url = "https://raw.githubusercontent.com/cmacrae/emacs/b2d582f/patches/fix-window-role.patch";
           sha256 = "0c41rgpi19vr9ai740g09lka3nkjk48ppqyqdnncjrkfgvm2710z";
         };
-        basePackage = pkgs.emacs-unstable.override {
+        basePackage = pkgs.unstable.emacs.override {
           # 使用 emacs-unstable 取代 emacs-git
           # webkitgtk-2.40.2+abi=4.0 is blorken,
           # @see https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/libraries/webkitgtk/default.nix

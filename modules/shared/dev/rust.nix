@@ -23,7 +23,7 @@ in {
     user.packages = with pkgs.unstable; [
       package
       (mkIf cfg.enSlsp rust-analyzer)
-      cargo-update
+      pkgs.cargo-update
     ];
     modules.shell.env.RUSTUP_HOME = rustup_dir;
     modules.shell.env.CARGO_HOME = let
