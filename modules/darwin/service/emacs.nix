@@ -11,7 +11,7 @@ with lib.my; let
   emacsPkg = config.modules.editor.emacs.pkg;
 in {
   options.modules.service.emacs = {
-    enable = mkEnableOption "Whethor to use emacs service";
+    enable = mkBoolOpt config.modules.editor.emacs.service.enable;
     keepAlive = mkEnableOption "Whethor to keep Alive";
   };
   config = mkIf (cfg.enable && cfm.macos.emacs.enable) {

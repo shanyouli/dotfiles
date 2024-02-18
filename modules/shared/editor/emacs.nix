@@ -17,6 +17,7 @@ with lib.my; let
 in {
   options.modules.editor.emacs = {
     enable = mkBoolOpt false;
+    service.enable = mkBoolOpt false;
     gccEnable = mkBoolOpt true;
     pluginEnable = mkBoolOpt true;
     rimeEnable = mkBoolOpt true;

@@ -35,6 +35,8 @@
     editor.nvim.enable = true;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs
     editor.vscode.enable = true;
+    editor.emacs.enable = true;
+    editor.emacs.service.enable = true;
 
     media.music.enable = true;
     media.flameshot.enable = true;
@@ -72,7 +74,6 @@
     service.clash.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/meta.yaml";
 
     macos.games.enable = true;
-    macos.emacs.enable = true;
     macos.hammerspoon.enable = true;
     macos.rime.enable = true;
     macos.brew.mirror = "tuna";
@@ -82,7 +83,6 @@
     service.mysql.enable = true;
     service.deeplx.enable = true;
     service.alist.enable = true;
-    service.emacs.enable = true;
     service.battery.enable = false;
     service.yabai.enable = true;
     service.aria2.enable = true;
