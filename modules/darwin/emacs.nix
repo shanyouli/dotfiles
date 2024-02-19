@@ -2,19 +2,14 @@
   pkgs,
   lib,
   config,
-  options,
   ...
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.macos.emacs;
   emacsPkg = config.modules.editor.emacs.pkg;
+  cshemacs = config.modules.editor.emacs;
 in {
-  options.modules.macos.emacs = {
-    enable = mkBoolOpt config.modules.editor.emacs.enable;
-  };
-
-  config = mkIf cfg.enable {
+  config = mkIf cshemacs.enable {
     modules.editor.emacs.package = let
       # Fix OS window role (needed for window managers like yabai)
       role-patch = pkgs.fetchurl {

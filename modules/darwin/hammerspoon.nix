@@ -37,7 +37,7 @@ in {
       yabaiCmd = lib.optionalString config.modules.service.yabai.enable ''
         yabaicmd="${config.modules.service.yabai.package}/bin/yabai",
       '';
-      emacsClient = lib.optionalString config.modules.macos.emacs.enable ''
+      emacsClient = lib.optionalString config.modules.editor.emacs.enable ''
         emacsClient = "${config.modules.editor.emacs.pkg}/bin/emacsclient",
       '';
       defaultBrowser = ''

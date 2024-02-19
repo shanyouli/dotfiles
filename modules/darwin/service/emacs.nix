@@ -8,13 +8,13 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.service.emacs;
+  cshemacs = config.modules.editor.emacs;
   emacsPkg = config.modules.editor.emacs.pkg;
 in {
   options.modules.service.emacs = {
-    enable = mkBoolOpt config.modules.editor.emacs.service.enable;
     keepAlive = mkEnableOption "Whethor to keep Alive";
   };
-  config = mkIf (cfg.enable && cfm.macos.emacs.enable) {
+  config = mkIf (cshemacs.service.enable && cshemacs.enable) {
     launchd.user.agents.emacs = {
       serviceConfig.RunAtLoad = true;
       serviceConfig.KeepAlive = cfg.keepAlive;
