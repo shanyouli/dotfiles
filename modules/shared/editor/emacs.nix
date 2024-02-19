@@ -88,6 +88,12 @@ in {
           epkgs.vterm
           epkgs.pdf-tools
           epkgs.saveplace-pdf-view
+
+          epkgs.puni
+          epkgs.ef-themes
+          epkgs.rainbow-mode
+          epkgs.noflet
+
           (epkgs.treesit-grammars.with-grammars
             (grammars:
               with grammars; [
