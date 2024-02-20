@@ -22,4 +22,8 @@
   # Show Punycode.
   # This helps to protect against possible character spoofing.
   "network.IDN_show_punycode" = true;
+
+  # 本 accounts-static.cdn.mozilla.net,accounts.firefox.com,addons.cdn.mozilla.net,addons.mozilla.org,api.accounts.firefox.com,content.cdn.mozilla.net,discovery.addons.mozilla.org,install.mozilla.org,oauth.accounts.firefox.com,profile.accounts.firefox.com,support.mozilla.org,sync.services.mozilla.com,autoatendimento.bb.com.br,ibpf.sicredi.com.br,ibpj.sicredi.com.br,internetbanking.caixa.gov.br,www.ib12.bradesco.com.br,www2.bancobrasil.com.br
+  "extensions.webextensions.restrictedDomains" = "";
+  "privacy.resistFingerprinting.block_mozAddonManager" = true;
 }
