@@ -83,6 +83,11 @@ fetch.github = "Borber/seam"
 # passthru = { cargoHash = "sha256-SFwNYyZ/qzWlIwV2c8Tot+RyQtTNb559jK4GCGtWjNk=" }
 cargo_locks = ["Cargo.lock"]
 
+[fav]
+src.github = "kingwingfly/fav"
+fetch.github = "kingwingfly/fav"
+cargo_locks = [ "Cargo.lock" ]
+
 [bbdown]
 src.git = "https://github.com/nilaoda/BBDown"
 fetch.github = "nilaoda/BBDown"

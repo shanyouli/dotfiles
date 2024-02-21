@@ -265,6 +265,7 @@
         unstable = mkPkg {
           system = prev.system;
           cfg = {allowUnfree = true;};
+          extraOverlays = [this.overlay];
           nixpkgs = inputs.nixpkgs;
         };
       };

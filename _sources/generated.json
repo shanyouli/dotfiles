@@ -302,6 +302,31 @@
         },
         "version": "917f2f2694019d534098f5e2e365b5f6e5ddbd37"
     },
+    "fav": {
+        "cargoLocks": {
+            "Cargo.lock": [
+                "./fav-v0.2.1/Cargo.lock",
+                {}
+            ]
+        },
+        "date": null,
+        "extract": null,
+        "name": "fav",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "kingwingfly",
+            "repo": "fav",
+            "rev": "v0.2.1",
+            "sha256": "sha256-R6vJa9dCRz9KqMNbW/DoJGVTUlqpE6PaCROQQw8vK9I=",
+            "type": "github"
+        },
+        "version": "v0.2.1"
+    },
     "firefox-utils": {
         "cargoLocks": null,
         "date": "2023-02-24",

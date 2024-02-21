@@ -168,6 +168,23 @@
     };
     date = "2018-08-26";
   };
+  fav = {
+    pname = "fav";
+    version = "v0.2.1";
+    src = fetchFromGitHub {
+      owner = "kingwingfly";
+      repo = "fav";
+      rev = "v0.2.1";
+      fetchSubmodules = false;
+      sha256 = "sha256-R6vJa9dCRz9KqMNbW/DoJGVTUlqpE6PaCROQQw8vK9I=";
+    };
+    cargoLock."Cargo.lock" = {
+      lockFile = ./fav-v0.2.1/Cargo.lock;
+      outputHashes = {
+        
+      };
+    };
+  };
   firefox-utils = {
     pname = "firefox-utils";
     version = "b013243f1916576166a02d816651c2cc6416f63e";
