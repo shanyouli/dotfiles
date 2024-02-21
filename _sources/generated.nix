@@ -360,6 +360,17 @@
       sha256 = "sha256-uvajxSelk1Wfd5is5kmT2fzDShlufBgC0PDCeabEOSE=";
     };
   };
+  qbittorrent = {
+    pname = "qbittorrent";
+    version = "release-4.6.3.10";
+    src = fetchFromGitHub {
+      owner = "c0re100";
+      repo = "qBittorrent-Enhanced-Edition";
+      rev = "release-4.6.3.10";
+      fetchSubmodules = false;
+      sha256 = "sha256-O25sJmpyOwhtjrCbN4srKjcNDxEPHwX08MY+AM8QaCU=";
+    };
+  };
   qutebrowser = {
     pname = "qutebrowser";
     version = "3.1.0";
@@ -458,6 +469,17 @@
     src = fetchurl {
       url = "https://github.com/odomu/aliyunpan/releases/download/v3.24.12922/alixby-3.24.12922-mac-arm64.dmg";
       sha256 = "sha256-TZt3ufH5L7l3WE0/ZNDt82pYKS3GnV436m0i9kcgnxc=";
+    };
+  };
+  yabai = {
+    pname = "yabai";
+    version = "v6.0.13";
+    src = fetchFromGitHub {
+      owner = "koekeishiya";
+      repo = "yabai";
+      rev = "v6.0.13";
+      fetchSubmodules = false;
+      sha256 = "sha256-jt1PwMkhWBWAFYXJ1HxVLwJY9OmNDzlohB5krIsvWfg=";
     };
   };
   yabai-zsh-completions = {

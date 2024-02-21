@@ -8,24 +8,15 @@
 with lib;
 with lib.my; let
   cfg = config.modules.service.yabai;
+  srcs = (import "${config.dotfiles.srcDir}/generated.nix") {
+    inherit (pkgs) fetchurl fetchFromGitHub fetchgit dockerTools;
+  };
   buildSymlinks = pkgs.runCommandLocal "build-symlinks" {} ''
     mkdir -p $out/bin
     ln -s /usr/bin/{xcrun,codesign,xxd} $out/bin
   '';
   yabai = pkgs.yabai.overrideAttrs (prev: rec {
-    # src = pkgs.fetchFromGitHub {
-    #   owner = "FelixKratz";
-    #   repo = "yabai";
-    #   rev = "df5b037108c4a70dc5e854bb60ccbff9701da4f5";
-    #   hash = "sha256-xMOwte/nuJdrwMWNLxfHikxA3btuyDyle6aLm5TD8ac=";
-    # };
-    version = "6.0.13";
-    src = pkgs.fetchFromGitHub {
-      owner = "koekeishiya";
-      repo = "yabai";
-      rev = "v${version}";
-      hash = "sha256-jt1PwMkhWBWAFYXJ1HxVLwJY9OmNDzlohB5krIsvWfg=";
-    };
+    inherit (srcs.yabai) version src;
     nativeBuildInputs = (prev.nativeBuildInputes or []) ++ [buildSymlinks];
     dontBuild = false;
     installPhase = ''

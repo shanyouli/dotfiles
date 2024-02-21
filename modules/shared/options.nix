@@ -43,6 +43,7 @@ in {
       binDir = mkOpt path "${config.dotfiles.dir}/bin";
       configDir = mkOpt path "${config.dotfiles.dir}/config";
       modulesDir = mkOpt path "${config.dotfiles.dir}/modules";
+      srcDir = mkOpt path "${config.dotfiles.dir}/_sources";
     };
     modules.opt = {
       enGui = mkBoolOpt false; # Whether to use GUI mode

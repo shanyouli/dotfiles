@@ -9,6 +9,9 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.tool.qbittorrent;
+  srcs = (import "${config.dotfiles.srcDir}/generated.nix") {
+    inherit (pkgs) fetchurl fetchFromGitHub fetchgit dockerTools;
+  };
 in {
   options.modules.tool.qbittorrent = {
     enable = mkEnableOption "Whether to use qbittorrent";
@@ -25,13 +28,7 @@ in {
         else pkgs.qbittorrent-nox
       )
       .overrideAttrs (old: rec {
-        src = pkgs.fetchFromGitHub {
-          owner = "c0re100";
-          repo = "qBittorrent-Enhanced-Edition";
-          rev = "release-4.6.3.10";
-          hash = "sha256-O25sJmpyOwhtjrCbN4srKjcNDxEPHwX08MY+AM8QaCU=";
-          # hash = "sha256-HP0TtNLU5hKnkHgXoxqRjIHWVyq8A8Wx6b1tlyKDA+I=";
-        };
+        inherit (srcs.qbittorrent) src;
         cmakeFlags = (old.cmakeFlags or []) ++ ["-DCMAKE_CXX_FLAGS=-Wno-c++20-extensions"];
         postInstall =
           (old.postInstall or "")

@@ -267,3 +267,13 @@ src.github = "darkreader/darkreader"
 src.from_pattern = "v(.*)"
 src.to_pattern = "\\1"
 fetch.url = "https://github.com/darkreader/darkreader/releases/download/v$ver/darkreader-firefox.xpi"
+
+
+### packages in modules
+[qbittorrent]
+src.github = "c0re100/qBittorrent-Enhanced-Edition"
+fetch.github = "c0re100/qBittorrent-Enhanced-Edition"
+
+[yabai]
+src.github = "koekeishiya/yabai"
+fetch.github = "koekeishiya/yabai"
