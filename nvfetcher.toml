@@ -277,3 +277,23 @@ fetch.github = "c0re100/qBittorrent-Enhanced-Edition"
 [yabai]
 src.github = "koekeishiya/yabai"
 fetch.github = "koekeishiya/yabai"
+
+["emacs29.role-patch"]
+src.git = "https://github.com/d12frosted/homebrew-emacs-plus"
+fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/$ver/patches/emacs-28/fix-window-role.patch"
+
+["emacs29.poll"]
+src.git = "https://github.com/d12frosted/homebrew-emacs-plus"
+fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/$ver/patches/emacs-29/poll.patch"
+
+["emacs29.round-undecorated-frame"]
+src.git = "https://github.com/d12frosted/homebrew-emacs-plus"
+fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/$ver/patches/emacs-29/round-undecorated-frame.patch"
+
+["emacs29.system-appearance"]
+src.git = "https://github.com/d12frosted/homebrew-emacs-plus"
+fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/$ver/patches/emacs-28/system-appearance.patch"
+
+["emacs29.no-frame-refocus-cocoa"]
+src.git = "https://github.com/d12frosted/homebrew-emacs-plus"
+fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/$ver/patches/emacs-28/no-frame-refocus-cocoa.patch"

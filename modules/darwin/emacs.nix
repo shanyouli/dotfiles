@@ -8,14 +8,12 @@ with lib;
 with lib.my; let
   emacsPkg = config.modules.editor.emacs.pkg;
   cshemacs = config.modules.editor.emacs;
+  srcs = (import "${config.dotfiles.srcDir}/generated.nix") {
+    inherit (pkgs) fetchurl fetchFromGitHub fetchgit dockerTools;
+  };
 in {
   config = mkIf cshemacs.enable {
     modules.editor.emacs.package = let
-      # Fix OS window role (needed for window managers like yabai)
-      role-patch = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/cmacrae/emacs/b2d582f/patches/fix-window-role.patch";
-        sha256 = "0c41rgpi19vr9ai740g09lka3nkjk48ppqyqdnncjrkfgvm2710z";
-      };
       basePackage = pkgs.unstable.emacs.override {
         # 使用 emacs-unstable 取代 emacs-git
         # webkitgtk-2.40.2+abi=4.0 is blorken,
@@ -32,24 +30,12 @@ in {
         patches =
           (old.patches or [])
           ++ [
-            role-patch
-            # Use poll instead of select to get file descriptors
-            (pkgs.fetchpatch {
-              url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/23c993b/patches/emacs-29/poll.patch";
-              sha256 = "sha256-jN9MlD8/ZrnLuP2/HUXXEVVd6A+aRZNYFdZF8ReJGfY=";
-            })
-            # Enable rounded window with no decoration
-            (pkgs.fetchpatch {
-              url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/c281504/patches/emacs-29/round-undecorated-frame.patch";
-              sha256 = "sha256-uYIxNTyfbprx5mCqMNFVrBcLeo+8e21qmBE3lpcnd+4=";
-              # url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/e98ed09/patches/emacs-30/round-undecorated-frame.patch";
-              # sha256 = "sha256-uYIxNTyfbprx5mCqMNFVrBcLeo+8e21qmBE3lpcnd+4=";
-            })
-            # Make Emacs aware of OS-level light/dark mode
-            (pkgs.fetchpatch {
-              url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/f3c16d6/patches/emacs-28/system-appearance.patch";
-              sha256 = "sha256-oM6fXdXCWVcBnNrzXmF0ZMdp8j0pzkLE66WteeCutv8=";
-            })
+            # Fix OS window role (needed for window managers like yabai)
+            srcs."emacs29.role-patch".src
+            srcs."emacs29.no-frame-refocus-cocoa".src
+            srcs."emacs29.system-appearance".src
+            srcs."emacs29.round-undecorated-frame".src
+            srcs."emacs29.poll".src
           ];
         buildInputs = (old.buildInputs or []) ++ [pkgs.darwin.apple_sdk.frameworks.WebKit];
         configureFlags = (old.configureFlags or []) ++ ["--with-xwidgets"];

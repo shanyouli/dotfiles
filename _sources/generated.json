@@ -287,6 +287,81 @@
         },
         "version": "e8f8d6176fff1b42e7e68a552fcfd2923f9c27a2"
     },
+    "emacs29.no-frame-refocus-cocoa": {
+        "cargoLocks": null,
+        "date": "2024-02-21",
+        "extract": null,
+        "name": "emacs29.no-frame-refocus-cocoa",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-+1d33IkKoHNJ8UOuZcK89D7a1v6/1WSwGiI1xaFfyr0=",
+            "type": "url",
+            "url": "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-28/no-frame-refocus-cocoa.patch"
+        },
+        "version": "d5dd64d3ad95b5e99c282f8cb7c596ed69da108b"
+    },
+    "emacs29.poll": {
+        "cargoLocks": null,
+        "date": "2024-02-21",
+        "extract": null,
+        "name": "emacs29.poll",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-BS6srFt72GtGb5o9GL/5NX8rl1F/RjoJ5MUSVb2xRkg=",
+            "type": "url",
+            "url": "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-29/poll.patch"
+        },
+        "version": "d5dd64d3ad95b5e99c282f8cb7c596ed69da108b"
+    },
+    "emacs29.role-patch": {
+        "cargoLocks": null,
+        "date": "2024-02-21",
+        "extract": null,
+        "name": "emacs29.role-patch",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-H4Qj6n5uZsmsbdjjexGZctqhJk3gAXKiSnmnEO/LgTA=",
+            "type": "url",
+            "url": "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-28/fix-window-role.patch"
+        },
+        "version": "d5dd64d3ad95b5e99c282f8cb7c596ed69da108b"
+    },
+    "emacs29.round-undecorated-frame": {
+        "cargoLocks": null,
+        "date": "2024-02-21",
+        "extract": null,
+        "name": "emacs29.round-undecorated-frame",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-dFH4D1WYQOVOagUuVdEQB3irxV+Y8dDAOKJOJXc/KHQ=",
+            "type": "url",
+            "url": "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-29/round-undecorated-frame.patch"
+        },
+        "version": "d5dd64d3ad95b5e99c282f8cb7c596ed69da108b"
+    },
+    "emacs29.system-appearance": {
+        "cargoLocks": null,
+        "date": "2024-02-21",
+        "extract": null,
+        "name": "emacs29.system-appearance",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-1u4VmDmzi2r1Ode5vf8jEmPkUcH9Qu7A0SUxjJ24zZI=",
+            "type": "url",
+            "url": "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-28/system-appearance.patch"
+        },
+        "version": "d5dd64d3ad95b5e99c282f8cb7c596ed69da108b"
+    },
     "emacsclient": {
         "cargoLocks": null,
         "date": "2018-08-26",

@@ -159,6 +159,51 @@
     vendorHash = "sha256-lUBSQq4ac/Vc76gmSaKFkfCrO/BmhQU+3UyA+URb8l8=";
     date = "2023-09-27";
   };
+  "emacs29.no-frame-refocus-cocoa" = {
+    pname = "emacs29.no-frame-refocus-cocoa";
+    version = "d5dd64d3ad95b5e99c282f8cb7c596ed69da108b";
+    src = fetchurl {
+      url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-28/no-frame-refocus-cocoa.patch";
+      sha256 = "sha256-+1d33IkKoHNJ8UOuZcK89D7a1v6/1WSwGiI1xaFfyr0=";
+    };
+    date = "2024-02-21";
+  };
+  "emacs29.poll" = {
+    pname = "emacs29.poll";
+    version = "d5dd64d3ad95b5e99c282f8cb7c596ed69da108b";
+    src = fetchurl {
+      url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-29/poll.patch";
+      sha256 = "sha256-BS6srFt72GtGb5o9GL/5NX8rl1F/RjoJ5MUSVb2xRkg=";
+    };
+    date = "2024-02-21";
+  };
+  "emacs29.role-patch" = {
+    pname = "emacs29.role-patch";
+    version = "d5dd64d3ad95b5e99c282f8cb7c596ed69da108b";
+    src = fetchurl {
+      url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-28/fix-window-role.patch";
+      sha256 = "sha256-H4Qj6n5uZsmsbdjjexGZctqhJk3gAXKiSnmnEO/LgTA=";
+    };
+    date = "2024-02-21";
+  };
+  "emacs29.round-undecorated-frame" = {
+    pname = "emacs29.round-undecorated-frame";
+    version = "d5dd64d3ad95b5e99c282f8cb7c596ed69da108b";
+    src = fetchurl {
+      url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-29/round-undecorated-frame.patch";
+      sha256 = "sha256-dFH4D1WYQOVOagUuVdEQB3irxV+Y8dDAOKJOJXc/KHQ=";
+    };
+    date = "2024-02-21";
+  };
+  "emacs29.system-appearance" = {
+    pname = "emacs29.system-appearance";
+    version = "d5dd64d3ad95b5e99c282f8cb7c596ed69da108b";
+    src = fetchurl {
+      url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-28/system-appearance.patch";
+      sha256 = "sha256-1u4VmDmzi2r1Ode5vf8jEmPkUcH9Qu7A0SUxjJ24zZI=";
+    };
+    date = "2024-02-21";
+  };
   emacsclient = {
     pname = "emacsclient";
     version = "917f2f2694019d534098f5e2e365b5f6e5ddbd37";
