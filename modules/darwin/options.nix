@@ -89,6 +89,8 @@ in {
         pkgs.calibre-app
 
         pkgs.lporg
+
+        pkgs.switchaudio-osx
       ];
 
       modules.xdg.enable = true;

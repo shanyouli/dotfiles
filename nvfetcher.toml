@@ -125,6 +125,11 @@ src.github = "blacktop/lporg"
 fetch.github = "blacktop/lporg"
 passthru = { vendorHash = "sha256-GQaIfUtM3iDQ9jmrSMqYvcPysigdu7w10xGDIYv4OY8=" }
 
+[switchaudio-osx]
+src.github_tag = "deweller/switchaudio-osx"
+fetch.github = "deweller/switchaudio-osx"
+
+
 ### DarwinAPP
 
 [chatgpt]

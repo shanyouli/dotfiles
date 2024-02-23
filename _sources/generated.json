@@ -843,6 +843,26 @@
         },
         "version": "3.4.1"
     },
+    "switchaudio-osx": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "switchaudio-osx",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "deweller",
+            "repo": "switchaudio-osx",
+            "rev": "1.2.2",
+            "sha256": "sha256-AZJn5kHK/al94ONfIHcG+W0jyMfgdJkIngN+PVj+I44=",
+            "type": "github"
+        },
+        "version": "1.2.2"
+    },
     "ublock-origin": {
         "cargoLocks": null,
         "date": null,

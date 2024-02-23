@@ -476,6 +476,17 @@
       sha256 = "sha256-VobLCxsmE5kGIlDDa3v5xIHkw2x2YV14fgHHcDb+bLo=";
     };
   };
+  switchaudio-osx = {
+    pname = "switchaudio-osx";
+    version = "1.2.2";
+    src = fetchFromGitHub {
+      owner = "deweller";
+      repo = "switchaudio-osx";
+      rev = "1.2.2";
+      fetchSubmodules = false;
+      sha256 = "sha256-AZJn5kHK/al94ONfIHcG+W0jyMfgdJkIngN+PVj+I44=";
+    };
+  };
   ublock-origin = {
     pname = "ublock-origin";
     version = "1.55.1b28";
