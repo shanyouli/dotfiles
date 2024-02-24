@@ -380,7 +380,7 @@
     "fav": {
         "cargoLocks": {
             "Cargo.lock": [
-                "./fav-v0.2.1/Cargo.lock",
+                "./fav-v0.2.4/Cargo.lock",
                 {}
             ]
         },
@@ -396,11 +396,11 @@
             "name": null,
             "owner": "kingwingfly",
             "repo": "fav",
-            "rev": "v0.2.1",
-            "sha256": "sha256-R6vJa9dCRz9KqMNbW/DoJGVTUlqpE6PaCROQQw8vK9I=",
+            "rev": "v0.2.4",
+            "sha256": "sha256-YWQnMQSOXOFSssC6HFrStSlhnkLpfiXyNXTwq4J7cjk=",
             "type": "github"
         },
-        "version": "v0.2.1"
+        "version": "v0.2.4"
     },
     "firefox-utils": {
         "cargoLocks": null,

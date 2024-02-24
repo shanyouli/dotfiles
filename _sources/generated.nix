@@ -215,16 +215,16 @@
   };
   fav = {
     pname = "fav";
-    version = "v0.2.1";
+    version = "v0.2.4";
     src = fetchFromGitHub {
       owner = "kingwingfly";
       repo = "fav";
-      rev = "v0.2.1";
+      rev = "v0.2.4";
       fetchSubmodules = false;
-      sha256 = "sha256-R6vJa9dCRz9KqMNbW/DoJGVTUlqpE6PaCROQQw8vK9I=";
+      sha256 = "sha256-YWQnMQSOXOFSssC6HFrStSlhnkLpfiXyNXTwq4J7cjk=";
     };
     cargoLock."Cargo.lock" = {
-      lockFile = ./fav-v0.2.1/Cargo.lock;
+      lockFile = ./fav-v0.2.4/Cargo.lock;
       outputHashes = {
         
       };
