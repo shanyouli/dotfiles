@@ -10,6 +10,7 @@
     pathsToLink = ["/Applications"];
     # backupFileExtension = "backup";
     etc = {darwin.source = "${inputs.darwin}";};
+    systemPackages = with pkgs; [findutils];
     # Use a custom configuration.nix location.
     # $ darwin-rebuild switch -I darwin-config=$HOME/.config/nixpkgs/darwin/configuration.nix
 
@@ -47,9 +48,9 @@
   system.stateVersion = 4;
 
   documentation = {
-    enable = false;
-    doc.enable = false;
-    info.enable = false;
-    man.enable = false;
+    enable = true;
+    doc.enable = true;
+    info.enable = true;
+    man.enable = true;
   };
 }

@@ -14,7 +14,9 @@ with lib.my; let
 in {
   config = mkIf cshemacs.enable {
     modules.editor.emacs.package = let
-      basePackage = pkgs.unstable.emacs.override {
+      basePackage = pkgs.emacs29.override {
+        # pkgs.unstable.emacs-unstable.override {
+        # pkgs.unstable.emacs.override {
         # 使用 emacs-unstable 取代 emacs-git
         # webkitgtk-2.40.2+abi=4.0 is blorken,
         # @see https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/libraries/webkitgtk/default.nix
@@ -38,7 +40,7 @@ in {
             srcs."emacs29.poll".src
           ];
         buildInputs = (old.buildInputs or []) ++ [pkgs.darwin.apple_sdk.frameworks.WebKit];
-        configureFlags = (old.configureFlags or []) ++ ["--with-xwidgets"];
+        configureFlags = (old.configureFlags or []) ++ ["--with-xwidgets" "--enable-check-lisp-object-type"];
         CFLAGS = "-DMAC_OS_X_VERSION_MAX_ALLOWED=110203 -g -O2";
         # src = inputs.emacs-src;
         # version = inputs.emacs-src.shortRev;

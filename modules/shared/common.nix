@@ -15,7 +15,6 @@ with lib.my; {
     systemPackages = with pkgs; [
       # standard toolset
       coreutils-full
-      # curl
       wget
       git
       jq
