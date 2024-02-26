@@ -546,14 +546,13 @@ def update(
                     fg=Colors.ERROR.value,
                 )
                 raise typer.Abort()
-
     if not flakes:
         typer.secho('updating all flake inputs')
         run_cmd(['nix', 'flake', 'update'] + flags)
     else:
         inputs = [f'--update-input {input}' for input in flakes]
         typer.secho(f"updating {','.join(flakes)}")
-        run_cmd(['nix', 'flake', 'lock' 'update'] + inputs + flags)
+        run_cmd(['nix', 'flake', 'lock'] + inputs + flags, shell=True)
 
 
 @app.command(help='pull changes from remote repo')
@@ -707,7 +706,6 @@ def init(
     nixgc.run()
     if not dry_run:
         bootstrap(host=host, darwin=True, remote=False)
-
 
 if __name__ == '__main__':
     app()
