@@ -25,6 +25,10 @@ src.pypi = "websocket_bridge_python"
 src.github = "encode/httpx"
 fetch.github = "encode/httpx"
 
+[dict2xml]
+src.github = "delfick/python-dict2xml"
+fetch.github = "delfick/python-dict2xml"
+
 ### common
 [maple-sc-nf]
 src.github = "subframe7536/Maple-font"
@@ -60,13 +64,13 @@ fetch.url = "https://github.com/microsoft/vscode-codicons/raw/$ver/dist/codicon.
 [clash2singbox]
 src.github = "xmdhs/clash2singbox"
 fetch.github = "xmdhs/clash2singbox"
-passthru = { vendorHash = "sha256-0HpjgvxhhZ7pb5Z+K78hxdaddb/H7Sc3l1xEz4FDKaA=" }
+passthru = { vendorHash = "sha256-+trt7BLgy1d1ENrqf/J0mf8ECnKfYl3P/KibQQxNRN4=" }
 
 
 [mihomo]
 src.github = "MetaCubeX/mihomo"
 fetch.github = "MetaCubeX/mihomo"
-passthru = { vendorHash = "sha256-b7q0e3HHolVhwNJF0kwvwuVy8ndJLc0ITMl+0/YtSjA=" }
+passthru = { vendorHash = "sha256-tvPR5kAta4MlMTwjfxwVOacRr2nVpfalbN08mfxml64=" }
 
 [musicn]
 src.github = "zonemeen/musicn"
@@ -95,7 +99,7 @@ fetch.github = "nilaoda/BBDown"
 [alist]
 src.github = "alist-org/alist"
 fetch.github = "alist-org/alist"
-passthru = { vendorHash = "sha256-5APKL65KKvpOJ6KE5ccA4S/AAy1fhdovc1d+L0rq0Ks=" }
+passthru = { vendorHash = "sha256-AIgT1USS1uWMTWYYc7uUORn5pVsbGynGV3KjiGmvU1Y=" }
 
 [alist-web]
 src.github = "alist-org/alist-web"
@@ -142,7 +146,7 @@ fetch.url = "https://github.com/lencx/ChatGPT/releases/download/v$ver/ChatGPT_$v
 src.github="ChatGPTNextWeb/ChatGPT-Next-Web"
 src.from_pattern = "v(.*)"
 src.to_pattern = "\\1"
-fetch.url = "https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web/releases/download/v$ver/NextChat_$ver_x64.dmg"
+fetch.url = "https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web/releases/download/v$ver/NextChat_$ver_universal.dmg"
 
 [clash-nyanpasu]
 src.github="keiko233/clash-nyanpasu"
@@ -234,13 +238,14 @@ fetch.url = "https://downloads.vivaldi.com/stable/Vivaldi.$ver.universal.dmg"
 ["chrome.arm64"]
 src.webpage = "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json"
 src.regex = "\"channel\":\"Stable\",\"version\":\"([0-9.]+)\""
-fetch.url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$ver/mac-arm64/chrome-mac-arm64.zip"
-# "https://registry.npmmirror.com/-/binary/chrome-for-testing/121.0.6167.85/mac-x64/chrome-mac-x64.zip"
-
+fetch.url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/$ver/mac-arm64/chrome-mac-arm64.zip"
+# fetch.url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$ver/mac-arm64/chrome-mac-arm64.zip"
+# fetch.url = "https://storage.googleapis.com/chrome-for-testing-public/$ver/mac-arm64/chrome-mac-arm64.zip"
 ["chrome.x64"]
 src.webpage = "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json"
 src.regex = "\"channel\":\"Stable\",\"version\":\"([0-9.]+)\""
-fetch.url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$ver/mac-x64/chrome-mac-x64.zip"
+# fetch.url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$ver/mac-x64/chrome-mac-x64.zip"
+fetch.url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/$ver/mac-x64/chrome-mac-x64.zip"
 
 [ryujinx]
 src.github = "Ryujinx/release-channel-master"
@@ -257,6 +262,12 @@ src.github = "KRTirtho/spotube"
 src.from_pattern = "v(.*)"
 src.to_pattern = "\\1"
 fetch.url = "https://github.com/KRTirtho/spotube/releases/download/v$ver/Spotube-macos-universal.dmg"
+
+[downkyi]
+src.github = "yaobiao131/downkyicore"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/yaobiao131/downkyicore/releases/download/v$ver/DownKyi-$ver-osx-arm64.dmg"
 
 ### firefox-addons
 [ublock-origin]

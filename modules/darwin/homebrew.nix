@@ -143,6 +143,7 @@ in {
         # "visual-studio-code" # other editors nix 管理
         (mkIf config.modules.shell.git.enGui "github") # github客户端
         (mkIf config.modules.browser.chrome.useBrew "google chrome")
+        "command-x" # Cut files
       ];
       homebrew.brews = [
         # "macos-trash" # trash-cli

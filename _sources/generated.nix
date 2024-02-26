@@ -11,22 +11,22 @@
   };
   alist = {
     pname = "alist";
-    version = "v3.30.0";
+    version = "v3.31.0";
     src = fetchFromGitHub {
       owner = "alist-org";
       repo = "alist";
-      rev = "v3.30.0";
+      rev = "v3.31.0";
       fetchSubmodules = false;
-      sha256 = "sha256-MW9QtH7nR1Zaepi1snwgbzPK7XjFDKlFoKG/KYjH9dM=";
+      sha256 = "sha256-Xg1pxMLY4M/5wA44UIms1PW1TYaO0+WB8YBc65MFSYA=";
     };
-    vendorHash = "sha256-5APKL65KKvpOJ6KE5ccA4S/AAy1fhdovc1d+L0rq0Ks=";
+    vendorHash = "sha256-AIgT1USS1uWMTWYYc7uUORn5pVsbGynGV3KjiGmvU1Y=";
   };
   alist-web = {
     pname = "alist-web";
-    version = "3.30.0";
+    version = "3.31.0";
     src = fetchurl {
-      url = "https://github.com/alist-org/alist-web/releases/download/3.30.0/dist.tar.gz";
-      sha256 = "sha256-BOFg78bnFpEDzUJKOd4PFyDnaarMSdwKL8w/H8xtD+4=";
+      url = "https://github.com/alist-org/alist-web/releases/download/3.31.0/dist.tar.gz";
+      sha256 = "sha256-hZUlDwIZGn46TEKH2rMJpgbO/brboQEGnOEEmZbz2Mc=";
     };
   };
   alive-progress = {
@@ -51,18 +51,18 @@
   };
   calibre = {
     pname = "calibre";
-    version = "7.4.0";
+    version = "7.5.1";
     src = fetchurl {
-      url = "https://download.calibre-ebook.com/7.4.0/calibre-7.4.0.dmg";
-      sha256 = "sha256-ON3NG6F7dSaie4t31ALd2V2DX34TZu6VqMMXJi4cwic=";
+      url = "https://download.calibre-ebook.com/7.5.1/calibre-7.5.1.dmg";
+      sha256 = "sha256-hI5DImjZ7fLwvPeaEKG7p+s/Y4RG5Fdu0mEBVa479qg=";
     };
   };
   calibrepath = {
     pname = "calibrepath";
-    version = "7.4.0";
+    version = "7.5.1";
     src = fetchurl {
-      url = "https://github.com/Cirn09/calibre-do-not-translate-my-path/releases/download/v7.4.0/mac-patch-backend+update-v7.4.0.zip";
-      sha256 = "sha256-VkOHhDtiA2jANSSDV5nROdIIet56oz0gqgnpy87g+5k=";
+      url = "https://github.com/Cirn09/calibre-do-not-translate-my-path/releases/download/v7.5.1/mac-patch-backend+update-v7.5.1.zip";
+      sha256 = "sha256-p0ALGlTJdV2hUhOeJZTqvWRfpx+u56O0JTbWv2AthOI=";
     };
   };
   chatgpt = {
@@ -75,26 +75,26 @@
   };
   "chrome.arm64" = {
     pname = "chrome.arm64";
-    version = "121.0.6167.85";
+    version = "122.0.6261.69";
     src = fetchurl {
-      url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/121.0.6167.85/mac-arm64/chrome-mac-arm64.zip";
-      sha256 = "sha256-ZtkZoJxLVBf3Mu1XQtNAHNM9LgYAs2INKOZIZ1/t1Wc=";
+      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.69/mac-arm64/chrome-mac-arm64.zip";
+      sha256 = "sha256-rhaWcEna0tV8FuNPEQd6p2boZwRW+QrPyzCkN7CeKUM=";
     };
   };
   "chrome.x64" = {
     pname = "chrome.x64";
-    version = "121.0.6167.85";
+    version = "122.0.6261.69";
     src = fetchurl {
-      url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/121.0.6167.85/mac-x64/chrome-mac-x64.zip";
-      sha256 = "sha256-4VAxmg+14TrbxwN3JUXHyfogsEdLVmZ/mfeWf17v4Lg=";
+      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.69/mac-x64/chrome-mac-x64.zip";
+      sha256 = "sha256-awKJi+sAsKstC6gx9R4MLaBt+bfvNPq6XHddhiFEf84=";
     };
   };
   clash-nyanpasu = {
     pname = "clash-nyanpasu";
-    version = "1.4.4";
+    version = "1.4.5";
     src = fetchurl {
-      url = "https://github.com/keiko233/clash-nyanpasu/releases/download/v1.4.4/Clash.Nyanpasu_1.4.4_aarch64.dmg";
-      sha256 = "sha256-hE9DKwv7dVK4zYpRvI5i5pTLWIET/bQ5FKq12uce/00=";
+      url = "https://github.com/keiko233/clash-nyanpasu/releases/download/v1.4.5/Clash.Nyanpasu_1.4.5_aarch64.dmg";
+      sha256 = "sha256-shBqYYBPSgfeFK+QQOEBCQLcqtEplTHxnbpPk7djJBM=";
     };
   };
   clash-verge = {
@@ -107,31 +107,31 @@
   };
   clash2singbox = {
     pname = "clash2singbox";
-    version = "v0.0.2";
+    version = "v0.1.4";
     src = fetchFromGitHub {
       owner = "xmdhs";
       repo = "clash2singbox";
-      rev = "v0.0.2";
+      rev = "v0.1.4";
       fetchSubmodules = false;
-      sha256 = "sha256-XnjsRi5G+i6Bfh3Pq7uQYZmN2IOIrVjz74D4mmXq6zY=";
+      sha256 = "sha256-qEv5lmuu4UWaxmCQ0sb21TMJVhYaW7VscD6O+dOWjgE=";
     };
-    vendorHash = "sha256-0HpjgvxhhZ7pb5Z+K78hxdaddb/H7Sc3l1xEz4FDKaA=";
+    vendorHash = "sha256-+trt7BLgy1d1ENrqf/J0mf8ECnKfYl3P/KibQQxNRN4=";
   };
   codicons = {
     pname = "codicons";
-    version = "6ceb091d5c40da3e5836e3d80b08d3f74efc4cbf";
+    version = "45fc3f549ceb679a2d36a8e073b066922a160aac";
     src = fetchurl {
-      url = "https://github.com/microsoft/vscode-codicons/raw/6ceb091d5c40da3e5836e3d80b08d3f74efc4cbf/dist/codicon.ttf";
-      sha256 = "sha256-YAjrSd1ospTk4UtrKS2rkYDcBjzXk0/mlpIaCVjilXs=";
+      url = "https://github.com/microsoft/vscode-codicons/raw/45fc3f549ceb679a2d36a8e073b066922a160aac/dist/codicon.ttf";
+      sha256 = "sha256-o/qnVVbuy1fV5LmLNYiK1WolCM6NM9tvgPmZBiHbsbA=";
     };
-    date = "2024-01-18";
+    date = "2024-02-22";
   };
   darkreader = {
     pname = "darkreader";
-    version = "4.9.76";
+    version = "4.9.77";
     src = fetchurl {
-      url = "https://github.com/darkreader/darkreader/releases/download/v4.9.76/darkreader-firefox.xpi";
-      sha256 = "sha256-lz9mQmPcxyHRDmK12bKmHIyW/iHtPI4WDC769XTrSC0=";
+      url = "https://github.com/darkreader/darkreader/releases/download/v4.9.77/darkreader-firefox.xpi";
+      sha256 = "sha256-cofy4w752lG/FBmknknVULGI5ZYbr1FaHmQUkcGICvc=";
     };
   };
   deeplx = {
@@ -145,6 +145,25 @@
       sha256 = "sha256-4/sfePuNS67tlyt0KGqLiYXfTu5uvHS2+XD8X5IrROo=";
     };
     vendorHash = "sha256-x4Z8fTrgXOH+9Ixj9NKr2G3BuQPm7/CqNGoIVbXmMOE=";
+  };
+  dict2xml = {
+    pname = "dict2xml";
+    version = "release-1.7.5";
+    src = fetchFromGitHub {
+      owner = "delfick";
+      repo = "python-dict2xml";
+      rev = "release-1.7.5";
+      fetchSubmodules = false;
+      sha256 = "sha256-GNvG1VFz/qkkTrKleMrq8n6kcIYtfhUlQMyCqH9uQzw=";
+    };
+  };
+  downkyi = {
+    pname = "downkyi";
+    version = "1.0.7";
+    src = fetchurl {
+      url = "https://github.com/yaobiao131/downkyicore/releases/download/v1.0.7/DownKyi-1.0.7-osx-arm64.dmg";
+      sha256 = "sha256-6VqAUQ+JzL5Xq7xmXqgq+UU2/If6nA+xgyzx4d5kaDM=";
+    };
   };
   dutis = {
     pname = "dutis";
@@ -250,24 +269,24 @@
   };
   go-musicfox = {
     pname = "go-musicfox";
-    version = "v4.3.0";
+    version = "v4.3.1";
     src = fetchFromGitHub {
       owner = "go-musicfox";
       repo = "go-musicfox";
-      rev = "v4.3.0";
+      rev = "v4.3.1";
       fetchSubmodules = false;
-      sha256 = "sha256-JDR3D3tILT0q9jqcZmbfQC3yn7cmaSL/GEpCguqCFXI=";
+      sha256 = "sha256-QZHuQAOnthSm7Kb82i3NUWTnKk+9OMHV5vzOU72inX0=";
     };
   };
   httpx = {
     pname = "httpx";
-    version = "0.26.0";
+    version = "0.27.0";
     src = fetchFromGitHub {
       owner = "encode";
       repo = "httpx";
-      rev = "0.26.0";
+      rev = "0.27.0";
       fetchSubmodules = false;
-      sha256 = "sha256-qMMx1CYu2/yH4NRvZFzJOflAPIbcvMYJqU4r+chuzl0=";
+      sha256 = "sha256-13EnSzrCkseK6s6Yz9OpLzqo/2PTFiB31m5fAIJLoZg=";
     };
   };
   iina = {
@@ -280,10 +299,10 @@
   };
   iinaplus = {
     pname = "iinaplus";
-    version = "0.7.18";
+    version = "0.7.22";
     src = fetchurl {
-      url = "https://github.com/xjbeta/iina-plus/releases/download/0.7.18/IINA+.0.7.18.dmg";
-      sha256 = "sha256-LFIQh4BOWOJqaO3m8IvDQ4yBhCATseFHKDeP3nKlUlc=";
+      url = "https://github.com/xjbeta/iina-plus/releases/download/0.7.22/IINA+.0.7.22.dmg";
+      sha256 = "sha256-s7CE9g7llVCOLwT4HiVOMdshmWc5sOpFoee6D91Gj5w=";
     };
   };
   lazyvim-star = {
@@ -344,15 +363,15 @@
   };
   mihomo = {
     pname = "mihomo";
-    version = "v1.18.0";
+    version = "v1.18.1";
     src = fetchFromGitHub {
       owner = "MetaCubeX";
       repo = "mihomo";
-      rev = "v1.18.0";
+      rev = "v1.18.1";
       fetchSubmodules = false;
-      sha256 = "sha256-lxiPrFPOPNppxdm2Ns4jaMHMRCYFlMz2h2rf7x0gv9c=";
+      sha256 = "sha256-ezOkDrpytZQdc+Txe4eUyuWY6oipn9jIrmu7aO8lNlQ=";
     };
-    vendorHash = "sha256-b7q0e3HHolVhwNJF0kwvwuVy8ndJLc0ITMl+0/YtSjA=";
+    vendorHash = "sha256-tvPR5kAta4MlMTwjfxwVOacRr2nVpfalbN08mfxml64=";
   };
   musicdl = {
     pname = "musicdl";
@@ -388,10 +407,10 @@
   };
   next-chat = {
     pname = "next-chat";
-    version = "2.10.1";
+    version = "2.11.2";
     src = fetchurl {
-      url = "https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web/releases/download/v2.10.1/NextChat_2.10.1_x64.dmg";
-      sha256 = "sha256-gzVnA+ODxfi1aT2A4Jnofkwa9xYmMYuCTyKng9/CBpw=";
+      url = "https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web/releases/download/v2.11.2/NextChat_2.11.2_universal.dmg";
+      sha256 = "sha256-PEOm2y7CbxP2kpVhujKIb1Y8pC0nV7pQKrSn3/fC874=";
     };
   };
   pngpaste = {
@@ -426,10 +445,10 @@
   };
   ryujinx = {
     pname = "ryujinx";
-    version = "1.1.1155";
+    version = "1.1.1214";
     src = fetchurl {
-      url = "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1155/test-ava-ryujinx-1.1.1155-macos_universal.app.tar.gz";
-      sha256 = "sha256-WDiYP0pE3d64SKj159DGntTdCxmjY1wENwUtusa7c2I=";
+      url = "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1214/test-ava-ryujinx-1.1.1214-macos_universal.app.tar.gz";
+      sha256 = "sha256-9cnJPrp4NKsBWQ3szqOCtqg4ZcZeBnzJ+eFi/ZHL3fw=";
     };
   };
   ryusak = {
@@ -489,10 +508,10 @@
   };
   ublock-origin = {
     pname = "ublock-origin";
-    version = "1.55.1b28";
+    version = "1.56.1b0";
     src = fetchurl {
-      url = "https://github.com/gorhill/uBlock/releases/download/1.55.1b28/uBlock0_1.55.1b28.firefox.signed.xpi";
-      sha256 = "sha256-QHVcVymrQ3MxfOJr+skZrWEM9A+CliiyL7xIQskwdGY=";
+      url = "https://github.com/gorhill/uBlock/releases/download/1.56.1b0/uBlock0_1.56.1b0.firefox.signed.xpi";
+      sha256 = "sha256-8qKK7pEXTkUHmgFXFCUzwzv6wSEvVTITpHkhODy4DT8=";
     };
   };
   upic = {
@@ -505,10 +524,10 @@
   };
   vivaldi = {
     pname = "vivaldi";
-    version = "6.5.3206.59";
+    version = "6.5.3206.63";
     src = fetchurl {
-      url = "https://downloads.vivaldi.com/stable/Vivaldi.6.5.3206.59.universal.dmg";
-      sha256 = "sha256-2ldrznH6krKcwgEHyI/wNGQsVoqxPmcC3a68XJTQiRk=";
+      url = "https://downloads.vivaldi.com/stable/Vivaldi.6.5.3206.63.universal.dmg";
+      sha256 = "sha256-e2Z5jYaEYK7Bev9Y2LgAk5p7NnPfsfM2FAUnmMyHmMM=";
     };
   };
   websocket-bridge-python = {
@@ -521,21 +540,21 @@
   };
   xbydriver = {
     pname = "xbydriver";
-    version = "3.24.12922";
+    version = "3.24.22618";
     src = fetchurl {
-      url = "https://github.com/odomu/aliyunpan/releases/download/v3.24.12922/alixby-3.24.12922-mac-arm64.dmg";
-      sha256 = "sha256-TZt3ufH5L7l3WE0/ZNDt82pYKS3GnV436m0i9kcgnxc=";
+      url = "https://github.com/odomu/aliyunpan/releases/download/v3.24.22618/alixby-3.24.22618-mac-arm64.dmg";
+      sha256 = "sha256-fHeszYLiKuwmNIVE5zIEZgl7pjPtIJR3Culbx9uDdVU=";
     };
   };
   yabai = {
     pname = "yabai";
-    version = "v6.0.13";
+    version = "v6.0.15";
     src = fetchFromGitHub {
       owner = "koekeishiya";
       repo = "yabai";
-      rev = "v6.0.13";
+      rev = "v6.0.15";
       fetchSubmodules = false;
-      sha256 = "sha256-jt1PwMkhWBWAFYXJ1HxVLwJY9OmNDzlohB5krIsvWfg=";
+      sha256 = "sha256-buX6FRIXdM5VmYpA80eESDMPf+xeMfJJj0ulyx2g94M=";
     };
   };
   yabai-zsh-completions = {
@@ -552,13 +571,13 @@
   };
   yutto = {
     pname = "yutto";
-    version = "v2.0.0-beta.34";
+    version = "v2.0.0-beta.36";
     src = fetchFromGitHub {
       owner = "yutto-dev";
       repo = "yutto";
-      rev = "v2.0.0-beta.34";
+      rev = "v2.0.0-beta.36";
       fetchSubmodules = false;
-      sha256 = "sha256-laliYsrcnvYSvpYRH4IgTGuJxEdx92Lb1urB02ozfaY=";
+      sha256 = "sha256-rXajj7lGuiirWHctePIhChGgD74KxbA0XJ/AIGGW6aM=";
     };
   };
   zy-player = {

@@ -88,8 +88,11 @@ in rec {
         pfinal.toPythonModule (final.callPackage package args);
     in
       {
-        httpx = pprev.httpx.overrideAttrs (old: {
-          inherit (sources.httpx) pname version src;
+        # httpx = pprev.httpx.overrideAttrs (old: {
+        #   inherit (sources.httpx) pname version src;
+        # });
+        dict2xml = pprev.dict2xml.overrideAttrs (old: {
+          inherit (sources.dict2xml) pname version src;
         });
       }
       // mapPkgs ./python callPyPkg;
