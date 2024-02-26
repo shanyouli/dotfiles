@@ -9,7 +9,7 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.media.flameshot;
-  basePkg = pkgs.flameshot;
+  basePkg = pkgs.stable.flameshot;
   package =
     if pkgs.stdenvNoCC.isDarwin
     then

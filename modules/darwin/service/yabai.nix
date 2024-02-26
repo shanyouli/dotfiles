@@ -15,7 +15,7 @@ with lib.my; let
     mkdir -p $out/bin
     ln -s /usr/bin/{xcrun,codesign,xxd} $out/bin
   '';
-  yabai = pkgs.yabai.overrideAttrs (prev: rec {
+  yabai = pkgs.stable.yabai.overrideAttrs (prev: rec {
     inherit (srcs.yabai) version src;
     nativeBuildInputs = (prev.nativeBuildInputes or []) ++ [buildSymlinks];
     dontBuild = false;

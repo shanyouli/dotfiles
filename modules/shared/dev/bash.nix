@@ -14,8 +14,8 @@ in {
     enable = mkEnableOption "Whether to develop bash language";
   };
   config = mkIf cfg.enable {
-    user.packages = with pkgs.unstable; [
-      nodePackages.bash-language-server
+    user.packages = with pkgs.stable; [
+      pkgs.nodePackages.bash-language-server
       shfmt
       shellcheck
     ];

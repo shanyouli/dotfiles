@@ -11,7 +11,7 @@ with lib.my; let
   cfg = cfm.shell.wget;
   toWgetConfig = opts:
     concatStringsSep "\n" (mapAttrsToList (p: v: "${p} = ${toString v}") opts);
-  wget = pkgs.wget;
+  wget = pkgs.stable.wget;
 in {
   options.modules.shell.wget = {
     enable = mkEnableOption "Whether wget module";

@@ -12,11 +12,11 @@ with lib.my; let
 in {
   options.modules.dev.nix = {
     enable = mkEnableOption "Whether to Nix Language";
-    lspPkg = mkPkgOpt pkgs.unstable.rnix-lsp "Nix LSP pkg";
-    fmtPkg = mkPkgOpt pkgs.unstable.alejandra "Nix Format";
+    lspPkg = mkPkgOpt pkgs.rnix-lsp "Nix LSP pkg";
+    fmtPkg = mkPkgOpt pkgs.alejandra "Nix Format";
   };
   config = mkIf cfg.enable {
-    user.packages = with pkgs.unstable; [
+    user.packages = with pkgs; [
       cfg.lspPkg
       cfg.fmtPkg
       nix-init

@@ -19,16 +19,16 @@ with lib.my; let
 in {
   options.modules.dev.node = {
     enable = mkEnableOption "Whether to use node";
-    package = mkOpt' types.package pkgs.nodejs "nodejs package";
+    package = mkOpt' types.package pkgs.stable.nodejs "nodejs package";
   };
   config = mkIf cfg.enable {
-    user.packages = with pkgs.nodePackages; [
+    user.packages = with pkgs.stable.nodePackages; [
       cfg.package
       pnpm
       typescript-language-server
       stylelint
       js-beautify
-      pkgs.bun
+      pkgs.stable.bun
     ];
     home.configFile."npm/config".text = ''
       cache=${npm_config_cache}

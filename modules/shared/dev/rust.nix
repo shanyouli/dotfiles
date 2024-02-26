@@ -11,7 +11,7 @@ with lib.my; let
   cfg = cfm.dev.rust;
   homeDir = config.user.home;
   rustup_dir = "${homeDir}/.local/share/rustup";
-  package = pkgs.unstable.rustup;
+  package = pkgs.rustup;
 in {
   options.modules.dev.rust = {
     enable = mkEnableOption "Whether to dev rust";
@@ -20,10 +20,10 @@ in {
     initScript = mkOpt' types.lines "" "init script";
   };
   config = mkIf cfg.enable {
-    user.packages = with pkgs.unstable; [
+    user.packages = with pkgs; [
       package
       (mkIf cfg.enSlsp rust-analyzer)
-      pkgs.cargo-update
+      pkgs.stable.cargo-update
     ];
     modules.shell.env.RUSTUP_HOME = rustup_dir;
     modules.shell.env.CARGO_HOME = let

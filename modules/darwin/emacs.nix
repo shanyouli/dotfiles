@@ -14,9 +14,9 @@ with lib.my; let
 in {
   config = mkIf cshemacs.enable {
     modules.editor.emacs.package = let
-      basePackage = pkgs.emacs29.override {
-        # pkgs.unstable.emacs-unstable.override {
-        # pkgs.unstable.emacs.override {
+      basePackage = pkgs.emacs-unstable.override {
+        # pkgs.emacs-unstable.override {
+        # pkgs.emacs.override {
         # 使用 emacs-unstable 取代 emacs-git
         # webkitgtk-2.40.2+abi=4.0 is blorken,
         # @see https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/libraries/webkitgtk/default.nix

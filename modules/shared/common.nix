@@ -12,7 +12,7 @@ with lib.my; {
 
     variables.NIXPKGS_ALLOW_UNFREE = "1";
 
-    systemPackages = with pkgs; [
+    systemPackages = with pkgs.stable; [
       # standard toolset
       coreutils-full
       wget

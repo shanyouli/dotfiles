@@ -14,7 +14,7 @@ in {
     enable = mkEnableOption "Whether to c/c++ dev";
   };
   config = mkIf cfg.enable {
-    user.packages = with pkgs.unstable;
+    user.packages = with pkgs;
       [
         (mkIf pkgs.stdenvNoCC.isLinux clang)
         # gcc
@@ -22,12 +22,12 @@ in {
         llvmPackages.libcxx
       ]
       ++ optionals stdenvNoCC.isLinux [bear gdb];
-    modules.editor.vscode.extensions = with pkgs.unstable.vscode-extensions; let
+    modules.editor.vscode.extensions = with pkgs.vscode-extensions; let
       cpp =
         if pkgs.stdenvNoCC.isLinux
         then ms-vscode.cpptools
         else
-          pkgs.unstable.vscode-utils.extensionFromVscodeMarketplace {
+          pkgs.vscode-utils.extensionFromVscodeMarketplace {
             name = "cpptools";
             publisher = "ms-vscode";
             version = "1.18.5";

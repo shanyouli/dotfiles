@@ -553,7 +553,7 @@ def update(
     else:
         inputs = [f'--update-input {input}' for input in flakes]
         typer.secho(f"updating {','.join(flakes)}")
-        run_cmd(['nix', 'flake', 'lock'] + inputs + flags)
+        run_cmd(['nix', 'flake', 'lock' 'update'] + inputs + flags)
 
 
 @app.command(help='pull changes from remote repo')

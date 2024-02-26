@@ -24,10 +24,10 @@ in {
   };
   config = mkMerge [
     (mkIf cfg.toml.fmt {
-      user.packages = [pkgs.unstable.taplo];
+      user.packages = [pkgs.stable.taplo];
     })
     (mkIf cfg.enWebReport {
-      user.packages = [pkgs.unstable.allure];
+      user.packages = [pkgs.allure];
     })
     (mkIf (cfg.plugins != []) (let
       cmh = config.home;

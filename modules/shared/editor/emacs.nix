@@ -12,7 +12,8 @@ with lib.my; let
   emacsPackages = let
     epkgs = pkgs.emacsPackagesFor cfg.package;
   in
-    epkgs.overrideScope' cfg.overrides;
+    # epkgs.overrideScope' cfg.overrides;
+    epkgs.overrideScope cfg.overrides;
   emacsWithPackages = emacsPackages.emacsWithPackages;
 in {
   options.modules.editor.emacs = {

@@ -1,10 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let cfg = config.services.syncthing;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.services.syncthing;
+in {
   options = {
     services.syncthing = {
       enable = mkOption {
@@ -34,7 +36,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = [ pkgs.syncthing ];
+    environment.systemPackages = [pkgs.stable.syncthing];
     launchd.user.agents.syncthing = {
       command = "${pkgs.syncthing}/bin/syncthing";
       serviceConfig = {

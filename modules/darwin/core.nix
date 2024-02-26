@@ -10,12 +10,11 @@
     pathsToLink = ["/Applications"];
     # backupFileExtension = "backup";
     etc = {darwin.source = "${inputs.darwin}";};
-    systemPackages = with pkgs; [findutils];
     # Use a custom configuration.nix location.
     # $ darwin-rebuild switch -I darwin-config=$HOME/.config/nixpkgs/darwin/configuration.nix
 
     # packages installed in system profile
-    # systemPackages = [ ];
+    systemPackages = with pkgs.stable; [findutils];
     # see@ https://github.com/LnL7/nix-darwin/issues/165
     etc = {
       "sudoers.d/00-not-commands".text = let

@@ -43,7 +43,13 @@ in {
       user.packages = [pkgs.musicn];
     })
     (mkIf cfg.enVideo {
-      user.packages = [pkgs.unstable.yt-dlp pkgs.python3Packages.yutto bbdown pkgs.lux pkgs.unstable.fav]; # yutto 下载bilibili
+      user.packages = [
+        pkgs.yt-dlp
+        pkgs.python3Packages.yutto
+        bbdown
+        pkgs.lux
+        pkgs.fav
+      ]; # yutto 下载bilibili
       home.configFile."yt-dlp/config".text = ''
         # 下载默认保存目录
         --paths $HOME/Downloads/Youtube

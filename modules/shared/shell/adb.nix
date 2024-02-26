@@ -14,6 +14,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = [pkgs.android-tools];
+    user.packages = [pkgs.stable.android-tools];
   };
 }

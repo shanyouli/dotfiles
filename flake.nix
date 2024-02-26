@@ -50,11 +50,10 @@
     inherit (lib) attrValues;
     inherit (lib.my) defaultSystems mkPkgs mkPkg;
     allPkgs = mkPkgs {
-      nixpkgs = [nixos-stable darwin-stable];
+      nixpkgs = nixpkgs;
       cfg = {allowUnfree = true;};
       overlays = self.overlays // {};
     };
-
     # with overlays and any extraModules applied
     lib = nixpkgs.lib.extend (self: super: {
       my = import ./lib {
@@ -262,11 +261,10 @@
       nvfetcher = inputs.nvfetcher.overlays.default;
       channels = final: prev: {
         # expose other channels via overlays
-        unstable = mkPkg {
+        stable = mkPkg {
           system = prev.system;
           cfg = {allowUnfree = true;};
-          extraOverlays = [this.overlay inputs.emacs-overlay.overlay];
-          nixpkgs = inputs.nixpkgs;
+          nixpkgs = [nixos-stable darwin-stable];
         };
       };
     };

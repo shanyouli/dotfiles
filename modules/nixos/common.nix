@@ -16,7 +16,7 @@ with lib.my; {
       systemd-boot.enable = mkDefault true;
     };
   };
-  environment.systemPackages = with pkgs; [cached-nix-shell];
+  environment.systemPackages = with pkgs.stable; [cached-nix-shell];
 
   # Change me later!
   user.initialPassword = "nixos";

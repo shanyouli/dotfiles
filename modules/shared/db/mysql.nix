@@ -12,7 +12,7 @@ with lib.my; let
 in {
   options.modules.db.mysql = {
     enable = mkEnableOption "Whether to use mysql";
-    package = mkPkgOpt pkgs.mysql "mysql package";
+    package = mkPkgOpt pkgs.stable.mysql "mysql package";
   };
   config = mkIf cfg.enable {
     user.packages = [cfg.package];

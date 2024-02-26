@@ -84,8 +84,16 @@ in rec {
     cfg ? {},
     overlays ? {},
     extraOverlays ? [],
-  }:
-    import nixpkgs {
+  }: let
+    pkgs =
+      if (typeOf nixpkgs) == "list"
+      then
+        if isDarwin system
+        then elemAt nixpkgs 1
+        else head nixpkgs
+      else nixpkgs;
+  in
+    import pkgs {
       inherit system;
       config = cfg;
       overlays = (attrValues overlays) ++ extraOverlays;
@@ -96,20 +104,11 @@ in rec {
     cfg ? {},
     overlays ? {},
   }:
-    withSystems systems (system: (let
-      pkgs =
-        if (typeOf nixpkgs) == "list"
-        then
-          if isDarwin system
-          then elemAt nixpkgs 1
-          else head nixpkgs
-        else nixpkgs;
-    in
+    withSystems systems (system:
       mkPkg {
-        inherit cfg overlays;
-        nixpkgs = pkgs;
+        inherit cfg overlays nixpkgs;
         system = system;
-      }));
+      });
 
   mkOverlays = {
     allPkgs,
