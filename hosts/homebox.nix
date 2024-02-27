@@ -30,6 +30,7 @@
     shell.git.enable = true;
     shell.git.enGui = false; # 使用网页管理 github
     shell.gopass.enable = true;
+    shell.gopass.enGui = false;
     shell.nix-index.enable = true;
     shell.trash.enable = true;
 
