@@ -166,5 +166,18 @@ in {
       user.packages = [pkgs.zinit];
       modules.shell.env.ZINIT_HOME = "${pkgs.zinit}/share/zinit";
     })
+    (mkIf (! cfg.atuin.enable) {
+      modules.shell.prevInit = ''
+        _source "${config.dotfiles.configDir}/zsh/history.zsh"
+      '';
+    })
+    (mkIf (! cfg.enVivid) {
+      modules.shell.rcInit = ''
+        # colors 配置 if'[[ -z $LS_COLORS ]]'
+        zice 0a atcone="dircors -b LS_COLORS > c.zsh" \
+          atpull='%atclone' pick='c.zsh' \
+          trapd00r/LS_COLORS
+      '';
+    })
   ];
 }

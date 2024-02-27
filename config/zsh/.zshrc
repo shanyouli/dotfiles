@@ -78,10 +78,6 @@ zice 0b if'[[ -z $SSH_CONNECTION ]]'  atinit='zpcompinit' \
 # alias 提示
 zice 0c atload'YSU_MESSAGE_POSITION="after"' MichaelAquilina/zsh-you-should-use
 
-# colors 配置
-zice 0a if'[[ -z $LS_COLORS ]]' atcone="dircors -b LS_COLORS > c.zsh" atpull='%atclone' pick='c.zsh' \
-  trapd00r/LS_COLORS
-
 # 刷新补全，修复bash-completion失效的问题, 或者删除zcompdump文件
 # @https://stackoverflow.com/questions/3249432/can-a-bash-tab-completion-script-be-used-in-zsh
 recomp() {
@@ -90,7 +86,6 @@ recomp() {
 if [[ $TERM != dumb ]]; then
   # 补全文件设置
   source $ZDOTDIR/keybinds.zsh
-  source $ZDOTDIR/config.zsh
   autoload -Uz compinit && compinit -u -d $ZSH_CACHE/zcompdump
   (( $+commands[fzf] )) || source $ZDOTDIR/completion.zsh
 
