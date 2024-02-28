@@ -20,7 +20,6 @@
     shell.wget.enable = true;
     shell.tmux.enable = true;
     shell.adb.enable = true;
-    shell.fzf.enable = true;
     shell.rsync.enable = true;
     shell.starship.enable = false;
     shell.ugrep.enable = true;

@@ -57,21 +57,21 @@ in {
         promptInit = "";
       };
       user.packages = with pkgs; [
-        bottom
-        fd
-        eza
-        bat
-        any-nix-shell
-        duf
+        stable.bottom
+        stable.fd
+        stable.eza
+        stable.bat
+        stable.any-nix-shell
+        stable.duf
         httrack # 网页抓取
         cachix # nix cache
-        hugo # 我的blog工具
+        stable.hugo # 我的blog工具
         imagemagick # 图片转换工具
         gifsicle # 命令行gif生成工具
 
-        atool # 解压工具
-        gnused # sed 工具
-        coreutils-prefixed # GNUcoreutils 工具，mv，cp等
+        stable.atool # 解压工具
+        stable.gnused # sed 工具
+        stable.coreutils-prefixed # GNUcoreutils 工具，mv，cp等
         (pkgs.sysdo.override {
           withZshCompletion = true;
           withRich = true;
@@ -79,6 +79,9 @@ in {
 
         tailspin # 支持高亮的语法查看工具
         nvfetcher-bin # 管理自己构建包的升级
+
+        stable.fzf
+        pkgs.my-nix-script
       ];
       env = {
         PATH = ["${config.home.binDir}"];
@@ -89,6 +92,16 @@ in {
         prevInit = ''
           # starship和p10有自己的提示方法；--info-right
           _cache ${pkgs.any-nix-shell}/bin/any-nix-shell zsh
+          # FZF 配置
+          FZF_DEFAULT_COMMAND="fd -H -I --type f"
+          FZF_DEFAULT_OPTIONS="fd --height 50%"
+          FZF_CTRL_T_COMMAND="fd -H -I --type f"
+          FZF_CTRL_T_OPTS="--preview 'bat --color=always --plain --line-range=:200 {}'"
+          FZF_ALT_C_COMMAND="fd -H -I --type d -E '.git*'"
+          FZF_ALT_C_OPTS="--preview 'eza -T -L 2 {} | head -2000'"
+          # FZF_CTRL_R_OPTS=""
+          source ${pkgs.stable.fzf}/share/fzf/completion.zsh
+          source ${pkgs.stable.fzf}/share/fzf/key-bindings.zsh
         '';
         aliases.htop = "btm --basic --mem_as_value";
         aliases.df = "duf";

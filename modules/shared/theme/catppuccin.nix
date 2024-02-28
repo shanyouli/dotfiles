@@ -60,11 +60,9 @@ in {
             ${lib.optionalString cm.shell.enVivid ''
               export LS_COLORS=$(${pkgs.vivid.out}/bin/vivid generate catppuccin-${n})
             ''}
-            ${lib.optionalString cm.shell.fzf.enable ''
-              if [[ -z $INSIDE_EMACS ]]; then
+            if [[ -z $INSIDE_EMACS ]]; then
               ${fzf."${n}"}
-              fi
-            ''}
+            fi
             ${lib.optionalString cm.shell.starship.enable ''
               export STARSHIP_CONFIG="${defaultDir}/starship.toml"
             ''}
