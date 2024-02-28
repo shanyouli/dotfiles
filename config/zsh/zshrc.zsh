@@ -114,7 +114,11 @@ _zsnippet "0a" $ZDOTDIR/plugins/*.plugin.zsh(:)
 
 # ==== 加载并配置 fzf-tab ====
 
-_zice Aloxaf/fzf-tab
+# https://github.com/Aloxaf/fzf-tab/issues/176
+# fzf-tab 补全会导致ffmpeg -i <按tab> 崩溃
+_zice "0c" atpull'!git rest --hard' \
+    atclone"sed -i '/^ *COLUMNS=500 /s/COLUMNS=500 //' fzf-tab.zsh" \
+    nocompile blockf Aloxaf/fzf-tab
 
 # ==== ====
 

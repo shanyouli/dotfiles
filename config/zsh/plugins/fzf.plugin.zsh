@@ -115,30 +115,3 @@ pass() {
         $(gopass ls --flat \
         | fzf -q "$QUERY" --height 10)
 }
-[[ -n $INSIDE_EMACS ]] || {
-    # https://github.com/Aloxaf/fzf-tab/issues/176
-    # fzf-tab 补全会导致ffmpeg -i <按tab> 崩溃
-    zinit ice wait lucid depth"1" atload"zicompinit; zicdreplay;" \
-        atpull'!git rest --hard' \
-        atclone"sed -i '/^ *COLUMNS=500 /s/COLUMNS=500 //' fzf-tab.zsh" \
-        nocompile blockf
-    zinit light Aloxaf/fzf-tab
-    zstyle ':completion:*:descriptions' format '[%d]'
-    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-    zstyle ':completion:complete:*:options' sort false
-    zstyle ':fzf-tab:complete:(cd|ls|exa|eza|bat|cat|emacs|nano|vi|vim):*' \
-        fzf-preview 'eza -1 --color=always $realpath 2>/dev/null || ls -1 --color=always $realpath'
-    zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' \
-        fzf-preview 'echo ${(P)word}'
-
-    # Preivew `kill` and `ps` commands
-    zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm -w -w'
-    zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview \
-        '[[ $group == "[process ID]" ]] &&
-        if [[ $OSTYPE == darwin* ]]; then
-          ps -p $word -o comm="" -w -w
-        elif [[ $OSTYPE == linux* ]]; then
-          ps --pid=$word -o cmd --no-headers -w -w
-        fi'
-    zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags '--preview-window=down:3:wrap'
-}
