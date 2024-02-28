@@ -6,6 +6,19 @@ export KEYTIMEOUT=15
 
 autoload -U is-at-least
 
+# make sure the terminal is in application mode, when zle is
+# active. Only then are the values from $terminfo valid.
+if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )) {
+    function zle-line-init() {
+        echoti smkx
+    }
+    function zle-line-finish() {
+        echoti rmkx
+    }
+    zle -N zle-line-init
+    zle -N zle-line-finish
+}
+
 ## vi-mode ###############
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
@@ -23,8 +36,7 @@ bindkey -a ys add-surround
 
 # <5.0.8 doesn't have visual map
 if is-at-least 5.0.8; then
-  bindkey -M visual S add-surround
-
+  bindkey -M visual 'S' add-surround
   # add vimmish text-object support to zsh
   autoload -U select-quoted; zle -N select-quoted
   for m in visual viopp; do

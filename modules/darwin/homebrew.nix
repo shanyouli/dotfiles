@@ -83,7 +83,6 @@ in {
         "stats" # 状态显示
         "telegram"
         "baidunetdisk"
-        "orbstack" # docker
         "easydict" # 翻译软件
         "jetbrains-toolbox"
         # "syncthing" 同步

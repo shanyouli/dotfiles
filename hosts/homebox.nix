@@ -67,6 +67,7 @@
 
     # # macos
     macos.enable = true;
+    macos.docker.enable = true;
     macos.app.enable = true;
     macos.karabiner.enable = true;
     macos.stopAutoReopen = true;

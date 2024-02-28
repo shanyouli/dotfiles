@@ -1,0 +1,11 @@
+# DESC: Backup the source file and fix the file
+
+local file="$1"
+if [[ -L "$file" ]]; then
+    local rfile="$(readlink -f "$file")"
+    if [[ $rfile == /nix/store/* ]]; then
+        mv "$file" "${file}.bak"
+        command cat "${file}.bak" >"$file"
+    fi
+fi
+${EDITOR:-vim} "$file"

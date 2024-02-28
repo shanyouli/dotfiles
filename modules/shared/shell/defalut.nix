@@ -108,14 +108,32 @@ in {
             source = "${config.dotfiles.configDir}/zsh";
             recursive = true;
           };
-          "zsh/prev.zshrc".text = ''${cfg.prevInit}'';
-          "zsh/extra.zshrc".text = let
+          "zsh/.zshrc".text = ''
+            ${lib.optionalString (! cfg.enZinit) ''
+              export ZINIT_HOME="''${XDG_DATA_HOME}/zinit/zinit.git"
+              [[ -d "''${ZINIT_HOME}" ]] || {
+                mkdir -p $(dirname "''${ZINIT_HOME}")
+                git clone --depth 1 https://github.com/zdharma-continuum/zinit.git "''${ZINIT_HOME}"
+              }
+            ''}
+            _source "''${ZDOTDIR}/cache/prev.zshrc" \
+              "''${ZDOTDIR}/zshrc.zsh" \
+              "''${ZDOTDIR}/cache/extra.zshrc" \
+              "~/.zshrc"
+          '';
+          "zsh/cache/prev.zshrc".text = ''${cfg.prevInit}'';
+          "zsh/cache/extra.zshrc".text = let
             p10 =
               if config.modules.shell.starship.enable
               then "_cache starship init zsh --print-full-init"
               else ''
                 zinit ice depth=1
                 zinit light romkatv/powerlevel10k
+                if [[ "$INSIDE_EMACS" != 'vterm' ]]; then
+                  _source $ZDOTDIR/p10conf/default.zsh
+                else
+                  _source $ZDOTDIR/p10conf/vterm.zsh
+                fi
               '';
             aliasLines =
               mapAttrsToList (n: v: ''alias ${n}="${v}"'') cfg.aliases;
@@ -129,7 +147,7 @@ in {
             ${concatStringsSep "\n" aliasLines}
             ${cfg.rcInit}
           '';
-          "zsh/extra.zshenv".text = let
+          "zsh/cache/extra.zshenv".text = let
             envLines =
               mapAttrsToList (n: v: (
                 if (strings.toUpper "${n}") == "PATH"
