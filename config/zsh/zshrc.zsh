@@ -15,6 +15,8 @@ typeset -gA ZINIT=(
     COMPINIT_OPTS -C
 )
 
+typeset -g -A _comps
+
 _source "${ZINIT_HOME}/zinit.zsh"
 
 function _zt { zinit depth"1" lucid ${1/#[0-9][a-c]/wait"$1"} "${@:2}"; }

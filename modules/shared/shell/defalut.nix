@@ -53,6 +53,7 @@ in {
     rcFiles = mkOpt (listOf (either str path)) [];
     envFiles = mkOpt (listOf (either str path)) [];
     cmpFiles = mkOpt (listOf (either str path)) [];
+    pluginFiles = mkOpt (listOf (either str path)) [];
   };
 
   # 一些现代命令行工具的推荐:https://github.com/ibraheemdev/modern-unix
@@ -146,7 +147,7 @@ in {
               _source "''${ZDOTDIR}/cache/prev.zshrc" \
                 "''${ZDOTDIR}/zshrc.zsh" \
                 "''${ZDOTDIR}/cache/extra.zshrc" \
-                "~/.zshrc"
+                "''${HOME}/.zshrc"
             '';
             "zsh/cache/prev.zshrc".text = ''${cfg.prevInit}'';
             "zsh/cache/extra.zshrc".text = let
@@ -192,7 +193,8 @@ in {
               ${cfg.envInit}
             '';
           }
-          // (cmpFunction cfg.cmpFiles);
+          // (cmpFunction cfg.cmpFiles)
+          // (cmpFunction cfg.pluginFiles);
       };
     }
     (mkIf cfg.enZoxide {

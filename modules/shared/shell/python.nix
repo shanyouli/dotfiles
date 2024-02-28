@@ -23,7 +23,7 @@ in {
     modules.shell.python.finalPkg = pkgs.python3.withPackages cfg.extraPkgs;
     user.packages = [
       cfg.finalPkg
-      pkgs.pipx # A better python command line installation tool
+      pkgs.stable.pipx # A better python command line installation tool
     ];
     modules.shell = {
       env = {
@@ -38,12 +38,22 @@ in {
         py2 = "python2";
         py3 = "python3";
       };
+      cmpFiles = ["pipx/_pipx"];
       rcInit = ''
         pipx() {
+          if [[ -z "''${_comps[_pipx]}" ]]; then
+            _comps[pipx]=_pipx
+          fi
           (( $+commands[asdf] ))  && export PIPX_DEFAULT_PYTHON=$(asdf which python)
           command pipx "$@"
           unset PIPX_DEFAULT_PYTHON
         };
+        if ! builtin type _pipx >/dev/null 2>&1; then
+          autoload -Uz _pipx
+        fi
+        if [[ -z "''${_comps[_pipx]}" ]]; then
+          _comps[pipx]=_pipx
+        fi
       '';
     };
   };
