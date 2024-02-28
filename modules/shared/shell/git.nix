@@ -56,8 +56,5 @@ in {
       };
       lfs.enable = true;
     };
-    modules.shell = {
-      rcFiles = ["git/git.zsh"];
-    };
   };
 }

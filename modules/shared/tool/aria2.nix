@@ -20,6 +20,7 @@ in {
     {
       user.packages = [cfg.package];
       modules.shell.aliases.aria2 = "aria2c -x 16 -s 5 --min-split-size 4M";
+      modules.shell.cmpFiles = ["aria2/_aria2c"];
     }
     (mkIf cfg.aria2p {
       modules.shell.python.extraPkgs = ps: with ps; [aria2p] ++ aria2p.optional-dependencies.tui;

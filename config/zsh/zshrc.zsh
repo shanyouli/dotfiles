@@ -42,7 +42,7 @@ function _zice {
 }
 
 # ============ 加载函数 ====
-fpatch+=(${ZDOTDIR}/completions)
+fpath+=(${ZDOTDIR}/completions)
 fpath+=(${ZDOTDIR}/functions)
 
 autoload -Uz ${ZDOTDIR}/functions/*(:t)
@@ -110,7 +110,10 @@ for i in $ZDOTDIR/snippets/*.zsh; do
     source $i
 done
 
-_zsnippet "0a" $ZDOTDIR/plugins/*.plugin.zsh(:)
+# _zsnippet "0a" $ZDOTDIR/plugins/*.plugin.zsh(:)
+for i in $ZDOTDIR/plugins/*.plugin.zsh; do
+  source $i
+done
 
 # ==== 加载并配置 fzf-tab ====
 
