@@ -107,8 +107,8 @@ in {
           FZF_ALT_C_COMMAND="fd -H -I --type d -E '.git*'"
           FZF_ALT_C_OPTS="--preview 'eza -T -L 2 {} | head -2000'"
           # FZF_CTRL_R_OPTS=""
-          source ${pkgs.stable.fzf}/share/fzf/completion.zsh
-          source ${pkgs.stable.fzf}/share/fzf/key-bindings.zsh
+          # source ${pkgs.stable.fzf}/share/fzf/completion.zsh
+          # source ${pkgs.stable.fzf}/share/fzf/key-bindings.zsh
 
           ${lib.optionalString (! cfg.vivid.enable) ''
             # colors 配置 if'[[ -z $LS_COLORS ]]'
@@ -120,6 +120,34 @@ in {
         rcInit = ''
           # starship和p10有自己的提示方法；--info-right
           _cache ${pkgs.stable.any-nix-shell}/bin/any-nix-shell zsh
+          ${lib.optionalString (! cfg.atuin.enable) ''
+            if [[ "$INSIDE_EMACS" != 'vterm' ]]; then
+              _zt 0b light-mode for \
+                compile'{hsmw-*,test/*}' \
+                zdharma/history-search-multi-word \
+                atload'bindkey -M viins "^n" history-substring-search-down;
+                bindkey -M viins "^p" history-substring-search-up;
+                bindkey "^[[A" history-substring-search-up;
+                bindkey "^[[B" history-substring-search-down' \
+                zsh-users/zsh-history-substring-search
+
+              # history-search-multi-word config
+              # # Color in which to highlight matched, searched text
+              # (default bg=17 on 256-color terminals)
+              zstyle ":history-search-multi-word" highlight-color "fg=yellow,bold"
+              # Whether to perform syntax highlighting (default true)
+              zstyle ":plugin:history-search-multi-word" synhl "yes"
+              # Effect on active history entry. Try: standout, bold, bg=blue (default underline)
+              zstyle ":plugin:history-search-multi-word" active "underline"
+              # Whether to check paths for existence and mark with magenta (default true)
+              zstyle ":plugin:history-search-multi-word" check-paths "yes"
+              # Whether pressing Ctrl-C or ESC should clear entered query
+              zstyle ":plugin:history-search-multi-word" clear-on-cancel "no"
+            else
+              bindkey '^r' fzf-history-widget
+            fi
+
+          ''}
         '';
         aliases.htop = "btm --basic --mem_as_value";
         aliases.df = "duf";
@@ -204,10 +232,5 @@ in {
           // (baseFunction cfg.pluginFiles "plugins");
       };
     }
-    (mkIf (! cfg.atuin.enable) {
-      modules.shell.prevInit = ''
-        _source "${config.dotfiles.configDir}/zsh/history.zsh"
-      '';
-    })
   ];
 }

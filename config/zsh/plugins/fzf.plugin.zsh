@@ -41,12 +41,32 @@ fzf-kill-widget() {
     zle beginning-of-line
     zle kill-whole-line
 }
-
 zle -N fzf-kill-widget
 bindkey '^X^K' fzf-kill-widget
 
-zle -N fzf-cd-widget
-bindkey '^X^D' fzf-cd-widget
+fzf-cd-widget() {
+  local cmd="${FZF_ALT_C_COMMAND:-"command find -L . -mindepth 1 \\( -path '*/.*' -o -fstype 'sysfs' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune \
+    -o -type d -print 2> /dev/null | cut -b3-"}"
+  setopt localoptions pipefail no_aliases 2> /dev/null
+  local dir="$(eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse --scheme=path --bind=ctrl-z:ignore ${FZF_DEFAULT_OPTS-} ${FZF_ALT_C_OPTS-}" $(_my_fzf_cmd) +m)"
+  if [[ -z "$dir" ]]; then
+    zle redisplay
+    return 0
+  fi
+  zle push-line # Clear buffer. Auto-restored on next prompt.
+  BUFFER="builtin cd -- ${(q)dir}"
+  zle accept-line
+  local ret=$?
+  unset dir # ensure this doesn't end up appearing in prompt expansion
+  zle reset-prompt
+  return $ret
+}
+
+zle     -N             fzf-cd-widget
+bindkey -M emacs '\ec' fzf-cd-widget
+bindkey -M vicmd '\ec' fzf-cd-widget
+bindkey -M viins '\ec' fzf-cd-widget
+bindkey '^Xd' fzf-cd-widget
 
 __my_fzf_select_file() {
     local _query="$1"
@@ -100,6 +120,25 @@ fzf-edit-file-widget() {
 }
 zle -N fzf-edit-file-widget
 bindkey '^X^F' fzf-edit-file-widget
+
+# fzf-history-widget
+# CTRL-R - Paste the selected command from history into the command line
+fzf-history-widget() {
+  local selected num
+  setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2> /dev/null
+  selected=( $(fc -rl 1 | awk '{ cmd=$0; sub(/^[ \t]*[0-9]+\**[ \t]+/, "", cmd); if (!seen[cmd]++) print $0 }' |
+    FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} ${FZF_DEFAULT_OPTS-} -n2..,.. --scheme=history --bind=ctrl-r:toggle-sort,ctrl-z:ignore ${FZF_CTRL_R_OPTS-} --query=${(qqq)LBUFFER} +m" $(_my_fzf_cmd)) )
+  local ret=$?
+  if [ -n "$selected" ]; then
+    num=$selected[1]
+    if [ -n "$num" ]; then
+      zle vi-fetch-history -n $num
+    fi
+  fi
+  zle reset-prompt
+  return $ret
+}
+zle     -N            fzf-history-widget
 
 # @see https://www.hergenhahn-web.de/fzf_gopass.html
 pass() {

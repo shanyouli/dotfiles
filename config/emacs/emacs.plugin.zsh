@@ -70,9 +70,9 @@ if [ -n $INSIDE_EMACS ]; then
         }
         autoload -U add-zsh-hook
         add-zsh-hook -Uz chpwd (){ vterm_set_directory }
-        if (( $+commands[fzf] )) ; then
-            bindkey -M viins '^r' fzf-history-widget
-        fi
+        # if (( $+commands[fzf] )) ; then
+        #     bindkey -M viins '^r' fzf-history-widget
+        # fi
     fi
 fi
 

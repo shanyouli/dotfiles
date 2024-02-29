@@ -1,3 +1,4 @@
+# see @https://docs.atuin.sh/configuration/config/
 {
   pkgs,
   lib,
@@ -15,5 +16,12 @@ in {
   };
   config = mkIf cfg.enable {
     user.packages = [pkgs.stable.atuin];
+    # modules.shell.pluginFiles = [ "atuin/atuin.plugin.zsh" ];
+    modules.shell.rcInit = ''
+      [[ -f $XDG_DATA_HOME/atuin/history.db ]] || atuin import auto
+      export ATUIN_NOBIND="true"
+      _cache atuin init zsh
+      bindkey '^r' _atuin_search_widget
+    '';
   };
 }
