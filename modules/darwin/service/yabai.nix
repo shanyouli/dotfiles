@@ -15,15 +15,16 @@ with lib.my; let
     mkdir -p $out/bin
     ln -s /usr/bin/{xcrun,codesign,xxd} $out/bin
   '';
-  yabai = pkgs.stable.yabai.overrideAttrs (prev: rec {
+  yabai = pkgs.yabai.overrideAttrs (prev: rec {
     inherit (srcs.yabai) version src;
-    nativeBuildInputs = (prev.nativeBuildInputes or []) ++ [buildSymlinks];
+    nativeBuildInputs = (prev.nativeBuildInputes or []) ++ [buildSymlinks pkgs.installShellFiles];
     dontBuild = false;
     installPhase = ''
       runHook preInstall
       mkdir -p $out
       codesign -s - -f ./bin/yabai
       cp -r ./bin $out
+      installManPage ./doc/yabai.1
       runHook postInstall
     '';
   });
