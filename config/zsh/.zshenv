@@ -24,21 +24,6 @@ function _source {
     done
 }
 
-function _dsource {
-    local file="$1"
-    if ! [[ -r "$file" ]]; then
-        if [[ -n "$DOTFILES" ]] && [[ -r "$DOTFILES/config/$file" ]]; then
-            file="$DOTFILES/config/$file"
-        elif [[ -n $ZDOTDIR ]] && [[ -r "$ZDOTDIR/$file" ]]; then
-            file="$DOTFILES/$file"
-        else
-            echo "Warning: not found file $file"
-            return 0
-        fi
-    fi
-    source "$file"
-}
-
 export LANGUAGE=en_US # :zh_CN
 
 # export GTAGSLABEL=pygments
