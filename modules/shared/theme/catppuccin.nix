@@ -57,8 +57,8 @@ in {
           zshrc = ''
             #!/usr/bin/env zsh
             alias bat='bat --theme=catppuccin'
-            ${lib.optionalString cm.shell.enVivid ''
-              export LS_COLORS=$(${pkgs.vivid.out}/bin/vivid generate catppuccin-${n})
+            ${lib.optionalString cm.shell.vivid.enable ''
+              export LS_COLORS=$(${pkgs.stable.vivid.out}/bin/vivid generate catppuccin-${n})
             ''}
             if [[ -z $INSIDE_EMACS ]]; then
               ${fzf."${n}"}

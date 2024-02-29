@@ -15,7 +15,7 @@
   modules = {
     # shared
     shell.zinit.enable = true;
-    shell.enVivid = true;
+    shell.vivid.enable = true;
     shell.enZoxide = true;
     shell.wget.enable = true;
     shell.tmux.enable = true;

@@ -22,10 +22,8 @@ with lib.my; let
       l));
 in {
   options.modules.shell = with types; {
-    enZinit = mkBoolOpt false;
     enZoxide = mkBoolOpt false;
     enNavi = mkBoolOpt false;
-    enVivid = mkBoolOpt false;
     aliases = mkOpt (attrsOf (either str path)) {};
     env = mkOption {
       type = attrsOf (oneOf [str path (listOf (either str path))]);
@@ -116,6 +114,13 @@ in {
           # FZF_CTRL_R_OPTS=""
           source ${pkgs.stable.fzf}/share/fzf/completion.zsh
           source ${pkgs.stable.fzf}/share/fzf/key-bindings.zsh
+
+          ${lib.optionalString (! cfg.vivid.enable) ''
+            # colors 配置 if'[[ -z $LS_COLORS ]]'
+            zice 0a atcone="dircolors -b LS_COLORS > c.zsh" \
+              atpull='%atclone' pick='c.zsh' \
+              trapd00r/LS_COLORS
+          ''}
         '';
         aliases.htop = "btm --basic --mem_as_value";
         aliases.df = "duf";
@@ -219,21 +224,9 @@ in {
     (mkIf cfg.enNavi {
       user.packages = [pkgs.navi];
     })
-    # 一个更好的LS_COLORS 工具: https://github.com/sharkdp/vivid
-    (mkIf cfg.enVivid {
-      user.packages = [pkgs.vivid];
-    })
     (mkIf (! cfg.atuin.enable) {
       modules.shell.prevInit = ''
         _source "${config.dotfiles.configDir}/zsh/history.zsh"
-      '';
-    })
-    (mkIf (! cfg.enVivid) {
-      modules.shell.rcInit = ''
-        # colors 配置 if'[[ -z $LS_COLORS ]]'
-        zice 0a atcone="dircors -b LS_COLORS > c.zsh" \
-          atpull='%atclone' pick='c.zsh' \
-          trapd00r/LS_COLORS
       '';
     })
   ];

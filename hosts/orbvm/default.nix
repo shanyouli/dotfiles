@@ -68,8 +68,8 @@
 
   # modules config
   modules = {
-    shell.enZinit = true;
-    shell.enVivid = true;
+    shell.zinit.enable = true;
+    shell.vivid.enable = true;
     shell.enZoxide = true;
     shell.wget.enable = true;
     shell.tmux.enable = true;
