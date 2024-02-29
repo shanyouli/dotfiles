@@ -9,6 +9,14 @@
       sha256 = "sha256-alOIYtM85n2ZdCnRSZgxDh2/2my32bv795nEcJhH/s4=";
     };
   };
+  aerospace = {
+    pname = "aerospace";
+    version = "0.8.7-Beta";
+    src = fetchurl {
+      url = "https://github.com/nikitabobko/AeroSpace/releases/download/v0.8.7-Beta/AeroSpace-v0.8.7-Beta.zip";
+      sha256 = "sha256-/zzkLIcT1sy2aWPa/Od/16ZdpgxV2w2Blt2rB2mC890=";
+    };
+  };
   alist = {
     pname = "alist";
     version = "v3.31.0";

@@ -14,6 +14,21 @@
         },
         "version": "4.2.1"
     },
+    "aerospace": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "aerospace",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-/zzkLIcT1sy2aWPa/Od/16ZdpgxV2w2Blt2rB2mC890=",
+            "type": "url",
+            "url": "https://github.com/nikitabobko/AeroSpace/releases/download/v0.8.7-Beta/AeroSpace-v0.8.7-Beta.zip"
+        },
+        "version": "0.8.7-Beta"
+    },
     "alist": {
         "cargoLocks": null,
         "date": null,

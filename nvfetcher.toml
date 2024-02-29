@@ -256,6 +256,11 @@ src.regex = "\"channel\":\"Stable\",\"version\":\"([0-9.]+)\""
 # fetch.url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$ver/mac-x64/chrome-mac-x64.zip"
 fetch.url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/$ver/mac-x64/chrome-mac-x64.zip"
 
+[aerospace]
+src.github_tag = "nikitabobko/AeroSpace"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/nikitabobko/AeroSpace/releases/download/v$ver/AeroSpace-v$ver.zip"
 
 [ryujinx]
 src.github = "Ryujinx/release-channel-master"
