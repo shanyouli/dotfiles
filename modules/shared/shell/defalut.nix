@@ -9,11 +9,11 @@ with lib;
 with lib.my; let
   cfg = config.modules.shell;
   getLastFunction = str: last (splitString "/" str);
-  cmpFunction = l:
+  baseFunction = l: path:
     concatMapAttrs (n: v: {
       "${n}".source = v;
     }) (builtins.listToAttrs (map (n: {
-        name = "zsh/completions/${getLastFunction n}";
+        name = "zsh/${path}/${getLastFunction n}";
         value =
           if hasPrefix "/" n
           then n
@@ -210,8 +210,8 @@ in {
               ${cfg.envInit}
             '';
           }
-          // (cmpFunction cfg.cmpFiles)
-          // (cmpFunction cfg.pluginFiles);
+          // (baseFunction cfg.cmpFiles "completions")
+          // (baseFunction cfg.pluginFiles "plugins");
       };
     }
     (mkIf cfg.enNavi {
