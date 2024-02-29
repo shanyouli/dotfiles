@@ -140,11 +140,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-rhaWcEna0tV8FuNPEQd6p2boZwRW+QrPyzCkN7CeKUM=",
+            "sha256": "sha256-jefQbQ2O9if7fhBDU8kngrU1BhFWDKBzizqhq+iS9Xs=",
             "type": "url",
-            "url": "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.69/mac-arm64/chrome-mac-arm64.zip"
+            "url": "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.94/mac-arm64/chrome-mac-arm64.zip"
         },
-        "version": "122.0.6261.69"
+        "version": "122.0.6261.94"
     },
     "chrome.x64": {
         "cargoLocks": null,
@@ -155,11 +155,41 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-awKJi+sAsKstC6gx9R4MLaBt+bfvNPq6XHddhiFEf84=",
+            "sha256": "sha256-YuzV4UG+8CjNlc3jTI8vy5pZKMM/x/I8R+f8MR5WoRs=",
             "type": "url",
-            "url": "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.69/mac-x64/chrome-mac-x64.zip"
+            "url": "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.94/mac-x64/chrome-mac-x64.zip"
         },
-        "version": "122.0.6261.69"
+        "version": "122.0.6261.94"
+    },
+    "chromium.arm64": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "chromium.arm64",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-3YGBexErHFbVKYnmcUXW87Q0TVFeQQjSienrinEQLE8=",
+            "type": "url",
+            "url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/122.0.6261.69-1.1/ungoogled-chromium_122.0.6261.69-1.1_arm64-macos.dmg"
+        },
+        "version": "122.0.6261.69-1.1"
+    },
+    "chromium.x64": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "chromium.x64",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-uk2Yb0J4RxBW/9dbq6MOlft43YLDTLmznnQibmpYi/8=",
+            "type": "url",
+            "url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/122.0.6261.69-1.1/ungoogled-chromium_122.0.6261.69-1.1_x86-64-macos.dmg"
+        },
+        "version": "122.0.6261.69-1.1"
     },
     "clash-nyanpasu": {
         "cargoLocks": null,

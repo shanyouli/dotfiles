@@ -61,7 +61,7 @@
     # browser.firefox.extensions = lib.mkForce [];
     browser.fallback = pkgs.vivaldi-app;
     browser.chrome.enable = true;
-
+    browser.chrome.package = pkgs.chromium-app;
     # theme.enable = true;
 
     # # macos
