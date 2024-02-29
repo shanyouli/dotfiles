@@ -146,26 +146,34 @@ in {
         enable = config.modules.tool.qbittorrent.webScript != "";
         text = config.modules.tool.qbittorrent.webScript;
       };
+      macos.userScript.linkChromeApp = let
+        appEn = config.modules.macos.app.enable;
+        mchrome = config.modules.browser.chrome;
+        enable = mchrome.enable && mchrome.dev.enable && appEn && (! mchrome.useBrew);
+      in {
+        inherit enable;
+        desc = "将Chrome链接到/Applications";
+        level = 100;
+        text = ''
+          if [[ -e "${config.user.home}/Applications/Myapps/Chromium.app" ]]; then
+            $DRY_RUN_CMD ln -sf "${config.user.home}/Applications/Myapps/Chromium.app" "/Applications/Google Chrome.app"
+          fi
+          if [[ -e "${config.user.home}/Applications/Myapps/Google Chrome.app" ]]; then
+            $DRY_RUN_CMD ln -sf "${config.user.home}/Applications/Myapps/Google Chrome.app" "/Applications/Google Chrome.app"
+          fi
+        '';
+      };
+      macos.userScript.initAsdf = {
+        enable = config.modules.dev.plugins != [];
+        desc = "Init asdf ...";
+        text = config.modules.dev.text;
+      };
     }
     (mkIf config.modules.shell.gpg.enable {
       modules.service.env.GNUPGHOME = config.environment.variables.GNUPGHOME;
     })
     (mkIf config.modules.shell.gopass.enable {
       modules.service.env.PASSWORD_STORE_DIR = config.env.PASSWORD_STORE_DIR;
-    })
-    (mkIf (config.modules.dev.plugins != []) {
-      macos.userScript.initAsdf = {
-        desc = "Init asdf ...";
-        text = config.modules.dev.text;
-      };
-    })
-    (mkIf (config.modules.browser.chrome.enable && config.modules.browser.chrome.dev.enable) {
-      macos.userScript.linkChromeApp = {
-        desc = "将Chrome链接到/Applications";
-        level = 100;
-        enable = ! config.modules.browser.chrome.useBrew;
-        text = ''$DRY_RUN_CMD ln -sf "${config.user.home}/Applications/Myapps/Google Chrome.app" /Applications/ '';
-      };
     })
   ];
 }

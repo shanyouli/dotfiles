@@ -75,18 +75,34 @@
   };
   "chrome.arm64" = {
     pname = "chrome.arm64";
-    version = "122.0.6261.69";
+    version = "122.0.6261.94";
     src = fetchurl {
-      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.69/mac-arm64/chrome-mac-arm64.zip";
-      sha256 = "sha256-rhaWcEna0tV8FuNPEQd6p2boZwRW+QrPyzCkN7CeKUM=";
+      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.94/mac-arm64/chrome-mac-arm64.zip";
+      sha256 = "sha256-jefQbQ2O9if7fhBDU8kngrU1BhFWDKBzizqhq+iS9Xs=";
     };
   };
   "chrome.x64" = {
     pname = "chrome.x64";
-    version = "122.0.6261.69";
+    version = "122.0.6261.94";
     src = fetchurl {
-      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.69/mac-x64/chrome-mac-x64.zip";
-      sha256 = "sha256-awKJi+sAsKstC6gx9R4MLaBt+bfvNPq6XHddhiFEf84=";
+      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.94/mac-x64/chrome-mac-x64.zip";
+      sha256 = "sha256-YuzV4UG+8CjNlc3jTI8vy5pZKMM/x/I8R+f8MR5WoRs=";
+    };
+  };
+  "chromium.arm64" = {
+    pname = "chromium.arm64";
+    version = "122.0.6261.69-1.1";
+    src = fetchurl {
+      url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/122.0.6261.69-1.1/ungoogled-chromium_122.0.6261.69-1.1_arm64-macos.dmg";
+      sha256 = "sha256-3YGBexErHFbVKYnmcUXW87Q0TVFeQQjSienrinEQLE8=";
+    };
+  };
+  "chromium.x64" = {
+    pname = "chromium.x64";
+    version = "122.0.6261.69-1.1";
+    src = fetchurl {
+      url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/122.0.6261.69-1.1/ungoogled-chromium_122.0.6261.69-1.1_x86-64-macos.dmg";
+      sha256 = "sha256-uk2Yb0J4RxBW/9dbq6MOlft43YLDTLmznnQibmpYi/8=";
     };
   };
   clash-nyanpasu = {
