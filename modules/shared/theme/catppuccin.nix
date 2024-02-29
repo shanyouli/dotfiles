@@ -126,7 +126,9 @@ in {
     modules.kitty.settings = ''
       include ${defaultDir}/kitty.conf
     '';
-    modules.shell.rcFiles = mkBefore ["${defaultDir}/zshrc"];
+    modules.shell.prevInit = ''
+      _source "${defaultDir}/zshrc"
+    '';
     modules.shell.tmux.rcFiles = mkBefore ["${defaultDir}/tmux"];
     modules.theme.script = ''
       if [[ -d "${defaultDir}" ]]; then

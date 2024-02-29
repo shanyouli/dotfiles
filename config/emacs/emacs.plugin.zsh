@@ -73,11 +73,6 @@ if [ -n $INSIDE_EMACS ]; then
         if (( $+commands[fzf] )) ; then
             bindkey -M viins '^r' fzf-history-widget
         fi
-        if type p10k >/dev/null ; then
-            _source $ZDOTDIR/p10k-emacs.zsh
-        fi
-        source $ZDOTDIR/completion.zsh
-
     fi
 fi
 

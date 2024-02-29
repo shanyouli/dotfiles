@@ -176,7 +176,7 @@ in {
       modules.shell = {
         env.PATH = ["$XDG_CONFIG_HOME/emacs/bin"];
         env.GRIPHOME = "$XDG_CONFIG_HOME/grip";
-        rcFiles = ["emacs/emacs.zsh"];
+        pluginFiles = ["emacs/emacs.plugin.zsh"];
       };
       home.configFile = let
         data-dir =
