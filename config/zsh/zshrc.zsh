@@ -92,6 +92,8 @@ _zt light-mode for \
     src="etc/git-extras-completion.zsh" \
     tj/git-extras
 
+zinit as="completion" for \
+  OMZP::rust/_rust
 # ==== 某些比较特殊的插件 ====
 autoload -Uz compinit && compinit -u -d $ZSH_CACHE/zcompdump
 zpcompinit
