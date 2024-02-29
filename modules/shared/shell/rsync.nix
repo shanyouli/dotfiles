@@ -15,6 +15,6 @@ in {
 
   config = mkIf cfg.enable {
     user.packages = [pkgs.rsync];
-    modules.shell.rcFiles = ["rsync/rsync.zsh"];
+    modules.shell.pluginFiles = ["rsync/rsync.plugin.zsh"];
   };
 }

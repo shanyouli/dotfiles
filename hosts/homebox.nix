@@ -14,13 +14,14 @@
   };
   modules = {
     # shared
-    shell.enZinit = true;
-    shell.enVivid = true;
-    shell.enZoxide = true;
+    shell.zinit.enable = true;
+    shell.vivid.enable = true;
+    shell.zoxide.enable = true;
+    shell.atuin.enable = true;
+    shell.navi.enable = true;
     shell.wget.enable = true;
     shell.tmux.enable = true;
     shell.adb.enable = true;
-    shell.fzf.enable = true;
     shell.rsync.enable = true;
     shell.starship.enable = false;
     shell.ugrep.enable = true;
@@ -67,6 +68,7 @@
 
     # # macos
     macos.enable = true;
+    macos.docker.enable = true;
     macos.app.enable = true;
     macos.karabiner.enable = true;
     macos.stopAutoReopen = true;

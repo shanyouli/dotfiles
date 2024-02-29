@@ -19,7 +19,7 @@ in {
     user.packages = with pkgs; [tmux];
 
     modules.shell = {
-      rcFiles = ["tmux/tmux.zsh"];
+      pluginFiles = ["tmux/tmux.plugin.zsh"];
     };
 
     home.configFile = {

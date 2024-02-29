@@ -1,0 +1,10 @@
+% sysdo
+
+# 更新 flake.lock
+sysdo update
+
+# switch 配置
+sysdo switch
+
+# gc, 保留最后 s条
+sysdo gc -s <s>

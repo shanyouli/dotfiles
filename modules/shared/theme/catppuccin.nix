@@ -57,14 +57,12 @@ in {
           zshrc = ''
             #!/usr/bin/env zsh
             alias bat='bat --theme=catppuccin'
-            ${lib.optionalString cm.shell.enVivid ''
-              export LS_COLORS=$(${pkgs.vivid.out}/bin/vivid generate catppuccin-${n})
+            ${lib.optionalString cm.shell.vivid.enable ''
+              export LS_COLORS=$(${pkgs.stable.vivid.out}/bin/vivid generate catppuccin-${n})
             ''}
-            ${lib.optionalString cm.shell.fzf.enable ''
-              if [[ -z $INSIDE_EMACS ]]; then
+            if [[ -z $INSIDE_EMACS ]]; then
               ${fzf."${n}"}
-              fi
-            ''}
+            fi
             ${lib.optionalString cm.shell.starship.enable ''
               export STARSHIP_CONFIG="${defaultDir}/starship.toml"
             ''}
@@ -128,7 +126,9 @@ in {
     modules.kitty.settings = ''
       include ${defaultDir}/kitty.conf
     '';
-    modules.shell.rcFiles = mkBefore ["${defaultDir}/zshrc"];
+    modules.shell.prevInit = ''
+      _source "${defaultDir}/zshrc"
+    '';
     modules.shell.tmux.rcFiles = mkBefore ["${defaultDir}/tmux"];
     modules.theme.script = ''
       if [[ -d "${defaultDir}" ]]; then

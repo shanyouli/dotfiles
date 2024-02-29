@@ -8,12 +8,20 @@
 with lib;
 with lib.my; let
   cfg = config.modules.shell;
+  getLastFunction = str: last (splitString "/" str);
+  baseFunction = l: path:
+    concatMapAttrs (n: v: {
+      "${n}".source = v;
+    }) (builtins.listToAttrs (map (n: {
+        name = "zsh/${path}/${getLastFunction n}";
+        value =
+          if hasPrefix "/" n
+          then n
+          else "${config.dotfiles.configDir}/${n}";
+      })
+      l));
 in {
   options.modules.shell = with types; {
-    enZinit = mkBoolOpt false;
-    enZoxide = mkBoolOpt false;
-    enNavi = mkBoolOpt false;
-    enVivid = mkBoolOpt false;
     aliases = mkOpt (attrsOf (either str path)) {};
     env = mkOption {
       type = attrsOf (oneOf [str path (listOf (either str path))]);
@@ -38,68 +46,121 @@ in {
       by $XDG_CONFIG_HOME/zsh/.zshenv
     '';
     prevInit = mkOpt' lines "" "zshrc pre";
-    rcFiles = mkOpt (listOf (either str path)) [];
     envFiles = mkOpt (listOf (either str path)) [];
+    cmpFiles = mkOpt (listOf (either str path)) [];
+    pluginFiles = mkOpt (listOf (either str path)) [];
   };
 
   # 一些现代命令行工具的推荐:https://github.com/ibraheemdev/modern-unix
-  config = mkMerge [
-    {
-      # lib.mkIf cfg.enable (lib.mkMerge [{ users.defaultUserShell = pkgs.zsh; }]);
-      # only nixos
-      # users.defaultUserShell = pkgs.zsh;
-      user.shell = pkgs.zsh;
-      programs.zsh = {
-        enable = true;
-        # 我将自动启用bashcompinit 和compinit配置
-        enableCompletion = false;
-        enableBashCompletion = false;
-        promptInit = "";
-      };
-      user.packages = with pkgs; [
-        bottom
-        fd
-        eza
-        bat
-        any-nix-shell
-        duf
-        httrack # 网页抓取
-        cachix # nix cache
-        hugo # 我的blog工具
-        imagemagick # 图片转换工具
-        gifsicle # 命令行gif生成工具
+  config = {
+    # lib.mkIf cfg.enable (lib.mkMerge [{ users.defaultUserShell = pkgs.zsh; }]);
+    # only nixos
+    # users.defaultUserShell = pkgs.zsh;
+    user.shell = pkgs.zsh;
+    programs.zsh = {
+      enable = true;
+      # 我将自动启用bashcompinit 和compinit配置
+      enableCompletion = false;
+      enableBashCompletion = false;
+      promptInit = "";
+    };
+    user.packages = with pkgs; [
+      stable.bottom
+      stable.fd
+      stable.eza
+      stable.bat
+      stable.any-nix-shell
+      stable.duf
+      stable.grc
+      httrack # 网页抓取
+      cachix # nix cache
+      stable.hugo # 我的blog工具
+      imagemagick # 图片转换工具
+      gifsicle # 命令行gif生成工具
 
-        atool # 解压工具
-        gnused # sed 工具
-        coreutils-prefixed # GNUcoreutils 工具，mv，cp等
-        (pkgs.sysdo.override {
-          withZshCompletion = true;
-          withRich = true;
-        })
+      stable.atool # 解压工具
+      stable.gnused # sed 工具
+      stable.coreutils-prefixed # GNUcoreutils 工具，mv，cp等
+      (pkgs.sysdo.override {
+        withZshCompletion = true;
+        withRich = true;
+      })
 
-        tailspin # 支持高亮的语法查看工具
-        nvfetcher-bin # 管理自己构建包的升级
-      ];
-      env = {
-        PATH = ["${config.home.binDir}"];
-        ZDOTDIR = "$XDG_CONFIG_HOME/zsh";
-        ZSH_CACHE = "${config.home.cacheDir}/zsh";
-      };
-      modules.shell = {
-        prevInit = ''
-          # starship和p10有自己的提示方法；--info-right
-          _cache ${pkgs.any-nix-shell}/bin/any-nix-shell zsh
-        '';
-        aliases.htop = "btm --basic --mem_as_value";
-        aliases.df = "duf";
-        aliases.cat = "bat -p"; #or  bat -pp
-        aliases.unzip = "atool --extract --explain";
-        aliases.zip = "atool --add";
-        aliases.log = "tspin";
-      };
+      tailspin # 支持高亮的语法查看工具
+      nvfetcher-bin # 管理自己构建包的升级
 
-      home = {
-        configFile = {
+      stable.fzf
+      pkgs.my-nix-script
+    ];
+    env = {
+      PATH = ["${config.home.binDir}"];
+      ZDOTDIR = "$XDG_CONFIG_HOME/zsh";
+      ZSH_CACHE = "${config.home.cacheDir}/zsh";
+    };
+    modules.shell = {
+      prevInit = ''
+        source ${pkgs.stable.grc}/etc/grc.zsh
+        # FZF 配置
+        FZF_DEFAULT_COMMAND="fd -H -I --type f"
+        FZF_DEFAULT_OPTIONS="fd --height 50%"
+        FZF_CTRL_T_COMMAND="fd -H -I --type f"
+        FZF_CTRL_T_OPTS="--preview 'bat --color=always --plain --line-range=:200 {}'"
+        FZF_ALT_C_COMMAND="fd -H -I --type d -E '.git*'"
+        FZF_ALT_C_OPTS="--preview 'eza -T -L 2 {} | head -2000'"
+        # FZF_CTRL_R_OPTS=""
+        # source ${pkgs.stable.fzf}/share/fzf/completion.zsh
+        # source ${pkgs.stable.fzf}/share/fzf/key-bindings.zsh
+
+        ${lib.optionalString (! cfg.vivid.enable) ''
+          # colors 配置 if'[[ -z $LS_COLORS ]]'
+          zice 0a atcone="dircolors -b LS_COLORS > c.zsh" \
+            atpull='%atclone' pick='c.zsh' \
+            trapd00r/LS_COLORS
+        ''}
+      '';
+      rcInit = ''
+        # starship和p10有自己的提示方法；--info-right
+        _cache ${pkgs.stable.any-nix-shell}/bin/any-nix-shell zsh
+        ${lib.optionalString (! cfg.atuin.enable) ''
+          if [[ "$INSIDE_EMACS" != 'vterm' ]]; then
+            _zt 0b light-mode for \
+              compile'{hsmw-*,test/*}' \
+              zdharma/history-search-multi-word \
+              atload'bindkey -M viins "^n" history-substring-search-down;
+              bindkey -M viins "^p" history-substring-search-up;
+              bindkey "^[[A" history-substring-search-up;
+              bindkey "^[[B" history-substring-search-down' \
+              zsh-users/zsh-history-substring-search
+
+            # history-search-multi-word config
+            # # Color in which to highlight matched, searched text
+            # (default bg=17 on 256-color terminals)
+            zstyle ":history-search-multi-word" highlight-color "fg=yellow,bold"
+            # Whether to perform syntax highlighting (default true)
+            zstyle ":plugin:history-search-multi-word" synhl "yes"
+            # Effect on active history entry. Try: standout, bold, bg=blue (default underline)
+            zstyle ":plugin:history-search-multi-word" active "underline"
+            # Whether to check paths for existence and mark with magenta (default true)
+            zstyle ":plugin:history-search-multi-word" check-paths "yes"
+            # Whether pressing Ctrl-C or ESC should clear entered query
+            zstyle ":plugin:history-search-multi-word" clear-on-cancel "no"
+          else
+            bindkey '^r' fzf-history-widget
+          fi
+
+        ''}
+      '';
+      aliases.htop = "btm --basic --mem_as_value";
+      aliases.df = "duf";
+      aliases.cat = "bat -p"; #or  bat -pp
+      aliases.unzip = "atool --extract --explain";
+      aliases.zip = "atool --add";
+      aliases.log = "tspin";
+    };
+
+    home = {
+      configFile =
+        {
           # "bat/themes" = {
           #   source = "${config.dotfiles.configDir}/bat/themes";
           #   recursive = true;
@@ -108,28 +169,50 @@ in {
             source = "${config.dotfiles.configDir}/zsh";
             recursive = true;
           };
-          "zsh/prev.zshrc".text = ''${cfg.prevInit}'';
-          "zsh/extra.zshrc".text = let
+          "zsh/.zshrc".text = ''
+            : ''${ZINIT_HOME:="''${XDG_DATA_HOME}/zinit/zinit.git"}
+            ${lib.optionalString (! cfg.zinit.enable) ''
+              [[ -d "''${ZINIT_HOME}" ]] || {
+                mkdir -p $(dirname "''${ZINIT_HOME}")
+                git clone --depth 1 https://github.com/zdharma-continuum/zinit.git "''${ZINIT_HOME}"
+              }
+            ''}
+            typeset -gA ZINIT=(
+                HOME_DIR "''${XDG_DATA_HOME}/zinit"
+                ZCOMPDUMP_PATH "$ZSH_CACHE/zcompdump"
+                BIN_DIR "$ZINIT_HOME"
+                COMPINIT_OPTS -C
+            )
+            _source "''${ZINIT_HOME}/zinit.zsh"
+
+            _source "''${ZDOTDIR}/cache/prev.zshrc" \
+              "''${ZDOTDIR}/zshrc.zsh" \
+              "''${ZDOTDIR}/cache/extra.zshrc" \
+              "''${HOME}/.zshrc"
+          '';
+          "zsh/cache/prev.zshrc".text = ''${cfg.prevInit}'';
+          "zsh/cache/extra.zshrc".text = let
             p10 =
               if config.modules.shell.starship.enable
               then "_cache starship init zsh --print-full-init"
               else ''
                 zinit ice depth=1
                 zinit light romkatv/powerlevel10k
+                if [[ "$INSIDE_EMACS" != 'vterm' ]]; then
+                  _source $ZDOTDIR/p10conf/default.zsh
+                else
+                  _source $ZDOTDIR/p10conf/vterm.zsh
+                fi
               '';
             aliasLines =
               mapAttrsToList (n: v: ''alias ${n}="${v}"'') cfg.aliases;
           in ''
             # This file was autogenerated, do not edit it!
             ${p10}
-            ${concatMapStrings (path: ''
-                _dsource '${path}'
-              '')
-              cfg.rcFiles}
             ${concatStringsSep "\n" aliasLines}
             ${cfg.rcInit}
           '';
-          "zsh/extra.zshenv".text = let
+          "zsh/cache/extra.zshenv".text = let
             envLines =
               mapAttrsToList (n: v: (
                 if (strings.toUpper "${n}") == "PATH"
@@ -138,7 +221,6 @@ in {
               ))
               cfg.env;
           in ''
-            # typeset -U path
             # if [ -n "$__MY_ZSHENV_SOURCED" ]; then return; fi
             # export __MY_ZSHENV_SOURCED=1
             # This file is autogenerated, do not edit it!
@@ -146,38 +228,9 @@ in {
             ${concatMapStringsSep "\n" (path: "_dsource '${path}' ") cfg.envFiles}
             ${cfg.envInit}
           '';
-        };
-      };
-    }
-    (mkIf cfg.enZoxide {
-      user.packages = [pkgs.zoxide];
-      modules.shell.rcInit = ''
-        _cache zoxide init zsh
-      '';
-    })
-    (mkIf cfg.enNavi {
-      user.packages = [pkgs.navi];
-    })
-    # 一个更好的LS_COLORS 工具: https://github.com/sharkdp/vivid
-    (mkIf cfg.enVivid {
-      user.packages = [pkgs.vivid];
-    })
-    (mkIf cfg.enZinit {
-      user.packages = [pkgs.zinit];
-      modules.shell.env.ZINIT_HOME = "${pkgs.zinit}/share/zinit";
-    })
-    (mkIf (! cfg.atuin.enable) {
-      modules.shell.prevInit = ''
-        _source "${config.dotfiles.configDir}/zsh/history.zsh"
-      '';
-    })
-    (mkIf (! cfg.enVivid) {
-      modules.shell.rcInit = ''
-        # colors 配置 if'[[ -z $LS_COLORS ]]'
-        zice 0a atcone="dircors -b LS_COLORS > c.zsh" \
-          atpull='%atclone' pick='c.zsh' \
-          trapd00r/LS_COLORS
-      '';
-    })
-  ];
+        }
+        // (baseFunction cfg.cmpFiles "completions")
+        // (baseFunction cfg.pluginFiles "plugins");
+    };
+  };
 }

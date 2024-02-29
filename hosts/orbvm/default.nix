@@ -68,12 +68,11 @@
 
   # modules config
   modules = {
-    shell.enZinit = true;
-    shell.enVivid = true;
-    shell.enZoxide = true;
+    shell.zinit.enable = true;
+    shell.vivid.enable = true;
+    shell.zoxide.enable = true;
     shell.wget.enable = true;
     shell.tmux.enable = true;
-    shell.fzf.enable = true;
     shell.rsync.enable = true;
     shell.direnv.enable = true;
     shell.git.enable = true;
