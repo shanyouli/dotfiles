@@ -6,19 +6,6 @@ if [[ -z $TMUX && "$TMUX_AUTOSTART" == "True" && -z "$INSIDE_EMACS" && -z $EMACS
     fi
 fi
 
-: ${ZINIT_HOME:="${XDG_DATA_HOME}/zinit/zinit.git"}
-
-typeset -gA ZINIT=(
-    HOME_DIR "${XDG_DATA_HOME}/zinit"
-    ZCOMPDUMP_PATH "$ZSH_CACHE/zcompdump"
-    BIN_DIR "$ZINIT_HOME"
-    COMPINIT_OPTS -C
-)
-
-typeset -g -A _comps
-
-_source "${ZINIT_HOME}/zinit.zsh"
-
 function _zt { zinit depth"1" lucid ${1/#[0-9][a-c]/wait"$1"} "${@:2}"; }
 function _zsnippet() {
     local second

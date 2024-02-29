@@ -14,7 +14,7 @@
   };
   modules = {
     # shared
-    shell.enZinit = true;
+    shell.zinit.enable = true;
     shell.enVivid = true;
     shell.enZoxide = true;
     shell.wget.enable = true;

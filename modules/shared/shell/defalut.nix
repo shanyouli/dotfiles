@@ -137,13 +137,26 @@ in {
               recursive = true;
             };
             "zsh/.zshrc".text = ''
-              ${lib.optionalString (! cfg.enZinit) ''
+              ${lib.optionalString (! cfg.zinit.enable) ''
                 export ZINIT_HOME="''${XDG_DATA_HOME}/zinit/zinit.git"
                 [[ -d "''${ZINIT_HOME}" ]] || {
                   mkdir -p $(dirname "''${ZINIT_HOME}")
                   git clone --depth 1 https://github.com/zdharma-continuum/zinit.git "''${ZINIT_HOME}"
                 }
               ''}
+              : ''${ZINIT_HOME:="''${XDG_DATA_HOME}/zinit/zinit.git"}
+
+              typeset -gA ZINIT=(
+                  HOME_DIR "''${XDG_DATA_HOME}/zinit"
+                  ZCOMPDUMP_PATH "$ZSH_CACHE/zcompdump"
+                  BIN_DIR "$ZINIT_HOME"
+                  COMPINIT_OPTS -C
+              )
+
+              typeset -g -A _comps
+
+              _source "''${ZINIT_HOME}/zinit.zsh"
+
               _source "''${ZDOTDIR}/cache/prev.zshrc" \
                 "''${ZDOTDIR}/zshrc.zsh" \
                 "''${ZDOTDIR}/cache/extra.zshrc" \
@@ -209,10 +222,6 @@ in {
     # 一个更好的LS_COLORS 工具: https://github.com/sharkdp/vivid
     (mkIf cfg.enVivid {
       user.packages = [pkgs.vivid];
-    })
-    (mkIf cfg.enZinit {
-      user.packages = [pkgs.zinit];
-      modules.shell.env.ZINIT_HOME = "${pkgs.zinit}/share/zinit";
     })
     (mkIf (! cfg.atuin.enable) {
       modules.shell.prevInit = ''
