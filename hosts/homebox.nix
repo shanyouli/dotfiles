@@ -17,6 +17,7 @@
     shell.zinit.enable = true;
     shell.vivid.enable = true;
     shell.zoxide.enable = true;
+    shell.navi.enable = true;
     shell.wget.enable = true;
     shell.tmux.enable = true;
     shell.adb.enable = true;

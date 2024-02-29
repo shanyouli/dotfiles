@@ -22,7 +22,6 @@ with lib.my; let
       l));
 in {
   options.modules.shell = with types; {
-    enNavi = mkBoolOpt false;
     aliases = mkOpt (attrsOf (either str path)) {};
     env = mkOption {
       type = attrsOf (oneOf [str path (listOf (either str path))]);
@@ -205,9 +204,6 @@ in {
           // (baseFunction cfg.pluginFiles "plugins");
       };
     }
-    (mkIf cfg.enNavi {
-      user.packages = [pkgs.navi];
-    })
     (mkIf (! cfg.atuin.enable) {
       modules.shell.prevInit = ''
         _source "${config.dotfiles.configDir}/zsh/history.zsh"
