@@ -55,6 +55,17 @@ fi
 # Open current prompt in external editor
 autoload -Uz edit-command-line; zle -N edit-command-line
 bindkey '^ ' edit-command-line
+# 在命令前插入 sudo
+# https://github.com/goreliu/zshguide/wiki/.zshrc
+sudo-command-line() {
+    [[ -z $BUFFER ]] && zle up-history
+    [[ $BUFFER != sudo\ * ]] && BUFFER="sudo $BUFFER"
+    # 光标移动到行末
+    zle end-of-line
+}
+
+zle -N sudo-command-line
+bindkey '^y' sudo-command-line
 
 bindkey -M viins '^s' history-incremental-pattern-search-backward
 bindkey -M viins '^u' backward-kill-line
@@ -64,7 +75,7 @@ bindkey -M viins '^f' forward-word
 bindkey -M viins '^g' push-line-or-edit
 bindkey -M viins '^a' beginning-of-line
 bindkey -M viins '^e' end-of-line
-bindkey -M viins '^d' push-line-or-edit
+# bindkey -M viins '^d' push-line-or-edit
 
 bindkey -M vicmd '^k' kill-line
 bindkey -M vicmd 'H'  run-help
@@ -128,3 +139,44 @@ bindkey -rM viins '^X'
 bindkey -M viins '^X,' _history-complete-newer \
   '^X/' _history-complete-older \
   '^X`' _bash_complete-word
+
+# M-x # 棒棒 M-x
+function execute-command() {
+    local selected=$(printf "%s\n" ${(k)widgets} | ftb-tmux-popup --reverse --prompt="cmd> " --height=10 )
+    zle redisplay
+    [[ $selected ]] && zle $selected
+}
+zle -N execute-command
+bindkey '^[x' execute-command
+
+# zce 相关函数，快速跳转, 需要配置 https://github.com/hchbaw/zce.zsh
+function zce-jump-char() {
+    [[ -z $BUFFER ]] && zle up-history
+    zstyle ':zce:*' keys 'asdghklqwertyuiopzxcvbnmfj;23456789'
+    zstyle ':zce:*' prompt-char '%B%F{green}Jump to character:%F%b '
+    zstyle ':zce:*' prompt-key '%B%F{green}Target key:%F%b '
+    with-zce zce-raw zce-searchin-read
+    CURSOR+=1
+}
+zle -N zce-jump-char
+bindkey -a '^[j' zce-jump-char
+
+# 删除到指定字符
+function zce-delete-to-char() {
+    [[ -z $BUFFER ]] && zle up-history
+    local pbuffer=$BUFFER pcursor=$CURSOR
+    local keys=${(j..)$(print {a..z} {A..Z})}
+    zstyle ':zce:*' prompt-char '%B%F{yellow}Delete to character:%F%b '
+    zstyle ':zce:*' prompt-key '%B%F{yellow}Target key:%F%b '
+    zce-raw zce-searchin-read $keys
+
+    if (( $CURSOR < $pcursor ))  {
+        pbuffer[$CURSOR,$pcursor]=$pbuffer[$CURSOR]
+    } else {
+        pbuffer[$pcursor,$CURSOR]=$pbuffer[$pcursor]
+        CURSOR=$pcursor
+    }
+    BUFFER=$pbuffer
+}
+zle -N zce-delete-to-char
+bindkey -a '^Xj' zce-delete-to-char

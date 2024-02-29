@@ -105,6 +105,8 @@ if (( $+commands[brew] )); then
     alias bcu='brew cu --all --yes --cleanup'
     alias bua='bu ; bcu'
     alias bin='{brew formulae; brew casks; } | fzf | xargs brew install'
+    alias binfo='{brew formulae; brew casks; } | fzf | xargs brew info'
+    alias bedit='{brew formulae; brew casks; } | fzf | xargs brew edit'
     alias bri='brew list | fzf | xargs brew reinstall'
     alias brm='brew list | fzf | xargs brew uininstall'
     alias bcl='brew cleanup'

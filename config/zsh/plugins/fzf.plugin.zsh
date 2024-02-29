@@ -154,3 +154,22 @@ pass() {
         $(gopass ls --flat \
         | fzf -q "$QUERY" --height 10)
 }
+
+# 搜索文件
+# 会将 * 或 ** 替换为搜索结果
+# 前者表示搜索单层, 后者表示搜索子目录
+function fz-find() {
+    local selected dir cut
+    cut=$(grep -oP '[^* ]+(?=\*{1,2}$)' <<< $BUFFER)
+    eval "dir=${cut:-.}"
+    if [[ $BUFFER == *"**"* ]] {
+        selected=$(fd -H . $dir | ftb-tmux-popup --tiebreak=end,length --prompt="cd> ")
+    } elif [[ $BUFFER == *"*"* ]] {
+        selected=$(fd -d 1 . $dir | ftb-tmux-popup --tiebreak=end --prompt="cd> ")
+    }
+    BUFFER=${BUFFER/%'*'*/}
+    BUFFER=${BUFFER/%$cut/$selected}
+    zle end-of-line
+}
+zle -N fz-find
+bindkey "^[s" fz-find
