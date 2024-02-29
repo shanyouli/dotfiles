@@ -22,7 +22,6 @@ with lib.my; let
       l));
 in {
   options.modules.shell = with types; {
-    enZoxide = mkBoolOpt false;
     enNavi = mkBoolOpt false;
     aliases = mkOpt (attrsOf (either str path)) {};
     env = mkOption {
@@ -215,12 +214,6 @@ in {
           // (cmpFunction cfg.pluginFiles);
       };
     }
-    (mkIf cfg.enZoxide {
-      user.packages = [pkgs.zoxide];
-      modules.shell.rcInit = ''
-        _cache zoxide init zsh
-      '';
-    })
     (mkIf cfg.enNavi {
       user.packages = [pkgs.navi];
     })

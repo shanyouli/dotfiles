@@ -16,7 +16,7 @@
     # shared
     shell.zinit.enable = true;
     shell.vivid.enable = true;
-    shell.enZoxide = true;
+    shell.zoxide.enable = true;
     shell.wget.enable = true;
     shell.tmux.enable = true;
     shell.adb.enable = true;
