@@ -39,26 +39,6 @@ function _dsource {
     source "$file"
 }
 
-# command -v "$1" >/dev/null || return 1
-function _cache {
-    if (( $+commands[$1] )) || [[ -x $1 ]]; then
-        local cache_dir="$XDG_CACHE_HOME/${SHELL##*/}/cache"
-        local cache="$cache_dir/${1##*/}"
-        if [[ ! -f $cache || ! -s $cache ]]; then
-            echo "Caching $1"
-            mkdir -p $cache_dir
-            "$@" >$cache
-            chmod 600 $cache
-        fi
-
-        if [[ -o interactive ]]; then
-            source $cache || rm -f $cache
-        fi
-    else
-        return 1
-    fi
-}
-
 export LANGUAGE=en_US # :zh_CN
 
 # export GTAGSLABEL=pygments
@@ -70,6 +50,10 @@ path=( $path )
 typeset -U fpath
 fpath=(  $fpath )
 
+# _comps 全局变量, zsh 内置补全
+typeset -g -A _comps
+
+# 全局变量
 export XDG_DATA_HOME
 export XDG_CONFIG_HOME
 export XDG_CACHE_HOME

@@ -1,0 +1,17 @@
+# -*- mode: sh -*-
+if (( $+commands[$1] )) || [[ -x $1 ]]; then
+    local cache_dir="$XDG_CACHE_HOME/${SHELL##*/}/cache"
+    local cache="$cache_dir/${1##*/}"
+    if [[ ! -f $cache || ! -s $cache ]]; then
+        echo "Caching $1"
+        mkdir -p $cache_dir
+        "$@" >$cache
+        chmod 600 $cache
+    fi
+
+    if [[ -o interactive ]]; then
+        source $cache || rm -f $cache
+    fi
+else
+    return 1
+fi
