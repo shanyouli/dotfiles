@@ -16,6 +16,10 @@ alias home='cd ~'
 # 清屏
 alias clr=clear
 
+# zmv zsh内置的更多功能的mv
+alias zmv="noglob zmv"
+alias zcp="zmv -C"
+alias zln="zmv -L"
 
 # 在sudo中使用用户环境变量
 alias mysudo='sudo -E env "PATH=$PATH"'

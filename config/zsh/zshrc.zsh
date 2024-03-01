@@ -38,7 +38,7 @@ fpath+=(${ZDOTDIR}/functions)
 
 autoload -Uz ${ZDOTDIR}/functions/*(:t)
 autoload +X zman
-
+autoload -Uz zmv
 # =============== 配置插件 =============
 
 # ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd completion)
@@ -92,8 +92,6 @@ _zt light-mode for \
     src="etc/git-extras-completion.zsh" \
     tj/git-extras
 
-zinit as="completion" for \
-  OMZP::rust/_rust
 # ==== 某些比较特殊的插件 ====
 autoload -Uz compinit && compinit -u -d $ZSH_CACHE/zcompdump
 zpcompinit

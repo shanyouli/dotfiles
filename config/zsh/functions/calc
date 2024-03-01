@@ -1,0 +1,5 @@
+# -*- mode: sh -*-
+# DESC: simple calculator
+zmodload zsh/matchfunc
+
+builtin noglob echo $(($*))

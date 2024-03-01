@@ -53,6 +53,10 @@ in {
       rsp = "rustup";
       ca = "cargo";
     };
+    modules.shell.rcInit = ''
+      zinit as="completion" for \
+        OMZP::rust/_rustc
+    '';
     modules.dev.rust.initScript =
       ''
         $DRY_RUN_CMD mkdir -p "${homeDir}"/{.config/cargo,.cache/cargo/{registry,git}}

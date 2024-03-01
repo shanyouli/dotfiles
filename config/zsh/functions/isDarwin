@@ -1,0 +1,4 @@
+# -*- mode: sh -*-;
+# DESC: is MacOS
+
+[[ "$OSTYPE" == "darwin"* ]]
