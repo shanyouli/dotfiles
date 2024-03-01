@@ -9,7 +9,6 @@ with lib;
 with lib.my; let
   cfg = config.modules.shell.starship;
   tomlFormat = pkgs.formats.toml {};
-  starshipCmd = "${config.home.profileBinDir}/starship";
 in {
   options.modules.shell.starship = {
     enable = mkBoolOpt false;
@@ -61,7 +60,6 @@ in {
       };
       directory = {
         truncation_length = 4;
-        # Catppuccin 'lavender'
         style = "bold lavender";
       };
     };
@@ -73,7 +71,7 @@ in {
     };
     programs.bash.interactiveShellInit = mkIf cfg.enableBash ''
       if [[ $TERM != "dumb" && (-z $INSIDE_EMACS || $INSIDE_EMACS == "vterm") ]]; then
-        eval "$(${starshipCmd} init bash --print-full-init)"
+        eval "$(starship init bash --print-full-init)"
       fi
     '';
   };

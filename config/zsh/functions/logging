@@ -1,0 +1,44 @@
+# -*- mode: sh -*-
+# DESC: color_output
+
+local ncolors RED GREEN YELLOW BLUE BOLD NORMAL
+if (( $+commands[tput] )); then
+    ncolors=$(tput colors)
+fi
+
+if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
+    RED="$(tput setaf 1)"
+    GREEN="$(tput setaf 2)"
+    YELLOW="$(tput setaf 3)"
+    BLUE="$(tput setaf 4)"
+    BOLD="$(tput bold)"
+    NORMAL="$(tput sgr0)"
+else
+    RED="\e[31m"
+    GREEN="\e[32m"
+    YELLOW="\e[33m"
+    BLUE="\e[34m"
+    BOLD="\e[1m"
+    NORMAL="\e[0m"
+fi
+
+local log_level="${(U)1}"
+local log_color
+
+case $log_level in
+    "DEBUG")  log_color="${BLUE}"
+              shift
+              ;;
+    "INFO")  log_color="${GREEN}"
+              shift
+              ;;
+    "WARN")  log_color="${YELLOW}"
+              shift
+              ;;
+    "ERROR")  log_color="${RED}"
+              shift
+              ;;
+    *) log_color="${GREEN}" ;;
+esac
+
+printf "${log_color}${BOLD}${log_level}${NORMAL}: ${log_color}$*${NORMAL}"

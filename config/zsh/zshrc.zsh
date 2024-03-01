@@ -39,6 +39,7 @@ fpath+=(${ZDOTDIR}/functions)
 autoload -Uz ${ZDOTDIR}/functions/*(:t)
 autoload +X zman
 autoload -Uz zmv
+
 # =============== 配置插件 =============
 
 # ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd completion)
