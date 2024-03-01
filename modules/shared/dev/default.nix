@@ -87,7 +87,7 @@ in {
             ASDF_CONFIG_FILE = "${cmh.configDir}/asdf/asdf.conf";
             ASDF_DATA_DIR = asdf_data_dir;
           };
-          pluginFiles = ["asdf/asdf.plugin.zsh"];
+          pluginFiles = ["asdf"];
         }
       ];
       home.configFile."asdf/asdf.conf".text = ''

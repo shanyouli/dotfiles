@@ -38,7 +38,7 @@ in {
         py2 = "python2";
         py3 = "python3";
       };
-      cmpFiles = ["pipx/_pipx"];
+      cmpFiles = ["pipx"];
       rcInit = ''
         pipx() {
           if [[ -z "''${_comps[_pipx]}" ]]; then

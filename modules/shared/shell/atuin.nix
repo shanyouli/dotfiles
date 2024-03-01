@@ -16,7 +16,7 @@ in {
   };
   config = mkIf cfg.enable {
     user.packages = [pkgs.stable.atuin];
-    # modules.shell.pluginFiles = [ "atuin/atuin.plugin.zsh" ];
+    # modules.shell.pluginFiles = [ "atuin" ];
     modules.shell.rcInit = ''
       [[ -f $XDG_DATA_HOME/atuin/history.db ]] || atuin import auto
       export ATUIN_NOBIND="true"

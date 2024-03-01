@@ -15,6 +15,6 @@ in {
 
   config = mkIf cfg.enable {
     user.packages = [pkgs.ugrep];
-    modules.shell.pluginFiles = ["ugrep/ugrep.plugin.zsh"];
+    modules.shell.pluginFiles = ["ugrep"];
   };
 }

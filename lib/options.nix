@@ -2,9 +2,10 @@
   inherit (lib) mkOption types mkOptionType isFunction concatMap getValues foldl' mergeAttrs;
 in rec {
   mkOpt = type: default: mkOption {inherit type default;};
-
   mkOpt' = type: default: description:
     mkOption {inherit type default description;};
+
+  mkOptA = type: default: apply: mkOption {inherit type default apply;};
 
   mkBoolOpt = default:
     mkOption {

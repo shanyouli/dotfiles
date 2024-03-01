@@ -9,15 +9,25 @@ with lib;
 with lib.my; let
   cfg = config.modules.shell;
   getLastFunction = str: last (splitString "/" str);
+  configDir = config.dotfiles.configDir;
+  cmpFunc = map (x:
+    if hasPrefix "/" x
+    then x
+    else if hasInfix "/" x
+    then "${configDir}/${x}"
+    else "${configDir}/${x}/_${x}");
+  pluginFunc = map (x:
+    if hasPrefix "/" x
+    then x
+    else if hasInfix "/" x
+    then "${configDir}/${x}"
+    else "${configDir}/${x}/${x}.plugin.zsh");
   baseFunction = l: path:
     concatMapAttrs (n: v: {
       "${n}".source = v;
-    }) (builtins.listToAttrs (map (n: {
-        name = "zsh/${path}/${getLastFunction n}";
-        value =
-          if hasPrefix "/" n
-          then n
-          else "${config.dotfiles.configDir}/${n}";
+    }) (builtins.listToAttrs (map (value: {
+        inherit value;
+        name = "zsh/${path}/${getLastFunction value}";
       })
       l));
 in {
@@ -47,8 +57,8 @@ in {
     '';
     prevInit = mkOpt' lines "" "zshrc pre";
     envFiles = mkOpt (listOf (either str path)) [];
-    cmpFiles = mkOpt (listOf (either str path)) [];
-    pluginFiles = mkOpt (listOf (either str path)) [];
+    cmpFiles = mkOptA (listOf (either str path)) [] cmpFunc;
+    pluginFiles = mkOptA (listOf (either str path)) [] pluginFunc;
   };
 
   # 一些现代命令行工具的推荐:https://github.com/ibraheemdev/modern-unix
@@ -166,7 +176,7 @@ in {
           #   recursive = true;
           # };
           "zsh" = {
-            source = "${config.dotfiles.configDir}/zsh";
+            source = "${configDir}/zsh";
             recursive = true;
           };
           "zsh/.zshrc".text = ''
