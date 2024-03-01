@@ -65,6 +65,9 @@ in {
         style = "bold lavender";
       };
     };
+    modules.shell.rcInit = ''
+      _cache starship init zsh --print-full-init
+    '';
     home.configFile."starship.toml" = mkIf ((cfg.settings != {}) && (config.modules.themes.default == "")) {
       source = tomlFormat.generate "starship-config" cfg.settings;
     };
