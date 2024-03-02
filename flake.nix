@@ -229,7 +229,7 @@
           };
           py = pkgs.python3.withPackages (p: with p; [requests beautifulsoup4]);
         in
-          pkgs.writeScriptBin "repl" ''
+          pkgs.writeScriptBin "pkgs-update" ''
             #! ${pkgs.lib.getExe pkgs.bash}
             export PATH=$PATH:${buildPath}/bin
             export NIX_PATH="nixpkgs=${inputs.nixpkgs}:$NIX_PATH"
@@ -244,6 +244,13 @@
             bash packages/darwinApp/simple-live/update.sh
             ${py}/bin/python3 packages/firefox-addons/update.py
           '';
+      };
+      upOne = flake-utils.lib.mkApp {
+        drv = pkgs.writeScriptBin "upOne" ''
+          #!${pkgs.lib.getExe pkgs.bash}
+          echo "update $1"
+          ${allPkgs."${system}".nvfetcher-bin}/bin/nvfetcher -f "$1"
+        '';
       };
       default = sysdo;
     });
