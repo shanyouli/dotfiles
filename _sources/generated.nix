@@ -31,10 +31,10 @@
   };
   alist-web = {
     pname = "alist-web";
-    version = "3.31.0";
+    version = "3.32.0";
     src = fetchurl {
-      url = "https://github.com/alist-org/alist-web/releases/download/3.31.0/dist.tar.gz";
-      sha256 = "sha256-hZUlDwIZGn46TEKH2rMJpgbO/brboQEGnOEEmZbz2Mc=";
+      url = "https://github.com/alist-org/alist-web/releases/download/3.32.0/dist.tar.gz";
+      sha256 = "sha256-KvklBz5SH/rdmYZrZb5U1JWk3OC0FkRpECMM2DtLEh8=";
     };
   };
   alive-progress = {
@@ -59,18 +59,18 @@
   };
   calibre = {
     pname = "calibre";
-    version = "7.5.1";
+    version = "7.6.0";
     src = fetchurl {
-      url = "https://download.calibre-ebook.com/7.5.1/calibre-7.5.1.dmg";
-      sha256 = "sha256-hI5DImjZ7fLwvPeaEKG7p+s/Y4RG5Fdu0mEBVa479qg=";
+      url = "https://download.calibre-ebook.com/7.6.0/calibre-7.6.0.dmg";
+      sha256 = "sha256-p9bqym47j/YrNV2hzIl3YtUqwUih4c42pu61kAayQMs=";
     };
   };
   calibrepath = {
     pname = "calibrepath";
-    version = "7.5.1";
+    version = "7.6.0";
     src = fetchurl {
-      url = "https://github.com/Cirn09/calibre-do-not-translate-my-path/releases/download/v7.5.1/mac-patch-backend+update-v7.5.1.zip";
-      sha256 = "sha256-p0ALGlTJdV2hUhOeJZTqvWRfpx+u56O0JTbWv2AthOI=";
+      url = "https://github.com/Cirn09/calibre-do-not-translate-my-path/releases/download/v7.6.0/mac-patch-backend+update-v7.6.0.zip";
+      sha256 = "sha256-P4G4BrZepXNHsCzKB9Vkv0AsPAov6DvaKNAieulaKfc=";
     };
   };
   chatgpt = {
@@ -141,21 +141,12 @@
     };
     vendorHash = "sha256-+trt7BLgy1d1ENrqf/J0mf8ECnKfYl3P/KibQQxNRN4=";
   };
-  codicons = {
-    pname = "codicons";
-    version = "45fc3f549ceb679a2d36a8e073b066922a160aac";
-    src = fetchurl {
-      url = "https://github.com/microsoft/vscode-codicons/raw/45fc3f549ceb679a2d36a8e073b066922a160aac/dist/codicon.ttf";
-      sha256 = "sha256-o/qnVVbuy1fV5LmLNYiK1WolCM6NM9tvgPmZBiHbsbA=";
-    };
-    date = "2024-02-22";
-  };
   darkreader = {
     pname = "darkreader";
-    version = "4.9.77";
+    version = "4.9.78";
     src = fetchurl {
-      url = "https://github.com/darkreader/darkreader/releases/download/v4.9.77/darkreader-firefox.xpi";
-      sha256 = "sha256-cofy4w752lG/FBmknknVULGI5ZYbr1FaHmQUkcGICvc=";
+      url = "https://github.com/darkreader/darkreader/releases/download/v4.9.78/darkreader-firefox.xpi";
+      sha256 = "sha256-m2uJ5BBpCubDFDd1ohVGPfLorA1IYaca+2XhZaG7n6o=";
     };
   };
   deeplx = {
@@ -258,16 +249,16 @@
   };
   fav = {
     pname = "fav";
-    version = "v0.2.4";
+    version = "v0.2.6";
     src = fetchFromGitHub {
       owner = "kingwingfly";
       repo = "fav";
-      rev = "v0.2.4";
+      rev = "v0.2.6";
       fetchSubmodules = false;
-      sha256 = "sha256-YWQnMQSOXOFSssC6HFrStSlhnkLpfiXyNXTwq4J7cjk=";
+      sha256 = "sha256-L4yJfgJNxlWTXyL7i6UiDfbjpzXhp8pxTLrd/SSzp9A=";
     };
     cargoLock."Cargo.lock" = {
-      lockFile = ./fav-v0.2.4/Cargo.lock;
+      lockFile = ./fav-v0.2.6/Cargo.lock;
       outputHashes = {
         
       };
@@ -343,10 +334,10 @@
   };
   localsend = {
     pname = "localsend";
-    version = "1.13.1";
+    version = "1.14.0";
     src = fetchurl {
-      url = "https://github.com/localsend/localsend/releases/download/v1.13.1/LocalSend-1.13.1.dmg";
-      sha256 = "sha256-YCy6NlmEPsOFtIZ27mOYDnMPd1tj3YO2bwNDdM3K/uY=";
+      url = "https://github.com/localsend/localsend/releases/download/v1.14.0/LocalSend-1.14.0.dmg";
+      sha256 = "sha256-L7V48QoOA0cjx45n+9Xav/zzCzCsZB3TBip0WGusMXg=";
     };
   };
   lporg = {
@@ -532,10 +523,10 @@
   };
   ublock-origin = {
     pname = "ublock-origin";
-    version = "1.56.1b0";
+    version = "1.56.1b10";
     src = fetchurl {
-      url = "https://github.com/gorhill/uBlock/releases/download/1.56.1b0/uBlock0_1.56.1b0.firefox.signed.xpi";
-      sha256 = "sha256-8qKK7pEXTkUHmgFXFCUzwzv6wSEvVTITpHkhODy4DT8=";
+      url = "https://github.com/gorhill/uBlock/releases/download/1.56.1b10/uBlock0_1.56.1b10.firefox.signed.xpi";
+      sha256 = "sha256-/Ta34QNxDR51IILYwLKDFZgKRPb1jRQiQUKAeG2sHL4=";
     };
   };
   upic = {
@@ -548,10 +539,10 @@
   };
   vivaldi = {
     pname = "vivaldi";
-    version = "6.5.3206.63";
+    version = "6.6.3271.45";
     src = fetchurl {
-      url = "https://downloads.vivaldi.com/stable/Vivaldi.6.5.3206.63.universal.dmg";
-      sha256 = "sha256-e2Z5jYaEYK7Bev9Y2LgAk5p7NnPfsfM2FAUnmMyHmMM=";
+      url = "https://downloads.vivaldi.com/stable/Vivaldi.6.6.3271.45.universal.dmg";
+      sha256 = "sha256-bbwN72Hdc1UTssVJ5SVqoQpmQf8dxWiPSS0j5zK/u/Q=";
     };
   };
   websocket-bridge-python = {
@@ -564,10 +555,10 @@
   };
   xbydriver = {
     pname = "xbydriver";
-    version = "3.24.22618";
+    version = "3.24.30216";
     src = fetchurl {
-      url = "https://github.com/odomu/aliyunpan/releases/download/v3.24.22618/alixby-3.24.22618-mac-arm64.dmg";
-      sha256 = "sha256-fHeszYLiKuwmNIVE5zIEZgl7pjPtIJR3Culbx9uDdVU=";
+      url = "https://github.com/odomu/aliyunpan/releases/download/v3.24.30216/alixby-3.24.30216-mac-arm64.dmg";
+      sha256 = "sha256-8Dd28LMAs2YiXgmSTmRKuwP2D+Dyvfuy+ZHi1mzRcJ8=";
     };
   };
   yabai = {
@@ -606,10 +597,10 @@
   };
   zy-player = {
     pname = "zy-player";
-    version = "3.3.1";
+    version = "3.3.2";
     src = fetchurl {
-      url = "https://github.com/Hiram-Wong/ZyPlayer/releases/download/v3.3.1/zyplayer-mac-3.3.1-arm64.dmg";
-      sha256 = "sha256-/43maclqJu75goMBzT8QaqQAqfruHRSE1yYYiWhu8eg=";
+      url = "https://github.com/Hiram-Wong/ZyPlayer/releases/download/v3.3.2/zyplayer-mac-3.3.2-arm64.dmg";
+      sha256 = "sha256-XjK6m5hlFAT84/cEuDn5Q59x1dW1hexM8GyCEkhfaeQ=";
     };
   };
 }
