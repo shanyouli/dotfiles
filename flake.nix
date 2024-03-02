@@ -236,7 +236,8 @@
             keys_args=""
             [[ -f $HOME/.config/nvfetcher.toml ]] && keys_args="-k $HOME/.config/nvfetcher.toml"
             [[ -f ./secrets.toml ]] && keys_args="-k ./secrets.toml"
-            ${inputs.nvfetcher.packages."${system}".default}/bin/nvfetcher $keys_args -r 10 --keep-going
+            ${allPkgs."${system}".nvfetcher-bin}/bin/nvfetcher $keys_args -r 10  --keep-going
+            # ${inputs.nvfetcher.packages."${system}".default}/bin/nvfetcher $keys_args -r 10  --keep-old
             echo "update firefox, rpcs3, simple-live ..."
             bash packages/darwinApp/firefox/update.sh
             bash packages/darwinApp/rpcs3/update.sh

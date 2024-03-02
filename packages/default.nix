@@ -94,6 +94,10 @@ in rec {
         dict2xml = pprev.dict2xml.overrideAttrs (old: {
           inherit (sources.dict2xml) pname version src;
         });
+        # nvfetcher-bin neeed packaging
+        nvchecker = pprev.nvchecker.overrideAttrs (old: {
+          propagatedBuildInputs = (old.propagatedBuildInputs or []) ++ [pfinal.packaging];
+        });
       }
       // mapPkgs ./python callPyPkg;
   in
