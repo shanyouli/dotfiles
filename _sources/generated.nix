@@ -19,13 +19,13 @@
   };
   alist = {
     pname = "alist";
-    version = "v3.31.0";
+    version = "v3.32.0";
     src = fetchFromGitHub {
       owner = "alist-org";
       repo = "alist";
-      rev = "v3.31.0";
+      rev = "v3.32.0";
       fetchSubmodules = false;
-      sha256 = "sha256-Xg1pxMLY4M/5wA44UIms1PW1TYaO0+WB8YBc65MFSYA=";
+      sha256 = "sha256-SHiPaXIcjMwAb+GLnVvmAkPK4Wv/3mh3AbIGjQMX0qQ=";
     };
     vendorHash = "sha256-AIgT1USS1uWMTWYYc7uUORn5pVsbGynGV3KjiGmvU1Y=";
   };
