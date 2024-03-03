@@ -249,7 +249,7 @@
         drv = pkgs.writeScriptBin "upOne" ''
           #!${pkgs.lib.getExe pkgs.bash}
           echo "update $1"
-          ${allPkgs."${system}".nvfetcher-bin}/bin/nvfetcher -f "$1"
+          ${allPkgs."${system}".nvfetcher-bin}/bin/nvfetcher -f "^$1$"
         '';
       };
       default = sysdo;

@@ -29,7 +29,6 @@ in {
         (nerdfonts.override {fonts = ["FantasqueSansMono" "NerdFontsSymbolsOnly"];})
         # maple-mono
         # maple-sc
-        # codicons # vscode icons 字体
         julia-mono
         monaspace
       ];

@@ -27,7 +27,7 @@
       fetchSubmodules = false;
       sha256 = "sha256-SHiPaXIcjMwAb+GLnVvmAkPK4Wv/3mh3AbIGjQMX0qQ=";
     };
-    vendorHash = "sha256-AIgT1USS1uWMTWYYc7uUORn5pVsbGynGV3KjiGmvU1Y=";
+    vendorHash = "sha256-7Eq/CuwsJZEWtECuUbGhQr0c0IFA3ZBDmbuLwLnlugs=";
   };
   alist-web = {
     pname = "alist-web";
@@ -200,7 +200,6 @@
       url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-28/no-frame-refocus-cocoa.patch";
       sha256 = "sha256-+1d33IkKoHNJ8UOuZcK89D7a1v6/1WSwGiI1xaFfyr0=";
     };
-    date = "2024-02-21";
   };
   "emacs29.poll" = {
     pname = "emacs29.poll";
@@ -209,7 +208,6 @@
       url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-29/poll.patch";
       sha256 = "sha256-BS6srFt72GtGb5o9GL/5NX8rl1F/RjoJ5MUSVb2xRkg=";
     };
-    date = "2024-02-21";
   };
   "emacs29.role-patch" = {
     pname = "emacs29.role-patch";
@@ -218,7 +216,6 @@
       url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-28/fix-window-role.patch";
       sha256 = "sha256-H4Qj6n5uZsmsbdjjexGZctqhJk3gAXKiSnmnEO/LgTA=";
     };
-    date = "2024-02-21";
   };
   "emacs29.round-undecorated-frame" = {
     pname = "emacs29.round-undecorated-frame";
@@ -227,7 +224,6 @@
       url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-29/round-undecorated-frame.patch";
       sha256 = "sha256-dFH4D1WYQOVOagUuVdEQB3irxV+Y8dDAOKJOJXc/KHQ=";
     };
-    date = "2024-02-21";
   };
   "emacs29.system-appearance" = {
     pname = "emacs29.system-appearance";
@@ -236,7 +232,6 @@
       url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-28/system-appearance.patch";
       sha256 = "sha256-1u4VmDmzi2r1Ode5vf8jEmPkUcH9Qu7A0SUxjJ24zZI=";
     };
-    date = "2024-02-21";
   };
   emacsclient = {
     pname = "emacsclient";
@@ -555,10 +550,10 @@
   };
   xbydriver = {
     pname = "xbydriver";
-    version = "3.24.30216";
+    version = "3.12.5";
     src = fetchurl {
-      url = "https://github.com/odomu/aliyunpan/releases/download/v3.24.30216/alixby-3.24.30216-mac-arm64.dmg";
-      sha256 = "sha256-8Dd28LMAs2YiXgmSTmRKuwP2D+Dyvfuy+ZHi1mzRcJ8=";
+      url = "https://github.com/gaozhangmin/aliyunpan/releases/download/v3.12.5/XBYDriver-3.12.5-mac-arm64.dmg";
+      sha256 = "sha256-9a3wRvOEdoHBfjE0faSvT9z46QRV9NhpauT/y76SNCY=";
     };
   };
   yabai = {
@@ -593,6 +588,17 @@
       rev = "v2.0.0-beta.36";
       fetchSubmodules = false;
       sha256 = "sha256-rXajj7lGuiirWHctePIhChGgD74KxbA0XJ/AIGGW6aM=";
+    };
+  };
+  zpmod = {
+    pname = "zpmod";
+    version = "v1.1.0";
+    src = fetchFromGitHub {
+      owner = "z-shell";
+      repo = "zpmod";
+      rev = "v1.1.0";
+      fetchSubmodules = false;
+      sha256 = "sha256-vCQOn+8l9DcVJ6XbtHhr7N5IDr2Ht/JRub217ZO96Ok=";
     };
   };
   zy-player = {

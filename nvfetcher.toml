@@ -30,6 +30,10 @@ src.github = "delfick/python-dict2xml"
 fetch.github = "delfick/python-dict2xml"
 
 ### common
+[zpmod]
+src.github = "z-shell/zpmod"
+fetch.github = "z-shell/zpmod"
+
 [maple-sc-nf]
 src.github = "subframe7536/Maple-font"
 src.from_pattern = "v(.*)"
@@ -57,9 +61,9 @@ src.github = "OwO-Network/DeepLX"
 fetch.github = "OwO-Network/DeepLX"
 passthru = { vendorHash = "sha256-x4Z8fTrgXOH+9Ixj9NKr2G3BuQPm7/CqNGoIVbXmMOE=" }
 
-[codicons]
-src.git = "https://github.com/microsoft/vscode-codicons"
-fetch.url = "https://github.com/microsoft/vscode-codicons/raw/$ver/dist/codicon.ttf"
+# [codicons]
+# src.git = "https://github.com/microsoft/vscode-codicons"
+# fetch.url = "https://github.com/microsoft/vscode-codicons/raw/$ver/dist/codicon.ttf"
 
 [clash2singbox]
 src.github = "xmdhs/clash2singbox"
@@ -99,7 +103,7 @@ fetch.github = "nilaoda/BBDown"
 [alist]
 src.github = "alist-org/alist"
 fetch.github = "alist-org/alist"
-passthru = { vendorHash = "sha256-AIgT1USS1uWMTWYYc7uUORn5pVsbGynGV3KjiGmvU1Y=" }
+passthru = { vendorHash = "sha256-7Eq/CuwsJZEWtECuUbGhQr0c0IFA3ZBDmbuLwLnlugs=" }
 
 [alist-web]
 src.github = "alist-org/alist-web"
@@ -310,21 +314,31 @@ src.github = "koekeishiya/yabai"
 fetch.github = "koekeishiya/yabai"
 
 ["emacs29.role-patch"]
-src.git = "https://github.com/d12frosted/homebrew-emacs-plus"
-fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/$ver/patches/emacs-28/fix-window-role.patch"
+src.manual = "29"
+fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-28/fix-window-role.patch"
+# src.git = "https://github.com/d12frosted/homebrew-emacs-plus"
+# fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/$ver/patches/emacs-28/fix-window-role.patch"
 
 ["emacs29.poll"]
-src.git = "https://github.com/d12frosted/homebrew-emacs-plus"
-fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/$ver/patches/emacs-29/poll.patch"
+src.manual = "29"
+fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-29/poll.patch"
+# src.git = "https://github.com/d12frosted/homebrew-emacs-plus"
+# fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/$ver/patches/emacs-29/poll.patch"
 
 ["emacs29.round-undecorated-frame"]
-src.git = "https://github.com/d12frosted/homebrew-emacs-plus"
-fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/$ver/patches/emacs-29/round-undecorated-frame.patch"
+src.manual = "29"
+fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-29/round-undecorated-frame.patch"
+# src.git = "https://github.com/d12frosted/homebrew-emacs-plus"
+# fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/$ver/patches/emacs-29/round-undecorated-frame.patch"
 
 ["emacs29.system-appearance"]
-src.git = "https://github.com/d12frosted/homebrew-emacs-plus"
-fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/$ver/patches/emacs-28/system-appearance.patch"
+src.manual = "29"
+fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-28/system-appearance.patch"
+# src.git = "https://github.com/d12frosted/homebrew-emacs-plus"
+# fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/$ver/patches/emacs-28/system-appearance.patch"
 
 ["emacs29.no-frame-refocus-cocoa"]
-src.git = "https://github.com/d12frosted/homebrew-emacs-plus"
-fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/$ver/patches/emacs-28/no-frame-refocus-cocoa.patch"
+src.manual = "29"
+fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-28/no-frame-refocus-cocoa.patch"
+# src.git = "https://github.com/d12frosted/homebrew-emacs-plus"
+# fetch.url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/$ver/patches/emacs-28/no-frame-refocus-cocoa.patch"

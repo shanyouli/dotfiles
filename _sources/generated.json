@@ -35,7 +35,7 @@
         "extract": null,
         "name": "alist",
         "passthru": {
-            "vendorHash": "sha256-AIgT1USS1uWMTWYYc7uUORn5pVsbGynGV3KjiGmvU1Y="
+            "vendorHash": "sha256-7Eq/CuwsJZEWtECuUbGhQr0c0IFA3ZBDmbuLwLnlugs="
         },
         "pinned": false,
         "src": {
@@ -354,7 +354,7 @@
     },
     "emacs29.no-frame-refocus-cocoa": {
         "cargoLocks": null,
-        "date": "2024-02-21",
+        "date": null,
         "extract": null,
         "name": "emacs29.no-frame-refocus-cocoa",
         "passthru": null,
@@ -369,7 +369,7 @@
     },
     "emacs29.poll": {
         "cargoLocks": null,
-        "date": "2024-02-21",
+        "date": null,
         "extract": null,
         "name": "emacs29.poll",
         "passthru": null,
@@ -384,7 +384,7 @@
     },
     "emacs29.role-patch": {
         "cargoLocks": null,
-        "date": "2024-02-21",
+        "date": null,
         "extract": null,
         "name": "emacs29.role-patch",
         "passthru": null,
@@ -399,7 +399,7 @@
     },
     "emacs29.round-undecorated-frame": {
         "cargoLocks": null,
-        "date": "2024-02-21",
+        "date": null,
         "extract": null,
         "name": "emacs29.round-undecorated-frame",
         "passthru": null,
@@ -414,7 +414,7 @@
     },
     "emacs29.system-appearance": {
         "cargoLocks": null,
-        "date": "2024-02-21",
+        "date": null,
         "extract": null,
         "name": "emacs29.system-appearance",
         "passthru": null,
@@ -997,11 +997,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-8Dd28LMAs2YiXgmSTmRKuwP2D+Dyvfuy+ZHi1mzRcJ8=",
+            "sha256": "sha256-9a3wRvOEdoHBfjE0faSvT9z46QRV9NhpauT/y76SNCY=",
             "type": "url",
-            "url": "https://github.com/odomu/aliyunpan/releases/download/v3.24.30216/alixby-3.24.30216-mac-arm64.dmg"
+            "url": "https://github.com/gaozhangmin/aliyunpan/releases/download/v3.12.5/XBYDriver-3.12.5-mac-arm64.dmg"
         },
-        "version": "3.24.30216"
+        "version": "3.12.5"
     },
     "yabai": {
         "cargoLocks": null,
@@ -1062,6 +1062,26 @@
             "type": "github"
         },
         "version": "v2.0.0-beta.36"
+    },
+    "zpmod": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "zpmod",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "z-shell",
+            "repo": "zpmod",
+            "rev": "v1.1.0",
+            "sha256": "sha256-vCQOn+8l9DcVJ6XbtHhr7N5IDr2Ht/JRub217ZO96Ok=",
+            "type": "github"
+        },
+        "version": "v1.1.0"
     },
     "zy-player": {
         "cargoLocks": null,

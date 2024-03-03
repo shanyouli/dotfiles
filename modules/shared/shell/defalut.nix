@@ -204,6 +204,7 @@ in {
         "zsh/cache/prev.zshrc".text = cfg.prevInit;
         "zsh/cache/extra.zshrc".text = cfg.rcInit;
         "zsh/cache/extra.zshenv".text = cfg.envInit;
+        # source ${pkgs.zpmod}/share/zpmod/zpmod.plugin.zsh
         "zsh/.zshrc".text = ''
           : ''${ZINIT_HOME:="''${XDG_DATA_HOME}/zinit/zinit.git"}
           ${lib.optionalString (! cfg.zinit.enable) ''
