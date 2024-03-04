@@ -16,7 +16,7 @@ in {
   config = mkIf cfg.enable {
     user.packages = [pkgs.stable.zoxide];
     modules.shell.rcInit = ''
-      _cache zoxide init zsh
+      _cache -v ${pkgs.stable.zoxide.version} zoxide init zsh
     '';
   };
 }

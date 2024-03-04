@@ -43,6 +43,13 @@ in {
     in {
       user.packages = [cfg.package];
       modules.shell = mkMerge [
+        {
+          env = {
+            ASDF_CONFIG_FILE = "${cmh.configDir}/asdf/asdf.conf";
+            ASDF_DATA_DIR = asdf_data_dir;
+          };
+          pluginFiles = ["asdf"];
+        }
         (mkIf cfm.shell.direnv.enable {
           direnv.stdlib.asdf = pkgs.writeScript "use_asdf" ''
             #!/usr/bin/env sh
@@ -82,13 +89,6 @@ in {
         (mkIf (! cfm.shell.direnv.enable) {
           rcInit = mkBefore ''source ${cfg.package}/etc/profile.d/asdf-prepare.sh '';
         })
-        {
-          env = {
-            ASDF_CONFIG_FILE = "${cmh.configDir}/asdf/asdf.conf";
-            ASDF_DATA_DIR = asdf_data_dir;
-          };
-          pluginFiles = ["asdf"];
-        }
       ];
       home.configFile."asdf/asdf.conf".text = ''
         plugin_repository_last_check_duration = never

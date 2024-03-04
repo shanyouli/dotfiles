@@ -20,7 +20,7 @@ in {
   config = mkIf cfg.enable {
     user.packages = [pkgs.stable.navi];
     modules.shell.rcInit = ''
-      _cache navi widget zsh
+      _cache -v ${pkgs.stable.navi.version} navi widget zsh
     '';
     modules.shell.env.NAVI_PATH = "${config.dotfiles.configDir}/navi/cheats:${dataDir}";
   };

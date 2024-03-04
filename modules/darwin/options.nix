@@ -116,8 +116,20 @@ in {
       '';
       macos.userScript.clear_zsh.text = ''
         echo-info "Clear zsh ..."
-        if [[ -d ${config.env.ZSH_CACHE}/cache ]]; then
-          $DRY_RUN_CMD rm -rf ${config.env.ZSH_CACHE}/cache
+        if command -v fd >/dev/null 2>&1; then
+          if [[ -d  ${config.env.ZDOTDIR} ]]; then
+            fd . ${config.env.ZDOTDIR} -e zwc -t f -X command rm  -vf {}
+          fi
+          if [[ -d ${config.env.ZSH_CACHE}/cache ]]; then
+            fd . ${config.env.ZSH_CACHE} -e zwc -t f -X command rm -vf {}
+          fi
+        else
+          if [[ -d  ${config.env.ZDOTDIR} ]]; then
+            find ${config.env.ZDOTDIR} -name "*.zwc" -type f -exec command rm -vf {} \;
+          fi
+          if [[ -d ${config.env.ZSH_CACHE}/cache ]]; then
+            find ${config.env.ZSH_CACHE} -name "*.zwc" -type f -exec command rm -vf {} \;
+          fi
         fi
         # 禁止在 USB 卷创建元数据文件, .DS_Store
         defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true

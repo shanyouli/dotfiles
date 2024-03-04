@@ -20,7 +20,7 @@ in {
     modules.shell.rcInit = ''
       [[ -f $XDG_DATA_HOME/atuin/history.db ]] || atuin import auto
       export ATUIN_NOBIND="true"
-      _cache atuin init zsh
+      _cache -v ${pkgs.stable.atuin.version} atuin init zsh
       bindkey '^r' _atuin_search_widget
     '';
   };

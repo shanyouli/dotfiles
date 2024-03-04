@@ -85,11 +85,10 @@ in {
       stable.fd
       stable.eza
       stable.bat
-      stable.any-nix-shell
       stable.duf
       stable.grc
       httrack # 网页抓取
-      cachix # nix cache
+      stable.cachix # nix cache
       stable.hugo # 我的blog工具
       imagemagick # 图片转换工具
       gifsicle # 命令行gif生成工具
@@ -110,7 +109,7 @@ in {
     ];
     env = {
       PATH = ["${config.home.binDir}"];
-      ZDOTDIR = "$XDG_CONFIG_HOME/zsh";
+      ZDOTDIR = ''''${XDG_CONFIG_HOME:-~/.config}/zsh'';
       ZSH_CACHE = "${config.home.cacheDir}/zsh";
     };
     modules.shell = {
@@ -153,7 +152,7 @@ in {
       '';
       rcInit = mkOrder 100 ''
         # starship和p10有自己的提示方法；--info-right
-        _cache ${pkgs.stable.any-nix-shell}/bin/any-nix-shell zsh
+        _cache -v ${pkgs.stable.any-nix-shell.version} ${pkgs.stable.any-nix-shell}/bin/any-nix-shell zsh
         ${lib.optionalString (! cfg.atuin.enable) ''
           if [[ "$INSIDE_EMACS" != 'vterm' ]]; then
             _zt 0b light-mode for \
