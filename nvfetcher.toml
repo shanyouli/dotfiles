@@ -207,10 +207,10 @@ src.to_pattern = "\\1"
 fetch.url = "https://github.com/gee1k/uPic/releases/download/v$ver/uPic.zip"
 
 [xbydriver]
-src.github ="odomu/aliyunpan"
+src.github ="gaozhangmin/aliyunpan"
 src.from_pattern = "v(.*)"
 src.to_pattern = "\\1"
-fetch.url = "https://github.com/odomu/aliyunpan/releases/download/v$ver/alixby-$ver-mac-arm64.dmg"
+fetch.url = "https://github.com/gaozhangmin/aliyunpan/releases/download/v$ver/XBYDriver-$ver-mac-arm64.dmg"
 
 [zy-player]
 src.github="Hiram-Wong/ZyPlayer"

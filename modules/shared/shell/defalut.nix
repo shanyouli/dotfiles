@@ -127,6 +127,9 @@ in {
             source $i
           done
         ''}
+        ZINIT[HOME_DIR]="$XDG_DATA_HOME/zinit"
+        ZINIT[ZCOMPDUMP_PATH]="$ZSH_CACHE/zcompdump"
+        ZINIT[COMPINIT_OPTS]="-C"
       '';
       prevInit = mkOrder 100 ''
         source ${pkgs.stable.grc}/etc/grc.zsh
@@ -204,8 +207,8 @@ in {
         "zsh/cache/prev.zshrc".text = cfg.prevInit;
         "zsh/cache/extra.zshrc".text = cfg.rcInit;
         "zsh/cache/extra.zshenv".text = cfg.envInit;
-        # source ${pkgs.zpmod}/share/zpmod/zpmod.plugin.zsh
         "zsh/.zshrc".text = ''
+          source ${pkgs.zpmod}/share/zpmod/zpmod.plugin.zsh
           : ''${ZINIT_HOME:="''${XDG_DATA_HOME}/zinit/zinit.git"}
           ${lib.optionalString (! cfg.zinit.enable) ''
             [[ -d "''${ZINIT_HOME}" ]] || {
@@ -213,12 +216,7 @@ in {
               git clone --depth 1 https://github.com/zdharma-continuum/zinit.git "''${ZINIT_HOME}"
             }
           ''}
-          typeset -gA ZINIT=(
-              HOME_DIR "''${XDG_DATA_HOME}/zinit"
-              ZCOMPDUMP_PATH "$ZSH_CACHE/zcompdump"
-              BIN_DIR "$ZINIT_HOME"
-              COMPINIT_OPTS -C
-          )
+          ZINIT[BIN_DIR]="$ZINIT_HOME"
           _source "''${ZINIT_HOME}/zinit.zsh"
 
           _source "''${ZDOTDIR}/cache/prev.zshrc" \

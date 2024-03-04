@@ -38,6 +38,9 @@ fpath=(  $fpath )
 # _comps 全局变量, zsh 内置补全
 typeset -g -A _comps
 
+# ZINIT 全局变量
+typeset -g -A ZINIT
+
 # 全局变量
 export XDG_DATA_HOME
 export XDG_CONFIG_HOME
