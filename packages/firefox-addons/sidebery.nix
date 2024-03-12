@@ -7,7 +7,7 @@
 in
   buildNpmPackage rec {
     inherit (source) pname version src;
-    npmDepsHash = "sha256-5Wen+1ERDNBeVYkcBe7d8QVPrIMCsvCeOGUnQWNj7uw=";
+    npmDepsHash = "sha256-wBYjX65Tb3+83NT5625j77qceCADkiS22PsmCdwbJA0=";
     installPhase = ''
       npm run build.ext
       dst="$out/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"

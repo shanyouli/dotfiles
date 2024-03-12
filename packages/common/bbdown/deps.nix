@@ -27,8 +27,8 @@
 
   (fetchNuGet {
     pname = "Microsoft.DotNet.ILCompiler";
-    version = "8.0.1";
-    sha256 = "sha256-u4JMGIe/rmXOzx+Y2tC5qlkP5aNVMHy6AQnYwxsXsN4=";
+    version = "8.0.2";
+    sha256 = "sha256-30ipXSZnbtWfpi22Zy0PT9anorgmtfmd/IaUaAoVZRA=";
   })
   (fetchNuGet {
     pname = "Microsoft.NET.ILLink.Tasks";
@@ -47,7 +47,7 @@
   })
   (fetchNuGet {
     pname = "runtime.osx-arm64.Microsoft.DotNet.ILCompiler";
-    version = "8.0.1";
-    sha256 = "sha256-7FJEqNLs8DvqsSJQZETbL2uvRrqO5M1ReWCYkXtqVAE=";
+    version = "8.0.2";
+    sha256 = "sha256-EJE25fk0iTzk0EfHrj0MdesNP75+YyMF4BX78KSsjyo=";
   })
 ]

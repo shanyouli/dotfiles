@@ -102,7 +102,7 @@ in {
       })
 
       tailspin # 支持高亮的语法查看工具
-      nvfetcher-bin # 管理自己构建包的升级
+      # nvfetcher-bin # 管理自己构建包的升级
 
       stable.fzf
       pkgs.my-nix-script

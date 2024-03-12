@@ -59,7 +59,7 @@ git.fetchSubmodules = false
 [deeplx]
 src.github = "OwO-Network/DeepLX"
 fetch.github = "OwO-Network/DeepLX"
-passthru = { vendorHash = "sha256-x4Z8fTrgXOH+9Ixj9NKr2G3BuQPm7/CqNGoIVbXmMOE=" }
+passthru = { vendorHash = "sha256-I9VardRRwWTEfsP8hKoNT7DiJ2vTu41guznWWrZ/Zq4=" }
 
 # [codicons]
 # src.git = "https://github.com/microsoft/vscode-codicons"

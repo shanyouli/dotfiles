@@ -83,42 +83,42 @@
   };
   "chrome.arm64" = {
     pname = "chrome.arm64";
-    version = "122.0.6261.94";
+    version = "122.0.6261.111";
     src = fetchurl {
-      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.94/mac-arm64/chrome-mac-arm64.zip";
-      sha256 = "sha256-jefQbQ2O9if7fhBDU8kngrU1BhFWDKBzizqhq+iS9Xs=";
+      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.111/mac-arm64/chrome-mac-arm64.zip";
+      sha256 = "sha256-UjY0U7f/gwfubUuIyzhfgFj0y3h/a3jNPwP4w0ZMnHk=";
     };
   };
   "chrome.x64" = {
     pname = "chrome.x64";
-    version = "122.0.6261.94";
+    version = "122.0.6261.111";
     src = fetchurl {
-      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.94/mac-x64/chrome-mac-x64.zip";
-      sha256 = "sha256-YuzV4UG+8CjNlc3jTI8vy5pZKMM/x/I8R+f8MR5WoRs=";
+      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.111/mac-x64/chrome-mac-x64.zip";
+      sha256 = "sha256-R1TFeT/sAIDinG3xcg0JxAUrRHoUI5pVaClIY1YSwOg=";
     };
   };
   "chromium.arm64" = {
     pname = "chromium.arm64";
-    version = "122.0.6261.69-1.1";
+    version = "122.0.6261.94-1.1";
     src = fetchurl {
-      url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/122.0.6261.69-1.1/ungoogled-chromium_122.0.6261.69-1.1_arm64-macos.dmg";
-      sha256 = "sha256-3YGBexErHFbVKYnmcUXW87Q0TVFeQQjSienrinEQLE8=";
+      url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/122.0.6261.94-1.1/ungoogled-chromium_122.0.6261.94-1.1_arm64-macos.dmg";
+      sha256 = "sha256-oE1J8WbhtmKuyBlKVKV+9ETwb66qQr99jgsT3/yTOJ4=";
     };
   };
   "chromium.x64" = {
     pname = "chromium.x64";
-    version = "122.0.6261.69-1.1";
+    version = "122.0.6261.94-1.1";
     src = fetchurl {
-      url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/122.0.6261.69-1.1/ungoogled-chromium_122.0.6261.69-1.1_x86-64-macos.dmg";
-      sha256 = "sha256-uk2Yb0J4RxBW/9dbq6MOlft43YLDTLmznnQibmpYi/8=";
+      url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/122.0.6261.94-1.1/ungoogled-chromium_122.0.6261.94-1.1_x86-64-macos.dmg";
+      sha256 = "sha256-lM7LEGUtkZdPpFiOO+NxsZmroeWjOmk4UqxEKe1DmwQ=";
     };
   };
   clash-nyanpasu = {
     pname = "clash-nyanpasu";
-    version = "1.4.5";
+    version = "1.5.0";
     src = fetchurl {
-      url = "https://github.com/keiko233/clash-nyanpasu/releases/download/v1.4.5/Clash.Nyanpasu_1.4.5_aarch64.dmg";
-      sha256 = "sha256-shBqYYBPSgfeFK+QQOEBCQLcqtEplTHxnbpPk7djJBM=";
+      url = "https://github.com/keiko233/clash-nyanpasu/releases/download/v1.5.0/Clash.Nyanpasu_1.5.0_aarch64.dmg";
+      sha256 = "sha256-TCJBw9ZDBb0EUeM9kbLhBThrqLu6xndiLbNGEV/JIBU=";
     };
   };
   clash-verge = {
@@ -151,15 +151,15 @@
   };
   deeplx = {
     pname = "deeplx";
-    version = "v0.8.8";
+    version = "v0.8.9";
     src = fetchFromGitHub {
       owner = "OwO-Network";
       repo = "DeepLX";
-      rev = "v0.8.8";
+      rev = "v0.8.9";
       fetchSubmodules = false;
-      sha256 = "sha256-4/sfePuNS67tlyt0KGqLiYXfTu5uvHS2+XD8X5IrROo=";
+      sha256 = "sha256-Ub3KULGWJyRAlHWAavYwpDVuG0dvKREKE8oJoUUizdQ=";
     };
-    vendorHash = "sha256-x4Z8fTrgXOH+9Ixj9NKr2G3BuQPm7/CqNGoIVbXmMOE=";
+    vendorHash = "sha256-I9VardRRwWTEfsP8hKoNT7DiJ2vTu41guznWWrZ/Zq4=";
   };
   dict2xml = {
     pname = "dict2xml";
@@ -174,10 +174,10 @@
   };
   downkyi = {
     pname = "downkyi";
-    version = "1.0.7";
+    version = "1.0.8";
     src = fetchurl {
-      url = "https://github.com/yaobiao131/downkyicore/releases/download/v1.0.7/DownKyi-1.0.7-osx-arm64.dmg";
-      sha256 = "sha256-6VqAUQ+JzL5Xq7xmXqgq+UU2/If6nA+xgyzx4d5kaDM=";
+      url = "https://github.com/yaobiao131/downkyicore/releases/download/v1.0.8/DownKyi-1.0.8-osx-arm64.dmg";
+      sha256 = "sha256-89dEve0zH4m07K4dK7PHCLSV57pcsaJVEeFMhOoi+eY=";
     };
   };
   dutis = {
@@ -195,7 +195,7 @@
   };
   "emacs29.no-frame-refocus-cocoa" = {
     pname = "emacs29.no-frame-refocus-cocoa";
-    version = "d5dd64d3ad95b5e99c282f8cb7c596ed69da108b";
+    version = "29";
     src = fetchurl {
       url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-28/no-frame-refocus-cocoa.patch";
       sha256 = "sha256-+1d33IkKoHNJ8UOuZcK89D7a1v6/1WSwGiI1xaFfyr0=";
@@ -203,7 +203,7 @@
   };
   "emacs29.poll" = {
     pname = "emacs29.poll";
-    version = "d5dd64d3ad95b5e99c282f8cb7c596ed69da108b";
+    version = "29";
     src = fetchurl {
       url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-29/poll.patch";
       sha256 = "sha256-BS6srFt72GtGb5o9GL/5NX8rl1F/RjoJ5MUSVb2xRkg=";
@@ -211,7 +211,7 @@
   };
   "emacs29.role-patch" = {
     pname = "emacs29.role-patch";
-    version = "d5dd64d3ad95b5e99c282f8cb7c596ed69da108b";
+    version = "29";
     src = fetchurl {
       url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-28/fix-window-role.patch";
       sha256 = "sha256-H4Qj6n5uZsmsbdjjexGZctqhJk3gAXKiSnmnEO/LgTA=";
@@ -219,7 +219,7 @@
   };
   "emacs29.round-undecorated-frame" = {
     pname = "emacs29.round-undecorated-frame";
-    version = "d5dd64d3ad95b5e99c282f8cb7c596ed69da108b";
+    version = "29";
     src = fetchurl {
       url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-29/round-undecorated-frame.patch";
       sha256 = "sha256-dFH4D1WYQOVOagUuVdEQB3irxV+Y8dDAOKJOJXc/KHQ=";
@@ -227,7 +227,7 @@
   };
   "emacs29.system-appearance" = {
     pname = "emacs29.system-appearance";
-    version = "d5dd64d3ad95b5e99c282f8cb7c596ed69da108b";
+    version = "29";
     src = fetchurl {
       url = "https://github.com/d12frosted/homebrew-emacs-plus/raw/d5dd64d3ad95b5e99c282f8cb7c596ed69da108b/patches/emacs-28/system-appearance.patch";
       sha256 = "sha256-1u4VmDmzi2r1Ode5vf8jEmPkUcH9Qu7A0SUxjJ24zZI=";
@@ -244,16 +244,16 @@
   };
   fav = {
     pname = "fav";
-    version = "v0.2.6";
+    version = "v0.2.9";
     src = fetchFromGitHub {
       owner = "kingwingfly";
       repo = "fav";
-      rev = "v0.2.6";
+      rev = "v0.2.9";
       fetchSubmodules = false;
-      sha256 = "sha256-L4yJfgJNxlWTXyL7i6UiDfbjpzXhp8pxTLrd/SSzp9A=";
+      sha256 = "sha256-GCoqfEyk8I+fDMqNAWu10RmTVg0JPH3b5/nTd1qBKxs=";
     };
     cargoLock."Cargo.lock" = {
-      lockFile = ./fav-v0.2.6/Cargo.lock;
+      lockFile = ./fav-v0.2.9/Cargo.lock;
       outputHashes = {
         
       };
@@ -455,10 +455,10 @@
   };
   ryujinx = {
     pname = "ryujinx";
-    version = "1.1.1214";
+    version = "1.1.1221";
     src = fetchurl {
-      url = "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1214/test-ava-ryujinx-1.1.1214-macos_universal.app.tar.gz";
-      sha256 = "sha256-9cnJPrp4NKsBWQ3szqOCtqg4ZcZeBnzJ+eFi/ZHL3fw=";
+      url = "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1221/test-ava-ryujinx-1.1.1221-macos_universal.app.tar.gz";
+      sha256 = "sha256-XWEo6xSd1lYqykTl0w7ik5rC3pF40Z3SQa7JPDu7ojY=";
     };
   };
   ryusak = {
@@ -488,21 +488,21 @@
   };
   sidebery = {
     pname = "sidebery";
-    version = "v5.1.1";
+    version = "v5.2.0";
     src = fetchFromGitHub {
       owner = "mbnuqw";
       repo = "sidebery";
-      rev = "v5.1.1";
+      rev = "v5.2.0";
       fetchSubmodules = false;
-      sha256 = "sha256-zK1kZeI6eyO3z+LyRQuvEncO1kx31UvNK1RrzwYWxWA=";
+      sha256 = "sha256-83n0aX5mJYf1yYamuM+DelkpOGLRZqkXpTgQMAmMLXI=";
     };
   };
   spotube = {
     pname = "spotube";
-    version = "3.4.1";
+    version = "3.5.0";
     src = fetchurl {
-      url = "https://github.com/KRTirtho/spotube/releases/download/v3.4.1/Spotube-macos-universal.dmg";
-      sha256 = "sha256-VobLCxsmE5kGIlDDa3v5xIHkw2x2YV14fgHHcDb+bLo=";
+      url = "https://github.com/KRTirtho/spotube/releases/download/v3.5.0/Spotube-macos-universal.dmg";
+      sha256 = "sha256-omXhiH/hVxFef03GqmpYf65SfdLjLyeMyuAWuvSpYiI=";
     };
   };
   switchaudio-osx = {
@@ -518,10 +518,10 @@
   };
   ublock-origin = {
     pname = "ublock-origin";
-    version = "1.56.1b10";
+    version = "1.56.1b14";
     src = fetchurl {
-      url = "https://github.com/gorhill/uBlock/releases/download/1.56.1b10/uBlock0_1.56.1b10.firefox.signed.xpi";
-      sha256 = "sha256-/Ta34QNxDR51IILYwLKDFZgKRPb1jRQiQUKAeG2sHL4=";
+      url = "https://github.com/gorhill/uBlock/releases/download/1.56.1b14/uBlock0_1.56.1b14.firefox.signed.xpi";
+      sha256 = "sha256-IpPCMMwXxnGEyVThccEYsMFNyFRMe2lyV3igsKNQhiA=";
     };
   };
   upic = {
@@ -534,10 +534,10 @@
   };
   vivaldi = {
     pname = "vivaldi";
-    version = "6.6.3271.45";
+    version = "6.6.3271.48";
     src = fetchurl {
-      url = "https://downloads.vivaldi.com/stable/Vivaldi.6.6.3271.45.universal.dmg";
-      sha256 = "sha256-bbwN72Hdc1UTssVJ5SVqoQpmQf8dxWiPSS0j5zK/u/Q=";
+      url = "https://downloads.vivaldi.com/stable/Vivaldi.6.6.3271.48.universal.dmg";
+      sha256 = "sha256-qlqjF3Ff1+o8D6Fzjs/1TRJTK8x+GrQA38wy4f/h5U0=";
     };
   };
   websocket-bridge-python = {
