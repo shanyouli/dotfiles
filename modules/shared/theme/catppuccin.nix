@@ -56,7 +56,6 @@ in {
         value = {
           zshrc = ''
             #!/usr/bin/env zsh
-            alias bat='bat --theme=catppuccin'
             ${lib.optionalString cm.shell.vivid.enable ''
               export LS_COLORS=$(${pkgs.stable.vivid.out}/bin/vivid generate catppuccin-${n})
             ''}
@@ -125,6 +124,9 @@ in {
       };
     modules.kitty.settings = ''
       include ${defaultDir}/kitty.conf
+    '';
+    modules.shell.envInit = ''
+      export BAT_THEME='catppuccin'
     '';
     modules.shell.prevInit = ''
       _source "${defaultDir}/zshrc"

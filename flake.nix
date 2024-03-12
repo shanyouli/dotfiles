@@ -141,9 +141,7 @@
         name = "nixos-work";
         nixos = inputs.nixos-stable;
         allPkgs = allPkgs;
-        extraModules = [
-          ./hosts/linux-test
-        ];
+        extraModules = [./hosts/linux-test];
         baseModules = [
           home-manager.nixosModules.home-manager
         ];
@@ -154,11 +152,7 @@
         nixos = inputs.nixos-stable;
         system = "aarch64-linux";
         allPkgs = allPkgs;
-        extraModules = [
-          # ./modules/hardware/phil.nix
-          # inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t460s
-          ./hosts/orbvm
-        ];
+        extraModules = [./hosts/orbvm];
         baseModules = [
           home-manager.nixosModules.home-manager
         ];
@@ -244,13 +238,6 @@
             bash packages/darwinApp/simple-live/update.sh
             ${py}/bin/python3 packages/firefox-addons/update.py
           '';
-      };
-      upOne = flake-utils.lib.mkApp {
-        drv = pkgs.writeScriptBin "upOne" ''
-          #!${pkgs.lib.getExe pkgs.bash}
-          echo "update $1"
-          ${allPkgs."${system}".nvfetcher-bin}/bin/nvfetcher -f "^$1$"
-        '';
       };
       default = sysdo;
     });

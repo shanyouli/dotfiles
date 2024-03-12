@@ -16,7 +16,8 @@ in {
     '';
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.kitty];
+    user.packages = [pkgs.stable.kitty];
+    modules.shell.pluginFiles = ["kitty"];
     modules.kitty.settings = ''
       font_family ${config.modules.fonts.term.family}
       font_size ${toString config.modules.fonts.term.size}

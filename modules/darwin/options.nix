@@ -131,6 +131,9 @@ in {
             find ${config.env.ZSH_CACHE} -name "*.zwc" -type f -exec command rm -vf {} \;
           fi
         fi
+        if [[ -f ''${XDG_CACHE_HOME:-~/.cache}/themes/default/zshrc.zwc ]] ; then
+          $DRY_RUN_CMD rm -vf ''${XDG_CACHE_HOME:-~/.cache}/themes/default/zshrc.zwc
+        fi
         # 禁止在 USB 卷创建元数据文件, .DS_Store
         defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
         # 禁止在网络卷创建元数据文件

@@ -1,9 +1,11 @@
 # -*- mode: sh -*-
-
+# 局部函数: https://www.zsh.org/mla/users/2011/msg00207.html
 local version
 local nextStep="cacheFunction"
 local cache_dir="$XDG_CACHE_HOME/${SHELL##*/}/cache"
 ### Helpers
+{
+
 function _usage {
     echo "Cache the execution results of the ARGS command into the ${cache_dir}/<ARGS> directory"
     echo "and source results"
@@ -37,6 +39,9 @@ while getopts "v:c:h" opt; do
        return 0;;
     esac
 done
+} always {
+    unfunction -m _usage
+}
 if [[ "$nextStep" == "cacheFunction" ]]; then
     if (( $+commands[$1] )) || [[ -x $1 ]]; then
         local cache=$cache_dir/${1##*/}
@@ -58,11 +63,14 @@ if [[ "$nextStep" == "cacheFunction" ]]; then
 elif [[ "$nextStep" == "ClearFunction" ]]; then
     if [[ "$1" == "all" ]] || [[ "$1" == "a" ]]; then
         if (($+commands[fd])); then
-            fd . $ZDOTDIR -e zwc -t f -X command rm -- {}
-            fd . $ZSH_CACHE -e zwc -t f -X command rm -- {}
+            fd . $ZDOTDIR -e zwc -t f -X command rm -vf -- {}
+            fd . $ZSH_CACHE -e zwc -t f -X command rm -vf -- {}
         else
-            find $ZDOTDIR -name "*.zwc" -type f -exec command rm -- {} \;
-            find $ZSH_CACHE -name "*.zwc" -type f -exec command rm -- {} \;
+            find $ZDOTDIR -name "*.zwc" -type f -exec command rm -vf -- {} \;
+            find $ZSH_CACHE -name "*.zwc" -type f -exec command rm -vf -- {} \;
+        fi
+        if [[ -e "$XDG_CACHE_HOME/themes/default/zshrc.zwc" ]]; then
+            rm -rf "$XDG_CACHE_HOME/themes/default/zshrc.zwc"
         fi
     fi
     if [[ -d $cache_dir ]]; then
@@ -71,8 +79,8 @@ elif [[ "$nextStep" == "ClearFunction" ]]; then
             target_file=$(basename $(readlink -f $link))
             echo ${target_file}
             for i in ${link}*; do
-                if [[ $i != $link && $i != "${link}.zwe" && $i != *"${target_file}" ]]; then
-                    command rm -- $i
+                if [[ $i != $link && $i != "${link}.zwc" && $i != *"${target_file}" ]]; then
+                    command rm -vf -- $i
                 fi
             done
         done
