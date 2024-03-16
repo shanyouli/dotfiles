@@ -11,10 +11,10 @@
   };
   aerospace = {
     pname = "aerospace";
-    version = "0.8.7-Beta";
+    version = "0.9.0-Beta";
     src = fetchurl {
-      url = "https://github.com/nikitabobko/AeroSpace/releases/download/v0.8.7-Beta/AeroSpace-v0.8.7-Beta.zip";
-      sha256 = "sha256-/zzkLIcT1sy2aWPa/Od/16ZdpgxV2w2Blt2rB2mC890=";
+      url = "https://github.com/nikitabobko/AeroSpace/releases/download/v0.9.0-Beta/AeroSpace-v0.9.0-Beta.zip";
+      sha256 = "sha256-A87ukVjHc7V7+V4WJtgFXUPm8xYYnspFQQ49eXASP+w=";
     };
   };
   alist = {
@@ -59,18 +59,18 @@
   };
   calibre = {
     pname = "calibre";
-    version = "7.6.0";
+    version = "7.7.0";
     src = fetchurl {
-      url = "https://download.calibre-ebook.com/7.6.0/calibre-7.6.0.dmg";
-      sha256 = "sha256-p9bqym47j/YrNV2hzIl3YtUqwUih4c42pu61kAayQMs=";
+      url = "https://download.calibre-ebook.com/7.7.0/calibre-7.7.0.dmg";
+      sha256 = "sha256-2qPTFuDnLm37momNSo8D9dXHw+7eHV03UZZozhRYCb8=";
     };
   };
   calibrepath = {
     pname = "calibrepath";
-    version = "7.6.0";
+    version = "7.7.0";
     src = fetchurl {
-      url = "https://github.com/Cirn09/calibre-do-not-translate-my-path/releases/download/v7.6.0/mac-patch-backend+update-v7.6.0.zip";
-      sha256 = "sha256-P4G4BrZepXNHsCzKB9Vkv0AsPAov6DvaKNAieulaKfc=";
+      url = "https://github.com/Cirn09/calibre-do-not-translate-my-path/releases/download/v7.7.0/mac-patch-backend+update-v7.7.0.zip";
+      sha256 = "sha256-c3IK9jcVYmAYg36IcT6fVQAjiEvzfUISetavzfKNhxU=";
     };
   };
   chatgpt = {
@@ -83,34 +83,34 @@
   };
   "chrome.arm64" = {
     pname = "chrome.arm64";
-    version = "122.0.6261.111";
+    version = "122.0.6261.128";
     src = fetchurl {
-      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.111/mac-arm64/chrome-mac-arm64.zip";
-      sha256 = "sha256-UjY0U7f/gwfubUuIyzhfgFj0y3h/a3jNPwP4w0ZMnHk=";
+      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.128/mac-arm64/chrome-mac-arm64.zip";
+      sha256 = "sha256-aQm2nXmQ6PcU1IUtGjjifeX9LuIjkQSKNwBpwzZpZkM=";
     };
   };
   "chrome.x64" = {
     pname = "chrome.x64";
-    version = "122.0.6261.111";
+    version = "122.0.6261.128";
     src = fetchurl {
-      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.111/mac-x64/chrome-mac-x64.zip";
-      sha256 = "sha256-R1TFeT/sAIDinG3xcg0JxAUrRHoUI5pVaClIY1YSwOg=";
+      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/122.0.6261.128/mac-x64/chrome-mac-x64.zip";
+      sha256 = "sha256-9O+qXb5OAtXTJKyGJCe+L6y8ob7Rx1xbrKpMkiq1tkM=";
     };
   };
   "chromium.arm64" = {
     pname = "chromium.arm64";
-    version = "122.0.6261.94-1.1";
+    version = "122.0.6261.111-1.1";
     src = fetchurl {
-      url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/122.0.6261.94-1.1/ungoogled-chromium_122.0.6261.94-1.1_arm64-macos.dmg";
-      sha256 = "sha256-oE1J8WbhtmKuyBlKVKV+9ETwb66qQr99jgsT3/yTOJ4=";
+      url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/122.0.6261.111-1.1/ungoogled-chromium_122.0.6261.111-1.1_arm64-macos.dmg";
+      sha256 = "sha256-2CMw4lJ/FdA1RCqGm03xLJKtppmb8uQXAOTYJnbCHHY=";
     };
   };
   "chromium.x64" = {
     pname = "chromium.x64";
-    version = "122.0.6261.94-1.1";
+    version = "122.0.6261.111-1.1";
     src = fetchurl {
-      url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/122.0.6261.94-1.1/ungoogled-chromium_122.0.6261.94-1.1_x86-64-macos.dmg";
-      sha256 = "sha256-lM7LEGUtkZdPpFiOO+NxsZmroeWjOmk4UqxEKe1DmwQ=";
+      url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/122.0.6261.111-1.1/ungoogled-chromium_122.0.6261.111-1.1_x86-64-macos.dmg";
+      sha256 = "sha256-yywSXunNBbvY+txLhlqJRRe12G5ofG6z3T7lZl5LiWU=";
     };
   };
   clash-nyanpasu = {
@@ -143,21 +143,21 @@
   };
   darkreader = {
     pname = "darkreader";
-    version = "4.9.78";
+    version = "4.9.80";
     src = fetchurl {
-      url = "https://github.com/darkreader/darkreader/releases/download/v4.9.78/darkreader-firefox.xpi";
-      sha256 = "sha256-m2uJ5BBpCubDFDd1ohVGPfLorA1IYaca+2XhZaG7n6o=";
+      url = "https://github.com/darkreader/darkreader/releases/download/v4.9.80/darkreader-firefox.xpi";
+      sha256 = "sha256-x4JtJIJSyjyv0dkwdj+IvtR5W/J4d6x0xTeg5r2BY1s=";
     };
   };
   deeplx = {
     pname = "deeplx";
-    version = "v0.8.9";
+    version = "v0.9.0";
     src = fetchFromGitHub {
       owner = "OwO-Network";
       repo = "DeepLX";
-      rev = "v0.8.9";
+      rev = "v0.9.0";
       fetchSubmodules = false;
-      sha256 = "sha256-Ub3KULGWJyRAlHWAavYwpDVuG0dvKREKE8oJoUUizdQ=";
+      sha256 = "sha256-7lQQqKdZ17C1LtNNDOuQrd3eLpEN94WtNlPm/3ap8ZM=";
     };
     vendorHash = "sha256-I9VardRRwWTEfsP8hKoNT7DiJ2vTu41guznWWrZ/Zq4=";
   };
@@ -244,16 +244,16 @@
   };
   fav = {
     pname = "fav";
-    version = "v0.2.9";
+    version = "v0.2.10";
     src = fetchFromGitHub {
       owner = "kingwingfly";
       repo = "fav";
-      rev = "v0.2.9";
+      rev = "v0.2.10";
       fetchSubmodules = false;
-      sha256 = "sha256-GCoqfEyk8I+fDMqNAWu10RmTVg0JPH3b5/nTd1qBKxs=";
+      sha256 = "sha256-bh/BMiRxShGkgJR4O9n+qj2coR9mLXVL1fy1YndhCG8=";
     };
     cargoLock."Cargo.lock" = {
-      lockFile = ./fav-v0.2.9/Cargo.lock;
+      lockFile = ./fav-v0.2.10/Cargo.lock;
       outputHashes = {
         
       };
@@ -417,10 +417,10 @@
   };
   next-chat = {
     pname = "next-chat";
-    version = "2.11.2";
+    version = "2.11.3";
     src = fetchurl {
-      url = "https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web/releases/download/v2.11.2/NextChat_2.11.2_universal.dmg";
-      sha256 = "sha256-PEOm2y7CbxP2kpVhujKIb1Y8pC0nV7pQKrSn3/fC874=";
+      url = "https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web/releases/download/v2.11.3/NextChat_2.11.3_universal.dmg";
+      sha256 = "sha256-A8Zn2b0KatwGSIVYPP+uyxIrPPRh6gtJ97+/fOgZQ5c=";
     };
   };
   pngpaste = {
@@ -455,10 +455,10 @@
   };
   ryujinx = {
     pname = "ryujinx";
-    version = "1.1.1221";
+    version = "1.1.1231";
     src = fetchurl {
-      url = "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1221/test-ava-ryujinx-1.1.1221-macos_universal.app.tar.gz";
-      sha256 = "sha256-XWEo6xSd1lYqykTl0w7ik5rC3pF40Z3SQa7JPDu7ojY=";
+      url = "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1231/test-ava-ryujinx-1.1.1231-macos_universal.app.tar.gz";
+      sha256 = "sha256-/L6jBQJ/OtPCRu/L334VIQKwtYXCAqIBe4y80/PokDU=";
     };
   };
   ryusak = {
@@ -518,10 +518,10 @@
   };
   ublock-origin = {
     pname = "ublock-origin";
-    version = "1.56.1b14";
+    version = "1.56.1b18";
     src = fetchurl {
-      url = "https://github.com/gorhill/uBlock/releases/download/1.56.1b14/uBlock0_1.56.1b14.firefox.signed.xpi";
-      sha256 = "sha256-IpPCMMwXxnGEyVThccEYsMFNyFRMe2lyV3igsKNQhiA=";
+      url = "https://github.com/gorhill/uBlock/releases/download/1.56.1b18/uBlock0_1.56.1b18.firefox.signed.xpi";
+      sha256 = "sha256-LJCjY7FazoliXgu0LrbzUBZN2SXTBzn8Gx4/Id2BDhw=";
     };
   };
   upic = {
@@ -534,10 +534,10 @@
   };
   vivaldi = {
     pname = "vivaldi";
-    version = "6.6.3271.48";
+    version = "6.6.3271.50";
     src = fetchurl {
-      url = "https://downloads.vivaldi.com/stable/Vivaldi.6.6.3271.48.universal.dmg";
-      sha256 = "sha256-qlqjF3Ff1+o8D6Fzjs/1TRJTK8x+GrQA38wy4f/h5U0=";
+      url = "https://downloads.vivaldi.com/stable/Vivaldi.6.6.3271.50.universal.dmg";
+      sha256 = "sha256-vnlX+2CAiTZVeq9i3tshAnCUbMhGIa0I67Uc+b7AOp8=";
     };
   };
   websocket-bridge-python = {
@@ -558,13 +558,13 @@
   };
   yabai = {
     pname = "yabai";
-    version = "v6.0.15";
+    version = "v7.0.2";
     src = fetchFromGitHub {
       owner = "koekeishiya";
       repo = "yabai";
-      rev = "v6.0.15";
+      rev = "v7.0.2";
       fetchSubmodules = false;
-      sha256 = "sha256-buX6FRIXdM5VmYpA80eESDMPf+xeMfJJj0ulyx2g94M=";
+      sha256 = "sha256-/MOAKsY7MlRWdvUQwHeITTeGJbCUdX7blZZAl2zXuic=";
     };
   };
   yabai-zsh-completions = {
