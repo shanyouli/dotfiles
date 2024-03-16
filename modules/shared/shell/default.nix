@@ -94,6 +94,7 @@ in {
       gifsicle # 命令行gif生成工具
 
       stable.atool # 解压工具
+      stable.unrar
       stable.gnused # sed 工具
       stable.coreutils-prefixed # GNUcoreutils 工具，mv，cp等
       (pkgs.sysdo.override {
@@ -102,7 +103,7 @@ in {
       })
 
       tailspin # 支持高亮的语法查看工具
-      # nvfetcher-bin # 管理自己构建包的升级
+      nvfetcher-bin # 管理自己构建包的升级
 
       stable.fzf
       pkgs.my-nix-script

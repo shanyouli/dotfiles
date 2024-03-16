@@ -159,7 +159,7 @@
       fetchSubmodules = false;
       sha256 = "sha256-7lQQqKdZ17C1LtNNDOuQrd3eLpEN94WtNlPm/3ap8ZM=";
     };
-    vendorHash = "sha256-I9VardRRwWTEfsP8hKoNT7DiJ2vTu41guznWWrZ/Zq4=";
+    vendorHash = "sha256-kTSMY4K07hpy/ry5/kxTP3RcR5ewMzj/BDJxxYRdxYI=";
   };
   dict2xml = {
     pname = "dict2xml";

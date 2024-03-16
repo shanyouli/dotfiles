@@ -28,7 +28,7 @@ in {
       enableExtensionUpdateCheck = false;
       extensions = cfg.extensions;
       userSettings = {
-        "nix.serverPath" = "rnix-lsp";
+        "nix.serverPath" = "nil";
         "nix.enableLanguageServer" = true;
         "nix.formatterPath" = "alejandra";
         "security.workspace.trust.enabled" = false; # 禁用全局工作区询问是否信任
