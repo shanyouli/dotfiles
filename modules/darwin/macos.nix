@@ -45,7 +45,7 @@ in {
       };
       modules.shell.pluginFiles = ["macos"];
       user.packages = let
-        mybid = pkgs.mybid.override {
+        mybid = pkgs.stable.mybid.override {
           withZshCompletion = true;
           withRich = true;
         };

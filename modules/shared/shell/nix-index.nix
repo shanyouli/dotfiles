@@ -16,7 +16,7 @@ in {
   config = mkIf cfg.enable {
     programs.nix-index = {
       enable = true;
-      package = pkgs.nix-index-with-db;
+      package = pkgs.unstable.nix-index-with-db;
     };
   };
 }

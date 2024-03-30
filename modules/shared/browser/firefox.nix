@@ -30,10 +30,10 @@ in {
     dev.enable = mkBoolOpt true;
     package = mkOption {
       type = with types; nullOr package;
-      default =
-        if pkgs.stdenvNoCC.isLinux
-        then pkgs.firefox
-        else pkgs.firefox-app;
+      default = with pkgs.stable;
+        if stdenvNoCC.isLinux
+        then firefox
+        else firefox-app;
       description = "The Firefox package to use. ";
     };
     finalPackage = mkOption {
@@ -84,7 +84,7 @@ in {
         }
       ];
       modules.shell.gopass.browsers = ["firefox"];
-      modules.browser.firefox.extensions = mkDefault (with pkgs.firefox-addons; [
+      modules.browser.firefox.extensions = mkDefault (with pkgs.stable.firefox-addons; [
         (mkIf cfm.shell.gopass.enable browserpass-ce)
         noscript
         ublock-origin
@@ -101,7 +101,13 @@ in {
       modules.browser.firefox.finalPackage = wrapPackage cfg.package;
     }
     {
-      user.packages = [cfg.finalPackage] ++ optionals cfg.dev.enable [pkgs.geckodriver];
+      user.packages = let
+        pkgDriver =
+          if pkgs.stdenvNoCC.isLinux
+          then pkgs.stable.geckodriver
+          else pkgs.unstable.geckodriver;
+      in
+        [cfg.finalPackage] ++ optionals cfg.dev.enable [pkgDriver];
       home.file = let
         profilePath = "${cfgConfDir}/Profiles/${lib.toLower cfg.profileName}";
       in
@@ -157,7 +163,7 @@ in {
               recursive = true;
             };
             "${profilePath}/chrome/utils" = {
-              source = "${pkgs.firefox-utils}/share/utils";
+              source = "${pkgs.stable.firefox-utils}/share/utils";
               recursive = true;
             };
           })

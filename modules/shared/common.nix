@@ -22,7 +22,7 @@ with lib.my; {
       # helpful shell stuff
       bat
       fzf
-      (pkgs.ripgrep.override {withPCRE2 = true;})
+      (ripgrep.override {withPCRE2 = true;})
       #
       curl
     ];
@@ -37,7 +37,7 @@ with lib.my; {
     # list of acceptable shells in /etc/shells
     shells = with pkgs; [bash zsh];
   };
-  documentation.man.enable = mkDefault true;
+  # documentation.man.enable = mkDefault true;
   nix = let
     filterFn =
       if pkgs.stdenvNoCC.isLinux
@@ -64,7 +64,7 @@ with lib.my; {
         # "nixpkgs-overlays=${config.dotfiles.dir}/overlays"
         "dotfiles=${config.dotfiles.dir}"
       ];
-    package = pkgs.nix;
+    package = pkgs.stable.nix;
     gc = {
       automatic = mkDefault true;
       options = mkDefault "--delete-older-than 7d";

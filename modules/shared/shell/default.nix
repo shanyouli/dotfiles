@@ -72,7 +72,7 @@ in {
     # lib.mkIf cfg.enable (lib.mkMerge [{ users.defaultUserShell = pkgs.zsh; }]);
     # only nixos
     # users.defaultUserShell = pkgs.zsh;
-    user.shell = pkgs.zsh;
+    user.shell = pkgs.stable.zsh;
     programs.zsh = {
       enable = true;
       # 我将自动启用bashcompinit 和compinit配置
@@ -87,26 +87,26 @@ in {
       stable.bat
       stable.duf
       stable.grc
-      httrack # 网页抓取
+      stable.httrack # 网页抓取
       stable.cachix # nix cache
       stable.hugo # 我的blog工具
-      imagemagick # 图片转换工具
-      gifsicle # 命令行gif生成工具
+      stable.imagemagick # 图片转换工具
+      stable.gifsicle # 命令行gif生成工具
 
       stable.atool # 解压工具
       stable.unrar
       stable.gnused # sed 工具
       stable.coreutils-prefixed # GNUcoreutils 工具，mv，cp等
-      (pkgs.sysdo.override {
+      (stable.sysdo.override {
         withZshCompletion = true;
         withRich = true;
       })
 
-      tailspin # 支持高亮的语法查看工具
-      nvfetcher-bin # 管理自己构建包的升级
+      stable.tailspin # 支持高亮的语法查看工具
+      unstable.nvfetcher-bin # 管理自己构建包的升级
 
       stable.fzf
-      pkgs.my-nix-script
+      stable.my-nix-script
     ];
     env = {
       PATH = ["${config.home.binDir}"];
@@ -208,7 +208,7 @@ in {
         "zsh/cache/extra.zshrc".text = cfg.rcInit;
         "zsh/cache/extra.zshenv".text = cfg.envInit;
         "zsh/.zshrc".text = ''
-          source ${pkgs.zpmod}/share/zpmod/zpmod.plugin.zsh
+          source ${pkgs.stable.zpmod}/share/zpmod/zpmod.plugin.zsh
           : ''${ZINIT_HOME:="''${XDG_DATA_HOME}/zinit/zinit.git"}
           ${lib.optionalString (! cfg.zinit.enable) ''
             [[ -d "''${ZINIT_HOME}" ]] || {

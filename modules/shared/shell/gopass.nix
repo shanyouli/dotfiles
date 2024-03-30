@@ -8,12 +8,12 @@
 with lib;
 with lib.my; let
   cfg = config.modules.shell.gopass;
-  package = pkgs.gopass;
+  package = pkgs.stable.gopass;
   qtpass =
     if pkgs.stdenvNoCC.isLinux
-    then pkgs.qtpass
+    then pkgs.stable.qtpass
     else
-      pkgs.qtpass.overrideAttrs (old: {
+      pkgs.stable.qtpass.overrideAttrs (old: {
         postInstall = ''
           if [[ -d $out/bin/QtPass.app ]]; then
             mkdir -p $out/Applications
@@ -57,7 +57,7 @@ in {
               if isFirefox n
               then "firefox"
               else "chromium";
-          in "${pkgs.browserpass}/lib/browserpass/hosts/${browserName}/${jsonFile}"
+          in "${pkgs.stable.browserpass}/lib/browserpass/hosts/${browserName}/${jsonFile}"
         );
       in
         foldl' (a: b: a // b) {} (concatMap (
@@ -78,7 +78,7 @@ in {
               then [
                 {
                   "${cfbrowser."${x}"}/${nativeHostsName x}/${jsonFile}".source = passJsonFn x;
-                  "${cfbrowser."${x}"}/policies/managed/${jsonFile}".source = "${pkgs.browserpass}/lib/browserpass/policies/chromium/${jsonFile}";
+                  "${cfbrowser."${x}"}/policies/managed/${jsonFile}".source = "${pkgs.stable.browserpass}/lib/browserpass/policies/chromium/${jsonFile}";
                 }
               ]
               else throw "unknown browser ${x}"

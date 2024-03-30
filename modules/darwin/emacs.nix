@@ -14,7 +14,7 @@ with lib.my; let
 in {
   config = mkIf cshemacs.enable {
     modules.editor.emacs.package = let
-      basePackage = pkgs.emacs-unstable.override {
+      basePackage = pkgs.unstable.emacs-unstable.override {
         # pkgs.emacs-unstable.override {
         # pkgs.emacs.override {
         # 使用 emacs-unstable 取代 emacs-git
@@ -46,8 +46,8 @@ in {
         # version = inputs.emacs-src.shortRev;
       }));
     user.packages = [
-      pkgs.pngpaste
-      (pkgs.emacsclient.override {
+      pkgs.stable.pngpaste
+      (pkgs.stable.emacsclient.override {
         emacsClientBin = "${emacsPkg}/bin/emacsclient";
         withNotify = true;
       })

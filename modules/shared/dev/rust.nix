@@ -11,7 +11,7 @@ with lib.my; let
   cfg = cfm.dev.rust;
   homeDir = config.user.home;
   rustup_dir = "${homeDir}/.local/share/rustup";
-  package = pkgs.rustup;
+  package = pkgs.stable.rustup;
 in {
   options.modules.dev.rust = {
     enable = mkEnableOption "Whether to dev rust";
@@ -22,8 +22,8 @@ in {
   config = mkIf cfg.enable {
     user.packages = with pkgs; [
       package
-      (mkIf cfg.enSlsp rust-analyzer)
-      pkgs.stable.cargo-update
+      (mkIf cfg.enSlsp stable.rust-analyzer)
+      stable.cargo-update
     ];
     modules.shell.env.RUSTUP_HOME = rustup_dir;
     modules.shell.env.CARGO_HOME = let
