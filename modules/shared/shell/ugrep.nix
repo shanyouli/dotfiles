@@ -14,7 +14,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = [pkgs.ugrep];
+    user.packages = [pkgs.stable.ugrep];
     modules.shell.pluginFiles = ["ugrep"];
   };
 }

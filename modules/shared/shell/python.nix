@@ -20,7 +20,7 @@ in {
     finalPkg = mkPkgReadOpt "The Python include with packages";
   };
   config = mkIf (cfg.extraPkgs != null) {
-    modules.shell.python.finalPkg = pkgs.python3.withPackages cfg.extraPkgs;
+    modules.shell.python.finalPkg = pkgs.stable.python3.withPackages cfg.extraPkgs;
     user.packages = [
       cfg.finalPkg
       pkgs.stable.pipx # A better python command line installation tool

@@ -31,7 +31,7 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.mpd.enable {
-      user.packages = [pkgs.mpd pkgs.mpc-cli (pkgs.ncmpcpp.override {visualizerSupport = true;})];
+      user.packages = with pkgs.stable; [mpd mpc-cli (ncmpcpp.override {visualizerSupport = true;})];
       modules.shell.aliases.mpcs = "mpc search any";
       modules.shell.aliases.mpcsp = "mpc searchplay any";
       home = let
@@ -74,8 +74,8 @@ in {
     })
     (mkIf cfg.netease.enable {
       user.packages = [
-        pkgs.go-musicfox
-        (mkIf (pkgs.stdenvNoCC.isLinux && cfg.netease.enGui) pkgs.netease-cloud-music-gtk)
+        pkgs.stable.go-musicfox
+        (mkIf (pkgs.stdenvNoCC.isLinux && cfg.netease.enGui) pkgs.unstable.netease-cloud-music-gtk)
       ];
     })
   ]);

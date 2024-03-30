@@ -1,8 +1,8 @@
 {modulesPath, ...}: {
   imports = [
     "${modulesPath}/virtualisation/lxc-container.nix"
-    /etc/nixos/lxd.nix
-    /etc/nixos/orbstack.nix
+    ./lxd.nix
+    ./orbstack.nix
   ];
   boot.loader.systemd-boot.enable = false;
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.

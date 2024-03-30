@@ -14,7 +14,7 @@ in {
     workDir = mkStrOpt "/etc/nginx";
     sScript = mkStrOpt "";
     uScript = mkStrOpt "";
-    package = mkPkgOpt pkgs.nginx "nginx package";
+    package = mkPkgOpt pkgs.stable.nginx "nginx package";
   };
 
   config = mkIf cfg.enable {

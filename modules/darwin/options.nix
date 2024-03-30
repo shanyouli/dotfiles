@@ -79,18 +79,18 @@ in {
     {
       user.packages = [
         # pkgs.qbittorrent-app
-        pkgs.xbydriver-app
+        pkgs.stable.xbydriver-app
         # pkgs.chatgpt-app
-        pkgs.next-chat-app
-        pkgs.localsend-app
-        (lib.mkIf (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) pkgs.neovide-app)
+        pkgs.stable.next-chat-app
+        pkgs.stable.localsend-app
+        (lib.mkIf (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) pkgs.stable.neovide-app)
         # qutebrowser-app # 不再需要
-        pkgs.upic-app
-        pkgs.calibre-app
+        pkgs.stable.upic-app
+        pkgs.stable.calibre-app
 
-        pkgs.lporg
+        pkgs.stable.lporg
 
-        pkgs.switchaudio-osx
+        pkgs.stable.switchaudio-osx
       ];
 
       modules.xdg.enable = true;

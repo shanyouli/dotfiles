@@ -17,7 +17,7 @@ in {
       default = [];
     };
     text = mkOpt' lines "" "init asdf script";
-    package = mkPkgOpt pkgs.asdf-vm "asdf package";
+    package = mkPkgOpt pkgs.stable.asdf-vm "asdf package";
     pltext = mkOpt' lines "" "auto install language version";
     toml.fmt = mkBoolOpt false;
     enWebReport = mkBoolOpt false;
@@ -27,7 +27,7 @@ in {
       user.packages = [pkgs.stable.taplo];
     })
     (mkIf cfg.enWebReport {
-      user.packages = [pkgs.allure];
+      user.packages = [pkgs.stable.allure];
     })
     (mkIf (cfg.plugins != []) (let
       cmh = config.home;
@@ -51,7 +51,7 @@ in {
           pluginFiles = ["asdf"];
         }
         (mkIf cfm.shell.direnv.enable {
-          direnv.stdlib.asdf = pkgs.writeScript "use_asdf" ''
+          direnv.stdlib.asdf = pkgs.stable.writeScript "use_asdf" ''
             #!/usr/bin/env sh
 
             use_asdf() {

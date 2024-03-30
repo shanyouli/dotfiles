@@ -15,14 +15,14 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = [pkgs.direnv pkgs.nix-direnv];
-    modules.shell.rcInit = ''_cache -v ${pkgs.direnv.version} direnv hook zsh'';
-    modules.editor.vscode.extensions = [pkgs.vscode-extensions.mkhl.direnv];
+    user.packages = [pkgs.stable.direnv pkgs.stable.nix-direnv];
+    modules.shell.rcInit = ''_cache -v ${pkgs.stable.direnv.version} direnv hook zsh'';
+    modules.editor.vscode.extensions = [pkgs.unstable.vscode-extensions.mkhl.direnv];
     modules.shell.pluginFiles = ["direnv"];
     home.configFile = mkMerge [
       {
         "direnv/direnvrc".text = ''
-          source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc
+          source ${pkgs.unstable.nix-direnv}/share/nix-direnv/direnvrc
         '';
       }
       (mkIf (cfg.stdlib != {}) (concatMapAttrs (name: value: (

@@ -18,7 +18,7 @@ in {
   config = mkIf cfg.enable {
     # user.packages = [pkgs.deeplx];
     launchd.user.agents.deeplx = {
-      serviceConfig.ProgramArguments = ["${pkgs.deeplx}/bin/deeplx" "-p" "${toString cfg.port}"];
+      serviceConfig.ProgramArguments = ["${pkgs.stable.deeplx}/bin/deeplx" "-p" "${toString cfg.port}"];
       path = [config.modules.service.path];
       serviceConfig.RunAtLoad = true;
       # serviceConfig.KeepAlive.NetworkState = true;

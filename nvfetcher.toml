@@ -268,7 +268,7 @@ fetch.url = "https://github.com/nikitabobko/AeroSpace/releases/download/v$ver/Ae
 
 [ryujinx]
 src.github = "Ryujinx/release-channel-master"
-fetch.url = "https://github.com/Ryujinx/release-channel-master/releases/download/$ver/test-ava-ryujinx-$ver-macos_universal.app.tar.gz"
+fetch.url = "https://github.com/Ryujinx/release-channel-master/releases/download/$ver/ryujinx-$ver-macos_universal.app.tar.gz"
 
 [ryusak]
 src.github = "FennyFatal/RyuSAK"
@@ -290,8 +290,8 @@ fetch.url = "https://github.com/yaobiao131/downkyicore/releases/download/v$ver/D
 
 ### firefox-addons
 [ublock-origin]
-src.github_tag = "gorhill/uBlock"
-fetch.url = "https://github.com/gorhill/uBlock/releases/download/$ver/uBlock0_$ver.firefox.signed.xpi"
+src.github = "gorhill/uBlock"
+fetch.url = "https://github.com/gorhill/uBlock/releases/download/$ver/uBlock0_$ver.firefox.xpi"
 
 [sidebery]
 src.github = "mbnuqw/sidebery"

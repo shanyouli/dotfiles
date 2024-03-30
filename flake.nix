@@ -49,11 +49,7 @@
     inherit (flake-utils.lib) eachSystemMap;
     inherit (lib) attrValues;
     inherit (lib.my) defaultSystems mkPkgs mkPkg;
-    allPkgs = mkPkgs {
-      nixpkgs = nixpkgs;
-      cfg = {allowUnfree = true;};
-      overlays = self.overlays // {};
-    };
+
     # with overlays and any extraModules applied
     lib = nixpkgs.lib.extend (self: super: {
       my = import ./lib {
@@ -61,6 +57,18 @@
         lib = self;
       };
     });
+
+    allPkgs = mkPkgs {
+      nixpkgs = [nixos-stable darwin-stable];
+      cfg = {allowUnfree = true;};
+      overlays = self.overlays // {};
+    };
+    baseOverlays = {
+      nur = inputs.nur.overlay;
+      nix-index-database = inputs.nix-index-database.overlays.nix-index;
+      nvfetcher = inputs.nvfetcher.overlays.default;
+      emacs = inputs.emacs-overlay.overlay;
+    };
     this = import ./packages;
   in {
     lib = lib.my;
@@ -161,11 +169,12 @@
     };
 
     devShells = eachSystemMap defaultSystems (system: let
-      pkgs = mkPkg {
-        inherit system;
-        nixpkgs = inputs.nixpkgs;
-        overlays = self.overlays;
-      };
+      pkgs = allPkgs."${system}";
+      # pkgs = mkPkg {
+      #   inherit system;
+      #   nixpkgs = inputs.nixpkgs;
+      #   overlays = self.overlays;
+      # };
     in {
       default = devenv.lib.mkShell {
         inherit inputs pkgs;
@@ -175,7 +184,7 @@
     packages = lib.my.withDefaultSystems (system: let
       pkgs = allPkgs."${system}";
     in
-      (this.packages pkgs)
+      (this.packages pkgs.stable)
       // {
         # devenv = inputs.devenv.defaultPackage.${system};
       });
@@ -218,10 +227,10 @@
         drv = let
           buildPath = pkgs.buildEnv {
             name = "update-nix-pkgs-env";
-            paths = with pkgs; [nix-prefetch-scripts jq curl gawk];
+            paths = with pkgs.stable; [nix-prefetch-scripts jq curl gawk];
             pathsToLink = "/bin";
           };
-          py = pkgs.python3.withPackages (p: with p; [requests beautifulsoup4]);
+          py = pkgs.stable.python3.withPackages (p: with p; [requests beautifulsoup4]);
         in
           pkgs.writeScriptBin "pkgs-update" ''
             #! ${pkgs.lib.getExe pkgs.bash}
@@ -230,8 +239,7 @@
             keys_args=""
             [[ -f $HOME/.config/nvfetcher.toml ]] && keys_args="-k $HOME/.config/nvfetcher.toml"
             [[ -f ./secrets.toml ]] && keys_args="-k ./secrets.toml"
-            ${allPkgs."${system}".nvfetcher-bin}/bin/nvfetcher $keys_args -r 10  --keep-going -j 3 --keep-old --commit-changes
-            # ${inputs.nvfetcher.packages."${system}".default}/bin/nvfetcher $keys_args -r 10  --keep-old
+            ${inputs.nvfetcher.packages."${system}".default}/bin/nvfetcher $keys_args -r 10  --keep-going -j 3 --keep-old --commit-changes
             echo "update firefox, rpcs3, simple-live ..."
             bash packages/darwinApp/firefox/update.sh
             bash packages/darwinApp/rpcs3/update.sh
@@ -243,23 +251,34 @@
     });
 
     overlays = {
-      default = final: prev: (
-        nixpkgs.lib.composeExtensions this.overlay
-        (final: prev: {
-          devenv = inputs.devenv.defaultPackage.${prev.system};
-        })
-        final
-        prev
-      );
-      nur = inputs.nur.overlay;
-      nix-index-database = inputs.nix-index-database.overlays.nix-index;
-      nvfetcher = inputs.nvfetcher.overlays.default;
       channels = final: prev: {
         # expose other channels via overlays
         stable = mkPkg {
           system = prev.system;
           cfg = {allowUnfree = true;};
           nixpkgs = [nixos-stable darwin-stable];
+          extraOverlays = [this.overlay];
+          # overlays = {
+          #   default = ffinal: fprev: (
+          #     nixpkgs.lib.composeExtensions this.overlay
+          #     # (final: prev: {
+          #     #   devenv = inputs.devenv.defaultPackage.${prev.system};
+          #     # })
+          #     ffinal
+          #     fprev
+          #   );
+          # };
+        };
+        unstable = mkPkg {
+          inherit nixpkgs;
+          system = prev.system;
+          cfg = {allowUnfree = true;};
+          overlays = baseOverlays;
+          extraOverlays = [
+            (ffinal: pprev: {
+              devenv = inputs.devenv.defaultPackage.${pprev.system};
+            })
+          ];
         };
       };
     };

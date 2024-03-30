@@ -12,7 +12,7 @@ in {
   options = {
     modules.tool.aria2 = {
       enable = mkEnableOption "Whether to enable aria2 module";
-      package = mkPkgOpt pkgs.aria2 "aria2 package";
+      package = mkPkgOpt pkgs.stable.aria2 "aria2 package";
       aria2p = mkEnableOption "aria2c daemon python cli";
     };
   };

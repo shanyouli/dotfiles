@@ -16,18 +16,18 @@ in {
   config = mkIf cfg.enable {
     user.packages = with pkgs;
       [
-        (mkIf pkgs.stdenvNoCC.isLinux clang)
+        (mkIf pkgs.stdenvNoCC.isLinux stable.clang)
         # gcc
-        cmake
-        llvmPackages.libcxx
+        stable.cmake
+        stable.llvmPackages.libcxx
       ]
-      ++ optionals stdenvNoCC.isLinux [bear gdb];
+      ++ optionals stdenvNoCC.isLinux [stable.bear stable.gdb];
     modules.editor.vscode.extensions = with pkgs.vscode-extensions; let
       cpp =
         if pkgs.stdenvNoCC.isLinux
         then ms-vscode.cpptools
         else
-          pkgs.vscode-utils.extensionFromVscodeMarketplace {
+          pkgs.stable.vscode-utils.extensionFromVscodeMarketplace {
             name = "cpptools";
             publisher = "ms-vscode";
             version = "1.18.5";

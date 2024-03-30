@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  inputs,
   ...
 }:
 with lib;
@@ -78,7 +77,7 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      nixpkgs.overlays = [inputs.emacs-overlay.overlay];
+      # nixpkgs.overlays = [inputs.emacs-overlay.overlay];
       modules.editor.emacs.doom.confInit = ''
         ;; (setq mydotfile "/etc/nixos")
       '';
@@ -130,8 +129,8 @@ in {
         ]
         ++ optionals cfg.rimeEnable [
           (epkgs.rime.overrideAttrs (esuper: {
-            buildInputs = (esuper.buildInputs or []) ++ [pkgs.librime];
-            nativeBuildInputs = [pkgs.gnumake pkgs.gcc];
+            buildInputs = (esuper.buildInputs or []) ++ [pkgs.stable.librime];
+            nativeBuildInputs = [pkgs.stable.gnumake pkgs.stable.gcc];
             preBuild = "";
             postInstall = let
               suffix =
@@ -152,15 +151,15 @@ in {
     }
     {
       user.packages = [
-        pkgs.graphviz
+        pkgs.stable.graphviz
         cfg.pkg
-        pkgs.pandoc
+        pkgs.stable.pandoc
         #dirvish 包需要的工具
         # poppler
-        pkgs.ffmpegthumbnailer
-        pkgs.mediainfo
+        pkgs.stable.ffmpegthumbnailer
+        pkgs.stable.mediainfo
         # grip markdown 预览配置
-        pkgs.python3Packages.grip
+        pkgs.stable.python3Packages.grip
       ];
       modules.shell.python.extraPkgs = ps:
         with ps; [
@@ -181,13 +180,13 @@ in {
       home.configFile = let
         data-dir =
           if pkgs.stdenvNoCC.isLinux
-          then "${pkgs.brise}/share/rime-data"
+          then "${pkgs.stable.brise}/share/rime-data"
           else "/Library/Input Methods/Squirrel.app/Contents/SharedSupport";
       in {
         "doom/config.init.el".text = ''
           ${lib.optionalString cfg.rimeEnable ''
             (setq rime-emacs-module-header-root "${cfg.package}/include")
-            (setq rime-librime-root "${pkgs.librime}")
+            (setq rime-librime-root "${pkgs.stable.librime}")
             (setq rime-share-data-dir "${data-dir}")
             (setq rime-user-data-dir "${config.home.configDir}/emacs-rime")
           ''}
