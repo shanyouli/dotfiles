@@ -61,7 +61,7 @@ in {
       sudo ${clashCmd} -f "${cfg.configFile}" -d "${workdir}"
     '';
   in {
-    user.packages = [pkgs.clash-nyanpasu-app];
+    user.packages = [pkgs.stable.clash-nyanpasu-app];
     modules.tool.clash = {
       enable = true;
       package = cfg.package;

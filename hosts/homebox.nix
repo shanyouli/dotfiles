@@ -61,9 +61,9 @@
     tool.sdcv.enable = true;
     browser.default = "firefox";
     # browser.firefox.extensions = lib.mkForce [];
-    browser.fallback = pkgs.vivaldi-app;
+    # browser.fallback = pkgs.stable.vivaldi-app;
     browser.chrome.enable = true;
-    browser.chrome.package = pkgs.chromium-app;
+    browser.chrome.package = pkgs.stable.chromium-app;
     # theme.enable = true;
 
     # # macos
@@ -73,7 +73,7 @@
     macos.karabiner.enable = true;
     macos.stopAutoReopen = true;
     service.clash.enable = true;
-    service.clash.package = pkgs.mihomo;
+    service.clash.package = pkgs.stable.mihomo;
     tool.clash.enSingbox = true;
     service.clash.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/meta.yaml";
 

@@ -24,8 +24,8 @@ in {
     modules.tool.qbittorrent.package =
       (
         if cfg.enGui
-        then pkgs.qbittorrent
-        else pkgs.qbittorrent-nox
+        then pkgs.stable.qbittorrent
+        else pkgs.stable.qbittorrent-nox
       )
       .overrideAttrs (old: rec {
         inherit (srcs.qbittorrent) src;

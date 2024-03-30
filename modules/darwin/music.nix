@@ -19,10 +19,7 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       homebrew.casks = ["vox"] ++ lib.optionals (netease.enable && netease.enGui) ["neteasemusic"];
-      user.packages = [
-        pkgs.lyricx-app
-        pkgs.spotube-app
-      ];
+      user.packages = with pkgs.stable; [lyricx-app spotube-app];
     }
     (mkIf scfg.mpd.enable {
       modules.media.music.mpd = {

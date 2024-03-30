@@ -19,7 +19,7 @@ in {
       default =
         if pkgs.stdenvNoCC.isLinux
         then pkgs.google-chrome
-        else pkgs.chrome-app;
+        else pkgs.stable.chrome-app;
       defaultText = literalExample "pkgs.google-chrome";
       example = literalExample "pkgs.google-chrome";
       description = "The Chrome module to use.";

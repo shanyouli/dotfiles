@@ -20,15 +20,15 @@ with lib.my; let
     case "$2" in
 
     8)
-    	JDK="${pkgs.jdk8}"
+    	JDK="${pkgs.stable.jdk8}"
     	;;
-    17) JDK="${pkgs.jdk17}" ;;
+    17) JDK="${pkgs.stable.jdk17}" ;;
     *)
-        JDK="${pkgs.jdk21}"
+        JDK="${pkgs.stable.jdk21}"
     	;;
 
     esac
-    JAVA_HOME=$(${pkgs.coreutils}/bin/realpath "$JDK/bin/..")
+    JAVA_HOME=$(${pkgs.stable.coreutils}/bin/realpath "$JDK/bin/..")
     echo $JAVA_HOME
   '';
 in {
@@ -52,6 +52,7 @@ in {
     # https://github.com/ldeck/nix-home/blob/master/lib/defaults/direnv-java.nix
     modules.shell.direnv.stdlib = mkIf false {
       java = pkgs.writeScript "java" ''
+
         use_java() {
           # desired jdk version as first parameter?
           local ver=$1

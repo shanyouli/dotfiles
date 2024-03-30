@@ -33,12 +33,12 @@ in {
         pylint
         pylint-venv
       ];
-    user.packages = [
-      pkgs.ruff
-      pkgs.python3.pkgs.ruff-lsp
-      pkgs.poetry
-      pkgs.pyright
-      pkgs.pipenv
+    user.packages = with pkgs.stable; [
+      ruff
+      python3.pkgs.ruff-lsp
+      poetry
+      pyright
+      pipenv
     ];
     modules.shell = {
       env = {

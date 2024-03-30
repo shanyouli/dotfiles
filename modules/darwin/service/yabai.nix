@@ -11,13 +11,15 @@ with lib.my; let
   srcs = (import "${config.dotfiles.srcDir}/generated.nix") {
     inherit (pkgs) fetchurl fetchFromGitHub fetchgit dockerTools;
   };
-  buildSymlinks = pkgs.runCommandLocal "build-symlinks" {} ''
-    mkdir -p $out/bin
-    ln -s /usr/bin/{xcrun,codesign,xxd} $out/bin
-  '';
-  yabai = pkgs.yabai.overrideAttrs (prev: rec {
+  yabai = pkgs.stable.yabai.overrideAttrs (prev: rec {
     inherit (srcs.yabai) version src;
-    nativeBuildInputs = (prev.nativeBuildInputes or []) ++ [buildSymlinks pkgs.installShellFiles];
+    nativeBuildInputs = let
+      buildSymlinks = pkgs.runCommandLocal "build-symlinks" {} ''
+        mkdir -p $out/bin
+        ln -s /usr/bin/{xcrun,codesign,xxd} $out/bin
+      '';
+    in
+      (prev.nativeBuildInputes or []) ++ [buildSymlinks pkgs.installShellFiles];
     dontBuild = false;
     installPhase = ''
       runHook preInstall
@@ -41,7 +43,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = [pkgs.yabai-zsh-completions];
+    user.packages = [pkgs.stable.yabai-zsh-completions];
     home.configFile."yabai" = {
       source = "${config.dotfiles.configDir}/yabai";
       recursive = true;

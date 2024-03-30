@@ -71,7 +71,7 @@ in {
           '';
           "tmux" = optionalString cm.shell.tmux.enable ''
             set -g @catppuccin_flavour '${n}'
-            run-shell '${pkgs.tmuxPlugins.catppuccin}/share/tmux-plugins/catppuccin/catppuccin.tmux'
+            run-shell '${pkgs.stable.tmuxPlugins.catppuccin}/share/tmux-plugins/catppuccin/catppuccin.tmux'
           '';
         };
       })
