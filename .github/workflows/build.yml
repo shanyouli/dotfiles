@@ -3,15 +3,22 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - README.md
-      - CHANGELOG.md  # Should never be edited anyway
-      - .gitignore
-      - .github/**
-      - Jenkinsfile
+    paths:
+      - 'packages/**'
+      - '!packages/**/update.py'
+      - '!packages/**/update.sh'
+      - 'modules/shared/**'
+      - '_sources/**'
+      - 'flake.lock'
+
   pull_request_target:
     branches:
       - master
+    paths:
+      - 'packages/**/source.json'
+      - '_sources/**'
+      - 'modules/shared/**'
+      - 'flake.lock'
 jobs:
   build:
     strategy:
