@@ -14,7 +14,7 @@ with lib.my; let
 in {
   config = mkIf cshemacs.enable {
     modules.editor.emacs.package = let
-      basePackage = pkgs.unstable.emacs-unstable.override {
+      basePackage = pkgs.emacs-unstable.override {
         # pkgs.emacs-unstable.override {
         # pkgs.emacs.override {
         # 使用 emacs-unstable 取代 emacs-git

@@ -27,7 +27,7 @@
       fetchSubmodules = false;
       sha256 = "sha256-/Os8DndNtWvwIHQ1us7TPg16+WOpMFcntZv9wv4O1fU=";
     };
-    vendorHash = "sha256-7Eq/CuwsJZEWtECuUbGhQr0c0IFA3ZBDmbuLwLnlugs=";
+    vendorHash = "sha256-dr6fiCVihZpDN1ilKCsFW6LS8OnZJC6VwvIEyoZ1S5s=";
   };
   alist-web = {
     pname = "alist-web";
@@ -381,7 +381,7 @@
       fetchSubmodules = false;
       sha256 = "sha256-/fFVUI++OhOer5DrvcXO+R+4whtb5+3Qg3e4+ikJr1Y=";
     };
-    vendorHash = "sha256-tvPR5kAta4MlMTwjfxwVOacRr2nVpfalbN08mfxml64=";
+    vendorHash = "sha256-k4xB/jO78VGD+n9HtuoWXoXB+kZCEyPKJTTwj32nGIw=";
   };
   musicdl = {
     pname = "musicdl";

@@ -48,7 +48,9 @@ in {
         pkgs.stable.python3Packages.yutto
         pkgs.stable.bbdown
         pkgs.unstable.lux
-        pkgs.stable.fav
+        (pkgs.stable.fav.override {
+          rustPlatform = pkgs.unstable.rustPlatform;
+        })
       ]; # yutto 下载bilibili
       home.configFile."yt-dlp/config".text = ''
         # 下载默认保存目录

@@ -10,6 +10,9 @@ with lib.my; let
   cfm = config.modules;
   cfg = cfm.service.deeplx;
   log_file = "${config.user.home}/Library/Logs/deeplx.log";
+  deeplx = pkgs.stable.deeplx.override {
+    buildGoModule = pkgs.unstable.buildGo122Module;
+  };
 in {
   options.modules.service.deeplx = {
     enable = mkEnableOption "Whether to deeplx service";
@@ -18,7 +21,7 @@ in {
   config = mkIf cfg.enable {
     # user.packages = [pkgs.deeplx];
     launchd.user.agents.deeplx = {
-      serviceConfig.ProgramArguments = ["${pkgs.stable.deeplx}/bin/deeplx" "-p" "${toString cfg.port}"];
+      serviceConfig.ProgramArguments = ["${deeplx}/bin/deeplx" "-p" "${toString cfg.port}"];
       path = [config.modules.service.path];
       serviceConfig.RunAtLoad = true;
       # serviceConfig.KeepAlive.NetworkState = true;

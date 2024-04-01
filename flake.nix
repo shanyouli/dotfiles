@@ -67,7 +67,7 @@
       nur = inputs.nur.overlay;
       nix-index-database = inputs.nix-index-database.overlays.nix-index;
       nvfetcher = inputs.nvfetcher.overlays.default;
-      emacs = inputs.emacs-overlay.overlay;
+      # emacs = inputs.emacs-overlay.overlay;
     };
     this = import ./packages;
   in {
@@ -244,6 +244,7 @@
             bash packages/darwinApp/firefox/update.sh
             bash packages/darwinApp/rpcs3/update.sh
             bash packages/darwinApp/simple-live/update.sh
+            bash packages/darwinApp/xbydriver/update.sh
             ${py}/bin/python3 packages/firefox-addons/update.py
           '';
       };

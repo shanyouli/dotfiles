@@ -74,7 +74,7 @@ passthru = { vendorHash = "sha256-+trt7BLgy1d1ENrqf/J0mf8ECnKfYl3P/KibQQxNRN4=" 
 [mihomo]
 src.github = "MetaCubeX/mihomo"
 fetch.github = "MetaCubeX/mihomo"
-passthru = { vendorHash = "sha256-tvPR5kAta4MlMTwjfxwVOacRr2nVpfalbN08mfxml64=" }
+passthru = { vendorHash = "sha256-k4xB/jO78VGD+n9HtuoWXoXB+kZCEyPKJTTwj32nGIw=" }
 
 [musicn]
 src.github = "zonemeen/musicn"
@@ -103,7 +103,7 @@ fetch.github = "nilaoda/BBDown"
 [alist]
 src.github = "alist-org/alist"
 fetch.github = "alist-org/alist"
-passthru = { vendorHash = "sha256-7Eq/CuwsJZEWtECuUbGhQr0c0IFA3ZBDmbuLwLnlugs=" }
+passthru = { vendorHash = "sha256-dr6fiCVihZpDN1ilKCsFW6LS8OnZJC6VwvIEyoZ1S5s=" }
 
 [alist-web]
 src.github = "alist-org/alist-web"
@@ -205,12 +205,6 @@ src.github="gee1k/uPic"
 src.from_pattern = "v(.*)"
 src.to_pattern = "\\1"
 fetch.url = "https://github.com/gee1k/uPic/releases/download/v$ver/uPic.zip"
-
-[xbydriver]
-src.github ="odomu/aliyunpan"
-src.from_pattern = "v(.*)"
-src.to_pattern = "\\1"
-fetch.url = "https://github.com/odomu/aliyunpan/releases/download/v$ver/alixby-$ver-mac-arm64.dmg"
 
 [zy-player]
 src.github="Hiram-Wong/ZyPlayer"

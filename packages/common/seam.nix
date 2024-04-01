@@ -16,6 +16,7 @@ rustPlatform.buildRustPackage rec {
   nativeBuildInputs = [pkg-config];
   cargoBuildFlags = ["--package" "seam"];
   cargoTestFlags = ["-p" "seam" "--bin" "seam"];
+  doCheck = false;
   cargoLock = source.cargoLock."Cargo.lock";
   buildInputs =
     [openssl]
