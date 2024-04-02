@@ -14,6 +14,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = [pkgs.stable.android-tools];
+    user.packages = with pkgs.stable; [android-tools payload-dumper-go];
   };
 }

@@ -152,14 +152,15 @@ in {
         "Userscript" = 1463298887; # tampermonkey
         "OneTab" = 1540160809;
         "Amphetamine" = 937984704;
-        "mineweeper" = 1475921958;
+        # "mineweeper" = 1475921958;
         "immersive-translate" = 6447957425;
         "vimkey" = 1585682577; # replace vimari
-        "adblock" = 1018301773;
+        # "adblock" = 1018301773;
         "text-scaner" = 1452523807;
         "medis2" = 1579200037;
         "vidhub" = 1659622164; # 视频管理,需要网速足够好
         "medis" = 1579200037; # redis 管理工具
+        "devhub" = 6476452351; # 试用小工具合集
       };
     }
   ]);
