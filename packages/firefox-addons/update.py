@@ -25,9 +25,18 @@ def commit_source(msg):
     os.chdir(SCRIPT_DIR)
     for i in ["sources.json", "source.json"]:
         if os.path.isfile(i):
-            subprocess.run("git add ./{i}", shell=True)
+            subprocess.run(f"git add ./{i}", shell=True)
     subprocess.run(f"git commit -m '{msg}'", shell=True)
     os.chdir(current_dir)
+
+
+def nix_prefix_url(url: str) -> str:
+    result = subprocess.run(["nix-prefetch-url", url], stdout=subprocess.PIPE)
+    if result.returncode != 0:
+        raise RuntimeError(
+            "nix-prefetch-url exited with error {}".format(result.returncode)
+        )
+    return result.stdout.decode("utf-8").strip()
 
 
 def get_firefox_addons_xpi(name: str) -> str:
@@ -47,15 +56,6 @@ def get_firefox_addons_xpi(name: str) -> str:
 def get_version(url: str) -> str:
     re_pattern = re.search(r"-([0-9.]+).xpi", url)
     return re_pattern.group(1) if re_pattern is not None else None
-
-
-def nix_prefix_url(url: str) -> str:
-    result = subprocess.run(["nix-prefetch-url", url], stdout=subprocess.PIPE)
-    if result.returncode != 0:
-        raise RuntimeError(
-            "nix-prefetch-url exited with error {}".format(result.returncode)
-        )
-    return result.stdout.decode("utf-8").strip()
 
 
 def get_current_src(f):

@@ -1,0 +1,12 @@
+{
+  "firefox-esr": {
+    "url": "https://download-installer.cdn.mozilla.net/pub/mac/en-US/Firefox%20115.9.1esr.dmg",
+    "sha256": "44b56d29d9fba50bd6e8fa3ff1744ebcea6c5f718200f075669a62804290a3de ",
+    "version": "115.9.1esr"
+  },
+  "firefox": {
+    "url": "https://download-installer.cdn.mozilla.net/pub/mac/en-US/Firefox%20124.0.1.dmg",
+    "sha256": "b7b260287296cf65193e76c20488fa75f98ff858ea1c2be4337ce5c1226ebcfa ",
+    "version": "124.0.1"
+  }
+}

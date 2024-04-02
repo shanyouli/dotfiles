@@ -24,7 +24,7 @@ def commit_source(msg):
     os.chdir(SCRIPT_DIR)
     for i in ["sources.json", "source.json"]:
         if os.path.isfile(i):
-            subprocess.run("git add ./{i}", shell=True)
+            subprocess.run(f"git add ./{i}", shell=True)
     subprocess.run(f"git commit -m '{msg}'", shell=True)
     os.chdir(current_dir)
 
@@ -33,9 +33,6 @@ def get_current_src(f):
     if os.path.isfile(f):
         with open(f, encoding="utf-8", mode="r") as text:
             return json.load(text)
-    else:
-        return {}
-
 
 def save_current_src(f, sources):
     with open(f, encoding="utf-8", mode="w") as text:
@@ -73,7 +70,7 @@ def main():
     next_infos = {}
     update_msg_list = []
     for i in ["firefox-esr", "firefox"]:
-        last_i = latest_info.get(i) if latest_info.get(i) else None
+        last_i = latest_info.get(i) if latest_info and latest_info.get(i) else None
         if last_i is None or next_version_info[i] != last_i["version"]:
             i_info = get_dict(next_version_info[i])
             if i_info:
@@ -90,7 +87,7 @@ def main():
                 if len(update_msg_list) == 1
                 else "Update\n" + "\n".join(update_msg_list)
             )
-            print(msg)
+            commit_source(msg)
 
 
 if __name__ == "__main__":
