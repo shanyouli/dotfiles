@@ -113,9 +113,9 @@ def update_src(add_name: List[str]):
         next_sources, update_list = init_sources(add_name)
     if update_list:
         save_current_src(target_file, next_sources)
-    if IS_COMMIT:
-        msg = "Update\n" + "\n".join(update_list)
-        commit_source(msg)
+        if IS_COMMIT:
+            msg = "Update\n" + "\n".join(update_list)
+            commit_source(msg)
 
 
 if __name__ == "__main__":
