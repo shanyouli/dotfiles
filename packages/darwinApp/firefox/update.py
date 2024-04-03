@@ -52,7 +52,7 @@ def get_version() -> List:
 def get_hash(version="124.0.1"):
     url = f"https://download-installer.cdn.mozilla.net/pub/firefox/releases/{version}/SHA256SUMS"
     resp = requests.get(url).text
-    re_pattern = re.search(rf"(.*) +mac\/en-US\/Firefox {version}.dmg", resp)
+    re_pattern = re.search(rf"(\S*) +mac\/en-US\/Firefox {version}.dmg", resp)
     return re_pattern.group(1) if re_pattern is not None else None
 
 
