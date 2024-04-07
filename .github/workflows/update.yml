@@ -46,7 +46,6 @@ jobs:
           github = "${{ secrets.GITHUB_TOKEN }}"
           EOF
           nix --auto-allocate-uids run .#update
-          git commit -a -m "update my pkgs src"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
