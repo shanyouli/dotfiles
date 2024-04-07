@@ -35,7 +35,7 @@
         "extract": null,
         "name": "alist",
         "passthru": {
-            "vendorHash": "sha256-7Eq/CuwsJZEWtECuUbGhQr0c0IFA3ZBDmbuLwLnlugs="
+            "vendorHash": "sha256-dr6fiCVihZpDN1ilKCsFW6LS8OnZJC6VwvIEyoZ1S5s="
         },
         "pinned": false,
         "src": {
@@ -110,11 +110,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-2qPTFuDnLm37momNSo8D9dXHw+7eHV03UZZozhRYCb8=",
+            "sha256": "sha256-ugA+ekCx/fyIeb11DTDumC4iREkhgz2Wcs14P+TMSe4=",
             "type": "url",
-            "url": "https://download.calibre-ebook.com/7.7.0/calibre-7.7.0.dmg"
+            "url": "https://download.calibre-ebook.com/7.8.0/calibre-7.8.0.dmg"
         },
-        "version": "7.7.0"
+        "version": "7.8.0"
     },
     "calibrepath": {
         "cargoLocks": null,
@@ -125,11 +125,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-c3IK9jcVYmAYg36IcT6fVQAjiEvzfUISetavzfKNhxU=",
+            "sha256": "sha256-F4Ci5wwmSDQ7U3K/tm5Fz//SEpEAYuL0DgR9YYEba/8=",
             "type": "url",
-            "url": "https://github.com/Cirn09/calibre-do-not-translate-my-path/releases/download/v7.7.0/mac-patch-backend+update-v7.7.0.zip"
+            "url": "https://github.com/Cirn09/calibre-do-not-translate-my-path/releases/download/v7.8.0/mac-patch-backend+update-v7.8.0.zip"
         },
-        "version": "7.7.0"
+        "version": "7.8.0"
     },
     "chatgpt": {
         "cargoLocks": null,
@@ -155,11 +155,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-uyeEyxmSl+JOvbzwBtdm1Y3afFU5S3Ka5T8VoJVhYUU=",
+            "sha256": "sha256-RTMaro1h7ws7ObA06yPIh6RlhpAHifIojlSaznYhVDI=",
             "type": "url",
-            "url": "https://registry.npmmirror.com/-/binary/chrome-for-testing/123.0.6312.86/mac-arm64/chrome-mac-arm64.zip"
+            "url": "https://registry.npmmirror.com/-/binary/chrome-for-testing/123.0.6312.105/mac-arm64/chrome-mac-arm64.zip"
         },
-        "version": "123.0.6312.86"
+        "version": "123.0.6312.105"
     },
     "chrome.x64": {
         "cargoLocks": null,
@@ -170,11 +170,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-03fAd4P4H81KW5zv4F8ALBqppDDh8lO4vZmNkz5Y+H4=",
+            "sha256": "sha256-fUIa51tBrxiUfS0gwvrVtb7yAm6VxHP7Cr2SPWnZC7E=",
             "type": "url",
-            "url": "https://registry.npmmirror.com/-/binary/chrome-for-testing/123.0.6312.86/mac-x64/chrome-mac-x64.zip"
+            "url": "https://registry.npmmirror.com/-/binary/chrome-for-testing/123.0.6312.105/mac-x64/chrome-mac-x64.zip"
         },
-        "version": "123.0.6312.86"
+        "version": "123.0.6312.105"
     },
     "chromium.arm64": {
         "cargoLocks": null,
@@ -185,11 +185,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-UCsirZF9Px6XQa63BTiSz/sdsb97SaJdiVXSLbkm++Y=",
+            "sha256": "sha256-5S2ig7og3LZWtyHIljrxOH5frUwhS8ib6wxvusQJ5Sg=",
             "type": "url",
-            "url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/123.0.6312.86-1.1/ungoogled-chromium_123.0.6312.86-1.1_arm64-macos.dmg"
+            "url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/123.0.6312.105-1.1/ungoogled-chromium_123.0.6312.105-1.1_arm64-macos.dmg"
         },
-        "version": "123.0.6312.86-1.1"
+        "version": "123.0.6312.105-1.1"
     },
     "chromium.x64": {
         "cargoLocks": null,
@@ -200,11 +200,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-rfVQmFZ4fWr54QSj5MwNGy2yz6KEQoh91Zwu4mhdSaA=",
+            "sha256": "sha256-ts+iHQAiQJqbafPp2KzSlxbOrv0nPlS6EhkHKsomkpw=",
             "type": "url",
-            "url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/123.0.6312.86-1.1/ungoogled-chromium_123.0.6312.86-1.1_x86-64-macos.dmg"
+            "url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/123.0.6312.105-1.1/ungoogled-chromium_123.0.6312.105-1.1_x86-64-macos.dmg"
         },
-        "version": "123.0.6312.86-1.1"
+        "version": "123.0.6312.105-1.1"
     },
     "clash-nyanpasu": {
         "cargoLocks": null,
@@ -267,11 +267,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-T0p1qkMYqQ1DthtzaCSsA12Kbji6WUK7cRwCdk0/+8s=",
+            "sha256": "sha256-42QjEzJOFmSFos0z4FcMJPxuT0DaayQFyQYRvc+VnWY=",
             "type": "url",
-            "url": "https://github.com/darkreader/darkreader/releases/download/v4.9.81/darkreader-firefox.xpi"
+            "url": "https://github.com/darkreader/darkreader/releases/download/v4.9.82/darkreader-firefox.xpi"
         },
-        "version": "4.9.81"
+        "version": "4.9.82"
     },
     "deeplx": {
         "cargoLocks": null,
@@ -511,11 +511,11 @@
             "name": null,
             "owner": "go-musicfox",
             "repo": "go-musicfox",
-            "rev": "v4.3.2",
-            "sha256": "sha256-W9TVDDfTjWNDEBlkDGByYFoUtL6S9K8nHS2dsfGWYIY=",
+            "rev": "v4.3.3",
+            "sha256": "sha256-J6R3T92cHFUkKwc+GKm612tVjglP2Tc/kDUmzUMhvio=",
             "type": "github"
         },
-        "version": "v4.3.2"
+        "version": "v4.3.3"
     },
     "httpx": {
         "cargoLocks": null,
@@ -675,7 +675,7 @@
         "extract": null,
         "name": "mihomo",
         "passthru": {
-            "vendorHash": "sha256-tvPR5kAta4MlMTwjfxwVOacRr2nVpfalbN08mfxml64="
+            "vendorHash": "sha256-k4xB/jO78VGD+n9HtuoWXoXB+kZCEyPKJTTwj32nGIw="
         },
         "pinned": false,
         "src": {
@@ -827,11 +827,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-aUFWPimBSqbjGhmdqepihUQnC0DfmAGDSfC2J5lgxOg=",
+            "sha256": "sha256-YNrYsd394sGZkFnG+ZM5+5lGslLQkAOmU/zeasGxav8=",
             "type": "url",
-            "url": "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1248/ryujinx-1.1.1248-macos_universal.app.tar.gz"
+            "url": "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1262/ryujinx-1.1.1262-macos_universal.app.tar.gz"
         },
-        "version": "1.1.1248"
+        "version": "1.1.1262"
     },
     "ryusak": {
         "cargoLocks": null,
@@ -928,21 +928,6 @@
         },
         "version": "1.2.2"
     },
-    "ublock-origin": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "ublock-origin",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-S0HPmMqty5hsoX00tJm0obJmbQW8iVMKySQ3by/odtM=",
-            "type": "url",
-            "url": "https://github.com/gorhill/uBlock/releases/download/1.57.0/uBlock0_1.57.0.firefox.xpi"
-        },
-        "version": "1.57.0"
-    },
     "upic": {
         "cargoLocks": null,
         "date": null,
@@ -967,11 +952,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-AzyjcPyNUsULW7ZNhoBaVuFF+KVx+0JcmQ6ejUSRwtI=",
+            "sha256": "sha256-5pdlHD6zdqDyRZRn3JPNHNjT9CE6rCAQNG4WYLl8gbs=",
             "type": "url",
-            "url": "https://downloads.vivaldi.com/stable/Vivaldi.6.6.3271.55.universal.dmg"
+            "url": "https://downloads.vivaldi.com/stable/Vivaldi.6.6.3271.57.universal.dmg"
         },
-        "version": "6.6.3271.55"
+        "version": "6.6.3271.57"
     },
     "websocket-bridge-python": {
         "cargoLocks": null,
@@ -988,21 +973,6 @@
         },
         "version": "0.0.2"
     },
-    "xbydriver": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "xbydriver",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-CVhz/nIe5TamceB7NTXINNb8Cmbr6gaBpAxsVdNiSZQ=",
-            "type": "url",
-            "url": "https://github.com/odomu/aliyunpan/releases/download/v3.24.33011/alixby-3.24.33011-mac-arm64.dmg"
-        },
-        "version": "3.24.33011"
-    },
     "yabai": {
         "cargoLocks": null,
         "date": null,
@@ -1017,11 +987,11 @@
             "name": null,
             "owner": "koekeishiya",
             "repo": "yabai",
-            "rev": "v7.0.3",
-            "sha256": "sha256-oxQsCvTZqfKZoTuY1NC6h+Fzvyl0gJDhljFY2KrjRQ8=",
+            "rev": "v7.1.0",
+            "sha256": "sha256-5iC1U6tyUYFLjOfnIxCrjCjj2deUZ/rvsJN4jlrr2Tc=",
             "type": "github"
         },
-        "version": "v7.0.3"
+        "version": "v7.1.0"
     },
     "yabai-zsh-completions": {
         "cargoLocks": null,
@@ -1057,11 +1027,11 @@
             "name": null,
             "owner": "yutto-dev",
             "repo": "yutto",
-            "rev": "v2.0.0-beta.36",
-            "sha256": "sha256-rXajj7lGuiirWHctePIhChGgD74KxbA0XJ/AIGGW6aM=",
+            "rev": "v2.0.0-beta.37",
+            "sha256": "sha256-daRuFYfR3FjvhVsQM1FXI19iOH+bukh6WxfH5O+CFk4=",
             "type": "github"
         },
-        "version": "v2.0.0-beta.36"
+        "version": "v2.0.0-beta.37"
     },
     "zpmod": {
         "cargoLocks": null,

@@ -59,18 +59,18 @@
   };
   calibre = {
     pname = "calibre";
-    version = "7.7.0";
+    version = "7.8.0";
     src = fetchurl {
-      url = "https://download.calibre-ebook.com/7.7.0/calibre-7.7.0.dmg";
-      sha256 = "sha256-2qPTFuDnLm37momNSo8D9dXHw+7eHV03UZZozhRYCb8=";
+      url = "https://download.calibre-ebook.com/7.8.0/calibre-7.8.0.dmg";
+      sha256 = "sha256-ugA+ekCx/fyIeb11DTDumC4iREkhgz2Wcs14P+TMSe4=";
     };
   };
   calibrepath = {
     pname = "calibrepath";
-    version = "7.7.0";
+    version = "7.8.0";
     src = fetchurl {
-      url = "https://github.com/Cirn09/calibre-do-not-translate-my-path/releases/download/v7.7.0/mac-patch-backend+update-v7.7.0.zip";
-      sha256 = "sha256-c3IK9jcVYmAYg36IcT6fVQAjiEvzfUISetavzfKNhxU=";
+      url = "https://github.com/Cirn09/calibre-do-not-translate-my-path/releases/download/v7.8.0/mac-patch-backend+update-v7.8.0.zip";
+      sha256 = "sha256-F4Ci5wwmSDQ7U3K/tm5Fz//SEpEAYuL0DgR9YYEba/8=";
     };
   };
   chatgpt = {
@@ -83,34 +83,34 @@
   };
   "chrome.arm64" = {
     pname = "chrome.arm64";
-    version = "123.0.6312.86";
+    version = "123.0.6312.105";
     src = fetchurl {
-      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/123.0.6312.86/mac-arm64/chrome-mac-arm64.zip";
-      sha256 = "sha256-uyeEyxmSl+JOvbzwBtdm1Y3afFU5S3Ka5T8VoJVhYUU=";
+      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/123.0.6312.105/mac-arm64/chrome-mac-arm64.zip";
+      sha256 = "sha256-RTMaro1h7ws7ObA06yPIh6RlhpAHifIojlSaznYhVDI=";
     };
   };
   "chrome.x64" = {
     pname = "chrome.x64";
-    version = "123.0.6312.86";
+    version = "123.0.6312.105";
     src = fetchurl {
-      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/123.0.6312.86/mac-x64/chrome-mac-x64.zip";
-      sha256 = "sha256-03fAd4P4H81KW5zv4F8ALBqppDDh8lO4vZmNkz5Y+H4=";
+      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/123.0.6312.105/mac-x64/chrome-mac-x64.zip";
+      sha256 = "sha256-fUIa51tBrxiUfS0gwvrVtb7yAm6VxHP7Cr2SPWnZC7E=";
     };
   };
   "chromium.arm64" = {
     pname = "chromium.arm64";
-    version = "123.0.6312.86-1.1";
+    version = "123.0.6312.105-1.1";
     src = fetchurl {
-      url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/123.0.6312.86-1.1/ungoogled-chromium_123.0.6312.86-1.1_arm64-macos.dmg";
-      sha256 = "sha256-UCsirZF9Px6XQa63BTiSz/sdsb97SaJdiVXSLbkm++Y=";
+      url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/123.0.6312.105-1.1/ungoogled-chromium_123.0.6312.105-1.1_arm64-macos.dmg";
+      sha256 = "sha256-5S2ig7og3LZWtyHIljrxOH5frUwhS8ib6wxvusQJ5Sg=";
     };
   };
   "chromium.x64" = {
     pname = "chromium.x64";
-    version = "123.0.6312.86-1.1";
+    version = "123.0.6312.105-1.1";
     src = fetchurl {
-      url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/123.0.6312.86-1.1/ungoogled-chromium_123.0.6312.86-1.1_x86-64-macos.dmg";
-      sha256 = "sha256-rfVQmFZ4fWr54QSj5MwNGy2yz6KEQoh91Zwu4mhdSaA=";
+      url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/123.0.6312.105-1.1/ungoogled-chromium_123.0.6312.105-1.1_x86-64-macos.dmg";
+      sha256 = "sha256-ts+iHQAiQJqbafPp2KzSlxbOrv0nPlS6EhkHKsomkpw=";
     };
   };
   clash-nyanpasu = {
@@ -143,10 +143,10 @@
   };
   darkreader = {
     pname = "darkreader";
-    version = "4.9.81";
+    version = "4.9.82";
     src = fetchurl {
-      url = "https://github.com/darkreader/darkreader/releases/download/v4.9.81/darkreader-firefox.xpi";
-      sha256 = "sha256-T0p1qkMYqQ1DthtzaCSsA12Kbji6WUK7cRwCdk0/+8s=";
+      url = "https://github.com/darkreader/darkreader/releases/download/v4.9.82/darkreader-firefox.xpi";
+      sha256 = "sha256-42QjEzJOFmSFos0z4FcMJPxuT0DaayQFyQYRvc+VnWY=";
     };
   };
   deeplx = {
@@ -279,13 +279,13 @@
   };
   go-musicfox = {
     pname = "go-musicfox";
-    version = "v4.3.2";
+    version = "v4.3.3";
     src = fetchFromGitHub {
       owner = "go-musicfox";
       repo = "go-musicfox";
-      rev = "v4.3.2";
+      rev = "v4.3.3";
       fetchSubmodules = false;
-      sha256 = "sha256-W9TVDDfTjWNDEBlkDGByYFoUtL6S9K8nHS2dsfGWYIY=";
+      sha256 = "sha256-J6R3T92cHFUkKwc+GKm612tVjglP2Tc/kDUmzUMhvio=";
     };
   };
   httpx = {
@@ -455,10 +455,10 @@
   };
   ryujinx = {
     pname = "ryujinx";
-    version = "1.1.1248";
+    version = "1.1.1262";
     src = fetchurl {
-      url = "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1248/ryujinx-1.1.1248-macos_universal.app.tar.gz";
-      sha256 = "sha256-aUFWPimBSqbjGhmdqepihUQnC0DfmAGDSfC2J5lgxOg=";
+      url = "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1262/ryujinx-1.1.1262-macos_universal.app.tar.gz";
+      sha256 = "sha256-YNrYsd394sGZkFnG+ZM5+5lGslLQkAOmU/zeasGxav8=";
     };
   };
   ryusak = {
@@ -516,14 +516,6 @@
       sha256 = "sha256-AZJn5kHK/al94ONfIHcG+W0jyMfgdJkIngN+PVj+I44=";
     };
   };
-  ublock-origin = {
-    pname = "ublock-origin";
-    version = "1.57.0";
-    src = fetchurl {
-      url = "https://github.com/gorhill/uBlock/releases/download/1.57.0/uBlock0_1.57.0.firefox.xpi";
-      sha256 = "sha256-S0HPmMqty5hsoX00tJm0obJmbQW8iVMKySQ3by/odtM=";
-    };
-  };
   upic = {
     pname = "upic";
     version = "0.21.1";
@@ -534,10 +526,10 @@
   };
   vivaldi = {
     pname = "vivaldi";
-    version = "6.6.3271.55";
+    version = "6.6.3271.57";
     src = fetchurl {
-      url = "https://downloads.vivaldi.com/stable/Vivaldi.6.6.3271.55.universal.dmg";
-      sha256 = "sha256-AzyjcPyNUsULW7ZNhoBaVuFF+KVx+0JcmQ6ejUSRwtI=";
+      url = "https://downloads.vivaldi.com/stable/Vivaldi.6.6.3271.57.universal.dmg";
+      sha256 = "sha256-5pdlHD6zdqDyRZRn3JPNHNjT9CE6rCAQNG4WYLl8gbs=";
     };
   };
   websocket-bridge-python = {
@@ -548,23 +540,15 @@
       sha256 = "sha256-J9HGD3PSavZQwh2eZPbM6isdknZ1M2nkL5WHlYjRju8=";
     };
   };
-  xbydriver = {
-    pname = "xbydriver";
-    version = "3.24.33011";
-    src = fetchurl {
-      url = "https://github.com/odomu/aliyunpan/releases/download/v3.24.33011/alixby-3.24.33011-mac-arm64.dmg";
-      sha256 = "sha256-CVhz/nIe5TamceB7NTXINNb8Cmbr6gaBpAxsVdNiSZQ=";
-    };
-  };
   yabai = {
     pname = "yabai";
-    version = "v7.0.3";
+    version = "v7.1.0";
     src = fetchFromGitHub {
       owner = "koekeishiya";
       repo = "yabai";
-      rev = "v7.0.3";
+      rev = "v7.1.0";
       fetchSubmodules = false;
-      sha256 = "sha256-oxQsCvTZqfKZoTuY1NC6h+Fzvyl0gJDhljFY2KrjRQ8=";
+      sha256 = "sha256-5iC1U6tyUYFLjOfnIxCrjCjj2deUZ/rvsJN4jlrr2Tc=";
     };
   };
   yabai-zsh-completions = {
@@ -581,13 +565,13 @@
   };
   yutto = {
     pname = "yutto";
-    version = "v2.0.0-beta.36";
+    version = "v2.0.0-beta.37";
     src = fetchFromGitHub {
       owner = "yutto-dev";
       repo = "yutto";
-      rev = "v2.0.0-beta.36";
+      rev = "v2.0.0-beta.37";
       fetchSubmodules = false;
-      sha256 = "sha256-rXajj7lGuiirWHctePIhChGgD74KxbA0XJ/AIGGW6aM=";
+      sha256 = "sha256-daRuFYfR3FjvhVsQM1FXI19iOH+bukh6WxfH5O+CFk4=";
     };
   };
   zpmod = {
