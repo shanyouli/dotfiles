@@ -130,5 +130,6 @@ if __name__ == "__main__":
             "violentmonkey",
             "switchyomega",
             "styl-us",
+            "ublock-origin"
         ]
     )

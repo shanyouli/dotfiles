@@ -237,9 +237,9 @@ fetch.url = "https://downloads.vivaldi.com/stable/Vivaldi.$ver.universal.dmg"
 src.github = "ungoogled-software/ungoogled-chromium-macos"
 fetch.url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/$ver/ungoogled-chromium_$ver_arm64-macos.dmg"
 
-["chromium.x64"]
-src.github = "ungoogled-software/ungoogled-chromium-macos"
-fetch.url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/$ver/ungoogled-chromium_$ver_x86-64-macos.dmg"
+# ["chromium.x64"]
+# src.github = "ungoogled-software/ungoogled-chromium-macos"
+# fetch.url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/$ver/ungoogled-chromium_$ver_x86-64-macos.dmg"
 
 ["chrome.arm64"]
 src.webpage = "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json"
@@ -248,11 +248,11 @@ fetch.url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/$ver/mac
 # fetch.url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$ver/mac-arm64/chrome-mac-arm64.zip"
 # fetch.url = "https://storage.googleapis.com/chrome-for-testing-public/$ver/mac-arm64/chrome-mac-arm64.zip"
 
-["chrome.x64"]
-src.webpage = "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json"
-src.regex = "\"channel\":\"Stable\",\"version\":\"([0-9.]+)\""
-# fetch.url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$ver/mac-x64/chrome-mac-x64.zip"
-fetch.url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/$ver/mac-x64/chrome-mac-x64.zip"
+# ["chrome.x64"]
+# src.webpage = "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json"
+# src.regex = "\"channel\":\"Stable\",\"version\":\"([0-9.]+)\""
+# # fetch.url = "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$ver/mac-x64/chrome-mac-x64.zip"
+# fetch.url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/$ver/mac-x64/chrome-mac-x64.zip"
 
 [aerospace]
 src.github_tag = "nikitabobko/AeroSpace"
@@ -283,9 +283,6 @@ src.to_pattern = "\\1"
 fetch.url = "https://github.com/yaobiao131/downkyicore/releases/download/v$ver/DownKyi-$ver-osx-arm64.dmg"
 
 ### firefox-addons
-[ublock-origin]
-src.github = "gorhill/uBlock"
-fetch.url = "https://github.com/gorhill/uBlock/releases/download/$ver/uBlock0_$ver.firefox.xpi"
 
 [sidebery]
 src.github = "mbnuqw/sidebery"

@@ -52,5 +52,11 @@
     "version": "1.5.46",
     "sha256": "0r2kaqmyb93v5s2zqyi3wq4yl5wiy6shk06p09akl9p7vldvyxcs",
     "pname": "styl-us"
+  },
+  "ublock-origin": {
+    "url": "https://addons.mozilla.org/firefox/downloads/file/4257361/ublock_origin-1.57.0.xpi",
+    "version": "1.57.0",
+    "sha256": "0zj420ds0hy5jljnck3sdqzw77kfxmiipqz496lg8ghb6pvkcdrr",
+    "pname": "ublock-origin"
   }
 }
