@@ -36,36 +36,4 @@ with lib; rec {
     then substring (stringLength prefix) (stringLength str) str
     else ""
   );
-
-  asdfInPlugins = bin: plugin: versions: ''
-    echo-info "Use asdf initialization development ${plugin}"
-    function asdf_${plugin}_init() {
-      local exist_ver=""
-      local all_ver=""
-      local is_install_p=0
-      exist_ver=$(mktemp)
-      ${bin} list ${plugin} > "$exist_ver"
-      ${concatStrings (map (v: ''
-        is_install_p=0
-        if grep ' ${v}\|*${v}$' "$exist_ver" >/dev/null 2>&1; then
-          is_install_p=1
-          echo-debug "${v} version has been installed."
-        fi
-        if [[ $is_install_p == 0 ]]; then
-          if [[ $all_ver == "" ]]; then
-            all_ver=$(mktemp)
-            ${bin} list all ${plugin} > "$all_ver"
-          fi
-          if ! grep '^${v}$' "$all_ver" >/dev/null 2>&1; then
-            echo-info "Install ${plugin} ${v} ..."
-            asdf install ${plugin} ${v}
-          else
-            echo-error "${plugin} version ${v} not found!"
-          fi
-        fi
-      '')
-      versions)}
-    }
-    asdf_${plugin}_init
-  '';
 }

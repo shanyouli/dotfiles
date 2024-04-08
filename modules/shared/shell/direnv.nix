@@ -37,7 +37,7 @@ in {
               else value;
           in {"direnv/lib/${newname}.sh".source = newvalue;}
         ))
-        cfg.stdlib))
+        (filterAttrs (n: v: !(builtins.isNull v)) cfg.stdlib)))
     ];
   };
 }
