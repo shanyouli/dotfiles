@@ -67,7 +67,6 @@ in {
       then
         pkgs.writeScript "use_asdf" ''
           #!/usr/bin/env sh
-
           use_asdf() {
               if asdf plugin list | grep direnv >/dev/null 2>&1; then
                   source_env "$(asdf direnv envrc "$@")"
