@@ -47,7 +47,7 @@
 
     dev.bash.enable = true;
     dev.python.enable = true;
-    dev.python.plugins = ["3.12.1" "3.10.13" "3.11.7"];
+    dev.python.plugins = ["3.12" "3.10" "3.11"];
     dev.nix.enable = true;
     dev.java.enable = true;
     dev.java.plugins = ["oracle-21.0.1" "liberica-8u392+9"];

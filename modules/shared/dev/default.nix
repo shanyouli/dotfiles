@@ -12,9 +12,9 @@ with lib.my; let
 in {
   options.modules.dev = with types; {
     default = mkOption {
-      description = "use language manager";
+      description = "use language manager, asdf, mise";
       type = str;
-      default = "asdf";
+      default = "mise";
     };
 
     plugins = mkOption {
@@ -38,10 +38,17 @@ in {
     })
     (mkIf (cfg.default == "asdf") {
       modules.dev.asdf.enable = true;
-      modules.dev.asdf.plugins = cfm.dev.plugins;
+      modules.dev.asdf.plugins = cfg.plugins;
       modules.dev.asdf.extInit = cfg.extInit;
       modules.dev.asdf.prevInit = cfg.prevInit;
-      modules.dev.text = cfm.dev.asdf.text;
+      modules.dev.text = cfg.asdf.text;
+    })
+    (mkIf (cfg.default == "mise") {
+      modules.dev.mise.enable = true;
+      modules.dev.mise.plugins = cfg.plugins;
+      modules.dev.mise.extInit = cfg.extInit;
+      modules.dev.mise.prevInit = cfg.prevInit;
+      modules.dev.text = cfg.mise.text;
     })
   ];
 }
