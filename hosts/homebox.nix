@@ -34,6 +34,7 @@
     shell.gopass.enGui = false;
     shell.nix-index.enable = true;
     shell.trash.enable = true;
+    shell.just.enable = true;
 
     editor.nvim.enable = true;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs

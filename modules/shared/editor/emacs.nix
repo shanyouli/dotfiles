@@ -147,7 +147,8 @@ in {
               popd
             '';
           }))
-        ];
+        ]
+        ++ optionals config.modules.shell.just.enable [epkgs.just-mode epkgs.justl];
       modules.editor.emacs.pkg = emacsWithPackages cfg.extraPkgs;
     }
     {
