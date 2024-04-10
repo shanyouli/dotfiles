@@ -18,13 +18,13 @@ in {
     };
 
     plugins = mkOption {
-      description = "asdf install plugins";
+      description = "asdf or mise install plugins";
       type = attrsOf (oneOf [(nullOr bool) (listOf str)]);
       default = {};
     };
-    text = mkOpt' lines "" "init asdf script";
-    prevInit = mkOpt' lines "" "prev asdf env";
-    extInit = mkOpt' lines "" "extra asdf Init";
+    text = mkOpt' lines "" "init dev Lang script";
+    prevInit = mkOpt' lines "" "prev dev language env";
+    extInit = mkOpt' lines "" "extra dev language Init";
 
     toml.fmt = mkBoolOpt false;
     enWebReport = mkBoolOpt false;

@@ -15,7 +15,7 @@ in {
   };
   config = mkIf cfg.enable {
     user.packages = with pkgs.stable; [
-      pkgs.unstable.nodePackages.bash-language-server
+      nodePackages.bash-language-server
       shfmt
       shellcheck
     ];

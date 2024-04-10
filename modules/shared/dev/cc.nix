@@ -14,14 +14,10 @@ in {
     enable = mkEnableOption "Whether to c/c++ dev";
   };
   config = mkIf cfg.enable {
-    user.packages = with pkgs;
-      [
-        (mkIf pkgs.stdenvNoCC.isLinux stable.clang)
-        # gcc
-        stable.cmake
-        stable.llvmPackages.libcxx
-      ]
-      ++ optionals stdenvNoCC.isLinux [stable.bear stable.gdb];
+    # gcc
+    user.packages = with pkgs.stable;
+      [cmake llvmPackages.libcxx]
+      ++ optionals stdenvNoCC.isLinux [bear gdb clang];
     modules.editor.vscode.extensions = with pkgs.vscode-extensions; let
       cpp =
         if pkgs.stdenvNoCC.isLinux
