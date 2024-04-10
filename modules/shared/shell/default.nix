@@ -148,8 +148,7 @@ in {
         ''}
       '';
       rcInit = mkOrder 100 ''
-        # starship和p10有自己的提示方法；--info-right
-        _cache -v ${pkgs.stable.any-nix-shell.version} ${pkgs.stable.any-nix-shell}/bin/any-nix-shell zsh
+        _cache -v ${pkgs.stable.nix-your-shell.version} nix-your-shell zsh
         ${lib.optionalString (! cfg.atuin.enable) ''
           if [[ "$INSIDE_EMACS" != 'vterm' ]]; then
             _zt 0b light-mode for \
