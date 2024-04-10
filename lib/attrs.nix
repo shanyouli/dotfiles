@@ -36,4 +36,8 @@ with lib; rec {
     then substring (stringLength prefix) (stringLength str) str
     else ""
   );
+  optionalNull = cond: result:
+    if cond
+    then result
+    else null;
 }
