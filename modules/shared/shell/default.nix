@@ -10,24 +10,19 @@ with lib.my; let
   cfg = config.modules.shell;
   getLastFunction = str: last (splitString "/" str);
   configDir = config.dotfiles.configDir;
-  cmpFunc = map (x:
-    if hasPrefix "/" x
-    then x
-    else if hasInfix "/" x
-    then "${configDir}/${x}"
-    else "${configDir}/${x}/_${x}");
-  pluginFunc = map (x:
-    if hasPrefix "/" x
-    then x
-    else if hasInfix "/" x
-    then "${configDir}/${x}"
-    else "${configDir}/${x}/${x}.plugin.zsh");
-  envFunc = map (x:
-    if hasPrefix "/" x
-    then x
-    else if hasInfix "/" x
-    then "${configDir}/${x}"
-    else "${configDir}/${x}/${x}.env.zsh");
+  plFn = ext: l: (let
+    _resultFn =
+      if ext == "completions"
+      then x: "${configDir}/${x}/_${x}"
+      else x: "${configDir}/${x}/${x}.${ext}.zsh";
+  in
+    map (x:
+      if hasPrefix "/" x
+      then x
+      else if hasInfix "/" x
+      then "${configDir}/${x}"
+      else _resultFn x)
+    l);
   baseFunction = l: path:
     concatMapAttrs (n: v: {
       "${n}".source = v;
@@ -62,9 +57,9 @@ in {
       by $XDG_CONFIG_HOME/zsh/.zshenv
     '';
     prevInit = mkOpt' lines "" "zshrc pre";
-    envFiles = mkOptA (listOf (either str path)) [] envFunc;
-    cmpFiles = mkOptA (listOf (either str path)) [] cmpFunc;
-    pluginFiles = mkOptA (listOf (either str path)) [] pluginFunc;
+    envFiles = mkOptA (listOf (either str path)) [] (plFn "env");
+    cmpFiles = mkOptA (listOf (either str path)) [] (plFn "completions");
+    pluginFiles = mkOptA (listOf (either str path)) [] (plFn "plugin");
   };
 
   # 一些现代命令行工具的推荐:https://github.com/ibraheemdev/modern-unix
@@ -80,33 +75,34 @@ in {
       enableBashCompletion = false;
       promptInit = "";
     };
-    user.packages = with pkgs; [
-      stable.bottom
-      stable.fd
-      stable.eza
-      stable.bat
-      stable.duf
-      stable.grc
-      stable.httrack # 网页抓取
-      stable.cachix # nix cache
-      stable.hugo # 我的blog工具
-      stable.imagemagick # 图片转换工具
-      stable.gifsicle # 命令行gif生成工具
+    user.packages = with pkgs.stable; [
+      bottom
+      fd
+      eza
+      bat
+      duf
+      grc
+      httrack # 网页抓取
+      cachix # nix cache
+      hugo # 我的blog工具
+      imagemagick # 图片转换工具
+      gifsicle # 命令行gif生成工具
+      nix-your-shell # nix-shell Support for other shells(zsh,fish,nushell)
 
-      stable.atool # 解压工具
-      stable.unrar
-      stable.gnused # sed 工具
-      stable.coreutils-prefixed # GNUcoreutils 工具，mv，cp等
-      (stable.sysdo.override {
+      atool # 解压工具
+      unrar
+      gnused # sed 工具
+      coreutils-prefixed # GNUcoreutils 工具，mv，cp等
+      (sysdo.override {
         withZshCompletion = true;
         withRich = true;
       })
 
-      stable.tailspin # 支持高亮的语法查看工具
-      unstable.nvfetcher-bin # 管理自己构建包的升级
+      tailspin # 支持高亮的语法查看工具
+      pkgs.unstable.nvfetcher-bin # 管理自己构建包的升级
 
-      stable.fzf
-      stable.my-nix-script
+      fzf
+      my-nix-script
     ];
     env = {
       PATH = ["${config.home.binDir}"];
