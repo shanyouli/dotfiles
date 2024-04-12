@@ -89,28 +89,12 @@
       sha256 = "sha256-RTMaro1h7ws7ObA06yPIh6RlhpAHifIojlSaznYhVDI=";
     };
   };
-  "chrome.x64" = {
-    pname = "chrome.x64";
-    version = "123.0.6312.105";
-    src = fetchurl {
-      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/123.0.6312.105/mac-x64/chrome-mac-x64.zip";
-      sha256 = "sha256-fUIa51tBrxiUfS0gwvrVtb7yAm6VxHP7Cr2SPWnZC7E=";
-    };
-  };
   "chromium.arm64" = {
     pname = "chromium.arm64";
     version = "123.0.6312.105-1.1";
     src = fetchurl {
       url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/123.0.6312.105-1.1/ungoogled-chromium_123.0.6312.105-1.1_arm64-macos.dmg";
       sha256 = "sha256-5S2ig7og3LZWtyHIljrxOH5frUwhS8ib6wxvusQJ5Sg=";
-    };
-  };
-  "chromium.x64" = {
-    pname = "chromium.x64";
-    version = "123.0.6312.105-1.1";
-    src = fetchurl {
-      url = "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/123.0.6312.105-1.1/ungoogled-chromium_123.0.6312.105-1.1_x86-64-macos.dmg";
-      sha256 = "sha256-ts+iHQAiQJqbafPp2KzSlxbOrv0nPlS6EhkHKsomkpw=";
     };
   };
   clash-nyanpasu = {
@@ -538,6 +522,14 @@
     src = fetchurl {
       url = "https://pypi.org/packages/source/w/websocket_bridge_python/websocket_bridge_python-0.0.2.tar.gz";
       sha256 = "sha256-J9HGD3PSavZQwh2eZPbM6isdknZ1M2nkL5WHlYjRju8=";
+    };
+  };
+  wiliwili = {
+    pname = "wiliwili";
+    version = "1.3.0";
+    src = fetchurl {
+      url = "https://github.com/xfangfang/wiliwili/releases/download/v1.3.0/wiliwili-macOS-AppleSilicon.dmg";
+      sha256 = "sha256-mo23N8UMUWXBrLFXqa0FGDqBwSPy7CMVPel1iPLF/nk=";
     };
   };
   yabai = {

@@ -161,21 +161,6 @@
         },
         "version": "123.0.6312.105"
     },
-    "chrome.x64": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "chrome.x64",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-fUIa51tBrxiUfS0gwvrVtb7yAm6VxHP7Cr2SPWnZC7E=",
-            "type": "url",
-            "url": "https://registry.npmmirror.com/-/binary/chrome-for-testing/123.0.6312.105/mac-x64/chrome-mac-x64.zip"
-        },
-        "version": "123.0.6312.105"
-    },
     "chromium.arm64": {
         "cargoLocks": null,
         "date": null,
@@ -188,21 +173,6 @@
             "sha256": "sha256-5S2ig7og3LZWtyHIljrxOH5frUwhS8ib6wxvusQJ5Sg=",
             "type": "url",
             "url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/123.0.6312.105-1.1/ungoogled-chromium_123.0.6312.105-1.1_arm64-macos.dmg"
-        },
-        "version": "123.0.6312.105-1.1"
-    },
-    "chromium.x64": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "chromium.x64",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-ts+iHQAiQJqbafPp2KzSlxbOrv0nPlS6EhkHKsomkpw=",
-            "type": "url",
-            "url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/123.0.6312.105-1.1/ungoogled-chromium_123.0.6312.105-1.1_x86-64-macos.dmg"
         },
         "version": "123.0.6312.105-1.1"
     },
@@ -972,6 +942,21 @@
             "url": "https://pypi.org/packages/source/w/websocket_bridge_python/websocket_bridge_python-0.0.2.tar.gz"
         },
         "version": "0.0.2"
+    },
+    "wiliwili": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "wiliwili",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-mo23N8UMUWXBrLFXqa0FGDqBwSPy7CMVPel1iPLF/nk=",
+            "type": "url",
+            "url": "https://github.com/xfangfang/wiliwili/releases/download/v1.3.0/wiliwili-macOS-AppleSilicon.dmg"
+        },
+        "version": "1.3.0"
     },
     "yabai": {
         "cargoLocks": null,

@@ -25,6 +25,7 @@ in {
         iinaplus-app
         simple-live-app
         downkyi-app
+        wiliwili-app
       ];
     # 视频压缩工具, 使用 ffmpeg 取代
     # homebrew.casks = ["handbrake"];

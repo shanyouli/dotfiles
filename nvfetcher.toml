@@ -282,6 +282,12 @@ src.from_pattern = "v(.*)"
 src.to_pattern = "\\1"
 fetch.url = "https://github.com/yaobiao131/downkyicore/releases/download/v$ver/DownKyi-$ver-osx-arm64.dmg"
 
+[wiliwili]
+src.github = "xfangfang/wiliwili"
+src.from_pattern = "v(.*)"
+src.to_pattern = "\\1"
+fetch.url = "https://github.com/xfangfang/wiliwili/releases/download/v1.3.0/wiliwili-macOS-AppleSilicon.dmg"
+
 ### firefox-addons
 
 [sidebery]
