@@ -78,18 +78,13 @@ in {
   config = mkMerge [
     {
       user.packages = [
-        # pkgs.qbittorrent-app
         pkgs.stable.xbydriver-app
-        # pkgs.chatgpt-app
         pkgs.stable.next-chat-app
         pkgs.stable.localsend-app
         (lib.mkIf (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) pkgs.stable.neovide-app)
-        # qutebrowser-app # 不再需要
         pkgs.stable.upic-app
         pkgs.stable.calibre-app
-
         pkgs.stable.lporg
-
         pkgs.stable.switchaudio-osx
       ];
 
@@ -167,7 +162,7 @@ in {
         enable = mchrome.enable && mchrome.dev.enable && appEn && (! mchrome.useBrew);
       in {
         inherit enable;
-        desc = "将Chrome链接到/Applications";
+        desc = "Link Google Chrome.app";
         level = 100;
         text = ''
           if [[ -e "${config.user.home}/Applications/Myapps/Chromium.app" ]]; then
@@ -182,9 +177,9 @@ in {
           fi
         '';
       };
-      macos.userScript.initAsdf = {
+      macos.userScript.initDevInit = {
         enable = config.modules.dev.plugins != [];
-        desc = "Init asdf ...";
+        desc = "Init dev language manager ...";
         text = config.modules.dev.text;
       };
     }
