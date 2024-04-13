@@ -18,11 +18,9 @@
       shfmt.enable = false;
       stylua.enable = true;
       ruff.enable = true;
-    };
 
-    settings = {
-      deadnix.edit = true;
-      deadnix.noLambdaArg = true;
+      deadnix.settings.edit = true;
+      deadnix.settings.noLambdaArg = true;
     };
   };
 }

@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 with builtins;
@@ -44,12 +43,6 @@ in {
         desc = "Stopping the repon program when starting up after a system shutdown!";
       };
       modules.shell.pluginFiles = ["macos"];
-      user.packages = let
-        mybid = pkgs.stable.mybid.override {
-          withZshCompletion = true;
-          withRich = true;
-        };
-      in [mybid];
       system = {
         defaults = {
           # ".GlobalPreferences".com.apple.sound.beep.sound = "Funk";

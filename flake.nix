@@ -192,9 +192,9 @@
     apps = lib.my.withDefaultSystems (system: let
       pkgs = allPkgs."${system}";
     in rec {
-      sysdo = {
+      sd = {
         type = "app";
-        program = "${self.packages.${system}.sysdo}/bin/sysdo";
+        program = "${self.packages.${system}.sd}/bin/sd";
       };
       # 加载配置, nix run .#repl
       # @see https://github.com/NixOS/nix/issues/3803#issuecomment-748612294
@@ -244,7 +244,7 @@
             find ./packages -iname "update.py" -exec ${py}/bin/python3 {} 1 \;
           '';
       };
-      default = sysdo;
+      default = sd;
     });
 
     overlays = {

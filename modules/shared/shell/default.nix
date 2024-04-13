@@ -93,16 +93,13 @@ in {
       unrar
       gnused # sed 工具
       coreutils-prefixed # GNUcoreutils 工具，mv，cp等
-      (sysdo.override {
-        withZshCompletion = true;
-        withRich = true;
-      })
 
       tailspin # 支持高亮的语法查看工具
       pkgs.unstable.nvfetcher-bin # 管理自己构建包的升级
 
       fzf
       my-nix-script
+      python3.pkgs.sd
     ];
     env = {
       PATH = ["${config.home.binDir}"];
