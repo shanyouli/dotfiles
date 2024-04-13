@@ -83,10 +83,10 @@
   };
   "chrome.arm64" = {
     pname = "chrome.arm64";
-    version = "123.0.6312.105";
+    version = "123.0.6312.122";
     src = fetchurl {
-      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/123.0.6312.105/mac-arm64/chrome-mac-arm64.zip";
-      sha256 = "sha256-RTMaro1h7ws7ObA06yPIh6RlhpAHifIojlSaznYhVDI=";
+      url = "https://registry.npmmirror.com/-/binary/chrome-for-testing/123.0.6312.122/mac-arm64/chrome-mac-arm64.zip";
+      sha256 = "sha256-i0DLRofwnPYk+3hLXDeMFeIwQZ6c0KDGspdbBPMmTo8=";
     };
   };
   "chromium.arm64" = {
@@ -99,10 +99,10 @@
   };
   clash-nyanpasu = {
     pname = "clash-nyanpasu";
-    version = "1.5.0";
+    version = "1.5.1";
     src = fetchurl {
-      url = "https://github.com/keiko233/clash-nyanpasu/releases/download/v1.5.0/Clash.Nyanpasu_1.5.0_aarch64.dmg";
-      sha256 = "sha256-TCJBw9ZDBb0EUeM9kbLhBThrqLu6xndiLbNGEV/JIBU=";
+      url = "https://github.com/keiko233/clash-nyanpasu/releases/download/v1.5.1/Clash.Nyanpasu_1.5.1_aarch64.dmg";
+      sha256 = "sha256-ZB61L5Z8bfFAuanAYn6yeHha+gfL4j6fu++w3nEq0yQ=";
     };
   };
   clash-verge = {
@@ -127,10 +127,10 @@
   };
   darkreader = {
     pname = "darkreader";
-    version = "4.9.82";
+    version = "4.9.83";
     src = fetchurl {
-      url = "https://github.com/darkreader/darkreader/releases/download/v4.9.82/darkreader-firefox.xpi";
-      sha256 = "sha256-42QjEzJOFmSFos0z4FcMJPxuT0DaayQFyQYRvc+VnWY=";
+      url = "https://github.com/darkreader/darkreader/releases/download/v4.9.83/darkreader-firefox.xpi";
+      sha256 = "sha256-9xYYIaxkROLb6mEnOce+gORtezWf2pffzgCPS6Ts9+8=";
     };
   };
   deeplx = {
@@ -158,10 +158,10 @@
   };
   downkyi = {
     pname = "downkyi";
-    version = "1.0.8";
+    version = "1.0.9";
     src = fetchurl {
-      url = "https://github.com/yaobiao131/downkyicore/releases/download/v1.0.8/DownKyi-1.0.8-osx-arm64.dmg";
-      sha256 = "sha256-89dEve0zH4m07K4dK7PHCLSV57pcsaJVEeFMhOoi+eY=";
+      url = "https://github.com/yaobiao131/downkyicore/releases/download/v1.0.9/DownKyi-1.0.9-osx-arm64.dmg";
+      sha256 = "sha256-/OyqHpFlZs2nA3xqjHLEOV2xrL9NlQtaa0oEIYGEfxI=";
     };
   };
   dutis = {
@@ -228,16 +228,16 @@
   };
   fav = {
     pname = "fav";
-    version = "v0.2.11";
+    version = "v0.2.12";
     src = fetchFromGitHub {
       owner = "kingwingfly";
       repo = "fav";
-      rev = "v0.2.11";
+      rev = "v0.2.12";
       fetchSubmodules = false;
-      sha256 = "sha256-VkStGTQYgUctkdETzlBlOeZYccYA9ARXoWt4mvqjujI=";
+      sha256 = "sha256-0Zg3rn4iyDET6oA/hjHxk/v4y+Sl8imZvYOeOUSapPc=";
     };
     cargoLock."Cargo.lock" = {
-      lockFile = ./fav-v0.2.11/Cargo.lock;
+      lockFile = ./fav-v0.2.12/Cargo.lock;
       outputHashes = {
         
       };
@@ -293,10 +293,10 @@
   };
   iinaplus = {
     pname = "iinaplus";
-    version = "0.7.22";
+    version = "0.7.23";
     src = fetchurl {
-      url = "https://github.com/xjbeta/iina-plus/releases/download/0.7.22/IINA+.0.7.22.dmg";
-      sha256 = "sha256-s7CE9g7llVCOLwT4HiVOMdshmWc5sOpFoee6D91Gj5w=";
+      url = "https://github.com/xjbeta/iina-plus/releases/download/0.7.23/IINA+.0.7.23.dmg";
+      sha256 = "sha256-Qf2GUNMwpvcVlMmeL3TGOvZB213fOXU8VNbAM+pY3Hc=";
     };
   };
   lazyvim-star = {
@@ -439,10 +439,10 @@
   };
   ryujinx = {
     pname = "ryujinx";
-    version = "1.1.1262";
+    version = "1.1.1279";
     src = fetchurl {
-      url = "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1262/ryujinx-1.1.1262-macos_universal.app.tar.gz";
-      sha256 = "sha256-YNrYsd394sGZkFnG+ZM5+5lGslLQkAOmU/zeasGxav8=";
+      url = "https://github.com/Ryujinx/release-channel-master/releases/download/1.1.1279/ryujinx-1.1.1279-macos_universal.app.tar.gz";
+      sha256 = "sha256-AXRKOjvABUSLbx1f4BO6zvWQp8Ye0mGSRYYnGd6WWdM=";
     };
   };
   ryusak = {
@@ -510,10 +510,10 @@
   };
   vivaldi = {
     pname = "vivaldi";
-    version = "6.6.3271.57";
+    version = "6.6.3271.61";
     src = fetchurl {
-      url = "https://downloads.vivaldi.com/stable/Vivaldi.6.6.3271.57.universal.dmg";
-      sha256 = "sha256-5pdlHD6zdqDyRZRn3JPNHNjT9CE6rCAQNG4WYLl8gbs=";
+      url = "https://downloads.vivaldi.com/stable/Vivaldi.6.6.3271.61.universal.dmg";
+      sha256 = "sha256-cj9cej+T/KgFL1mn2UGEInlk7s45xAOhgt7kpg6jrbU=";
     };
   };
   websocket-bridge-python = {
