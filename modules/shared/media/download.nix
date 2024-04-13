@@ -10,28 +10,28 @@ with lib.my; let
   cfm = config.modules;
   cfg = cfm.media.download;
   cfp = cfm.media;
-  bbdown = let
-    cmd = pkgs.writeScript "bbdown" ''
-      #!${pkgs.stdenv.shell}
-        _dir=${config.home.cacheDir}/bbdown
-        [[ -d $_dir ]] || mkdir -p $_dir
-        get_shasum() { shasum $1 | cut -d" " -f1 ; }
-        copy_source() {
-          local file1=$_dir/bbdown
-          local file2=${pkgs.bbdown}/lib/BBDown/BBDown
-          local hash2=$(get_shasum $file2)
-          [[ -f $file1 ]] && [[ $(get_shasum $file1) == $hash2 ]] || cp -r $file2 $file1
-        }
-        copy_source
-        exec -a "$0" "$_dir/bbdown"  "$@"
-    '';
-  in
-    pkgs.runCommandLocal "bbdown" {nativeBuildInputs = [pkgs.makeWrapper];} ''
-      mkdir -p $out/bin
-      makeWrapper ${cmd} $out/bin/bbdown \
-        --set PATH  "${pkgs.ffmpeg}/bin" \
-        --set LD_LIBRARY_PATH  "${pkgs.icu}/lib"
-    '';
+  # bbdown = let
+  #   cmd = pkgs.writeScript "bbdown" ''
+  #     #!${pkgs.stdenv.shell}
+  #       _dir=${config.home.cacheDir}/bbdown
+  #       [[ -d $_dir ]] || mkdir -p $_dir
+  #       get_shasum() { shasum $1 | cut -d" " -f1 ; }
+  #       copy_source() {
+  #         local file1=$_dir/bbdown
+  #         local file2=${pkgs.bbdown}/lib/BBDown/BBDown
+  #         local hash2=$(get_shasum $file2)
+  #         [[ -f $file1 ]] && [[ $(get_shasum $file1) == $hash2 ]] || cp -r $file2 $file1
+  #       }
+  #       copy_source
+  #       exec -a "$0" "$_dir/bbdown"  "$@"
+  #   '';
+  # in
+  #   pkgs.runCommandLocal "bbdown" {nativeBuildInputs = [pkgs.makeWrapper];} ''
+  #     mkdir -p $out/bin
+  #     makeWrapper ${cmd} $out/bin/bbdown \
+  #       --set PATH  "${pkgs.ffmpeg}/bin" \
+  #       --set LD_LIBRARY_PATH  "${pkgs.icu}/lib"
+  #   '';
 in {
   options.modules.media.download = {
     enAudio = mkBoolOpt cfp.music.enable;
@@ -46,7 +46,7 @@ in {
       user.packages = [
         pkgs.unstable.yt-dlp
         pkgs.stable.python3Packages.yutto
-        pkgs.stable.bbdown
+        # pkgs.stable.bbdown
         pkgs.unstable.lux
         (pkgs.stable.fav.override {
           rustPlatform = pkgs.unstable.rustPlatform;
