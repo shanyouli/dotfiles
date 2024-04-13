@@ -29,6 +29,11 @@ fetch.github = "encode/httpx"
 src.github = "delfick/python-dict2xml"
 fetch.github = "delfick/python-dict2xml"
 
+[sd]
+src.github_tag = "shanyouli/sd"
+fetch.github = "shanyouli/sd"
+
+
 ### common
 [zpmod]
 src.github = "z-shell/zpmod"
