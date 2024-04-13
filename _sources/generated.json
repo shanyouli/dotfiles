@@ -818,6 +818,26 @@
         },
         "version": "1.6.3"
     },
+    "sd": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "sd",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "shanyouli",
+            "repo": "sd",
+            "rev": "v0.1",
+            "sha256": "sha256-WrrkUiNOGfe8CwKnsKpV142qY56MLudnSF/9HWuWSZs=",
+            "type": "github"
+        },
+        "version": "v0.1"
+    },
     "seam": {
         "cargoLocks": {
             "Cargo.lock": [

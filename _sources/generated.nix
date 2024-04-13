@@ -453,6 +453,17 @@
       sha256 = "sha256-iohH/P56qaFnrS/WhoNxZr66h8cdwCuFfCUDfHF1tho=";
     };
   };
+  sd = {
+    pname = "sd";
+    version = "v0.1";
+    src = fetchFromGitHub {
+      owner = "shanyouli";
+      repo = "sd";
+      rev = "v0.1";
+      fetchSubmodules = false;
+      sha256 = "sha256-WrrkUiNOGfe8CwKnsKpV142qY56MLudnSF/9HWuWSZs=";
+    };
+  };
   seam = {
     pname = "seam";
     version = "v_cli.0.1.39";
