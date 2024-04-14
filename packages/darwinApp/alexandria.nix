@@ -12,7 +12,6 @@ mkDarwinApp rec {
   appname = "Alexandria";
   meta = {
     description = "A minimalistic cross-platform eBook reader built with Tauri, Epub.js, and Typescript";
-    # homepage = "http://zyplayer.fun/";
     homepage = "https://github.com/btpf/Alexandria";
   };
 }
