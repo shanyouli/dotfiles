@@ -259,11 +259,11 @@
             "name": null,
             "owner": "OwO-Network",
             "repo": "DeepLX",
-            "rev": "v0.9.1",
-            "sha256": "sha256-rxzYWxh8BnXxrT0eJVqm6dhYMke/rcQ5/SCIXFGiqis=",
+            "rev": "v0.9.2",
+            "sha256": "sha256-j3ANFRW8tMBvd1L7THrU79b2yEb7DaElbbSBo2cfxBg=",
             "type": "github"
         },
-        "version": "v0.9.1"
+        "version": "v0.9.2"
     },
     "dict2xml": {
         "cargoLocks": null,
