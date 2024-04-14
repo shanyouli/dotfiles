@@ -7,7 +7,7 @@ on:
       - 'packages/**'
       - '!packages/**/update.py'
       - '!packages/**/update.sh'
-      - 'modules/shared/**'
+      - 'hosts/**'
       - '_sources/**'
       - 'flake.lock'
 
