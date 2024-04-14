@@ -86,6 +86,7 @@ in {
         pkgs.stable.calibre-app
         pkgs.stable.lporg
         pkgs.stable.switchaudio-osx
+        pkgs.stable.alexandria-app
       ];
 
       modules.xdg.enable = true;
