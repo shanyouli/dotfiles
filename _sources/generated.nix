@@ -135,13 +135,13 @@
   };
   deeplx = {
     pname = "deeplx";
-    version = "v0.9.1";
+    version = "v0.9.2";
     src = fetchFromGitHub {
       owner = "OwO-Network";
       repo = "DeepLX";
-      rev = "v0.9.1";
+      rev = "v0.9.2";
       fetchSubmodules = false;
-      sha256 = "sha256-rxzYWxh8BnXxrT0eJVqm6dhYMke/rcQ5/SCIXFGiqis=";
+      sha256 = "sha256-j3ANFRW8tMBvd1L7THrU79b2yEb7DaElbbSBo2cfxBg=";
     };
     vendorHash = "sha256-kTSMY4K07hpy/ry5/kxTP3RcR5ewMzj/BDJxxYRdxYI=";
   };
