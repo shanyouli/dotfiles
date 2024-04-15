@@ -17,6 +17,14 @@
       sha256 = "sha256-ASZfCv9MRyme1+Qx3J+ucOdFXlusWx108hRCKnkjr2c=";
     };
   };
+  alexandria = {
+    pname = "alexandria";
+    version = "0.12";
+    src = fetchurl {
+      url = "https://github.com/btpf/Alexandria/releases/download/v0.12/Alexandria_0.12.0_x64.dmg";
+      sha256 = "sha256-mmQFu3Ym+jYRu9pN9SSmTQZ37e//1Ck86BCFrTVDpFg=";
+    };
+  };
   alist = {
     pname = "alist";
     version = "v3.33.0";

@@ -239,7 +239,7 @@
             keys_args=""
             [[ -f $HOME/.config/nvfetcher.toml ]] && keys_args="-k $HOME/.config/nvfetcher.toml"
             [[ -f ./secrets.toml ]] && keys_args="-k ./secrets.toml"
-            ${inputs.nvfetcher.packages."${system}".default}/bin/nvfetcher $keys_args -r 10  --keep-going -j 3 --keep-old --commit-changes
+            ${inputs.nvfetcher.packages."${system}".default}/bin/nvfetcher $keys_args -r 10  --keep-going -j 3 --commit-changes
             echo "update firefox, rpcs3, simple-live ..."
             find ./packages -iname "update.py" -exec ${py}/bin/python3 {} 1 \;
           '';

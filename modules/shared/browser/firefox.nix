@@ -97,6 +97,7 @@ in {
         violentmonkey
         switchyomega
         styl-us
+        privacy-pass
       ]);
       modules.browser.firefox.finalPackage = wrapPackage cfg.package;
     }

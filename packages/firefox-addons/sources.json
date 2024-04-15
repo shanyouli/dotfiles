@@ -53,6 +53,12 @@
     "sha256": "0r2kaqmyb93v5s2zqyi3wq4yl5wiy6shk06p09akl9p7vldvyxcs",
     "pname": "styl-us"
   },
+  "privacy-pass": {
+    "url": "https://addons.mozilla.org/firefox/downloads/file/4258867/privacy_pass-4.0.2.xpi",
+    "version": "4.0.2",
+    "sha256": "0bqhf9zhnhjpf0x792wff891xsyjfkm9japd2yfn6iyx1dh35s28",
+    "pname": "privacy-pass"
+  },
   "ublock-origin": {
     "url": "https://addons.mozilla.org/firefox/downloads/file/4261710/ublock_origin-1.57.2.xpi",
     "version": "1.57.2",

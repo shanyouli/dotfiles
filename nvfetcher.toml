@@ -297,7 +297,7 @@ fetch.url = "https://github.com/xfangfang/wiliwili/releases/download/v$ver/wiliw
 src.github = "btpf/Alexandria"
 src.from_pattern = "v(.*)"
 src.to_pattern = "\\1"
-fetch.url = "https://github.com/btpf/Alexandria/releases/download/v$ver/Alexandria_$ver_x64.dmg"
+fetch.url = "https://github.com/btpf/Alexandria/releases/download/v$ver/Alexandria_$ver.0_x64.dmg"
 ### firefox-addons
 
 [sidebery]

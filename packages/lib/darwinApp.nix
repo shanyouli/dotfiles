@@ -42,7 +42,7 @@ in
           if [[ "" == $_app ]]; then
             echo $_pathDmg will undmg
             if undmg $_pathDmg >/dev/null 2>&1; then
-              _app=$(find . -maxdepth 1 -name "*.app" | head 1)
+              _app=$(find . -maxdepth 1 -name "*.app" | head -n 1)
             else
               _mnt=$(mktemp -d -t ci-XXXXXXXXXX)
               echo "Attahing $_mnt"
