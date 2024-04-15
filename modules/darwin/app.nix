@@ -32,89 +32,76 @@ in {
     };
   in {
     modules.macos.app.path = workdir;
-    # https://github.com/LnL7/nix-darwin/issues/214#issuecomment-1230730292
+    # see @https://github.com/LnL7/nix-darwin/issues/214#issuecomment-1230730292
     # home.file."Applications/Myapps" = { source = "${apps}/Applications"; };
+    # see @https://github.com/andreykaipov/nix/blob/384292d67c76b4a0df2308f51f8eb39abb36725c/.config/nix/packages/default.nix#L35-L64
     macos.userScript.settingApplications = {
       enable = true;
       desc = "My method is used to manage applications";
       text = ''
         if [[ -L "$HOME/Applications/Home Manager Apps"  ]]; then
-           echo "remove Home Manager Generation link"
+          echo "remove Home Manager Generation link"
           $DRY_RUN_CMD rm -rf "$HOME/Applications/Home Manager Apps"
         fi
         echo "settings up ${workdir}..." >&2
-        nix_apps="${workdir}"
-        nix_app_linktxt="$nix_apps/.appslist.txt"
-        nix_apps_tmpdir=$(mktemp -d)
+        [[ -d "${workdir}" ]] || $DRY_RUN_CMD mkdir -p "${workdir}"
 
-        [[ -d $nix_apps ]] || $DRY_RUN_CMD mkdir -p "$nix_apps"
-
-        new_apps=( ${apps}/Applications/* )
-
-        _first_add_app() {
-          for _app in "''${new_apps[@]}" ; do
-            echo "install newApp: $(basename "$_app")"
-            local capp_path="$(readlink -f "$_app")"
-            $DRY_RUN_CMD cp -r "$capp_path" $nix_apps
-            echo $capp_path >> $nix_app_linktxt
-          done
+        apps_backup_dir=$(mktemp -d)
+        function app_back_fn() {
+            $DRY_RUN_CMD mv -f "$1" "$apps_backup_dir"
         }
-        _second_add_app() {
-          local _tmp="$nix_apps_tmpdir/.appslist.txt"
-          for _app in "''${new_apps[@]}" ; do
-            local _app_name="$(basename "$_app")"
-            local _app_grep_by="$(grep "$_app_name" "$_tmp")"
-            local _app_readlink_path="$(readlink -f "$_app")"
 
-            if [[ -n $_app_grep_by ]]; then
-              if [[ "$_app_grep_by" != "$_app_readlink_path" ]]; then
-                local old_app_path="$nix_apps/$_app_name"
-                if [[ -e $old_app_path ]]; then
-                  chmod -R +w "$old_app_path"
-                  $DRY_RUN_CMD mv -f "$old_app_path" $nix_apps_tmpdir
+        function delete_apps_no_control() {
+            local p1="$1"
+            local p2="$2"
+            cd "$p1" || exit 0
+            find . -maxdepth 1 -iname "*.app"  | while read -r f; do
+                if [[ ! -e "$p2/$f" ]]; then
+                    echo-info "Uninstall: $(basename "$f")"
+                    app_back_fn "$p1/$f"
                 fi
-                echo "Update app: $_app_name ..."
-                $DRY_RUN_CMD cp -r "$_app_readlink_path" $nix_apps
-              fi
-              sed -i'.bak' "\:$_app_grep_by:d" $_tmp
-            else
-              echo "Install newApp: $_app_name ..."
-              $DRY_RUN_CMD cp -r "$_app_readlink_path" $nix_apps
-            fi
-            echo "$_app_readlink_path" >> $nix_app_linktxt
-          done
-          local IFS=$'\n'
-          while read -r line; do
-            local app_name="$(echo "$line" | awk -F/ '{print $(NF)}')"
-            local old_app_path="$nix_apps/$app_name"
-            if [[ -e $old_app_path ]]; then
-              echo "Remove app: $app_name"
-              chmod -R +w "$old_app_path"
-              $DRY_RUN_CMD mv -f "$old_app_path" $nix_apps_tmpdir
-            fi
-          done < "$_tmp"
+            done
         }
-        _apps_init() {
-          if [[ "''${new_apps[*]}" != "${apps}/Applications/*" ]]; then
-            if [[ -f $nix_app_linktxt ]]; then
-              chmod u+w $nix_app_linktxt
-              $DRY_RUN_CMD mv -f $nix_app_linktxt $nix_apps_tmpdir
-              _second_add_app
-            else
-              _first_add_app
-            fi
-          fi
+        function hashApp() {
+            local _path="$1/Contents/MacOS"; shift
+            [[ -d "$_path" ]] && cd "$_path" || exit 0
+            find . -perm +111 -type f -maxdepth 1 2>/dev/null | while read -r f; do
+                md5sum "$_path/$f" | cut -b-32
+            done | md5sum | cut -b-32
         }
-        _apps_init
-        chmod a-w $nix_app_linktxt
-        chmod -R u+w $nix_apps/*
-        ${optionalString (cfg.enBackup == false) ''
-          if [[ -d $nix_apps_rmdir ]]; then
-            chmod -R +w $nix_apps_rmdir
-            $DRY_RUN_CMD rm -rf $nix_apps_rmdir
-          fi
-        ''}
-        unset nix_apps nix_app_linktxt nix_apps_tmpdir new_apps
+
+        function apps_install() {
+            local from_p1="$1"
+            local to_p2="$2"
+            cd "$from_p1" || exit 0
+            find . -maxdepth 1 -iname "*.app" | while read -r f; do
+                local f_readlink=$(readlink -f "$f")
+                if [[ -e "$to_p2/$f" ]]; then
+                    if [[ $(hashApp "$f_readlink") != $(hashApp "$to_p2/$f") ]]; then
+                        echo-info "Update $(basename "$f")"
+                        app_back_fn "$to_p2/$f"
+                        $DRY_CMD_RUN cp -R "$f_readlink" "$to_p2"
+                    fi
+                else
+                    echo-info "Install $(basename "$f")"
+                    $DRY_CMD_RUN cp -R "$f_readlink" "$to_p2"
+                fi
+            done
+        }
+        delete_apps_no_control "${workdir}" "${apps}/Applications"
+        apps_install "${apps}/Applications" "${workdir}"
+        rmdir "$apps_backup_dir"  >/dev/null 2>&1 || {
+        ${
+          if cfg.enBackup
+          then ''echo-info "Deleted or updated previous apps are stored in the $apps_backup_dir directory"''
+          else ''
+            chmod -R +w $apps_backup_dir
+            $DRY_RUN_CMD rm -rf $apps_backup_dir
+            echo-warn "Delete all apps before they are uninstalled or updated!!"
+          ''
+        }
+        }
+        unset apps_install apps_backup_dir hashApp app_back_fn delete_apps_no_control
       '';
     };
   });
