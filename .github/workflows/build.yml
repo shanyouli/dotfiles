@@ -26,7 +26,7 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - macos-latest
+          - flyci-macos-large-latest-m1 
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
