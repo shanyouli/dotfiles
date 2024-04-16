@@ -29,12 +29,9 @@ in {
     modules.shell.env.CARGO_HOME = let
       cargoConfig = ''
         [source.crates-io]
-        registry = "https://github.com/rust-lang/crates.io-index"
         replace-with = 'ustc'
         [source.ustc]
         registry = "git://mirrors.ustc.edu.cn/crates.io-index"
-        [registries.ustc]
-        index = "git://mirrors.ustc.edu.cn/crates.io-index"
 
         [install]
         root = "${homeDir}/.local"

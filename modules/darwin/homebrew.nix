@@ -81,7 +81,7 @@ in {
       homebrew.casks = [
         "raycast" # 取代 spotlight
         "stats" # 状态显示
-        "telegram"
+        "forkgram-telegram"
         "baidunetdisk"
         "easydict" # 翻译软件
         "jetbrains-toolbox"
