@@ -57,7 +57,7 @@ def get_hash(version="124.0.1"):
 
 
 def get_dict(version) -> dict[str, str]:
-    url = f"https://download-installer.cdn.mozilla.net/pub/mac/en-US/Firefox%20{version}.dmg"
+    url = f"https://download-installer.cdn.mozilla.net/pub/firefox/releases/{version}/mac/en-US/Firefox%20{version}.dmg"
     sha256 = get_hash(version)
     if sha256 is not None:
         return {"url": url, "sha256": sha256, "version": version}

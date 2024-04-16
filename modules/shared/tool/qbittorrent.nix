@@ -36,7 +36,7 @@ in {
             [[ -d $out/$APP_NAME.app ]] && rm -rf $out/$APP_NAME.app
           '';
       });
-    user.packages = [cfg.package];
+    user.packages = [cfg.package pkgs.stable.xbydriver];
 
     modules.tool.qbittorrent.webScript = optionalString cfg.webui ''
       [[ -d ${config.home.cacheDir}/qbittorrent/ui/public ]] || {

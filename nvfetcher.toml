@@ -39,6 +39,11 @@ fetch.github = "shanyouli/sd"
 src.github = "z-shell/zpmod"
 fetch.github = "z-shell/zpmod"
 
+[xbydriver]
+src.github = "odomu/aliyunpan"
+fetch.github = "odomu/aliyunpan"
+
+
 [maple-sc-nf]
 src.github = "subframe7536/Maple-font"
 src.from_pattern = "v(.*)"

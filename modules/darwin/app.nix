@@ -48,6 +48,7 @@ in {
 
         apps_backup_dir=$(mktemp -d)
         function app_back_fn() {
+            chmod -R +w "$1"
             $DRY_RUN_CMD mv -f "$1" "$apps_backup_dir"
         }
 

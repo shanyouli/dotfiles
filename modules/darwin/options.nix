@@ -78,7 +78,7 @@ in {
   config = mkMerge [
     {
       user.packages = [
-        pkgs.stable.xbydriver-app
+        # pkgs.stable.xbydriver-app
         pkgs.stable.next-chat-app
         pkgs.stable.localsend-app
         (lib.mkIf (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) pkgs.stable.neovide-app)
