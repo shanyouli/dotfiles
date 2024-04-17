@@ -39,29 +39,11 @@ let
 in rec {
   overlay = final: prev: let
     sources = (import ../_sources/generated.nix) {inherit (final) fetchurl fetchFromGitHub fetchgit dockerTools;};
-    mkDarwinApp = import ./lib/darwinApp.nix {pkgs = prev;};
-    buildFirefoxXpiAddon = import ./lib/firefox-addons.nix {pkgs = prev;};
+    # mkDarwinApp = import ./lib/darwinApp.nix {pkgs = prev;};
+    # mkFirefoxAddon = import ./lib/firefox-addons.nix {pkgs = prev;};
     fsources = builtins.fromJSON (builtins.readFile ./firefox-addons/sources.json);
 
     callPkg = dir: name: let
-      package = import "${builtins.toString dir}/${name}";
-      source = getAttr (removeNixSuffix name) sources;
-      args = builtins.intersectAttrs (builtins.functionArgs package) {
-        inherit sources source;
-      };
-    in
-      final.callPackage package args;
-
-    callDarwinApp = dir: name: let
-      package = import "${builtins.toString dir}/${name}";
-      source = getAttr (removeNixSuffix name) sources;
-      args = builtins.intersectAttrs (builtins.functionArgs package) {
-        inherit sources source mkDarwinApp;
-      };
-    in
-      final.callPackage package args;
-
-    callFirefoxAdd = dir: name: let
       package = import "${builtins.toString dir}/${name}";
       source = let
         basename = removeNixSuffix name;
@@ -71,7 +53,7 @@ in rec {
         then (getAttr basename fsources)
         else bsource;
       args = builtins.intersectAttrs (builtins.functionArgs package) {
-        inherit sources source buildFirefoxXpiAddon;
+        inherit sources source;
       };
     in
       final.callPackage package args;
@@ -115,10 +97,11 @@ in rec {
       python310 = prev.python310.override {inherit packageOverrides;};
       python310Packages = python310.pkgs;
     }
+    // (mapPkgs ./build-support callPkg)
     // (mapPkgs ./common callPkg)
     // (mapPkgs ./darwin callPkg)
-    // {firefox-addons = mapPkgs ./firefox-addons callFirefoxAdd;}
-    // (mapPkgs' ./darwinApp callDarwinApp darwinNameFn);
+    // {firefox-addons = mapPkgs ./firefox-addons callPkg;}
+    // (mapPkgs' ./darwinApp callPkg darwinNameFn);
   packages = pkgs: (
     let
       darwinPkg = n: pkgs.${darwinNameFn n};

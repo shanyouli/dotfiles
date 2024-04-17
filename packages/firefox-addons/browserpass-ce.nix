@@ -1,10 +1,10 @@
 {
-  buildFirefoxXpiAddon,
+  mkFirefoxAddon,
   lib,
   source,
   fetchurl,
 }:
-buildFirefoxXpiAddon
+mkFirefoxAddon
 {
   inherit (source) pname version;
   addonId = "browserpass@maximbaz.com";

@@ -1,5 +1,5 @@
 {
-  buildFirefoxXpiAddon,
+  mkFirefoxAddon,
   lib,
   source,
   fetchurl,
@@ -9,7 +9,7 @@
     then source.src
     else fetchurl {inherit (source) url sha256;};
 in
-  buildFirefoxXpiAddon
+  mkFirefoxAddon
   {
     inherit (source) pname version;
     inherit src;
