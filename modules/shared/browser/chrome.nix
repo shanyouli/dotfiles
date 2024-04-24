@@ -18,8 +18,8 @@ in {
       type = types.package;
       default =
         if pkgs.stdenvNoCC.isLinux
-        then pkgs.google-chrome
-        else pkgs.stable.chrome-app;
+        then pkgs.stable.google-chrome
+        else pkgs.unstable.darwinapps.chrome;
       defaultText = literalExample "pkgs.google-chrome";
       example = literalExample "pkgs.google-chrome";
       description = "The Chrome module to use.";

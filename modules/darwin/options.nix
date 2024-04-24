@@ -77,16 +77,16 @@ in {
   };
   config = mkMerge [
     {
-      user.packages = [
+      user.packages = with pkgs.unstable.darwinapps; [
         # pkgs.stable.xbydriver-app
-        pkgs.stable.next-chat-app
-        pkgs.stable.localsend-app
-        (lib.mkIf (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) pkgs.stable.neovide-app)
-        pkgs.stable.upic-app
-        pkgs.stable.calibre-app
-        pkgs.stable.lporg
-        pkgs.stable.switchaudio-osx
-        pkgs.stable.alexandria-app
+        next-chat
+        localsend
+        (lib.mkIf (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) pkgs.unstable.darwinapps.neovide-app)
+        upic
+        calibre
+        lporg
+        switchaudio-osx
+        alexandria
       ];
 
       modules.xdg.enable = true;

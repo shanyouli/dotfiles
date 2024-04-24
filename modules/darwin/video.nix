@@ -16,16 +16,16 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = with pkgs.stable;
+    user.packages = with pkgs.unstable.darwinapps;
       [
-        iina-app
-        zy-player-app
+        iina
+        zy-player
       ]
       ++ optionals mpvcfg.stream.enable [
-        iinaplus-app
-        simple-live-app
-        downkyi-app
-        wiliwili-app
+        iinaplus
+        simple-live
+        downkyi
+        wiliwili
       ];
     # 视频压缩工具, 使用 ffmpeg 取代
     # homebrew.casks = ["handbrake"];

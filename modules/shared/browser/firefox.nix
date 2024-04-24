@@ -30,10 +30,10 @@ in {
     dev.enable = mkBoolOpt true;
     package = mkOption {
       type = with types; nullOr package;
-      default = with pkgs.stable;
-        if stdenvNoCC.isLinux
-        then firefox
-        else firefox-app;
+      default =
+        if pkgs.stdenvNoCC.isLinux
+        then pkgs.stable.firefox
+        else pkgs.unstable.darwinapps.firefox;
       description = "The Firefox package to use. ";
     };
     finalPackage = mkOption {

@@ -62,9 +62,9 @@
     tool.sdcv.enable = true;
     browser.default = "firefox";
     # browser.firefox.extensions = lib.mkForce [];
-    # browser.fallback = pkgs.stable.vivaldi-app;
+    # browser.fallback = pkgs.unstable.darwinapps.vivaldi;
     browser.chrome.enable = true;
-    browser.chrome.package = pkgs.stable.chromium-app;
+    browser.chrome.package = pkgs.unstable.darwinapps.chromium;
     # theme.enable = true;
 
     # # macos

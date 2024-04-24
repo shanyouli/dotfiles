@@ -15,7 +15,7 @@ in {
 
   config = mkIf cfg.enable {
     homebrew.casks = ["openemu"];
-    user.packages = with pkgs.stable; [rpcs3-app ryujinx-app ryusak-app];
+    user.packages = with pkgs.unstable.darwinapps; [rpcs3 ryujinx ryusak];
     macos.userScript.linkRyujinxApp = {
       desc = "Link RyuJinx App";
       level = 100;

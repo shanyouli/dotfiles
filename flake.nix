@@ -25,6 +25,7 @@
     # shell stuff
     flake-utils.url = "github:numtide/flake-utils";
     nur.url = "github:nix-community/NUR";
+
     devenv.url = "github:cachix/devenv/latest";
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
@@ -33,6 +34,9 @@
 
     nvfetcher.url = "github:berberman/nvfetcher";
     nvfetcher.inputs.nixpkgs.follows = "nixpkgs";
+
+    nurpkgs.url = "github:shanyouli/nur-packages";
+    nurpkgs.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ {
@@ -67,6 +71,7 @@
       nur = inputs.nur.overlay;
       nix-index-database = inputs.nix-index-database.overlays.nix-index;
       nvfetcher = inputs.nvfetcher.overlays.default;
+      nurpkgs = inputs.nurpkgs.overlays.default;
       # emacs = inputs.emacs-overlay.overlay;
     };
     this = import ./packages;
