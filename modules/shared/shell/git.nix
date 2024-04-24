@@ -13,7 +13,7 @@ in {
     enGui = mkBoolOpt config.modules.opt.enGui;
   };
   config = mkIf cfg.enable {
-    user.packages = with pkgs.stable; [
+    user.packages = with pkgs; [
       github-cli
       git-crypt
       # pre-commit # git 提交前自检, 使用 pipx安装
@@ -21,7 +21,7 @@ in {
     ];
     home.programs.git = {
       enable = true;
-      package = pkgs.stable.git;
+      package = pkgs.git;
       userName = config.modules.opt.name;
       userEmail = config.modules.opt.email;
       signing = {

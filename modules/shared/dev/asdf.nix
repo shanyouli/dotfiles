@@ -21,7 +21,7 @@ in {
       type = attrsOf (oneOf [(nullOr bool) (listOf str)]);
       default = {};
     };
-    package = mkPkgOpt pkgs.stable.asdf-vm "asdf package";
+    package = mkPkgOpt pkgs.asdf-vm "asdf package";
 
     text = mkOpt' lines "" "init asdf script";
     prevInit = mkOpt' lines "" "prev asdf env";

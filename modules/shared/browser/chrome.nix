@@ -18,7 +18,7 @@ in {
       type = types.package;
       default =
         if pkgs.stdenvNoCC.isLinux
-        then pkgs.stable.google-chrome
+        then pkgs.google-chrome
         else pkgs.unstable.darwinapps.chrome;
       defaultText = literalExample "pkgs.google-chrome";
       example = literalExample "pkgs.google-chrome";

@@ -130,8 +130,8 @@ in {
         ]
         ++ optionals cfg.rimeEnable [
           (epkgs.rime.overrideAttrs (esuper: {
-            buildInputs = (esuper.buildInputs or []) ++ [pkgs.stable.librime];
-            nativeBuildInputs = [pkgs.stable.gnumake pkgs.stable.gcc];
+            buildInputs = (esuper.buildInputs or []) ++ [pkgs.librime];
+            nativeBuildInputs = [pkgs.gnumake pkgs.gcc];
             preBuild = "";
             postInstall = let
               suffix =
@@ -153,15 +153,15 @@ in {
     }
     {
       user.packages = [
-        pkgs.stable.graphviz
+        pkgs.graphviz
         cfg.pkg
-        pkgs.stable.pandoc
+        pkgs.pandoc
         #dirvish 包需要的工具
         # poppler
-        pkgs.stable.ffmpegthumbnailer
-        pkgs.stable.mediainfo
+        pkgs.ffmpegthumbnailer
+        pkgs.mediainfo
         # grip markdown 预览配置
-        pkgs.stable.python3Packages.grip
+        pkgs.python3Packages.grip
       ];
       modules.shell.python.extraPkgs = ps:
         with ps; [
@@ -182,13 +182,13 @@ in {
       home.configFile = let
         data-dir =
           if pkgs.stdenvNoCC.isLinux
-          then "${pkgs.stable.brise}/share/rime-data"
+          then "${pkgs.brise}/share/rime-data"
           else "/Library/Input Methods/Squirrel.app/Contents/SharedSupport";
       in {
         "doom/config.init.el".text = ''
           ${lib.optionalString cfg.rimeEnable ''
             (setq rime-emacs-module-header-root "${cfg.package}/include")
-            (setq rime-librime-root "${pkgs.stable.librime}")
+            (setq rime-librime-root "${pkgs.librime}")
             (setq rime-share-data-dir "${data-dir}")
             (setq rime-user-data-dir "${config.home.configDir}/emacs-rime")
           ''}

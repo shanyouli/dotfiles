@@ -16,6 +16,6 @@ in {
     enable = mkEnableOption "Whether to use just";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.stable.just];
+    user.packages = [pkgs.just];
   };
 }

@@ -32,7 +32,7 @@ in {
       type = with types; nullOr package;
       default =
         if pkgs.stdenvNoCC.isLinux
-        then pkgs.stable.firefox
+        then pkgs.firefox
         else pkgs.unstable.darwinapps.firefox;
       description = "The Firefox package to use. ";
     };

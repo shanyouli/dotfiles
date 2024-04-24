@@ -16,10 +16,10 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      user.packages = [pkgs.stable.duti];
+      user.packages = [pkgs.duti];
     }
     (mkIf cfg.wrapper.enable {
-      user.packages = [pkgs.stable.dutis];
+      user.packages = [pkgs.dutis];
       # If dutis is used, homebrew must be installed.It only supports apps in the /Applications directory.
     })
   ]);

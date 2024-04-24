@@ -85,7 +85,7 @@ in {
     # lib.mkIf cfg.enable (lib.mkMerge [{ users.defaultUserShell = pkgs.zsh; }]);
     # only nixos
     # users.defaultUserShell = pkgs.zsh;
-    user.shell = pkgs.stable.zsh;
+    user.shell = pkgs.zsh;
     programs.zsh = {
       enable = true;
       # 我将自动启用bashcompinit 和compinit配置
@@ -93,7 +93,7 @@ in {
       enableBashCompletion = false;
       promptInit = "";
     };
-    user.packages = with pkgs.stable; [
+    user.packages = with pkgs; [
       bottom
       fd
       eza
@@ -142,7 +142,7 @@ in {
         ZINIT[COMPINIT_OPTS]="-C"
       '';
       prevInit = mkOrder 100 ''
-        source ${pkgs.stable.grc}/etc/grc.zsh
+        source ${pkgs.grc}/etc/grc.zsh
         # FZF 配置
         FZF_DEFAULT_COMMAND="fd -H -I --type f"
         FZF_DEFAULT_OPTIONS="fd --height 50%"
@@ -151,8 +151,8 @@ in {
         FZF_ALT_C_COMMAND="fd -H -I --type d -E '.git*'"
         FZF_ALT_C_OPTS="--preview 'eza -T -L 2 {} | head -2000'"
         # FZF_CTRL_R_OPTS=""
-        # source ${pkgs.stable.fzf}/share/fzf/completion.zsh
-        # source ${pkgs.stable.fzf}/share/fzf/key-bindings.zsh
+        # source ${pkgs.fzf}/share/fzf/completion.zsh
+        # source ${pkgs.fzf}/share/fzf/key-bindings.zsh
 
         ${lib.optionalString (! cfg.vivid.enable) ''
           # colors 配置 if'[[ -z $LS_COLORS ]]'
@@ -162,7 +162,7 @@ in {
         ''}
       '';
       rcInit = mkOrder 100 ''
-        _cache -v ${pkgs.stable.nix-your-shell.version} nix-your-shell zsh
+        _cache -v ${pkgs.nix-your-shell.version} nix-your-shell zsh
         ${lib.optionalString (! cfg.atuin.enable) ''
           if [[ "$INSIDE_EMACS" != 'vterm' ]]; then
             _zt 0b light-mode for \

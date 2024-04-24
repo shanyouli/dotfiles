@@ -19,11 +19,11 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      user.packages = [pkgs.stable.usql];
+      user.packages = [pkgs.usql];
     }
     (mkIf cfg.mycli.enable {
       # mycli mysql 一个好用的客户端
-      user.packages = [pkgs.stable.mycli];
+      user.packages = [pkgs.mycli];
       modules.shell.prevInit = ''
         MYCLI_HISTFILE="${config.home.cacheDir}/mycli/mycli.history"
       '';

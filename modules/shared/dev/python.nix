@@ -34,7 +34,7 @@ in {
           pylint
           pylint-venv
         ];
-      user.packages = with pkgs.stable; [
+      user.packages = with pkgs; [
         ruff
         python3.pkgs.ruff-lsp
         poetry

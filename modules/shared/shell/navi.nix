@@ -18,9 +18,9 @@ in {
     enable = mkEnableOption "Whether to use navi";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.stable.navi];
+    user.packages = [pkgs.navi];
     modules.shell.rcInit = ''
-      _cache -v ${pkgs.stable.navi.version} navi widget zsh
+      _cache -v ${pkgs.navi.version} navi widget zsh
     '';
     modules.shell.env.NAVI_PATH = "${config.dotfiles.configDir}/navi/cheats:${dataDir}";
   };

@@ -31,10 +31,10 @@ in {
   };
   config = mkMerge [
     (mkIf cfg.toml.fmt {
-      user.packages = [pkgs.stable.taplo];
+      user.packages = [pkgs.taplo];
     })
     (mkIf cfg.enWebReport {
-      user.packages = [pkgs.stable.allure];
+      user.packages = [pkgs.allure];
     })
     (mkIf (cfg.default == "asdf") {
       modules.dev.asdf.enable = true;

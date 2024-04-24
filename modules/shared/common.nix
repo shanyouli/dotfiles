@@ -12,7 +12,7 @@ with lib.my; {
 
     variables.NIXPKGS_ALLOW_UNFREE = "1";
 
-    systemPackages = with pkgs.stable; [
+    systemPackages = with pkgs; [
       # standard toolset
       coreutils-full
       wget
@@ -64,7 +64,7 @@ with lib.my; {
         # "nixpkgs-overlays=${config.dotfiles.dir}/overlays"
         "dotfiles=${config.dotfiles.dir}"
       ];
-    package = pkgs.stable.nix;
+    package = pkgs.nix;
     gc = {
       automatic = mkDefault true;
       options = mkDefault "--delete-older-than 7d";

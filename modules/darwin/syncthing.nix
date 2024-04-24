@@ -36,7 +36,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = [pkgs.stable.syncthing];
+    environment.systemPackages = [pkgs.syncthing];
     launchd.user.agents.syncthing = {
       command = "${pkgs.syncthing}/bin/syncthing";
       serviceConfig = {

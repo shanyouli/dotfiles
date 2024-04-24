@@ -15,12 +15,12 @@ in {
   };
   config = mkMerge [
     (mkIf (cfg.enable && pkgs.stdenvNoCC.isDarwin) {
-      user.packages = [pkgs.stable.darwin.trash];
+      user.packages = [pkgs.darwin.trash];
       modules.shell.aliases.rm = "trash";
       modules.shell.aliases.rmi = "trash -F";
     })
     (mkIf (cfg.enable && pkgs.stdenvNoCC.isLinux) {
-      user.packages = [pkgs.stable.trashy];
+      user.packages = [pkgs.trashy];
       modules.shell.aliases = {
         rm = "trashy put";
         rmi = "trashy put";

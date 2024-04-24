@@ -26,7 +26,7 @@ in {
     };
     package = mkOption {
       type = types.package;
-      default = pkgs.stable.lua;
+      default = pkgs.lua;
       defaultText = literalExample "pkgs.lua5_4";
       example = literalExample "pkgs.lua5_4";
       description = "The Lua Package to use.";
@@ -35,9 +35,9 @@ in {
   };
   config = mkIf cfg.enable {
     modules.dev.lua.extraPkgs = ps: with ps; [luarocks-nix lua-cjson luacheck];
-    modules.dev.lua.package = pkgs.stable.lua5_4;
+    modules.dev.lua.package = pkgs.lua5_4;
     modules.dev.lua.finalPkg = cfg.package.withPackages cfg.extraPkgs;
-    user.packages = with pkgs.stable; [
+    user.packages = with pkgs; [
       cfg.finalPkg
       # lua54Packages.luarocks-nix
       stylua # fmt

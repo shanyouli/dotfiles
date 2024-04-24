@@ -9,7 +9,7 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.shell.zinit;
-  cpkgs = pkgs.stable.zinit;
+  cpkgs = pkgs.zinit;
 in {
   options.modules.shell.zinit = {
     enable = mkEnableOption "WHether to use zsh plugin manager (zinit)";

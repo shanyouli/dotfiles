@@ -15,6 +15,6 @@ in {
     enable = mkEnableOption "Whether to use vivid to manage LS_COLORS";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.stable.vivid];
+    user.packages = [pkgs.vivid];
   };
 }

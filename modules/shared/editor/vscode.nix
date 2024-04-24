@@ -23,7 +23,7 @@ in {
     ];
     home.programs.vscode = {
       enable = true;
-      package = pkgs.stable.vscode;
+      package = pkgs.vscode;
       enableUpdateCheck = false;
       enableExtensionUpdateCheck = false;
       extensions = cfg.extensions;

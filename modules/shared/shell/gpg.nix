@@ -18,7 +18,7 @@ in {
     environment.variables.GNUPGHOME = "${config.home.configDir}/gnupg";
 
     programs.gnupg.agent.enable = true;
-    user.packages = [(mkIf pkgs.stdenvNoCC.isLinux pkgs.stable.tomb) pkgs.stable.gnupg];
+    user.packages = [(mkIf pkgs.stdenvNoCC.isLinux pkgs.tomb) pkgs.gnupg];
     # HACK Without this config file you get "No pinentry program" on 20.03.
     #      programs.gnupg.agent.pinentryFlavor doesn't appear to work, and this
     #      is cleaner than overriding the systemd unit.
@@ -28,10 +28,10 @@ in {
           default-cache-ttl ${toString cfg.cacheTTL}
         ''
         + optionalString pkgs.stdenvNoCC.isLinux ''
-          pinentry-program ${pkgs.stable.pinentry.gtk2}/bin/pinentry
+          pinentry-program ${pkgs.pinentry.gtk2}/bin/pinentry
         ''
         + optionalString pkgs.stdenvNoCC.isDarwin ''
-          pinentry-program ${pkgs.stable.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac
+          pinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac
         '';
     };
   };

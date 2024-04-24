@@ -13,7 +13,7 @@
     # $ darwin-rebuild switch -I darwin-config=$HOME/.config/nixpkgs/darwin/configuration.nix
 
     # packages installed in system profile
-    systemPackages = with pkgs.stable; [findutils];
+    systemPackages = with pkgs; [findutils];
     # see@ https://github.com/LnL7/nix-darwin/issues/165
     etc = {
       "sudoers.d/00-not-commands".text = let

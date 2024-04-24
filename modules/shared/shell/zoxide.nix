@@ -14,9 +14,9 @@ in {
     enable = mkEnableOption "Whether to use zoxide";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.stable.zoxide];
+    user.packages = [pkgs.zoxide];
     modules.shell.rcInit = ''
-      _cache -v ${pkgs.stable.zoxide.version} zoxide init zsh
+      _cache -v ${pkgs.zoxide.version} zoxide init zsh
     '';
   };
 }

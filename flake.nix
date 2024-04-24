@@ -229,22 +229,6 @@
     overlays = {
       channels = final: prev: {
         # expose other channels via overlays
-        stable = mkPkg {
-          system = prev.system;
-          cfg = {allowUnfree = true;};
-          nixpkgs = [nixos-stable darwin-stable];
-          # extraOverlays = [this.overlay];
-          # overlays = {
-          #   default = ffinal: fprev: (
-          #     nixpkgs.lib.composeExtensions this.overlay
-          #     # (final: prev: {
-          #     #   devenv = inputs.devenv.defaultPackage.${prev.system};
-          #     # })
-          #     ffinal
-          #     fprev
-          #   );
-          # };
-        };
         unstable = mkPkg {
           inherit nixpkgs;
           system = prev.system;

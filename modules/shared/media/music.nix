@@ -31,7 +31,7 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.mpd.enable {
-      user.packages = with pkgs.stable; [mpd mpc-cli (ncmpcpp.override {visualizerSupport = true;})];
+      user.packages = with pkgs; [mpd mpc-cli (ncmpcpp.override {visualizerSupport = true;})];
       modules.shell.aliases.mpcs = "mpc search any";
       modules.shell.aliases.mpcsp = "mpc searchplay any";
       home = let

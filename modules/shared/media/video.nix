@@ -20,8 +20,8 @@ in {
     mkIf cfg.enable (mkMerge [
       {
         user.packages = with pkgs; [
-          stable.mpv
-          (mkIf pkgs.stdenvNoCC.isLinux stable.mpvc)
+          mpv
+          (mkIf pkgs.stdenvNoCC.isLinux mpvc)
           (mkIf cfg.stream.enable unstable.seam)
         ];
       }
