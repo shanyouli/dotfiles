@@ -8,34 +8,12 @@
 with lib;
 with lib.my; let
   cfg = config.modules.service.yabai;
-  srcs = (import "${config.dotfiles.srcDir}/generated.nix") {
-    inherit (pkgs) fetchurl fetchFromGitHub fetchgit dockerTools;
-  };
-  yabai = pkgs.stable.yabai.overrideAttrs (prev: rec {
-    inherit (srcs.yabai) version src;
-    nativeBuildInputs = let
-      buildSymlinks = pkgs.runCommandLocal "build-symlinks" {} ''
-        mkdir -p $out/bin
-        ln -s /usr/bin/{xcrun,codesign,xxd} $out/bin
-      '';
-    in
-      (prev.nativeBuildInputes or []) ++ [buildSymlinks pkgs.installShellFiles];
-    dontBuild = false;
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $out
-      codesign -s - -f ./bin/yabai
-      cp -r ./bin $out
-      installManPage ./doc/yabai.1
-      runHook postInstall
-    '';
-  });
 in {
   options.modules.service.yabai = {
     enable = mkBoolOpt false;
     package = mkOption {
       type = types.package;
-      default = yabai;
+      default = pkgs.unstable.darwinapps.yabai;
       defaultText = literalExample "pkgs.yabai";
       example = literalExample "pkgs.yabai";
       description = "The Yabai Package to use.";
@@ -43,7 +21,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = [pkgs.stable.yabai-zsh-completions];
+    user.packages = [pkgs.unstable.darwinapps.yabai-zsh-completions];
     home.configFile."yabai" = {
       source = "${config.dotfiles.configDir}/yabai";
       recursive = true;
@@ -59,6 +37,6 @@ in {
     # The scripting addition needs root access to load, which we want to do automatically when logging in.
     # Disable the password requirement for it so that a service can do so without user interaction.
     environment.etc."sudoers.d/yabai-load-sa".text =
-      sudoNotPass config.user.name "${yabai}/bin/yabai";
+      sudoNotPass config.user.name "${cfg.package}/bin/yabai";
   };
 }
