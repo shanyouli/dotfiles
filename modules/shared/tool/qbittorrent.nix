@@ -9,34 +9,22 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.tool.qbittorrent;
-  srcs = (import "${config.dotfiles.srcDir}/generated.nix") {
-    inherit (pkgs) fetchurl fetchFromGitHub fetchgit dockerTools;
-  };
 in {
   options.modules.tool.qbittorrent = {
     enable = mkEnableOption "Whether to use qbittorrent";
     enGui = mkBoolOpt config.modules.opt.enGui;
-    package = mkPkgOpt pkgs.qbittorrent "qbittorrent use package";
+    package =
+      mkPkgOpt (
+        if cfg.enGui
+        then pkgs.unstable.qbittorrent-enhanced
+        else pkgs.unstable.qbittorrent-enhanced-nox
+      )
+      "qbittorrent use package";
     webui = mkBoolOpt (! cfg.enGui);
     webScript = mkStrOpt "";
   };
   config = mkIf cfg.enable {
-    modules.tool.qbittorrent.package =
-      (
-        if cfg.enGui
-        then pkgs.stable.qbittorrent
-        else pkgs.stable.qbittorrent-nox
-      )
-      .overrideAttrs (old: rec {
-        inherit (srcs.qbittorrent) src;
-        cmakeFlags = (old.cmakeFlags or []) ++ ["-DCMAKE_CXX_FLAGS=-Wno-c++20-extensions"];
-        postInstall =
-          (old.postInstall or "")
-          + pkgs.lib.optionalString pkgs.stdenvNoCC.isDarwin ''
-            [[ -d $out/$APP_NAME.app ]] && rm -rf $out/$APP_NAME.app
-          '';
-      });
-    user.packages = [cfg.package pkgs.stable.xbydriver];
+    user.packages = [cfg.package pkgs.unstable.xbydriver];
 
     modules.tool.qbittorrent.webScript = optionalString cfg.webui ''
       [[ -d ${config.home.cacheDir}/qbittorrent/ui/public ]] || {

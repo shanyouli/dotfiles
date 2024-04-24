@@ -40,17 +40,15 @@ in {
   config = mkMerge [
     (mkIf cfg.enAudio {
       # pkgs.python3.pkgs.musicdl # 无法下载
-      user.packages = [pkgs.stable.musicn];
+      user.packages = [pkgs.unstable.musicn];
     })
     (mkIf cfg.enVideo {
       user.packages = [
         pkgs.unstable.yt-dlp
-        pkgs.stable.python3Packages.yutto
-        # pkgs.stable.bbdown
+        pkgs.unstable.python3Packages.yutto
+        # pkgs.unstable.bbdown
         pkgs.unstable.lux
-        (pkgs.stable.fav.override {
-          rustPlatform = pkgs.unstable.rustPlatform;
-        })
+        pkgs.unstable.fav
       ]; # yutto 下载bilibili
       home.configFile."yt-dlp/config".text = ''
         # 下载默认保存目录

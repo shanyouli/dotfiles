@@ -1,5 +1,0 @@
-* 说明
-- 代码来源: [[https://github.com/bandithedoge/nixpkgs-firefox-darwin/tree/main][bandithedoge/nixpkgs-firefox-darwin: Nixpkgs overlay with Firefox binary builds for macOS]]
-- 脚本依赖
-  + jq
-  + curl

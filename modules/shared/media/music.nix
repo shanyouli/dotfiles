@@ -74,7 +74,7 @@ in {
     })
     (mkIf cfg.netease.enable {
       user.packages = [
-        pkgs.stable.go-musicfox
+        pkgs.unstable.go-musicfox
         (mkIf (pkgs.stdenvNoCC.isLinux && cfg.netease.enGui) pkgs.unstable.netease-cloud-music-gtk)
       ];
     })

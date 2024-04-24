@@ -31,6 +31,24 @@ with lib.my; let
         name = "zsh/${path}/${getLastFunction value}";
       })
       l));
+  my-nix-script = pkgs.stdenv.mkDerivation rec {
+    name = "nix-scripts";
+    src = ../../../bin;
+    buildInputs = [];
+    installPhase = ''
+      mkdir -p $out/bin
+      find . -maxdepth 1 -perm -a+x -not -name '*.*' \
+        -exec cp -pL {} $out/bin \;
+    '';
+
+    meta = with lib; {
+      description = "my scripts bin";
+      homepage = https://github.com/shanyouli/system;
+      license = licenses.mit;
+      maintainers = with maintainers; [shanyouli];
+      platforms = platforms.all;
+    };
+  };
 in {
   options.modules.shell = with types; {
     aliases = mkOpt (attrsOf (either str path)) {};
@@ -99,7 +117,7 @@ in {
 
       fzf
       my-nix-script
-      python3.pkgs.sd
+      pkgs.unstable.python3.pkgs.sd
     ];
     env = {
       PATH = ["${config.home.binDir}"];
@@ -200,7 +218,7 @@ in {
         "zsh/cache/extra.zshrc".text = cfg.rcInit;
         "zsh/cache/extra.zshenv".text = cfg.envInit;
         "zsh/.zshrc".text = ''
-          source ${pkgs.stable.zpmod}/share/zpmod/zpmod.plugin.zsh
+          source ${pkgs.unstable.zpmod}/share/zpmod/zpmod.plugin.zsh
           : ''${ZINIT_HOME:="''${XDG_DATA_HOME}/zinit/zinit.git"}
           ${lib.optionalString (! cfg.zinit.enable) ''
             [[ -d "''${ZINIT_HOME}" ]] || {

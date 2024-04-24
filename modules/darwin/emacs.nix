@@ -46,8 +46,8 @@ in {
         # version = inputs.emacs-src.shortRev;
       }));
     user.packages = [
-      pkgs.stable.pngpaste
-      (pkgs.stable.emacsclient.override {
+      pkgs.unstable.darwinapps.pngpaste
+      (pkgs.unstable.darwinapps.emacsclient.override {
         emacsClientBin = "${emacsPkg}/bin/emacsclient";
         withNotify = true;
       })

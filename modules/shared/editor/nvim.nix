@@ -28,7 +28,7 @@ in {
       # @https://discourse.nixos.org/t/stuck-writing-my-first-package/19022/4
       user.packages = [pkgs.unstable.neovim (mkIf (cfg.enGui && pkgs.stdenvNoCC.isLinux) pkgs.unstable.neovide)];
       home.configFile = let
-        sc = pkgs.stable.lazyvim-star.out;
+        sc = pkgs.unstable.lazyvim-star.out;
       in {
         "nvim/init.lua".source = "${sc}/init.lua";
         "nvim/stylua.toml".source = "${sc}/stylua.toml";

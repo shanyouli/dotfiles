@@ -74,7 +74,6 @@
       nurpkgs = inputs.nurpkgs.overlays.default;
       # emacs = inputs.emacs-overlay.overlay;
     };
-    this = import ./packages;
   in {
     lib = lib.my;
     checks =
@@ -186,21 +185,21 @@
         modules = [(import ./devenv.nix)];
       };
     });
-    packages = lib.my.withDefaultSystems (system: let
-      pkgs = allPkgs."${system}";
-    in
-      (this.packages pkgs.stable)
-      // {
-        # devenv = inputs.devenv.defaultPackage.${system};
-      });
+    # packages = lib.my.withDefaultSystems (system: let
+    #   pkgs = allPkgs."${system}";
+    # in
+    #   (this.packages pkgs.stable)
+    #   // {
+    #     # devenv = inputs.devenv.defaultPackage.${system};
+    #   });
 
     apps = lib.my.withDefaultSystems (system: let
       pkgs = allPkgs."${system}";
     in rec {
-      sd = {
-        type = "app";
-        program = "${self.packages.${system}.sd}/bin/sd";
-      };
+      # sd = {
+      #   type = "app";
+      #   program = "${self.packages.${system}.sd}/bin/sd";
+      # };
       # 加载配置, nix run .#repl
       # @see https://github.com/NixOS/nix/issues/3803#issuecomment-748612294
       repl = flake-utils.lib.mkApp {
@@ -249,7 +248,7 @@
             find ./packages -iname "update.py" -exec ${py}/bin/python3 {} 1 \;
           '';
       };
-      default = sd;
+      default = update;
     });
 
     overlays = {
@@ -259,7 +258,7 @@
           system = prev.system;
           cfg = {allowUnfree = true;};
           nixpkgs = [nixos-stable darwin-stable];
-          extraOverlays = [this.overlay];
+          # extraOverlays = [this.overlay];
           # overlays = {
           #   default = ffinal: fprev: (
           #     nixpkgs.lib.composeExtensions this.overlay

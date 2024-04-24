@@ -84,7 +84,7 @@ in {
         }
       ];
       modules.shell.gopass.browsers = ["firefox"];
-      modules.browser.firefox.extensions = mkDefault (with pkgs.stable.firefox-addons; [
+      modules.browser.firefox.extensions = mkDefault (with pkgs.unstable.firefox-addons; [
         (mkIf cfm.shell.gopass.enable browserpass-ce)
         noscript
         ublock-origin
@@ -102,13 +102,8 @@ in {
       modules.browser.firefox.finalPackage = wrapPackage cfg.package;
     }
     {
-      user.packages = let
-        pkgDriver =
-          if pkgs.stdenvNoCC.isLinux
-          then pkgs.stable.geckodriver
-          else pkgs.unstable.geckodriver;
-      in
-        [cfg.finalPackage] ++ optionals cfg.dev.enable [pkgDriver];
+      user.packages =
+        [cfg.finalPackage] ++ optionals cfg.dev.enable [pkgs.unstable.geckodriver];
       home.file = let
         profilePath = "${cfgConfDir}/Profiles/${lib.toLower cfg.profileName}";
       in
@@ -164,7 +159,7 @@ in {
               recursive = true;
             };
             "${profilePath}/chrome/utils" = {
-              source = "${pkgs.stable.firefox-utils}/share/utils";
+              source = "${pkgs.unstable.firefox-utils}/share/utils";
               recursive = true;
             };
           })

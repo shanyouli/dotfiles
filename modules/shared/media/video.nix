@@ -22,7 +22,7 @@ in {
         user.packages = with pkgs; [
           stable.mpv
           (mkIf pkgs.stdenvNoCC.isLinux stable.mpvc)
-          (mkIf cfg.stream.enable stable.seam)
+          (mkIf cfg.stream.enable unstable.seam)
         ];
       }
     ]);

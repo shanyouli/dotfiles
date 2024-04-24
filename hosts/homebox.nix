@@ -74,7 +74,7 @@
     macos.karabiner.enable = true;
     macos.stopAutoReopen = true;
     service.clash.enable = true;
-    service.clash.package = pkgs.stable.mihomo;
+    service.clash.package = pkgs.unstable.mihomo;
     tool.clash.enSingbox = true;
     service.clash.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/meta.yaml";
 

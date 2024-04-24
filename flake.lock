@@ -783,11 +783,11 @@
         "nvfetcher": "nvfetcher"
       },
       "locked": {
-        "lastModified": 1713892077,
-        "narHash": "sha256-4R8shv4y8wlhz4d40MCSzWBD1Q6nUeIhkR167jAh48c=",
+        "lastModified": 1713936639,
+        "narHash": "sha256-sA2Cv4W8K1ZqdUsllwdQ9wSOgfWDyZ7ONaP8P5O/PCw=",
         "owner": "shanyouli",
         "repo": "nur-packages",
-        "rev": "1a623a3648dbb963e6a5fd7b96cd20522d68a531",
+        "rev": "be5065acbb235874f8a6cdf78291ffd6d3c2287a",
         "type": "github"
       },
       "original": {
