@@ -17,10 +17,6 @@
       url = "github:rycee/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    emacs-overlay.url = "github:nix-community/emacs-overlay/master";
-    # @see https://github.com/nix-community/emacs-overlay/issues/275
-    # emacs-src.url = "github:emacs-mirror/emacs/emacs-29";
-    # emacs-src.flake = false;
 
     # shell stuff
     flake-utils.url = "github:numtide/flake-utils";
@@ -68,7 +64,6 @@
       nur = inputs.nur.overlay;
       nix-index-database = inputs.nix-index-database.overlays.nix-index;
       nurpkgs = inputs.nurpkgs.overlays.default;
-      # emacs = inputs.emacs-overlay.overlay;
     };
   in {
     lib = lib.my;

@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  inputs,
   ...
 }:
 with lib;
@@ -78,7 +77,6 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      nixpkgs.overlays = [inputs.emacs-overlay.overlay];
       modules.editor.emacs.doom.confInit = ''
         ;; (setq mydotfile "/etc/nixos")
       '';
