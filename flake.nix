@@ -32,9 +32,6 @@
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    nvfetcher.url = "github:berberman/nvfetcher";
-    nvfetcher.inputs.nixpkgs.follows = "nixpkgs";
-
     nurpkgs.url = "github:shanyouli/nur-packages";
     nurpkgs.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -70,7 +67,6 @@
     baseOverlays = {
       nur = inputs.nur.overlay;
       nix-index-database = inputs.nix-index-database.overlays.nix-index;
-      nvfetcher = inputs.nvfetcher.overlays.default;
       nurpkgs = inputs.nurpkgs.overlays.default;
       # emacs = inputs.emacs-overlay.overlay;
     };
@@ -227,28 +223,7 @@
             cp ${bin} $out/bin/checks-combined
           '';
       };
-      update = flake-utils.lib.mkApp {
-        drv = let
-          buildPath = pkgs.buildEnv {
-            name = "update-nix-pkgs-env";
-            paths = with pkgs.stable; [nix-prefetch-scripts jq curl gawk];
-            pathsToLink = "/bin";
-          };
-          py = pkgs.stable.python3.withPackages (p: with p; [requests beautifulsoup4]);
-        in
-          pkgs.writeScriptBin "pkgs-update" ''
-            #! ${pkgs.lib.getExe pkgs.bash}
-            export PATH=$PATH:${buildPath}/bin
-            export NIX_PATH="nixpkgs=${inputs.nixpkgs}:$NIX_PATH"
-            keys_args=""
-            [[ -f $HOME/.config/nvfetcher.toml ]] && keys_args="-k $HOME/.config/nvfetcher.toml"
-            [[ -f ./secrets.toml ]] && keys_args="-k ./secrets.toml"
-            ${inputs.nvfetcher.packages."${system}".default}/bin/nvfetcher $keys_args -r 10  --keep-going -j 3 --commit-changes
-            echo "update firefox, rpcs3, simple-live ..."
-            find ./packages -iname "update.py" -exec ${py}/bin/python3 {} 1 \;
-          '';
-      };
-      default = update;
+      default = repl;
     });
 
     overlays = {

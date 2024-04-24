@@ -8,10 +8,6 @@ on:
   push:
     branches:
       - master
-    paths:
-      - 'packages/**/update.py'
-      - 'packages/**/update.sh'
-      - 'nvfetcher.toml'
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -38,14 +34,7 @@ jobs:
           git checkout -B flakebot
       - name: Update and commit lockfile
         # run: nix flake update --commit-lock-file
-        run: nix flake lock --update-input darwin --update-input devenv --update-input emacs-overlay --update-input flake-utils --update-input home-manager --update-input nix-index-database --update-input nixos-hardware --update-input nixpkgs --update-input nur --update-input treefmt-nix --update-input nvfetcher --commit-lock-file
-      - name: Update my pkgs src
-        run: |
-          cat > secrets.toml <<EOF
-          [keys]
-          github = "${{ secrets.GITHUB_TOKEN }}"
-          EOF
-          nix --auto-allocate-uids run .#update
+        run: nix flake lock --update-input darwin --update-input devenv --update-input emacs-overlay --update-input flake-utils --update-input home-manager --update-input nix-index-database --update-input nixos-hardware --update-input nixpkgs --update-input nur --update-input treefmt-nix --commit-lock-file
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
