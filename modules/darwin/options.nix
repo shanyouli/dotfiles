@@ -87,6 +87,7 @@ in {
         lporg
         switchaudio-osx
         alexandria
+        tmexclude
       ];
 
       modules.xdg.enable = true;

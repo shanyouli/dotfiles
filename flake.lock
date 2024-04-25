@@ -124,11 +124,11 @@
         "nixpkgs-stable": "nixpkgs-stable_3"
       },
       "locked": {
-        "lastModified": 1713949624,
-        "narHash": "sha256-Er2cq+QeylfOs0KWKn0pA0v/3+pYLZN+sdrcl9DSQo8=",
+        "lastModified": 1714012795,
+        "narHash": "sha256-UCst+RoX67NhDgfCcJwOk94ZEjDg09wh1i0gs83Nrvc=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "7da709f57affaa4367e192a4ab4d70e44234a77e",
+        "rev": "bf2ab188e525dd20cdd9448e270fd442cea56949",
         "type": "github"
       },
       "original": {
@@ -706,11 +706,11 @@
     },
     "nixpkgs-stable_3": {
       "locked": {
-        "lastModified": 1713725259,
-        "narHash": "sha256-9ZR/Rbx5/Z/JZf5ehVNMoz/s5xjpP0a22tL6qNvLt5E=",
+        "lastModified": 1713828541,
+        "narHash": "sha256-KtvQeE12MSkCOhvVmnmcZCjnx7t31zWin2XVSDOwBDE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a5e4bbcb4780c63c79c87d29ea409abf097de3f7",
+        "rev": "b500489fd3cf653eafc075f9362423ad5cdd8676",
         "type": "github"
       },
       "original": {
@@ -810,11 +810,11 @@
         "pre-commit-hooks-nix": "pre-commit-hooks-nix"
       },
       "locked": {
-        "lastModified": 1713972816,
-        "narHash": "sha256-TW1qJDYSmKaPOxvQ64gKMdxZkBR6eBA+TKpvc9flK/w=",
+        "lastModified": 1714042395,
+        "narHash": "sha256-0kuo/bBCiROCPcDvSiPM6vbYljEbTL+pD8VVUbXriz4=",
         "owner": "shanyouli",
         "repo": "nur-packages",
-        "rev": "3d00ae9ead1345f01b7e357e8acd32add88b66a9",
+        "rev": "64021ea82972b8bfcbec80646e333a9877b48f21",
         "type": "github"
       },
       "original": {
@@ -909,11 +909,11 @@
         "nixpkgs-stable": "nixpkgs-stable_4"
       },
       "locked": {
-        "lastModified": 1713775815,
-        "narHash": "sha256-Wu9cdYTnGQQwtT20QQMg7jzkANKQjwBD9iccfGKkfls=",
+        "lastModified": 1713954846,
+        "narHash": "sha256-RWFafuSb5nkWGu8dDbW7gVb8FOQOPqmX/9MlxUUDguw=",
         "owner": "cachix",
         "repo": "pre-commit-hooks.nix",
-        "rev": "2ac4dcbf55ed43f3be0bae15e181f08a57af24a4",
+        "rev": "6fb82e44254d6a0ece014ec423cb62d92435336f",
         "type": "github"
       },
       "original": {
