@@ -4,20 +4,17 @@ on:
     branches:
       - master
     paths:
-      - 'packages/**'
-      - '!packages/**/update.py'
-      - '!packages/**/update.sh'
-      - 'hosts/**'
-      - '_sources/**'
+      - 'hosts/hostname.nix'
+      - 'hosts/linux-test/**'
       - 'flake.lock'
 
   pull_request_target:
     branches:
       - master
     paths:
-      - 'packages/**/source.json'
-      - '_sources/**'
       - 'modules/shared/**'
+      - 'hosts/hostname.nix'
+      - 'hosts/linux-test/**'
       - 'flake.lock'
 jobs:
   build:
