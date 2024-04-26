@@ -5,9 +5,9 @@ on:
     # run this daily at 8am UTC, or roughly 4am eastern
     - cron: '30 2 * * 6'
   # Allows you to run this workflow manually from the Actions tab
-  push:
-    branches:
-      - master
+  # push:
+  #   branches:
+  #     - master
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel

@@ -1,6 +1,7 @@
 # Nix System Configuration
 
-![system build](https://github.com/kclejeune/system/workflows/system%20build/badge.svg)
+![system build](https://github.com/shanyouli/dotfiles/workflows/system%20build/badge.svg)
+![update flake](https://github.com/shanyouli/dotfiles/workflows/Auto%20Update%20Flake%20Inputs/badge.svg)
 
 This repository manages system configurations for all of my
 macOS, nixOS, and linux machines.
