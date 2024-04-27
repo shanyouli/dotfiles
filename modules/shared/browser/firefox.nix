@@ -95,7 +95,7 @@ in {
         auto-tab-discard
         user-agent-string-switcher
         violentmonkey
-        switchyomega
+        # switchyomega
         styl-us
         privacy-pass
       ]);
