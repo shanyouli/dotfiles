@@ -71,9 +71,7 @@ function sc() {
     case $1 in
         start) launchctl start $server_name;;
         stop) launchctl stop $server_name;;
-        restart) launchctl stop $server_name
-                 sleep 0.3
-                 launchctl start $server_name;;
+        restart) launchctl kickstart -k $server_name ;;
         status) launchctl list $server_name;;
         *) launchctl $@;;
     esac

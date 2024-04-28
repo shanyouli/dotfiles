@@ -21,6 +21,8 @@
 
       deadnix.settings.edit = true;
       deadnix.settings.noLambdaArg = true;
+
+      shellcheck.excludes = ["\\.zsh$"];
     };
   };
 }
