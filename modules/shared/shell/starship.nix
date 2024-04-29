@@ -7,6 +7,7 @@
 }:
 with lib;
 with lib.my; let
+  cfm = config.modules.shell;
   cfg = config.modules.shell.starship;
   tomlFormat = pkgs.formats.toml {};
 in {
@@ -63,9 +64,9 @@ in {
         style = "bold lavender";
       };
     };
-    # modules.shell.rcInit = ''
-    #   _cache starship init zsh --print-full-init
-    # '';
+    modules.shell.rcInit = lib.optionalString (! cfm.useP10) ''
+      _cache starship init zsh --print-full-init
+    '';
     home.configFile."starship.toml" = mkIf ((cfg.settings != {}) && (config.modules.theme.default == "")) {
       source = tomlFormat.generate "starship-config" cfg.settings;
     };

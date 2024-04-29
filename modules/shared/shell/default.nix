@@ -52,6 +52,7 @@ with lib.my; let
 in {
   options.modules.shell = with types; {
     aliases = mkOpt (attrsOf (either str path)) {};
+    useP10 = mkBoolOpt true;
     env = mkOption {
       type = attrsOf (oneOf [str path (listOf (either str path))]);
       apply = mapAttrs (n: v:
@@ -190,7 +191,7 @@ in {
             bindkey '^r' fzf-history-widget
           fi
         ''}
-        ${optionalString (! cfg.starship.enable) ''
+        ${optionalString cfg.useP10 ''
           zinit ice depth=1
           zinit light romkatv/powerlevel10k
           if [[ "$INSIDE_EMACS" != 'vterm' ]]; then
