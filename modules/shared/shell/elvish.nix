@@ -14,6 +14,6 @@ in {
     enable = mkEnableOption "Whether to elvish";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.elvish];
+    user.packages = [pkgs.unstable.elvish];
   };
 }

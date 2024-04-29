@@ -92,7 +92,6 @@ in {
           epkgs.ef-themes
           epkgs.rainbow-mode
           epkgs.noflet
-
           (epkgs.treesit-grammars.with-grammars
             (grammars:
               with grammars; [
@@ -125,6 +124,7 @@ in {
                 tree-sitter-yaml
                 tree-sitter-vue
               ]))
+          epkgs.elvish-mode
         ]
         ++ optionals cfg.rimeEnable [
           (epkgs.rime.overrideAttrs (esuper: {
