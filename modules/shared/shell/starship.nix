@@ -63,10 +63,10 @@ in {
         style = "bold lavender";
       };
     };
-    modules.shell.rcInit = ''
-      _cache starship init zsh --print-full-init
-    '';
-    home.configFile."starship.toml" = mkIf ((cfg.settings != {}) && (config.modules.themes.default == "")) {
+    # modules.shell.rcInit = ''
+    #   _cache starship init zsh --print-full-init
+    # '';
+    home.configFile."starship.toml" = mkIf ((cfg.settings != {}) && (config.modules.theme.default == "")) {
       source = tomlFormat.generate "starship-config" cfg.settings;
     };
     programs.bash.interactiveShellInit = mkIf cfg.enableBash ''

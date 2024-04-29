@@ -23,7 +23,6 @@
     shell.tmux.enable = true;
     shell.adb.enable = true;
     shell.rsync.enable = true;
-    shell.starship.enable = false;
     shell.ugrep.enable = true;
     shell.gpg.enable = true;
     shell.gpg.cacheTTL = 36000;
@@ -36,6 +35,7 @@
     shell.trash.enable = true;
     shell.just.enable = true;
     shell.elvish.enable = true;
+    shell.starship.enable = true;
 
     editor.nvim.enable = true;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs

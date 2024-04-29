@@ -44,7 +44,11 @@ in {
           if [[ -z "''${_comps[_pipx]}" ]]; then
             _comps[pipx]=_pipx
           fi
-          (( $+commands[asdf] ))  && export PIPX_DEFAULT_PYTHON=$(asdf which python)
+          if (( $+commands[asdf] )) ; then
+            export PIPX_DEFAULT_PYTHON=$(asdf which python)
+          elif (( $+commands[mise])) ; then
+            export PIPX_DEFAULT_PYTHON=$(mise where python@3.10)/bin/python
+          fi
           command pipx "$@"
           unset PIPX_DEFAULT_PYTHON
         };

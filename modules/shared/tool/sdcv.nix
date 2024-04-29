@@ -20,7 +20,8 @@ in {
     # crow-translate 一个多后端的翻译工具可惜不支持mac
     user.packages = with pkgs;
       [sdcv translate-shell]
-      ++ optionals stdenvNoCC.isLinux [crow-translate];
+      ++ optionals stdenvNoCC.isLinux [crow-translate]
+      ++ optionals stdenvNoCC.isx86_64 [libretranslate];
     modules.shell.env.STARDICT_DATA_DIR = "${config.home.dataDir}/stardict";
     modules.shell.env.SDCV_HISTSIZE = "100000";
     modules.shell.env.SDCV_HISTFILE = "${config.home.cacheDir}/sdcv_history";
