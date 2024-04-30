@@ -24,7 +24,7 @@ in {
     webScript = mkStrOpt "";
   };
   config = mkIf cfg.enable {
-    user.packages = [cfg.package pkgs.unstable.xbydriver];
+    user.packages = [cfg.package];
 
     modules.tool.qbittorrent.webScript = optionalString cfg.webui ''
       [[ -d ${config.home.cacheDir}/qbittorrent/ui/public ]] || {

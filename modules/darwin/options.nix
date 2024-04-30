@@ -78,7 +78,6 @@ in {
   config = mkMerge [
     {
       user.packages = with pkgs.unstable.darwinapps; [
-        # pkgs.xbydriver-app
         next-chat
         localsend
         (lib.mkIf (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) pkgs.unstable.darwinapps.neovide-app)
