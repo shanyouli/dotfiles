@@ -111,7 +111,8 @@ in {
       atool # 解压工具
       unrar
       gnused # sed 工具
-      coreutils-prefixed # GNUcoreutils 工具，mv，cp等
+      # coreutils-prefixed # GNUcoreutils 工具，mv，cp等
+      coreutils
 
       tailspin # 支持高亮的语法查看工具
 
