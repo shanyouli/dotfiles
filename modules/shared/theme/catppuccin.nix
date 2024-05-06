@@ -81,6 +81,7 @@ in {
         value = {
           "kitty.conf" = optionalString cm.kitty.enable "${configDir}/kitty/${n}.conf";
           "bat.tmTheme" = "${configDir}/bat/Catppuccin-${n}.tmTheme";
+          "helix.toml" = optionalString cm.editor.helix.enable "${configDir}/helix/${n}.toml";
           "starship.toml" = optionalString cm.shell.starship.enable (let
             colors = builtins.fromTOML (builtins.readFile "${configDir}/starship/${n}.toml");
             allSettings =
@@ -135,17 +136,27 @@ in {
       _source "${defaultDir}/zshrc"
     '';
     modules.shell.tmux.rcFiles = mkBefore ["${defaultDir}/tmux"];
-    modules.theme.script = ''
-      if [[ -d "${defaultDir}" ]]; then
-        rm -rf "${defaultDir}"
-      fi
-      ln -sf "${linkDir}/${cfg.name}" "${defaultDir}"
 
-      echo-info "Handling bat theme management..."
-      [[ -d "${config.home.configDir}/bat/themes" ]] || mkdir -p "${config.home.configDir}/bat/themes"
-      ln -sf "${defaultDir}/bat.tmTheme"  "${config.home.configDir}/bat/themes/catppuccin.tmTheme"
-      command -v bat >/dev/null && bat cache --build >/dev/null
-    '';
+    modules.editor.helix.settings.theme = "catppuccin";
+
+    modules.theme.script =
+      ''
+        if [[ -d "${defaultDir}" ]]; then
+          rm -rf "${defaultDir}"
+        fi
+        ln -sf "${linkDir}/${cfg.name}" "${defaultDir}"
+      ''
+      + optionalString cm.shell.modern.enable ''
+        echo-info "Handling bat theme management..."
+        [[ -d "${config.home.configDir}/bat/themes" ]] || mkdir -p "${config.home.configDir}/bat/themes"
+        ln -sf "${defaultDir}/bat.tmTheme"  "${config.home.configDir}/bat/themes/catppuccin.tmTheme"
+        command -v bat >/dev/null && bat cache --build >/dev/null
+      ''
+      + optionalString cm.editor.helix.enable ''
+        echo-info "Handling helix theme management..."
+        [[ -d "${config.home.configDir}/helix/themes" ]] || mkdir -p "${config.home.configDir}/helix/themes"
+        ln -sf "${defaultDir}/helix.toml"  "${config.home.configDir}/helix/themes/catppuccin.toml"
+      '';
 
     home.configFile."nvim/lua/plugins/usetheme.lua" = mkIf cm.editor.nvim.enable {
       text = ''

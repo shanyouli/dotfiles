@@ -95,11 +95,6 @@ in {
       promptInit = "";
     };
     user.packages = with pkgs; [
-      bottom
-      fd
-      eza
-      bat
-      duf
       grc
       httrack # 网页抓取
       cachix # nix cache
@@ -143,26 +138,27 @@ in {
         ZINIT[ZCOMPDUMP_PATH]="$ZSH_CACHE/zcompdump"
         ZINIT[COMPINIT_OPTS]="-C"
       '';
-      prevInit = mkOrder 100 ''
-        source ${pkgs.grc}/etc/grc.zsh
-        # FZF 配置
-        FZF_DEFAULT_COMMAND="fd -H -I --type f"
-        FZF_DEFAULT_OPTIONS="fd --height 50%"
-        FZF_CTRL_T_COMMAND="fd -H -I --type f"
-        FZF_CTRL_T_OPTS="--preview 'bat --color=always --plain --line-range=:200 {}'"
-        FZF_ALT_C_COMMAND="fd -H -I --type d -E '.git*'"
-        FZF_ALT_C_OPTS="--preview 'eza -T -L 2 {} | head -2000'"
-        # FZF_CTRL_R_OPTS=""
-        # source ${pkgs.fzf}/share/fzf/completion.zsh
-        # source ${pkgs.fzf}/share/fzf/key-bindings.zsh
-
-        ${lib.optionalString (! cfg.vivid.enable) ''
+      prevInit = mkOrder 100 (''
+          source ${pkgs.grc}/etc/grc.zsh
+        ''
+        + lib.optionalString (! cfg.modern.enable) ''
+          # FZF 配置
+          FZF_DEFAULT_COMMAND="fd -H -I --type f"
+          FZF_DEFAULT_OPTIONS="fd --height 50%"
+          FZF_CTRL_T_COMMAND="fd -H -I --type f"
+          FZF_CTRL_T_OPTS="--preview 'bat --color=always --plain --line-range=:200 {}'"
+          FZF_ALT_C_COMMAND="fd -H -I --type d -E '.git*'"
+          FZF_ALT_C_OPTS="--preview 'eza -T -L 2 {} | head -2000'"
+          # FZF_CTRL_R_OPTS=""
+          # source ${pkgs.fzf}/share/fzf/completion.zsh
+          # source ${pkgs.fzf}/share/fzf/key-bindings.zsh
+        ''
+        + lib.optionalString (! cfg.vivid.enable) ''
           # colors 配置 if'[[ -z $LS_COLORS ]]'
           zice 0a atcone="dircolors -b LS_COLORS > c.zsh" \
             atpull='%atclone' pick='c.zsh' \
             trapd00r/LS_COLORS
-        ''}
-      '';
+        '');
       rcInit = mkOrder 100 ''
         _cache -v ${pkgs.nix-your-shell.version} nix-your-shell zsh
         ${lib.optionalString (! cfg.atuin.enable) ''
@@ -204,9 +200,6 @@ in {
         # alias 别名，设置
         ${concatStringsSep "\n" (mapAttrsToList (n: v: ''alias ${n}="${v}"'') cfg.aliases)}
       '';
-      aliases.htop = "btm --basic --mem_as_value";
-      aliases.df = "duf";
-      aliases.cat = "bat -p"; #or  bat -pp
       aliases.unzip = "atool --extract --explain";
       aliases.zip = "atool --add";
       aliases.log = "tspin";

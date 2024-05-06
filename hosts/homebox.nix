@@ -37,11 +37,14 @@
     shell.elvish.enable = true;
     shell.starship.enable = true;
 
+    shell.modern.enable = true;
+
     editor.nvim.enable = true;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs
     editor.vscode.enable = true;
     editor.emacs.enable = true;
     editor.emacs.service.enable = true;
+    editor.helix.enable = true;
 
     media.music.enable = true;
     media.flameshot.enable = true;
