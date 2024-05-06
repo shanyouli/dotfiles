@@ -86,7 +86,7 @@ in {
             {
               name = "python";
               language-servers = ["ruff-lsp" "pyright"];
-              formatters = {
+              formatter = {
                 command = "ruff";
                 args = ["--quiet" "-"];
               };

@@ -5,6 +5,7 @@
   options,
   ...
 }:
+#see @https://github.com/helix-editor/helix/wiki/Language-Server-Configurations#json
 with lib;
 with lib.my; let
   cfm = config.modules;
@@ -44,6 +45,28 @@ in {
         })
       ]
       else [cfg.package];
+
+    modules.editor.helix.settings = {
+      editor.line-number = "relative";
+      editor.mouse = false;
+      editor.completion-trigger-len = 1;
+
+      editor.cursor-shape.insert = "bar";
+      editor.cursor-shape.normal = "block";
+      editor.cursor-shape.select = "underline";
+
+      editor.file-picker.hidden = false;
+
+      editor.statusline = {
+        left = ["mode" "spinner"];
+        center = ["file-name"];
+        right = ["diagnostics" "selections" "position" "file-encoding" "file-line-ending" "file-type"];
+        separator = "│";
+        mode.normal = "N";
+        mode.insert = "I";
+        mode.select = "S";
+      };
+    };
 
     home.configFile = let
       settings = {
