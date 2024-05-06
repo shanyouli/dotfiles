@@ -79,6 +79,24 @@ in {
         source = "${cenv}";
         recursive = true;
       };
+      modules.editor.helix = {
+        # extraPackages = with pkgs; [];
+        languages = {
+          language = [
+            {
+              name = "python";
+              language-servers = ["ruff-lsp" "pyright"];
+              formatters = {
+                command = "ruff";
+                args = ["--quiet" "-"];
+              };
+            }
+          ];
+          language-server.pyright.config.python.analysis.typeCheckingMode = "basic";
+          language-server.ruff-lsp.command = "ruff-lsp";
+          language-server.ruff-lsp.config.settings.args = ["--ignore" "E501"];
+        };
+      };
     }
     (mkIf (cfg.plugins != []) {
       modules.dev.plugins.python = cfg.plugins;
