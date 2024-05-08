@@ -77,18 +77,32 @@ in {
   };
   config = mkMerge [
     {
-      user.packages = with pkgs.unstable.darwinapps; [
-        next-chat
-        localsend
-        (lib.mkIf (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) pkgs.unstable.darwinapps.neovide-app)
-        upic
-        calibre
-        lporg
-        switchaudio-osx
-        alexandria
-        tmexclude
-      ];
-
+      user.packages = with pkgs.unstable.darwinapps;
+        [
+          next-chat
+          localsend
+          (lib.mkIf (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) pkgs.unstable.darwinapps.neovide-app)
+          upic
+          calibre
+          lporg
+          switchaudio-osx
+          alexandria
+          tmexclude
+        ]
+        ++ optionals config.modules.editor.emacs.enable [
+          pkgs.unstable.darwinapps.pngpaste
+          (pkgs.unstable.darwinapps.emacsclient.override {
+            emacsClientBin = "${config.modules.editor.emacs.pkg}/bin/emacsclient";
+            withNotify = true;
+          })
+        ];
+      modules.shell.aliases.emacs = let
+        baseDir =
+          if config.modules.macos.app.enable
+          then config.modules.macos.app.path
+          else "${config.modules.editor.emacs.pkg}/Applications";
+      in
+        optionalString config.modules.editor.emacs.enable "${baseDir}/Emacs.app/Contents/MacOS/Emacs";
       modules.xdg.enable = true;
       environment.variables = config.modules.xdg.value;
       time.timeZone = config.modules.opt.timezone;
