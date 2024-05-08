@@ -198,7 +198,7 @@ in {
           fi
         ''}
         # alias 别名，设置
-        ${concatStringsSep "\n" (mapAttrsToList (n: v: ''alias ${n}="${v}"'') cfg.aliases)}
+        ${concatStringsSep "\n" (mapAttrsToList (n: v: ''alias ${n}="${v}"'') (filterAttrs (n: v: v != "") cfg.aliases))}
       '';
       aliases.unzip = "atool --extract --explain";
       aliases.zip = "atool --add";
