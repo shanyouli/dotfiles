@@ -15,13 +15,11 @@ in {
   };
 
   config = mkIf cfg.enable (let
-    workdir = "${config.home.cacheDir}/clash";
-    log_file = "${config.user.home}/Library/Logs/clash-meta.log";
+    log_file = "${config.user.home}/Library/Logs/org.nixos.proxy.log";
   in {
     user.packages = [pkgs.unstable.darwinapps.clash-nyanpasu];
     launchd.user.agents.proxy = {
       path = [config.modules.service.path];
-      serviceConfig.WorkingDirectory = workdir;
       serviceConfig.RunAtLoad = true;
       serviceConfig.StandardOutPath = log_file;
 

@@ -30,6 +30,11 @@ in {
       modules.tool.proxy.clash.configFile = cfg.configFile;
       modules.tool.proxy.clash.enable = true;
     })
+    (mkIf (cfg.default == "sing-box") {
+      modules.tool.proxy.sing-box.configFile = cfg.configFile;
+      modules.tool.proxy.sing-box.enable = true;
+    })
+
     (mkIf (cfg.default != "") {
       modules.shell.aliases.paria2 = optionalString config.modules.tool.aria2.enable "aria2c --all-proxy=${proxy_url}";
 
@@ -68,6 +73,9 @@ in {
         ''
         + optionalString (cfg.default == "clash") ''
           ${config.modules.tool.proxy.clash.serviceCmd}
+        ''
+        + optionalString (cfg.default == "sing-box") ''
+          ${config.modules.tool.proxy.sing-box.serviceCmd}
         '');
     })
   ];

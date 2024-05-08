@@ -9,7 +9,6 @@ with lib;
 with lib.my; let
   # TODO: 设置更好的管理配置文件的方法
   cfg = config.modules.tool.proxy.clash;
-  proxy = "http://127.0.0.1:10801";
   workdir = "${config.home.cacheDir}/clash";
   cmdName =
     if cfg.package.pname == "clash-meta"
@@ -25,8 +24,9 @@ in {
     serviceCmd = mkStrOpt "";
   };
   config = mkIf cfg.enable {
+    user.packages = [cfg.package];
     environment.etc."sudoers.d/clash".text =
       sudoNotPass config.user.name "${cfg.package}/bin/${cfg.package.pname}";
-    modules.tool.proxy.clash.serviceCmd = ''${cfg.package}/bin/${cmdName} -f "${cfg.configFile}" -d "${workdir}"'';
+    modules.tool.proxy.clash.serviceCmd = ''sudo ${cfg.package}/bin/${cmdName} -f "${cfg.configFile}" -d "${workdir}"'';
   };
 }

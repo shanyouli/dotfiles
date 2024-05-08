@@ -79,10 +79,10 @@
     macos.karabiner.enable = true;
     macos.stopAutoReopen = true;
 
-    tool.proxy.default = "clash";
-    tool.proxy.clash.package = pkgs.unstable.mihomo;
+    tool.proxy.default = "sing-box";
+    tool.proxy.sing-box.package = pkgs.unstable.sing-box;
     # tool.clash.enSingbox = true;
-    tool.proxy.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/meta.yaml";
+    tool.proxy.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/singbox.json";
 
     macos.games.enable = true;
     macos.hammerspoon.enable = true;
