@@ -6,3 +6,8 @@
 @import "css/popup/popup.css";
 @import "css/interface/interface.css";
 @import "css/userChrome-tabline.css";
+
+/* [[https://css.celestialy.top/blog/firefox-disable-drm-notification/][Firefox 禁用 DRM 提示 | clsty 的网络空间站]] */
+notification-message[value="drmContentDisabled"] {
+    display: none !important;
+}

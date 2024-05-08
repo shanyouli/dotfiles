@@ -7,9 +7,9 @@
 with lib;
 with lib.my; let
   cfm = config.modules;
-  cfg = cfm.editor.default;
+  cfg = cfm.editor;
 in {
-  options.modules.editor.default = {
+  options.modules.editor = {
     default = mkOpt types.str "nvim";
   };
   config = mkIf (cfg.default != null) {

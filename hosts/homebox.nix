@@ -39,12 +39,13 @@
 
     shell.modern.enable = true;
 
-    editor.nvim.enable = true;
+    editor.nvim.enable = false;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs
     editor.vscode.enable = true;
     editor.emacs.enable = true;
     editor.emacs.service.enable = true;
     editor.helix.enable = true;
+    editor.default = "hx";
 
     media.music.enable = true;
     media.flameshot.enable = true;

@@ -26,6 +26,7 @@ in {
     modules.shell.aliases.df = "duf";
     modules.shell.aliases.cat = "bat -p"; # or bat -pp
     modules.shell.aliases.du = "gdu";
+    modules.shell.aliases.htop = "btm --basic --mem_as_value";
     modules.shell.pluginFiles = ["exa"];
   };
 }
