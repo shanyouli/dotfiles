@@ -129,61 +129,51 @@ in rec {
     if data.success
     then data.value
     else {};
-
-  mkNixosConfig = {
+  mkSystem = {
     name,
-    nixos,
+    os,
     allPkgs,
-    system ? "x86_64-linux",
+    system,
     baseModules ? [{nixpkgs.config.allowUnfree = true;}],
     extraModules ? [],
     specialArgs ? {},
-  }:
-    nixos.lib.nixosSystem {
+  }: let
+    useDarwin = isDarwin system;
+    sysFunc =
+      if useDarwin
+      then os.lib.darwinSystem
+      else os.lib.nixosSystem;
+    defaultModule =
+      [
+        ({
+            nixpkgs.pkgs = allPkgs."${system}";
+            networking.hostName = "${name}";
+          }
+          // (
+            if useDarwin
+            then {}
+            else {
+              system.stateVersion = "23.11";
+              boot.readOnlyNixStore = true;
+              # Currently doesn't work in nix-darwin
+              # https://discourse.nixos.org/t/man-k-apropos-return-nothing-appropriate/15464
+              documentation.man.generateCaches = true;
+            }
+          ))
+      ]
+      ++ baseModules
+      ++ (mapModulesRec' (toString ../modules/shared) import)
+      ++ (mapModulesRec' (
+          if useDarwin
+          then toString ../modules/darwin
+          else toString ../modules/nixos
+        )
+        import);
+  in
+    sysFunc {
       inherit system specialArgs;
-      modules =
-        [
-          {
-            nixpkgs.pkgs = allPkgs."${system}";
-            networking.hostName = "${name}";
-            system.stateVersion = "23.11";
-            boot.readOnlyNixStore = true;
-            # Currently doesn't work in nix-darwin
-            # https://discourse.nixos.org/t/man-k-apropos-return-nothing-appropriate/15464
-            documentation.man.generateCaches = true;
-          }
-        ]
-        ++ baseModules
-        ++ (mapModulesRec' (toString ../modules/shared) import)
-        ++ (mapModulesRec' (toString ../modules/nixos) import)
-        ++ extraModules;
+      modules = defaultModule ++ extraModules;
     };
-
-  mkDarwinConfig = {
-    name,
-    darwin,
-    system ? "aarch64-darwin",
-    allPkgs,
-    baseModules ? [{nixpkgs.config.allowUnfree = true;}],
-    extraModules ? [],
-    specialArgs ? {},
-    ...
-  }:
-    darwin.lib.darwinSystem {
-      inherit specialArgs system;
-      modules =
-        [
-          {
-            networking.hostName = "${name}";
-            nixpkgs.pkgs = allPkgs."${system}";
-          }
-        ]
-        ++ baseModules
-        ++ (mapModulesRec' (toString ../modules/shared) import)
-        ++ (mapModulesRec' (toString ../modules/darwin) import)
-        ++ extraModules;
-    };
-
   # @see https://github.com/kclejeune/system/blob/9c3b4222e1f4a48d392d0bba244740481160f819/flake.nix#L129
   mkChecks = {
     self,

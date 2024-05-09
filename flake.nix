@@ -92,10 +92,10 @@
       });
 
     darwinConfigurations = {
-      Lye-MAC = lib.my.mkDarwinConfig {
+      Lye-MAC = lib.my.mkSystem {
         name = "home-box";
         system = "aarch64-darwin";
-        darwin = inputs.darwin;
+        os = inputs.darwin;
         allPkgs = allPkgs;
         baseModules = [
           {
@@ -107,10 +107,10 @@
         extraModules = [./hosts/homebox.nix];
         specialArgs = {inherit inputs self nixpkgs lib;};
       };
-      "lyeli@aarch64-darwin" = lib.my.mkDarwinConfig {
+      "lyeli@aarch64-darwin" = lib.my.mkSystem {
         name = "home-box";
         system = "aarch64-darwin";
-        darwin = inputs.darwin;
+        os = inputs.darwin;
         allPkgs = allPkgs;
         baseModules = [
           {
@@ -122,9 +122,9 @@
         extraModules = [./hosts/homebox.nix];
         specialArgs = {inherit inputs self nixpkgs lib;};
       };
-      "lyeli@x86_64-darwin" = lib.my.mkDarwinConfig {
+      "lyeli@x86_64-darwin" = lib.my.mkSystem {
         name = "home-box";
-        darwin = inputs.darwin;
+        os = inputs.darwin;
         allPkgs = allPkgs;
         system = "x86_64-darwin";
         baseModules = [
@@ -140,9 +140,10 @@
     };
 
     nixosConfigurations = {
-      "shanyouli@x86_64-linux" = lib.my.mkNixosConfig {
+      "shanyouli@x86_64-linux" = lib.my.mkSystem {
         name = "nixos-work";
-        nixos = inputs.nixos-stable;
+        os = inputs.nixos-stable;
+        system = "x86_64-linux";
         allPkgs = allPkgs;
         extraModules = [./hosts/linux-test];
         baseModules = [
@@ -150,9 +151,9 @@
         ];
         specialArgs = {inherit inputs nixpkgs lib self;};
       };
-      "lyeli@aarch64-linux" = lib.my.mkNixosConfig {
+      "lyeli@aarch64-linux" = lib.my.mkSystem {
         name = "nixos";
-        nixos = inputs.nixos-stable;
+        os = inputs.nixos-stable;
         system = "aarch64-linux";
         allPkgs = allPkgs;
         extraModules = [./hosts/orbvm];
