@@ -35,6 +35,7 @@
     shell.trash.enable = true;
     shell.just.enable = true;
     shell.elvish.enable = true;
+    shell.nushell.enable = true;
     shell.starship.enable = true;
 
     shell.modern.enable = true;
