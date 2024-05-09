@@ -1,8 +1,8 @@
 {
-  pkgs,
   lib,
   config,
   options,
+  inputs,
   ...
 }:
 with lib;
@@ -16,7 +16,7 @@ in {
   config = mkIf cfg.enable {
     programs.nix-index = {
       enable = true;
-      package = pkgs.unstable.nix-index-with-db;
+      package = inputs.nurpkgs.currentSystem.packages.nix-index;
     };
   };
 }
