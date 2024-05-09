@@ -102,9 +102,6 @@ in {
       imagemagick # 图片转换工具
       gifsicle # 命令行gif生成工具
       nix-your-shell # nix-shell Support for other shells(zsh,fish,nushell)
-
-      atool # 解压工具
-      unrar
       gnused # sed 工具
       # coreutils-prefixed # GNUcoreutils 工具，mv，cp等
       coreutils
@@ -200,8 +197,6 @@ in {
         # alias 别名，设置
         ${concatStringsSep "\n" (mapAttrsToList (n: v: ''alias ${n}="${v}"'') (filterAttrs (n: v: v != "") cfg.aliases))}
       '';
-      aliases.unzip = "atool --extract --explain";
-      aliases.zip = "atool --add";
       aliases.log = "tspin";
     };
     home.configFile =
