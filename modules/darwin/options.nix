@@ -107,6 +107,12 @@ in {
       environment.variables = config.modules.xdg.value;
       time.timeZone = config.modules.opt.timezone;
 
+      modules.shell.nushell.rcInit = ''
+        # macos open 别名
+        def nuopen [arg, --raw (-r)] { if $raw { open -r $arg } else {open $arg } }
+        alias open = ^open
+      '';
+
       modules.opt.enGui = true;
       system.activationScripts.postActivation.text = ''
         # activateSettings -u will reload the settings from the database and apply them to the current session,
