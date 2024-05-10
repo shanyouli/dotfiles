@@ -205,6 +205,7 @@ in {
         enable = config.modules.shell.nushell.enable;
         desc = "Init nushell source file";
         text = ''
+          ${config.modules.shell.nushell.cachePrev}
           function nushell_cache() {
               local cache_dir="${config.home.cacheDir}/nushell"
               [[ -d "$cache_dir" ]] || mkdir -p "$cache_dir"
