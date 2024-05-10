@@ -39,5 +39,17 @@ in {
         ))
         (filterAttrs (n: v: !(builtins.isNull v)) cfg.stdlib)))
     ];
+    modules.shell.nushell.rcInit = ''
+      $env.config = ($env | default {} config).config
+      $env.config = ($env.config | default {} hooks)
+      $env.config = (
+          $env.config | upsert hooks (
+              $env.config.hooks | upsert pre_prompt (
+                  $env.config.hooks
+                  | get -i pre_prompt
+                  | default []
+                  | append { || ^direnv export json | from json | default {} | load-env}
+                  )))
+    '';
   };
 }
