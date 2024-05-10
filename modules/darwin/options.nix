@@ -201,6 +201,23 @@ in {
         desc = "Init dev language manager ...";
         text = config.modules.dev.text;
       };
+      macos.userScript.initNuShell = {
+        enable = config.modules.shell.nushell.enable;
+        desc = "Init nushell source file";
+        text = ''
+          function nushell_cache() {
+              local cache_dir="${config.home.cacheDir}/nushell"
+              [[ -d "$cache_dir" ]] || mkdir -p "$cache_dir"
+              local name="$(basename "$1").nu"
+              echo-info  "cache $1 ..."
+              "$@" >"$cache_dir/$name"
+          }
+          ${optionalString (config.modules.shell.nushell.cacheCmd != []) (concatMapStrings (s: ''
+              nushell_cache ${s}
+            '')
+            config.modules.shell.nushell.cacheCmd)}
+        '';
+      };
     }
     (mkIf config.modules.shell.gpg.enable {
       modules.service.env.GNUPGHOME = config.environment.variables.GNUPGHOME;
