@@ -469,27 +469,6 @@
         "type": "github"
       }
     },
-    "nix-index-database_2": {
-      "inputs": {
-        "nixpkgs": [
-          "nurpkgs",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1714878592,
-        "narHash": "sha256-E68C03sYRsYFsK7wiGHUIJm8IsyPRALOrFoTL0glXnI=",
-        "owner": "Mic92",
-        "repo": "nix-index-database",
-        "rev": "a362555e9dbd4ecff3bb98969bbdb8f79fe87f10",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Mic92",
-        "repo": "nix-index-database",
-        "type": "github"
-      }
-    },
     "nix_2": {
       "inputs": {
         "flake-compat": [
@@ -716,20 +695,11 @@
         "pre-commit-hooks-nix": "pre-commit-hooks-nix"
       },
       "locked": {
-<<<<<<< variant A
-        "lastModified": 1715392196,
-        "narHash": "sha256-nl+/QxCt0lAUtdQ4D1hNNteJvi5DK4qCD7rrvO52x1M=",
->>>>>>> variant B
-        "lastModified": 1715249317,
-        "narHash": "sha256-BsYesCfnpIOwIuntgWhkgRqgpDzP7QzLGfZEvf5Rb28=",
-======= end
+        "lastModified": 1715399509,
+        "narHash": "sha256-vPAeSJDb6AZiHphVvlExFuyB5RltpwbfAHREPuPPeyY=",
         "owner": "shanyouli",
         "repo": "nur-packages",
-<<<<<<< variant A
-        "rev": "0bbbeed01d25f6459c2c2641ed5c7b717ca91fa3",
->>>>>>> variant B
-        "rev": "a3261f8ae686ba00f9bee44c704570d1e71852e6",
-======= end
+        "rev": "3bcbcc555644522270c785605576e80dbbde32d9",
         "type": "github"
       },
       "original": {

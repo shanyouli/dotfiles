@@ -159,7 +159,6 @@ in {
       ];
       homebrew.masApps = {
         "Userscript" = 1463298887; # tampermonkey
-        "OneTab" = 1540160809;
         "Amphetamine" = 937984704;
         # "mineweeper" = 1475921958;
         "immersive-translate" = 6447957425;
