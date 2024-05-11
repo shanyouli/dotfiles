@@ -98,6 +98,7 @@ in {
         # switchyomega
         styl-us
         privacy-pass
+        immersive-translate
       ]);
       modules.browser.firefox.finalPackage = wrapPackage cfg.package;
     }
