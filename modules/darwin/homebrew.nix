@@ -145,6 +145,7 @@ in {
           (mkIf config.modules.shell.git.enGui "github") # github客户端
           (mkIf config.modules.browser.chrome.useBrew "google chrome")
           "command-x" # Cut files
+          "tencent-lemon" # 文件清理
         ]
         ++ optionals config.modules.shell.adb.enable [
           # "openmtp" # 目前不是很稳定
