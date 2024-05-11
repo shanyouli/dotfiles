@@ -451,6 +451,7 @@
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
+          "nurpkgs",
           "nixpkgs"
         ]
       },
@@ -707,7 +708,7 @@
       "inputs": {
         "emacs-overlay": "emacs-overlay",
         "flake-parts": "flake-parts",
-        "nix-index-database": "nix-index-database_2",
+        "nix-index-database": "nix-index-database",
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -715,11 +716,20 @@
         "pre-commit-hooks-nix": "pre-commit-hooks-nix"
       },
       "locked": {
+<<<<<<< variant A
         "lastModified": 1715392196,
         "narHash": "sha256-nl+/QxCt0lAUtdQ4D1hNNteJvi5DK4qCD7rrvO52x1M=",
+>>>>>>> variant B
+        "lastModified": 1715249317,
+        "narHash": "sha256-BsYesCfnpIOwIuntgWhkgRqgpDzP7QzLGfZEvf5Rb28=",
+======= end
         "owner": "shanyouli",
         "repo": "nur-packages",
+<<<<<<< variant A
         "rev": "0bbbeed01d25f6459c2c2641ed5c7b717ca91fa3",
+>>>>>>> variant B
+        "rev": "a3261f8ae686ba00f9bee44c704570d1e71852e6",
+======= end
         "type": "github"
       },
       "original": {
@@ -836,7 +846,6 @@
         "devenv": "devenv",
         "flake-utils": "flake-utils_3",
         "home-manager": "home-manager",
-        "nix-index-database": "nix-index-database",
         "nixos-hardware": "nixos-hardware",
         "nixos-stable": "nixos-stable",
         "nixpkgs": "nixpkgs_3",

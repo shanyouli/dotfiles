@@ -24,9 +24,6 @@
     devenv.url = "github:cachix/devenv/latest";
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
-    nix-index-database.url = "github:Mic92/nix-index-database";
-    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-
     nurpkgs.url = "github:shanyouli/nur-packages";
     nurpkgs.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -60,7 +57,6 @@
       overlays = self.overlays // {};
     };
     baseOverlays = {
-      nix-index-database = inputs.nix-index-database.overlays.nix-index;
       nurpkgs = inputs.nurpkgs.overlays.default;
     };
   in {
