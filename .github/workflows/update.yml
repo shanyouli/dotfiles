@@ -34,7 +34,7 @@ jobs:
           git checkout -B flakebot
       - name: Update and commit lockfile
         # run: nix flake update --commit-lock-file
-        run: nix flake lock --update-input darwin --update-input devenv --update-input flake-utils --update-input home-manager --update-input nix-index-database --update-input nixos-hardware --update-input nixpkgs --update-input nur --update-input treefmt-nix --update-input nurpkgs --commit-lock-file
+        run: nix flake lock --update-input darwin --update-input devenv --update-input flake-utils --update-input home-manager --update-input nixos-hardware --update-input nixpkgs --update-input treefmt-nix --update-input nurpkgs --commit-lock-file
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:

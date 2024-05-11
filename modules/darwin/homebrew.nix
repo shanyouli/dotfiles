@@ -78,72 +78,81 @@ in {
       );
       homebrew.taps = ["buo/cask-upgrade"];
 
-      homebrew.casks = [
-        "raycast" # 取代 spotlight
-        "stats" # 状态显示
-        "forkgram-telegram"
-        "baidunetdisk"
-        "easydict" # 翻译软件
-        "jetbrains-toolbox"
-        # "syncthing" 同步
-        # "downie"
-        # # 使用第三方工具取代openmtp，MacDroid.app
-        # (lib.mkIf config.modules.adb.enable
-        #   "openmtp") # 或者  "android-file-transfer"
-        "lulu" # 网络管理
-        # "microsoft-office" , 手动安装
-        "cryptomator"
-        # "picgo" 使用 upic取代
-        "wechat"
-        "wpsoffice-cn"
-        "mactex"
+      homebrew.casks =
+        [
+          "raycast" # 取代 spotlight
+          "stats" # 状态显示
+          "forkgram-telegram"
+          "baidunetdisk"
+          "easydict" # 翻译软件
+          "jetbrains-toolbox"
+          # "syncthing" 同步
+          # "downie"
+          # # 使用第三方工具取代openmtp，MacDroid.app
+          # (lib.mkIf config.modules.adb.enable
+          #   "openmtp") # 或者
+          "lulu" # 网络管理
+          # "microsoft-office" , 手动安装
+          "cryptomator"
+          # "picgo" 使用 upic取代
+          "wechat"
+          "wpsoffice-cn"
+          "mactex"
 
-        # "calibre" #"koodo-reader", 书籍管理和阅读
-        "skim" # PDF
+          # "calibre" #"koodo-reader", 书籍管理和阅读
+          "skim" # PDF
 
-        "imageoptim" # 图片压缩
-        #
-        "displaperture" # screen 曲线图
-        "licecap" # GIF kap
-        # "imazing" # 手机备份管理
-        (mkIf (! config.modules.media.flameshot.enable) "shottr") # 截图
-        # "betterdisplay" # 其他替代工具
-        # "dozer" # 菜单栏管理,
-        "maczip" # 压缩解压GUI
-        # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
-        "squirrel" # 输入法
-        "findergo" # 快捷方式，在finder中打开终端
-        # "coconutbattery" # 电量查看
-        "zotero" # 文献管理
+          "imageoptim" # 图片压缩
+          #
+          "displaperture" # screen 曲线图
+          "licecap" # GIF kap
+          # "imazing" # 手机备份管理
+          "arc"
+          (mkIf (! config.modules.media.flameshot.enable) "shottr") # 截图
+          # "betterdisplay" # 其他替代工具
+          # "dozer" # 菜单栏管理,
+          "maczip" # 压缩解压GUI
+          # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
+          "squirrel" # 输入法
+          "findergo" # 快捷方式，在finder中打开终端
+          # "coconutbattery" # 电量查看
+          "zotero" # 文献管理
 
-        # "warp" # next terminal, 不太好用
+          # "warp" # next terminal, 不太好用
 
-        "syntax-highlight"
-        "qlmarkdown"
+          "syntax-highlight"
+          "qlmarkdown"
 
-        "playcover-community" # 侧载工具
+          "playcover-community" # 侧载工具
 
-        "mac-mouse-fix" # 鼠标fix
-        "pictureview" # 看图
+          "mac-mouse-fix" # 鼠标fix
+          "pictureview" # 看图
 
-        "appcleaner" # 软件卸载
-        "clean-me" # ka
+          "appcleaner" # 软件卸载
+          "clean-me" # ka
 
-        "charles" # "proxyman", 抓包
-        "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
-        "background-music" # 和一些工具冲突，eg mpd， yesplaymusic
+          "charles" # "proxyman", 抓包
+          "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
+          "background-music" # 和一些工具冲突，eg mpd， yesplaymusic
 
-        "postman" # "rapidapi" "httpie"
-        # "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
-        "sequel-ace" # mysql
+          "postman" # "rapidapi" "httpie"
+          # "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
+          "sequel-ace" # mysql
 
-        # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
-        # "maccy" # clip 剪切薄，使用raycast取代
-        # "visual-studio-code" # other editors nix 管理
-        (mkIf config.modules.shell.git.enGui "github") # github客户端
-        (mkIf config.modules.browser.chrome.useBrew "google chrome")
-        "command-x" # Cut files
-      ];
+          # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
+          # "maccy" # clip 剪切薄，使用raycast取代
+          # "visual-studio-code" # other editors nix 管理
+          (mkIf config.modules.shell.git.enGui "github") # github客户端
+          (mkIf config.modules.browser.chrome.useBrew "google chrome")
+          "command-x" # Cut files
+        ]
+        ++ optionals config.modules.shell.adb.enable [
+          # "openmtp" # 目前不是很稳定
+          # “macdroid” # 付费app，使用adb传输，稳定性存疑
+          # "android-file-transfer" # 可用，稳定性一般
+          "whoozle-android-file-transfer" # 速度一般，稳定
+          # "commander-one" # 速度可以，大文件也稳定，需要付费
+        ];
       homebrew.brews = [
         # "macos-trash" # trash-cli
         # "mysql"
@@ -154,7 +163,7 @@ in {
         "Amphetamine" = 937984704;
         # "mineweeper" = 1475921958;
         "immersive-translate" = 6447957425;
-        "vimkey" = 1585682577; # replace vimari
+        "vimari" = 1480933944;
         # "adblock" = 1018301773;
         "text-scaner" = 1452523807;
         "medis2" = 1579200037;

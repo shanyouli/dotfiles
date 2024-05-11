@@ -703,21 +703,6 @@
         "type": "github"
       }
     },
-    "nur": {
-      "locked": {
-        "lastModified": 1715391928,
-        "narHash": "sha256-MazTRM2jHtaWkhKD9//Rhs0MWokDTP5dDHx1SGrw6GQ=",
-        "owner": "nix-community",
-        "repo": "NUR",
-        "rev": "8dc94cbd90c90dd80aeebe0f778831fc7dc213b7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "NUR",
-        "type": "github"
-      }
-    },
     "nurpkgs": {
       "inputs": {
         "emacs-overlay": "emacs-overlay",
@@ -855,7 +840,6 @@
         "nixos-hardware": "nixos-hardware",
         "nixos-stable": "nixos-stable",
         "nixpkgs": "nixpkgs_3",
-        "nur": "nur",
         "nurpkgs": "nurpkgs",
         "treefmt-nix": "treefmt-nix"
       }

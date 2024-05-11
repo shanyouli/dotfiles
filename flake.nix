@@ -20,7 +20,6 @@
 
     # shell stuff
     flake-utils.url = "github:numtide/flake-utils";
-    nur.url = "github:nix-community/NUR";
 
     devenv.url = "github:cachix/devenv/latest";
     treefmt-nix.url = "github:numtide/treefmt-nix";
@@ -61,7 +60,6 @@
       overlays = self.overlays // {};
     };
     baseOverlays = {
-      nur = inputs.nur.overlay;
       nix-index-database = inputs.nix-index-database.overlays.nix-index;
       nurpkgs = inputs.nurpkgs.overlays.default;
     };
