@@ -216,7 +216,7 @@ in {
               local cache_dir="${config.home.cacheDir}/nushell"
               [[ -d "$cache_dir" ]] || mkdir -p "$cache_dir"
               local name="$(basename "$1").nu"
-              echo-info  "cache $1 ..."
+              echo-info  "cache $name ..."
               "$@" >"$cache_dir/$name"
           }
           ${optionalString (config.modules.shell.nushell.cacheCmd != []) (concatMapStrings (s: ''
