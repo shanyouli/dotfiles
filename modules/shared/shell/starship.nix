@@ -68,7 +68,6 @@ in {
       _cache starship init zsh --print-full-init
     '';
     modules.shell.nushell.cacheCmd = ["${pkgs.starship}/bin/starship init nu"];
-    modules.shell.nushell.rcInit = "source ${config.home.cacheDir}/nushell/starship.nu";
     home.configFile."starship.toml" = mkIf ((cfg.settings != {}) && (config.modules.theme.default == "")) {
       source = tomlFormat.generate "starship-config" cfg.settings;
     };

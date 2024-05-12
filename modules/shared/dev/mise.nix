@@ -58,6 +58,5 @@ in {
       }
     '';
     modules.shell.nushell.cacheCmd = ["${cfbin} activate nu"];
-    modules.shell.nushell.rcInit = "source ${config.home.cacheDir}/nushell/mise.nu";
   };
 }

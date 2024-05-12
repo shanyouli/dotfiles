@@ -19,6 +19,5 @@ in {
       _cache -v ${pkgs.unstable.zoxide.version} zoxide init zsh
     '';
     modules.shell.nushell.cacheCmd = ["${pkgs.unstable.zoxide}/bin/zoxide init nushell"];
-    modules.shell.nushell.rcInit = "source ${config.home.cacheDir}/nushell/zoxide.nu";
   };
 }
