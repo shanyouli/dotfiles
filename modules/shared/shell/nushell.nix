@@ -26,7 +26,8 @@ in {
             source ${config.home.cacheDir}/nushell/${x}.nu
           '')
           cfg.cacheCmd)}
-
+        ${concatStringsSep "\n" (mapAttrsToList (n: v: ''alias ${n} = ^${v}'')
+            (filterAttrs (n: v: v != "") config.modules.shell.aliases))}
         ${cfg.rcInit}
       '';
     };
