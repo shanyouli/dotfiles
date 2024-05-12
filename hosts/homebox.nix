@@ -34,8 +34,9 @@
     shell.nix-index.enable = true;
     shell.trash.enable = true;
     shell.just.enable = true;
-    shell.elvish.enable = true;
+    # shell.elvish.enable = true;
     shell.nushell.enable = true;
+    shell.carapace.enable = true;
     shell.starship.enable = true;
 
     shell.modern.enable = true;

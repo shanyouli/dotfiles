@@ -27,7 +27,7 @@ in {
           '')
           cfg.cacheCmd)}
         ${concatStringsSep "\n" (mapAttrsToList (n: v: ''alias ${n} = ^${v}'')
-            (filterAttrs (n: v: v != "" || n != "rm" || n != "rmi") config.modules.shell.aliases))}
+            (filterAttrs (n: v: v != "" && n != "rm" && n != "rmi") config.modules.shell.aliases))}
         ${cfg.rcInit}
         alias nure = exec nu
         def aliases [] { help commands | where command_type == alias }
