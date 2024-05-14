@@ -83,6 +83,11 @@ in {
     }
     (mkIf useEmacs {
       home.configFile."emacs-rime/default.custom.yaml".source = "${config.dotfiles.configDir}/rime/default.custom.yaml";
+      # FIXME: 显示拼音问题解决方法: https://github.com/iDvel/rime-ice/issues/431
+      home.configFile."emacs-rime/rime_ice.custom.yaml".text = ''
+        patch:
+          translator/spelling_hints: 0
+      '';
     })
   ]);
 }
