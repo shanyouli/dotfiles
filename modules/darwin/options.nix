@@ -108,8 +108,11 @@ in {
       time.timeZone = config.modules.opt.timezone;
 
       modules.shell.nushell.rcInit = ''
-        # macos open 别名
-        def nuopen [arg, --raw (-r)] { if $raw { open -r $arg } else {open $arg } }
+        # 修复macos上nushell自带的open和外部命令open的冲突
+        def nuopen [ arg, --raw (-r)] {
+          let arg = (if ($raw | str starts-with "~") { ( $raw | path expand) } else { $raw } )
+          if $raw { open -r $arg } else {open $arg }
+        }
         alias open = ^open
       '';
 
