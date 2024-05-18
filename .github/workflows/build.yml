@@ -16,9 +16,9 @@ on:
       - 'hosts/hostname.nix'
       - 'hosts/linux-test/**'
       - 'flake.lock'
-  schedule:
-    # run this daily at 8am UTC, or roughly 4am eastern
-    - cron: '45 2 * * 6'
+  # schedule:
+  #   # run this daily at 8am UTC, or roughly 4am eastern
+  #   - cron: '45 2 * * 6'
   workflow_dispatch:
 jobs:
   build:

@@ -227,6 +227,11 @@
           extraOverlays = [
             (ffinal: pprev: {
               devenv = inputs.devenv.defaultPackage.${pprev.system};
+              my = {
+                nix-index = inputs.nurpkgs.packages.${pprev.system}.nix-index;
+                emacs = inputs.nurpkgs.packages.${pprev.system}.emacs;
+                emacs-git = inputs.nurpkgs.packages.${pprev.system}.emacsGit;
+              };
             })
           ];
         };

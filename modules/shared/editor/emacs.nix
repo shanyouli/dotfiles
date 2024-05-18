@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  inputs,
   ...
 }:
 with lib;
@@ -69,7 +68,8 @@ in {
     };
     package = mkOption {
       type = types.package;
-      default = inputs.nurpkgs.currentSystem.packages.emacs;
+      # default = inputs.nurpkgs.currentSystem.packages.emacs;
+      default = pkgs.unstable.my.emacs;
       defaultText = literalExample "pkgs.emacs";
       example = literalExample "pkgs.emacs26-nox";
       description = "The Emacs Package to use.";
