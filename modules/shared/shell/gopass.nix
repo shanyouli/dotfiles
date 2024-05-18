@@ -28,7 +28,7 @@ in {
     enable = mkBoolOpt false;
     enGui = mkBoolOpt config.modules.opt.enGui;
     browsers = let
-      browsers = ["firefox" "chrome" "chromium" "brave" "librewolf" "vivaldi"];
+      browsers = ["firefox" "chrome" "chromium" "brave" "librewolf" "vivaldi" "arc"];
     in
       mkOption {
         type = types.listOf (types.enum browsers);
@@ -79,6 +79,13 @@ in {
                 {
                   "${cfbrowser."${x}"}/${nativeHostsName x}/${jsonFile}".source = passJsonFn x;
                   "${cfbrowser."${x}"}/policies/managed/${jsonFile}".source = "${pkgs.browserpass}/lib/browserpass/policies/chromium/${jsonFile}";
+                }
+              ]
+              else if x == "arc"
+              then [
+                {
+                  "${config.user.home}/Library/Application Support/Arc/User Data/policies/managed/${jsonFile}".source = "${pkgs.browserpass}/lib/browserpass/policies/chromium/${jsonFile}";
+                  "${config.user.home}/Library/Application Support/Arc/User Data/NativeMessagingHosts/$(jsonFile)".source = "${pkgs.browserpass}/lib/browserpass/hosts/chromiu/${jsonFile}";
                 }
               ]
               else throw "unknown browser ${x}"
