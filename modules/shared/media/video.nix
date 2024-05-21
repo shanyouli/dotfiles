@@ -13,17 +13,31 @@ in {
     modules.media.video = {
       enable = mkEnableOption "Whether to enable mpv module ";
       stream.enable = mkBoolOpt true;
+      mpvc.enable = mkBoolOpt true;
     };
   };
 
   config = with lib;
     mkIf cfg.enable (mkMerge [
       {
-        user.packages = with pkgs; [
-          mpv
-          (mkIf pkgs.stdenvNoCC.isLinux mpvc)
-          (mkIf cfg.stream.enable unstable.seam)
-        ];
+        user.packages =
+          [
+            pkgs.mpv
+          ]
+          ++ optionals cfg.mpvc.enable [
+            pkgs.unstable.mpvc
+            pkgs.fzf
+            pkgs.gawk
+            pkgs.gnused
+            pkgs.socat
+            pkgs.rlwrap
+            pkgs.jq
+            (mkIf (! config.modules.media.download.enVideo) pkgs.yt-dlp)
+            pkgs.util-linux
+          ]
+          ++ optionals cfg.stream.enable [
+            pkgs.unstable.seam
+          ];
       }
     ]);
 }

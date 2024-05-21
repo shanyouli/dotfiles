@@ -41,7 +41,7 @@
 
     shell.modern.enable = true;
 
-    editor.nvim.enable = false;
+    # editor.nvim.enable = true;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs
     editor.vscode.enable = true;
     editor.emacs.enable = true;
@@ -92,6 +92,7 @@
     macos.rime.enable = true;
     macos.brew.mirror = "tuna";
     macos.duti.enable = true;
+    macos.netdriver.enable = true;
 
     service.nginx.enable = true;
     service.mysql.enable = true;

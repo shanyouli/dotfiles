@@ -20,6 +20,7 @@ in {
       [
         iina
         zy-player
+        dashplayer
       ]
       ++ optionals mpvcfg.stream.enable [
         iinaplus

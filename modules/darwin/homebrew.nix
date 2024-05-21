@@ -83,7 +83,6 @@ in {
           "raycast" # 取代 spotlight
           "stats" # 状态显示
           "forkgram-telegram"
-          "baidunetdisk"
           "easydict" # 翻译软件
           "jetbrains-toolbox"
           # "syncthing" 同步
@@ -157,6 +156,7 @@ in {
       homebrew.brews = [
         # "macos-trash" # trash-cli
         # "mysql"
+        "mist-cli"
       ];
       homebrew.masApps = {
         "Userscript" = 1463298887; # tampermonkey

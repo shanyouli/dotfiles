@@ -88,6 +88,8 @@ in {
           switchaudio-osx
           alexandria
           tmexclude
+
+          quickrecorder
         ]
         ++ optionals config.modules.editor.emacs.enable [
           pkgs.unstable.darwinapps.pngpaste

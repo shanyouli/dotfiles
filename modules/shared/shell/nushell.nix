@@ -18,6 +18,21 @@ in {
   };
   config = mkIf cfg.enable {
     user.packages = [pkgs.unstable.nushell];
+    modules.editor.helix = {
+      languages = {
+        language = [
+          {
+            name = "nu";
+            language-servers = ["nushell-lsp"];
+          }
+        ];
+        language-server.nushell-lsp.command = "nu";
+        language-server.nushell-lsp.args = ["--lsp"];
+      };
+    };
+    modules.editor.vscode.extensions = with pkgs.unstable.vscode-extensions; [
+      thenuprojectcontributors.vscode-nushell-lang
+    ];
     home.configFile = {
       "nushell/cache/extrarc.nu".text = ''
         ${optionalString (cfg.cacheCmd != []) (concatMapStrings (s: let
