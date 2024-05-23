@@ -104,7 +104,7 @@ in {
       nix-your-shell # nix-shell Support for other shells(zsh,fish,nushell)
       gnused # sed 工具
       # coreutils-prefixed # GNUcoreutils 工具，mv，cp等
-      coreutils
+      uutils-coreutils
 
       tailspin # 支持高亮的语法查看工具
 
