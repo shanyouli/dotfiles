@@ -25,7 +25,7 @@
     shell.rsync.enable = true;
     shell.ugrep.enable = true;
     shell.gpg.enable = true;
-    shell.gpg.cacheTTL = 36000;
+    shell.gpg.cacheTTL = 360000;
     shell.direnv.enable = true;
     shell.git.enable = true;
     shell.git.enGui = false; # 使用网页管理 github

@@ -90,6 +90,7 @@ in {
           tmexclude
 
           quickrecorder
+          # aerospace
         ]
         ++ optionals config.modules.editor.emacs.enable [
           pkgs.unstable.darwinapps.pngpaste
