@@ -108,7 +108,7 @@ in {
           # look for a nixpkgs channel.
           stateVersion =
             if pkgs.stdenv.isDarwin
-            then "23.11"
+            then "24.11"
             else config.system.stateVersion;
           username = config.user.name;
 
