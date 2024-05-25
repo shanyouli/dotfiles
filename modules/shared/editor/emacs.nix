@@ -170,7 +170,7 @@ in {
           six
           paramiko
           rapidfuzz
-          # openAI
+          # # openAI
           sexpdata # 0.0.3, or lsp-bridge
           openai
         ];

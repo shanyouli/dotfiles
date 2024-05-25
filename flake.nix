@@ -4,8 +4,8 @@
   inputs = {
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
-    nixos-stable.url = "github:nixos/nixpkgs/nixos-23.11";
-    darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
+    nixos-stable.url = "github:nixos/nixpkgs/nixos-24.05";
+    darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
 
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     # small.url = "github:nixos/nixpkgs/nixos-unstable-small";
@@ -217,6 +217,20 @@
     });
 
     overlays = {
+      python3 = final: prev: (let
+        packageOverrides = pfinal: pprev: {
+          gssapi = inputs.nurpkgs.packages.${prev.system}.python-apps-gssapi;
+        };
+      in rec {
+        python3 = prev.python3.override {inherit packageOverrides;};
+        python3Packages = python3.pkgs;
+
+        pypy3 = prev.python3.override {inherit packageOverrides;};
+        pypy3Packages = pypy3.pkgs;
+
+        python310 = prev.python310.override {inherit packageOverrides;};
+        python310Packages = python310.pkgs;
+      });
       channels = final: prev: {
         # expose other channels via overlays
         unstable = mkPkg {

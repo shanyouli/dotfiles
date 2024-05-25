@@ -100,7 +100,6 @@ in {
       useGlobalPkgs = true;
       useUserPackages = true;
       backupFileExtension = "backup";
-
       users.${config.user.name} = {
         home = {
           file = mkAliasDefinitions options.home.file;
@@ -108,7 +107,7 @@ in {
           # look for a nixpkgs channel.
           stateVersion =
             if pkgs.stdenv.isDarwin
-            then "23.11"
+            then "24.05"
             else config.system.stateVersion;
           username = config.user.name;
 
@@ -124,6 +123,7 @@ in {
           stateHome = mkAliasDefinitions options.home.stateDir;
         };
         programs = config.home.programs;
+        home.enableNixpkgsReleaseCheck = false;
       };
     };
 

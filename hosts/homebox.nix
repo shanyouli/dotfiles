@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   # user.name = "lyeli";
@@ -44,8 +45,6 @@
     # editor.nvim.enable = true;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs
     editor.vscode.enable = true;
-    editor.emacs.enable = true;
-    editor.emacs.service.enable = true;
     editor.helix.enable = true;
     editor.default = "hx";
 
@@ -72,9 +71,8 @@
     # browser.fallback = pkgs.unstable.darwinapps.vivaldi;
     browser.chrome.enable = true;
     browser.chrome.package = pkgs.unstable.darwinapps.chromium;
-    # theme.enable = true;
 
-    # # macos
+    # macos
     macos.enable = true;
     macos.docker.enable = true;
     macos.app.enable = true;
@@ -102,6 +100,11 @@
     service.yabai.enable = true;
     service.aria2.enable = true;
     service.qbittorrent.enable = true;
+
+    # NOTE: 24.05 error, 无法安装 aria2p
+    tool.aria2.aria2p = lib.mkForce false;
+    editor.emacs.enable = true;
+    editor.emacs.service.enable = true;
   };
   # 如果你想使用macos别名请查看
   # https://github.com/LnL7/nix-darwin/issues/139#issuecomment-1230728610

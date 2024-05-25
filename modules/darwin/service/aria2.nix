@@ -15,7 +15,7 @@ in {
 
   config = mkIf cfg.enable {
     modules.tool.aria2.enable = true;
-    modules.tool.aria2.aria2p = true;
+    modules.tool.aria2.aria2p = mkDefault true;
     launchd.user.agents.aria2 = {
       path = ["${config.modules.tool.aria2.package}/bin" config.modules.service.path];
       serviceConfig.ProgramArguments = [

@@ -57,7 +57,7 @@ with lib.my; {
     #   all_proxy = "http://127.0.0.1:7890";
 
     # };
-    registry = registryInputs // {dotfiles.flake = inputs.self;};
+    registry = mkForce registryInputs // {dotfiles.flake = inputs.self;};
     nixPath =
       nixPathInputs
       ++ [
