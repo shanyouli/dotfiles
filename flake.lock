@@ -677,11 +677,11 @@
         "pre-commit-hooks-nix": "pre-commit-hooks-nix"
       },
       "locked": {
-        "lastModified": 1716626985,
-        "narHash": "sha256-S7vortN7UdZyKA0NWPXZN9qJfaFAM5/gfpDupruZX4c=",
+        "lastModified": 1716627355,
+        "narHash": "sha256-u4EajCtz15iuHiDzRhgBWZ5r00xtCorKXFLZo7NqcVo=",
         "owner": "shanyouli",
         "repo": "nur-packages",
-        "rev": "f04c3ccd92a081bce75be2fad6962d421e543dcb",
+        "rev": "149acc17c031ebd8edbe922374faf76ce3200309",
         "type": "github"
       },
       "original": {
