@@ -101,17 +101,15 @@ in {
           # "calibre" #"koodo-reader", 书籍管理和阅读
           "skim" # PDF
 
-          "imageoptim" # 图片压缩
-          #
           "displaperture" # screen 曲线图
-          "licecap" # GIF kap
+          # "imageoptim" # 图片压缩
+          # "licecap" # GIF kap
           # "imazing" # 手机备份管理
           (mkIf (! config.modules.media.flameshot.enable) "shottr") # 截图
           # "betterdisplay" # 其他替代工具
           # "dozer" # 菜单栏管理,
           "maczip" # 压缩解压GUI
           # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
-          "squirrel" # 输入法
           "findergo" # 快捷方式，在finder中打开终端
           # "coconutbattery" # 电量查看
           "zotero" # 文献管理
@@ -126,8 +124,9 @@ in {
           "mac-mouse-fix" # 鼠标fix
           "pictureview" # 看图
 
-          "appcleaner" # 软件卸载
-          "clean-me" # ka
+          # "appcleaner" # 软件卸载
+          # "clean-me" # ka, 使用 Lemon Cleaner 取代
+          "tencent-lemon" # 文件清理
 
           "charles" # "proxyman", 抓包
           "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
@@ -143,7 +142,6 @@ in {
           (mkIf config.modules.shell.git.enGui "github") # github客户端
           (mkIf config.modules.browser.chrome.useBrew "google chrome")
           "command-x" # Cut files
-          "tencent-lemon" # 文件清理
           "logseq" # 笔记工具
         ]
         ++ optionals config.modules.shell.adb.enable [
@@ -167,9 +165,9 @@ in {
         # "adblock" = 1018301773;
         "text-scaner" = 1452523807;
         "medis2" = 1579200037;
-        "vidhub" = 1659622164; # 视频管理,需要网速足够好
+        # "vidhub" = 1659622164; # 视频管理,需要网速足够好
         "medis" = 1579200037; # redis 管理工具
-        "devhub" = 6476452351; # 试用小工具合集
+        # "devhub" = 6476452351; # 试用小工具合集
       };
     }
   ]);

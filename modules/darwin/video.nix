@@ -25,8 +25,8 @@ in {
       ++ optionals mpvcfg.stream.enable [
         iinaplus
         simple-live
-        downkyi
-        wiliwili
+        # downkyi
+        # wiliwili
       ];
     # 视频压缩工具, 使用 ffmpeg 取代
     # homebrew.casks = ["handbrake"];
