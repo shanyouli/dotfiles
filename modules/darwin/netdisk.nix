@@ -13,6 +13,6 @@ in {
     enable = mkEnableOption "Whether to net driver";
   };
   config = mkIf cfg.enable {
-    homebrew.casks = ["adrive" "baidunetdisk"];
+    homebrew.casks = ["adrive" "baidunetdisk" "nutstore"];
   };
 }

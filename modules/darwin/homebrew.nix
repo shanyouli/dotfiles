@@ -101,7 +101,7 @@ in {
           # "calibre" #"koodo-reader", 书籍管理和阅读
           "skim" # PDF
 
-          "displaperture" # screen 曲线图
+          # "displaperture" # screen 曲线图
           # "imageoptim" # 图片压缩
           # "licecap" # GIF kap
           # "imazing" # 手机备份管理
@@ -119,7 +119,7 @@ in {
           "syntax-highlight"
           "qlmarkdown"
 
-          "playcover-community" # 侧载工具
+          # "playcover-community" # 侧载工具
 
           "mac-mouse-fix" # 鼠标fix
           "pictureview" # 看图
@@ -132,9 +132,14 @@ in {
           "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
           "background-music" # 和一些工具冲突，eg mpd， yesplaymusic
 
-          "postman" # "rapidapi" "httpie"
+          "postman"
+          "rapidapi" # "httpie"
+          "reqable"
+
+          "paragon-ntfs"
+
           # "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
-          "sequel-ace" # mysql
+          # "sequel-ace" # mysql
 
           # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
           # "maccy" # clip 剪切薄，使用raycast取代
@@ -148,8 +153,11 @@ in {
           # "openmtp" # 目前不是很稳定
           # “macdroid” # 付费app，使用adb传输，稳定性存疑
           # "android-file-transfer" # 可用，稳定性一般
-          "whoozle-android-file-transfer" # 速度一般，稳定
           # "commander-one" # 速度可以，大文件也稳定，需要付费
+          "whoozle-android-file-transfer" # 速度一般，稳定
+        ]
+        ++ optionals config.modules.shell.gopass.enable [
+          "ente-auth"
         ];
       homebrew.brews = [
         # "macos-trash" # trash-cli
@@ -159,14 +167,14 @@ in {
       homebrew.masApps = {
         "Userscript" = 1463298887; # tampermonkey
         "Amphetamine" = 937984704;
-        # "mineweeper" = 1475921958;
-        "immersive-translate" = 6447957425;
-        "vimari" = 1480933944;
+        # "mineweeper" = 1475921958; # 扫雷
+        "immersive-translate" = 6447957425; # 双语翻译
+        "vimari" = 1480933944; # vim 控制safari
         # "adblock" = 1018301773;
         "text-scaner" = 1452523807;
-        "medis2" = 1579200037;
+        # "localSend" = 1661733229;
         # "vidhub" = 1659622164; # 视频管理,需要网速足够好
-        "medis" = 1579200037; # redis 管理工具
+        # "medis" = 1579200037; # redis 管理工具, 可免费使用，
         # "devhub" = 6476452351; # 试用小工具合集
       };
     }

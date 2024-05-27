@@ -18,7 +18,9 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      homebrew.casks = ["vox"] ++ lib.optionals (netease.enable && netease.enGui) ["neteasemusic"];
+      # neteasemusic or yesplaymusic
+      # vox or foobar2000
+      homebrew.casks = ["foobar2000"] ++ lib.optionals (netease.enable && netease.enGui) ["yesplaymusic"];
       user.packages = with pkgs.unstable.darwinapps; [lyricx spotube vimmotion];
     }
     (mkIf scfg.mpd.enable {

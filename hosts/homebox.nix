@@ -66,6 +66,7 @@
     dev.rust.enable = true;
 
     tool.sdcv.enable = true;
+    tool.localsend.enable = true; # 需要gui，局域网文件传输工具
     browser.default = "firefox";
     # browser.firefox.extensions = lib.mkForce [];
     # browser.fallback = pkgs.unstable.darwinapps.vivaldi;
