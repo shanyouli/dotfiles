@@ -14,5 +14,7 @@ in {
   };
   config = mkIf (cfg.default != null) {
     environment.variables.EDITOR = cfg.default;
+    modules.editor.nvim.enable = mkDefault (cfg.default == "nvim");
+    modules.editor.helix.enable = mkDefault (cfg.default == "hx");
   };
 }

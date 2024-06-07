@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }: {
   # user.name = "lyeli";
@@ -42,11 +41,10 @@
 
     shell.modern.enable = true;
 
+    editor.default = "hx";
     # editor.nvim.enable = true;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs
     editor.vscode.enable = true;
-    editor.helix.enable = true;
-    editor.default = "hx";
 
     media.music.enable = true;
     media.flameshot.enable = true;
@@ -103,8 +101,6 @@
     service.aria2.enable = true;
     service.qbittorrent.enable = true;
 
-    # NOTE: 24.05 error, 无法安装 aria2p
-    tool.aria2.aria2p = lib.mkForce false;
     editor.emacs.enable = true;
     editor.emacs.service.enable = true;
   };

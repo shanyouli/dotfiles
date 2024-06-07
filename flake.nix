@@ -220,6 +220,10 @@
       python3 = final: prev: (let
         packageOverrides = pfinal: pprev: {
           # gssapi = inputs.nurpkgs.packages.${prev.system}.python-apps-gssapi;
+          aria2p = pprev.aria2p.overrideAttrs (old: {
+            doCheck = false;
+            doInstallCheck = false;
+          });
         };
       in rec {
         python3 = prev.python3.override {inherit packageOverrides;};
