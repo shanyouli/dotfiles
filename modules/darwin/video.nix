@@ -16,14 +16,13 @@ in {
   };
 
   config = mkIf cfg.enable {
+    homebrew.casks = ["iina"] ++ optionals mpvcfg.stream.enable ["iina-plus"];
     user.packages = with pkgs.unstable.darwinapps;
       [
-        iina
         zy-player
         dashplayer
       ]
       ++ optionals mpvcfg.stream.enable [
-        iinaplus
         simple-live
         # downkyi
         # wiliwili
@@ -31,7 +30,8 @@ in {
     # 视频压缩工具, 使用 ffmpeg 取代
     # homebrew.casks = ["handbrake"];
     macos.userScript.setingIinaApp = {
-      enable = mpvcfg.stream.enable;
+      # enable = mpvcfg.stream.enable;
+      enable = false; # 使用 brew 管理 macos 上的 GUI 程序
       desc = "使用iinaplus时，将iina链接到/Applications";
       level = 100;
       text = ''$DRY_RUN_CMD ln -sf ${homeDir}/Applications/Myapps/IINA.app /Applications/ '';

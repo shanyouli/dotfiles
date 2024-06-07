@@ -4,13 +4,13 @@ patch:
     color_scheme_dark: mac_dark
 
     text_orientation: horizontal  # horizontal | vertical
-    inline_preedit: true # 拼音位于： 候选框 false | 行内 true
+    candidate_list_layout: linear # 拼音位于： 候选框 false | 行内 true
 
   # https://ssnhd.com/2022/01/11/rime-skin/
   "preset_color_schemes/+":
     mac_light:
       name: Mac浅色
-      horizontal: true             # true横排，false竖排
+      text_orientation: horizontal  # horizontal | vertical
       candidate_format: "%c %@ "   # 用 1/6 em 空格 U+2005 来控制编号 %c 和候选词 %@ 前后的空间
       corner_radius: 5                             # 窗口圆角
       hilited_corner_radius: 5                     # 高亮圆角
@@ -34,7 +34,7 @@ patch:
 
     mac_dark:
       name: Mac深色
-      horizontal: true             # true横排，false竖排
+      text_orientation: horizontal  # horizontal | vertical , 水平，垂直
       candidate_format: "%c %@ "   # 用 1/6 em 空格 U+2005 来控制编号 %c 和候选词 %@ 前后的空间
       corner_radius: 5                             # 窗口圆角
       hilited_corner_radius: 5                     # 高亮圆角

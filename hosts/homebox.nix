@@ -79,6 +79,7 @@
     macos.app.enable = true;
     macos.arc.enable = true;
     macos.karabiner.enable = true;
+    macos.safari.enable = true;
     macos.stopAutoReopen = true;
 
     tool.proxy.default = "sing-box";

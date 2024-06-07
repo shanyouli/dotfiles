@@ -165,12 +165,8 @@ in {
         "mist-cli"
       ];
       homebrew.masApps = {
-        "Userscript" = 1463298887; # tampermonkey
         "Amphetamine" = 937984704;
         # "mineweeper" = 1475921958; # 扫雷
-        "immersive-translate" = 6447957425; # 双语翻译
-        "vimari" = 1480933944; # vim 控制safari
-        # "adblock" = 1018301773;
         "text-scaner" = 1452523807;
         # "localSend" = 1661733229;
         # "vidhub" = 1659622164; # 视频管理,需要网速足够好

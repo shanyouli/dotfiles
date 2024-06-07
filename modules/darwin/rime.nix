@@ -18,6 +18,7 @@ in {
   config = mkIf cfg.enable {
     # 输入法
     homebrew.casks = ["squirrel"];
+    homebrew.masApps.squirrel_designer = 1530616498;
     modules.rime.enable = true;
     modules.rime.userDir = "${config.user.home}/Library/Rime";
     modules.rime.backupid = "macos";
