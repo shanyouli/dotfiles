@@ -22,12 +22,12 @@ in {
       description = "Default Browser";
     };
     fallback = mkOption {
-      type = types.oneOf [types.str types.package];
+      type = types.str;
       default = "";
       apply = v:
-        if ((builtins.typeOf v) == "string") && (! (builtins.elem v ["chrome" "firefox"]))
-        then ""
-        else v;
+        if builtins.elem v browsers
+        then v
+        else "";
       description = "FallBack browser";
     };
     configDir = with types; mkOpt (attrsOf (either str path)) {};
@@ -70,30 +70,31 @@ in {
             else throw "unknown browser ${n}";
         })
         browsers);
+      modules.browser.firefox.enable = mkDefault (builtins.elem "firefox" [cfg.default cfg.fallback]);
+      modules.browser.chrome.enable = mkDefault (builtins.elem "chrome" [cfg.default cfg.fallback]);
     }
-    (mkIf ((builtins.typeOf cfg.fallback) != "string") (let
-      pkgsPname =
-        if builtins.hasAttr "pname" cfg.fallback
-        then cfg.fallback.pname
-        else "";
-      hostList =
-        if builtins.elem pkgsPname browsers
-        then [pkgsPname]
-        else [];
-    in {
-      user.packages = [cfg.fallback];
-      modules.shell.gopass.browsers = hostList;
-    }))
-    (
-      mkIf (builtins.elem "firefox" [cfg.default cfg.fallback]) {
-        modules.browser.firefox.enable = mkDefault true;
+    (mkIf (cfg.fallback != "") (
+      let
+        # browsers = ["firefox" "chrome" "chromium" "brave" "librewolf" "vivaldi"];
+        package =
+          if (! pkgs.stdenvNoCC.isDarwin)
+          then
+            if cfg.fallback == "brave"
+            then [pkgs.brave]
+            else if cfg.fallback == "vivaldi"
+            then [pkgs.vivaldi]
+            else if cfg.fallback == "chromium"
+            then [pkgs.chromium]
+            else []
+          else [];
+        fallback_browser =
+          if (builtins.elem cfg.fallback ["firefox" "chrome"])
+          then []
+          else [cfg.fallback];
+      in {
+        user.packages = package;
+        modules.shell.gopass.browsers = fallback_browser;
       }
-    )
-    (
-      mkIf (builtins.elem "chrome" [cfg.default cfg.fallback]) {
-        modules.browser.chrome.enable = mkDefault true;
-        modules.browser.chrome.useBrew = mkDefault pkgs.stdenvNoCC.isDarwin;
-      }
-    )
+    ))
   ];
 }

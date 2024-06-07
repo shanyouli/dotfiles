@@ -13,7 +13,7 @@ in {
   options.modules.browser.chrome = {
     enable = mkEnableOption "Whether to google-chrome";
     dev.enable = mkBoolOpt true;
-    useBrew = mkBoolOpt false;
+    useBrew = mkBoolOpt pkgs.stdenvNoCC.isDarwin;
     package = mkOption {
       type = types.package;
       default =

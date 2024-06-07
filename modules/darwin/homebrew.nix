@@ -124,7 +124,7 @@ in {
           "mac-mouse-fix" # 鼠标fix
           "pictureview" # 看图
 
-          # "appcleaner" # 软件卸载
+          "appcleaner" # 软件卸载
           # "clean-me" # ka, 使用 Lemon Cleaner 取代
           "tencent-lemon" # 文件清理
 
@@ -144,8 +144,6 @@ in {
           # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
           # "maccy" # clip 剪切薄，使用raycast取代
           # "visual-studio-code" # other editors nix 管理
-          (mkIf config.modules.shell.git.enGui "github") # github客户端
-          (mkIf config.modules.browser.chrome.useBrew "google chrome")
           "command-x" # Cut files
           "logseq" # 笔记工具
         ]
@@ -158,6 +156,12 @@ in {
         ]
         ++ optionals config.modules.shell.gopass.enable [
           "ente-auth"
+        ]
+        ++ optionals (config.modules.browser.chrome.enable && config.modules.browser.chrome.useBrew) [
+          "google-chrome"
+        ]
+        ++ optionals (config.modules.shell.git.enable && config.modules.shell.git.enGui) [
+          "github" # github客户端
         ];
       homebrew.brews = [
         # "macos-trash" # trash-cli
