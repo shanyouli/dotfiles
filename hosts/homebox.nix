@@ -14,6 +14,7 @@
   };
   modules = {
     # shared
+    shell.nix-your-shell.enable = true;
     shell.zinit.enable = true;
     shell.vivid.enable = true;
     shell.zoxide.enable = true;

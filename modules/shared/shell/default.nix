@@ -157,7 +157,6 @@ in {
             trapd00r/LS_COLORS
         '');
       rcInit = mkOrder 100 ''
-        _cache -v ${pkgs.nix-your-shell.version} nix-your-shell zsh
         ${lib.optionalString (! cfg.atuin.enable) ''
           if [[ "$INSIDE_EMACS" != 'vterm' ]]; then
             _zt 0b light-mode for \
