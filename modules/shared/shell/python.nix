@@ -59,6 +59,14 @@ in {
           _comps[pipx]=_pipx
         fi
       '';
+      nushell.rcInit = ''
+        export def --wrapped pipx [...rest: string] {
+            if (not (which mise | is-empty)) {
+                $env.PIPX_DEFAULT_PYTHON = ([(mise where python@3.11), "bin", "python"] | path join)
+            }
+            ^pipx ...$rest
+        }
+      '';
     };
   };
 }
