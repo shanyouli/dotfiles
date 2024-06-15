@@ -81,7 +81,8 @@ in {
       homebrew.casks =
         [
           "raycast" # 取代 spotlight
-          "stats" # 状态显示
+          # "stats" # 状态显示, 目前无法显示温度。
+          "macs-fan-control" # 用来控制 fan 的工具
           "forkgram-telegram"
           "easydict" # 翻译软件
           "jetbrains-toolbox"
