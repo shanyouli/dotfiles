@@ -34,12 +34,12 @@ in {
             buffer_before_play "25%"
           }
           # Visualizer
-          audio_output {
-            type "fifo"
-            name "my_fifo"
-            path "${mpdfifo}"
-            format "44100:16:2"
-          }
+          # audio_output {
+          #   type "fifo"
+          #   name "my_fifo"
+          #   path "${mpdfifo}"
+          #   format "44100:16:2"
+          # }
           # input
           input {
             enabled "no"

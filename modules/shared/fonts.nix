@@ -20,8 +20,8 @@ in {
   };
   config = mkIf cfg.enable {
     fonts = {
-      fontDir.enable = true;
-      fonts = with pkgs; [
+      # fontDir.enable = true;
+      packages = with pkgs; [
         fantasque-sans-mono
         cfg.term.package
         lxgw-wenkai
