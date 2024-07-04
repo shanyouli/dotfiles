@@ -15,13 +15,17 @@ with lib.my; let
 in {
   options.modules.macos.music = {
     enable = mkBoolOpt scfg.enable;
+    lx.enable = mkBoolOpt false;
   };
   config = mkIf cfg.enable (mkMerge [
     {
       # neteasemusic or yesplaymusic
       # vox or foobar2000
-      homebrew.casks = ["foobar2000"] ++ lib.optionals (netease.enable && netease.enGui) ["yesplaymusic"];
-      user.packages = with pkgs.unstable.darwinapps; [lyricx spotube vimmotion];
+      homebrew.casks =
+        ["foobar2000"]
+        ++ lib.optionals (netease.enable && netease.enGui) ["yesplaymusic"]
+        ++ optionals cfg.lx.enable ["lx-music"];
+      user.packages = with pkgs.unstable.darwinapps; [lyricx vimmotion] ++ optionals (! cfg.lx.enable) [spotube];
     }
     (mkIf scfg.mpd.enable {
       modules.media.music.mpd = {

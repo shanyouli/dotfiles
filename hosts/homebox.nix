@@ -48,6 +48,7 @@
     editor.vscode.enable = true;
 
     media.music.enable = true;
+    media.music.netease.enGui = false;
     media.flameshot.enable = true;
     media.video.enable = true;
 
@@ -79,6 +80,7 @@
     macos.karabiner.enable = true;
     macos.safari.enable = true;
     macos.stopAutoReopen = true;
+    macos.music.lx.enable = true;
 
     tool.proxy.default = "sing-box";
     tool.proxy.sing-box.package = pkgs.unstable.sing-box;

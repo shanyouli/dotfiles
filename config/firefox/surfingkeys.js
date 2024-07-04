@@ -66,6 +66,10 @@ removeSearchAlias('e', 's');
 addSearchAlias('d', 'devv', "https://devv.ai/search/", 's',null, null, 'o', {favion_url: 'https://devv.ai/favicon.ico', skipMaps: false} );
 // anybt bt搜索
 addSearchAlias('D', "anybt", "https://anybt.eth.limo/#/search?q=", 's')
+
+// nixos-optional
+addSearchAlias('n', "nixos-optional", "https://search.nixos.org/options?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=", 's')
+// bing
 addSearchAlias('b', 'bing', 'https://www.bing.com/search?setmkt=en-us&setlang=en-us&q=', 's', 'https://api.bing.com/osjson.aspx?query=', function(response) {
     var res = JSON.parse(response.text);
     return res[1];
@@ -91,22 +95,6 @@ addSearchAlias('G', 'github', 'https://github.com/search?q=', 's', 'https://api.
 mapkey('p', '#0进入PassThrough模式', function() {
   api.Normal.passThrough(2000);
 });
-
-mapkey('ot', '打开onetab页面', function() {
-  if (api.getBrowserName() === "Chrome") {
-    tabOpenLink("chrome-extension://chphlpgkkbolifaimnlloiipkdnihall/onetab.html");
-  } else {
-    tabOpenLink("moz-extension://59b912fc-f318-419e-99a7-76469dc200ce/onetab.html");
-  }
-});
-
-mapkey(",ps", "打开浏览器设置", function() {
-  tabOpenLink("about:preferences")
-});
-
-mapkey(',op', '打开pocket', function() {
-  tabOpenLink("https://getpocket.com/my-list");
-})
 
 mapkey('ymo', '以org格式复制链接', () => {
   let url = document.URL;

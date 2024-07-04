@@ -141,6 +141,7 @@ in {
 
           # "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
           # "sequel-ace" # mysql
+          # "navicat-premium"
 
           # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
           # "maccy" # clip 剪切薄，使用raycast取代
@@ -153,7 +154,7 @@ in {
           # “macdroid” # 付费app，使用adb传输，稳定性存疑
           # "android-file-transfer" # 可用，稳定性一般
           # "commander-one" # 速度可以，大文件也稳定，需要付费
-          "whoozle-android-file-transfer" # 速度一般，稳定
+          # "whoozle-android-file-transfer" # 速度一般，稳定
         ]
         ++ optionals config.modules.shell.gopass.enable [
           "ente-auth"
