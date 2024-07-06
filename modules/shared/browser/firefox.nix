@@ -135,8 +135,8 @@ in {
         in "${config.dotfiles.configDir}/firefox/chrome/${name}";
       })
       {
-        "${profilePath}/chrome/utils" = {
-          source = "${pkgs.unstable.firefox-utils}/share/utils";
+        "${profilePath}/chrome/" = {
+          source = "${pkgs.unstable.userChromeJS}";
           recursive = true;
         };
       }
