@@ -7,11 +7,11 @@
 }:
 with lib;
 with lib.my; let
-  cfm = config.modules.shell;
-  cfg = config.modules.shell.starship;
+  cfm = config.modules.shell.prompt;
+  cfg = cfm.starship;
   tomlFormat = pkgs.formats.toml {};
 in {
-  options.modules.shell.starship = {
+  options.modules.shell.prompt.starship = {
     enable = mkBoolOpt false;
 
     settings = mkOption {
@@ -52,7 +52,7 @@ in {
   };
   config = mkIf cfg.enable {
     user.packages = [pkgs.starship];
-    modules.shell.starship.settings = {
+    modules.shell.prompt.starship.settings = {
       add_newline = false;
       character = {
         success_symbol = "[[♥](green) ❯](maroon)";
@@ -64,7 +64,7 @@ in {
         style = "bold lavender";
       };
     };
-    modules.shell.rcInit = lib.optionalString (! cfm.useP10) ''
+    modules.shell.rcInit = lib.optionalString (! cfm.p10k.enable) ''
       _cache starship init zsh --print-full-init
     '';
     modules.shell.nushell.cacheCmd = ["${pkgs.starship}/bin/starship init nu"];

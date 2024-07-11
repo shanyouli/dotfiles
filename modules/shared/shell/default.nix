@@ -52,7 +52,6 @@ with lib.my; let
 in {
   options.modules.shell = with types; {
     aliases = mkOpt (attrsOf (either str path)) {};
-    useP10 = mkBoolOpt true;
     env = mkOption {
       type = attrsOf (oneOf [str path (listOf (either str path))]);
       apply = mapAttrs (n: v:
@@ -182,15 +181,6 @@ in {
             zstyle ":plugin:history-search-multi-word" clear-on-cancel "no"
           else
             bindkey '^r' fzf-history-widget
-          fi
-        ''}
-        ${optionalString cfg.useP10 ''
-          zinit ice depth=1
-          zinit light romkatv/powerlevel10k
-          if [[ "$INSIDE_EMACS" != 'vterm' ]]; then
-            _source $ZDOTDIR/p10conf/default.zsh
-          else
-            _source $ZDOTDIR/p10conf/vterm.zsh
           fi
         ''}
         # alias 别名，设置

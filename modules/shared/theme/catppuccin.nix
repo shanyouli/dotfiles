@@ -62,7 +62,7 @@ in {
             if [[ -z $INSIDE_EMACS ]]; then
               ${fzf."${n}"}
             fi
-            ${lib.optionalString cm.shell.starship.enable ''
+            ${lib.optionalString cm.shell.prompt.starship.enable ''
               export STARSHIP_CONFIG="${defaultDir}/starship.toml"
             ''}
           '';
@@ -82,10 +82,10 @@ in {
           "kitty.conf" = optionalString cm.kitty.enable "${configDir}/kitty/${n}.conf";
           "bat.tmTheme" = "${configDir}/bat/Catppuccin-${n}.tmTheme";
           "helix.toml" = optionalString cm.editor.helix.enable "${configDir}/helix/${n}.toml";
-          "starship.toml" = optionalString cm.shell.starship.enable (let
+          "starship.toml" = optionalString cm.shell.prompt.starship.enable (let
             colors = builtins.fromTOML (builtins.readFile "${configDir}/starship/${n}.toml");
             allSettings =
-              cm.shell.starship.settings
+              cm.shell.prompt.starship.settings
               // {
                 palettes.${n} = colors;
                 palette = "${n}";

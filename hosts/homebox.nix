@@ -38,7 +38,6 @@
     # shell.elvish.enable = true;
     shell.nushell.enable = true;
     shell.carapace.enable = true;
-    shell.starship.enable = true;
 
     shell.modern.enable = true;
 
