@@ -66,9 +66,6 @@ in {
               export STARSHIP_CONFIG="${defaultDir}/starship.toml"
             ''}
           '';
-          "neovim.lua" = optionalString cm.editor.nvim.enable ''
-            return "catppuccin-${n}"
-          '';
           "tmux" = optionalString cm.shell.tmux.enable ''
             set -g @catppuccin_flavour '${n}'
             run-shell '${pkgs.tmuxPlugins.catppuccin}/share/tmux-plugins/catppuccin/catppuccin.tmux'
@@ -157,19 +154,5 @@ in {
         [[ -d "${config.home.configDir}/helix/themes" ]] || mkdir -p "${config.home.configDir}/helix/themes"
         ln -sf "${defaultDir}/helix.toml"  "${config.home.configDir}/helix/themes/catppuccin.toml"
       '';
-
-    home.configFile."nvim/lua/plugins/usetheme.lua" = mkIf cm.editor.nvim.enable {
-      text = ''
-        local name = dofile("${defaultDir}/neovim.lua")
-        return {
-          {
-            "LazyVim/LazyVim",
-            opts = {
-              colorscheme = name,
-            },
-          },
-        }
-      '';
-    };
   };
 }

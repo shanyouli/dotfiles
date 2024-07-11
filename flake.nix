@@ -40,7 +40,6 @@
     ...
   }: let
     inherit (flake-utils.lib) eachSystemMap;
-    inherit (lib) attrValues;
     inherit (lib.my) defaultSystems mkPkgs mkPkg;
 
     # with overlays and any extraModules applied

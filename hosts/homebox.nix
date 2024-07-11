@@ -41,7 +41,7 @@
 
     shell.modern.enable = true;
 
-    editor.default = "hx";
+    editor.default = "nvim";
     # editor.nvim.enable = true;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs
     editor.vscode.enable = true;

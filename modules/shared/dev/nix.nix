@@ -12,7 +12,7 @@ with lib.my; let
 in {
   options.modules.dev.nix = {
     enable = mkEnableOption "Whether to Nix Language";
-    lspPkg = mkPkgOpt pkgs.nixd "Nix LSP pkg";
+    lspPkg = mkPkgOpt pkgs.nil "Nix LSP pkg";
     fmtPkg = mkPkgOpt pkgs.alejandra "Nix Format";
   };
   config = mkIf cfg.enable {
@@ -27,7 +27,7 @@ in {
       nixpkgs = "<nixpkgs>"
     '';
     modules.editor.emacs.doom.confInit = ''
-      (setqopt my-nix-lsp-cmd "${cfg.lspPkg.pname}")
+      (setopt my-nix-lsp-cmd "${cfg.lspPkg.pname}")
     '';
   };
 }

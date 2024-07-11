@@ -5,7 +5,7 @@
   ...
 }: {
   packages = [
-    pkgs.nixd
+    pkgs.nil
     (inputs.treefmt-nix.lib.mkWrapper pkgs (import ./treefmt.nix))
   ];
 

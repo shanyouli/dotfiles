@@ -28,8 +28,8 @@ with lib.my; {
     ];
     etc = {
       home-manager.source = "${inputs.home-manager}";
-      nixpkgs.source = "${inputs.nixpkgs}";
-      stable.source =
+      nixpkgs-unstable.source = "${inputs.nixpkgs}";
+      nixpkgs.source =
         if pkgs.stdenvNoCC.isDarwin
         then "${inputs.darwin-stable}"
         else "${inputs.nixos-stable}";
@@ -46,7 +46,9 @@ with lib.my; {
     filteredInputs = filterAttrs filterFn inputs;
     nixPathInputs = mapAttrsToList (n: v:
       if (hasSuffix "stable" n)
-      then "stable=${v}"
+      then "nixpkgs=${v}"
+      else if n == "nixpkgs"
+      then "nixpkgs-unstable=${v}"
       else "${n}=${v}")
     filteredInputs;
     registryInputs = mapAttrs (_: v: {flake = v;}) filteredInputs;
