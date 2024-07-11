@@ -17,7 +17,7 @@ in {
   config = mkIf cfg.enable (let
     log_file = "${config.user.home}/Library/Logs/org.nixos.proxy.log";
   in {
-    user.packages = [pkgs.unstable.darwinapps.clash-nyanpasu];
+    user.packages = [pkgs.unstable.darwinapps.clash-verge];
     launchd.user.agents.proxy = {
       path = [config.modules.service.path];
       serviceConfig.RunAtLoad = true;

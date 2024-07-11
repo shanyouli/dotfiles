@@ -38,7 +38,8 @@ in {
         ruff
         python3.pkgs.ruff-lsp
         poetry
-        pyright
+        # pyright
+        unstable.basedpyright
         pipenv
       ];
       modules.shell = {
