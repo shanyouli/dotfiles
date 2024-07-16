@@ -14,6 +14,7 @@
   };
   modules = {
     # shared
+    shell.prompt.default = "oh-my-posh";
     shell.nix-your-shell.enable = true;
     shell.zinit.enable = true;
     shell.vivid.enable = true;

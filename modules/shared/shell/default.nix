@@ -99,6 +99,9 @@ in {
       cachix # nix cache
       hugo # 我的blog工具
       imagemagick # 图片转换工具
+      viu # Terminal image viewer with native support for iTerm and Kitty
+      graphviz
+
       gifsicle # 命令行gif生成工具
       nix-your-shell # nix-shell Support for other shells(zsh,fish,nushell)
       gnused # sed 工具

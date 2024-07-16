@@ -48,10 +48,9 @@ in {
         of options.
       '';
     };
-    enableBash = mkBoolOpt true;
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.starship];
+    environment.systemPackages = [pkgs.starship];
     modules.shell.prompt.starship.settings = {
       add_newline = false;
       character = {
@@ -64,14 +63,14 @@ in {
         style = "bold lavender";
       };
     };
-    modules.shell.rcInit = lib.optionalString (! cfm.p10k.enable) ''
+    modules.shell.rcInit = lib.optionalString cfm.zsh.enable ''
       _cache starship init zsh --print-full-init
     '';
     modules.shell.nushell.cacheCmd = ["${pkgs.starship}/bin/starship init nu"];
     home.configFile."starship.toml" = mkIf ((cfg.settings != {}) && (config.modules.theme.default == "")) {
       source = tomlFormat.generate "starship-config" cfg.settings;
     };
-    programs.bash.interactiveShellInit = mkIf cfg.enableBash ''
+    programs.bash.interactiveShellInit = mkIf cfm.bash.enable ''
       if [[ $TERM != "dumb" && (-z $INSIDE_EMACS || $INSIDE_EMACS == "vterm") ]]; then
         eval "$(starship init bash --print-full-init)"
       fi
