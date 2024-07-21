@@ -13,7 +13,6 @@ in {
     modules.media.video = {
       enable = mkEnableOption "Whether to enable mpv module ";
       stream.enable = mkBoolOpt true;
-      mpvc.enable = mkBoolOpt true;
     };
   };
 
@@ -23,17 +22,7 @@ in {
         user.packages =
           [
             pkgs.mpv
-          ]
-          ++ optionals cfg.mpvc.enable [
-            pkgs.unstable.mpvc
-            pkgs.fzf
-            pkgs.gawk
-            pkgs.gnused
-            pkgs.socat
-            pkgs.rlwrap
-            pkgs.jq
-            (mkIf (! config.modules.media.download.enVideo) pkgs.yt-dlp)
-            pkgs.util-linux
+            (mkIf pkgs.stdenvNoCC.isLinux pkgs.mpvc)
           ]
           ++ optionals cfg.stream.enable [
             pkgs.unstable.seam

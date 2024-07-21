@@ -79,7 +79,7 @@ in {
       violentmonkey
       # switchyomega
       styl-us
-      privacy-pass
+      # privacy-pass
       immersive-translate
     ]);
     modules.browser.firefox.finalPackage = wrapPackage cfg.package;

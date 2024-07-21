@@ -148,6 +148,8 @@ in {
           # "visual-studio-code" # other editors nix 管理
           "command-x" # Cut files
           "logseq" # 笔记工具
+
+          "jordanbaird-ice" # tab 自动隐藏
         ]
         ++ optionals config.modules.shell.adb.enable [
           # "openmtp" # 目前不是很稳定
@@ -174,6 +176,7 @@ in {
         "Amphetamine" = 937984704;
         # "mineweeper" = 1475921958; # 扫雷
         "text-scaner" = 1452523807;
+        "pipad-calc" = 1482575592; # 高颜值的计算器
         # "localSend" = 1661733229;
         # "vidhub" = 1659622164; # 视频管理,需要网速足够好
         # "medis" = 1579200037; # redis 管理工具, 可免费使用，
