@@ -16,6 +16,7 @@ in {
   options.modules.macos.music = {
     enable = mkBoolOpt scfg.enable;
     lx.enable = mkBoolOpt false;
+    fifo.enable = mkBoolOpt false;
   };
   config = mkIf cfg.enable (mkMerge [
     {
@@ -37,20 +38,22 @@ in {
             audio_buffer_size "8192"
             buffer_before_play "25%"
           }
-          # Visualizer
-          # audio_output {
-          #   type "fifo"
-          #   name "my_fifo"
-          #   path "${mpdfifo}"
-          #   format "44100:16:2"
-          # }
+          ${lib.optionalString cfg.fifo.enable ''
+            # Visualizer
+            audio_output {
+              type "fifo"
+              name "my_fifo"
+              path "${mpdfifo}"
+              format "44100:16:2"
+            }
+          ''}
           # input
           input {
             enabled "no"
             plugin "qobuz"
           }
         '';
-        ncmpcppConfig = ''
+        ncmpcppConfig = lib.optionalString cfg.fifo.enable ''
           visualizer_data_source = "${mpdfifo}"
         '';
       };
