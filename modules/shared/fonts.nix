@@ -27,10 +27,6 @@ in {
         lxgw-wenkai
         unifont
         (nerdfonts.override {fonts = ["FantasqueSansMono" "NerdFontsSymbolsOnly"];})
-        # maple-mono
-        # maple-sc
-        julia-mono
-        monaspace
       ];
     };
   };

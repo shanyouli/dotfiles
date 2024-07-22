@@ -47,7 +47,7 @@ in {
           if (( $+commands[asdf] )) ; then
             export PIPX_DEFAULT_PYTHON=$(asdf which python)
           elif (( $+commands[mise])) ; then
-            export PIPX_DEFAULT_PYTHON=$(mise where python@3.10)/bin/python
+            export PIPX_DEFAULT_PYTHON=$(mise where python@3.11)/bin/python
           fi
           command pipx "$@"
           unset PIPX_DEFAULT_PYTHON
