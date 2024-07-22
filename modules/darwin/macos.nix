@@ -75,7 +75,9 @@ in {
             NSWindowResizeTime = 1.0e-3;
             PMPrintingExpandedStateForPrint = true;
             PMPrintingExpandedStateForPrint2 = true;
-            _HIHideMenuBar = true;
+            # see@ https://github.com/jordanbaird/Ice/issues/201
+            # ice 工具目前无法在总是隐藏 menubar 的状态下工作
+            _HIHideMenuBar = false;
             # com.apple.mouse.tapBehavior = 1;
             # com.apple.sound.beep.feedback = 0;
             # com.apple.springing.delay = 0;
