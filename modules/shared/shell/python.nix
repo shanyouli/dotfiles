@@ -59,6 +59,7 @@ in {
           _comps[pipx]=_pipx
         fi
       '';
+      # nushell.cmpFiles = ["${config.dotfiles.configDir}/pipx/pipx-completions.nu"];
       nushell.rcInit = ''
         export def --wrapped pipx [...rest: string] {
             let pipx_default_python = if (not (which mise | is-empty)) {
@@ -72,7 +73,7 @@ in {
             if $pipx_default_python == "" {
                 ^pipx ...$rest
             } else {
-                with-env {PIPX_DEFAULT_PYTHON: "$pipx_default_python" } {
+                with-env {PIPX_DEFAULT_PYTHON: $pipx_default_python } {
                     ^pipx ...$rest
                 }
             }

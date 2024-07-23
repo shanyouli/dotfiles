@@ -163,6 +163,8 @@ in {
         pkgs.mediainfo
         # grip markdown 预览配置
         pkgs.python3Packages.grip
+        # emacs-lsp-booster , 更快的使用 lsp 服务
+        pkgs.emacs-lsp-booster
       ];
       modules.shell.python.extraPkgs = ps:
         with ps; [
