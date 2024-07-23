@@ -61,10 +61,21 @@ in {
       '';
       nushell.rcInit = ''
         export def --wrapped pipx [...rest: string] {
-            if (not (which mise | is-empty)) {
-                $env.PIPX_DEFAULT_PYTHON = ([(mise where python@3.11), "bin", "python"] | path join)
+            let pipx_default_python = if (not (which mise | is-empty)) {
+                [(mise where python@3.11), "bin", "python"] | path join
+                # ^mise which python
+            } else if (not (which asdf | is-empty)) {
+                [(asdf where python 3.11.9), "bin", "python"] | path join
+            } else {
+                ""
             }
-            ^pipx ...$rest
+            if $pipx_default_python == "" {
+                ^pipx ...$rest
+            } else {
+                with-env {PIPX_DEFAULT_PYTHON: "$pipx_default_python" } {
+                    ^pipx ...$rest
+                }
+            }
         }
       '';
     };

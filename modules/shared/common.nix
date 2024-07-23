@@ -25,6 +25,7 @@ with lib.my; {
       (ripgrep.override {withPCRE2 = true;})
       #
       curl
+      pkgs.unstable.cached-nix-shell # Better nix-shell
     ];
     etc = {
       home-manager.source = "${inputs.home-manager}";

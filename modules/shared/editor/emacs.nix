@@ -124,6 +124,7 @@ in {
                 tree-sitter-nix
                 tree-sitter-yaml
                 tree-sitter-vue
+                tree-sitter-nu
               ]))
           epkgs.elvish-mode
         ]

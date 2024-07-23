@@ -15,6 +15,7 @@ in {
     cacheCmd = with types; mkOpt' (listOf str) [] "cache file";
     cachePrev = mkOpt' types.lines "" "Initialization script at build time";
     rcInit = mkOpt' types.lines "" "Init nushell";
+    cmpFiles = with types; mkOpt' (listOf (either str path)) [] "nushell plugins";
   };
   config = mkIf cfg.enable {
     user.packages = [pkgs.unstable.nushell];
@@ -41,6 +42,7 @@ in {
             source ${config.home.cacheDir}/nushell/${x}.nu
           '')
           cfg.cacheCmd)}
+        ${concatStringsSep "\n" (map (x: "use ${x} *") cfg.cmpFiles)}
         ${concatStringsSep "\n" (mapAttrsToList (n: v: ''alias ${n} = ^${v}'')
             (filterAttrs (n: v: v != "" && n != "rm" && n != "rmi") config.modules.shell.aliases))}
         ${cfg.rcInit}
