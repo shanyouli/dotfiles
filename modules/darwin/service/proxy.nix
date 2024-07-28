@@ -18,6 +18,7 @@ in {
     log_file = "${config.user.home}/Library/Logs/org.nixos.proxy.log";
   in {
     user.packages = [pkgs.unstable.darwinapps.clash-verge];
+    homebrew.casks = [(mkIf (config.modules.tool.proxy.default == "sing-box") "sfm")];
     launchd.user.agents.proxy = {
       path = [config.modules.service.path];
       serviceConfig.RunAtLoad = true;
