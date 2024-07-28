@@ -12,6 +12,7 @@
     # maxJobs = 4;
     settings.cores = 4;
   };
+  user.uid = 501; # uid macos 创建的用户 默认 uid 为 501
   modules = {
     # shared
     shell.prompt.default = "oh-my-posh";

@@ -36,6 +36,8 @@ in {
       XDG_DATA_HOME = "${config.home.dataDir}";
       XDG_BIN_HOME = "${config.home.binDir}";
       XDG_STATE_HOME = "${config.home.stateDir}";
+
+      XDG_RUNTIME_DIR = "/run/user/${toString config.user.uid}";
       # Conform more programs to XDG conventions. The rest are handled by their
       # respective modules.
       __GL_SHADER_DISK_CACHE_PATH = "${config.home.cacheDir}/nv";

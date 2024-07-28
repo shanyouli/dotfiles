@@ -13,7 +13,13 @@ in {
     enable = mkBoolOpt false;
   };
 
-  config = mkIf cfg.enable {
-    user.packages = with pkgs; [android-tools payload-dumper-go];
-  };
+  config = mkIf cfg.enable (mkMerge [
+    {
+      user.packages = with pkgs; [android-tools payload-dumper-go];
+    }
+    (mkIf config.modules.xdg.enable {
+      modules.shell.env.ANDROID_USER_HOME = "$XDG_DATA_HOME/android";
+      modules.shell.aliases.adb = ''HOME="$XDG_DATA_HOME"/android adb'';
+    })
+  ]);
 }
