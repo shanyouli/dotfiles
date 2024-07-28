@@ -150,6 +150,8 @@ in {
           "logseq" # 笔记工具
 
           "jordanbaird-ice" # tab 自动隐藏
+
+          # "windterm" # 比较好用的 ssh 客户端，可以使用 vscode 的 ssh 插件取代
         ]
         ++ optionals config.modules.shell.adb.enable [
           # "openmtp" # 目前不是很稳定

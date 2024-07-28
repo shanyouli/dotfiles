@@ -4,11 +4,14 @@ if [[ -z $TMUX && "$TMUX_AUTOSTART" == "True" && -z "$INSIDE_EMACS" && -z $EMACS
     if (( $+commands[tmux] )); then
         exec sh -c "tmux attach -t TMUX || tmux new -s TMUX"
     fi
-else
-    export FZF_TMUX=1
+fi
+
+if [[ -n $TMUX ]]; then
+   export FZF_TMUX=1
 fi
 
 function _zt { zinit depth"1" lucid ${1/#[0-9][a-c]/wait"$1"} "${@:2}"; }
+
 function _zsnippet() {
     local second
     if [[ $1 == [0-9][a-c] ]]; then
