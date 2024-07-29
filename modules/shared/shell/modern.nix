@@ -21,11 +21,11 @@ in {
       eza # ls, tree
       bat # cat
       duf # df
-      gdu # du
+      dua # gdu # du
     ];
     modules.shell.aliases.df = "duf";
     modules.shell.aliases.cat = "bat -p"; # or bat -pp
-    modules.shell.aliases.du = "gdu";
+    modules.shell.aliases.du = "dua";
     modules.shell.aliases.htop = "btm --basic --mem_as_value";
     modules.shell.pluginFiles = ["exa"];
   };

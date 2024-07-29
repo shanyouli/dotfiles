@@ -23,8 +23,7 @@ in {
       # neteasemusic or yesplaymusic
       # vox or foobar2000
       homebrew.casks =
-        ["foobar2000"]
-        ++ lib.optionals (netease.enable && netease.enGui) ["yesplaymusic"]
+        lib.optionals (netease.enable && netease.enGui) ["yesplaymusic"]
         ++ optionals cfg.lx.enable ["lx-music"];
       user.packages = with pkgs.unstable.darwinapps; [lyricx vimmotion] ++ optionals (! cfg.lx.enable) [spotube];
     }
