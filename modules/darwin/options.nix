@@ -190,6 +190,17 @@ in {
         enable = config.modules.tool.qbittorrent.webScript != "";
         text = config.modules.tool.qbittorrent.webScript;
       };
+
+      macos.systemScript.initXDG = {
+        enable = config.modules.xdg.enable;
+        text = ''
+          if ! [[ -d ${config.modules.xdg.value.XDG_RUNTIME_DIR} ]] ; then
+            mkdir -p ${config.modules.xdg.value.XDG_RUNTIME_DIR}
+            chown -R "${config.user.name}" ${config.modules.xdg.value.XDG_RUNTIME_DIR}
+            chmod +755 ${config.modules.xdg.value.XDG_RUNTIME_DIR}
+          fi
+        '';
+      };
       macos.userScript.linkChromeApp = let
         appEn = config.modules.macos.app.enable;
         mchrome = config.modules.browser.chrome;

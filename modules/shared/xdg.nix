@@ -36,8 +36,8 @@ in {
       XDG_DATA_HOME = "${config.home.dataDir}";
       XDG_BIN_HOME = "${config.home.binDir}";
       XDG_STATE_HOME = "${config.home.stateDir}";
-
       XDG_RUNTIME_DIR = "/run/user/${toString config.user.uid}";
+
       # Conform more programs to XDG conventions. The rest are handled by their
       # respective modules.
       __GL_SHADER_DISK_CACHE_PATH = "${config.home.cacheDir}/nv";
@@ -57,6 +57,22 @@ in {
       # BZR_PLUGIN_PATH = "${config.home.dataDir}/bazaar";
       # BZR_HOME        = "${config.home.cacheDir}/bazaar";
       # ICEAUTHORITY    = "${config.home.cacheDir}/ICEauthority";
+
+      # .dotnet 文件 to $XDG_DATA_HOME/dotnet
+      DOTNET_CLI_HOME = "${config.home.dataDir}/dotnet";
+
+      # .gem to $XDG_CACHE_HOME
+      GEM_HOME = "${config.home.dataDir}/gem";
+      GEM_SPAC_HOME = "${config.home.cacheDir}/gem";
+
+      # MPLCONFIGDIR
+      MPLCONFIGDIR = "${config.home.cacheDir}/matplotlib";
+
+      # .openjfx to $XDG_CACHE_DIR
+      _JAVA_OPTIONS = "-Djava.util.prefs.userRoot=${config.home.cacheDir}/java -Djavafx.cachedir=${config.home.cacheDir}/openjfx";
+
+      # .docker
+      DOCKER_CONFIG = "${config.home.configDir}/docker";
     };
   };
 }
