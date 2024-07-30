@@ -22,6 +22,7 @@ in {
         "-D"
       ];
       serviceConfig.EnvironmentVariables.TMUX_HOME = "${config.home.configDir}/tmux";
+      serviceConfig.EnvironmentVariables.XDG_CONFIG_HOME = "${config.home.configDir}";
       serviceConfig.RunAtLoad = true;
     };
   };
