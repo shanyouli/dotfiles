@@ -37,5 +37,8 @@ in {
         builtins.replaceStrings ["$USER" "$HOME"] [config.user.name config.user.home]
         config.environment.systemPath;
     }
+    (mkIf config.programs.gnupg.agent.enable {
+      launchd.user.agents.gnupg-agent.serviceConfig.EnvironmentVariables.GPUPGHOME = config.environment.variables.GNUPGHOME;
+    })
   ];
 }

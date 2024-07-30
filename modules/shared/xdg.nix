@@ -36,7 +36,10 @@ in {
       XDG_DATA_HOME = "${config.home.dataDir}";
       XDG_BIN_HOME = "${config.home.binDir}";
       XDG_STATE_HOME = "${config.home.stateDir}";
-      XDG_RUNTIME_DIR = "/run/user/${toString config.user.uid}";
+      XDG_RUNTIME_DIR =
+        if pkgs.stdenvNoCC.isDarwin
+        then "/tmp/user/${toString config.user.uid}"
+        else "/run/user/${toString config.user.uid}";
 
       # Conform more programs to XDG conventions. The rest are handled by their
       # respective modules.
