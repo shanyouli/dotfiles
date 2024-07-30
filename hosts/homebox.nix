@@ -43,6 +43,8 @@
 
     shell.modern.enable = true;
 
+    terminal.alacritty.enable = true;
+    terminal.default = "kitty";
     editor.default = "nvim";
     # editor.nvim.enable = true;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs

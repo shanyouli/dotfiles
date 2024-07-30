@@ -7,9 +7,9 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.kitty;
+  cfg = config.modules.terminal.kitty;
 in {
-  options.modules.kitty = with types; {
+  options.modules.terminal.kitty = with types; {
     enable = mkBoolOpt false;
     settings = mkOpt' lines "" ''
       Kitty additional configuration
@@ -18,7 +18,7 @@ in {
   config = mkIf cfg.enable {
     user.packages = [pkgs.kitty];
     modules.shell.pluginFiles = ["kitty"];
-    modules.kitty.settings = ''
+    modules.terminal.kitty.settings = ''
       font_family ${config.modules.fonts.term.family}
       font_size ${toString config.modules.fonts.term.size}
     '';

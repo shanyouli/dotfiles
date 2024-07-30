@@ -2,8 +2,8 @@
 # https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/tmux/tmux.plugin.zsh
 if [[ -z $TMUX && "$TMUX_AUTOSTART" == "True" && -z "$INSIDE_EMACS" && -z $EMACS && -z $VIM && -z "$INTELLIJ_ENVIRONMENT_READER" && $- == *i* ]]; then
     if (( $+commands[tmux] )); then
-        if tmux has-sesssion -t TMUX >/dev/null 2>&1; then
-            exec sh -c "tmux attach -t TMUX"
+        if tmux has-session -t TMUX >/dev/null 2>&1; then
+            exec tmux attach -t TMUX
         else
             exec tmux new -s TMUX -- "export SHELL=$(which zsh); zsh -il"
         fi

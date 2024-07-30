@@ -7,9 +7,9 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.wezterm;
+  cfg = config.modules.terminal.wezterm;
 in {
-  options.modules.wezterm = with types; {
+  options.modules.terminal.wezterm = with types; {
     enable = mkBoolOpt false;
   };
   config = mkIf cfg.enable {
