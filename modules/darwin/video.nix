@@ -19,8 +19,9 @@ in {
     homebrew.casks = ["iina"] ++ optionals mpvcfg.stream.enable ["iina-plus"];
     user.packages = with pkgs.unstable.darwinapps;
       [
-        zy-player
-        dashplayer
+        # 使用浏览器进行视频播放和搜索
+        # zy-player
+        # dashplayer
       ]
       ++ optionals mpvcfg.stream.enable [
         simple-live
