@@ -23,6 +23,7 @@ in {
       ];
       serviceConfig.EnvironmentVariables.TMUX_HOME = "${config.home.configDir}/tmux";
       serviceConfig.EnvironmentVariables.XDG_CONFIG_HOME = "${config.home.configDir}";
+      serviceConfig.EnvironmentVariables.SHELL = "zsh";
       serviceConfig.RunAtLoad = true;
     };
   };

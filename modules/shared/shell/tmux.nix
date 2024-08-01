@@ -40,18 +40,30 @@ in {
               source-file '${path}'
             '')
             cfg.rcFiles}
+
+          ${theme}
           set -g @tmux_power_prefix_highlight_pos 'L'
-          set -g @continuum-restore 'on'
+          run-shell '${pkgs.tmuxPlugins.prefix-highlight}/share/tmux-plugins/prefix-highlight/prefix_highlight.tmux'
+
+          # 复制，快捷按键 prefix </>
+          run-shell '${pkgs.tmuxPlugins.copycat}/share/tmux-plugins/copycat/copycat.tmux'
+          run-shell '${pkgs.tmuxPlugins.yank}/share/tmux-plugins/yank/yank.tmux'
+
+          # prefix <tab>, selection, <tab> insert <enter> copy
+          run-shell '${pkgs.tmuxPlugins.extrakto}/share/tmux-plugins/extrakto/extrakto.tmux'
+
+          # tmux 会话自动保存，配合 continuum 自动恢复会话
           set -g @resurrect-dir '${config.home.cacheDir}/tmux-resurrect'
           set -g @resurrect-processes 'btm'
-          ${theme}
-          run-shell '${pkgs.tmuxPlugins.copycat}/share/tmux-plugins/copycat/copycat.tmux'
-          run-shell '${pkgs.tmuxPlugins.prefix-highlight}/share/tmux-plugins/prefix-highlight/prefix_highlight.tmux'
-          run-shell '${pkgs.tmuxPlugins.yank}/share/tmux-plugins/yank/yank.tmux'
-          run-shell '${pkgs.tmuxPlugins.open}/share/tmux-plugins/open/open.tmux'
-          run-shell '${pkgs.tmuxPlugins.extrakto}/share/tmux-plugins/extrakto/extrakto.tmux'
           run-shell '${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/resurrect.tmux'
+
+          set -g @continuum-restore 'on'
           run-shell '${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum/continuum.tmux'
+
+          # tmux copy toolkit 配置
+          set -g @copytk-quickopen-env-file '${config.home.cacheDir}/tmux-copytk-env'
+          run-shell '${pkgs.tmuxPlugins.copy-toolkit}/share/tmux-plugins/copy-toolkit/copytk.tmux'
+          tmux bind-key -T prefix l run-shell -b "pythons ${pkgs.tmuxPlugins.copy-toolkit}/share/tmux-plugins/copy-toolkit/copytk.py linecopy"
         '';
         executable = true;
       };

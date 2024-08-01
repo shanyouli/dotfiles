@@ -59,6 +59,9 @@ in {
       '';
     }))
     {
+      user.packages = [
+        pkgs.unstable.darwinapps.pearcleaner
+      ];
       homebrew.enable = true; # 你需要手动安装homebrew
       homebrew.onActivation = {
         autoUpdate = false;
@@ -125,7 +128,7 @@ in {
           "mac-mouse-fix" # 鼠标fix
           "pictureview" # 看图
 
-          "appcleaner" # 软件卸载
+          # "appcleaner" # 软件卸载, 使用 pearcleaner
           # "clean-me" # ka, 使用 Lemon Cleaner 取代
           "tencent-lemon" # 文件清理
 
