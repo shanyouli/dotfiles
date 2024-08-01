@@ -63,7 +63,7 @@ in {
           # tmux copy toolkit 配置
           set -g @copytk-quickopen-env-file '${config.home.cacheDir}/tmux-copytk-env'
           run-shell '${pkgs.tmuxPlugins.copy-toolkit}/share/tmux-plugins/copy-toolkit/copytk.tmux'
-          tmux bind-key -T prefix l run-shell -b "pythons ${pkgs.tmuxPlugins.copy-toolkit}/share/tmux-plugins/copy-toolkit/copytk.py linecopy"
+          bind-key -T prefix l run-shell -b "pythons ${pkgs.tmuxPlugins.copy-toolkit}/share/tmux-plugins/copy-toolkit/copytk.py linecopy"
         '';
         executable = true;
       };

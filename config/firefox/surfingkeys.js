@@ -123,11 +123,11 @@ mapkey('ymo', '以org格式复制链接', () => {
       console.log("No video information was found");
     }
     message = [
+      `* [[${url}][${title}]]`,
+      "豆瓣评分: ${score}",
       "#+begin_quote",
       info,
       "#+end_quote",
-      `- [[${url}][${title} 豆瓣评分:]] ${score}`,
-      "- 我的评分:"
     ].join("\n")
   }
   if (message === undefined) {

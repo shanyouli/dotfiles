@@ -19,12 +19,12 @@ in {
     environment.systemPackages = [package];
     programs.bash.interactiveShellInit = mkIf cfp.bash.enable ''
       if [[ $TERM != "dumb" && (-z $INSIDE_EMACS || $INSIDE_EMACS == "vterm") ]]; then
-        eval "$(${formatFn bash})"
+        eval "$(${formatFn "bash"})"
       fi
     '';
-    modules.shell.nushell.cacheCmd = ["${formatFn nu}"];
+    modules.shell.nushell.cacheCmd = ["${formatFn "nu"}"];
     modules.shell.rcInit = lib.optionalString cfp.zsh.enable ''
-      _cache ${formatFn zsh}
+      _cache ${formatFn "zsh"}
     '';
   };
 }

@@ -156,6 +156,8 @@ in {
 
           # "windterm" # 比较好用的 ssh 客户端，可以使用 vscode 的 ssh 插件取代
           # "doll" # 在 menubar 上显示 消息提示
+          "zed"
+          "qutebrowser"
         ]
         ++ optionals config.modules.shell.adb.enable [
           # "openmtp" # 目前不是很稳定
