@@ -26,7 +26,7 @@ in {
         cfg.term.package
         lxgw-wenkai
         unifont
-        (nerdfonts.override {fonts = ["FantasqueSansMono" "NerdFontsSymbolsOnly"];})
+        (nerdfonts.override {fonts = ["FantasqueSansMono" "NerdFontsSymbolsOnly" "CascadiaCode"];})
       ];
     };
   };

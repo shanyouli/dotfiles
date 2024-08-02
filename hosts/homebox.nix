@@ -43,7 +43,7 @@
 
     shell.modern.enable = true;
 
-    terminal.alacritty.enable = true;
+    # terminal.alacritty.enable = true;
     terminal.default = "kitty";
     editor.default = "nvim";
     # editor.nvim.enable = true;

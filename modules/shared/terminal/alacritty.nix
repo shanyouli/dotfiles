@@ -32,5 +32,11 @@ in {
   };
   config = mkIf cfg.enable {
     user.packages = [cfgPkg];
+    home.configFile = {
+      "alacritty" = {
+        source = "${config.dotfiles.configDir}/alacritty";
+        recursive = true;
+      };
+    };
   };
 }

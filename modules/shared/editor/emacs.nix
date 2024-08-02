@@ -165,6 +165,8 @@ in {
         pkgs.python3Packages.grip
         # emacs-lsp-booster , 更快的使用 lsp 服务
         pkgs.emacs-lsp-booster
+        (mkIf (config.programs.gnupg.agent.enable)
+          pkgs.pinentry-emacs) # in emacs gnupg prompts
       ];
       modules.shell.python.extraPkgs = ps:
         with ps; [
