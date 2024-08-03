@@ -154,17 +154,20 @@ in {
     }
     {
       user.packages = [
-        pkgs.graphviz
         cfg.pkg
+
+        pkgs.graphviz
         pkgs.pandoc
+
         #dirvish 包需要的工具
         # poppler
         pkgs.ffmpegthumbnailer
         pkgs.mediainfo
         # grip markdown 预览配置
         pkgs.python3Packages.grip
-        # emacs-lsp-booster , 更快的使用 lsp 服务
-        pkgs.emacs-lsp-booster
+
+        pkgs.emacs-lsp-booster # emacs-lsp-booster , 更快的使用 lsp 服务
+
         (mkIf (config.programs.gnupg.agent.enable)
           pkgs.pinentry-emacs) # in emacs gnupg prompts
       ];
@@ -175,9 +178,7 @@ in {
           six
           paramiko
           rapidfuzz
-          # # openAI
           sexpdata # 0.0.3, or lsp-bridge
-          openai
         ];
       modules.shell = {
         env.PATH = ["$XDG_CONFIG_HOME/emacs/bin"];
