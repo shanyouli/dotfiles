@@ -62,7 +62,16 @@ with lib.my; {
     # };
     registry = mkForce registryInputs // {dotfiles.flake = inputs.self;};
     nixPath =
-      nixPathInputs
+      [
+        "nixpkgs=/etc/nixpkgs"
+        "nixpkgs-unstable=/etc/nixpkgs-unstable"
+        "home-manager=/etc/home-manager"
+      ]
+      ++ (builtins.filter (x:
+        !((hasPrefix "nixpkgs=" x)
+          || (hasPrefix "nixpkgs-unstable=" x)
+          || (hasPrefix "home-manager=" x)))
+      nixPathInputs)
       ++ [
         # "nixpkgs-overlays=${config.dotfiles.dir}/overlays"
         "dotfiles=${config.dotfiles.dir}"
