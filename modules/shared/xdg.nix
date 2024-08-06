@@ -18,8 +18,8 @@ in {
   config = mkIf cfg.enable {
     home-manager.users.${config.user.name}.xdg.enable = true;
 
-    # 用来提示还有那些可以规范的文件。如何使用
-    environment.systemPackages = [pkgs.xdg-ninja];
+    # 用来提示还有那些可以规范的文件。如何使用, 使用 my-xdg 脚本取代
+    # environment.systemPackages = [pkgs.xdg-ninja];
 
     # Get Nix (2.14+) itself to respect XDG. I.e.
     # ~/.nix-defexpr -> $XDG_DATA_HOME/nix/defexpr
