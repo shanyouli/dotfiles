@@ -25,18 +25,18 @@ in {
     path = mkStrOpt "";
   };
   config = mkMerge [
-    (mkIf (cfg.env != []) {
-      launchd.user.agents.env = {
-        path = [config.environment.systemPath];
-        serviceConfig.RunAtLoad = true;
-        serviceConfig.ProgramArguments = ["${envScript}/bin/launchdenv-service"];
-      };
-    })
     {
       modules.service.path =
         builtins.replaceStrings ["$USER" "$HOME"] [config.user.name config.user.home]
         config.environment.systemPath;
     }
+    (mkIf (cfg.env != []) {
+      launchd.user.agents.env = {
+        path = [cfg.path];
+        serviceConfig.RunAtLoad = true;
+        serviceConfig.ProgramArguments = ["${envScript}/bin/launchdenv-service"];
+      };
+    })
     (mkIf config.programs.gnupg.agent.enable {
       launchd.user.agents.gnupg-agent.serviceConfig.EnvironmentVariables.GPUPGHOME = config.environment.variables.GNUPGHOME;
     })
