@@ -19,7 +19,10 @@ in {
     }
     (mkIf config.modules.xdg.enable {
       modules.shell.env.ANDROID_USER_HOME = "$XDG_DATA_HOME/android";
-      modules.shell.aliases.adb = ''HOME="${config.home.dataDir}"/android adb'';
+      # modules.shell.aliases.adb = ''HOME="${config.home.dataDir}"/android adb'';
+      modules.shell.rcInit = ''
+        alias adb='HOME="$XDG_DATA_HOME"/android adb'
+      '';
     })
   ]);
 }

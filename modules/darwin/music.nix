@@ -52,7 +52,7 @@ in {
             plugin "qobuz"
           }
         '';
-        ncmpcppConfig = lib.optionalString cfg.fifo.enable ''
+        ncmpcpp.config = lib.optionalString cfg.fifo.enable ''
           visualizer_data_source = "${mpdfifo}"
         '';
       };

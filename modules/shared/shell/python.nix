@@ -62,20 +62,25 @@ in {
       # nushell.cmpFiles = ["${config.dotfiles.configDir}/pipx/pipx-completions.nu"];
       nushell.rcInit = ''
         export def --wrapped pipx [...rest: string] {
-            let pipx_default_python = if (not (which mise | is-empty)) {
-                [(mise where python@3.11), "bin", "python"] | path join
-                # ^mise which python
-            } else if (not (which asdf | is-empty)) {
-                [(asdf where python 3.11.9), "bin", "python"] | path join
-            } else {
-                ""
-            }
-            if $pipx_default_python == "" {
-                ^pipx ...$rest
-            } else {
-                with-env {PIPX_DEFAULT_PYTHON: $pipx_default_python } {
-                    ^pipx ...$rest
+            if ($env | get --ignore-errors PIPX_DEFAULT_PYTHON | is-empty) {
+                let pipx_default_python = if (not (which mise | is-empty)) {
+                    [(mise where python@3.11), "bin", "python"] | path join
+                    # ^mise which python
+                } else if (not (which asdf | is-empty)) {
+                    [(asdf where python 3.11.9), "bin", "python"] | path join
+                } else {
+                    ""
                 }
+                if $pipx_default_python == "" {
+                    ^pipx ...$rest
+                } else {
+                    with-env {PIPX_DEFAULT_PYTHON: $pipx_default_python } {
+                        ^pipx ...$rest
+                    }
+                }
+
+            } else {
+                ^pipx ...$rest
             }
         }
       '';
