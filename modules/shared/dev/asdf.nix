@@ -18,7 +18,7 @@ in {
     enable = mkEnableOption "Whether to asdf plugins";
     plugins = mkOption {
       description = "asdf install plugins";
-      type = attrsOf (oneOf [(nullOr bool) (listOf str)]);
+      type = attrsOf (oneOf [str (nullOr bool) (listOf str)]);
       default = {};
     };
     package = mkPkgOpt pkgs.asdf-vm "asdf package";
@@ -92,7 +92,12 @@ in {
           ${cfbin} plugin add ${v}
         fi
       '';
-      asdfInPlugins = plugin: versions: ''
+      asdfInPlugins = plugin: versions: let
+        versions =
+          if builtins.isString versions
+          then [versions]
+          else versions;
+      in ''
         echo-info "Use asdf initialization development ${plugin}"
         function asdf_${plugin}_init() {
           local _all_ver=""

@@ -17,7 +17,7 @@ with lib.my; let
 in {
   options.modules.dev.python = with types; {
     enable = mkEnableOption "Whether to python";
-    plugins = mkOpt' (listOf (nullOr str)) [] "Use asdf install python version";
+    plugins = mkOpt' (oneOf [str (listOf (nullOr str))]) [] "Use asdf install python version";
   };
   config = mkIf cfg.enable (mkMerge [
     {

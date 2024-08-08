@@ -19,7 +19,7 @@ in {
 
     plugins = mkOption {
       description = "asdf or mise install plugins";
-      type = attrsOf (oneOf [(nullOr bool) (listOf str)]);
+      type = attrsOf (oneOf [str (nullOr bool) (listOf str)]);
       default = {};
     };
     text = mkOpt' lines "" "init dev Lang script";

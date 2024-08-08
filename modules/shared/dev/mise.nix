@@ -15,7 +15,7 @@ in {
     enable = mkEnableOption "Whether to use mise";
     plugins = mkOption {
       description = "mise install plugins";
-      type = attrsOf (oneOf [(nullOr bool) (listOf str)]);
+      type = attrsOf (oneOf [str (nullOr bool) (listOf str)]);
       default = {};
     };
     package = mkPkgOpt pkgs.unstable.mise "mise package";
@@ -33,11 +33,17 @@ in {
       finalNeedPlugins = lib.filterAttrs (k: v: !(builtins.elem v [null false])) cfg.plugins;
       mise_in_plugin_fn = v: ''${cfbin} p add ${v} -y'';
       mise_plugin_ver_fn = p: vers:
-        concatStrings (map (v: ''
-            echo-info "Use ${p} ${v} ..."
-            ${cfbin} install ${p}@${v}
-          '')
-          vers);
+        if builtins.isString vers
+        then ''
+          echo-info "Use ${p} ${vers} ..."
+          ${cfbin} install ${p}@${vers}
+        ''
+        else
+          concatStrings (map (v: ''
+              echo-info "Use ${p} ${v} ..."
+              ${cfbin} install ${p}@${v}
+            '')
+            vers);
       text = concatStringsSep "\n" (mapAttrsToList (n: v: ''
           echo-info "Using mise to manage versions of ${n}"
           ${lib.optionalString (v != true) ''${mise_plugin_ver_fn n v}''}
