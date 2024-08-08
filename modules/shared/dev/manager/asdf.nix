@@ -8,13 +8,13 @@
 with lib;
 with lib.my; let
   cfm = config.modules;
-  cfg = cfm.dev.asdf;
+  cfg = cfm.dev.manager.asdf;
   cfbin = "${cfg.package}/bin/asdf";
 
   asdfConfigFile = "${config.home.configDir}/asdf/asdf.conf";
   asdfDataDir = "${config.home.dataDir}/asdf";
 in {
-  options.modules.dev.asdf = with types; {
+  options.modules.dev.manager.asdf = with types; {
     enable = mkEnableOption "Whether to asdf plugins";
     plugins = mkOption {
       description = "asdf install plugins";
@@ -85,7 +85,7 @@ in {
       })
     ];
     modules.shell.pluginFiles = ["asdf"];
-    modules.dev.asdf.text = let
+    modules.dev.manager.asdf.text = let
       asdf_plugin_fn = v: ''
         if ! echo $asdf_plugins | grep -w ${v} >/dev/null 2>&1 ; then
           echo-info "asdf: install plugin ${v} ..."
@@ -93,7 +93,7 @@ in {
         fi
       '';
       asdfInPlugins = plugin: versions: let
-        versions =
+        vers =
           if builtins.isString versions
           then [versions]
           else versions;
@@ -121,7 +121,7 @@ in {
               fi
             fi
           '')
-          versions)}
+          vers)}
         }
         asdf_${plugin}_init
       '';
@@ -148,6 +148,6 @@ in {
       ${text}
       ${cfg.extInit}
     '';
-    modules.dev.asdf.plugins.direnv = cfm.shell.direnv.enable;
+    modules.dev.manager.asdf.plugins.direnv = cfm.shell.direnv.enable;
   };
 }

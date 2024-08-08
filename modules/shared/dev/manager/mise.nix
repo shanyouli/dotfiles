@@ -8,10 +8,10 @@
 with lib;
 with lib.my; let
   cfm = config.modules;
-  cfg = cfm.dev.mise;
+  cfg = cfm.dev.manager.mise;
   cfbin = "${cfg.package}/bin/mise";
 in {
-  options.modules.dev.mise = with types; {
+  options.modules.dev.manager.mise = with types; {
     enable = mkEnableOption "Whether to use mise";
     plugins = mkOption {
       description = "mise install plugins";
@@ -28,7 +28,7 @@ in {
     user.packages = [cfg.package];
     modules.shell.env.MISE_CACHE_DIR = "${config.home.cacheDir}/mise";
     modules.shell.rcInit = ''_cache -v ${cfg.package.version} mise activate zsh'';
-    modules.dev.mise.text = let
+    modules.dev.manager.mise.text = let
       mise_core_plugins = ["python" "bun" "deno" "erlang" "go" "java" "ruby" "rust" "node"];
       finalNeedPlugins = lib.filterAttrs (k: v: !(builtins.elem v [null false])) cfg.plugins;
       mise_in_plugin_fn = v: ''${cfbin} p add ${v} -y'';
