@@ -99,7 +99,11 @@ in {
       cachix # nix cache
       hugo # 我的blog工具
       imagemagick # 图片转换工具
-      viu # Terminal image viewer with native support for iTerm and Kitty
+
+      # Terminal image viewer with native support for iTerm and Kitty
+      # viu or timg,  timg better than viu。
+      # support graphics see @https://sw.kovidgoyal.net/kitty/graphics-protocol/
+      timg
       graphviz
 
       gifsicle # 命令行gif生成工具

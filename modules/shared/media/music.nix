@@ -32,15 +32,18 @@ in {
     };
     netease.enable = mkBoolOpt true;
     netease.enGui = mkBoolOpt config.modules.opt.enGui;
+    musikcube.enable = mkBoolOpt false;
   };
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.mpd.enable {
-      user.packages = with pkgs; [
-        mpd
-        mpc-cli
-        (mkIf cfg.mpd.ncmpcpp.enable (ncmpcpp.override {visualizerSupport = true;}))
-        (mkIf cfg.mpd.rmpc.enable pkgs.unstable.rmpc)
-      ];
+      user.packages = with pkgs;
+        [
+          mpd
+          mpc-cli
+          (mkIf cfg.mpd.ncmpcpp.enable (ncmpcpp.override {visualizerSupport = true;}))
+          (mkIf cfg.mpd.rmpc.enable pkgs.unstable.rmpc)
+        ]
+        ++ optionals cfg.musikcube.enable [pkgs.musikcube];
       modules.shell.aliases.mpcs = "mpc search any";
       modules.shell.aliases.mpcsp = "mpc searchplay any";
       home = let

@@ -121,5 +121,5 @@
 
   # 内存管理
   "browser.cache.memory.enable" = true;
-  "browser.cache.memory.capacity" = 8192; # 512M, 256M ==> 4096, -1 默认
+  "browser.cache.memory.capacity" = -1; # 512M, 256M ==> 4096, -1 默认, 18432=18MB一般适用于512M~1G内存
 }

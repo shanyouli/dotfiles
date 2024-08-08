@@ -37,5 +37,9 @@ in {
       level = 100;
       text = ''$DRY_RUN_CMD ln -sf ${homeDir}/Applications/Myapps/IINA.app /Applications/ '';
     };
+    home.configFile."mpv/fonts" = {
+      recursive = true;
+      source = "${pkgs.lxgw-wenkai}/share/fonts/truetype/LXGWWenKai";
+    };
   };
 }

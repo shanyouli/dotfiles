@@ -37,6 +37,7 @@ with lib.my; let
 
     # HACK: Unable to use nix installed git in scripts
     export PATH=/usr/bin:$PATH
+    export TERM="xterm-256color"
 
     # 一些echo 函数
     if command -v tput >/dev/null 2>&1; then

@@ -64,6 +64,11 @@ in {
           set -g @copytk-quickopen-env-file '${config.home.cacheDir}/tmux-copytk-env'
           run-shell '${pkgs.tmuxPlugins.copy-toolkit}/share/tmux-plugins/copy-toolkit/copytk.tmux'
           bind-key -T prefix l run-shell -b "pythons ${pkgs.tmuxPlugins.copy-toolkit}/share/tmux-plugins/copy-toolkit/copytk.py linecopy"
+
+          ${optionalString config.modules.terminal.kitty.enable ''
+            # when using kitty, @see https://mbuffett.com/posts/setting-up-tmux-and-kitty-for-true-color-support/
+            set-option -sa terminal-overrides ",xterm-kitty:RGB"
+          ''}
         '';
         executable = true;
       };

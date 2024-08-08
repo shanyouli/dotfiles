@@ -1,4 +1,7 @@
 # 安装一些现代工具
+# 现代 cli 工具来源:
+# see @https://github.com/hugsy/modern
+# see @https://github.com/ibraheemdev/modern-unix
 {
   pkgs,
   lib,
@@ -22,6 +25,10 @@ in {
       bat # cat
       duf # df
       dua # gdu # du
+      procs # ps(procps) 的替代工具
+      delta # diff
+      xh # curl
+      dog # dig
     ];
     modules.shell.aliases.df = "duf";
     modules.shell.aliases.cat = "bat -p"; # or bat -pp
