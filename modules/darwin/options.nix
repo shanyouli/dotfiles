@@ -226,7 +226,7 @@ in {
       macos.userScript.initDevInit = {
         enable = config.modules.dev.lang != [];
         desc = "Init dev language manager ...";
-        text = config.modules.dev.text;
+        text = config.modules.dev.manager.text;
       };
       macos.userScript.initNuShell = {
         enable = config.modules.shell.nushell.enable;

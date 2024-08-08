@@ -101,12 +101,12 @@ in {
     }
     (mkIf (cfg.plugins != []) {
       modules.dev.lang.python = cfg.plugins;
-      modules.dev.prevInit = ''
+      modules.dev.manager.prevInit = ''
         export CFLAGS="-I${config.home.dataDir}/benv/python/include $CFLAGS"
         export CPPFLAGS="-I${config.home.dataDir}/benv/python/include $CPPFLAGS"
         export LDFLAGS="-L${config.home.dataDir}/benv/python/lib $LDFLAGS"
       '';
-      modules.dev.extInit = ''
+      modules.dev.manager.extInit = ''
         unset CFLAGS LDFLAGS CPPFLAGS
       '';
     })

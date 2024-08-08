@@ -22,10 +22,6 @@ in {
       type = attrsOf (oneOf [str (nullOr bool) (listOf str)]);
       default = {};
     };
-    text = mkOpt' lines "" "init dev Lang script";
-    prevInit = mkOpt' lines "" "prev dev language env";
-    extInit = mkOpt' lines "" "extra dev language Init";
-
     toml.fmt = mkBoolOpt false;
     enWebReport = mkBoolOpt false;
   };
@@ -36,19 +32,8 @@ in {
     (mkIf cfg.enWebReport {
       user.packages = [pkgs.allure];
     })
-    (mkIf (cfg.default == "asdf") {
-      modules.dev.asdf.enable = true;
-      modules.dev.asdf.plugins = cfg.lang;
-      modules.dev.asdf.extInit = cfg.extInit;
-      modules.dev.asdf.prevInit = cfg.prevInit;
-      modules.dev.text = cfg.asdf.text;
-    })
-    (mkIf (cfg.default == "mise") {
-      modules.dev.mise.enable = true;
-      modules.dev.mise.plugins = cfg.lang;
-      modules.dev.mise.extInit = cfg.extInit;
-      modules.dev.mise.prevInit = cfg.prevInit;
-      modules.dev.text = cfg.mise.text;
+    (mkIf (cfg.lang != {}) {
+      modules.dev.manager.default = "mise";
     })
   ];
 }
