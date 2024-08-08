@@ -14,12 +14,25 @@ with lib.my; let
     paths = with pkgs; [xz.dev];
     pathsToLink = ["/lib" "/include"];
   };
+  managers = ["poetry" "rye"];
 in {
   options.modules.dev.python = with types; {
     enable = mkEnableOption "Whether to python";
     versions = mkOpt' (oneOf [str (nullOr bool) (listOf (nullOr str))]) [] "Use asdf install python version";
+    manager = mkOption {
+      description = "python virtual environment management tools";
+      type = str;
+      default = "poetry";
+      apply = s:
+        if builtins.elem s managers
+        then s
+        else "";
+    };
   };
   config = mkIf cfg.enable (mkMerge [
+    (mkIf (cfg.manager == "poetry") {
+      modules.dev.python.poetry.enable = true;
+    })
     {
       modules.shell.python.extraPkgs = ps:
         with ps; [
@@ -37,7 +50,6 @@ in {
       user.packages = with pkgs; [
         ruff
         python3.pkgs.ruff-lsp
-        poetry
         # pyright
         unstable.basedpyright
         pipenv
@@ -49,32 +61,9 @@ in {
           IPYTHONDIR = "${config.home.configDir}/ipython";
         };
         aliases = {
-          po = "poetry";
           ipy = "ipython --no-banner";
           ipylab = "ipython --pylab=qt5 --no-banner";
         };
-        direnv.stdlib.poetry = pkgs.writeScript "poetry" ''
-          #!/usr/bin/env bash
-          use_poetry() {
-              PYPROJECT_TOML="''${PYPROJECT_TOML:-pyproject.toml}"
-              if [[ ! -f "$PYPROJECT_TOML" ]]; then
-                  log_status "No pyproject.toml found. Executing \`poetry init\` to create a \`$PYPROJECT_TOML\` first."
-                  poetry init
-              fi
-
-              VIRTUAL_ENV=$(poetry env info --path 2>/dev/null ; true)
-
-              if [ -z "$VIRTUAL_ENV" ] || [ ! -d "$VIRTUAL_ENV" ]; then
-                  log_status "No virtual environment exists. Executing \`poetry install\` to create one."
-                  poetry install
-                  VIRTUAL_ENV=$(poetry env info --path)
-              fi
-
-              PATH_add "$VIRTUAL_ENV/bin"
-              export POETRY_ACTIVE=1
-              export VIRTUAL_ENV
-          }
-        '';
       };
       home.dataFile."benv/python" = {
         source = "${cenv}";
