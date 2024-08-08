@@ -80,7 +80,6 @@ in {
     pluginFiles = mkOptA (listOf (either str path)) [] (plFn "plugin");
   };
 
-  # 一些现代命令行工具的推荐:https://github.com/ibraheemdev/modern-unix
   config = {
     # lib.mkIf cfg.enable (lib.mkMerge [{ users.defaultUserShell = pkgs.zsh; }]);
     # only nixos

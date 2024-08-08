@@ -5,7 +5,8 @@ if [[ -z $TMUX && "$TMUX_AUTOSTART" == "True" && -z "$INSIDE_EMACS" && -z $EMACS
         if tmux has-session -t TMUX >/dev/null 2>&1; then
             exec tmux attach -t TMUX
         else
-            exec tmux new -s TMUX -- "export SHELL=$(which zsh); zsh -il"
+            exec tmux new -s TMUX
+            # exec tmux new -s TMUX -- "export SHELL=$(which zsh); zsh -il"
         fi
     fi
 fi

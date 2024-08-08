@@ -69,6 +69,9 @@ in {
             # when using kitty, @see https://mbuffett.com/posts/setting-up-tmux-and-kitty-for-true-color-support/
             set-option -sa terminal-overrides ",xterm-kitty:RGB"
           ''}
+
+          # 设置默认的 shell
+          run-shell "tmux set-option -g default-shell $(which ${config.user.shell.pname})"
         '';
         executable = true;
       };
