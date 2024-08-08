@@ -17,7 +17,7 @@ with lib.my; let
 in {
   options.modules.dev.python = with types; {
     enable = mkEnableOption "Whether to python";
-    plugins = mkOpt' (oneOf [str (listOf (nullOr str))]) [] "Use asdf install python version";
+    versions = mkOpt' (oneOf [str (nullOr bool) (listOf (nullOr str))]) [] "Use asdf install python version";
   };
   config = mkIf cfg.enable (mkMerge [
     {
@@ -99,8 +99,8 @@ in {
         };
       };
     }
-    (mkIf (cfg.plugins != []) {
-      modules.dev.lang.python = cfg.plugins;
+    (mkIf (cfg.versions != []) {
+      modules.dev.lang.python = cfg.versions;
       modules.dev.manager.prevInit = ''
         export CFLAGS="-I${config.home.dataDir}/benv/python/include $CFLAGS"
         export CPPFLAGS="-I${config.home.dataDir}/benv/python/include $CPPFLAGS"

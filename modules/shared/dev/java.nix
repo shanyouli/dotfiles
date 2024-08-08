@@ -17,15 +17,9 @@ with lib.my; let
     fi
 
     case "$2" in
-
-    8)
-    	JDK="${pkgs.jdk8}"
-    	;;
+    8) JDK="${pkgs.jdk8}"  ;;
     17) JDK="${pkgs.jdk17}" ;;
-    *)
-        JDK="${pkgs.jdk21}"
-    	;;
-
+    *) JDK="${pkgs.jdk21}" ;;
     esac
     JAVA_HOME=$(${pkgs.coreutils}/bin/realpath "$JDK/bin/..")
     echo $JAVA_HOME
@@ -33,15 +27,14 @@ with lib.my; let
 in {
   options.modules.dev.java = with types; {
     enable = mkBoolOpt false;
-    plugins = mkOption {
+    versions = mkOption {
       description = "Use asdf to install java version";
-      type = listOf (nullOr str);
+      type = oneOf [str (nullOr bool) (listOf (nullOr str))];
       default = [];
     };
   };
-
   config = mkIf cfg.enable (mkMerge [
-    (mkIf (cfg.plugins == []) {
+    (mkIf (cfg.versions == []) {
       # https://github.com/ldeck/nix-home/blob/master/lib/defaults/direnv-java.nix
       modules.shell.direnv.stdlib.java = pkgs.writeScript "java" ''
         use_java() {
@@ -66,9 +59,11 @@ in {
         }
       '';
     })
-    (mkIf (cfg.plugins != []) {
-      modules.dev.lang.java = cfg.plugins;
-      modules.shell.rcInit = lib.optionalString (config.modules.dev.default == "asdf") "_source ${config.home.dataDir}/asdf/plugins/java/set-java-home.zsh";
+    (mkIf (cfg.versions != []) {
+      modules.dev.lang.java = cfg.versions;
+      modules.shell.rcInit =
+        lib.optionalString (config.modules.dev.manager.default == "asdf")
+        "_source ${config.home.dataDir}/asdf/plugins/java/set-java-home.zsh";
     })
   ]);
 }
