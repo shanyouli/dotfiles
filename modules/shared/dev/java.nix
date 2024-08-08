@@ -67,7 +67,7 @@ in {
       '';
     })
     (mkIf (cfg.plugins != []) {
-      modules.dev.plugins.java = cfg.plugins;
+      modules.dev.lang.java = cfg.plugins;
       modules.shell.rcInit = lib.optionalString (config.modules.dev.default == "asdf") "_source ${config.home.dataDir}/asdf/plugins/java/set-java-home.zsh";
     })
   ]);

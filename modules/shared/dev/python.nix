@@ -100,7 +100,7 @@ in {
       };
     }
     (mkIf (cfg.plugins != []) {
-      modules.dev.plugins.python = cfg.plugins;
+      modules.dev.lang.python = cfg.plugins;
       modules.dev.prevInit = ''
         export CFLAGS="-I${config.home.dataDir}/benv/python/include $CFLAGS"
         export CPPFLAGS="-I${config.home.dataDir}/benv/python/include $CPPFLAGS"

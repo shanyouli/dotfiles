@@ -224,7 +224,7 @@ in {
         '';
       };
       macos.userScript.initDevInit = {
-        enable = config.modules.dev.plugins != [];
+        enable = config.modules.dev.lang != [];
         desc = "Init dev language manager ...";
         text = config.modules.dev.text;
       };

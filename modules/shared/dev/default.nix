@@ -17,8 +17,8 @@ in {
       default = "mise";
     };
 
-    plugins = mkOption {
-      description = "asdf or mise install plugins";
+    lang = mkOption {
+      description = "Programming Language Versioning.";
       type = attrsOf (oneOf [str (nullOr bool) (listOf str)]);
       default = {};
     };
@@ -38,14 +38,14 @@ in {
     })
     (mkIf (cfg.default == "asdf") {
       modules.dev.asdf.enable = true;
-      modules.dev.asdf.plugins = cfg.plugins;
+      modules.dev.asdf.plugins = cfg.lang;
       modules.dev.asdf.extInit = cfg.extInit;
       modules.dev.asdf.prevInit = cfg.prevInit;
       modules.dev.text = cfg.asdf.text;
     })
     (mkIf (cfg.default == "mise") {
       modules.dev.mise.enable = true;
-      modules.dev.mise.plugins = cfg.plugins;
+      modules.dev.mise.plugins = cfg.lang;
       modules.dev.mise.extInit = cfg.extInit;
       modules.dev.mise.prevInit = cfg.prevInit;
       modules.dev.text = cfg.mise.text;
