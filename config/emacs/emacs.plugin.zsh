@@ -3,6 +3,9 @@
 function doom() {
     # 不导入某些变量
     unset FZF_DEFAULT_OPTS
+    local old_PATH=$PATH
+    export PATH=$(echo $PATH | tr ':' '\n' | grep -v '^/nix/store' | paste -sd:)
+
     if [[ -n $EMACSDIR ]]; then
         _DOOM_HOME=$EMACSDIR
     elif [[ -d ${XDG_CONFIG:-${HOME}/.config}/emacs ]]; then
@@ -33,6 +36,7 @@ function doom() {
     else
         ${_DOOM_HOME}/bin/doom "$@"
     fi
+    export PATH=$old_PATH
 }
 
 # clear scrollback

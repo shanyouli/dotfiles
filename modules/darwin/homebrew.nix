@@ -95,11 +95,11 @@ in {
           # (lib.mkIf config.modules.adb.enable
           #   "openmtp") # 或者
           "lulu" # 网络管理
-          # "microsoft-office" , 手动安装
-          "cryptomator"
+          "veracrypt" # "cryptomator" # 即时加密软件
+          "macfuse" # veracrypt 需要的工具
           # "picgo" 使用 upic取代
           "wechat"
-          "wpsoffice-cn"
+          "wpsoffice-cn" # "microsoft-office" , 手动安装
           "mactex"
 
           # "calibre" #"koodo-reader", 书籍管理和阅读

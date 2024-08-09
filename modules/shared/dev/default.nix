@@ -11,12 +11,6 @@ with lib.my; let
   cfg = cfm.dev;
 in {
   options.modules.dev = with types; {
-    default = mkOption {
-      description = "use language manager, asdf, mise";
-      type = str;
-      default = "mise";
-    };
-
     lang = mkOption {
       description = "Programming Language Versioning.";
       type = attrsOf (oneOf [str (nullOr bool) (listOf str)]);

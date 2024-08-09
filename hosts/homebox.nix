@@ -56,8 +56,11 @@
     media.video.enable = true;
 
     dev.bash.enable = true;
+
     dev.python.enable = true;
     dev.python.versions = ["3.12" "3.10" "3.11"];
+    dev.python.rye.enable = true;
+
     dev.nix.enable = true;
     dev.java.enable = true;
     dev.java.versions = ["oracle-21.0.1" "liberica-8u392+9"];
