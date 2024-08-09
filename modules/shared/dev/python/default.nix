@@ -9,11 +9,6 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.dev.python;
-  cenv = pkgs.buildEnv {
-    name = "python-build-env";
-    paths = with pkgs; [xz.dev];
-    pathsToLink = ["/lib" "/include"];
-  };
   managers = ["poetry" "rye"];
 in {
   options.modules.dev.python = with types; {
@@ -32,6 +27,9 @@ in {
   config = mkIf cfg.enable (mkMerge [
     (mkIf (cfg.manager == "poetry") {
       modules.dev.python.poetry.enable = true;
+    })
+    (mkIf (cfg.manager == "rye") {
+      modules.dev.python.rye.enable = true;
     })
     {
       modules.shell.python.extraPkgs = ps:
@@ -65,10 +63,6 @@ in {
           ipylab = "ipython --pylab=qt5 --no-banner";
         };
       };
-      home.dataFile."benv/python" = {
-        source = "${cenv}";
-        recursive = true;
-      };
       modules.editor.helix = {
         # extraPackages = with pkgs; [];
         languages = {
@@ -88,16 +82,8 @@ in {
         };
       };
     }
-    (mkIf (cfg.versions != []) {
+    (mkIf ((! (builtins.elem cfg.versions [false null []])) && ((cfg.manager != "rye") || (! cfg.rye.manager))) {
       modules.dev.lang.python = cfg.versions;
-      modules.dev.manager.prevInit = ''
-        export CFLAGS="-I${config.home.dataDir}/benv/python/include $CFLAGS"
-        export CPPFLAGS="-I${config.home.dataDir}/benv/python/include $CPPFLAGS"
-        export LDFLAGS="-L${config.home.dataDir}/benv/python/lib $LDFLAGS"
-      '';
-      modules.dev.manager.extInit = ''
-        unset CFLAGS LDFLAGS CPPFLAGS
-      '';
     })
   ]);
 }
