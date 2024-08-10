@@ -60,7 +60,9 @@
     dev.python.enable = true;
     dev.python.versions = ["3.12" "3.10" "3.11"];
     dev.python.global = "3.11";
-    dev.python.rye.enable = true;
+    dev.python.manager = "rye";
+    dev.python.rye.manager = true;
+    dev.python.poetry.enable = true;
 
     dev.nix.enable = true;
     dev.java.enable = true;

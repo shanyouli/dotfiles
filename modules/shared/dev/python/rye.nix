@@ -81,5 +81,42 @@ in {
         ${ver_fn}
       '';
     })
+    (mkIf cfg.manager {
+      modules.shell.env.PATH = mkBefore ["${config.home.dataDir}/rye"];
+      modules.dev.manager.extInit = mkAfter (let
+        isNumeric = character: builtins.match "[0-9]" character != null;
+        checkFirstCharIsNumber = str:
+          if builtins.stringLength str > 0
+          then isNumeric (builtins.substring 0 1 str)
+          else false;
+        global_python_msg = lib.optionalString (cfp.global != "") ''
+          echo-info "Setting python global version"
+          ${
+            if (checkFirstCharIsNumber cfp.global)
+            then ''
+              ${cfb} config --set default.toolchain=cpython@${cfp.global}
+            ''
+            else ''
+              ${cfb} config --set default.toolchain=${cfp.global}
+            ''
+          }
+          ${cfb} config --set-bool behavior.global-python=true
+        '';
+        rye_fn = v: ''
+          echo-info "rye install python ${v}"
+          ${cfb} fetch ${v}
+        '';
+        version_msg =
+          if builtins.isString cfp.versions
+          then rye_fn cfp.versions
+          else if (builtins.elem cfp.versions [null false true []])
+          then ""
+          else concatMapStrings rye_fn cfp.versions;
+      in ''
+        export RYE_HOME="${config.home.dataDir}/rye"
+        ${version_msg}
+        ${global_python_msg}
+      '');
+    })
   ]);
 }

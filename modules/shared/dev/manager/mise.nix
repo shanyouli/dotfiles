@@ -32,18 +32,14 @@ in {
       mise_core_plugins = ["python" "bun" "deno" "erlang" "go" "java" "ruby" "rust" "node"];
       finalNeedPlugins = lib.filterAttrs (k: v: !(builtins.elem v [null false])) cfg.plugins;
       mise_in_plugin_fn = v: ''${cfbin} p add ${v} -y'';
+      mise_ver_base_fn = p: v: ''
+        echo-info "Use ${p} ${v} ..."
+        ${cfbin} install ${p}@${v}
+      '';
       mise_plugin_ver_fn = p: vers:
         if builtins.isString vers
-        then ''
-          echo-info "Use ${p} ${vers} ..."
-          ${cfbin} install ${p}@${vers}
-        ''
-        else
-          concatStrings (map (v: ''
-              echo-info "Use ${p} ${v} ..."
-              ${cfbin} install ${p}@${v}
-            '')
-            vers);
+        then mise_ver_base_fn p vers
+        else concatMapStrings (v: mise_ver_base_fn p v) vers;
       text = concatStringsSep "\n" (mapAttrsToList (n: v: ''
           echo-info "Using mise to manage versions of ${n}"
           ${lib.optionalString (v != true) ''${mise_plugin_ver_fn n v}''}
