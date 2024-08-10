@@ -8,22 +8,6 @@
 with lib;
 with lib.my; let
   cfg = config.modules.dev.java;
-  java_home = pkgs.writeShellScriptBin "java_home" ''
-    #!/usr/bin/env bash
-
-    if [[ "$#" -ne 2 ]] || [[ "$1" != "-v" ]] || [[ "$2" -lt 8 ]]; then
-        echo "Usage: java_home -v <version>";
-        exit 1;
-    fi
-
-    case "$2" in
-    8) JDK="${pkgs.jdk8}"  ;;
-    17) JDK="${pkgs.jdk17}" ;;
-    *) JDK="${pkgs.jdk21}" ;;
-    esac
-    JAVA_HOME=$(${pkgs.coreutils}/bin/realpath "$JDK/bin/..")
-    echo $JAVA_HOME
-  '';
 in {
   options.modules.dev.java = with types; {
     enable = mkBoolOpt false;
@@ -32,11 +16,43 @@ in {
       type = oneOf [str (nullOr bool) (listOf (nullOr str))];
       default = [];
     };
+    global = mkOption {
+      description = "java default version";
+      type = str;
+      default = "";
+      apply = s:
+        if builtins.isString cfg.versions
+        then cf.versions
+        else if (builtins.elem cfg.versions [null false true []])
+        then ""
+        else if builtins.elem s cfg.versions
+        then s
+        else "";
+    };
   };
   config = mkIf cfg.enable (mkMerge [
-    (mkIf (cfg.versions == []) {
+    (mkIf (cfg.versions == []) (let
+      java_home = pkgs.writeShellScriptBin "java_home" ''
+        #!/usr/bin/env bash
+
+        if [[ "$#" -ne 2 ]] || [[ "$1" != "-v" ]] || [[ "$2" -lt 8 ]]; then
+            echo "Usage: java_home -v <version>";
+            exit 1;
+        fi
+
+        case "$2" in
+        8) JDK="${pkgs.jdk8}"  ;;
+        17) JDK="${pkgs.jdk17}" ;;
+        *) JDK="${pkgs.jdk21}" ;;
+        esac
+        JAVA_HOME=$(${pkgs.coreutils}/bin/realpath "$JDK/bin/..")
+        echo $JAVA_HOME
+      '';
+    in {
       # https://github.com/ldeck/nix-home/blob/master/lib/defaults/direnv-java.nix
+      user.packages = [java_home];
       modules.shell.direnv.stdlib.java = pkgs.writeScript "java" ''
+        #!/usr/bin/env bash
         use_java() {
           # desired jdk version as first parameter?
           local ver=$1
@@ -58,12 +74,25 @@ in {
           PATH_add "$JAVA_HOME/bin"
         }
       '';
-    })
+    }))
     (mkIf (cfg.versions != []) {
       modules.dev.lang.java = cfg.versions;
       modules.shell.rcInit =
         lib.optionalString (config.modules.dev.manager.default == "asdf")
         "_source ${config.home.dataDir}/asdf/plugins/java/set-java-home.zsh";
+      modules.dev.manager.extInit = lib.optionalString (cfg.global != "") ''
+        ${lib.optionalString (config.modules.dev.manager.default == "asdf") ''
+          ${config.modules.dev.manager.asdf.package}/bin/asdf global java ${cfg.global}
+        ''}
+        ${lib.optionalString (config.modules.dev.manager.default == "mise") (let
+          misebin = "${config.modules.dev.manager.mise.package}/bin/mise";
+        in ''
+          if ! [[ $(${misebin} global java) == "${cfg.global}" ]]; then
+            echo-info "java global version ${cfg.global}"
+            ${misebin} global java ${cfg.global}
+          fi
+        '')}
+      '';
     })
   ]);
 }

@@ -64,6 +64,7 @@
     dev.nix.enable = true;
     dev.java.enable = true;
     dev.java.versions = ["oracle-21.0.1" "liberica-8u392+9"];
+    dev.java.global = "oracle-21.0.1";
     dev.lua.enable = true;
     dev.cc.enable = true;
     dev.node.enable = true;
