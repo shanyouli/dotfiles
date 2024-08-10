@@ -13,6 +13,9 @@ with lib.my; let
 in {
   options.modules.dev.python = with types; {
     enable = mkEnableOption "Whether to python";
+    # 如果使用 asdf 管理版本。versions 的值需要符合：`asdf list all python` 的结果
+    # 如果使用 mise 管理版本的值需要符合 `mise ls-remote python` 的结果
+    # 如果使用 rye 管理版本，versions 需要符合 `rye toolchain list --include-downloadable` 的结果
     versions = mkOpt' (oneOf [str (nullOr bool) (listOf (nullOr str))]) [] "Use asdf install python version";
     manager = mkOption {
       description = "python virtual environment management tools";
@@ -82,7 +85,7 @@ in {
         };
       };
     }
-    (mkIf ((! (builtins.elem cfg.versions [false null []])) && ((cfg.manager != "rye") || (! cfg.rye.manager))) {
+    (mkIf ((cfg.manager != "rye") || (cfg.rye.manager == false)) {
       modules.dev.lang.python = cfg.versions;
     })
   ]);
