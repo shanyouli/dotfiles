@@ -81,16 +81,17 @@ in {
         lib.optionalString (config.modules.dev.manager.default == "asdf")
         "_source ${config.home.dataDir}/asdf/plugins/java/set-java-home.zsh";
       modules.dev.manager.extInit = lib.optionalString (cfg.global != "") ''
-        ${lib.optionalString (config.modules.dev.manager.default == "asdf") ''
-          ${config.modules.dev.manager.asdf.package}/bin/asdf global java ${cfg.global}
-        ''}
+        ${lib.optionalString (config.modules.dev.manager.default == "asdf") (let
+          asdfbin = "${config.modules.dev.manager.asdf.package}/bin/asdf";
+        in ''
+          echo-info "java global version ${cfg.global}"
+          ${asdfbin} global java ${cfg.global}
+        '')}
         ${lib.optionalString (config.modules.dev.manager.default == "mise") (let
           misebin = "${config.modules.dev.manager.mise.package}/bin/mise";
         in ''
-          if ! [[ $(${misebin} global java) == "${cfg.global}" ]]; then
-            echo-info "java global version ${cfg.global}"
-            ${misebin} global java ${cfg.global}
-          fi
+          echo-info "java global version ${cfg.global}"
+          ${misebin} global -q java@${cfg.global}
         '')}
       '';
     })
