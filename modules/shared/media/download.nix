@@ -45,7 +45,7 @@ in {
     (mkIf cfg.enVideo {
       user.packages = [
         pkgs.unstable.yt-dlp
-        pkgs.unstable.yutto # 使用pipx 安
+        # pkgs.unstable.yutto # 使用 pipx 安装
         # pkgs.unstable.bbdown
         pkgs.unstable.lux
         pkgs.unstable.fav
