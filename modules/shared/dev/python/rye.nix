@@ -82,7 +82,7 @@ in {
       '';
     })
     (mkIf cfg.manager {
-      modules.shell.env.PATH = mkBefore ["${config.home.dataDir}/rye"];
+      modules.shell.env.PATH = mkBefore ["${config.home.dataDir}/rye/shims"];
       modules.dev.manager.extInit = mkAfter (let
         isNumeric = character: builtins.match "[0-9]" character != null;
         checkFirstCharIsNumber = str:
