@@ -32,7 +32,7 @@ in {
         then
           (
             if use_rye_p
-            then "rye toolchain list --format json  | jq -r '[.[] | select(.name | contains(\"${cmdp.global}\"))].[0].path'"
+            then "rye toolchain list --format json"
             else
               (
                 if config.modules.dev.manager.default == "asdf"
@@ -69,7 +69,7 @@ in {
           local _is_pipx_default=$PIPX_DEFAULT_PYTHON
           if [[ -z $_is_pipx_default ]]; then
             ${lib.optionalString use_rye_p ''
-          export PIPX_DEFAULT_PYTHON="$(readlink -f $(${global_python_path}))"
+          export PIPX_DEFAULT_PYTHON="$(readlink -f $(${global_python_path} | jq -r '[.[] | select(.name | contains("${cmdp.global}"))].[0].path'))"
         ''}
             ${lib.optionalString (use_rye_p == false) ''
           export PIPX_DEFAULT_PYTHON="$(readlink -f $(${global_python_path})/bin/python)"
@@ -92,7 +92,7 @@ in {
         export def --wrapped pipx [...rest: string] {
             if ($env | get --ignore-errors PIPX_DEFAULT_PYTHON | is-empty) {
                 ${lib.optionalString use_rye_p ''
-          let pipx_default_python = (${global_python_path} | readlink -f $in)
+          let pipx_default_python = (${global_python_path} | from json | where ($it.name | str contains "${cmdp.global}") | get path | first | readlink -f $in)
         ''}
                 ${lib.optionalString (use_rye_p == false) ''
           let pipx_default_python = ([( ${global_python_path} ), "bin", "python" ] | path join | readlink -f $in)
