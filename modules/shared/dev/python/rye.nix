@@ -9,7 +9,7 @@ with lib;
 with lib.my; let
   cfp = config.modules.dev.python;
   cfg = cfp.rye;
-  cpkg = pkgs.rye;
+  cpkg = pkgs.unstable.rye;
   cfb = "${cpkg}/bin/rye";
 in {
   options.modules.dev.python.rye = {
@@ -18,7 +18,7 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      user.packages = [cpkg pkgs.uv];
+      user.packages = [cpkg];
       modules.shell.direnv.stdlib.rye = pkgs.writeScript "rye" ''
         #!/usr/bin/env bash
         # 基本工作流程:
