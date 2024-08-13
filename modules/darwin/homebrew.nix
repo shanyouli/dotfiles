@@ -93,7 +93,7 @@ in {
           "lulu" # 网络管理
           "veracrypt" # "cryptomator" # 即时加密软件
           "macfuse" # veracrypt 需要的工具
-          # "picgo" 使用 upic取代
+
           "wechat"
           "wpsoffice-cn" # "microsoft-office" , 手动安装
           "mactex"
@@ -156,6 +156,8 @@ in {
           "qutebrowser"
 
           "shanyouli/tap/nextchat" # gptchat, 客户端，需要密钥
+          "shanyouli/tap/upic" # or "picgo"
+
           "pearcleaner" # app 卸载工具
         ]
         ++ optionals config.modules.shell.adb.enable [

@@ -21,11 +21,12 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       # neteasemusic or yesplaymusic
-      # vox or foobar2000
+      # vox or foobar2000 auralplayer
       homebrew.casks =
-        lib.optionals (netease.enable && netease.enGui) ["yesplaymusic"]
+        ["shanyouli/tap/lyricsx" "shanyouli/tap/auralplayer"]
+        ++ lib.optionals (netease.enable && netease.enGui) ["yesplaymusic"]
         ++ optionals cfg.lx.enable ["lx-music"];
-      user.packages = with pkgs.unstable.darwinapps; [lyricx vimmotion] ++ optionals (! cfg.lx.enable) [spotube];
+      user.packages = with pkgs.unstable.darwinapps; [vimmotion] ++ optionals (! cfg.lx.enable) [spotube];
     }
     (mkIf scfg.mpd.enable {
       modules.media.music.mpd = {
