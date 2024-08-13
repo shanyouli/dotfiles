@@ -46,22 +46,17 @@ in {
       };
     in {
       homebrew.taps = map fmtfunc can_mirror_taps;
-      modules.shell.rcInit = ''
-        export HOMEBREW_INSTALL_FROM_API=1
-
-        export HOMEBREW_API_DOMAIN="${domain}/homebrew-bottles/api"
-        export HOMEBREW_BOTTLE_DOMAIN="${domain}/homebrew-bottles"
-
-        export HOMEBREW_PIP_INDEX_URL="${domain}/pypi/web/simple"
-
-        export HOMEBREW_BREW_GIT_REMOTE="${domain}/${need_git}homebrew/brew.git"
-        export HOMEBREW_CORE_GIT_REMOTE="${domain}/${need_git}homebrew/homebrew-core.git"
-      '';
+      # 不使用 api 来获取安装信息
+      modules.shell.env.HOMEBREW_NO_INSTALL_FROM_API = "1";
+      # 不自动更新 brew 仓库
+      # modules.shell.env.HOMEBREW_NO_AUTO_UPDATE = "1"; # or homebrew.global.autoUpdate = 1
+      modules.shell.env.HOMEBREW_API_DOMAIN = "${domain}/homebrew-bottles/api";
+      modules.shell.env.HOMEBREW_BOTTLE_DOMAIN = "${domain}/homebrew-bottles";
+      modules.shell.env.HOMEBREW_PIP_INDEX_URL = "${domain}/pypi/web/simple";
+      modules.shell.env.HOMEBREW_BREW_GIT_REMOTE = "${domain}/${need_git}homebrew/brew.git";
+      modules.shell.env.HOMEBREW_CORE_GIT_REMOTE = "${domain}/${need_git}homebrew/homebrew-core.git";
     }))
     {
-      user.packages = [
-        pkgs.unstable.darwinapps.pearcleaner
-      ];
       homebrew.enable = true; # 你需要手动安装homebrew
       homebrew.onActivation = {
         autoUpdate = false;
@@ -70,6 +65,7 @@ in {
       homebrew.global = {
         brewfile = true;
         lockfiles = true;
+        autoUpdate = false;
         # noLock = true;
       };
       homebrew.brewPrefix = let
@@ -79,7 +75,7 @@ in {
         then "/opt/homebrew/bin"
         else "/usr/local/bin"
       );
-      homebrew.taps = ["buo/cask-upgrade"];
+      homebrew.taps = ["buo/cask-upgrade" "shanyouli/tap"];
 
       homebrew.casks =
         [
@@ -158,6 +154,9 @@ in {
           # "doll" # 在 menubar 上显示 消息提示
           "zed"
           "qutebrowser"
+
+          "shanyouli/tap/nextchat" # gptchat, 客户端，需要密钥
+          "pearcleaner" # app 卸载工具
         ]
         ++ optionals config.modules.shell.adb.enable [
           # "openmtp" # 目前不是很稳定

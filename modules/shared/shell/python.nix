@@ -60,12 +60,12 @@ in {
         py2 = "python2";
         py3 = "python3";
       };
-      cmpFiles = ["pipx"];
+      # cmpFiles = ["pipx"];
       rcInit = lib.optionalString (global_python_path != "") ''
         pipx() {
-          if [[ -z "''${_comps[_pipx]}" ]]; then
-            _comps[pipx]=_pipx
-          fi
+          # if [[ -z "''${_comps[_pipx]}" ]]; then
+          #   _comps[pipx]=_pipx
+          # fi
           local _is_pipx_default=$PIPX_DEFAULT_PYTHON
           if [[ -z $_is_pipx_default ]]; then
             ${lib.optionalString use_rye_p ''
@@ -80,12 +80,12 @@ in {
             unset PIPX_DEFAULT_PYTHON
           fi
         };
-        if ! builtin type _pipx >/dev/null 2>&1; then
-          autoload -Uz _pipx
-        fi
-        if [[ -z "''${_comps[_pipx]}" ]]; then
-          _comps[pipx]=_pipx
-        fi
+        # if ! builtin type _pipx >/dev/null 2>&1; then
+        #   autoload -Uz _pipx
+        # fi
+        # if [[ -z "''${_comps[_pipx]}" ]]; then
+        #   _comps[pipx]=_pipx
+        # fi
       '';
       # nushell.cmpFiles = ["${config.dotfiles.configDir}/pipx/pipx-completions.nu"];
       nushell.rcInit = lib.optionalString (global_python_path != "") ''

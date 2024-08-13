@@ -106,7 +106,7 @@
 
     service.nginx.enable = true;
     service.mysql.enable = true;
-    service.deeplx.enable = true;
+    # service.deeplx.enable = true;
     service.alist.enable = true;
     service.battery.enable = false;
     service.yabai.enable = true;

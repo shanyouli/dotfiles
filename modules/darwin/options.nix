@@ -80,7 +80,6 @@ in {
     {
       user.packages = with pkgs.unstable.darwinapps;
         [
-          next-chat
           (lib.mkIf (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) pkgs.unstable.darwinapps.neovide-app)
           upic
           calibre
