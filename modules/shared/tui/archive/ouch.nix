@@ -1,0 +1,24 @@
+# ouch 使用 rust 编写的压缩工具. 支持的压缩格式有
+# tar, zip, 7z, gz, xz, lzm bz, bz2, lz4, .sz, zst ,
+# rar (仅支持解压)
+{
+  pkgs,
+  lib,
+  config,
+  options,
+  ...
+}:
+with lib;
+with lib.my; let
+  cfp = config.modules.tui.archive;
+  cfg = cfp.ouch;
+in {
+  options.modules.tui.archive.ouch = {
+    enable = mkEnableOption "Whether to use ouch packages";
+  };
+  config = mkIf cfg.enable {
+    user.packages = with pkgs; [ouch rar];
+    modules.shell.aliases.unzip = "ouch decompress";
+    modules.shell.aliases.zip = "ouch compress";
+  };
+}

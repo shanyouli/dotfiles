@@ -15,6 +15,10 @@
   user.uid = 501; # uid macos 创建的用户 默认 uid 为 501
   modules = {
     # shared
+
+    # tui 工具
+    tui.archive.default = "ouch";
+
     shell.prompt.default = "oh-my-posh";
     shell.nix-your-shell.enable = true;
     shell.zinit.enable = true;
