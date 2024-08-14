@@ -16,18 +16,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    homebrew.casks = ["iina"] ++ optionals mpvcfg.stream.enable ["iina-plus"];
-    user.packages = with pkgs.unstable.darwinapps;
-      [
-        # 使用浏览器进行视频播放和搜索
-        # zy-player
-        # dashplayer
-      ]
-      ++ optionals mpvcfg.stream.enable [
-        simple-live
-        # downkyi
-        # wiliwili
-      ];
+    homebrew.casks = ["iina"] ++ optionals mpvcfg.stream.enable ["iina-plus" "shanyouli/tap/simple-live"];
     # 视频压缩工具, 使用 ffmpeg 取代
     # homebrew.casks = ["handbrake"];
     macos.userScript.setingIinaApp = {
