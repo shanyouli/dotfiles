@@ -7,7 +7,7 @@
 }:
 with lib;
 with lib.my; let
-  cfm = config.modules;
+  cfm = config.modules.gui;
   cfg = cfm.browser.firefox;
   mozillaConfDir = cfm.browser.configDir.firefox;
   cfgConfDir =
@@ -27,7 +27,7 @@ with lib.my; let
 
   profilePath = "${cfgConfDir}/Profiles/${lib.toLower cfg.profileName}";
 in {
-  options.modules.browser.firefox = {
+  options.modules.gui.browser.firefox = {
     enable = mkEnableOption "Whether to using firefox";
     dev.enable = mkBoolOpt true;
     package = mkOption {
@@ -66,8 +66,8 @@ in {
   };
   config = mkIf cfg.enable {
     modules.shell.gopass.browsers = ["firefox"];
-    modules.browser.firefox.extensions = mkDefault (with pkgs.unstable.firefox-addons; [
-      (mkIf cfm.shell.gopass.enable browserpass-ce)
+    modules.gui.browser.firefox.extensions = mkDefault (with pkgs.unstable.firefox-addons; [
+      (mkIf config.modules.shell.gopass.enable browserpass-ce)
       noscript
       ublock-origin
       download-with-aria2
@@ -82,7 +82,7 @@ in {
       # privacy-pass
       immersive-translate
     ]);
-    modules.browser.firefox.finalPackage = wrapPackage cfg.package;
+    modules.gui.browser.firefox.finalPackage = wrapPackage cfg.package;
 
     user.packages =
       [cfg.finalPackage] ++ optionals cfg.dev.enable [pkgs.unstable.geckodriver];

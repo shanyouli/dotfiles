@@ -8,14 +8,14 @@
 with lib;
 with lib.my; let
   # TODO: 设置更好的管理配置文件的方法
-  cfg = config.modules.tool.proxy.clash;
+  cfg = config.modules.tui.proxy.clash;
   workdir = "${config.home.cacheDir}/clash";
   cmdName =
     if cfg.package.pname == "clash-meta"
     then "clash-meta"
     else "mihomo";
 in {
-  options.modules.tool.proxy.clash = {
+  options.modules.tui.proxy.clash = {
     enable = mkBoolOpt false;
     configFile = mkOpt' types.path "${config.home.configDir}/clash-meta/clash.yaml" ''
       clash 配置文件保存位置
@@ -27,6 +27,6 @@ in {
     user.packages = [cfg.package];
     environment.etc."sudoers.d/clash".text =
       sudoNotPass config.user.name "${cfg.package}/bin/${cfg.package.pname}";
-    modules.tool.proxy.clash.serviceCmd = ''sudo ${cfg.package}/bin/${cmdName} -f "${cfg.configFile}" -d "${workdir}"'';
+    modules.tui.proxy.clash.serviceCmd = ''sudo ${cfg.package}/bin/${cmdName} -f "${cfg.configFile}" -d "${workdir}"'';
   };
 }

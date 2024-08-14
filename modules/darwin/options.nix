@@ -198,7 +198,7 @@ in {
       };
       macos.userScript.linkChromeApp = let
         appEn = config.modules.macos.app.enable;
-        mchrome = config.modules.browser.chrome;
+        mchrome = config.modules.gui.browser.chrome;
         enable = mchrome.enable && mchrome.dev.enable && appEn && (! mchrome.useBrew);
       in {
         inherit enable;

@@ -174,7 +174,7 @@ in {
         ++ optionals config.modules.shell.gopass.enable [
           "ente-auth"
         ]
-        ++ optionals (config.modules.browser.chrome.enable && config.modules.browser.chrome.useBrew) [
+        ++ optionals (config.modules.gui.browser.chrome.enable && config.modules.gui.browser.chrome.useBrew) [
           "google-chrome"
         ]
         ++ optionals (config.modules.shell.git.enable && config.modules.shell.git.enGui) [

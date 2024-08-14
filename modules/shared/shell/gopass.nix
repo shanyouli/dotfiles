@@ -45,7 +45,7 @@ in {
     }
     (mkIf (cfg.browsers != []) {
       home.file = let
-        cfbrowser = config.modules.browser.configDir;
+        cfbrowser = config.modules.gui.browser.configDir;
         isFirefox = n: builtins.elem n ["firefox" "librewolf"];
         nativeHostsName = n:
           if pkgs.stdenvNoCC.isLinux && (isFirefox n)

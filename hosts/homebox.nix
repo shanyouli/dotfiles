@@ -25,11 +25,15 @@
     # app
     app.qbittorrent.enGui = false;
     app.qbittorrent.service.startup = false;
-    app.qbittorrent.service.enable = false;
+    app.qbittorrent.service.enable = true;
 
     # gui
     gui.terminal.default = "kitty";
     gui.localsend.enable = true; # 需要gui，局域网文件传输工具
+    gui.browser.default = "firefox";
+    # browser.firefox.extensions = lib.mkForce [];
+    gui.browser.fallback = "chrome";
+    # browser.fallback = pkgs.unstable.darwinapps.vivaldi;
 
     shell.prompt.default = "oh-my-posh";
     shell.nix-your-shell.enable = true;
@@ -89,12 +93,6 @@
     dev.enWebReport = true;
     dev.rust.enable = true;
 
-    # tool.sdcv.enable = true;
-    browser.default = "firefox";
-    # browser.firefox.extensions = lib.mkForce [];
-    browser.fallback = "chrome";
-    # browser.fallback = pkgs.unstable.darwinapps.vivaldi;
-
     # macos
     macos.enable = true;
     macos.docker.enable = true;
@@ -105,10 +103,10 @@
     macos.stopAutoReopen = true;
     macos.music.lx.enable = true;
 
-    tool.proxy.default = "sing-box";
-    tool.proxy.sing-box.package = pkgs.unstable.sing-box;
+    tui.proxy.default = "sing-box";
+    tui.proxy.sing-box.package = pkgs.unstable.sing-box;
     # tool.clash.enSingbox = true;
-    tool.proxy.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/singbox.json";
+    tui.proxy.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/singbox.json";
 
     macos.games.enable = true;
     macos.hammerspoon.enable = true;
@@ -124,7 +122,6 @@
     service.battery.enable = false;
     service.yabai.enable = true;
     service.aria2.enable = true;
-    # service.qbittorrent.enable = true;
 
     editor.emacs.enable = true;
     editor.emacs.service.enable = true;

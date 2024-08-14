@@ -7,11 +7,11 @@
 }:
 with lib;
 with lib.my; let
-  cfm = config.modules;
+  cfm = config.modules.gui;
   cfg = cfm.browser;
   browsers = ["firefox" "chrome" "chromium" "brave" "librewolf" "vivaldi"];
 in {
-  options.modules.browser = {
+  options.modules.gui.browser = {
     default = mkOption {
       type = types.str;
       default = "";
@@ -34,7 +34,7 @@ in {
   };
   config = mkMerge [
     {
-      modules.browser.configDir = builtins.listToAttrs (map (n: {
+      modules.gui.browser.configDir = builtins.listToAttrs (map (n: {
           name = n;
           value =
             if n == "brave"
@@ -70,8 +70,8 @@ in {
             else throw "unknown browser ${n}";
         })
         browsers);
-      modules.browser.firefox.enable = mkDefault (builtins.elem "firefox" [cfg.default cfg.fallback]);
-      modules.browser.chrome.enable = mkDefault (builtins.elem "chrome" [cfg.default cfg.fallback]);
+      modules.gui.browser.firefox.enable = mkDefault (builtins.elem "firefox" [cfg.default cfg.fallback]);
+      modules.gui.browser.chrome.enable = mkDefault (builtins.elem "chrome" [cfg.default cfg.fallback]);
     }
     (mkIf (cfg.fallback != "") (
       let

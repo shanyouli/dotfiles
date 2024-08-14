@@ -20,7 +20,7 @@ in {
       path = ["${config.modules.tui.download.aria2.package}/bin" config.modules.service.path];
       serviceConfig.ProgramArguments = [
         "${config.modules.tui.download.aria2.package}/bin/aria2c"
-        # (mkIf (config.modules.tool.proxy.default != "") "--all-proxy=http://127.0.0.1:10801")
+        # (mkIf (config.modules.tui.proxy.default != "") "--all-proxy=http://127.0.0.1:10801")
         "--conf-path=${config.home.configDir}/aria2/config"
         "--rpc-listen-port=${toString cfg.port}"
       ];

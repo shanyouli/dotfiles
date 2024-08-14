@@ -7,7 +7,7 @@
 with lib;
 with lib.my; let
   cfg = config.modules.service.proxy;
-  cft = config.modules.tool.proxy;
+  cft = config.modules.tui.proxy;
 in {
   options.modules.service.proxy = {
     enable = mkBoolOpt (cft.default != "");
@@ -18,7 +18,7 @@ in {
   in {
     homebrew.casks =
       ["shanyouli/tap/clash-verge"]
-      ++ optionals (config.modules.tool.proxy.default == "sing-box") ["sfm"];
+      ++ optionals (config.modules.tui.proxy.default == "sing-box") ["sfm"];
     launchd.user.agents.proxy = {
       path = [config.modules.service.path];
       serviceConfig.RunAtLoad = true;

@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfm = config.modules;
+  cfm = config.modules.gui;
   cfg = cfm.browser.chrome;
 in {
-  options.modules.browser.chrome = {
+  options.modules.gui.browser.chrome = {
     enable = mkEnableOption "Whether to google-chrome";
     dev.enable = mkBoolOpt true;
     useBrew = mkBoolOpt pkgs.stdenvNoCC.isDarwin;

@@ -8,11 +8,11 @@
 with lib;
 with lib.my; let
   cfm = config.modules;
-  cfg = cfm.tool.proxy;
+  cfg = cfm.tui.proxy;
   proxy_commands = ["sing-box" "clash"];
   proxy_url = "http://127.0.0.1:10801";
 in {
-  options.modules.tool.proxy = {
+  options.modules.tui.proxy = {
     default = mkOption {
       type = types.str;
       default = "";
@@ -27,18 +27,18 @@ in {
   };
   config = mkMerge [
     (mkIf (cfg.default == "clash") {
-      modules.tool.proxy.clash.configFile = cfg.configFile;
-      modules.tool.proxy.clash.enable = true;
+      modules.tui.proxy.clash.configFile = cfg.configFile;
+      modules.tui.proxy.clash.enable = true;
     })
     (mkIf (cfg.default == "sing-box") {
-      modules.tool.proxy.sing-box.configFile = cfg.configFile;
-      modules.tool.proxy.sing-box.enable = true;
+      modules.tui.proxy.sing-box.configFile = cfg.configFile;
+      modules.tui.proxy.sing-box.enable = true;
     })
 
     (mkIf (cfg.default != "") {
       modules.shell.aliases.paria2 = optionalString config.modules.tui.download.aria2.enable "aria2c --all-proxy=${proxy_url}";
 
-      modules.tool.proxy.servicePkg = pkgs.writeScriptBin "proxy-service" (''
+      modules.tui.proxy.servicePkg = pkgs.writeScriptBin "proxy-service" (''
           #!${pkgs.stdenv.shell}
         ''
         + optionalString pkgs.stdenvNoCC.isDarwin ''
@@ -72,10 +72,10 @@ in {
           set_dns
         ''
         + optionalString (cfg.default == "clash") ''
-          ${config.modules.tool.proxy.clash.serviceCmd}
+          ${config.modules.tui.proxy.clash.serviceCmd}
         ''
         + optionalString (cfg.default == "sing-box") ''
-          ${config.modules.tool.proxy.sing-box.serviceCmd}
+          ${config.modules.tui.proxy.sing-box.serviceCmd}
         '');
     })
   ];
