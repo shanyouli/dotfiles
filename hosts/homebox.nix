@@ -28,6 +28,7 @@
 
     # gui
     gui.terminal.default = "kitty";
+    gui.localsend.enable = true; # 需要gui，局域网文件传输工具
 
     shell.prompt.default = "oh-my-posh";
     shell.nix-your-shell.enable = true;
@@ -88,7 +89,6 @@
     dev.rust.enable = true;
 
     # tool.sdcv.enable = true;
-    tool.localsend.enable = true; # 需要gui，局域网文件传输工具
     browser.default = "firefox";
     # browser.firefox.extensions = lib.mkForce [];
     browser.fallback = "chrome";
