@@ -80,14 +80,10 @@ in {
     {
       user.packages = with pkgs.unstable.darwinapps;
         [
-          (lib.mkIf (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) pkgs.unstable.darwinapps.neovide-app)
           calibre
           lporg
           switchaudio-osx
           alexandria
-          tmexclude
-
-          quickrecorder
           # aerospace
         ]
         ++ optionals config.modules.editor.emacs.enable [
