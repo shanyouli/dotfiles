@@ -80,7 +80,6 @@ in {
     {
       user.packages = with pkgs.unstable.darwinapps;
         [
-          calibre
           lporg
           switchaudio-osx
           alexandria

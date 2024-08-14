@@ -98,7 +98,6 @@ in {
           "wpsoffice-cn" # "microsoft-office" , 手动安装
           "mactex"
 
-          # "calibre" #"koodo-reader", 书籍管理和阅读
           "skim" # PDF
 
           # "displaperture" # screen 曲线图
@@ -163,6 +162,7 @@ in {
           "shanyouli/tap/tmexclude"
 
           "shanyouli/tap/vimmotion" # 使用 vim 全局操作
+          "shanyouli/tap/calibre-cjk" #"koodo-reader", 书籍管理和阅读
         ]
         ++ optionals config.modules.shell.adb.enable [
           # "openmtp" # 目前不是很稳定
