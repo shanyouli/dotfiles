@@ -7,7 +7,7 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.terminal;
+  cfp = config.modules.gui.terminal;
   cfg = cfp.alacritty;
   cfgPkg = let
     package = pkgs.alacritty;
@@ -27,7 +27,7 @@ with lib.my; let
         '';
       };
 in {
-  options.modules.terminal.alacritty = {
+  options.modules.gui.terminal.alacritty = {
     enable = mkEnableOption "Whether to use alacritty";
   };
   config = mkIf cfg.enable {
@@ -37,6 +37,7 @@ in {
         source = "${config.dotfiles.configDir}/alacritty";
         recursive = true;
       };
+      # TODO: 更多可选配置
     };
   };
 }

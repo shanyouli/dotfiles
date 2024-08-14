@@ -26,6 +26,9 @@
     app.qbittorrent.enGui = false;
     app.qbittorrent.service.startup = false;
 
+    # gui
+    gui.terminal.default = "kitty";
+
     shell.prompt.default = "oh-my-posh";
     shell.nix-your-shell.enable = true;
     shell.zinit.enable = true;
@@ -54,8 +57,6 @@
 
     shell.modern.enable = true;
 
-    # terminal.alacritty.enable = true;
-    terminal.default = "kitty";
     editor.default = "nvim";
     # editor.nvim.enable = true;
     editor.nvim.enGui = false; # GUI 编辑工具为emacs

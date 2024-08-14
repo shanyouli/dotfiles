@@ -76,7 +76,7 @@ in {
     modules.theme.catppuccin.dirs = builtins.listToAttrs (map (n: {
         name = n;
         value = {
-          "kitty.conf" = optionalString config.modules.terminal.kitty.enable "${configDir}/kitty/${n}.conf";
+          "kitty.conf" = optionalString config.modules.gui.terminal.kitty.enable "${configDir}/kitty/${n}.conf";
           "bat.tmTheme" = "${configDir}/bat/Catppuccin-${n}.tmTheme";
           "helix.toml" = optionalString cm.editor.helix.enable "${configDir}/helix/${n}.toml";
           "starship.toml" = optionalString cm.shell.prompt.starship.enable (let
@@ -123,7 +123,7 @@ in {
       // (recursiveMerge (map dirs_fn themes))
       // {
       };
-    modules.terminal.kitty.settings = ''
+    modules.gui.terminal.kitty.settings = ''
       include ${defaultDir}/kitty.conf
     '';
     modules.shell.envInit = ''
