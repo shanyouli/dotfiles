@@ -159,6 +159,8 @@ in {
           "shanyouli/tap/upic" # or "picgo"
 
           "pearcleaner" # app 卸载工具
+          "shanyouli/tap/quickrecorder" # 录屏
+          "shanyouli/tap/tmexclude"
         ]
         ++ optionals config.modules.shell.adb.enable [
           # "openmtp" # 目前不是很稳定
@@ -175,6 +177,9 @@ in {
         ]
         ++ optionals (config.modules.shell.git.enable && config.modules.shell.git.enGui) [
           "github" # github客户端
+        ]
+        ++ optionals (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) [
+          "shanyouli/tap/neovide"
         ];
       homebrew.brews = [
         # "macos-trash" # trash-cli
