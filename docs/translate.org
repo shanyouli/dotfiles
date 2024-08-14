@@ -1,0 +1,23 @@
+* 翻译工具
+
+** tui
+使用选项: modules.tui.translate.enable 开启。
+- 本地翻译工具: sdcv
+- 远程翻译工具: translate-shell
+- 其他:
+  + deeplx: 基于 deepl 的第三方工具
+  + libretranslate: 本地 ai 翻译工具，
+    1. 翻译质量目前不如常用网络翻译服务，仅推荐在无网环境使用
+    2. 有些环境安装存在问题，推荐使用 pipx 工具安装
+*** 选项解释
+选项前缀: modules.tui.translate
+| 选项          | 类型 | 含意                             |
+|---------------+------+----------------------------------|
+| enable        | bool | 是否开启 tui 翻译工具             |
+| sdcv.enable   | bool | 启用 sdcv 和 libretranslate 工具 |
+| remote.enable | bool | 启用 translate-shell 工具        |
+| deeplx.enable | bool | 启用 deeplx 工具                           |
+
+**  gui
+- linux 下主要使用 crow-translate，因为它支持命令行
+- darwin 上使用 easydict(默认)，

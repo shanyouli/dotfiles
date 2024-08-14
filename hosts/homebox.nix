@@ -18,6 +18,8 @@
 
     # tui 工具
     tui.archive.default = "ouch";
+    tui.translate.enable = true;
+    tui.translate.deeplx.enable = false;
 
     shell.prompt.default = "oh-my-posh";
     shell.nix-your-shell.enable = true;
@@ -79,7 +81,7 @@
     dev.enWebReport = true;
     dev.rust.enable = true;
 
-    tool.sdcv.enable = true;
+    # tool.sdcv.enable = true;
     tool.localsend.enable = true; # 需要gui，局域网文件传输工具
     browser.default = "firefox";
     # browser.firefox.extensions = lib.mkForce [];
