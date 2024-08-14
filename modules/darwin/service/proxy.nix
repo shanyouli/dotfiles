@@ -2,7 +2,6 @@
   lib,
   config,
   options,
-  pkgs,
   ...
 }:
 with lib;
@@ -17,8 +16,9 @@ in {
   config = mkIf cfg.enable (let
     log_file = "${config.user.home}/Library/Logs/org.nixos.proxy.log";
   in {
-    user.packages = [pkgs.unstable.darwinapps.clash-verge];
-    homebrew.casks = [(mkIf (config.modules.tool.proxy.default == "sing-box") "sfm")];
+    homebrew.casks =
+      ["shanyouli/tap/clash-verge"]
+      ++ optionals (config.modules.tool.proxy.default == "sing-box") ["sfm"];
     launchd.user.agents.proxy = {
       path = [config.modules.service.path];
       serviceConfig.RunAtLoad = true;
