@@ -26,7 +26,7 @@ in {
       maintainers = [ "${config.user.name}" ]
       nixpkgs = "<nixpkgs>"
     '';
-    modules.editor.emacs.doom.confInit = ''
+    modules.app.editor.emacs.doom.confInit = ''
       (setopt my-nix-lsp-cmd "${cfg.lspPkg.pname}")
     '';
   };

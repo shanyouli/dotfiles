@@ -18,7 +18,7 @@ in {
     user.packages = with pkgs;
       [cmake llvmPackages.libcxx]
       ++ optionals stdenvNoCC.isLinux [bear gdb clang];
-    modules.editor.vscode.extensions = with pkgs.vscode-extensions; let
+    modules.app.editor.vscode.extensions = with pkgs.vscode-extensions; let
       cpp =
         if pkgs.stdenvNoCC.isLinux
         then ms-vscode.cpptools

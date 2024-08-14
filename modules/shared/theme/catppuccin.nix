@@ -78,7 +78,7 @@ in {
         value = {
           "kitty.conf" = optionalString config.modules.gui.terminal.kitty.enable "${configDir}/kitty/${n}.conf";
           "bat.tmTheme" = "${configDir}/bat/Catppuccin-${n}.tmTheme";
-          "helix.toml" = optionalString cm.editor.helix.enable "${configDir}/helix/${n}.toml";
+          "helix.toml" = optionalString cm.app.editor.helix.enable "${configDir}/helix/${n}.toml";
           "starship.toml" = optionalString cm.shell.prompt.starship.enable (let
             colors = builtins.fromTOML (builtins.readFile "${configDir}/starship/${n}.toml");
             allSettings =
@@ -134,7 +134,7 @@ in {
     '';
     modules.shell.tmux.rcFiles = mkBefore ["${defaultDir}/tmux"];
 
-    modules.editor.helix.settings.theme = "catppuccin";
+    modules.app.editor.helix.settings.theme = "catppuccin";
 
     modules.theme.script =
       ''
@@ -149,7 +149,7 @@ in {
         ln -sf "${defaultDir}/bat.tmTheme"  "${config.home.configDir}/bat/themes/catppuccin.tmTheme"
         command -v bat >/dev/null && bat cache --build >/dev/null
       ''
-      + optionalString cm.editor.helix.enable ''
+      + optionalString cm.app.editor.helix.enable ''
         echo-info "Handling helix theme management..."
         [[ -d "${config.home.configDir}/helix/themes" ]] || mkdir -p "${config.home.configDir}/helix/themes"
         ln -sf "${defaultDir}/helix.toml"  "${config.home.configDir}/helix/themes/catppuccin.toml"

@@ -7,7 +7,7 @@
 with lib;
 with lib.my; let
   # emacs 29.0.50 It is not stable
-  cfg = config.modules.editor.emacs;
+  cfg = config.modules.app.editor.emacs;
   emacsPackages = let
     epkgs = pkgs.emacsPackagesFor cfg.package;
   in
@@ -15,7 +15,7 @@ with lib.my; let
     epkgs.overrideScope cfg.overrides;
   emacsWithPackages = emacsPackages.emacsWithPackages;
 in {
-  options.modules.editor.emacs = {
+  options.modules.app.editor.emacs = {
     enable = mkBoolOpt false;
     service.enable = mkBoolOpt false;
     gccEnable = mkBoolOpt true;
@@ -78,10 +78,10 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      modules.editor.emacs.doom.confInit = ''
+      modules.app.editor.emacs.doom.confInit = ''
         ;; (setq mydotfile "/etc/nixos")
       '';
-      modules.editor.emacs.extraPkgs = epkgs:
+      modules.app.editor.emacs.extraPkgs = epkgs:
         [
           epkgs.emacsql-sqlite-builtin
           # epkgs.telega
@@ -150,7 +150,7 @@ in {
         ]
         ++ optionals config.modules.shell.just.enable [epkgs.just-mode epkgs.justl]
         ++ optionals config.modules.shell.nushell.enable [epkgs.nushell-mode];
-      modules.editor.emacs.pkg = emacsWithPackages cfg.extraPkgs;
+      modules.app.editor.emacs.pkg = emacsWithPackages cfg.extraPkgs;
     }
     {
       user.packages = [

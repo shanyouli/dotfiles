@@ -85,10 +85,10 @@ in {
           alexandria
           # aerospace
         ]
-        ++ optionals config.modules.editor.emacs.enable [
+        ++ optionals config.modules.app.editor.emacs.enable [
           pkgs.unstable.darwinapps.pngpaste
           (pkgs.unstable.darwinapps.emacsclient.override {
-            emacsClientBin = "${config.modules.editor.emacs.pkg}/bin/emacsclient";
+            emacsClientBin = "${config.modules.app.editor.emacs.pkg}/bin/emacsclient";
             withNotify = true;
           })
         ];
@@ -96,9 +96,9 @@ in {
         baseDir =
           if config.modules.macos.app.enable
           then config.modules.macos.app.path
-          else "${config.modules.editor.emacs.pkg}/Applications";
+          else "${config.modules.app.editor.emacs.pkg}/Applications";
       in
-        optionalString config.modules.editor.emacs.enable "${baseDir}/Emacs.app/Contents/MacOS/Emacs";
+        optionalString config.modules.app.editor.emacs.enable "${baseDir}/Emacs.app/Contents/MacOS/Emacs";
       modules.xdg.enable = true;
       environment.variables = config.modules.xdg.value;
       time.timeZone = config.modules.opt.timezone;
@@ -172,9 +172,9 @@ in {
         text = config.modules.dev.rust.initScript;
       };
       macos.userScript.initNvim = {
-        enable = config.modules.editor.nvim.enable;
+        enable = config.modules.app.editor.nvim.enable;
         desc = "Init nvim";
-        text = config.modules.editor.nvim.script;
+        text = config.modules.app.editor.nvim.script;
       };
       macos.userScript.initTheme = {
         enable = config.modules.theme.default != "";

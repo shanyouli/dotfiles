@@ -180,7 +180,7 @@ in {
         ++ optionals (config.modules.shell.git.enable && config.modules.shell.git.enGui) [
           "github" # github客户端
         ]
-        ++ optionals (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) [
+        ++ optionals (config.modules.app.editor.nvim.enGui && config.modules.app.editor.nvim.enable) [
           "shanyouli/tap/neovide"
         ];
       homebrew.brews = [

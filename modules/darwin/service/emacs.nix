@@ -8,8 +8,8 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.service.emacs;
-  cshemacs = config.modules.editor.emacs;
-  emacsPkg = config.modules.editor.emacs.pkg;
+  cshemacs = config.modules.app.editor.emacs;
+  emacsPkg = config.modules.app.editor.emacs.pkg;
 in {
   options.modules.service.emacs = {
     keepAlive = mkEnableOption "Whethor to keep Alive";

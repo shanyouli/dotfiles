@@ -6,15 +6,15 @@
 }:
 with lib;
 with lib.my; let
-  cfm = config.modules;
+  cfm = config.modules.app;
   cfg = cfm.editor;
 in {
-  options.modules.editor = {
+  options.modules.app.editor = {
     default = mkOpt types.str "nvim";
   };
   config = mkIf (cfg.default != null) {
     environment.variables.EDITOR = cfg.default;
-    modules.editor.nvim.enable = mkDefault (cfg.default == "nvim");
-    modules.editor.helix.enable = mkDefault (cfg.default == "hx");
+    modules.app.editor.nvim.enable = mkDefault (cfg.default == "nvim");
+    modules.app.editor.helix.enable = mkDefault (cfg.default == "hx");
   };
 }

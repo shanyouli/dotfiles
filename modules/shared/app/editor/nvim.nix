@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.editor.nvim;
+  cfg = config.modules.app.editor.nvim;
 in {
   options = with lib; {
-    modules.editor.nvim = {
+    modules.app.editor.nvim = {
       enable = mkEnableOption "Whether to enable nvim module";
       enGui = mkBoolOpt config.modules.gui.enable;
       script = mkStrOpt "";

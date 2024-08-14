@@ -9,10 +9,10 @@
 with lib;
 with lib.my; let
   cfm = config.modules;
-  cfg = cfm.editor.helix;
+  cfg = cfm.app.editor.helix;
   tomlFormat = pkgs.formats.toml {};
 in {
-  options.modules.editor.helix = {
+  options.modules.app.editor.helix = {
     enable = mkEnableOption "Whether to use helix";
 
     package = mkOpt' types.package pkgs.helix "The package to use for helix.";
@@ -22,10 +22,10 @@ in {
     languages = with types;
       mkOpt' (coercedTo (listOf tomlFormat.type) (language:
         lib.warn ''
-          The syntax of modules.editor.helix.languages has changed.
+          The syntax of modules.app.editor.helix.languages has changed.
           It now generates the whole languages.toml file instead of just the language array in that file.
 
-          Use `modules.editor.helix.languages = { language = <languages list>; }` instead.
+          Use `modules.app.editor.helix.languages = { language = <languages list>; }` instead.
         '' {inherit language;}) (addCheck tomlFormat.type builtins.isAttrs)) {} "lsp support";
     ignores = with types; mkOpt' (listOf str) [] "ignores .gitignore files.";
     themes = mkOpt' (types.attrsOf tomlFormat.type) {} "Each theme is written to ~/.config/helix/themes/xx.toml";
@@ -46,7 +46,7 @@ in {
       ]
       else [cfg.package];
 
-    modules.editor.helix.settings = {
+    modules.app.editor.helix.settings = {
       editor.line-number = "relative";
       editor.mouse = false;
       editor.completion-trigger-len = 1;

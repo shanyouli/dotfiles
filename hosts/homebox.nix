@@ -27,6 +27,13 @@
     app.qbittorrent.service.startup = false;
     app.qbittorrent.service.enable = true;
 
+    app.editor.emacs.enable = true;
+    app.editor.emacs.service.enable = true;
+    app.editor.default = "nvim";
+    # app.editor.nvim.enable = true;
+    app.editor.nvim.enGui = false; # GUI 编辑工具为emacs
+    app.editor.vscode.enable = true;
+
     # gui
     gui.terminal.default = "kitty";
     gui.localsend.enable = true; # 需要gui，局域网文件传输工具
@@ -62,11 +69,6 @@
     shell.carapace.enable = true;
 
     shell.modern.enable = true;
-
-    editor.default = "nvim";
-    # editor.nvim.enable = true;
-    editor.nvim.enGui = false; # GUI 编辑工具为emacs
-    editor.vscode.enable = true;
 
     media.music.enable = true;
     media.music.netease.enGui = false;
@@ -122,9 +124,6 @@
     service.battery.enable = false;
     service.yabai.enable = true;
     service.aria2.enable = true;
-
-    editor.emacs.enable = true;
-    editor.emacs.service.enable = true;
   };
   # 如果你想使用macos别名请查看
   # https://github.com/LnL7/nix-darwin/issues/139#issuecomment-1230728610

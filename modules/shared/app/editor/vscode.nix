@@ -8,14 +8,14 @@
 with lib;
 with lib.my; let
   cfm = config.modules;
-  cfg = cfm.editor.vscode;
+  cfg = cfm.app.editor.vscode;
 in {
-  options.modules.editor.vscode = {
+  options.modules.app.editor.vscode = {
     enable = mkEnableOption "Whether using vscode";
     extensions = mkOpt' (types.listOf types.package) [] "VScode extensions";
   };
   config = mkIf cfg.enable {
-    modules.editor.vscode.extensions = with pkgs.unstable.vscode-extensions; [
+    modules.app.editor.vscode.extensions = with pkgs.unstable.vscode-extensions; [
       vscodevim.vim
       jnoortheen.nix-ide
       formulahendry.code-runner

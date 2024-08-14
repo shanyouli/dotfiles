@@ -19,7 +19,7 @@ in {
   };
   config = mkIf cfg.enable {
     user.packages = [pkgs.unstable.nushell];
-    modules.editor.helix = {
+    modules.app.editor.helix = {
       languages = {
         language = [
           {
@@ -31,7 +31,7 @@ in {
         language-server.nushell-lsp.args = ["--lsp"];
       };
     };
-    modules.editor.vscode.extensions = with pkgs.unstable.vscode-extensions; [
+    modules.app.editor.vscode.extensions = with pkgs.unstable.vscode-extensions; [
       thenuprojectcontributors.vscode-nushell-lang
     ];
     home.configFile = {
