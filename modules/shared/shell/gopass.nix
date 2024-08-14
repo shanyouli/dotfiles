@@ -26,7 +26,7 @@ with lib.my; let
 in {
   options.modules.shell.gopass = with types; {
     enable = mkBoolOpt false;
-    enGui = mkBoolOpt config.modules.opt.enGui;
+    enGui = mkBoolOpt config.modules.gui.enable;
     browsers = let
       browsers = ["firefox" "chrome" "chromium" "brave" "librewolf" "vivaldi" "arc"];
     in

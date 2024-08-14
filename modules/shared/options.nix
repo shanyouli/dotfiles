@@ -46,7 +46,6 @@ in {
       srcDir = mkOpt path "${config.dotfiles.dir}/_sources";
     };
     modules.opt = {
-      enGui = mkBoolOpt false; # Whether to use GUI mode
       name = mkStrOpt "Shanyou Li";
       timezone = mkStrOpt "Asia/Shanghai";
       website = mkStrOpt "https://shanyouli.github.io";

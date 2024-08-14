@@ -31,7 +31,7 @@ in {
       rmpc.enable = mkBoolOpt true;
     };
     netease.enable = mkBoolOpt true;
-    netease.enGui = mkBoolOpt config.modules.opt.enGui;
+    netease.enGui = mkBoolOpt config.modules.gui.enable;
     musikcube.enable = mkBoolOpt false;
   };
   config = mkIf cfg.enable (mkMerge [

@@ -16,14 +16,15 @@
   modules = {
     # shared
 
-    # app
-    app.qbittorrent.enable = true;
-    app.qbittorrent.enGui = false;
-    app.qbittorrent.service.startup = false;
     # tui 工具
     tui.archive.default = "ouch";
     tui.translate.enable = true;
+    tui.download.enable = true;
     tui.translate.deeplx.enable = false;
+
+    # app
+    app.qbittorrent.enGui = false;
+    app.qbittorrent.service.startup = false;
 
     shell.prompt.default = "oh-my-posh";
     shell.nix-your-shell.enable = true;

@@ -11,7 +11,7 @@ with lib.my; let
 in {
   options = {
     modules.tui.download.aria2 = {
-      enable = mkEnableOption "Whether to enable aria2 module";
+      enable = mkBoolOpt config.modules.tui.download.enable;
       package = mkPkgOpt pkgs.aria2 "aria2 package";
       aria2p = mkEnableOption "aria2c daemon python cli";
     };
