@@ -1,0 +1,20 @@
+* 下载工具篇
+
+** aria2
+
+*** 选项
+前缀为 config.modules.tui.download.aria2
+
+| 名称    | 类型     | 含意                 |
+|---------+----------+----------------------|
+| enable  | bool     | 是否启用             |
+| package | packages | 安装包               |
+| aria2p  | bool     | 是否使用 aria2p 管理 |
+
+*** 常用命令
+
+*** TODOS
+
+**** TODO 添加配置
+
+**** TODO 常用 alias

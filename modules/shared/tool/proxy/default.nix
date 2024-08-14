@@ -36,7 +36,7 @@ in {
     })
 
     (mkIf (cfg.default != "") {
-      modules.shell.aliases.paria2 = optionalString config.modules.tool.aria2.enable "aria2c --all-proxy=${proxy_url}";
+      modules.shell.aliases.paria2 = optionalString config.modules.tui.download.aria2.enable "aria2c --all-proxy=${proxy_url}";
 
       modules.tool.proxy.servicePkg = pkgs.writeScriptBin "proxy-service" (''
           #!${pkgs.stdenv.shell}

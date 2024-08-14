@@ -181,8 +181,8 @@ in {
         text = config.modules.theme.script;
       };
       macos.userScript.initQbWebUI = {
-        enable = config.modules.tool.qbittorrent.webScript != "";
-        text = config.modules.tool.qbittorrent.webScript;
+        enable = config.modules.app.qbittorrent.webScript != "";
+        text = config.modules.app.qbittorrent.webScript;
       };
 
       macos.systemScript.initXDG = {

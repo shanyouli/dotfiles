@@ -69,7 +69,7 @@ in {
         # 字幕嵌入视频,
         # --embed-subs null
         --downloader dash,m3u8:native
-        ${optionalString cfm.tool.aria2.enable ''
+        ${optionalString cfm.tui.download.aria2.enable ''
           --downloader aria2c
           --downloader-args "aria2c:-x16 -s 8 -k 5M"
         ''}

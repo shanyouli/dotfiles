@@ -16,6 +16,10 @@
   modules = {
     # shared
 
+    # app
+    app.qbittorrent.enable = true;
+    app.qbittorrent.enGui = false;
+    app.qbittorrent.service.startup = false;
     # tui 工具
     tui.archive.default = "ouch";
     tui.translate.enable = true;
@@ -117,7 +121,7 @@
     service.battery.enable = false;
     service.yabai.enable = true;
     service.aria2.enable = true;
-    service.qbittorrent.enable = true;
+    # service.qbittorrent.enable = true;
 
     editor.emacs.enable = true;
     editor.emacs.service.enable = true;
