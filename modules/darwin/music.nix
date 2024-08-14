@@ -25,8 +25,9 @@ in {
       homebrew.casks =
         ["shanyouli/tap/lyricsx" "shanyouli/tap/auralplayer"]
         ++ lib.optionals (netease.enable && netease.enGui) ["yesplaymusic"]
-        ++ optionals cfg.lx.enable ["lx-music"];
-      user.packages = with pkgs.unstable.darwinapps; [vimmotion] ++ optionals (! cfg.lx.enable) [spotube];
+        ++ optionals cfg.lx.enable ["lx-music"]
+        ++ optionals (! cfg.lx.enable) ["shanyouli/tap/spotube"];
+      user.packages = with pkgs.unstable.darwinapps; [vimmotion];
     }
     (mkIf scfg.mpd.enable {
       modules.media.music.mpd = {
