@@ -14,7 +14,7 @@ in {
     enable = mkBoolOpt capp.service.enable;
     port = mkNumOpt 6801;
   };
-  config = mkIf cfg.enable {
+  config = mkIf (capp.enable && cfg.enable) {
     launchd.user.agents.qbittorrent = {
       serviceConfig.ProgramArguments = [
         "${capp.package}/bin/qbittorrent-nox"

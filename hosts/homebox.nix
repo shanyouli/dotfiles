@@ -25,6 +25,7 @@
     # app
     app.qbittorrent.enGui = false;
     app.qbittorrent.service.startup = false;
+    app.qbittorrent.service.enable = false;
 
     # gui
     gui.terminal.default = "kitty";
