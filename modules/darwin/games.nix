@@ -2,7 +2,6 @@
   lib,
   config,
   options,
-  pkgs,
   ...
 }:
 with lib;
@@ -14,7 +13,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    homebrew.casks = ["openemu" "shanyouli/tap/ryujinx"];
-    user.packages = with pkgs.unstable.darwinapps; [rpcs3];
+    homebrew.casks = ["openemu" "shanyouli/tap/ryujinx" "shanyouli/tap/rpcs3"];
   };
 }
