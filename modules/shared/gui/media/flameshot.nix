@@ -7,7 +7,7 @@
 }:
 with lib;
 with lib.my; let
-  cfm = config.modules;
+  cfm = config.modules.gui;
   cfg = cfm.media.flameshot;
   basePkg = pkgs.flameshot;
   package =
@@ -26,7 +26,7 @@ with lib.my; let
       })
     else basePkg;
 in {
-  options.modules.media.flameshot = {
+  options.modules.gui.media.flameshot = {
     enable = mkEnableOption "Whether to use Flameshot";
   };
   config = mkIf cfg.enable {

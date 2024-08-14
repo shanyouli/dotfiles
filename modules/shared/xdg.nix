@@ -40,42 +40,50 @@ in {
         if pkgs.stdenvNoCC.isDarwin
         then "/tmp/user/${toString config.user.uid}"
         else "/run/user/${toString config.user.uid}";
-
+    };
+    env = {
       # Conform more programs to XDG conventions. The rest are handled by their
       # respective modules.
-      __GL_SHADER_DISK_CACHE_PATH = "${config.home.cacheDir}/nv";
+      __GL_SHADER_DISK_CACHE_PATH = ''"$XDG_CACHE_HOME"/nv'';
       ASPELL_CONF = ''
-        per-conf ${config.home.configDir}/aspell/aspell.conf;
-        personal ${config.home.configDir}/aspell/en_US.pws;
-        repl ${config.home.configDir}/aspell/en.prepl;
+        per-conf "$XDG_CONFIG_HOME"/aspell/aspell.conf;
+        personal "$XDG_CONFIG_HOME"/aspell/en_US.pws;
+        repl "$XDG_CONFIG_HOME"/aspell/en.prepl;
       '';
-      CUDA_CACHE_PATH = "${config.home.cacheDir}/nv";
-      HISTFILE = "${config.home.dataDir}/bash/history";
-      INPUTRC = "${config.home.configDir}/readline/inputrc";
-      LESSHISTFILE = "${config.home.cacheDir}/lesshst";
+      CUDA_CACHE_PATH = ''"$XDG_CACHE_HOME"/nv'';
+      HISTFILE = ''"$XDG_DATA_HOME"/bash/history'';
+      INPUTRC = ''"$XDG_CONFIG_HOME"/readline/inputrc'';
+      LESSHISTFILE = ''"$XDG_CACHE_HOME"/lesshst'';
 
       # Tools I don't use
-      # SUBVERSION_HOME = "${config.home.configDir}/subversion";
-      # BZRPATH         = "${config.home.configDir}/bazaar";
-      # BZR_PLUGIN_PATH = "${config.home.dataDir}/bazaar";
-      # BZR_HOME        = "${config.home.cacheDir}/bazaar";
-      # ICEAUTHORITY    = "${config.home.cacheDir}/ICEauthority";
+      # SUBVERSION_HOME = ''"$XDG_CONFIG_HOME"/subversion'';
+      # BZRPATH         = ''"$XDG_CONFIG_HOME"/bazaar'';
+      # BZR_PLUGIN_PATH = ''"$XDG_DATA_HOME"/bazaar'';
+      # BZR_HOME        = ''"$XDG_CACHE_HOME"/bazaar'';
+      # ICEAUTHORITY    = ''"$XDG_CACHE_HOME"/ICEauthority'';
 
       # .dotnet 文件 to $XDG_DATA_HOME/dotnet
-      DOTNET_CLI_HOME = "${config.home.dataDir}/dotnet";
+      DOTNET_CLI_HOME = ''"$XDG_DATA_HOME"/dotnet'';
 
       # .gem to $XDG_CACHE_HOME
-      GEM_HOME = "${config.home.dataDir}/gem";
-      GEM_SPAC_HOME = "${config.home.cacheDir}/gem";
+      GEM_HOME = ''"$XDG_DATA_HOME"/gem'';
+      GEM_SPAC_CACHE = ''"$XDG_CACHE_HOME"/gem'';
+
+      # .bundle
+      BUNDLE_USER_CONFIG = ''"$XDG_CONFIG_HOME"/bundle'';
+      BUNDLE_USER_CACHE = ''"$XDG_CACHE_HOME"/bundle'';
+      BUNDLE_USER_PLUGIN = ''"$XDG_DATA_HOME"/bundle'';
+      # .sqlite_history
+      SQLITE_HISTORY = ''"$XDG_CACHE_HOME"/sqlite_history'';
 
       # MPLCONFIGDIR
-      MPLCONFIGDIR = "${config.home.cacheDir}/matplotlib";
+      MPLCONFIGDIR = ''"$XDG_CACHE_HOME"/matplotlib'';
 
       # .openjfx to $XDG_CACHE_DIR
-      _JAVA_OPTIONS = "-Djava.util.prefs.userRoot=${config.home.cacheDir}/java -Djavafx.cachedir=${config.home.cacheDir}/openjfx";
+      _JAVA_OPTIONS = "-Djava.util.prefs.userRoot=$XDG_CACHE_DIR/java -Djavafx.cachedir=$XDG_CACHE_DIR/openjfx";
 
       # .docker
-      DOCKER_CONFIG = "${config.home.configDir}/docker";
+      DOCKER_CONFIG = ''"$XDG_CONFIG_HOME"/docker'';
     };
   };
 }

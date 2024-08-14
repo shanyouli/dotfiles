@@ -7,13 +7,13 @@
 with lib;
 with lib.my; let
   cfg = config.modules.macos.music;
-  scfg = config.modules.media.music;
+  scfg = config.modules.tui.media.music;
   netease = scfg.netease;
   mpdDir = "${config.home.cacheDir}/mpd";
   mpdfifo = "/private/tmp/mpd.fifo";
 in {
   options.modules.macos.music = {
-    enable = mkBoolOpt scfg.enable;
+    enable = mkBoolOpt (scfg.default != "");
     lx.enable = mkBoolOpt false;
     fifo.enable = mkBoolOpt false;
   };
@@ -28,8 +28,8 @@ in {
         ++ optionals (! cfg.lx.enable) ["shanyouli/tap/spotube"];
     }
     (mkIf scfg.mpd.enable {
-      modules.media.music.mpd = {
-        extraConfig = ''
+      modules.tui.media.music.mpd = {
+        config = ''
           audio_output {
             type "osx"
             name "CoreAudio"
@@ -73,6 +73,7 @@ in {
         };
         ncmpcpp = {
           desc = "初始化ncmpcpp";
+          enable = scfg.mpd.ncmpcpp.enable;
           text = let
             ncmpcpp_dir = "${config.home.cacheDir}/ncmpcpp";
             lyrics_dir = "${config.user.home}/Music/LyricsX";

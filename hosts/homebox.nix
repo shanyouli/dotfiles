@@ -18,9 +18,14 @@
 
     # tui 工具
     tui.archive.default = "ouch";
+
     tui.translate.enable = true;
-    tui.download.enable = true;
     tui.translate.deeplx.enable = false;
+
+    tui.download.enable = true;
+
+    tui.media.enable = true;
+    tui.media.stream.enable = true;
 
     # app
     app.qbittorrent.enGui = false;
@@ -36,11 +41,16 @@
 
     # gui
     gui.terminal.default = "kitty";
+
     gui.localsend.enable = true; # 需要gui，局域网文件传输工具
+
     gui.browser.default = "firefox";
     # browser.firefox.extensions = lib.mkForce [];
     gui.browser.fallback = "chrome";
     # browser.fallback = pkgs.unstable.darwinapps.vivaldi;
+
+    gui.media.flameshot.enable = true;
+    gui.media.video.default = "mpv";
 
     shell.prompt.default = "oh-my-posh";
     shell.nix-your-shell.enable = true;
@@ -70,10 +80,9 @@
 
     shell.modern.enable = true;
 
-    media.music.enable = true;
-    media.music.netease.enGui = false;
-    media.flameshot.enable = true;
-    media.video.enable = true;
+    # media.music.enable = true;
+    # media.music.netease.enGui = false;
+    # media.video.enable = true;
 
     dev.bash.enable = true;
 

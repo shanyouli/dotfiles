@@ -104,7 +104,7 @@ in {
           # "imageoptim" # 图片压缩
           # "licecap" # GIF kap
           # "imazing" # 手机备份管理
-          (mkIf (! config.modules.media.flameshot.enable) "shottr") # 截图
+          (mkIf (! config.modules.gui.media.flameshot.enable) "shottr") # 截图
           # "betterdisplay" # 其他替代工具
           # "dozer" # 菜单栏管理,
           "maczip" # 压缩解压GUI
