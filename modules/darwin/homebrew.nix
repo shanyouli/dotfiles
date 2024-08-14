@@ -161,6 +161,8 @@ in {
           "pearcleaner" # app 卸载工具
           "shanyouli/tap/quickrecorder" # 录屏
           "shanyouli/tap/tmexclude"
+
+          "shanyouli/tap/vimmotion" # 使用 vim 全局操作
         ]
         ++ optionals config.modules.shell.adb.enable [
           # "openmtp" # 目前不是很稳定

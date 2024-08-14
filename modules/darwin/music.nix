@@ -2,7 +2,6 @@
   lib,
   config,
   options,
-  pkgs,
   ...
 }:
 with lib;
@@ -27,7 +26,6 @@ in {
         ++ lib.optionals (netease.enable && netease.enGui) ["yesplaymusic"]
         ++ optionals cfg.lx.enable ["lx-music"]
         ++ optionals (! cfg.lx.enable) ["shanyouli/tap/spotube"];
-      user.packages = with pkgs.unstable.darwinapps; [vimmotion];
     }
     (mkIf scfg.mpd.enable {
       modules.media.music.mpd = {
