@@ -12,7 +12,7 @@ with lib.my; let
   chm = config.home;
   workdir = cfg.workDir;
   homebin = config.home.profileBinDir;
-  mysqlBase = "${cfm.db.mysql.package}";
+  mysqlBase = "${cfm.tui.db.mysql.package}";
   datadir = "${workdir}/data";
   mysqlSock = "${workdir}/mysql.sock";
   mysqlPid = "${workdir}/mysql.pid";
@@ -52,7 +52,7 @@ in {
     port = mkNumOpt 3306;
   };
   config = mkIf cfg.enable {
-    modules.db.mysql.enable = true;
+    modules.tui.db.mysql.enable = true;
     modules.shell.env.MYSQL_UNIX_PORT = mysqlSock;
     modules.shell.rcInit = prevScirt;
     launchd.user.agents.mysql = {

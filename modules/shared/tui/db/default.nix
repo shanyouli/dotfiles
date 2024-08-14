@@ -10,10 +10,10 @@
 # pgcli Postgres CLI with autocompletion and syntax highlighting
 with lib;
 with lib.my; let
-  cfm = config.modules;
+  cfm = config.modules.tui;
   cfg = cfm.db;
 in {
-  options.modules.db = {
+  options.modules.tui.db = {
     enable = mkEnableOption "Whether to install db common client";
     mycli.enable = mkBoolOpt false;
   };
