@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.tui;
+  cfp = config.modules;
   cfg = cfp.translate;
 in {
-  options.modules.tui.translate = {
+  options.modules.translate = {
     enable = mkEnableOption "whether to use translate tools";
     sdcv.enable = mkBoolOpt true;
     remote.enable = mkBoolOpt true;

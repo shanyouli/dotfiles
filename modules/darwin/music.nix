@@ -7,7 +7,7 @@
 with lib;
 with lib.my; let
   cfg = config.modules.macos.music;
-  scfg = config.modules.tui.media.music;
+  scfg = config.modules.media.music;
   netease = scfg.netease;
   mpdDir = "${config.home.cacheDir}/mpd";
   mpdfifo = "/private/tmp/mpd.fifo";
@@ -28,7 +28,7 @@ in {
         ++ optionals (! cfg.lx.enable) ["shanyouli/tap/spotube"];
     }
     (mkIf scfg.mpd.enable {
-      modules.tui.media.music.mpd = {
+      modules.media.music.mpd = {
         config = ''
           audio_output {
             type "osx"

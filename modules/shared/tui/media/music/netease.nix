@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.tui.media.music;
+  cfp = config.modules.media.music;
   cfg = cfp.netease;
 in {
-  options.modules.tui.media.music.netease = {
+  options.modules.media.music.netease = {
     enable = mkEnableOption "Whether to use netease music";
   };
   config = mkIf cfg.enable {

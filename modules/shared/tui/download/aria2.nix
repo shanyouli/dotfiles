@@ -7,11 +7,11 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.tui.download.aria2;
+  cfg = config.modules.download.aria2;
 in {
   options = {
-    modules.tui.download.aria2 = {
-      enable = mkBoolOpt config.modules.tui.download.enable;
+    modules.download.aria2 = {
+      enable = mkBoolOpt config.modules.download.enable;
       package = mkPkgOpt pkgs.aria2 "aria2 package";
       aria2p = mkEnableOption "aria2c daemon python cli";
     };

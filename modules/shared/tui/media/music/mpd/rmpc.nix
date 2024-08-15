@@ -9,10 +9,10 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.tui.media.music.mpd;
+  cfp = config.modules.media.music.mpd;
   cfg = cfp.rmpc;
 in {
-  options.modules.tui.media.music.mpd.rmpc = {
+  options.modules.media.music.mpd.rmpc = {
     enable = mkEnableOption "Whether to use rmpc";
   };
   config = mkIf cfg.enable {

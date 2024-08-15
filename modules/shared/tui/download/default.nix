@@ -6,10 +6,10 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.tui;
+  cfp = config.modules;
   cfg = cfp.download;
 in {
-  options.modules.tui.download = {
+  options.modules.download = {
     enable = mkEnableOption "Whether to using download manager";
   };
   config =

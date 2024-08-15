@@ -7,9 +7,9 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.tui.nginx;
+  cfg = config.modules.nginx;
 in {
-  options.modules.tui.nginx = {
+  options.modules.nginx = {
     enable = mkBoolOpt false;
     workDir = mkStrOpt "/etc/nginx";
     sScript = mkStrOpt "";
@@ -19,7 +19,7 @@ in {
 
   config = mkIf cfg.enable {
     user.packages = [cfg.package];
-    modules.tui.nginx = {
+    modules.nginx = {
       sScript = ''
         [[ -d ${cfg.workDir} ]] || {
            mkdir -p ${cfg.workDir}

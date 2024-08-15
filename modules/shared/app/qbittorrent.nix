@@ -11,7 +11,7 @@ with lib.my; let
   cfg = cfm.app.qbittorrent;
 in {
   options.modules.app.qbittorrent = {
-    enable = mkBoolOpt config.modules.tui.download.enable;
+    enable = mkBoolOpt config.modules.download.enable;
     enGui = mkBoolOpt config.modules.gui.enable;
     package = with pkgs;
       mkOption {

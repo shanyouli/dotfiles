@@ -11,7 +11,7 @@ with lib.my; let
   mpdCmd = "${config.home.profileBinDir}/mpd";
 in {
   options.modules.service.mpd = {
-    enable = mkBoolOpt cfm.tui.media.music.mpd.enable;
+    enable = mkBoolOpt cfm.media.music.mpd.enable;
   };
   config = mkIf cfg.enable {
     launchd.user.agents.mpd = {

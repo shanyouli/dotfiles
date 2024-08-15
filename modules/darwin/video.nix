@@ -18,7 +18,7 @@ in {
   config = mkIf cfg.enable {
     homebrew.casks =
       ["iina"]
-      ++ optionals (config.modules.tui.media.stream.enable && config.modules.gui.enable) [
+      ++ optionals (config.modules.media.stream.enable && config.modules.gui.enable) [
         "iina-plus"
         "shanyouli/tap/simple-live"
       ];

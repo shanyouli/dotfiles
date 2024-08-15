@@ -7,12 +7,12 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.tui.media.music;
+  cfp = config.modules.media.music;
   cfg = cfp.mpd;
   tui_list = ["ncmpcpp" "rmpc"];
   mpd_dir = "${config.home.cacheDir}/mpd";
 in {
-  options.modules.tui.media.music.mpd = {
+  options.modules.media.music.mpd = {
     enable = mkEnableOption "Whether to use mpd";
     port = mkOpt' types.number 6600 "Listen on port";
     config = mkOpt' types.lines "" "Extra directives added to the end of MPD's configuration file.";
@@ -50,8 +50,8 @@ in {
       ${cfg.config}
     '';
 
-    modules.tui.media.music.mpd.rmpc.enable = mkDefault (cfg.default == "rmpc");
-    modules.tui.media.music.mpd.ncmpcpp.enable = mkDefault (cfg.default == "ncmpcpp");
+    modules.media.music.mpd.rmpc.enable = mkDefault (cfg.default == "rmpc");
+    modules.media.music.mpd.ncmpcpp.enable = mkDefault (cfg.default == "ncmpcpp");
 
     modules.shell.aliases.mpcs = "mpc search any";
     modules.shell.aliases.mpcsp = "mpc searchplay any";

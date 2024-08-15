@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.tui.media.music;
+  cfp = config.modules.media.music;
   cfg = cfp.cmus;
 in {
-  options.modules.tui.media.music.cmus = {
+  options.modules.media.music.cmus = {
     enable = mkEnableOption "Whether to use cmus";
   };
   config = mkIf cfg.enable {

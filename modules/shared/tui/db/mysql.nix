@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfm = config.modules.tui;
+  cfm = config.modules;
   cfg = cfm.db.mysql;
 in {
-  options.modules.tui.db.mysql = {
+  options.modules.db.mysql = {
     enable = mkEnableOption "Whether to use mysql";
     package = mkPkgOpt pkgs.mysql "mysql package";
   };

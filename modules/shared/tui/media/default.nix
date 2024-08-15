@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.tui;
+  cfp = config.modules;
   cfg = cfp.media;
 in {
-  options.modules.tui.media = {
+  options.modules.media = {
     enable = mkEnableOption "Whether to use media tools";
     ffmpeg.pkg = mkOpt types.package pkgs.ffmpeg-full;
     stream.enable = mkBoolOpt true;

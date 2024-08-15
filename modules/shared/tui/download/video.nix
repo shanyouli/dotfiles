@@ -7,7 +7,7 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.tui.download;
+  cfp = config.modules.download;
   cfg = cfp.video;
   # bbdown = let
   #   cmd = pkgs.writeScript "bbdown" ''
@@ -32,7 +32,7 @@ with lib.my; let
   #       --set LD_LIBRARY_PATH  "${pkgs.icu}/lib"
   #   '';
 in {
-  options.modules.tui.download.video = {
+  options.modules.download.video = {
     enable = mkBoolOpt cfp.enable;
   };
   config = mkIf cfg.enable {

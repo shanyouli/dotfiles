@@ -56,11 +56,11 @@ in {
       LESSHISTFILE = ''"$XDG_CACHE_HOME"/lesshst'';
 
       # Tools I don't use
-      # SUBVERSION_HOME = ''"$XDG_CONFIG_HOME"/subversion'';
-      # BZRPATH         = ''"$XDG_CONFIG_HOME"/bazaar'';
-      # BZR_PLUGIN_PATH = ''"$XDG_DATA_HOME"/bazaar'';
-      # BZR_HOME        = ''"$XDG_CACHE_HOME"/bazaar'';
-      # ICEAUTHORITY    = ''"$XDG_CACHE_HOME"/ICEauthority'';
+      SUBVERSION_HOME = ''"$XDG_CONFIG_HOME"/subversion'';
+      BZRPATH = ''"$XDG_CONFIG_HOME"/bazaar'';
+      BZR_PLUGIN_PATH = ''"$XDG_DATA_HOME"/bazaar'';
+      BZR_HOME = ''"$XDG_CACHE_HOME"/bazaar'';
+      ICEAUTHORITY = ''"$XDG_CACHE_HOME"/ICEauthority'';
 
       # .dotnet 文件 to $XDG_DATA_HOME/dotnet
       DOTNET_CLI_HOME = ''"$XDG_DATA_HOME"/dotnet'';

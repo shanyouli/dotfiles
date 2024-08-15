@@ -11,7 +11,7 @@ with lib.my; let
   cfg = cfp.music;
 in {
   options.modules.gui.media.music = {
-    netease.enable = mkBoolOpt config.modules.tui.media.music.netease.enable;
+    netease.enable = mkBoolOpt config.modules.media.music.netease.enable;
   };
   config = mkIf config.modules.gui.enable (mkMerge [
     (mkIf cfg.netease.enable {

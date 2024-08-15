@@ -6,11 +6,11 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.tui;
+  cfp = config.modules;
   cfg = cfp.archive;
   cfg_list = ["atool" "ouch" "common"];
 in {
-  options.modules.tui.archive = {
+  options.modules.archive = {
     default = with types;
       mkOption {
         default = "";
@@ -27,14 +27,14 @@ in {
       modules.shell.aliases.untar = "tar -axv -f";
     }
     (mkIf (cfg.default == "common") {
-      modules.tui.archive.common.enable = true;
+      modules.archive.common.enable = true;
     })
     (mkIf (cfg.default == "atool") {
-      modules.tui.archive.atool.enable = true;
-      modules.tui.archive.common.enable = mkDefault true;
+      modules.archive.atool.enable = true;
+      modules.archive.common.enable = mkDefault true;
     })
     (mkIf (cfg.default == "ouch") {
-      modules.tui.archive.ouch.enable = true;
+      modules.archive.ouch.enable = true;
     })
   ];
 }

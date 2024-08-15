@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.tui.download;
+  cfp = config.modules.download;
   cfg = cfp.music;
 in {
-  options.modules.tui.download.music = {
+  options.modules.download.music = {
     enable = mkBoolOpt cfp.enable;
   };
   config = mkIf cfg.enable {

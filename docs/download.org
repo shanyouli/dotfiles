@@ -3,7 +3,7 @@
 ** aria2
 
 *** 选项
-前缀为 config.modules.tui.download.aria2
+前缀为 config.modules.download.aria2
 
 | 名称    | 类型     | 含意                 |
 |---------+----------+----------------------|

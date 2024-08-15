@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.tui.media.music;
+  cfp = config.modules.media.music;
   cfg = cfp.musikcube;
 in {
-  options.modules.tui.media.music.musikcube = {
+  options.modules.media.music.musikcube = {
     enable = mkEnableOption "Whether to using musikcube";
   };
   config = mkIf cfg.enable {

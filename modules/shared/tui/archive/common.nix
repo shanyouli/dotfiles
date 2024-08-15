@@ -9,10 +9,10 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.tui.archive;
+  cfp = config.modules.archive;
   cfg = cfp.common;
 in {
-  options.modules.tui.archive.common = {
+  options.modules.archive.common = {
     enable = mkEnableOption "Whether to use archive";
   };
   config = mkIf cfg.enable {

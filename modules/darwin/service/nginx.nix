@@ -8,7 +8,7 @@ with lib;
 with lib.my; let
   cfg = config.modules.service.nginx;
   cfm = config.modules;
-  cfb = cfm.tui.nginx;
+  cfb = cfm.nginx;
 in {
   options.modules.service.nginx = {
     enable = mkBoolOpt false;
@@ -16,7 +16,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    modules.tui.nginx = {
+    modules.nginx = {
       enable = true;
       workDir = cfg.workDir;
     };

@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.tui.archive;
+  cfp = config.modules.archive;
   cfg = cfp.atool;
 in {
-  options.modules.tui.archive.atool = {
+  options.modules.archive.atool = {
     enable = mkEnableOption "Whether to use atool package";
   };
   config = mkIf cfg.enable {

@@ -17,15 +17,20 @@
     # shared
 
     # tui 工具
-    tui.archive.default = "ouch";
+    archive.default = "ouch";
 
-    tui.translate.enable = true;
-    tui.translate.deeplx.enable = false;
+    translate.enable = true;
+    translate.deeplx.enable = false;
 
-    tui.download.enable = true;
+    download.enable = true;
 
-    tui.media.enable = true;
-    tui.media.stream.enable = true;
+    media.enable = true;
+    media.stream.enable = true;
+
+    proxy.default = "sing-box";
+    proxy.sing-box.package = pkgs.unstable.sing-box;
+    # proxy.clash.enSingbox = true;
+    proxy.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/singbox.json";
 
     # app
     app.qbittorrent.enGui = false;
@@ -113,11 +118,6 @@
     macos.safari.enable = true;
     macos.stopAutoReopen = true;
     macos.music.lx.enable = true;
-
-    tui.proxy.default = "sing-box";
-    tui.proxy.sing-box.package = pkgs.unstable.sing-box;
-    # tool.clash.enSingbox = true;
-    tui.proxy.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/singbox.json";
 
     macos.games.enable = true;
     macos.hammerspoon.enable = true;

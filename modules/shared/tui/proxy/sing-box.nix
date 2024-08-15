@@ -8,10 +8,10 @@
 with lib;
 with lib.my; let
   # TODO: 设置更好的管理配置文件的方法
-  cfg = config.modules.tui.proxy.sing-box;
+  cfg = config.modules.proxy.sing-box;
   workdir = "${config.home.cacheDir}/sing-box";
 in {
-  options.modules.tui.proxy.sing-box = {
+  options.modules.proxy.sing-box = {
     enable = mkBoolOpt false;
     configFile = mkOpt' types.path "${config.home.configDir}/sing-box/config.json" ''
       sing-box 配置文件保存位置
@@ -23,6 +23,6 @@ in {
     user.packages = [cfg.package];
     environment.etc."sudoers.d/singbox".text =
       sudoNotPass config.user.name "${cfg.package}/bin/${cfg.package.pname}";
-    modules.tui.proxy.sing-box.serviceCmd = ''sudo ${cfg.package}/bin/sing-box run -c "${cfg.configFile}" -D "${workdir}"'';
+    modules.proxy.sing-box.serviceCmd = ''sudo ${cfg.package}/bin/sing-box run -c "${cfg.configFile}" -D "${workdir}"'';
   };
 }

@@ -10,10 +10,10 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.tui.archive;
+  cfp = config.modules.archive;
   cfg = cfp.ouch;
 in {
-  options.modules.tui.archive.ouch = {
+  options.modules.archive.ouch = {
     enable = mkEnableOption "Whether to use ouch packages";
   };
   config = mkIf cfg.enable {
