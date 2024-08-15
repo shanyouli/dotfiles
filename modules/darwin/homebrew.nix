@@ -182,7 +182,12 @@ in {
         ]
         ++ optionals (config.modules.app.editor.nvim.enGui && config.modules.app.editor.nvim.enable) [
           "shanyouli/tap/neovide"
+        ]
+        ++ optionals (config.modules.gui.enable && (config.modules.proxy.default != "")) [
+          "shanyouli/tap/clash-verge"
+          (mkIf (config.modules.proxy.default == "sing-box") "sfm")
         ];
+
       homebrew.brews = [
         # "macos-trash" # trash-cli
         # "mysql"

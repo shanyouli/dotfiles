@@ -10,21 +10,17 @@ with lib.my; let
   cft = config.modules.proxy;
 in {
   options.modules.service.proxy = {
-    enable = mkBoolOpt (cft.default != "");
+    enable = mkBoolOpt cft.service.enable;
   };
 
   config = mkIf cfg.enable (let
     log_file = "${config.user.home}/Library/Logs/org.nixos.proxy.log";
   in {
-    homebrew.casks =
-      ["shanyouli/tap/clash-verge"]
-      ++ optionals (config.modules.proxy.default == "sing-box") ["sfm"];
     launchd.user.agents.proxy = {
       path = [config.modules.service.path];
-      serviceConfig.RunAtLoad = true;
+      serviceConfig.RunAtLoad = cft.service.startup;
       serviceConfig.StandardOutPath = log_file;
-
-      serviceConfig.ProgramArguments = ["${cft.servicePkg}/bin/proxy-service"];
+      serviceConfig.ProgramArguments = ["${cft.service.pkg}/bin/${cft.service.pkg.name}"];
       serviceConfig.ProcessType = "Background";
     };
   });

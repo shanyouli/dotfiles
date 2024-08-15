@@ -32,7 +32,7 @@
 
     proxy.default = "sing-box";
     proxy.sing-box.package = pkgs.unstable.sing-box;
-    # proxy.clash.enSingbox = true;
+    proxy.service.enable = true;
     proxy.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/singbox.json";
 
     # app
