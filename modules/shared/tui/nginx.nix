@@ -12,9 +12,12 @@ in {
   options.modules.nginx = {
     enable = mkBoolOpt false;
     workDir = mkStrOpt "/etc/nginx";
-    sScript = mkStrOpt "";
-    uScript = mkStrOpt "";
+    sScript = mkOpt' types.lines "" "nginx 需要 root 运行的初始化脚本";
+    uScript = mkOpt' types.lines "" "nginx 需要的 user 初始化脚本";
     package = mkPkgOpt pkgs.nginx "nginx package";
+    service.enable = mkOpt' types.bool cfg.enable "是否生成 nginx 服务";
+    service.startup = mkOpt' types.bool true "是否开机启动 nginx 服务";
+    # TODO: 配置文件
   };
 
   config = mkIf cfg.enable {

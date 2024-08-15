@@ -27,6 +27,9 @@
     media.enable = true;
     media.stream.enable = true;
 
+    nginx.enable = true;
+    nginx.workDir = "/opt/nginx";
+
     proxy.default = "sing-box";
     proxy.sing-box.package = pkgs.unstable.sing-box;
     # proxy.clash.enSingbox = true;
