@@ -147,7 +147,7 @@ in {
       in ''
         PATH=""
         eval $(/usr/libexec/path_helper -s)
-        [[ -d ${brewHome} ]] && eval $(${brewHome}/brew shellenv)
+        [ -d ${brewHome} ] && eval $(${brewHome}/brew shellenv)
         PATH=${prevPath}:$PATH
       '');
     in

@@ -11,11 +11,11 @@ with lib.my; let
   cfg = cfp.music;
 in {
   options.modules.gui.media.music = {
-    netease.enable = mkBoolOpt config.modules.media.music.netease.enable;
+    netease.enable = mkBoolOpt (config.modules.media.music.netease.enable && config.modules.gui.enable);
   };
-  config = mkIf config.modules.gui.enable (mkMerge [
+  config = mkMerge [
     (mkIf cfg.netease.enable {
       user.packages = [(mkIf pkgs.stdenvNoCC.isLinux pkgs.netease-cloud-music-gtk)];
     })
-  ]);
+  ];
 }

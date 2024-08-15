@@ -26,6 +26,19 @@
 
     media.enable = true;
     media.stream.enable = true;
+    media.music.default = "mpd";
+    media.music.netease.enable = true;
+    media.music.mpd.service.startup = true;
+
+    gui.media.music.netease.enable = false;
+
+    gui.media.video.default = "mpv";
+
+    # 比较后选择
+    media.music.cmus.enable = true;
+    media.music.musikcube.enable = true;
+    media.music.mpd.default = "rmpc";
+    media.music.mpd.ncmpcpp.enable = true;
 
     nginx.enable = true;
     nginx.workDir = "/opt/nginx";
@@ -56,9 +69,7 @@
     # browser.firefox.extensions = lib.mkForce [];
     gui.browser.fallback = "chrome";
     # browser.fallback = pkgs.unstable.darwinapps.vivaldi;
-
     gui.media.flameshot.enable = true;
-    gui.media.video.default = "mpv";
 
     shell.prompt.default = "oh-my-posh";
     shell.nix-your-shell.enable = true;

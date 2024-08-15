@@ -25,6 +25,8 @@ in {
         else "";
       description = "Default tui mpd manager";
     };
+    service.enable = mkOpt' types.bool cfg.enable "是否配置 mpd 服务";
+    service.startup = mkOpt' types.bool true "mpd 服务是否开机自启动";
   };
   config = mkIf cfg.enable {
     user.packages = with pkgs; [pkgs.mpd pkgs.mpc-cli];

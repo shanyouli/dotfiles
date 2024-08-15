@@ -23,7 +23,7 @@ in {
       # vox or foobar2000 auralplayer
       homebrew.casks =
         ["shanyouli/tap/lyricsx" "shanyouli/tap/auralplayer"]
-        ++ lib.optionals (netease.enable && netease.enGui) ["yesplaymusic"]
+        ++ lib.optionals config.modules.gui.media.music.netease.enable ["yesplaymusic"]
         ++ optionals cfg.lx.enable ["lx-music"]
         ++ optionals (! cfg.lx.enable) ["shanyouli/tap/spotube"];
     }
