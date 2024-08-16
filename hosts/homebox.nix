@@ -49,6 +49,9 @@
     proxy.service.enable = true;
     proxy.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/singbox.json";
 
+    alist.enable = true;
+    alist.service.startup = false;
+
     # app
     app.qbittorrent.enGui = false;
     app.qbittorrent.service.startup = false;
@@ -143,7 +146,6 @@
 
     service.nginx.enable = true;
     service.mysql.enable = true;
-    service.alist.enable = true;
     service.battery.enable = false;
     service.yabai.enable = true;
     service.aria2.enable = true;
