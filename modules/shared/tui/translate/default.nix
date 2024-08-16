@@ -15,6 +15,8 @@ in {
     sdcv.enable = mkBoolOpt true;
     remote.enable = mkBoolOpt true;
     deeplx.enable = mkBoolOpt true;
+    deeplx.service.enable = mkBoolOpt cfg.deeplx.enable;
+    deeplx.service.startup = mkBoolOpt true;
   };
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.sdcv.enable {
