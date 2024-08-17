@@ -17,10 +17,13 @@ with lib.my; let
 in {
   options.modules.app.editor.emacs = {
     enable = mkBoolOpt false;
-    service.enable = mkBoolOpt false;
-    gccEnable = mkBoolOpt true;
-    pluginEnable = mkBoolOpt true;
+
+    service.enable = mkBoolOpt cfg.enable;
+    service.startup = mkBoolOpt true;
+    service.keep = mkBoolOpt true;
+
     rimeEnable = mkBoolOpt true;
+
     doom = {
       enable = mkBoolOpt true;
       fromSSH = mkBoolOpt false;

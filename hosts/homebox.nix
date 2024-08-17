@@ -24,6 +24,13 @@
     translate.deeplx.service.startup = false;
 
     download.enable = true;
+    download.aria2.enable = true;
+    download.aria2.aria2p = true;
+    download.aria2.service.startup = false;
+
+    db.enable = true;
+    db.mysql.enable = true;
+    db.mysql.service.startup = false;
 
     media.enable = true;
     media.stream.enable = true;
@@ -59,6 +66,7 @@
 
     app.editor.emacs.enable = true;
     app.editor.emacs.service.enable = true;
+
     app.editor.default = "nvim";
     # app.editor.nvim.enable = true;
     app.editor.nvim.enGui = false; # GUI 编辑工具为emacs
@@ -144,11 +152,8 @@
     macos.duti.enable = true;
     macos.netdriver.enable = true;
 
-    service.nginx.enable = true;
-    service.mysql.enable = true;
     service.battery.enable = false;
     service.yabai.enable = true;
-    service.aria2.enable = true;
   };
   # 如果你想使用macos别名请查看
   # https://github.com/LnL7/nix-darwin/issues/139#issuecomment-1230728610

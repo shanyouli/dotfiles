@@ -13,6 +13,8 @@ in {
   options.modules.shell.tmux = with types; {
     enable = mkBoolOpt false;
     rcFiles = mkOpt (listOf (either str path)) [];
+    service.enable = mkBoolOpt cfg.enable;
+    service.startup = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
@@ -52,6 +54,11 @@ in {
           # prefix <tab>, selection, <tab> insert <enter> copy
           run-shell '${pkgs.tmuxPlugins.extrakto}/share/tmux-plugins/extrakto/extrakto.tmux'
 
+          # tmux copy toolkit 配置
+          set -g @copytk-quickopen-env-file '${config.home.cacheDir}/tmux-copytk-env'
+          run-shell '${pkgs.tmuxPlugins.copy-toolkit}/share/tmux-plugins/copy-toolkit/copytk.tmux'
+          bind-key -T prefix l run-shell -b "pythons ${pkgs.tmuxPlugins.copy-toolkit}/share/tmux-plugins/copy-toolkit/copytk.py linecopy"
+
           # tmux 会话自动保存，配合 continuum 自动恢复会话
           set -g @resurrect-dir '${config.home.cacheDir}/tmux-resurrect'
           set -g @resurrect-processes 'btm'
@@ -59,11 +66,6 @@ in {
 
           set -g @continuum-restore 'on'
           run-shell '${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum/continuum.tmux'
-
-          # tmux copy toolkit 配置
-          set -g @copytk-quickopen-env-file '${config.home.cacheDir}/tmux-copytk-env'
-          run-shell '${pkgs.tmuxPlugins.copy-toolkit}/share/tmux-plugins/copy-toolkit/copytk.tmux'
-          bind-key -T prefix l run-shell -b "pythons ${pkgs.tmuxPlugins.copy-toolkit}/share/tmux-plugins/copy-toolkit/copytk.py linecopy"
 
           ${optionalString config.modules.gui.terminal.kitty.enable ''
             # when using kitty, @see https://mbuffett.com/posts/setting-up-tmux-and-kitty-for-true-color-support/

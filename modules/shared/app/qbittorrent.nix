@@ -42,6 +42,7 @@ in {
         else v;
     };
     service.startup = mkBoolOpt true;
+    service.port = mkOpt' types.number 6801 "";
   };
   config = mkIf cfg.enable {
     user.packages = [cfg.package];

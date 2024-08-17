@@ -15,7 +15,7 @@ with lib.my; let
 in {
   options.modules.db = {
     enable = mkEnableOption "Whether to install db common client";
-    mycli.enable = mkBoolOpt false;
+    mycli.enable = mkBoolOpt cfg.enable;
   };
   config = mkIf cfg.enable (mkMerge [
     {

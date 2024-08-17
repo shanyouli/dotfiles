@@ -12,13 +12,12 @@ with lib.my; let
 in {
   options.modules.service.qbittorrent = {
     enable = mkBoolOpt capp.service.enable;
-    port = mkNumOpt 6801;
   };
   config = mkIf (capp.enable && cfg.enable) {
     launchd.user.agents.qbittorrent = {
       serviceConfig.ProgramArguments = [
         "${capp.package}/bin/qbittorrent-nox"
-        "--webui-port=${toString cfg.port}"
+        "--webui-port=${toString capp.service.port}"
       ];
       path = [config.modules.service.path];
       serviceConfig.RunAtLoad = capp.service.startup;

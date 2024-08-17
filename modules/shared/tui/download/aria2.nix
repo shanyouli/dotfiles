@@ -14,6 +14,10 @@ in {
       enable = mkBoolOpt config.modules.download.enable;
       package = mkPkgOpt pkgs.aria2 "aria2 package";
       aria2p = mkEnableOption "aria2c daemon python cli";
+
+      service.enable = mkBoolOpt cfg.enable;
+      service.startup = mkBoolOpt true;
+      service.port = mkOpt' types.number 6800 "service open port";
     };
   };
   config = mkIf cfg.enable (mkMerge [

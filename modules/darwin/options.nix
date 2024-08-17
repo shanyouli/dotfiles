@@ -185,7 +185,11 @@ in {
         enable = config.modules.app.qbittorrent.webScript != "";
         text = config.modules.app.qbittorrent.webScript;
       };
-
+      macos.userScript.initMysql = {
+        enable = config.modules.db.mysql.enable;
+        text = config.modules.db.mysql.script;
+        desc = "init mysql ...";
+      };
       macos.systemScript.initXDG = {
         enable = config.modules.xdg.enable;
         text = ''
