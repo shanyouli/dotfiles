@@ -9,14 +9,19 @@ with lib;
 with lib.my; let
   cfg = config.modules.macos.video;
   homeDir = config.user.home;
-  mpvcfg = config.modules.media.video;
+  mpvcfg = config.modules.gui.media.video;
 in {
   options.modules.macos.video = {
-    enable = mkBoolOpt mpvcfg.enable;
+    enable = mkBoolOpt (mpvcfg.default != "");
   };
 
   config = mkIf cfg.enable {
-    homebrew.casks = ["iina"] ++ optionals mpvcfg.stream.enable ["iina-plus" "shanyouli/tap/simple-live"];
+    homebrew.casks =
+      ["iina"]
+      ++ optionals (config.modules.media.stream.enable && config.modules.gui.enable) [
+        "iina-plus"
+        "shanyouli/tap/simple-live"
+      ];
     # 视频压缩工具, 使用 ffmpeg 取代
     # homebrew.casks = ["handbrake"];
     macos.userScript.setingIinaApp = {

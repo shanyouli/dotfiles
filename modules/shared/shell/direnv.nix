@@ -17,7 +17,7 @@ in {
   config = mkIf cfg.enable {
     user.packages = [pkgs.direnv pkgs.nix-direnv];
     modules.shell.rcInit = ''_cache -v ${pkgs.direnv.version} direnv hook zsh'';
-    modules.editor.vscode.extensions = [pkgs.unstable.vscode-extensions.mkhl.direnv];
+    modules.app.editor.vscode.extensions = [pkgs.unstable.vscode-extensions.mkhl.direnv];
     modules.shell.pluginFiles = ["direnv"];
     home.configFile = mkMerge [
       {

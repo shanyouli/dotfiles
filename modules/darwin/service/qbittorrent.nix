@@ -7,22 +7,20 @@
 with lib;
 with lib.my; let
   cfm = config.modules;
+  capp = cfm.app.qbittorrent;
   cfg = cfm.service.qbittorrent;
 in {
   options.modules.service.qbittorrent = {
-    enable = mkEnableOption "Whether to use qbittorrent server";
-    port = mkNumOpt 6801;
+    enable = mkBoolOpt capp.service.enable;
   };
-  config = mkIf cfg.enable {
-    modules.tool.qbittorrent.enable = true;
-    modules.tool.qbittorrent.enGui = false;
+  config = mkIf (capp.enable && cfg.enable) {
     launchd.user.agents.qbittorrent = {
       serviceConfig.ProgramArguments = [
-        "${cfm.tool.qbittorrent.package}/bin/qbittorrent-nox"
-        "--webui-port=${toString cfg.port}"
+        "${capp.package}/bin/qbittorrent-nox"
+        "--webui-port=${toString capp.service.port}"
       ];
       path = [config.modules.service.path];
-      serviceConfig.RunAtLoad = true;
+      serviceConfig.RunAtLoad = capp.service.startup;
       # serviceConfig.KeepAlive.NetworkState = true;
       serviceConfig.StandardOutPath = "${config.user.home}/Library/Logs/qbittorrent-nox.log";
     };

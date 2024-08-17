@@ -26,7 +26,7 @@ with lib.my; let
 in {
   options.modules.shell.gopass = with types; {
     enable = mkBoolOpt false;
-    enGui = mkBoolOpt config.modules.opt.enGui;
+    enGui = mkBoolOpt config.modules.gui.enable;
     browsers = let
       browsers = ["firefox" "chrome" "chromium" "brave" "librewolf" "vivaldi" "arc"];
     in
@@ -45,7 +45,7 @@ in {
     }
     (mkIf (cfg.browsers != []) {
       home.file = let
-        cfbrowser = config.modules.browser.configDir;
+        cfbrowser = config.modules.gui.browser.configDir;
         isFirefox = n: builtins.elem n ["firefox" "librewolf"];
         nativeHostsName = n:
           if pkgs.stdenvNoCC.isLinux && (isFirefox n)

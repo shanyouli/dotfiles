@@ -1,0 +1,14 @@
+
+* qbittorrent
+
+** 选项
+前缀 config.modules.app.qbittorrent
+| 名称            | 类型    | 含意                                                       |
+|-----------------+---------+------------------------------------------------------------|
+| enable          | bool    | 是否启用                                                   |
+| enGui           | bool    | 使用 gui app                                               |
+| package         | package | 需要安装的包                                               |
+| webui           | bool    | 是否使用webui，和 enGui 冲突，当enGui 为true 时，强制为false |
+| webScript       | string  | 不要编辑它                                                 |
+| service.enable  | bool    | 是否构建为服务，和 enGui 冲突，同 webui                     |
+| service.startup | bool    | 服务是否开启自启动                                           |

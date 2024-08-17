@@ -79,7 +79,7 @@ in {
           ipylab = "ipython --pylab=qt5 --no-banner";
         };
       };
-      modules.editor.helix = {
+      modules.app.editor.helix = {
         # extraPackages = with pkgs; [];
         languages = {
           language = [

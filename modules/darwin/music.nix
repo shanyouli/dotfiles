@@ -13,7 +13,7 @@ with lib.my; let
   mpdfifo = "/private/tmp/mpd.fifo";
 in {
   options.modules.macos.music = {
-    enable = mkBoolOpt scfg.enable;
+    enable = mkBoolOpt (scfg.default != "");
     lx.enable = mkBoolOpt false;
     fifo.enable = mkBoolOpt false;
   };
@@ -23,13 +23,13 @@ in {
       # vox or foobar2000 auralplayer
       homebrew.casks =
         ["shanyouli/tap/lyricsx" "shanyouli/tap/auralplayer"]
-        ++ lib.optionals (netease.enable && netease.enGui) ["yesplaymusic"]
+        ++ lib.optionals config.modules.gui.media.music.netease.enable ["yesplaymusic"]
         ++ optionals cfg.lx.enable ["lx-music"]
         ++ optionals (! cfg.lx.enable) ["shanyouli/tap/spotube"];
     }
     (mkIf scfg.mpd.enable {
       modules.media.music.mpd = {
-        extraConfig = ''
+        config = ''
           audio_output {
             type "osx"
             name "CoreAudio"
@@ -73,6 +73,7 @@ in {
         };
         ncmpcpp = {
           desc = "初始化ncmpcpp";
+          enable = scfg.mpd.ncmpcpp.enable;
           text = let
             ncmpcpp_dir = "${config.home.cacheDir}/ncmpcpp";
             lyrics_dir = "${config.user.home}/Music/LyricsX";

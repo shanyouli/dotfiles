@@ -5,14 +5,13 @@ if [[ -z $TMUX && "$TMUX_AUTOSTART" == "True" && -z "$INSIDE_EMACS" && -z $EMACS
         if tmux has-session -t TMUX >/dev/null 2>&1; then
             exec tmux attach -t TMUX
         else
-            exec tmux new -s TMUX
-            # exec tmux new -s TMUX -- "export SHELL=$(which zsh); zsh -il"
+            exec tmux new -A -s TMUX
         fi
     fi
 fi
 
 if [[ -n $TMUX ]]; then
-   export FZF_TMUX=1
+  export FZF_TMUX=1
 fi
 
 function _zt { zinit depth"1" lucid ${1/#[0-9][a-c]/wait"$1"} "${@:2}"; }

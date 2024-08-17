@@ -46,7 +46,6 @@ in {
       srcDir = mkOpt path "${config.dotfiles.dir}/_sources";
     };
     modules.opt = {
-      enGui = mkBoolOpt false; # Whether to use GUI mode
       name = mkStrOpt "Shanyou Li";
       timezone = mkStrOpt "Asia/Shanghai";
       website = mkStrOpt "https://shanyouli.github.io";
@@ -148,7 +147,7 @@ in {
       in ''
         PATH=""
         eval $(/usr/libexec/path_helper -s)
-        [[ -d ${brewHome} ]] && eval $(${brewHome}/brew shellenv)
+        [ -d ${brewHome} ] && eval $(${brewHome}/brew shellenv)
         PATH=${prevPath}:$PATH
       '');
     in

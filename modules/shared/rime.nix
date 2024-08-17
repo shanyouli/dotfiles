@@ -9,7 +9,7 @@ with lib.my; let
   cfg = config.modules.rime;
   cfm = config.modules;
   # 移除 home目录后的部分
-  useEmacs = cfm.editor.emacs.enable && cfm.editor.emacs.rimeEnable;
+  useEmacs = cfm.app.editor.emacs.enable && cfm.app.editor.emacs.rimeEnable;
 in {
   options.modules.rime = {
     enable = mkBoolOpt false;

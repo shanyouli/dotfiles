@@ -10,7 +10,7 @@ with lib.my; let
 in {
   options.modules.shell.git = with types; {
     enable = mkBoolOpt false;
-    enGui = mkBoolOpt config.modules.opt.enGui;
+    enGui = mkBoolOpt config.modules.gui.enable;
   };
   config = mkIf cfg.enable {
     user.packages = with pkgs; [

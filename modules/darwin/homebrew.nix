@@ -104,7 +104,7 @@ in {
           # "imageoptim" # 图片压缩
           # "licecap" # GIF kap
           # "imazing" # 手机备份管理
-          (mkIf (! config.modules.media.flameshot.enable) "shottr") # 截图
+          (mkIf (! config.modules.gui.media.flameshot.enable) "shottr") # 截图
           # "betterdisplay" # 其他替代工具
           # "dozer" # 菜单栏管理,
           "maczip" # 压缩解压GUI
@@ -163,6 +163,7 @@ in {
 
           "shanyouli/tap/vimmotion" # 使用 vim 全局操作
           "shanyouli/tap/calibre-cjk" #"koodo-reader", 书籍管理和阅读
+          "shanyouli/tap/alexandria" # 阅读工具
         ]
         ++ optionals config.modules.shell.adb.enable [
           # "openmtp" # 目前不是很稳定
@@ -174,15 +175,20 @@ in {
         ++ optionals config.modules.shell.gopass.enable [
           "ente-auth"
         ]
-        ++ optionals (config.modules.browser.chrome.enable && config.modules.browser.chrome.useBrew) [
+        ++ optionals (config.modules.gui.browser.chrome.enable && config.modules.gui.browser.chrome.useBrew) [
           "google-chrome"
         ]
         ++ optionals (config.modules.shell.git.enable && config.modules.shell.git.enGui) [
           "github" # github客户端
         ]
-        ++ optionals (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) [
+        ++ optionals (config.modules.app.editor.nvim.enGui && config.modules.app.editor.nvim.enable) [
           "shanyouli/tap/neovide"
+        ]
+        ++ optionals (config.modules.gui.enable && (config.modules.proxy.default != "")) [
+          "shanyouli/tap/clash-verge"
+          (mkIf (config.modules.proxy.default == "sing-box") "sfm")
         ];
+
       homebrew.brews = [
         # "macos-trash" # trash-cli
         # "mysql"

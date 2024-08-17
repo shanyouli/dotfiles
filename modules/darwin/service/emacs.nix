@@ -8,16 +8,16 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.service.emacs;
-  cshemacs = config.modules.editor.emacs;
-  emacsPkg = config.modules.editor.emacs.pkg;
+  cft = config.modules.app.editor.emacs;
+  emacsPkg = config.modules.app.editor.emacs.pkg;
 in {
   options.modules.service.emacs = {
-    keepAlive = mkEnableOption "Whethor to keep Alive";
+    enable = mkBoolOpt cft.service.enable;
   };
-  config = mkIf (cshemacs.service.enable && cshemacs.enable) {
+  config = mkIf cfg.enable {
     launchd.user.agents.emacs = {
-      serviceConfig.RunAtLoad = true;
-      serviceConfig.KeepAlive = cfg.keepAlive;
+      serviceConfig.RunAtLoad = cft.service.startup;
+      serviceConfig.KeepAlive = cft.service.keep;
       serviceConfig.EnvironmentVariables = {
         PATH = "${emacsPkg}/bin:${config.modules.service.path}";
       };

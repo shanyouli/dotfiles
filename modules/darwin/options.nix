@@ -82,13 +82,12 @@ in {
         [
           lporg
           switchaudio-osx
-          alexandria
           # aerospace
         ]
-        ++ optionals config.modules.editor.emacs.enable [
+        ++ optionals config.modules.app.editor.emacs.enable [
           pkgs.unstable.darwinapps.pngpaste
           (pkgs.unstable.darwinapps.emacsclient.override {
-            emacsClientBin = "${config.modules.editor.emacs.pkg}/bin/emacsclient";
+            emacsClientBin = "${config.modules.app.editor.emacs.pkg}/bin/emacsclient";
             withNotify = true;
           })
         ];
@@ -96,9 +95,9 @@ in {
         baseDir =
           if config.modules.macos.app.enable
           then config.modules.macos.app.path
-          else "${config.modules.editor.emacs.pkg}/Applications";
+          else "${config.modules.app.editor.emacs.pkg}/Applications";
       in
-        optionalString config.modules.editor.emacs.enable "${baseDir}/Emacs.app/Contents/MacOS/Emacs";
+        optionalString config.modules.app.editor.emacs.enable "${baseDir}/Emacs.app/Contents/MacOS/Emacs";
       modules.xdg.enable = true;
       environment.variables = config.modules.xdg.value;
       time.timeZone = config.modules.opt.timezone;
@@ -112,7 +111,8 @@ in {
         alias open = ^open
       '';
 
-      modules.opt.enGui = true;
+      modules.gui.enable = mkDefault true;
+
       system.activationScripts.postActivation.text = ''
         # activateSettings -u will reload the settings from the database and apply them to the current session,
         # so we do not need to logout and login again to make the changes take effect.
@@ -171,9 +171,9 @@ in {
         text = config.modules.dev.rust.initScript;
       };
       macos.userScript.initNvim = {
-        enable = config.modules.editor.nvim.enable;
+        enable = config.modules.app.editor.nvim.enable;
         desc = "Init nvim";
-        text = config.modules.editor.nvim.script;
+        text = config.modules.app.editor.nvim.script;
       };
       macos.userScript.initTheme = {
         enable = config.modules.theme.default != "";
@@ -181,10 +181,14 @@ in {
         text = config.modules.theme.script;
       };
       macos.userScript.initQbWebUI = {
-        enable = config.modules.tool.qbittorrent.webScript != "";
-        text = config.modules.tool.qbittorrent.webScript;
+        enable = config.modules.app.qbittorrent.webScript != "";
+        text = config.modules.app.qbittorrent.webScript;
       };
-
+      macos.userScript.initMysql = {
+        enable = config.modules.db.mysql.enable;
+        text = config.modules.db.mysql.script;
+        desc = "init mysql ...";
+      };
       macos.systemScript.initXDG = {
         enable = config.modules.xdg.enable;
         text = ''
@@ -197,7 +201,7 @@ in {
       };
       macos.userScript.linkChromeApp = let
         appEn = config.modules.macos.app.enable;
-        mchrome = config.modules.browser.chrome;
+        mchrome = config.modules.gui.browser.chrome;
         enable = mchrome.enable && mchrome.dev.enable && appEn && (! mchrome.useBrew);
       in {
         inherit enable;

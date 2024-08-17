@@ -15,6 +15,74 @@
   user.uid = 501; # uid macos 创建的用户 默认 uid 为 501
   modules = {
     # shared
+
+    # tui 工具
+    archive.default = "ouch";
+
+    translate.enable = true;
+    translate.deeplx.enable = false;
+    translate.deeplx.service.startup = false;
+
+    download.enable = true;
+    download.aria2.enable = true;
+    download.aria2.aria2p = true;
+    download.aria2.service.startup = false;
+
+    db.enable = true;
+    db.mysql.enable = true;
+    db.mysql.service.startup = false;
+
+    media.enable = true;
+    media.stream.enable = true;
+    media.music.default = "mpd";
+    media.music.netease.enable = true;
+    media.music.mpd.service.startup = true;
+
+    gui.media.music.netease.enable = false;
+
+    gui.media.video.default = "mpv";
+
+    # 比较后选择
+    media.music.cmus.enable = true;
+    media.music.musikcube.enable = true;
+    media.music.mpd.default = "rmpc";
+    media.music.mpd.ncmpcpp.enable = true;
+
+    nginx.enable = true;
+    nginx.workDir = "/opt/nginx";
+
+    proxy.default = "sing-box";
+    proxy.sing-box.package = pkgs.unstable.sing-box;
+    proxy.service.enable = true;
+    proxy.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/singbox.json";
+
+    alist.enable = true;
+    alist.service.startup = false;
+
+    # app
+    app.qbittorrent.enGui = false;
+    app.qbittorrent.service.startup = false;
+    app.qbittorrent.service.enable = true;
+
+    app.editor.emacs.enable = true;
+    app.editor.emacs.service.enable = true;
+
+    app.editor.default = "nvim";
+    # app.editor.nvim.enable = true;
+    app.editor.nvim.enGui = false; # GUI 编辑工具为emacs
+    app.editor.vscode.enable = true;
+
+    # gui
+    gui.terminal.default = "kitty";
+
+    gui.localsend.enable = true; # 需要gui，局域网文件传输工具
+
+    gui.browser.default = "firefox";
+    # browser.firefox.extensions = lib.mkForce [];
+    gui.browser.fallback = "chrome";
+    # browser.fallback = pkgs.unstable.darwinapps.vivaldi;
+    gui.media.flameshot.enable = true;
+
     shell.prompt.default = "oh-my-posh";
     shell.nix-your-shell.enable = true;
     shell.zinit.enable = true;
@@ -43,17 +111,9 @@
 
     shell.modern.enable = true;
 
-    # terminal.alacritty.enable = true;
-    terminal.default = "kitty";
-    editor.default = "nvim";
-    # editor.nvim.enable = true;
-    editor.nvim.enGui = false; # GUI 编辑工具为emacs
-    editor.vscode.enable = true;
-
-    media.music.enable = true;
-    media.music.netease.enGui = false;
-    media.flameshot.enable = true;
-    media.video.enable = true;
+    # media.music.enable = true;
+    # media.music.netease.enGui = false;
+    # media.video.enable = true;
 
     dev.bash.enable = true;
 
@@ -75,13 +135,6 @@
     dev.enWebReport = true;
     dev.rust.enable = true;
 
-    tool.sdcv.enable = true;
-    tool.localsend.enable = true; # 需要gui，局域网文件传输工具
-    browser.default = "firefox";
-    # browser.firefox.extensions = lib.mkForce [];
-    browser.fallback = "chrome";
-    # browser.fallback = pkgs.unstable.darwinapps.vivaldi;
-
     # macos
     macos.enable = true;
     macos.docker.enable = true;
@@ -92,11 +145,6 @@
     macos.stopAutoReopen = true;
     macos.music.lx.enable = true;
 
-    tool.proxy.default = "sing-box";
-    tool.proxy.sing-box.package = pkgs.unstable.sing-box;
-    # tool.clash.enSingbox = true;
-    tool.proxy.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/singbox.json";
-
     macos.games.enable = true;
     macos.hammerspoon.enable = true;
     macos.rime.enable = true;
@@ -104,17 +152,8 @@
     macos.duti.enable = true;
     macos.netdriver.enable = true;
 
-    service.nginx.enable = true;
-    service.mysql.enable = true;
-    # service.deeplx.enable = true;
-    service.alist.enable = true;
     service.battery.enable = false;
     service.yabai.enable = true;
-    service.aria2.enable = true;
-    service.qbittorrent.enable = true;
-
-    editor.emacs.enable = true;
-    editor.emacs.service.enable = true;
   };
   # 如果你想使用macos别名请查看
   # https://github.com/LnL7/nix-darwin/issues/139#issuecomment-1230728610

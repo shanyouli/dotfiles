@@ -8,18 +8,14 @@ with lib;
 with lib.my; let
   cfg = config.modules.service.nginx;
   cfm = config.modules;
-  cfb = cfm.tool.nginx;
+  cfb = cfm.nginx;
+  work_dir = cfb.workDir;
 in {
   options.modules.service.nginx = {
-    enable = mkBoolOpt false;
-    workDir = mkStrOpt "/opt/nginx";
+    enable = mkBoolOpt cfb.service.enable;
   };
 
   config = mkIf cfg.enable {
-    modules.tool.nginx = {
-      enable = true;
-      workDir = cfg.workDir;
-    };
     macos.userScript.initNginx = {
       enable = cfg.enable;
       text = cfb.uScript;
@@ -35,7 +31,7 @@ in {
       serviceConfig.ProgramArguments = [
         "${cfb.package}/bin/nginx"
         "-p"
-        cfg.workDir
+        work_dir
         "-e"
         "logs/error.log"
         "-c"
@@ -43,7 +39,7 @@ in {
         "-g"
         "daemon off;"
       ];
-      serviceConfig.WorkingDirectory = cfg.workDir;
+      serviceConfig.WorkingDirectory = work_dir;
       serviceConfig.RunAtLoad = true;
     };
   };
