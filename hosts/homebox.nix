@@ -24,7 +24,6 @@
     translate.deeplx.service.startup = false;
 
     download.enable = true;
-    download.aria2.enable = true;
     download.aria2.aria2p = true;
     download.aria2.service.startup = false;
 
@@ -90,7 +89,6 @@
     shell.zoxide.enable = true;
     shell.atuin.enable = true;
     shell.navi.enable = true;
-    shell.wget.enable = true;
     shell.tmux.enable = true;
     shell.tmux.service.startup = true;
     shell.adb.enable = true;
