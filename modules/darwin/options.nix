@@ -251,7 +251,7 @@ in {
       modules.service.env.PASSWORD_STORE_DIR = config.env.PASSWORD_STORE_DIR;
     })
     (mkIf config.modules.xdg.enable {
-      environment.profiles = ["${config.user.home}/.local/status/nix/profile"];
+      environment.profiles = mkOrder 800 ["${config.user.home}/.local/status/nix/profile"];
     })
   ];
 }

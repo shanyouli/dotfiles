@@ -92,6 +92,7 @@
     shell.navi.enable = true;
     shell.wget.enable = true;
     shell.tmux.enable = true;
+    shell.tmux.service.startup = true;
     shell.adb.enable = true;
     shell.rsync.enable = true;
     shell.ugrep.enable = true;

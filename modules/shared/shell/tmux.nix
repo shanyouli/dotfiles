@@ -69,7 +69,8 @@ in {
 
           ${optionalString config.modules.gui.terminal.kitty.enable ''
             # when using kitty, @see https://mbuffett.com/posts/setting-up-tmux-and-kitty-for-true-color-support/
-            set-option -sa terminal-overrides ",xterm-kitty:RGB"
+            set-option -ga terminal-overrides ",xterm-kitty:RGB"
+            set-option -sa terminal-features ",xterm-kitty:RGB"
           ''}
 
           # 设置默认的 shell
