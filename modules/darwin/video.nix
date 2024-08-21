@@ -19,7 +19,7 @@ in {
     homebrew.casks =
       ["iina"]
       ++ optionals (config.modules.media.stream.enable && config.modules.gui.enable) [
-        "iina-plus"
+        "iina+"
         "shanyouli/tap/simple-live"
       ];
     # 视频压缩工具, 使用 ffmpeg 取代
@@ -31,9 +31,13 @@ in {
       level = 100;
       text = ''$DRY_RUN_CMD ln -sf ${homeDir}/Applications/Myapps/IINA.app /Applications/ '';
     };
-    home.configFile."mpv/fonts" = {
-      recursive = true;
-      source = "${pkgs.lxgw-wenkai}/share/fonts/truetype/LXGWWenKai";
+    home.configFile = let
+      base-font = "LXGWWenKaiMono";
+      prefix = "${pkgs.lxgw-wenkai}/share/fonts/truetype/LXGWWenKai/";
+    in {
+      "mpv/fonts/${base-font}-Bold.ttf".source = "${prefix}${base-font}-Bold.ttf";
+      "mpv/fonts/${base-font}-Light.ttf".source = "${prefix}${base-font}-Light.ttf";
+      "mpv/fonts/${base-font}-Regular.ttf".source = "${prefix}${base-font}-Regular.ttf";
     };
   };
 }

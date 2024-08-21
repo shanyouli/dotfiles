@@ -58,6 +58,7 @@
     alist.enable = true;
     alist.service.startup = false;
 
+    rsync.enable = true;
     # app
     app.qbittorrent.enGui = false;
     app.qbittorrent.service.startup = false;
@@ -92,7 +93,6 @@
     shell.tmux.enable = true;
     shell.tmux.service.startup = true;
     shell.adb.enable = true;
-    shell.rsync.enable = true;
     shell.ugrep.enable = true;
     shell.gpg.enable = true;
     shell.gpg.cacheTTL = 360000;

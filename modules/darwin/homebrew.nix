@@ -87,9 +87,6 @@ in {
           "jetbrains-toolbox"
           # "syncthing" 同步
           # "downie"
-          # # 使用第三方工具取代openmtp，MacDroid.app
-          # (lib.mkIf config.modules.adb.enable
-          #   "openmtp") # 或者
           "lulu" # 网络管理
           "veracrypt" # "cryptomator" # 即时加密软件
           "macfuse" # veracrypt 需要的工具
@@ -106,7 +103,6 @@ in {
           # "imazing" # 手机备份管理
           (mkIf (! config.modules.gui.media.flameshot.enable) "shottr") # 截图
           # "betterdisplay" # 其他替代工具
-          # "dozer" # 菜单栏管理,
           "maczip" # 压缩解压GUI
           # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
           "findergo" # 快捷方式，在finder中打开终端
@@ -123,9 +119,7 @@ in {
           "mac-mouse-fix" # 鼠标fix
           "pictureview" # 看图
 
-          # "appcleaner" # 软件卸载, 使用 pearcleaner
-          # "clean-me" # ka, 使用 Lemon Cleaner 取代
-          "tencent-lemon" # 文件清理
+          "tencent-lemon" # 文件清理 or ""clean-me""
 
           "charles" # "proxyman", 抓包
           "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
@@ -147,7 +141,7 @@ in {
           "command-x" # Cut files
           "logseq" # 笔记工具
 
-          "jordanbaird-ice" # tab 自动隐藏
+          "jordanbaird-ice" # tab 自动隐藏, 其他 "dozer" # 菜单栏管理,
 
           # "windterm" # 比较好用的 ssh 客户端，可以使用 vscode 的 ssh 插件取代
           # "doll" # 在 menubar 上显示 消息提示
@@ -157,15 +151,17 @@ in {
           "shanyouli/tap/nextchat" # gptchat, 客户端，需要密钥
           "shanyouli/tap/upic" # or "picgo"
 
-          "pearcleaner" # app 卸载工具
+          "pearcleaner" # app 卸载工具 or "appcleaner"
           "shanyouli/tap/quickrecorder" # 录屏
           "shanyouli/tap/tmexclude"
 
           "shanyouli/tap/vimmotion" # 使用 vim 全局操作
           "shanyouli/tap/calibre-cjk" #"koodo-reader", 书籍管理和阅读
           "shanyouli/tap/alexandria" # 阅读工具
+          "shanyouli/tap/airbattery" # 设备电量显示
         ]
         ++ optionals config.modules.shell.adb.enable [
+          # # 使用第三方工具取代openmtp，MacDroid.app
           # "openmtp" # 目前不是很稳定
           # “macdroid” # 付费app，使用adb传输，稳定性存疑
           # "android-file-transfer" # 可用，稳定性一般
