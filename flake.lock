@@ -681,11 +681,16 @@
         "narHash": "sha256-1WUEFsQPAvxNicA2h6bfIx19TfvwSnFZLf+UKUfELiw=",
         "owner": "shanyouli",
         "repo": "nur-packages",
+<<<<<<< variant A
         "rev": "c52bf9a2231ab7722e848b0393dd3d82d32ea9ab",
+>>>>>>> variant B
+        "rev": "91841a04f635d1583443a88afbd60a1d28e83426",
+======= end
         "type": "github"
       },
       "original": {
         "owner": "shanyouli",
+        "ref": "stable",
         "repo": "nur-packages",
         "type": "github"
       }

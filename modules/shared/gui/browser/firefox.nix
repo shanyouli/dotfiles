@@ -81,6 +81,11 @@ in {
       styl-us
       # privacy-pass
       immersive-translate
+      chrome-mask
+      zeroomega
+      easy-image-blocker
+      kiss-translator
+      raindropio
     ]);
     modules.gui.browser.firefox.finalPackage = wrapPackage cfg.package;
 
