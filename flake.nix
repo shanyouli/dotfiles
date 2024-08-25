@@ -24,7 +24,7 @@
     devenv.url = "github:cachix/devenv/latest";
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
-    nurpkgs.url = "github:shanyouli/nur-packages";
+    nurpkgs.url = "github:shanyouli/nur-packages/stable";
     nurpkgs.inputs.nixpkgs.follows = "nixpkgs";
   };
 
