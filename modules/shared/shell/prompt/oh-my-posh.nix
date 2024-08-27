@@ -19,7 +19,7 @@ in {
     environment.systemPackages = [package];
     # FIX: 由于使用 macos 自带的 bash 导致的错误，
     programs.bash.interactiveShellInit = mkIf cfp.bash.enable ''
-      if [ ''${BASH_VERSINFO[1]} -gt 5 ] && [[ $TERM != "dumb" && (-z $INSIDE_EMACS || $INSIDE_EMACS == "vterm") ]]; then
+      if [ ''${BASH_VERSINFO[0]} -gt 4 ] && [[ $TERM != "dumb" && (-z $INSIDE_EMACS || $INSIDE_EMACS == "vterm") ]]; then
         eval "$(${formatFn "bash"})"
       fi
     '';

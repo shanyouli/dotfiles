@@ -1,4 +1,4 @@
-#!/usr/bin/env cached-nix-shell
+#!/usr/bi/env cached-nix-shell
 #! nix-shell -i nu -p hyperfine nushell
 
 def --wrapped main [ ...rest: string ] {
@@ -9,7 +9,7 @@ def --wrapped main [ ...rest: string ] {
   let is_default = true
   for $i in $rest {
     if ($i | str starts-with "-") {
-      is_default = false
+      let is_default = false
       break
     }
   }
