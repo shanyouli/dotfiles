@@ -111,7 +111,8 @@ in {
       # coreutils-prefixed # GNUcoreutils 工具，mv，cp等
       # uutils-coreutils
       uutils-coreutils-noprefix
-      tailspin # 支持高亮的语法查看工具
+      # tailspin # 支持高亮的语法查看工具
+      lnav
 
       fzf
       my-nix-script
@@ -192,7 +193,7 @@ in {
         # alias 别名，设置
         ${concatStringsSep "\n" (mapAttrsToList (n: v: ''alias ${n}="${v}"'') (filterAttrs (n: v: v != "") cfg.aliases))}
       '';
-      aliases.log = "tspin";
+      aliases.log = "lnav";
     };
     home.configFile =
       {
