@@ -159,6 +159,8 @@ in {
           "shanyouli/tap/calibre-cjk" #"koodo-reader", 书籍管理和阅读
           "shanyouli/tap/alexandria" # 阅读工具
           "shanyouli/tap/airbattery" # 设备电量显示
+
+          "anythingllm" # LLM 管理工具。AI 相关
         ]
         ++ optionals config.modules.shell.adb.enable [
           # # 使用第三方工具取代openmtp，MacDroid.app

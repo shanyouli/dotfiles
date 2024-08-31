@@ -15,6 +15,14 @@ in {
   };
   config = mkIf cfg.enable {
     user.packages = [pkgs.mpv];
+    home.configFile = {
+      "mpv" = {
+        source = "${config.dotfiles.configDir}/mpv";
+        recursive = true;
+      };
+      "mpv/files/.keep".source = builtins.toFile "keep" "";
+      "mpv/cache/.keep".source = builtins.toFile "keep" "";
+    };
   };
   # TODO: 配置管理
 }

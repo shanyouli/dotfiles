@@ -82,7 +82,10 @@ in {
       '';
     })
     (mkIf cfg.manager {
+      modules.shell.python.pipx.enable = mkDefault false;
       modules.shell.env.PATH = mkBefore ["${config.home.dataDir}/rye/shims"];
+      modules.shell.pluginFiles = ["rye"];
+      modules.shell.nushell.scriptFiles = ["rye"];
       modules.dev.manager.extInit = mkAfter (let
         isNumeric = character: builtins.match "[0-9]" character != null;
         checkFirstCharIsNumber = str:
