@@ -15,6 +15,7 @@ in {
   };
   config = mkIf cfg.enable {
     user.packages = [pkgs.mpv];
+    # https://github.com/dyphire/mpv-config/issues/65
     home.configFile = {
       "mpv" = {
         source = "${config.dotfiles.configDir}/mpv";
@@ -24,5 +25,4 @@ in {
       "mpv/cache/.keep".source = builtins.toFile "keep" "";
     };
   };
-  # TODO: 配置管理
 }

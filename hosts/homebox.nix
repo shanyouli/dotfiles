@@ -44,8 +44,8 @@
     # 比较后选择
     media.music.cmus.enable = true;
     media.music.musikcube.enable = true;
-    media.music.mpd.default = "rmpc";
-    media.music.mpd.ncmpcpp.enable = true;
+    media.music.mpd.default = "ncmpcpp";
+    # media.music.mpd.ncmpcpp.enable = true;
 
     nginx.enable = true;
     nginx.workDir = "/opt/nginx";

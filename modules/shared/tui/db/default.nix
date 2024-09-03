@@ -15,10 +15,13 @@ with lib.my; let
 in {
   options.modules.db = {
     enable = mkEnableOption "Whether to install db common client";
-    mycli.enable = mkBoolOpt cfg.enable;
+    mycli.enable = mkBoolOpt cfg.enable; #
+    dblab.enable = mkBoolOpt cfg.enable; # https://github.com/danvergara/dblab
+    # https://github.com/theseus-rs/rsql/tree/main
   };
   config = mkIf cfg.enable (mkMerge [
     {
+      # https://github.com/xo/usql
       user.packages = [pkgs.usql];
     }
     (mkIf cfg.mycli.enable {
@@ -28,6 +31,9 @@ in {
         MYCLI_HISTFILE="${config.home.cacheDir}/mycli/mycli.history"
       '';
       home.configFile."mycli/myclirc".source = "${config.dotfiles.configDir}/mycli/myclirc";
+    })
+    (mkIf cfg.dblab.enable {
+      user.packages = [pkgs.dblab];
     })
   ]);
 }

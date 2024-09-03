@@ -20,7 +20,13 @@ in {
         fantasque-sans-mono
         lxgw-wenkai
         unifont
-        (nerdfonts.override {fonts = ["FantasqueSansMono" "NerdFontsSymbolsOnly" "CascadiaCode"];})
+        (nerdfonts.override {
+          fonts = [
+            "FantasqueSansMono"
+            "NerdFontsSymbolsOnly"
+            # "CascadiaCode" # cascadiaCode 自带
+          ];
+        })
       ];
     };
   };

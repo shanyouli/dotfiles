@@ -1,5 +1,6 @@
 # 使用 rust 编写的 mpd 客户端
 # see @https://mierak.github.io/rmpc/
+# only support linux
 {
   pkgs,
   lib,

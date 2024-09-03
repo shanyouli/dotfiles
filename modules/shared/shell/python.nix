@@ -34,10 +34,7 @@ in {
         PYTON_EGG_CACHE = "${config.home.cacheDir}/python-eggs";
         JUPYTER_CONFIG_DIR = "${config.home.dataDir}/jupyter";
       };
-      modules.shell.python.finalPkg =
-        if cfg.extraPkgs != []
-        then pkgs.python3.withPackages cfg.extraPkgs
-        else pkgs.python3;
+      modules.shell.python.finalPkg = pkgs.python3.withPackages cfg.extraPkgs;
       user.packages = [cfg.finalPkg];
     }
     (mkIf cfg.pipx.enable {

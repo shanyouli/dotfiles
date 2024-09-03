@@ -9,28 +9,34 @@ with lib;
 with lib.my; let
   cfp = config.modules.download;
   cfg = cfp.video;
-  # bbdown = let
-  #   cmd = pkgs.writeScript "bbdown" ''
-  #     #!${pkgs.stdenv.shell}
-  #       _dir=${config.home.cacheDir}/bbdown
-  #       [[ -d $_dir ]] || mkdir -p $_dir
-  #       get_shasum() { shasum $1 | cut -d" " -f1 ; }
-  #       copy_source() {
-  #         local file1=$_dir/bbdown
-  #         local file2=${pkgs.bbdown}/lib/BBDown/BBDown
-  #         local hash2=$(get_shasum $file2)
-  #         [[ -f $file1 ]] && [[ $(get_shasum $file1) == $hash2 ]] || cp -r $file2 $file1
-  #       }
-  #       copy_source
-  #       exec -a "$0" "$_dir/bbdown"  "$@"
-  #   '';
-  # in
-  #   pkgs.runCommandLocal "bbdown" {nativeBuildInputs = [pkgs.makeWrapper];} ''
-  #     mkdir -p $out/bin
-  #     makeWrapper ${cmd} $out/bin/bbdown \
-  #       --set PATH  "${pkgs.ffmpeg}/bin" \
-  #       --set LD_LIBRARY_PATH  "${pkgs.icu}/lib"
-  #   '';
+  bbdown = let
+    cmd = pkgs.writeScript "bbdown" ''
+      #!${pkgs.stdenv.shell}
+      # 配置缓存目录
+      _dir=${config.home.cacheDir}/bbdown
+      # 目录如果不存在则创建它
+      mkdir -p $dir
+      # 获取hash 值
+      get_shasum() { shasum $1 | cut -d" " -f1 ; }
+      # 更新执行程序
+      copy_source() {
+        local file1=$_dir/bbdown
+        local file2=${pkgs.unstable.bbdown}/lib/BBDown/BBDown
+        local hash2=$(get_shasum $file2)
+        if [[ ! -f "$file" || "$(get_shasum $file1)" != "$(get_shasum $file2)" ]]; then
+           cp -r $file2 $file1
+        fi
+      }
+      copy_source
+      exec -a "$0" "$_dir/bbdown"  "$@"
+    '';
+  in
+    pkgs.runCommandLocal "bbdown" {nativeBuildInputs = [pkgs.makeWrapper];} ''
+      mkdir -p $out/bin
+      makeWrapper ${cmd} $out/bin/bbdown \
+        --prefix PATH : "${pkgs.ffmpeg}/bin" \
+        --suffix LD_LIBRARY_PATH : "${pkgs.icu}/lib"
+    '';
 in {
   options.modules.download.video = {
     enable = mkBoolOpt cfp.enable;
@@ -42,6 +48,8 @@ in {
       # pkgs.unstable.bbdown # 使用 yutto 取代
       pkgs.unstable.lux
       pkgs.unstable.fav
+      # pkgs.unstable.bbdown
+      bbdown
     ]; # yutto 下载bilibili
     home.configFile."yt-dlp/config".text = ''
       # 下载默认保存目录
