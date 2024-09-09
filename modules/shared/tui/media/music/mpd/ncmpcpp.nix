@@ -25,7 +25,7 @@ in {
       ncmpcpp_directory = ${ncmpcpp_dir}
       mpd_port = "${toString cfp.port}"
 
-      ${builtins.readFile "${config.dotfiles.configDir}/ncmpcpp/config"}
+      ${builtins.readFile "${lib.var.dotfiles.config}/ncmpcpp/config"}
 
       ${cfg.config}
     '';

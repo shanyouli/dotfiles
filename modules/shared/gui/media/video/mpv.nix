@@ -18,7 +18,7 @@ in {
     # https://github.com/dyphire/mpv-config/issues/65
     home.configFile = {
       "mpv" = {
-        source = "${config.dotfiles.configDir}/mpv";
+        source = "${lib.var.dotfiles.config}/mpv";
         recursive = true;
       };
       "mpv/files/.keep".source = builtins.toFile "keep" "";

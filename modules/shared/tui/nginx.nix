@@ -34,11 +34,11 @@ in {
           [[ -d ${cfg.workDir}/$i ]] || mkdir -p ${cfg.workDir}/$i
         done
         ln -sf ${cfg.package}/conf/mime.types ${cfg.workDir}/conf
-        [[ -f ${config.dotfiles.configDir}/nginx/nginx.conf ]] && {
+        [[ -f ${lib.var.dotfiles.config}/nginx/nginx.conf ]] && {
           if [[ -e ${cfg.workDir}/conf/nginx.conf ]] && [[ ! -h ${cfg.workDir}/conf/nginx.conf ]]; then
             mv ${cfg.workDir}/conf/nginx.conf ${cfg.workDir}/conf/nginx.conf.backup
           fi
-          ln -sf ${config.dotfiles.configDir}/nginx/nginx.conf ${cfg.workDir}/conf/nginx.conf
+          ln -sf ${lib.var.dotfiles.config}/nginx/nginx.conf ${cfg.workDir}/conf/nginx.conf
         }
       '';
     };

@@ -22,7 +22,7 @@ in {
     mkIf cfg.enable {
       home.actionscript = ''
         echo-info "Synchronizing nvim configurations..."
-        ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${config.dotfiles.configDir}/nvim/ ${config.home.configDir}/nvim/
+        ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${lib.var.dotfiles.config}/nvim/ ${config.home.configDir}/nvim/
       '';
       home.configFile."nvim/plugin_list.lua".text = mkIf (cfg.lsp != []) ''
         return {

@@ -23,7 +23,7 @@ in {
   config = mkIf cfg.enable {
     user.packages = [pkgs.unstable.darwinapps.yabai-zsh-completions];
     home.configFile."yabai" = {
-      source = "${config.dotfiles.configDir}/yabai";
+      source = "${lib.var.dotfiles.config}/yabai";
       recursive = true;
     };
     environment.systemPackages = [cfg.package];

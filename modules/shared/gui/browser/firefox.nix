@@ -113,7 +113,7 @@ in {
         "${profilePath}/chrome/userChrome.css" = mkIf (cfg.userChrome != "") {text = cfg.userChrome;};
         "${profilePath}/chrome/userContent.css" = mkIf (cfg.userContent != "") {text = cfg.userContent;};
         "${profilePath}/user.js".text = ''
-          ${builtins.readFile "${config.dotfiles.configDir}/firefox/user.js"}
+          ${builtins.readFile "${lib.var.dotfiles.config}/firefox/user.js"}
 
           ${cfg.extraConfig}
         '';
@@ -137,7 +137,7 @@ in {
             if pkgs.stdenvNoCC.isDarwin
             then "userChrome-darwin.css"
             else "userChrome-linux.css";
-        in "${config.dotfiles.configDir}/firefox/chrome/${name}";
+        in "${lib.var.dotfiles.config}/firefox/chrome/${name}";
       })
       {
         "${profilePath}/chrome/" = {

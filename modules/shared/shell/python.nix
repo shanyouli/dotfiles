@@ -83,7 +83,7 @@ in {
             fi
           };
         '';
-        # nushell.cmpFiles = ["${config.dotfiles.configDir}/pipx/pipx-completions.nu"];
+        # nushell.cmpFiles = ["${lib.var.dotfiles.config}/pipx/pipx-completions.nu"];
         nushell.rcInit = lib.optionalString (global_python_path != "") ''
           export def --wrapped pipx [...rest: string] {
               if ($env | get --ignore-errors PIPX_DEFAULT_PYTHON | is-empty) {

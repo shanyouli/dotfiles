@@ -34,7 +34,7 @@ in {
     user.packages = [cfgPkg];
     home.configFile = {
       "alacritty" = {
-        source = "${config.dotfiles.configDir}/alacritty";
+        source = "${lib.var.dotfiles.config}/alacritty";
         recursive = true;
       };
       # TODO: 更多可选配置

@@ -41,7 +41,7 @@ in {
     {
       user.packages = [package (mkIf cfg.enGui qtpass)];
       env.PASSWORD_STORE_DIR = "${config.home.dataDir}/password-store";
-      modules.shell.nushell.cmpFiles = ["${config.dotfiles.configDir}/gopass/gopass-completions.nu"];
+      modules.shell.nushell.cmpFiles = ["${lib.var.dotfiles.config}/gopass/gopass-completions.nu"];
     }
     (mkIf (cfg.browsers != []) {
       home.file = let

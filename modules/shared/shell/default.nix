@@ -9,7 +9,7 @@ with lib;
 with lib.my; let
   cfg = config.modules.shell;
   getLastFunction = str: last (splitString "/" str);
-  configDir = config.dotfiles.configDir;
+  configDir = lib.var.dotfiles.config;
   plFn = ext: l: (let
     _resultFn =
       if ext == "completions"

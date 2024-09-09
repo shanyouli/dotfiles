@@ -22,6 +22,6 @@ in {
     modules.shell.rcInit = ''
       _cache -v ${pkgs.navi.version} navi widget zsh
     '';
-    modules.shell.env.NAVI_PATH = "${config.dotfiles.configDir}/navi/cheats:${dataDir}";
+    modules.shell.env.NAVI_PATH = "${lib.var.dotfiles.config}/navi/cheats:${dataDir}";
   };
 }

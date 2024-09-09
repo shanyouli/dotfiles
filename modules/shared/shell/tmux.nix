@@ -26,7 +26,7 @@ in {
 
     home.configFile = {
       "tmux" = {
-        source = "${config.dotfiles.configDir}/tmux";
+        source = "${lib.var.dotfiles.config}/tmux";
         recursive = true;
       };
       "tmux/extraInit" = {

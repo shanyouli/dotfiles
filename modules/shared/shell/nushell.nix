@@ -17,8 +17,8 @@ with lib.my; let
           if hasPrefix "/" vl
           then x
           else if hasInfix "/" vl
-          then "${config.dotfiles.configDir}/${vl}"
-          else "${config.dotfiles.configDir}/${vl}/${vl}.script.nu";
+          then "${lib.var.dotfiles.config}/${vl}"
+          else "${lib.var.dotfiles.config}/${vl}/${vl}.script.nu";
       })
       l));
 in {

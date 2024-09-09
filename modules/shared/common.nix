@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   lib,
   inputs,
@@ -8,7 +7,7 @@
 with lib;
 with lib.my; {
   environment = {
-    variables.DOTFILES = config.dotfiles.dir;
+    variables.DOTFILES = lib.var.dotfiles.dir;
 
     variables.NIXPKGS_ALLOW_UNFREE = "1";
 
@@ -73,8 +72,7 @@ with lib.my; {
           || (hasPrefix "home-manager=" x)))
       nixPathInputs)
       ++ [
-        # "nixpkgs-overlays=${config.dotfiles.dir}/overlays"
-        "dotfiles=${config.dotfiles.dir}"
+        "dotfiles=${lib.var.dotfiles.dir}"
       ];
     package = pkgs.nix;
     gc = {

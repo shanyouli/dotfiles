@@ -36,7 +36,7 @@ with lib.my; let
         --color=marker:#f2d5cf,fg+:#c6d0f5,prompt:#ca9ee6,hl+:#e78284"
     '';
   };
-  configDir = "${config.dotfiles.configDir}/themes/catppuccin";
+  configDir = "${lib.var.dotfiles.config}/themes/catppuccin";
   configPath = ".cache/themes/catppucin";
   linkDir = "${config.user.home}/${configPath}";
   defaultDir = "${config.user.home}/.cache/themes/default";

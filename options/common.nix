@@ -23,28 +23,6 @@ in {
   options = with types; {
     # user = mkOpt attrs {};
     user = mkOption {type = options.users.users.type.functor.wrapped;};
-    dotfiles = {
-      dir = let
-        envDotfiles = builtins.getEnv "DOTFILES";
-        defaultPaths =
-          if (envDotfiles == "")
-          then (toString ../../.)
-          else envDotfiles;
-        dotfilesList = [
-          "/mnt/etc/dotfiles"
-          "/etc/dotfiles"
-          "/etc/nixos"
-          "${homedir}/.config/dotfiles"
-          "${homedir}/.dotfiles"
-          "${homedir}/.nixpkgs"
-        ];
-      in
-        mkOpt path (removePrefix "/mnt" (findFirst pathExists defaultPaths dotfilesList));
-      binDir = mkOpt path "${config.dotfiles.dir}/bin";
-      configDir = mkOpt path "${config.dotfiles.dir}/config";
-      modulesDir = mkOpt path "${config.dotfiles.dir}/modules";
-      srcDir = mkOpt path "${config.dotfiles.dir}/_sources";
-    };
     home = {
       file = mkOpt' attrs {} "Files to place directly in $HOME";
       configFile = mkOpt' attrs {} "Files to place directly in $XDG_CONFIG_HOME";

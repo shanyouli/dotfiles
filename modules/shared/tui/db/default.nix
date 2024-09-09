@@ -30,7 +30,7 @@ in {
       modules.shell.prevInit = ''
         MYCLI_HISTFILE="${config.home.cacheDir}/mycli/mycli.history"
       '';
-      home.configFile."mycli/myclirc".source = "${config.dotfiles.configDir}/mycli/myclirc";
+      home.configFile."mycli/myclirc".source = "${lib.var.dotfiles.config}/mycli/myclirc";
     })
     (mkIf cfg.dblab.enable {
       user.packages = [pkgs.dblab];
