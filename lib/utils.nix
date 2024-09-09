@@ -1,12 +1,7 @@
-{
-  self,
-  lib,
-  ...
-}:
+{lib, ...}:
 # copy from https://github.com/wiltaylor/dotfiles/blob/e0217a4042fb2c226f34f67d5cc90c3cf1e4364c/lib/default.nix
 let
   inherit (builtins) elem foldl' attrValues typeOf elemAt head tryEval filter getAttr attrNames;
-  inherit (self.modules) mapModulesRec';
   defaultSystems = ["aarch64-linux" "aarch64-darwin" "x86_64-darwin" "x86_64-linux"];
   darwinSystem = ["x86_64-darwin" "aarch64-darwin"];
   isDarwin = system: elem system darwinSystem;
@@ -129,51 +124,6 @@ in rec {
     if data.success
     then data.value
     else {};
-  mkSystem = {
-    name,
-    os,
-    allPkgs,
-    system,
-    baseModules ? [{nixpkgs.config.allowUnfree = true;}],
-    extraModules ? [],
-    specialArgs ? {},
-  }: let
-    useDarwin = isDarwin system;
-    sysFunc =
-      if useDarwin
-      then os.lib.darwinSystem
-      else os.lib.nixosSystem;
-    defaultModule =
-      [
-        ({
-            nixpkgs.pkgs = allPkgs."${system}";
-            networking.hostName = "${name}";
-          }
-          // (
-            if useDarwin
-            then {}
-            else {
-              system.stateVersion = "23.11";
-              boot.readOnlyNixStore = true;
-              # Currently doesn't work in nix-darwin
-              # https://discourse.nixos.org/t/man-k-apropos-return-nothing-appropriate/15464
-              documentation.man.generateCaches = true;
-            }
-          ))
-      ]
-      ++ baseModules
-      ++ (mapModulesRec' (toString ../modules/shared) import)
-      ++ (mapModulesRec' (
-          if useDarwin
-          then toString ../modules/darwin
-          else toString ../modules/nixos
-        )
-        import);
-  in
-    sysFunc {
-      inherit system specialArgs;
-      modules = defaultModule ++ extraModules;
-    };
   # @see https://github.com/kclejeune/system/blob/9c3b4222e1f4a48d392d0bba244740481160f819/flake.nix#L129
   mkChecks = {
     self,
