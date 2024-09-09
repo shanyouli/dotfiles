@@ -57,7 +57,7 @@
         };
         var = import ./vars {
           inherit inputs;
-          lib = self;
+          lib = nixpkgs.lib;
           system = system;
         };
       });

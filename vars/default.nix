@@ -3,7 +3,7 @@
   system,
   ...
 }: let
-  inherit (lib) toString optionals findFirst pathExists removePrefix;
+  inherit (lib) optionals findFirst pathExists removePrefix;
   isDarwin = system: builtins.elem system lib.platforms.darwin;
   # default "lyeli"
   name = let
@@ -19,7 +19,7 @@
 
   dotDefault = let
     envDotfiles = builtins.getEnv "DOTFILES";
-    defaultPath = toString ../.;
+    defaultPath = builtins.toString ../.;
     dotfilesList =
       []
       ++ optionals (envDotfiles != "") [envDotfiles]
