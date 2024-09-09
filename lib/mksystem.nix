@@ -10,6 +10,7 @@
   default-darwin-modules = mapModulesRec' (relativeToRoot "modules/darwin") import;
   default-nixos-modules = mapModulesRec' (relativeToRoot "modules/nixos") import;
   default-shared-modules = mapModulesRec' (relativeToRoot "modules/shared") import;
+  baseOption = import (relativeToRoot "options/common.nix");
 in rec {
   mkDarwin = {
     system,
@@ -26,6 +27,7 @@ in rec {
       inherit system specialArgs;
       modules =
         [
+          baseOption
           ({lib, ...}: {
             nixpkgs.pkgs = lib.mkDefault (import darwin-stable {
               inherit system;
@@ -57,9 +59,11 @@ in rec {
       inherit system specialArgs;
       modules =
         [
+          baseOption
           ({lib, ...}: {
             nixpkgs.pkgs = lib.mkDefault (import nixos-stable {
               inherit system;
+              config = {allowUnfree = true;};
             });
             nixpkgs.config.allowUnfree = true;
             nixpkgs.overlays = overlays;
