@@ -30,7 +30,7 @@ in rec {
             nixpkgs.pkgs = lib.mkDefault (import darwin-stable {
               inherit system;
             });
-            nixpkgs.config.allowUnfree = lib.mkDefault true;
+            nixpkgs.config.allowUnfree = true;
             nixpkgs.overlays = overlays;
             networking.hostName = name;
           })
@@ -61,7 +61,7 @@ in rec {
             nixpkgs.pkgs = lib.mkDefault (import nixos-stable {
               inherit system;
             });
-            nixpkgs.config.allowUnfree = lib.mkDefault true;
+            nixpkgs.config.allowUnfree = true;
             nixpkgs.overlays = overlays;
             networking.hostName = name;
           })
