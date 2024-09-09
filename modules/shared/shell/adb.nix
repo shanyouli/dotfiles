@@ -15,7 +15,7 @@ in {
 
   config = mkIf cfg.enable (mkMerge [
     {
-      user.packages = with pkgs; [android-tools payload-dumper-go];
+      home.packages = with pkgs; [android-tools payload-dumper-go];
     }
     (mkIf config.modules.xdg.enable {
       modules.shell.env.ANDROID_USER_HOME = "$XDG_DATA_HOME/android";

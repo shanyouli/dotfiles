@@ -209,4 +209,6 @@ in rec {
     foldl'
     (l: r: let ret = {"${r}" = filterBadPkgs allPkgs."${r}";}; in l // ret)
     {} (attrNames allPkgs);
+
+  relativeToRoot = lib.path.append ../.;
 }

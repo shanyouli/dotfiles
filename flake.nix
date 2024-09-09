@@ -31,7 +31,6 @@
   outputs = inputs @ {
     self,
     nixpkgs,
-    darwin,
     home-manager,
     flake-utils,
     devenv,
@@ -49,6 +48,20 @@
         lib = self;
       };
     });
+
+    genSpecialArgs = system: let
+      lib = nixpkgs.lib.extend (self: super: {
+        my = import ./lib {
+          inherit inputs;
+          lib = self;
+        };
+        var = import ./vars {
+          inherit inputs;
+          lib = self;
+          system = system;
+        };
+      });
+    in {inherit inputs lib self nixpkgs;};
 
     allPkgs = mkPkgs {
       nixpkgs = [nixos-stable darwin-stable];
@@ -71,7 +84,6 @@
         inherit self;
         arch = "x86_64";
         os = "linux";
-        username = "shanyouli";
       })
       // (lib.my.mkChecks {
         inherit self;
@@ -84,79 +96,68 @@
         os = "linux";
       });
 
-    darwinConfigurations = {
-      Lye-MAC = lib.my.mkSystem {
+    darwinConfigurations =
+      (lib.my.mkDarwin {
+        inherit genSpecialArgs;
         name = "home-box";
         system = "aarch64-darwin";
-        os = inputs.darwin;
-        allPkgs = allPkgs;
-        baseModules = [
-          {
-            nixpkgs.config.allowUnfree = true;
-            nixpkgs.overlays = builtins.attrValues self.overlays;
-          }
-          home-manager.darwinModules.home-manager
-        ];
+        overlays = builtins.attrValues self.overlays;
         extraModules = [./hosts/homebox.nix];
-        specialArgs = {inherit inputs self nixpkgs lib;};
-      };
-      "lyeli@aarch64-darwin" = lib.my.mkSystem {
+      })
+      // (lib.my.mkDarwin {
+        inherit genSpecialArgs;
         name = "home-box";
-        system = "aarch64-darwin";
-        os = inputs.darwin;
-        allPkgs = allPkgs;
-        baseModules = [
-          {
-            nixpkgs.config.allowUnfree = true;
-            nixpkgs.overlays = builtins.attrValues self.overlays;
-          }
-          home-manager.darwinModules.home-manager
-        ];
-        extraModules = [./hosts/homebox.nix];
-        specialArgs = {inherit inputs self nixpkgs lib;};
-      };
-      "lyeli@x86_64-darwin" = lib.my.mkSystem {
-        name = "home-box";
-        os = inputs.darwin;
-        allPkgs = allPkgs;
         system = "x86_64-darwin";
-        baseModules = [
-          {
-            nixpkgs.config.allowUnfree = true;
-            nixpkgs.overlays = builtins.attrValues self.overlays;
-          }
-          home-manager.darwinModules.home-manager
-        ];
+        overlays = builtins.attrValues self.overlays;
         extraModules = [./hosts/test.nix];
-        specialArgs = {inherit inputs self nixpkgs lib;};
-      };
-    };
+      });
 
-    nixosConfigurations = {
-      "shanyouli@x86_64-linux" = lib.my.mkSystem {
+    nixosConfigurations =
+      {
+        # "shanyouli@x86_64-linux" = lib.my.mkSystem {
+        #   name = "nixos-work";
+        #   os = inputs.nixos-stable;
+        #   system = "x86_64-linux";
+        #   allPkgs = allPkgs;
+        #   extraModules = [./hosts/linux-test];
+        #   baseModules = [
+        #     home-manager.nixosModules.home-manager
+        #   ];
+        #   specialArgs = {inherit inputs nixpkgs lib self;};
+        # };
+        "lyeli@aarch64-linux" = lib.my.mkSystem {
+          name = "nixos";
+          os = inputs.nixos-stable;
+          system = "aarch64-linux";
+          allPkgs = allPkgs;
+          extraModules = [./hosts/orbvm];
+          baseModules = [
+            home-manager.nixosModules.home-manager
+          ];
+          specialArgs = {inherit inputs nixpkgs lib self;};
+        };
+      }
+      // (lib.my.mkNixOS {
+        inherit genSpecialArgs;
         name = "nixos-work";
-        os = inputs.nixos-stable;
         system = "x86_64-linux";
-        allPkgs = allPkgs;
         extraModules = [./hosts/linux-test];
-        baseModules = [
-          home-manager.nixosModules.home-manager
-        ];
-        specialArgs = {inherit inputs nixpkgs lib self;};
-      };
-      "lyeli@aarch64-linux" = lib.my.mkSystem {
-        name = "nixos";
-        os = inputs.nixos-stable;
-        system = "aarch64-linux";
-        allPkgs = allPkgs;
-        extraModules = [./hosts/orbvm];
-        baseModules = [
-          home-manager.nixosModules.home-manager
-        ];
-        specialArgs = {inherit inputs nixpkgs lib self;};
-      };
-    };
-
+        overlays = builtins.attrValues self.overlays;
+      });
+    # homeConfigurations = {
+    #   "test@aarch64-darwin" = home-manager.lib.homeManagerConfiguration rec {
+    #     pkgs = import nixpkgs {
+    #       system = "aarch64-darwin";
+    #       overlays = builtins.attrValues self.overlays;
+    #     };
+    #     extraSpecialArgs = {inherit self inputs nixpkgs;};
+    #     modules = [
+    #       {
+    #         home.packages = [pkgs.zsh];
+    #       }
+    #     ];
+    #   };
+    # };
     devShells = eachSystemMap defaultSystems (system: let
       pkgs = allPkgs."${system}";
       # pkgs = mkPkg {

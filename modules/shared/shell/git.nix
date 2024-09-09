@@ -24,10 +24,10 @@ in {
     home.programs.git = {
       enable = true;
       package = pkgs.git;
-      userName = config.modules.opt.name;
-      userEmail = config.modules.opt.email;
+      userName = mkDefault lib.var.fullName;
+      userEmail = mkDefault lib.var.useremail;
       signing = {
-        key = "${config.modules.opt.email}";
+        key = mkDefault lib.var.useremail;
         signByDefault = true;
       };
       extraConfig = {

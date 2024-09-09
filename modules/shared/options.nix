@@ -45,12 +45,6 @@ in {
       modulesDir = mkOpt path "${config.dotfiles.dir}/modules";
       srcDir = mkOpt path "${config.dotfiles.dir}/_sources";
     };
-    modules.opt = {
-      name = mkStrOpt "Shanyou Li";
-      timezone = mkStrOpt "Asia/Shanghai";
-      website = mkStrOpt "https://shanyouli.github.io";
-      email = mkStrOpt "shanyouli6@gmail.com";
-    };
     home = {
       file = mkOpt' attrs {} "Files to place directly in $HOME";
       configFile = mkOpt' attrs {} "Files to place directly in $XDG_CONFIG_HOME";

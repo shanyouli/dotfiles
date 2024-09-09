@@ -89,7 +89,10 @@ jobs:
       #     echo "Cores: $(nproc), Arch: $(uname -p)"
       - name: Run Flake Checks
         run: |
+          export old_USER=${USER}
+          export USER="lyeli"
           nix run --impure .#checks
+          export USER=${old_USER}
           # if [[ $(uname) == "Linux" ]] && [[ $(uname -m) == "x86_64" ]]; then
           #   nix flake check -j auto --system "x86_64-linux" --show-trace --accept-flake-config
           # else
