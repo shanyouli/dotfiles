@@ -65,6 +65,8 @@ in {
       binDir = mkOpt' path "${homedir}/.local/bin" "xdg_bin_home";
       configDir = mkOpt' path "${homedir}/.config" "xdg_config_home";
       cacheDir = mkOpt' path "${homedir}/.cache" "xdg_cache_home";
+
+      actionscript = mkOpt' lines "" "激活时，执行脚本";
     };
     env = mkOption {
       type = attrsOf (oneOf [str path (listOf (either str path))]);

@@ -61,6 +61,7 @@ in {
           pylint
           pylint-venv
         ];
+      modules.app.editor.nvim.lsp = ["basedpyright"];
       user.packages = with pkgs; [
         ruff
         python3.pkgs.ruff-lsp

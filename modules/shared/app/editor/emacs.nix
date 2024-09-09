@@ -96,39 +96,12 @@ in {
           epkgs.ef-themes
           epkgs.rainbow-mode
           epkgs.noflet
-          (epkgs.treesit-grammars.with-grammars
-            (grammars:
-              with grammars; [
-                tree-sitter-bash
-                tree-sitter-c
-                tree-sitter-cpp
-                tree-sitter-css
-                tree-sitter-cmake
-                tree-sitter-c-sharp
-                tree-sitter-dockerfile
-                tree-sitter-elisp
-                tree-sitter-go
-                tree-sitter-gomod
-                tree-sitter-haskell
-                tree-sitter-html
-                tree-sitter-java
-                tree-sitter-javascript
-                tree-sitter-json
-                tree-sitter-lua
-                tree-sitter-make
-                tree-sitter-markdown
-                tree-sitter-ocaml
-                tree-sitter-org-nvim # 安装后命名存在问题，采用其他安装方法
-                tree-sitter-python
-                tree-sitter-rust
-                tree-sitter-sql
-                tree-sitter-toml
-                tree-sitter-typescript
-                tree-sitter-nix
-                tree-sitter-yaml
-                tree-sitter-vue
-                tree-sitter-nu
-              ]))
+          # (epkgs.treesit-grammars.with-grammars
+          #   (grammars:
+          #     with grammars; [
+          #       tree-sitter-bash
+          #     ]))
+          epkgs.treesit-grammars.with-all-grammars
           epkgs.elvish-mode
         ]
         ++ optionals cfg.rimeEnable [

@@ -66,6 +66,8 @@ with lib.my; let
   userScripts = pkgs.writeScript "postUserScript" ''
     ${prevtext}
     ${filterEnabledTexts cfg.userScript}
+
+    ${config.home.actionscript}
   '';
   systemScripts = pkgs.writeScript "postSystemScript" ''
     ${prevtext}

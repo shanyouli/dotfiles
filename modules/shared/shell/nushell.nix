@@ -44,6 +44,7 @@ in {
         language-server.nushell-lsp.args = ["--lsp"];
       };
     };
+    modules.app.editor.nvim.lsp = ["nushell"];
     modules.app.editor.vscode.extensions = with pkgs.unstable.vscode-extensions; [
       thenuprojectcontributors.vscode-nushell-lang
     ];

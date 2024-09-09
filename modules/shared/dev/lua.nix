@@ -43,5 +43,6 @@ in {
       stylua # fmt
       sumneko-lua-language-server # lsp
     ];
+    modules.app.editor.nvim.lsp = ["lua_ls"];
   };
 }
