@@ -31,7 +31,6 @@
   outputs = inputs @ {
     self,
     nixpkgs,
-    home-manager,
     flake-utils,
     devenv,
     darwin-stable,
@@ -113,35 +112,18 @@
       });
 
     nixosConfigurations =
-      {
-        # "shanyouli@x86_64-linux" = lib.my.mkSystem {
-        #   name = "nixos-work";
-        #   os = inputs.nixos-stable;
-        #   system = "x86_64-linux";
-        #   allPkgs = allPkgs;
-        #   extraModules = [./hosts/linux-test];
-        #   baseModules = [
-        #     home-manager.nixosModules.home-manager
-        #   ];
-        #   specialArgs = {inherit inputs nixpkgs lib self;};
-        # };
-        "lyeli@aarch64-linux" = lib.my.mkSystem {
-          name = "nixos";
-          os = inputs.nixos-stable;
-          system = "aarch64-linux";
-          allPkgs = allPkgs;
-          extraModules = [./hosts/orbvm];
-          baseModules = [
-            home-manager.nixosModules.home-manager
-          ];
-          specialArgs = {inherit inputs nixpkgs lib self;};
-        };
-      }
-      // (lib.my.mkNixOS {
+      (lib.my.mkNixOS {
         inherit genSpecialArgs;
         name = "nixos-work";
         system = "x86_64-linux";
         extraModules = [./hosts/linux-test];
+        overlays = builtins.attrValues self.overlays;
+      })
+      // (lib.my.mkNixOS {
+        inherit genSpecialArgs;
+        name = "nixos";
+        system = "aarch64-linux";
+        extraModules = [./hosts/orbvm];
         overlays = builtins.attrValues self.overlays;
       });
     # homeConfigurations = {
