@@ -87,6 +87,7 @@ in {
           activation = mkAliasDefinitions options.home.activation;
         };
         xdg = {
+          enable = true;
           configFile = mkAliasDefinitions options.home.configFile;
           dataFile = mkAliasDefinitions options.home.dataFile;
 
@@ -106,6 +107,11 @@ in {
     in {
       trusted-users = users;
       allowed-users = users;
+      # Get Nix (2.14+) itself to respect XDG. I.e.
+      # ~/.nix-defexpr -> $XDG_DATA_HOME/nix/defexpr
+      # ~/.nix-profile -> $XDG_DATA_HOME/nix/profile
+      # ~/.nix-channels -> $XDG_DATA_HOME/nix/channels
+      use-xdg-base-directories = true;
     };
 
     environment.extraInit = mkOrder 10 (let
@@ -122,7 +128,7 @@ in {
         PATH=""
         eval $(/usr/libexec/path_helper -s)
         [ -d ${brewHome} ] && eval $(${brewHome}/brew shellenv)
-        PATH=${prevPath}:$PATH
+        PATH=${prevPath}''${PATH:+:}$PATH
       '');
     in
       ''
@@ -130,7 +136,7 @@ in {
       ''
       + concatStringsSep "\n" (mapAttrsToList (n: v: (
           if "${n}" == "PATH"
-          then ''export ${n}="${v}:$PATH"''
+          then ''export ${n}="${v}:''${PATH:+:}$PATH"''
           else ''export ${n}="${v}"''
         ))
         config.env)

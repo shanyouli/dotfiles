@@ -97,34 +97,30 @@
 
     darwinConfigurations =
       (lib.my.mkDarwin {
-        inherit genSpecialArgs;
+        inherit genSpecialArgs allPkgs;
         name = "home-box";
         system = "aarch64-darwin";
-        overlays = builtins.attrValues self.overlays;
         extraModules = [./hosts/homebox.nix];
       })
       // (lib.my.mkDarwin {
-        inherit genSpecialArgs;
+        inherit genSpecialArgs allPkgs;
         name = "home-box";
         system = "x86_64-darwin";
-        overlays = builtins.attrValues self.overlays;
         extraModules = [./hosts/test.nix];
       });
 
     nixosConfigurations =
       (lib.my.mkNixOS {
-        inherit genSpecialArgs;
+        inherit genSpecialArgs allPkgs;
         name = "nixos-work";
         system = "x86_64-linux";
         extraModules = [./hosts/linux-test];
-        overlays = builtins.attrValues self.overlays;
       })
       // (lib.my.mkNixOS {
-        inherit genSpecialArgs;
+        inherit genSpecialArgs allPkgs;
         name = "nixos";
         system = "aarch64-linux";
         extraModules = [./hosts/orbvm];
-        overlays = builtins.attrValues self.overlays;
       });
     # homeConfigurations = {
     #   "test@aarch64-darwin" = home-manager.lib.homeManagerConfiguration rec {

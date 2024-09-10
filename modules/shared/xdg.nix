@@ -2,7 +2,6 @@
   lib,
   config,
   options,
-  home-manager,
   pkgs,
   ...
 }:
@@ -16,16 +15,10 @@ in {
     value = mkOpt types.attrs {};
   };
   config = mkIf cfg.enable {
-    home-manager.users.${config.user.name}.xdg.enable = true;
+    # home-manager.users.${config.user.name}.xdg.enable = true;
 
     # 用来提示还有那些可以规范的文件。如何使用, 使用 my-xdg 脚本取代
     # environment.systemPackages = [pkgs.xdg-ninja];
-
-    # Get Nix (2.14+) itself to respect XDG. I.e.
-    # ~/.nix-defexpr -> $XDG_DATA_HOME/nix/defexpr
-    # ~/.nix-profile -> $XDG_DATA_HOME/nix/profile
-    # ~/.nix-channels -> $XDG_DATA_HOME/nix/channels
-    nix.settings.use-xdg-base-directories = true;
 
     modules.xdg.value = {
       # These are the defaults, and xdg.enable does set them, but due to load

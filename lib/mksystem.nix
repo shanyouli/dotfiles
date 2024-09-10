@@ -4,7 +4,7 @@
   self,
   ...
 }: let
-  inherit (inputs) darwin darwin-stable home-manager nixos-stable;
+  inherit (inputs) darwin home-manager nixos-stable;
   inherit (self.modules) mapModulesRec';
   inherit (self.utils) relativeToRoot;
   default-darwin-modules = mapModulesRec' (relativeToRoot "modules/darwin") import;
@@ -18,7 +18,7 @@ in rec {
     darwin-modules ? default-darwin-modules,
     shared-modules ? default-shared-modules,
     myvars ? (import (relativeToRoot "vars") {inherit lib system;}),
-    overlays,
+    allPkgs,
     genSpecialArgs,
     specialArgs ? (genSpecialArgs system),
     extraModules ? [],
@@ -28,13 +28,15 @@ in rec {
       modules =
         [
           baseOption
-          ({lib, ...}: {
-            nixpkgs.pkgs = lib.mkDefault (import darwin-stable {
-              inherit system;
-              config = {allowUnfree = true;};
-            });
+          ({...}: {
+            # nixpkgs.pkgs = lib.mkDefault (import darwin-stable {
+            #   inherit system;
+            #   config = {allowUnfree = true;};
+            #   overlays = overlays;
+            # });
+            nixpkgs.pkgs = allPkgs."${system}";
             # nixpkgs.config.allowUnfree = true;
-            nixpkgs.overlays = overlays;
+            # nixpkgs.overlays = overlays;
             networking.hostName = name;
           })
           home-manager.darwinModules.home-manager
@@ -51,7 +53,7 @@ in rec {
     nixos-modules ? default-nixos-modules,
     shared-modules ? default-shared-modules,
     myvars ? (import (relativeToRoot "vars") {inherit lib system;}),
-    overlays,
+    allPkgs,
     genSpecialArgs,
     specialArgs ? (genSpecialArgs system),
     extraModules ? [],
@@ -61,13 +63,14 @@ in rec {
       modules =
         [
           baseOption
-          ({lib, ...}: {
-            nixpkgs.pkgs = lib.mkDefault (import nixos-stable {
-              inherit system;
-              config = {allowUnfree = true;};
-            });
+          ({...}: {
+            # nixpkgs.pkgs = lib.mkDefault (import nixos-stable {
+            #   inherit system;
+            #   config = {allowUnfree = true;};
+            # });
             # nixpkgs.config.allowUnfree = true;
-            nixpkgs.overlays = overlays;
+            # nixpkgs.overlays = overlays;
+            nixpkgs.pkgs = allPkgs."${system}";
             networking.hostName = name;
           })
           home-manager.darwinModules.home-manager
