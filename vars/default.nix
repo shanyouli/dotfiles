@@ -35,6 +35,7 @@
   in
     removePrefix "/mnt" (findFirst pathExists defaultPath dotfilesList);
 in rec {
+  inherit homedir;
   user = name;
   fullName = "Shanyou Li";
   useremail = "shanyouli6@gmail.com";

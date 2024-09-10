@@ -9,16 +9,8 @@
 }:
 with lib;
 with lib.my; let
-  name = let
-    user = builtins.getEnv "USER";
-  in
-    if elem user ["" "root"]
-    then "lyeli"
-    else user;
-  homedir =
-    if pkgs.stdenvNoCC.isDarwin
-    then "/Users/${name}"
-    else "/home/${name}";
+  name = lib.var.user;
+  homedir = lib.var.homedir;
 in {
   options = with types; {
     # user = mkOpt attrs {};
