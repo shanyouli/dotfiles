@@ -16,14 +16,14 @@ in {
     fmtPkg = mkPkgOpt pkgs.alejandra "Nix Format";
   };
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       cfg.lspPkg
       cfg.fmtPkg
       nix-init
       nurl # better nix-prefetch-xxx
     ];
     home.configFile."nix-init/config.toml".text = ''
-      maintainers = [ "${config.user.name}" ]
+      maintainers = [ "${lib.var.user}" ]
       nixpkgs = "<nixpkgs>"
     '';
     modules.app.editor.emacs.doom.confInit = ''

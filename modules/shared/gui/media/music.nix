@@ -15,7 +15,7 @@ in {
   };
   config = mkMerge [
     (mkIf cfg.netease.enable {
-      user.packages = [(mkIf pkgs.stdenvNoCC.isLinux pkgs.netease-cloud-music-gtk)];
+      home.packages = [(mkIf pkgs.stdenvNoCC.isLinux pkgs.netease-cloud-music-gtk)];
     })
   ];
 }

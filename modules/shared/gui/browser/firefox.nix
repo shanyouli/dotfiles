@@ -65,9 +65,9 @@ in {
     '';
   };
   config = mkIf cfg.enable {
-    modules.shell.gopass.browsers = ["firefox"];
+    modules.gopass.browsers = ["firefox"];
     modules.gui.browser.firefox.extensions = mkDefault (with pkgs.unstable.firefox-addons; [
-      (mkIf config.modules.shell.gopass.enable browserpass-ce)
+      (mkIf config.modules.gopass.enable browserpass-ce)
       noscript
       ublock-origin
       download-with-aria2
@@ -89,7 +89,7 @@ in {
     ]);
     modules.gui.browser.firefox.finalPackage = wrapPackage cfg.package;
 
-    user.packages =
+    home.packages =
       [cfg.finalPackage] ++ optionals cfg.dev.enable [pkgs.unstable.geckodriver];
     home.file = mkMerge [
       {

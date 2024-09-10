@@ -6,37 +6,6 @@
 }:
 with lib;
 with lib.my; {
-  environment = {
-    variables.DOTFILES = lib.var.dotfiles.dir;
-
-    variables.NIXPKGS_ALLOW_UNFREE = "1";
-
-    systemPackages = with pkgs; [
-      # standard toolset
-      coreutils-full
-      wget
-      git
-      jq
-
-      # helpful shell stuff
-      bat
-      fzf
-      (ripgrep.override {withPCRE2 = true;})
-      #
-      curl
-      pkgs.unstable.cached-nix-shell # Better nix-shell
-    ];
-    etc = {
-      home-manager.source = "${inputs.home-manager}";
-      nixpkgs-unstable.source = "${inputs.nixpkgs}";
-      nixpkgs.source =
-        if pkgs.stdenvNoCC.isDarwin
-        then "${inputs.darwin-stable}"
-        else "${inputs.nixos-stable}";
-    };
-    # list of acceptable shells in /etc/shells
-    shells = with pkgs; [bash zsh];
-  };
   # documentation.man.enable = mkDefault true;
   nix = let
     filterFn =

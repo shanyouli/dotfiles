@@ -16,6 +16,6 @@ in {
     enable = mkEnableOption "Whether to use archive";
   };
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [p7zip zip unzip rar unrar];
+    home.packages = with pkgs; [p7zip zip unzip rar unrar];
   };
 }

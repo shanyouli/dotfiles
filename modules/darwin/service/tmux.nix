@@ -9,7 +9,7 @@ with lib;
 with lib.my; let
   cfp = config.modules.services;
   cfg = cfp.tmux;
-  cft = config.modules.shell.tmux;
+  cft = config.modules.tmux;
 in {
   options.modules.services.tmux = {
     enable = mkBoolOpt cft.service.enable;

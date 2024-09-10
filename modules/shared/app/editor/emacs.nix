@@ -124,12 +124,12 @@ in {
             '';
           }))
         ]
-        ++ optionals config.modules.shell.just.enable [epkgs.just-mode epkgs.justl]
+        ++ optionals config.modules.just.enable [epkgs.just-mode epkgs.justl]
         ++ optionals config.modules.shell.nushell.enable [epkgs.nushell-mode];
       modules.app.editor.emacs.pkg = emacsWithPackages cfg.extraPkgs;
     }
     {
-      user.packages = [
+      home.packages = [
         cfg.pkg
 
         pkgs.graphviz
@@ -144,10 +144,10 @@ in {
 
         pkgs.emacs-lsp-booster # emacs-lsp-booster , 更快的使用 lsp 服务
 
-        (mkIf (config.programs.gnupg.agent.enable)
+        (mkIf (config.modules.gpg.enable)
           pkgs.pinentry-emacs) # in emacs gnupg prompts
       ];
-      modules.shell.python.extraPkgs = ps:
+      modules.python.extraPkgs = ps:
         with ps; [
           epc
           orjson
@@ -159,7 +159,7 @@ in {
       modules.shell = {
         env.PATH = ["$XDG_CONFIG_HOME/emacs/bin"];
         env.GRIPHOME = "$XDG_CONFIG_HOME/grip";
-        pluginFiles = ["emacs"];
+        zsh.pluginFiles = ["emacs"];
       };
       home.configFile = let
         data-dir =
@@ -174,7 +174,7 @@ in {
             (setq rime-share-data-dir "${data-dir}")
             (setq rime-user-data-dir "${config.home.configDir}/emacs-rime")
           ''}
-          (setq lsp-bridge-python-command "${config.modules.shell.python.finalPkg}/bin/python3")
+          (setq lsp-bridge-python-command "${config.modules.python.finalPkg}/bin/python3")
           ${cfg.doom.confInit}
         '';
       };

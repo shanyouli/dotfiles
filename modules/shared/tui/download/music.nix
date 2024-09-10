@@ -15,6 +15,6 @@ in {
   };
   config = mkIf cfg.enable {
     # pkgs.python3.pkgs.musicdl # 以不可用
-    user.packages = [pkgs.unstable.musicn];
+    home.packages = [pkgs.unstable.musicn];
   };
 }

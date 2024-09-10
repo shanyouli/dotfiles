@@ -38,8 +38,8 @@ with lib.my; let
   };
   configDir = "${lib.var.dotfiles.config}/themes/catppuccin";
   configPath = ".cache/themes/catppucin";
-  linkDir = "${config.user.home}/${configPath}";
-  defaultDir = "${config.user.home}/.cache/themes/default";
+  linkDir = "${lib.var.homedir}/${configPath}";
+  defaultDir = "${lib.var.homedir}/.cache/themes/default";
 in {
   # https://github.com/catppuccin
   options.modules.theme.catppuccin = {
@@ -66,7 +66,7 @@ in {
               export STARSHIP_CONFIG="${defaultDir}/starship.toml"
             ''}
           '';
-          "tmux" = optionalString cm.shell.tmux.enable ''
+          "tmux" = optionalString cm.tmux.enable ''
             set -g @catppuccin_flavour '${n}'
             run-shell '${pkgs.tmuxPlugins.catppuccin}/share/tmux-plugins/catppuccin/catppuccin.tmux'
           '';
@@ -126,13 +126,13 @@ in {
     modules.gui.terminal.kitty.settings = ''
       include ${defaultDir}/kitty.conf
     '';
-    modules.shell.envInit = ''
+    modules.shell.zsh.envInit = ''
       export BAT_THEME='catppuccin'
     '';
-    modules.shell.prevInit = ''
+    modules.shell.zsh.prevInit = ''
       _source "${defaultDir}/zshrc"
     '';
-    modules.shell.tmux.rcFiles = mkBefore ["${defaultDir}/tmux"];
+    modules.tmux.rcFiles = mkBefore ["${defaultDir}/tmux"];
 
     modules.app.editor.helix.settings.theme = "catppuccin";
 
@@ -143,7 +143,7 @@ in {
         fi
         ln -sf "${linkDir}/${cfg.name}" "${defaultDir}"
       ''
-      + optionalString cm.shell.modern.enable ''
+      + optionalString cm.modern.enable ''
         echo-info "Handling bat theme management..."
         [[ -d "${config.home.configDir}/bat/themes" ]] || mkdir -p "${config.home.configDir}/bat/themes"
         ln -sf "${defaultDir}/bat.tmTheme"  "${config.home.configDir}/bat/themes/catppuccin.tmTheme"

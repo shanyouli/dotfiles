@@ -28,7 +28,7 @@ in {
     extInit = mkOpt' lines "" "extra asdf Init";
   };
   config = mkIf cfg.enable {
-    user.packages = [cfg.package];
+    home.packages = [cfg.package];
 
     home.configFile."asdf/asdf.conf".text = ''
       plugin_repository_last_check_duration = never
@@ -36,7 +36,7 @@ in {
       always_keep_download = yes
     '';
 
-    modules.shell.rcInit = let
+    modules.shell.zsh.rcInit = let
       # HACK: https://github.com/asdf-community/asdf-direnv/issues/149
       text =
         if cfm.shell.direnv.enable
@@ -84,7 +84,7 @@ in {
         ASDF_DIR = "${cfg.package}/share/asdf-vm";
       })
     ];
-    modules.shell.pluginFiles = ["asdf"];
+    modules.shell.zsh.pluginFiles = ["asdf"];
     modules.dev.manager.asdf.text = let
       asdf_plugin_fn = v: ''
         if ! echo $asdf_plugins | grep -w ${v} >/dev/null 2>&1 ; then

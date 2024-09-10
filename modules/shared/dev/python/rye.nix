@@ -18,7 +18,7 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      user.packages = [cpkg];
+      home.packages = [cpkg];
       modules.shell.direnv.stdlib.rye = pkgs.writeScript "rye" ''
         #!/usr/bin/env bash
         # 基本工作流程:
@@ -82,9 +82,9 @@ in {
       '';
     })
     (mkIf cfg.manager {
-      modules.shell.python.pipx.enable = mkDefault false;
+      modules.python.pipx.enable = mkDefault false;
       modules.shell.env.PATH = mkBefore ["${config.home.dataDir}/rye/shims"];
-      modules.shell.pluginFiles = ["rye"];
+      modules.shell.zsh.pluginFiles = ["rye"];
       modules.shell.nushell.scriptFiles = ["rye"];
       modules.dev.manager.extInit = mkAfter (let
         isNumeric = character: builtins.match "[0-9]" character != null;

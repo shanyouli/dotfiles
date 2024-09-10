@@ -14,6 +14,6 @@ in {
     enable = mkEnableOption "Whether to use localsend";
   };
   config = mkIf (cfp.enable && cfg.enable) {
-    user.packages = [pkgs.localsend];
+    home.packages = [pkgs.localsend];
   };
 }

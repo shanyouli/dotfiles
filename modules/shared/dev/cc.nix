@@ -15,7 +15,7 @@ in {
   };
   config = mkIf cfg.enable {
     # gcc
-    user.packages = with pkgs;
+    home.packages = with pkgs;
       [cmake llvmPackages.libcxx]
       ++ optionals stdenvNoCC.isLinux [bear gdb clang];
     modules.app.editor.vscode.extensions = with pkgs.vscode-extensions; let

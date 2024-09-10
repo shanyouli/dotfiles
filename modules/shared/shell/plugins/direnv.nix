@@ -15,10 +15,13 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = [pkgs.direnv pkgs.nix-direnv];
-    modules.shell.rcInit = ''_cache -v ${pkgs.direnv.version} direnv hook zsh'';
+    home.packages = [pkgs.direnv pkgs.nix-direnv];
+    modules.shell.zsh.rcInit = ''_cache -v ${pkgs.direnv.version} direnv hook zsh'';
+    home.programs.bash.initExtra = ''
+      eval `direnv hook bash`
+    '';
     modules.app.editor.vscode.extensions = [pkgs.unstable.vscode-extensions.mkhl.direnv];
-    modules.shell.pluginFiles = ["direnv"];
+    modules.shell.zsh.pluginFiles = ["direnv"];
     home.configFile = mkMerge [
       {
         "direnv/direnvrc".text = ''

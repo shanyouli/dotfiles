@@ -14,6 +14,6 @@ in {
     enable = mkEnableOption "Whether to use netease music";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.unstable.go-musicfox];
+    home.packages = [pkgs.unstable.go-musicfox];
   };
 }

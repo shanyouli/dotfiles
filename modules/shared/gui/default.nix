@@ -12,22 +12,25 @@ with lib.my; let
 in {
   options.modules.gui = {
     enable = mkEnableOption "whether to use gui apps";
+    fonts = mkOpt' (types.listOf types.package) [] "font install";
   };
   config = mkIf cfg.enable {
-    fonts = {
-      # fontDir.enable = true;
-      packages = with pkgs; [
-        fantasque-sans-mono
-        lxgw-wenkai
-        unifont
-        (nerdfonts.override {
-          fonts = [
-            "FantasqueSansMono"
-            "NerdFontsSymbolsOnly"
-            # "CascadiaCode" # cascadiaCode 自带
-          ];
-        })
-      ];
-    };
+    modules.gui.fonts = with pkgs; [
+      fantasque-sans-mono
+      lxgw-wenkai
+      unifont
+      (nerdfonts.override {
+        fonts = [
+          "FantasqueSansMono"
+          "NerdFontsSymbolsOnly"
+          # "CascadiaCode" # cascadiaCode 自带
+        ];
+      })
+    ];
+    # fonts = {
+    #   # fontDir.enable = true;
+    #   packages = with pkgs; [
+    #   ];
+    # };
   };
 }

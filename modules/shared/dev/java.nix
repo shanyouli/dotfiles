@@ -50,7 +50,7 @@ in {
       '';
     in {
       # https://github.com/ldeck/nix-home/blob/master/lib/defaults/direnv-java.nix
-      user.packages = [java_home];
+      home.packages = [java_home];
       modules.shell.direnv.stdlib.java = pkgs.writeScript "java" ''
         #!/usr/bin/env bash
         use_java() {
@@ -77,9 +77,12 @@ in {
     }))
     (mkIf (cfg.versions != []) {
       modules.dev.lang.java = cfg.versions;
-      modules.shell.rcInit =
+      modules.shell.zsh.rcInit =
         lib.optionalString (config.modules.dev.manager.default == "asdf")
         "_source ${config.home.dataDir}/asdf/plugins/java/set-java-home.zsh";
+      home.programs.bash.initExtra =
+        lib.optionalString (config.modules.dev.manager.default == "asdf")
+        "source ${config.home.dataDir}/asdf/plugins/java/set-java-home.sh";
       modules.dev.manager.extInit = lib.optionalString (cfg.global != "") ''
         ${lib.optionalString (config.modules.dev.manager.default == "asdf") (let
           asdfbin = "${config.modules.dev.manager.asdf.package}/bin/asdf";

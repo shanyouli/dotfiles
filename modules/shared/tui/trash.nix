@@ -8,19 +8,19 @@
 with lib;
 with lib.my; let
   cfm = config.modules;
-  cfg = cfm.shell.trash;
+  cfg = cfm.trash;
 in {
-  options.modules.shell.trash = {
+  options.modules.trash = {
     enable = mkEnableOption "Whether to trash by commoand line";
   };
   config = mkMerge [
     (mkIf (cfg.enable && pkgs.stdenvNoCC.isDarwin) {
-      user.packages = [pkgs.darwin.trash];
+      home.packages = [pkgs.darwin.trash];
       modules.shell.aliases.rm = "trash";
       modules.shell.aliases.rmi = "trash -F";
     })
     (mkIf (cfg.enable && pkgs.stdenvNoCC.isLinux) {
-      user.packages = [pkgs.trashy];
+      home.packages = [pkgs.trashy];
       modules.shell.aliases = {
         rm = "trashy put";
         rmi = "trashy put";

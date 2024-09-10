@@ -42,7 +42,7 @@ in {
     enable = mkBoolOpt cfp.enable;
   };
   config = mkIf cfg.enable {
-    user.packages = [
+    home.packages = [
       pkgs.unstable.yt-dlp
       # pkgs.unstable.yutto # 使用 pipx 安装
       # pkgs.unstable.bbdown # 使用 yutto 取代

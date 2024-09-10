@@ -31,7 +31,7 @@ in {
     themes = mkOpt' (types.attrsOf tomlFormat.type) {} "Each theme is written to ~/.config/helix/themes/xx.toml";
   };
   config = mkIf cfg.enable {
-    user.packages =
+    home.packages =
       if cfg.extraPackages != []
       then [
         (pkgs.symlinkJoin {

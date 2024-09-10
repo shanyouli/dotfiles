@@ -11,7 +11,6 @@ with lib.my; let
   support_tools = ["starship" "oh-my-posh"];
 in {
   options.modules.shell.prompt = {
-    enable = mkEnableOption "";
     bash.enable = mkBoolOpt true;
     zsh.enable = mkEnableOption "whether to use powerlevel10 k config";
     default = mkOption {

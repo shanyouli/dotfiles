@@ -9,7 +9,7 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.dev.node;
-  homeDir = config.user.home;
+  homeDir = lib.var.homedir;
   npm_config_userconfig = "${homeDir}/.config/npm/config";
   npm_config_cache = "${homeDir}/.cache/npm";
   # NPM_CONFIG_TMP = "$XDG_RUNTIME_DIR/npm";
@@ -22,7 +22,7 @@ in {
     package = mkOpt' types.package pkgs.nodejs "nodejs package";
   };
   config = mkIf cfg.enable {
-    user.packages = with pkgs.nodePackages; [
+    home.packages = with pkgs.nodePackages; [
       cfg.package
       pnpm
       typescript-language-server

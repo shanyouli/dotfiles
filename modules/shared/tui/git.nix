@@ -6,14 +6,14 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.shell.git;
+  cfg = config.modules.git;
 in {
-  options.modules.shell.git = with types; {
+  options.modules.git = with types; {
     enable = mkBoolOpt false;
     enGui = mkBoolOpt config.modules.gui.enable;
   };
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       github-cli
       git-crypt
       # pre-commit # git 提交前自检, 使用 pipx安装

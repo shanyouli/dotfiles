@@ -30,7 +30,7 @@ in {
     '';
     env.MANPAGER = "nvim +Man!";
     # @https://discourse.nixos.org/t/stuck-writing-my-first-package/19022/4
-    user.packages = [
+    home.packages = [
       # (pkgs.lunarvim.override {
       #   nvimAlias = true;
       #   viAlias = true;

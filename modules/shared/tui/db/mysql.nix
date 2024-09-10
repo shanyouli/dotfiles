@@ -59,9 +59,9 @@ in {
     service.cmd = mkOpt' types.str "${mysqldService}/bin/mysqld-service" "";
   };
   config = mkIf cfg.enable {
-    user.packages = [cfg.package mysqldService];
+    home.packages = [cfg.package mysqldService];
     modules.db.mysql.script = mysqlInit;
-    modules.shell.rcInit = ''
+    modules.shell.zsh.rcInit = ''
       mysql_init() {
         ${mysqlInit}
       }

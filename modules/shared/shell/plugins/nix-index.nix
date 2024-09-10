@@ -15,11 +15,15 @@ in {
     enable = mkEnableOption "Whether to nix-index";
   };
   config = mkIf cfg.enable {
-    programs.nix-index = {
+    home.programs.nix-index = {
       enable = true;
       package = cfgpkg;
+      enableBashIntegration = true;
       # package = inputs.nurpkgs.currentSystem.packages.nix-index;
     };
+    modules.shell.zsh.rcInit = ''
+      _source ${cfgpkg}/etc/profile.d/command-not-found.sh
+    '';
     modules.shell.nushell.rcInit = ''
       $env.config = ($env | default {} config).config
       $env.config.hooks = ($env.config | default {} hooks).hooks

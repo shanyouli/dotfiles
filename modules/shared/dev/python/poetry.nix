@@ -14,7 +14,7 @@ in {
     enable = mkEnableOption "Whether to using poetry";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.poetry];
+    home.packages = [pkgs.poetry];
     modules.shell.aliases.po = "poetry";
     modules.shell.direnv.stdlib.poetry = pkgs.writeScript "poetry" ''
       #!/usr/bin/env bash

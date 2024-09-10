@@ -14,7 +14,7 @@ in {
     enable = mkEnableOption "Whether to use mpv";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.mpv];
+    home.packages = [pkgs.mpv];
     # https://github.com/dyphire/mpv-config/issues/65
     home.configFile = {
       "mpv" = {

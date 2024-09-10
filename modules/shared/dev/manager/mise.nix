@@ -25,9 +25,12 @@ in {
     extInit = mkOpt' lines "" "extra mise Init";
   };
   config = mkIf cfg.enable {
-    user.packages = [cfg.package];
+    home.packages = [cfg.package];
     modules.shell.env.MISE_CACHE_DIR = "${config.home.cacheDir}/mise";
-    modules.shell.rcInit = ''_cache -v ${cfg.package.version} mise activate zsh'';
+    modules.shell.zsh.rcInit = ''_cache -v ${cfg.package.version} mise activate zsh'';
+    home.programs.bash.initExtra = ''
+      eval `mise activate bash`
+    '';
     modules.dev.manager.mise.text = let
       mise_core_plugins = ["python" "bun" "deno" "erlang" "go" "java" "ruby" "rust" "node"];
       finalNeedPlugins = lib.filterAttrs (k: v: !(builtins.elem v [null false])) cfg.plugins;

@@ -22,18 +22,18 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       # https://github.com/xo/usql
-      user.packages = [pkgs.usql];
+      home.packages = [pkgs.usql];
     }
     (mkIf cfg.mycli.enable {
       # mycli mysql 一个好用的客户端
-      user.packages = [pkgs.mycli];
-      modules.shell.prevInit = ''
+      home.packages = [pkgs.mycli];
+      modules.shell.zsh.prevInit = ''
         MYCLI_HISTFILE="${config.home.cacheDir}/mycli/mycli.history"
       '';
       home.configFile."mycli/myclirc".source = "${lib.var.dotfiles.config}/mycli/myclirc";
     })
     (mkIf cfg.dblab.enable {
-      user.packages = [pkgs.dblab];
+      home.packages = [pkgs.dblab];
     })
   ]);
 }

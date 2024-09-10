@@ -18,7 +18,6 @@ with lib.my; let
 in {
   options.modules.dev.lua = {
     enable = mkBoolOpt false;
-    xdg.enable = mkBoolOpt devCfg.enableXDG;
     extraPkgs = mkOption {
       default = self: [];
       example = literalExample "ps: [ ps.luarocks-nix ]";
@@ -37,7 +36,7 @@ in {
     modules.dev.lua.extraPkgs = ps: with ps; [luarocks-nix lua-cjson luacheck];
     modules.dev.lua.package = pkgs.lua5_4;
     modules.dev.lua.finalPkg = cfg.package.withPackages cfg.extraPkgs;
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       cfg.finalPkg
       # lua54Packages.luarocks-nix
       stylua # fmt

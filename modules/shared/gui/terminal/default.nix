@@ -27,7 +27,7 @@ in {
   config = mkIf ((cfg.default != "") && config.modules.gui.enable) (
     mkMerge [
       {
-        fonts.packages = with pkgs; [cfg.font.package];
+        modules.gui.fonts = with pkgs; [cfg.font.package];
       }
       (mkIf (cfg.default == "kitty") {
         modules.gui.terminal.kitty.enable = true;

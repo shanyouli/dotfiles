@@ -29,7 +29,7 @@ in {
     service.startup = mkOpt' types.bool true "mpd 服务是否开机自启动";
   };
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [pkgs.mpd pkgs.mpc-cli];
+    home.packages = with pkgs; [pkgs.mpd pkgs.mpc-cli];
 
     home.configFile."mpd/mpd.conf".text = ''
       music_directory "${cfp.directory}"

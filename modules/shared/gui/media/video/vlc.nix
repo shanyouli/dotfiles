@@ -1,5 +1,4 @@
 {
-  pkgs,
   lib,
   config,
   options,
@@ -14,6 +13,6 @@ in {
     enable = mkEnableOption "Whether to use vlc";
   };
   config = mkIf cfg.enable {
-    user.packags = [] ++ optional pkgs.stdenvNoCC.isLinux [pkgs.vlc];
+    # home.packages = [] ++ optional pkgs.stdenvNoCC.isLinux [pkgs.vlc];
   };
 }

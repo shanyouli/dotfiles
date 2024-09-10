@@ -19,8 +19,8 @@ in {
     service.workDir = mkOpt' types.path "${config.home.cacheDir}/alist" "default work directory";
   };
   config = mkIf cfg.enable {
-    user.packages = [cfg.pkg];
-    modules.shell.rcInit = ''
+    home.packages = [cfg.pkg];
+    modules.shell.zsh.rcInit = ''
       alist() {
           if [[ "$*" == *--data* ]]; then
               command alist "$@"

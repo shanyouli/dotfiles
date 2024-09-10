@@ -16,9 +16,12 @@ in {
     # 使用 nix-shell ，nix develop 命令后进入的 shell 为当前 shell，而不是 bash
   };
   config = mkIf cfg.enable {
-    user.packages = [cfgpkg];
-    modules.shell.rcInit = mkOrder 50 ''
+    home.packages = [cfgpkg];
+    modules.shell.zsh.rcInit = mkOrder 50 ''
       _cache -v ${cfgpkg.version} nix-your-shell zsh
+    '';
+    home.programs.bash.initExtra = ''
+      eval `nix-your-shell bash`
     '';
     modules.shell.nushell.cacheCmd = ["${cfgpkg}/bin/nix-your-shell nu"];
   };

@@ -31,7 +31,7 @@ in {
     enable = mkEnableOption "Whether to use alacritty";
   };
   config = mkIf cfg.enable {
-    user.packages = [cfgPkg];
+    home.packages = [cfgPkg];
     home.configFile = {
       "alacritty" = {
         source = "${lib.var.dotfiles.config}/alacritty";

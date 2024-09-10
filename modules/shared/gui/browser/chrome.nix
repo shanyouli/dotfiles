@@ -27,11 +27,11 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     (mkIf cfg.dev.enable {
-      user.packages = [pkgs.chromedriver];
-      modules.shell.gopass.browsers = ["chrome" "chromium"];
+      home.packages = [pkgs.chromedriver];
+      modules.gopass.browsers = ["chrome" "chromium"];
     })
     (mkIf (! cfg.useBrew) {
-      user.packages = [cfg.package];
+      home.packages = [cfg.package];
     })
   ]);
 }

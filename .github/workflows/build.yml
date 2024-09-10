@@ -52,8 +52,10 @@ jobs:
           fi
       - name: Run Flake Checks
         run: |
-          export old_USER=${USER}
-          export USER="lyeli"
           nix run --impure .#checks
-          export USER=${old_USER}
+          if [[ $(uname) == "Darwin" ]]; then
+            nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake .#test@aarch64-darwin -b backup --show-trace
+          else
+            nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake .#test@x86_64-linux -b backup --show-trace
+          fi
         timeout-minutes: 240

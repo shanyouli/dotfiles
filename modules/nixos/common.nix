@@ -1,5 +1,4 @@
 {
-  inputs,
   config,
   lib,
   pkgs,
@@ -7,7 +6,7 @@
 }:
 with lib;
 with lib.my; {
-  imports = [inputs.home-manager.nixosModules.home-manager];
+  # imports = [inputs.home-manager.nixosModules.home-manager];
   boot = {
     kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_6_1;
     loader = {
@@ -23,7 +22,6 @@ with lib.my; {
   users.users.root.initialPassword = "nixos";
 
   #  xdg
-  modules.xdg.enable = true;
   environment.sessionVariables = config.modules.xdg.value;
   environment.extraInit = ''
     export XAUTHORITY=/tmp/Xauthority

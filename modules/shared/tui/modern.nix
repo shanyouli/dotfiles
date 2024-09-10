@@ -12,13 +12,13 @@
 with lib;
 with lib.my; let
   cfm = config.modules;
-  cfg = cfm.shell.modern;
+  cfg = cfm.modern;
 in {
-  options.modules.shell.modern = {
+  options.modules.modern = {
     enable = mkEnableOption "Whether modern tools are used, eg:duf,exa .etc";
   };
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       bottom # htop,top 替代工具
       fd # find
       eza # ls, tree
@@ -34,6 +34,6 @@ in {
     modules.shell.aliases.cat = "bat -p"; # or bat -pp
     modules.shell.aliases.du = "dua";
     modules.shell.aliases.htop = "btm --basic --mem_as_value";
-    modules.shell.pluginFiles = ["exa"];
+    modules.shell.zsh.pluginFiles = ["exa"];
   };
 }

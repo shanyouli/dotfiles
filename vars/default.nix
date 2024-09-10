@@ -37,6 +37,7 @@
 in rec {
   inherit homedir;
   user = name;
+  # homedir = homedir;
   fullName = "Shanyou Li";
   useremail = "shanyouli6@gmail.com";
   website = "https://shanyouli.github.io";

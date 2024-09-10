@@ -24,8 +24,7 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      user.packages = [cfg.package];
-      environment.etc."sudoers.d/singbox".text = sudoNotPass config.user.name "${cfgbin}";
+      home.packages = [cfg.package];
     }
     (mkIf (cfp.default == "sing-box") {
       modules.proxy.service.cmd = mkDefault ''sudo ${cfgbin} run -c "${cfg.configFile}" -D "${workdir}"'';

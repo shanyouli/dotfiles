@@ -100,7 +100,7 @@ in {
           else "${config.modules.app.editor.emacs.pkg}/Applications";
       in
         optionalString config.modules.app.editor.emacs.enable "${baseDir}/Emacs.app/Contents/MacOS/Emacs";
-      modules.xdg.enable = true;
+
       environment.variables = config.modules.xdg.value;
       time.timeZone = mkDefault lib.var.timezone;
 
@@ -189,7 +189,7 @@ in {
         desc = "init mysql ...";
       };
       macos.systemScript.initXDG = {
-        enable = config.modules.xdg.enable;
+        enable = true;
         text = ''
           if ! [[ -d ${config.modules.xdg.value.XDG_RUNTIME_DIR} ]] ; then
             mkdir -p ${config.modules.xdg.value.XDG_RUNTIME_DIR}
@@ -242,15 +242,25 @@ in {
             config.modules.shell.nushell.cacheCmd)}
         '';
       };
+      environment.profiles = mkOrder 800 ["${config.user.home}/.local/status/nix/profile"];
     }
-    (mkIf config.modules.shell.gpg.enable {
-      modules.service.env.GNUPGHOME = config.environment.variables.GNUPGHOME;
+    (mkIf config.modules.gpg.enable {
+      modules.service.env.GNUPGHOME = config.env.GNUPGHOME;
     })
-    (mkIf config.modules.shell.gopass.enable {
+    (mkIf config.modules.gopass.enable {
       modules.service.env.PASSWORD_STORE_DIR = config.env.PASSWORD_STORE_DIR;
     })
-    (mkIf config.modules.xdg.enable {
-      environment.profiles = mkOrder 800 ["${config.user.home}/.local/status/nix/profile"];
+    (mkIf config.modules.proxy.sing-box.enable {
+      environment.etc."sudoers.d/singbox".text = let
+        bin = lib.getExe config.modules.proxy.sing-box.package;
+      in
+        sudoNotPass config.user.name bin;
+    })
+    (mkIf config.modules.proxy.sing-box.enable {
+      environment.etc."sudoers.d/clash".text = let
+        bin = lib.getExe config.modules.proxy.clash.package;
+      in
+        sudoNotPass config.user.name bin;
     })
   ];
 }

@@ -15,9 +15,9 @@ in {
     enable = mkEnableOption "Using the database to manage shell history";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.unstable.atuin];
-    # modules.shell.pluginFiles = [ "atuin" ];
-    modules.shell.rcInit = ''
+    home.packages = [pkgs.unstable.atuin];
+    # modules.shell.zsh.pluginFiles = [ "atuin" ];
+    modules.shell.zsh.rcInit = ''
       [[ -f $XDG_DATA_HOME/atuin/history.db ]] || atuin import auto
       export ATUIN_NOBIND="true"
       _cache -v ${pkgs.unstable.atuin.version} atuin init zsh

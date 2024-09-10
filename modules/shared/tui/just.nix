@@ -10,12 +10,12 @@
 with lib;
 with lib.my; let
   cfm = config.modules;
-  cfg = cfm.shell.just;
+  cfg = cfm.just;
 in {
-  options.modules.shell.just = {
+  options.modules.just = {
     enable = mkEnableOption "Whether to use just";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.just];
+    home.packages = [pkgs.just];
   };
 }

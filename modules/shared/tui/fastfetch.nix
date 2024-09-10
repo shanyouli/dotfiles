@@ -7,13 +7,12 @@
 }:
 with lib;
 with lib.my; let
-  cfp = config.modules.shell;
-  cfg = cfp.fastfetch;
+  cfg = config.modules.fastfetch;
 in {
-  options.modules.shell.fastfetch = {
+  options.modules.fastfetch = {
     enable = mkEnableOption "Whether to use fastfetch";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.fastfetch];
+    home.packages = [pkgs.fastfetch];
   };
 }

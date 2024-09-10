@@ -6,20 +6,13 @@
   ...
 }:
 with lib;
-with lib.my; let
-  cfm = config.modules;
-  cfg = cfm.xdg;
-in {
+with lib.my; {
   options.modules.xdg = {
-    enable = mkEnableOption "Whether to use xdg compliance";
     value = mkOpt types.attrs {};
   };
-  config = mkIf cfg.enable {
-    # home-manager.users.${config.user.name}.xdg.enable = true;
-
+  config = {
     # 用来提示还有那些可以规范的文件。如何使用, 使用 my-xdg 脚本取代
     # environment.systemPackages = [pkgs.xdg-ninja];
-
     modules.xdg.value = {
       # These are the defaults, and xdg.enable does set them, but due to load
       # order, they're not set before environment.variables are set, which could
@@ -27,14 +20,17 @@ in {
       XDG_CACHE_HOME = "${config.home.cacheDir}";
       XDG_CONFIG_HOME = "${config.home.configDir}";
       XDG_DATA_HOME = "${config.home.dataDir}";
-      XDG_BIN_HOME = "${config.home.binDir}";
       XDG_STATE_HOME = "${config.home.stateDir}";
+      XDG_BIN_HOME = "${config.home.binDir}";
       XDG_RUNTIME_DIR =
         if pkgs.stdenvNoCC.isDarwin
         then "/tmp/user/${toString config.user.uid}"
         else "/run/user/${toString config.user.uid}";
     };
     env = {
+      DOTFILES = lib.var.dotfiles.dir;
+      NIXPKGS_ALLOW_UNFREE = "1";
+
       # Conform more programs to XDG conventions. The rest are handled by their
       # respective modules.
       __GL_SHADER_DISK_CACHE_PATH = ''"$XDG_CACHE_HOME"/nv'';

@@ -92,8 +92,8 @@ in {
           then []
           else [cfg.fallback];
       in {
-        user.packages = package;
-        modules.shell.gopass.browsers = fallback_browser;
+        home.packages = package;
+        modules.gopass.browsers = fallback_browser;
       }
     ))
   ];

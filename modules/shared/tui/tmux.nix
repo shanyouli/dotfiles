@@ -7,10 +7,10 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.shell.tmux;
+  cfg = config.modules.tmux;
   cft = config.modules.theme;
 in {
-  options.modules.shell.tmux = with types; {
+  options.modules.tmux = with types; {
     enable = mkBoolOpt false;
     rcFiles = mkOpt (listOf (either str path)) [];
     service.enable = mkBoolOpt cfg.enable;
@@ -18,11 +18,9 @@ in {
   };
 
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [tmux];
+    home.packages = with pkgs; [tmux];
 
-    modules.shell = {
-      pluginFiles = ["tmux/tmux.plugin.zsh"];
-    };
+    modules.shell.zsh.pluginFiles = ["tmux/tmux.plugin.zsh"];
 
     home.configFile = {
       "tmux" = {
@@ -66,16 +64,14 @@ in {
 
           set -g @continuum-restore 'on'
           run-shell '${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum/continuum.tmux'
-
-          ${optionalString config.modules.gui.terminal.kitty.enable ''
-            # when using kitty, @see https://mbuffett.com/posts/setting-up-tmux-and-kitty-for-true-color-support/
-            set-option -ga terminal-overrides ",xterm-kitty:RGB"
-            set-option -sa terminal-features ",xterm-kitty:RGB"
-          ''}
-
           # 设置默认的 shell
-          run-shell "tmux set-option -g default-shell $(which ${config.user.shell.pname})"
+          run-shell "tmux set-option -g default-shell $(which ${config.modules.shell.default})"
         '';
+        # ${optionalString config.modules.gui.terminal.kitty.enable ''
+        #   # when using kitty, @see https://mbuffett.com/posts/setting-up-tmux-and-kitty-for-true-color-support/
+        #   set-option -ga terminal-overrides ",xterm-kitty:RGB"
+        #   set-option -sa terminal-features ",xterm-kitty:RGB"
+        # ''}
         executable = true;
       };
     };

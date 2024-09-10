@@ -14,6 +14,6 @@ in {
     enable = mkEnableOption "Whether to use cmus";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.cmus];
+    home.packages = [pkgs.cmus];
   };
 }

@@ -2,17 +2,19 @@
   description = "nix system configurations";
 
   inputs = {
-    nixos-hardware.url = "github:nixos/nixos-hardware";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     nixos-stable.url = "github:nixos/nixpkgs/nixos-24.05";
     darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
 
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    # small.url = "github:nixos/nixpkgs/nixos-unstable-small";
+    nixos-hardware.url = "github:nixos/nixos-hardware";
+    # nixos-hardware.inputs.nixpkgs.follows = "nixos-stable";
+
     darwin = {
       url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "darwin-stable";
     };
+
     home-manager = {
       url = "github:rycee/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -20,9 +22,12 @@
 
     # shell stuff
     flake-utils.url = "github:numtide/flake-utils";
+    # flake-utils.inputs.nixpkgs.follows = "nixpkgs";
 
     devenv.url = "github:cachix/devenv/latest";
+    devenv.inputs.nixpkgs.follows = "nixpkgs";
     treefmt-nix.url = "github:numtide/treefmt-nix";
+    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     nurpkgs.url = "github:shanyouli/nur-packages/stable";
     nurpkgs.inputs.nixpkgs.follows = "nixpkgs";
@@ -95,47 +100,93 @@
         os = "linux";
       });
 
-    darwinConfigurations =
-      (lib.my.mkDarwin {
-        inherit genSpecialArgs allPkgs;
+    darwinConfigurations = {
+      "lyeli@aarch64-darwin" = lib.my.mkDarwin {
+        inherit genSpecialArgs;
         name = "home-box";
         system = "aarch64-darwin";
         extraModules = [./hosts/homebox.nix];
-      })
-      // (lib.my.mkDarwin {
-        inherit genSpecialArgs allPkgs;
+        overlays = builtins.attrValues self.overlays;
+      };
+      "lyeli@x86_64-darwin" = lib.my.mkDarwin {
+        inherit genSpecialArgs;
         name = "home-box";
         system = "x86_64-darwin";
         extraModules = [./hosts/test.nix];
-      });
+        overlays = builtins.attrValues self.overlays;
+      };
+      "test@aarch64-darwin" = inputs.darwin.lib.darwinSystem rec {
+        system = "aarch64-darwin";
+        specialArgs = genSpecialArgs system;
+        modules =
+          [
+            {
+              nixpkgs.pkgs = allPkgs."${system}";
+              networking.hostName = "test";
+            }
+            ./options/common.nix
+            inputs.home-manager.darwinModules.home-manager
+          ]
+          ++ (lib.my.mapModulesRec' ./modules/shared import)
+          ++ [./hosts/homemanager.nix];
+      };
+    };
 
-    nixosConfigurations =
-      (lib.my.mkNixOS {
-        inherit genSpecialArgs allPkgs;
+    nixosConfigurations = {
+      "lyeli@x86_64-linux" = lib.my.mkNixOS {
+        # inherit genSpecialArgs allPkgs;
+        inherit genSpecialArgs;
+        overlays = builtins.attrValues self.overlays;
         name = "nixos-work";
         system = "x86_64-linux";
         extraModules = [./hosts/linux-test];
-      })
-      // (lib.my.mkNixOS {
-        inherit genSpecialArgs allPkgs;
+      };
+      "lyeli@aarch64-linux" = lib.my.mkNixOS {
+        # inherit genSpecialArgs allPkgs;
+        inherit genSpecialArgs;
+        overlays = builtins.attrValues self.overlays;
         name = "nixos";
         system = "aarch64-linux";
         extraModules = [./hosts/orbvm];
-      });
-    # homeConfigurations = {
-    #   "test@aarch64-darwin" = home-manager.lib.homeManagerConfiguration rec {
-    #     pkgs = import nixpkgs {
-    #       system = "aarch64-darwin";
-    #       overlays = builtins.attrValues self.overlays;
-    #     };
-    #     extraSpecialArgs = {inherit self inputs nixpkgs;};
-    #     modules = [
-    #       {
-    #         home.packages = [pkgs.zsh];
-    #       }
-    #     ];
-    #   };
-    # };
+      };
+    };
+    homeConfigurations = let
+      genSpecialArgs = system: let
+        lib = nixpkgs.lib.extend (self: super: {
+          my = import ./lib {
+            inherit inputs;
+            lib = self;
+          };
+          var = import ./vars {
+            inherit inputs;
+            lib = nixpkgs.lib;
+            system = system;
+          };
+          hm = inputs.home-manager.lib.hm;
+        });
+      in {inherit inputs lib self nixpkgs;};
+    in {
+      "test@aarch64-darwin" = inputs.home-manager.lib.homeManagerConfiguration rec {
+        pkgs = allPkgs."aarch64-darwin";
+        extraSpecialArgs = genSpecialArgs "aarch64-darwin";
+        modules =
+          [
+            ./modules/home-manager.nix
+          ]
+          ++ (lib.my.mapModulesRec' ./modules/shared import)
+          ++ [./hosts/test-home-manager.nix];
+      };
+      "test@x86_64-linux" = inputs.home-manager.lib.homeManagerConfiguration rec {
+        pkgs = allPkgs."x86_64-linux";
+        extraSpecialArgs = genSpecialArgs "x86_64-linux";
+        modules =
+          [
+            ./modules/home-manager.nix
+          ]
+          ++ (lib.my.mapModulesRec' ./modules/shared import)
+          ++ [./hosts/test-home-manager.nix];
+      };
+    };
     devShells = eachSystemMap defaultSystems (system: let
       pkgs = allPkgs."${system}";
       # pkgs = mkPkg {

@@ -24,8 +24,7 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      user.packages = [cfg.package];
-      environment.etc."sudoers.d/clash".text = sudoNotPass config.user.name cfgbin;
+      home.packages = [cfg.package];
     }
     (mkIf (cfp.default == "clash") {
       modules.proxy.service.cmd = mkDefault ''sudo ${cfgbin} -f "${cfg.configFile}" -d "${workdir}"'';

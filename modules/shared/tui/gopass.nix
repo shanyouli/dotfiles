@@ -7,7 +7,7 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.shell.gopass;
+  cfg = config.modules.gopass;
   package = pkgs.gopass;
   qtpass =
     if pkgs.stdenvNoCC.isLinux
@@ -24,7 +24,7 @@ with lib.my; let
         '';
       });
 in {
-  options.modules.shell.gopass = with types; {
+  options.modules.gopass = with types; {
     enable = mkBoolOpt false;
     enGui = mkBoolOpt config.modules.gui.enable;
     browsers = let
@@ -39,7 +39,7 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      user.packages = [package (mkIf cfg.enGui qtpass)];
+      home.packages = [package (mkIf cfg.enGui qtpass)];
       env.PASSWORD_STORE_DIR = "${config.home.dataDir}/password-store";
       modules.shell.nushell.cmpFiles = ["${lib.var.dotfiles.config}/gopass/gopass-completions.nu"];
     }
@@ -85,8 +85,8 @@ in {
               else if x == "arc"
               then [
                 {
-                  "${config.user.home}/Library/Application Support/Arc/User Data/policies/managed/${jsonFile}".source = "${pkgs.browserpass}/lib/browserpass/policies/chromium/${jsonFile}";
-                  "${config.user.home}/Library/Application Support/Arc/User Data/NativeMessagingHosts/$(jsonFile)".source = "${pkgs.browserpass}/lib/browserpass/hosts/chromiu/${jsonFile}";
+                  "${lib.var.homedir}/Library/Application Support/Arc/User Data/policies/managed/${jsonFile}".source = "${pkgs.browserpass}/lib/browserpass/policies/chromium/${jsonFile}";
+                  "${lib.var.homedir}/Library/Application Support/Arc/User Data/NativeMessagingHosts/$(jsonFile)".source = "${pkgs.browserpass}/lib/browserpass/hosts/chromiu/${jsonFile}";
                 }
               ]
               else throw "unknown browser ${x}"

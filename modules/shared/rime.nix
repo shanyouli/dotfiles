@@ -14,16 +14,16 @@ in {
   options.modules.rime = {
     enable = mkBoolOpt false;
     backupDir =
-      mkOpt' types.path "${config.user.home}/.config/rime-bak" "rime 词库同步文件";
+      mkOpt' types.path "${lib.var.homedir}/.config/rime-bak" "rime 词库同步文件";
     userDir =
-      mkOpt' types.path "${config.user.home}/.config/fcitx/rime"
+      mkOpt' types.path "${lib.var.homedir}/.config/fcitx/rime"
       "rime 用户文件保存位置";
     script = mkOpt' types.str "" "执行脚本";
     extraScript = mkOpt' types.lines "" "额外的执行内容";
     backupid = mkOpt' types.str "" "rime 同步id";
     ice = {
       enable = mkBoolOpt true;
-      dir = mkOpt' types.path "${config.user.home}/.cache/rime-ice" "保存雾凇拼音仓库位置";
+      dir = mkOpt' types.path "${lib.var.homedir}/.cache/rime-ice" "保存雾凇拼音仓库位置";
     };
   };
   config = mkIf cfg.enable (mkMerge [

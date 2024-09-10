@@ -8,7 +8,7 @@ with lib.my; let
   cfp = config.modules.shell.prompt;
 in {
   config = mkIf (! cfp.zsh.enable) {
-    modules.shell.rcInit = mkOrder 200 ''
+    modules.shell.zsh.rcInit = mkOrder 200 ''
       zinit ice depth=1
       zinit light romkatv/powerlevel10k
       if [[ "$INSIDE_EMACS" != 'vterm' ]]; then

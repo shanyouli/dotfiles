@@ -21,10 +21,10 @@ in {
   };
   config = mkMerge [
     (mkIf cfg.toml.fmt {
-      user.packages = [pkgs.taplo];
+      home.packages = [pkgs.taplo];
     })
     (mkIf cfg.enWebReport {
-      user.packages = [pkgs.allure];
+      home.packages = [pkgs.allure];
     })
     (mkIf (cfg.lang != {}) {
       modules.dev.manager.default = "mise";

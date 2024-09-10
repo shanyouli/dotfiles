@@ -85,30 +85,32 @@
 
     shell.prompt.default = "oh-my-posh";
     shell.nix-your-shell.enable = true;
-    shell.zinit.enable = true;
+    shell.zsh.zinit.enable = true;
+
     shell.vivid.enable = true;
     shell.zoxide.enable = true;
     shell.atuin.enable = true;
-    shell.navi.enable = true;
-    shell.tmux.enable = true;
-    shell.tmux.service.startup = true;
-    shell.adb.enable = true;
-    shell.ugrep.enable = true;
-    shell.gpg.enable = true;
-    shell.gpg.cacheTTL = 360000;
-    shell.direnv.enable = true;
-    shell.git.enable = true;
-    shell.git.enGui = false; # 使用网页管理 github
-    shell.gopass.enable = true;
-    shell.gopass.enGui = false;
     shell.nix-index.enable = true;
-    shell.trash.enable = true;
-    shell.just.enable = true;
-    # shell.elvish.enable = true;
+    shell.direnv.enable = true;
+
+    navi.enable = true;
+    tmux.enable = true;
+    tmux.service.startup = true;
+    adb.enable = true;
+    ugrep.enable = true;
+    gpg.enable = true;
+    gpg.cacheTTL = 360000;
+    git.enable = true;
+    git.enGui = false; # 使用网页管理 github
+    gopass.enable = true;
+    gopass.enGui = false;
+    trash.enable = true;
+    just.enable = true;
+
     shell.nushell.enable = true;
     shell.carapace.enable = true;
 
-    shell.modern.enable = true;
+    modern.enable = true;
 
     # media.music.enable = true;
     # media.music.netease.enGui = false;
@@ -121,7 +123,7 @@
     dev.python.global = "3.11";
     dev.python.manager = "rye";
     dev.python.rye.manager = true;
-    dev.python.poetry.enable = true;
+    dev.python.poetry.enable = false;
 
     dev.nix.enable = true;
     dev.java.enable = true;

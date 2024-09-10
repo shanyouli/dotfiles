@@ -72,7 +72,7 @@
     shell.vivid.enable = true;
     shell.zoxide.enable = true;
     shell.wget.enable = true;
-    shell.tmux.enable = true;
+    tmux.enable = true;
     shell.rsync.enable = true;
     shell.direnv.enable = true;
     shell.git.enable = true;

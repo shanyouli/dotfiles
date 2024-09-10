@@ -16,7 +16,7 @@ in {
     homebrew.casks = [
       "orbstack" # docker
     ];
-    modules.shell.rcInit = ''
+    modules.shell.zsh.rcInit = ''
       zinit ice as"completion" # has"docker"
       zinit snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
     '';

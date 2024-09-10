@@ -17,7 +17,7 @@ in {
     enable = mkEnableOption "Whether to use ouch packages";
   };
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [ouch rar];
+    home.packages = with pkgs; [ouch rar];
     modules.shell.aliases.unzip = "ouch decompress";
     modules.shell.aliases.zip = "ouch compress";
   };

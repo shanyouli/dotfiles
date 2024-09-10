@@ -41,7 +41,7 @@ in {
         '';
         desc = "Stopping the repon program when starting up after a system shutdown!";
       };
-      modules.shell.pluginFiles = ["macos"];
+      modules.shell.zsh.pluginFiles = ["macos"];
       system = {
         defaults = {
           # ".GlobalPreferences".com.apple.sound.beep.sound = "Funk";

@@ -48,7 +48,7 @@ in {
       modules.dev.python.rye.enable = true;
     })
     {
-      modules.shell.python.extraPkgs = ps:
+      modules.python.extraPkgs = ps:
         with ps; [
           pip
           ipython
@@ -62,7 +62,7 @@ in {
           pylint-venv
         ];
       modules.app.editor.nvim.lsp = ["basedpyright"];
-      user.packages = with pkgs; [
+      home.packages = with pkgs; [
         ruff
         python3.pkgs.ruff-lsp
         # pyright

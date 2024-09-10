@@ -13,7 +13,7 @@ in {
     enable = mkBoolOpt false;
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.wezterm];
+    home.packages = [pkgs.wezterm];
     home.configFile."wezterm" = {
       source = "${lib.var.dotfiles.config}/wezterm";
       recursive = true;

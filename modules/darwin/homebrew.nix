@@ -162,7 +162,7 @@ in {
 
           "anythingllm" # LLM 管理工具。AI 相关
         ]
-        ++ optionals config.modules.shell.adb.enable [
+        ++ optionals config.modules.adb.enable [
           # # 使用第三方工具取代openmtp，MacDroid.app
           # "openmtp" # 目前不是很稳定
           # “macdroid” # 付费app，使用adb传输，稳定性存疑
@@ -170,13 +170,13 @@ in {
           # "commander-one" # 速度可以，大文件也稳定，需要付费
           # "whoozle-android-file-transfer" # 速度一般，稳定
         ]
-        ++ optionals config.modules.shell.gopass.enable [
+        ++ optionals config.modules.gopass.enable [
           "ente-auth"
         ]
         ++ optionals (config.modules.gui.browser.chrome.enable && config.modules.gui.browser.chrome.useBrew) [
           "google-chrome"
         ]
-        ++ optionals (config.modules.shell.git.enable && config.modules.shell.git.enGui) [
+        ++ optionals (config.modules.git.enable && config.modules.git.enGui) [
           "github" # github客户端
         ]
         ++ optionals (config.modules.app.editor.nvim.enGui && config.modules.app.editor.nvim.enable) [

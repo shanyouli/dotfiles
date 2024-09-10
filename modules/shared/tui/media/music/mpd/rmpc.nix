@@ -17,6 +17,6 @@ in {
     enable = mkEnableOption "Whether to use rmpc";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.unstable.rmpc];
+    home.packages = [pkgs.unstable.rmpc];
   };
 }

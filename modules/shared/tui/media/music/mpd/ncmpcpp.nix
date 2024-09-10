@@ -15,10 +15,10 @@ in {
     config = mkOpt' types.lines "" "Extra directives added to the end of ncmpcpp's configuration file";
   };
   config = mkIf cfg.enable {
-    user.packages = [(pkgs.ncmpcpp.override {visualizerSupport = true;})];
+    home.packages = [(pkgs.ncmpcpp.override {visualizerSupport = true;})];
     home.configFile."ncmpcpp/config".text = let
       ncmpcpp_dir = "${config.home.cacheDir}/ncmpcpp";
-      lyrics_dir = "${config.user.home}/Music/LyricsX";
+      lyrics_dir = "${lib.var.homedir}/Music/LyricsX";
     in ''
       mpd_music_dir = ${config.modules.media.music.directory}
       lyrics_directory = ${lyrics_dir}

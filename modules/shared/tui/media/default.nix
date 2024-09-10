@@ -16,9 +16,9 @@ in {
     stream.enable = mkBoolOpt true;
   };
   config = mkIf cfg.enable {
-    user.packages =
+    home.packages =
       [cfg.ffmpeg.pkg]
-      ++ optionals cfg.stream.enable [pkgs.unstable.seam]
-      ++ optional (pkgs.stdenvNoCC.isLinux && config.modules.gui.video.mpv.enable) [pkgs.mpvc];
+      ++ optionals cfg.stream.enable [pkgs.unstable.seam];
+    # ++ optional (pkgs.stdenvNoCC.isLinux && config.modules.gui.media.video.mpv.enable) [pkgs.mpvc];
   };
 }

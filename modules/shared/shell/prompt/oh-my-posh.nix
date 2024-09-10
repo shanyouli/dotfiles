@@ -16,15 +16,15 @@ in {
     enable = mkEnableOption "Whether to use oh-my-posh";
   };
   config = mkIf cfg.enable {
-    environment.systemPackages = [package];
+    home.packages = [package];
     # FIX: 由于使用 macos 自带的 bash 导致的错误，
-    programs.bash.interactiveShellInit = mkIf cfp.bash.enable ''
+    home.programs.bash.initExtra = mkIf cfp.bash.enable ''
       if [ ''${BASH_VERSINFO[0]} -gt 4 ] && [[ $TERM != "dumb" && (-z $INSIDE_EMACS || $INSIDE_EMACS == "vterm") ]]; then
         eval "$(${formatFn "bash"})"
       fi
     '';
     modules.shell.nushell.cacheCmd = ["${formatFn "nu"}"];
-    modules.shell.rcInit = lib.optionalString cfp.zsh.enable ''
+    modules.shell.zsh.rcInit = lib.optionalString cfp.zsh.enable ''
       _cache ${formatFn "zsh"}
     '';
   };

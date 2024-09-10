@@ -14,7 +14,7 @@ in {
     package = mkOpt' types.package pkgs.rsync "";
   };
   config = mkIf cfg.enable {
-    user.packages = [cfg.package];
-    modules.shell.pluginFiles = ["rsync"];
+    home.packages = [cfg.package];
+    modules.shell.zsh.pluginFiles = ["rsync"];
   };
 }

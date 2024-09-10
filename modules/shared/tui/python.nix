@@ -6,9 +6,9 @@
 }:
 with lib;
 with lib.my; let
-  cfg = config.modules.shell.python;
+  cfg = config.modules.python;
 in {
-  options.modules.shell.python = with types; {
+  options.modules.python = with types; {
     extraPkgs = mkOption {
       type = nullOr selectorFunction;
       default = null;
@@ -28,22 +28,20 @@ in {
         py3 = "python3";
       };
       modules.shell.env = {
-        PIP_CONFIG_FILE = "${config.home.configDir}/pip/pip.conf";
-        PIP_LOG_FILE = "${config.home.dataDir}/pip/log";
-        PYTHONSTARTUP = "${config.home.configDir}/python/config.py";
-        PYTON_EGG_CACHE = "${config.home.cacheDir}/python-eggs";
-        JUPYTER_CONFIG_DIR = "${config.home.dataDir}/jupyter";
+        PIP_CONFIG_FILE = "$XDG_CONFIG_HOME/pip/pip.conf";
+        PIP_LOG_FILE = "$XDG_DATA_HOME/pip/log";
+        PYTHONSTARTUP = "$XDG_CONFIG_HOME/python/config.py";
+        PYTON_EGG_CACHE = "$XDG_CACHE_HOME/python-eggs";
+        JUPYTER_CONFIG_DIR = "$XDG_DATA_HOME/jupyter";
       };
-      modules.shell.python.finalPkg =
+      modules.python.finalPkg =
         if cfg.extraPkgs != null
         then pkgs.python3.withPackages cfg.extraPkgs
         else pkgs.python3;
-      user.packages = [cfg.finalPkg];
+      home.packages = [cfg.finalPkg];
     }
-    (mkIf cfg.pipx.enable {
-      # A better python command line installation tool
-      user.packages = [pkgs.pipx];
-      modules.shell = let
+    (mkIf cfg.pipx.enable (
+      let
         cmdp = config.modules.dev.python;
         use_rye_p = (cmdp.manager == "rye") && cmdp.rye.manager;
         global_python_path =
@@ -65,8 +63,7 @@ in {
                 )
             )
           else "";
-      in {
-        rcInit = lib.optionalString (global_python_path != "") ''
+        pipx_function_text = ''
           pipx() {
             local _is_pipx_default=$PIPX_DEFAULT_PYTHON
             if [[ -z $_is_pipx_default ]]; then
@@ -83,8 +80,13 @@ in {
             fi
           };
         '';
+      in {
+        # A better python command line installation tool
+        home.packages = [pkgs.pipx];
+        modules.shell.zsh.rcInit = lib.optionalString (global_python_path != "") pipx_function_text;
+        home.programs.bash.initExtra = lib.optionalString (global_python_path != "") pipx_function_text;
         # nushell.cmpFiles = ["${lib.var.dotfiles.config}/pipx/pipx-completions.nu"];
-        nushell.rcInit = lib.optionalString (global_python_path != "") ''
+        modules.shell.nushell.rcInit = lib.optionalString (global_python_path != "") ''
           export def --wrapped pipx [...rest: string] {
               if ($env | get --ignore-errors PIPX_DEFAULT_PYTHON | is-empty) {
                   ${lib.optionalString use_rye_p ''
@@ -101,7 +103,7 @@ in {
               }
           }
         '';
-      };
-    })
+      }
+    ))
   ];
 }

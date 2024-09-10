@@ -45,7 +45,7 @@ in {
     service.port = mkOpt' types.number 6801 "";
   };
   config = mkIf cfg.enable {
-    user.packages = [cfg.package];
+    home.packages = [cfg.package];
 
     modules.app.qbittorrent.webScript = optionalString cfg.webui ''
       [[ -d ${config.home.cacheDir}/qbittorrent/ui/public ]] || {

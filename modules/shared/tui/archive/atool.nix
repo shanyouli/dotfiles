@@ -14,7 +14,7 @@ in {
     enable = mkEnableOption "Whether to use atool package";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.atool];
+    home.packages = [pkgs.atool];
     modules.shell.aliases.unzip = "atool --extract --explain";
     modules.shell.aliases.zip = "atool --add";
   };

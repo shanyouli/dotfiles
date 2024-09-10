@@ -20,7 +20,7 @@ in {
         else "";
       description = "default music manager";
     };
-    directory = mkOpt' types.path "${config.user.home}/Music" "Music Directory";
+    directory = mkOpt' types.path "${lib.var.homedir}/Music" "Music Directory";
   };
   config = mkIf (cfg.default != "") {
     modules.media.music.netease.enable = mkDefault (cfg.default == "netease");

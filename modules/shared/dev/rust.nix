@@ -9,7 +9,7 @@ with lib;
 with lib.my; let
   cfm = config.modules;
   cfg = cfm.dev.rust;
-  homeDir = config.user.home;
+  homeDir = lib.var.homedir;
   rustup_dir = "${homeDir}/.local/share/rustup";
   package = pkgs.rustup;
 in {
@@ -20,7 +20,7 @@ in {
     initScript = mkOpt' types.lines "" "init script";
   };
   config = mkIf cfg.enable {
-    user.packages = with pkgs; [
+    home.packages = with pkgs; [
       package
       (mkIf cfg.enSlsp rust-analyzer)
       cargo-update
@@ -50,7 +50,7 @@ in {
       rsp = "rustup";
       ca = "cargo";
     };
-    modules.shell.rcInit = ''
+    modules.shell.zsh.rcInit = ''
       zinit as="completion" for \
         OMZP::rust/_rustc
     '';

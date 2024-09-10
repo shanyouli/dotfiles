@@ -14,6 +14,6 @@ in {
     enable = mkEnableOption "Whether to using musikcube";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.musikcube];
+    home.packages = [pkgs.musikcube];
   };
 }

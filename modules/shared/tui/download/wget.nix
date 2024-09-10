@@ -29,7 +29,7 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      user.packages = [cfg.package];
+      home.packages = [cfg.package];
       modules.download.wget.settings = {
         # Use the server-provided last modification date, if available
         timestamping = "on";
@@ -63,7 +63,7 @@ in {
       modules.shell.aliases.wget = "${cfbin} --hsts-file ${config.home.cacheDir}/wget-hsts";
     }
     (mkIf (cfg.settings != {}) {
-      environment.variables.WGETRC = "${config.home.configDir}/wget/wgetrc";
+      env.WGETRC = ''''${XDG_CONFIG_HOME:-~/.config}/wget/wgetrc'';
       home.configFile."wget/wgetrc".text = toWgetConfig cfg.settings;
     })
   ]);

@@ -31,7 +31,7 @@ in {
     scriptFiles = with types; mkOpt' (listOf (either str path)) [] "nushell scripts";
   };
   config = mkIf cfg.enable {
-    user.packages = [pkgs.unstable.nushell];
+    home.packages = [pkgs.unstable.nushell];
     modules.app.editor.helix = {
       languages = {
         language = [
