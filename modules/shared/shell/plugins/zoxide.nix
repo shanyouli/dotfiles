@@ -19,7 +19,7 @@ in {
       _cache -v ${pkgs.unstable.zoxide.version} zoxide init zsh
     '';
     home.programs.bash.initExtra = ''
-      eval `zoxide init bash`
+      eval "$(zoxide init bash)"
     '';
     modules.shell.nushell.cacheCmd = ["${pkgs.unstable.zoxide}/bin/zoxide init nushell"];
   };

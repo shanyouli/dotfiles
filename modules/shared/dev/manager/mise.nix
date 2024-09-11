@@ -29,7 +29,7 @@ in {
     modules.shell.env.MISE_CACHE_DIR = "${config.home.cacheDir}/mise";
     modules.shell.zsh.rcInit = ''_cache -v ${cfg.package.version} mise activate zsh'';
     home.programs.bash.initExtra = ''
-      eval `mise activate bash`
+      eval "$(mise activate bash)"
     '';
     modules.dev.manager.mise.text = let
       mise_core_plugins = ["python" "bun" "deno" "erlang" "go" "java" "ruby" "rust" "node"];

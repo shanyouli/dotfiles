@@ -23,6 +23,10 @@ in {
       _cache -v ${pkgs.unstable.atuin.version} atuin init zsh
       bindkey '^r' _atuin_search_widget
     '';
+    modules.shell.bash.rcInit = ''
+      [[ -f $XDG_DATA_HOME/atuin/history.db ]] || atuin import auto
+      eval "$(atuin init bash)"
+    '';
     modules.shell.nushell.cacheCmd = ["${pkgs.unstable.atuin}/bin/atuin init nu"];
     modules.shell.nushell.cachePrev = "export ATUIN_NOBIND=true";
     modules.shell.nushell.rcInit = ''

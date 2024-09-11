@@ -21,7 +21,7 @@ in {
       _cache -v ${cfgpkg.version} nix-your-shell zsh
     '';
     home.programs.bash.initExtra = ''
-      eval `nix-your-shell bash`
+      nix-your-shell bash | source /dev/stdin
     '';
     modules.shell.nushell.cacheCmd = ["${cfgpkg}/bin/nix-your-shell nu"];
   };
