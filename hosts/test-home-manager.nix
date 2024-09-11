@@ -101,5 +101,7 @@
     gopass.enGui = false;
     trash.enable = true;
     just.enable = true;
+
+    shell.bash.enable = true; # 2024-09-11 添加 bash 配置
   };
 }

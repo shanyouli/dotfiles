@@ -84,6 +84,8 @@
     gui.media.flameshot.enable = true;
 
     shell.prompt.default = "oh-my-posh";
+    shell.default = "zsh";
+    shell.bash.enable = true;
     shell.nix-your-shell.enable = true;
     shell.zsh.zinit.enable = true;
 
