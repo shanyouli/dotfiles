@@ -77,14 +77,11 @@ in {
       auto-tab-discard
       user-agent-string-switcher
       violentmonkey
-      # switchyomega
       styl-us
-      # privacy-pass
-      immersive-translate
+      immersive-translate # kiss-translator # 翻译插件
       chrome-mask
       zeroomega
       easy-image-blocker
-      kiss-translator
       raindropio
     ]);
     modules.gui.browser.firefox.finalPackage = wrapPackage cfg.package;

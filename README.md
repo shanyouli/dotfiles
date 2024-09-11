@@ -88,3 +88,10 @@ and `home-manager` commands to provide a consistent interface across multiple pl
 flake output. Documentation for this tool is found in [sysdo.md](./docs/sysdo.md).
 
 ## submission prior to commencement `ad03045`
+
+# 参考配置
+
+1. [kclejeune--system](https://github.com/kclejeune/system)
+2. [ryan4yin/nix-config](https://github.com/ryan4yin/nix-config)
+3. [inclyc--flakes](https://github.com/inclyc/flakes)
+4. [Guanran928--flake](https://github.com/Guanran928/flake)
