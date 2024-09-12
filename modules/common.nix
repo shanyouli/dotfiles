@@ -61,7 +61,6 @@ in {
         })
       ];
       home.programs.home-manager.enable = true;
-      # home.packages = config.home-manager.users."${config.user.name}".home.packages;
       home.profileBinDir = "${config.home-manager.users."${config.user.name}".home.profileDirectory}/bin";
 
       home.profileDirectory = "${config.home-manager.users."${config.user.name}".home.profileDirectory}";
@@ -107,11 +106,6 @@ in {
       in {
         trusted-users = users;
         allowed-users = users;
-        # Get Nix (2.14+) itself to respect XDG. I.e.
-        # ~/.nix-defexpr -> $XDG_DATA_HOME/nix/defexpr
-        # ~/.nix-profile -> $XDG_DATA_HOME/nix/profile
-        # ~/.nix-channels -> $XDG_DATA_HOME/nix/channels
-        use-xdg-base-directories = true;
       };
 
       environment.extraInit = mkOrder 10 (let

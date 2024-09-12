@@ -2,7 +2,6 @@
 
 function doom() {
     # 不导入某些变量
-    unset FZF_DEFAULT_OPTS
     local old_PATH=$PATH
     export PATH=$(echo $PATH | tr ':' '\n' | grep -v '^/nix/store' | paste -sd:)
 
@@ -14,27 +13,25 @@ function doom() {
         _DOOM_HOME=${HOME}/.emacs.d
     fi
     if [[ -n $1 ]]; then
-        _setenv=0
-        if [[ $1 == "env" ]]; then
+        local _setenv=0
+        if [[ $1 == "env" ]] && [[ -z $2 ]]; then
             _setenv=1
         elif [[ $1 == "upgrade" ]] || [[ $1 == "install" ]]; then
-            _setenv=2
+            _setenv=1
         elif [[ $1 == "sync" ]]; then
             shift
             ${_DOOM_HOME}/bin/doom sync -e "$@"
             return 0
         fi
         ${_DOOM_HOME}/bin/doom "$@"
-
-        [[ $_setenv -ge 1 ]] && {
-            /usr/bin/sed -i".bak" 's?"EMACSLOADPATH="??g' "$_DOOM_HOME/.local/env"
-            /usr/bin/sed -i".bak" 's?"EMACSNATIVELOADPATH="??g' "$_DOOM_HOME/.local/env"
-            /usr/bin/sed -i".bak" '/^[ ]*$/d' "$_DOOM_HOME/.local/env"
-            [[ -f $_DOOM_HOME/.local/env.bak ]] && rm -rf $_DOOM_HOME/.local/env.bak
-            [[ $_setenv -eq 2 ]] && $_DOOM_HOME/bin/doom sync -e
-        }
+        if [[ $_setenv -eq 1 ]]; then
+            ${_DOOM_HOME}/bin/doom env -d "EMACSLOADPATH" \
+                -d "EMACSNATIVELOADPATH" \
+                -d "emacsWithPackages_site.*" \
+                -d "FZF.*"
+        fi
     else
-        ${_DOOM_HOME}/bin/doom "$@"
+        ${_DOOM_HOME}/bin/doom help
     fi
     export PATH=$old_PATH
 }

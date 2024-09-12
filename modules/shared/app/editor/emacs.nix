@@ -125,7 +125,7 @@ in {
           }))
         ]
         ++ optionals config.modules.just.enable [epkgs.just-mode epkgs.justl]
-        ++ optionals config.modules.shell.nushell.enable [epkgs.nushell-mode];
+        ++ optionals config.modules.shell.nushell.enable [epkgs.nushell-ts-mode];
       modules.app.editor.emacs.pkg = emacsWithPackages cfg.extraPkgs;
     }
     {

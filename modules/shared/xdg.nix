@@ -27,6 +27,11 @@ with lib.my; {
         then "/tmp/user/${toString config.user.uid}"
         else "/run/user/${toString config.user.uid}";
     };
+    # Get Nix (2.14+) itself to respect XDG. I.e.
+    # ~/.nix-defexpr -> $XDG_DATA_HOME/nix/defexpr
+    # ~/.nix-profile -> $XDG_DATA_HOME/nix/profile
+    # ~/.nix-channels -> $XDG_DATA_HOME/nix/channels
+    nix.settings.use-xdg-base-directories = true;
     env = {
       DOTFILES = lib.var.dotfiles.dir;
       NIXPKGS_ALLOW_UNFREE = "1";
