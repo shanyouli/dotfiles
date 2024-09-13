@@ -1,0 +1,92 @@
+# -*- mode: sh -*-
+# DESC: Backup the source file and fix the file
+
+local backExt="bak"
+local _mode="edit"
+local isExcute="false"
+local isSudo="false"
+{
+
+function _get_path_file() {
+    if [[ -f "$PWD/$1" ]]; then
+        echo "$PWD/$1"
+    elif [[ -f "${DOTFILES}/$1" ]]; then
+        echo "$PWD/$1"
+    else
+        echo "$1"
+    fi
+}
+### Helpers
+function _usage {
+    echo "Editing a file using the default edit build"
+    echo ""
+    echo "Usage: _cache [FLAGS...] file"
+    echo
+    echo "Available FLAGS:"
+    echo "  -b ext_name   Setting the extension of the backup file"
+    echo "  -e cmd        use CMD edit the file, if you don't have editing privileges, make a backup before editing."
+    echo "  -s            Editing files with sudo privileges"
+    echo "  -r            View files only, by default bat/vim is used for viewing"
+    echo "  -x            Give the file execute permissions after editing is complete"
+    echo "  -h            Display Usage"
+    echo ""
+    echo "Example:"
+    echo " edit -v bat -r file  # Viewing files using bat"
+    echo " edit file            # edit file"
+}
+
+
+while getopts "e:b:x:h:r:s" opt; do
+    case $opt in
+    b) backExt="$OPTARG" ;;
+    e) _mode="edit" ;;
+    x) isExcute="true" ;;
+    r) mode="read" ;;
+    s) isSudo="true" ;;
+    h|\?)
+        _usage
+        return  0 ;;
+    esac
+done
+shift $(($OPTIND - 1))
+
+local filename="${@:$#}"
+local file=$(_get_path_file "${filename}")
+local _edit=${EDITOR:-vim}
+
+function _backup_file() {
+    if [[ -f "$1" && ! -w "$1" ]] ; then
+        local _dir=$(dirname "$1")
+        if [[ -w "$_dir" ]]; then
+            mv "$file" "${file}.${backExt}"
+            cat "${file}.${backExt}" > "$file"
+        else
+            echo "Warn: Current directory has no permissions"
+        fi
+    fi
+}
+
+if [[ $_mode == "read" ]]; then
+    if (( $+commands[bat] )) ; then
+        bat -p "$file"
+    else
+        $edit "$file"
+    fi
+elif [[ $_mode == "edit" ]] ; then
+    if [[ $isSudo == "true" ]]; then
+        sudo $_edit "$file"
+    else
+        _backup_file "$file"
+        $_edit "$file"
+    fi
+fi
+if [[ $isExcute == "true" ]]; then
+    if [[ $isSudo == "true" ]]; then
+        sudo chmod a+x "$file"
+    else
+        chmod +x "$file"
+    fi
+fi
+} always {
+    unfunction _get_path_file _usage _backup_file
+}

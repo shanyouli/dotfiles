@@ -1,0 +1,54 @@
+#!/usr/bin/env nu
+
+def is_true [ name: string ] {
+  let lower_name = ($name | str downcase)
+  let os_name = ((sys).host.name | str downcase)
+  let arch_type = ((uname).machine | str downcase)
+  ($lower_name | str contains $arch_type ) and ($lower_name | str contains $os_name)
+}
+
+def setup [] {
+  let assets = (http get https://api.github.com/repos/XIU2/CloudflareSpeedTest/releases/latest | get assets)
+  for i in $assets {
+    if (is_true $i.name) {
+      echo $i.browser_download_url
+      # http get $i.browser_download_url | save $i.name
+      wget $i.browser_download_url -O $i.name
+      if ( $i.name | str ends-with 'zip') {
+        if ((sys).host.name | str downcase) == "darwin" {
+          ditto -V -x -k -- $i.name .
+        } else {
+          unzip $i.name
+        }
+      } else {
+        tar -zxf $i.name
+      }
+      if ([$env.PWD, $i.name] | path join | path exists) {
+        print 5
+        rm $i.name
+      }
+      chmod +x ./CloudflareST
+    }
+  }
+}
+
+def --wrapped main [ --clear (-c), ...args: string ] {
+  let cloudflare_dir = ("~/.cache/CloudflareST" | path expand)
+  let current_dir = $env.PWD
+  if $clear {
+    if ($cloudflare_dir | path exists) {
+      rm -r $cloudflare_dir
+      mkdir $cloudflare_dir
+    }
+  } else {
+    if not ($cloudflare_dir | path exists) {
+      mkdir $cloudflare_dir
+    }
+  }
+  cd $cloudflare_dir
+  if not ([$cloudflare_dir, "CloudflareST"] | path join | path exists) {
+    setup
+   }
+  ./CloudflareST ...$args
+  cd $current_dir
+}

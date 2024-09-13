@@ -38,52 +38,27 @@
         ./parts/vars
         ./parts/overlays
         ./parts/pkgs
+        ./parts/mkhome.nix
+        ./parts/home-modules.nix
       ];
 
       perSystem = {
         pkgs,
         system,
         ...
-      }: let
-        # TODO: Change username
-        # myUserName = "lyeli";
-        # myvar = myvarFun system;
-      in {
-        # legacyPackages.homeConfigurations.${myvar.user} = inputs.home-manager.lib.homeManagerConfiguration {
-        #   inherit pkgs;
-        #   extraSpecialArgs = {inherit myvar inputs self;};
-        #   modules = [
-        #     ({
-        #       pkgs,
-        #       myvar,
-        #       ...
-        #     }: {
-        #       imports = [self.homeModules.default];
-        #       home.username = myvar.user;
-        #       home.homeDirectory = "/${
-        #         if pkgs.stdenv.isDarwin
-        #         then "Users"
-        #         else "home"
-        #       }/${myUserName}";
-        #       home.stateVersion = "24.11";
-        #       nix.settings.use-xdg-base-directories = true;
-        #       nix.enable = true;
-        #       nix.package = pkgs.nix;
-        #     })
-        #   ];
-        # };
+      }:{
       };
 
       flake = {
         # All home-manager configurations are kept here.
-        homeModules.default = {pkgs, ...}: {
-          imports = [];
-          programs = {
-            git.enable = true;
-            starship.enable = true;
-            bash.enable = true;
-          };
-        };
+        # homeModules.default = {pkgs, ...}: {
+        #   imports = [];
+        #   programs = {
+        #     git.enable = true;
+        #     starship.enable = true;
+        #     bash.enable = true;
+        #   };
+        # };
       };
     };
 }

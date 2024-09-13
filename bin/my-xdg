@@ -1,0 +1,10 @@
+#!/usr/bin/env cached-nix-shell
+#! nix-shell -i nu -p xdg-ninja nushell
+
+def --wrapped main [ ...rest: string ] {
+  if ($rest | is-empty) {
+    ^xdg-ninja --skip-unsupported
+  } else {
+    ^xdg-ninja ...$rest
+  }
+}

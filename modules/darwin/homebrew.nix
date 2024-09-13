@@ -1,0 +1,207 @@
+{
+  pkgs,
+  lib,
+  config,
+  options,
+  ...
+}:
+with lib;
+with lib.my; let
+  cfg = config.modules.macos.brew;
+  mirrors = {
+    bfsu = "https://mirrors.bfsu.edu.cn"; # 北外
+    tuna = "https://mirrors.tuna.tsinghua.edu.cn"; # 清华
+    sust = "https://mirrors.sustech.edu.cn"; # 南方科技大学
+    nju = "https://mirror.nju.edu.cn"; # 浙江大学
+  };
+  can_mirror_taps = ["cask" "core" "services" "command-not-found"]; # cask-fonts
+in {
+  options.modules.macos.brew = {
+    enable = mkBoolOpt true;
+    useMirror = mkBoolOpt true;
+    mirror = mkOption {
+      type = types.str;
+      default = "bfsu";
+      apply = str:
+        if builtins.hasAttr str mirrors
+        then str
+        else "bfsu";
+    };
+    description = "homebrew 使用 mirror";
+  };
+
+  config = mkIf cfg.enable (mkMerge [
+    (mkIf (! cfg.useMirror) {
+      homebrew.taps = map (x: "homebrew/" + x) can_mirror_taps;
+    })
+    (mkIf cfg.useMirror (let
+      domain = mirrors."${cfg.mirror}";
+      need_git =
+        if cfg.mirror == "sust"
+        then ""
+        else "git/";
+      fmtfunc = x: {
+        name = "homebrew/" + x;
+        clone_target = domain + "/" + need_git + "homebrew/homebrew-" + x + ".git";
+      };
+    in {
+      homebrew.taps = map fmtfunc can_mirror_taps;
+      # 不使用 api 来获取安装信息
+      modules.shell.env.HOMEBREW_NO_INSTALL_FROM_API = "1";
+      # 不自动更新 brew 仓库
+      # modules.shell.env.HOMEBREW_NO_AUTO_UPDATE = "1"; # or homebrew.global.autoUpdate = 1
+      modules.shell.env.HOMEBREW_API_DOMAIN = "${domain}/homebrew-bottles/api";
+      modules.shell.env.HOMEBREW_BOTTLE_DOMAIN = "${domain}/homebrew-bottles";
+      modules.shell.env.HOMEBREW_PIP_INDEX_URL = "${domain}/pypi/web/simple";
+      modules.shell.env.HOMEBREW_BREW_GIT_REMOTE = "${domain}/${need_git}homebrew/brew.git";
+      modules.shell.env.HOMEBREW_CORE_GIT_REMOTE = "${domain}/${need_git}homebrew/homebrew-core.git";
+    }))
+    {
+      homebrew.enable = true; # 你需要手动安装homebrew
+      homebrew.onActivation = {
+        autoUpdate = false;
+        cleanup = "zap";
+      };
+      homebrew.global = {
+        brewfile = true;
+        lockfiles = true;
+        autoUpdate = false;
+        # noLock = true;
+      };
+      homebrew.brewPrefix = let
+        inherit (pkgs.stdenvNoCC) isAarch64 isAarch32;
+      in (
+        if isAarch64 || isAarch32
+        then "/opt/homebrew/bin"
+        else "/usr/local/bin"
+      );
+      homebrew.taps = ["buo/cask-upgrade" "shanyouli/tap"];
+
+      homebrew.casks =
+        [
+          "raycast" # 取代 spotlight
+          # "stats" # 状态显示, 目前无法显示温度。
+          "macs-fan-control" # 用来控制 fan 的工具
+          "forkgram-telegram"
+          "easydict" # 翻译软件
+          "jetbrains-toolbox"
+          # "syncthing" 同步
+          # "downie"
+          "lulu" # 网络管理
+          "veracrypt" # "cryptomator" # 即时加密软件
+          "macfuse" # veracrypt 需要的工具
+
+          "wechat"
+          "wpsoffice-cn" # "microsoft-office" , 手动安装
+          "mactex"
+
+          "skim" # PDF
+
+          # "displaperture" # screen 曲线图
+          # "imageoptim" # 图片压缩
+          # "licecap" # GIF kap
+          # "imazing" # 手机备份管理
+          (mkIf (! config.modules.gui.media.flameshot.enable) "shottr") # 截图
+          # "betterdisplay" # 其他替代工具
+          "maczip" # 压缩解压GUI
+          # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
+          "findergo" # 快捷方式，在finder中打开终端
+          # "coconutbattery" # 电量查看
+          "zotero" # 文献管理
+
+          # "warp" # next terminal, 不太好用
+
+          "syntax-highlight"
+          "qlmarkdown"
+
+          # "playcover-community" # 侧载工具
+
+          "mac-mouse-fix" # 鼠标fix
+          "pictureview" # 看图
+
+          "tencent-lemon" # 文件清理 or ""clean-me""
+
+          "charles" # "proxyman", 抓包
+          "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
+          "background-music" # 和一些工具冲突，eg mpd， yesplaymusic
+
+          "postman"
+          "rapidapi" # "httpie"
+          "reqable"
+
+          "paragon-ntfs"
+
+          # "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
+          # "sequel-ace" # mysql
+          # "navicat-premium"
+
+          # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
+          # "maccy" # clip 剪切薄，使用raycast取代
+          # "visual-studio-code" # other editors nix 管理
+          "command-x" # Cut files
+          "logseq" # 笔记工具
+
+          "jordanbaird-ice" # tab 自动隐藏, 其他 "dozer" # 菜单栏管理,
+
+          # "windterm" # 比较好用的 ssh 客户端，可以使用 vscode 的 ssh 插件取代
+          # "doll" # 在 menubar 上显示 消息提示
+          "zed"
+          "qutebrowser"
+
+          "shanyouli/tap/nextchat" # gptchat, 客户端，需要密钥
+          "shanyouli/tap/upic" # or "picgo"
+
+          "pearcleaner" # app 卸载工具 or "appcleaner"
+          "shanyouli/tap/quickrecorder" # 录屏
+          "shanyouli/tap/tmexclude"
+
+          "shanyouli/tap/vimmotion" # 使用 vim 全局操作
+          "shanyouli/tap/calibre-cjk" #"koodo-reader", 书籍管理和阅读
+          "shanyouli/tap/alexandria" # 阅读工具
+          "shanyouli/tap/airbattery" # 设备电量显示
+
+          "anythingllm" # LLM 管理工具。AI 相关
+        ]
+        ++ optionals config.modules.adb.enable [
+          # # 使用第三方工具取代openmtp，MacDroid.app
+          # "openmtp" # 目前不是很稳定
+          # “macdroid” # 付费app，使用adb传输，稳定性存疑
+          # "android-file-transfer" # 可用，稳定性一般
+          # "commander-one" # 速度可以，大文件也稳定，需要付费
+          # "whoozle-android-file-transfer" # 速度一般，稳定
+        ]
+        ++ optionals config.modules.gopass.enable [
+          "ente-auth"
+        ]
+        ++ optionals (config.modules.gui.browser.chrome.enable && config.modules.gui.browser.chrome.useBrew) [
+          "google-chrome"
+        ]
+        ++ optionals (config.modules.git.enable && config.modules.git.enGui) [
+          "github" # github客户端
+        ]
+        ++ optionals (config.modules.app.editor.nvim.enGui && config.modules.app.editor.nvim.enable) [
+          "shanyouli/tap/neovide"
+        ]
+        ++ optionals (config.modules.gui.enable && (config.modules.proxy.default != "")) [
+          "shanyouli/tap/clash-verge"
+          (mkIf (config.modules.proxy.default == "sing-box") "sfm")
+        ];
+
+      homebrew.brews = [
+        # "macos-trash" # trash-cli
+        # "mysql"
+        "mist-cli"
+      ];
+      homebrew.masApps = {
+        "Amphetamine" = 937984704;
+        # "mineweeper" = 1475921958; # 扫雷
+        "text-scaner" = 1452523807;
+        "pipad-calc" = 1482575592; # 高颜值的计算器
+        # "localSend" = 1661733229;
+        # "vidhub" = 1659622164; # 视频管理,需要网速足够好
+        # "medis" = 1579200037; # redis 管理工具, 可免费使用，
+        # "devhub" = 6476452351; # 试用小工具合集
+      };
+    }
+  ]);
+}

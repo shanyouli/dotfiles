@@ -1,0 +1,5 @@
+# -*- mode: sh -*-
+# DESC: Get pid value by port number
+
+local port=${1}
+sdo lsof -n -i :${port}

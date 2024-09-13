@@ -1,0 +1,89 @@
+# -*- mode: sh -*-
+# 局部函数: https://www.zsh.org/mla/users/2011/msg00207.html
+local version
+local nextStep="cacheFunction"
+local cache_dir="$XDG_CACHE_HOME/${SHELL##*/}/cache"
+### Helpers
+{
+
+function _usage {
+    echo "Cache the execution results of the ARGS command into the ${cache_dir}/<ARGS> directory"
+    echo "and source results"
+    echo ""
+    echo "Usage: _cache [FLAGS...] [ARGS...]"
+    echo
+    echo "Available FLAGS:"
+    echo "  -v  version [ARGS] Assigning a version number to a cached file"
+    echo "  -h                 help"
+    echo "  -c  [all|a]        Delete expired cache files"
+    echo "                     [all|a] Delete zwe compiled files from the ZDOTDIR and ZSH_CACHE"
+    echo ""
+    echo "Example:"
+    echo "  _cache -v 1.2 zoxide init zsh"
+    echo "                   # Cache results of zoxide commands to ${cache_dir}/zoxide-1.2 file"
+    echo " _cache zoxide init zsh"
+    echo "                   # Cache results of zoxide commands to ${cache_dir}/zoxide file"
+}
+
+while getopts "v:c:h" opt; do
+    case $opt in
+    v)
+        version=$OPTARG
+        shift 2
+        ;;
+    c)
+        nextStep="ClearFunction"
+        shift
+        ;;
+    h|\?) _usage
+       return 0;;
+    esac
+done
+} always {
+    unfunction -m _usage
+}
+if [[ "$nextStep" == "cacheFunction" ]]; then
+    if (( $+commands[$1] )) || [[ -x $1 ]]; then
+        local cache=$cache_dir/${1##*/}
+        local cache_file=$cache
+        [ -z $version ] || cache_file="${cache}-$version"
+        if [[ ! -f $cache_file || ! -s $cache_file ]]; then
+            echo "Caching $1"
+            mkdir -p $cache_dir
+            "$@" >$cache_file
+            chmod 600 $cache_file
+            [[ $cache_file == $cache ]] || ln -sf $cache_file $cache
+        fi
+        if [[ -o interactive ]]; then
+            source $cache || rm -f $cache
+        fi
+    else
+        return 1
+    fi
+elif [[ "$nextStep" == "ClearFunction" ]]; then
+    if [[ "$1" == "all" ]] || [[ "$1" == "a" ]]; then
+        if (($+commands[fd])); then
+            fd . $ZDOTDIR -e zwc -t f -X command rm -vf -- {}
+            fd . $ZSH_CACHE -e zwc -t f -X command rm -vf -- {}
+        else
+            find $ZDOTDIR -name "*.zwc" -type f -exec command rm -vf -- {} \;
+            find $ZSH_CACHE -name "*.zwc" -type f -exec command rm -vf -- {} \;
+        fi
+        if [[ -e "$XDG_CACHE_HOME/themes/default/zshrc.zwc" ]]; then
+            rm -rf "$XDG_CACHE_HOME/themes/default/zshrc.zwc"
+        fi
+    fi
+    if [[ -d $cache_dir ]]; then
+        popd "$cache_dir"
+        find . -type l | while read link; do
+            target_file=$(basename $(readlink -f $link))
+            echo ${target_file}
+            for i in ${link}*; do
+                if [[ $i != $link && $i != "${link}.zwc" && $i != *"${target_file}" ]]; then
+                    command rm -vf -- $i
+                fi
+            done
+        done
+        pushd
+    fi
+fi

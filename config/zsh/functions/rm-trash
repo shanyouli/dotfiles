@@ -1,0 +1,18 @@
+# -*- mode: sh -*-
+# DESC: 一个sh版本简易的trash命令
+local trashDir=${TRASHDIR:-${HOME}/.Trash}
+local file
+# 导入时间模块
+zmodload zsh/datetime
+
+[[ -d "${trashDir}" ]] || mkdir -p "${trashDir}"
+
+for file in "$@"; do
+    if [[ $file != -* ]]; then
+        # date +%Y-%m-%d_%H_%M_%S
+        local current_time="$(strftime "%Y-%m-%d-%H_%M_%S" $EPOCHSECONDS)"
+	    local to="${trashDir}/$(readlink -f "$file")-REMOVED-${current_time}"
+        mkdir -p "$(dirname "$to")"
+        mv -- "$file" "$to"
+    fi
+done

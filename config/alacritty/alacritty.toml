@@ -1,0 +1,94 @@
+live_config_reload = true
+
+[colors]
+draw_bold_text_with_bright_colors = false
+
+[colors.bright]
+black = "#4d4d4d"
+blue = "#a277ff"
+cyan = "#61ffca"
+green = "#61ffca"
+magenta = "#a277ff"
+red = "#ff6767"
+white = "#edecee"
+yellow = "#ffca85"
+
+[colors.cursor]
+cursor = "#a277ff"
+
+[colors.normal]
+black = "#110f18"
+blue = "#a277ff"
+cyan = "#61ffca"
+green = "#61ffca"
+magenta = "#a277ff"
+red = "#ff6767"
+white = "#edecee"
+yellow = "#ffca85"
+
+[colors.primary]
+background = "#15141b"
+foreground = "#edecee"
+
+[colors.search.focused_match]
+background = "#9F7AF5"
+foreground = "#ffffff"
+
+[colors.search.matches]
+background = "#ffffff"
+foreground = "#000000"
+
+[colors.selection]
+background = "#29263c"
+text = "CellForeground"
+
+[cursor.style]
+shape = "Beam"
+
+[font]
+size = 10
+
+[font.bold]
+family = "CaskaydiaCove Nerd Font"
+#family = "FantasqueSansM Nerd Font"
+style = "Bold"
+# family = "Cascadia Code"
+
+[font.bold_italic]
+family = "CaskaydiaCove Nerd Font"
+style = "Bold Italic"
+
+[font.glyph_offset]
+x = 0
+y = 2
+
+[font.italic]
+family = "CaskaydiaCove Nerd Font"
+style = "Italic"
+
+[font.normal]
+family = "CaskaydiaCove Nerd Font"
+style = "Regular"
+
+[font.offset]
+x = 0
+y = 9
+
+[scrolling]
+history = 100000
+multiplier = 4
+
+[selection]
+save_to_clipboard = true
+semantic_escape_chars = ",│`|:\"' ()[]{}<>"
+
+[window]
+decorations = "none"
+
+[window.dimensions]
+columns = 120
+lines = 27
+
+[window.padding]
+x = 2
+y = 2

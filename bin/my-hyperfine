@@ -1,0 +1,21 @@
+#!/usr/bi/env cached-nix-shell
+#! nix-shell -i nu -p hyperfine nushell
+
+def --wrapped main [ ...rest: string ] {
+  if  ($rest | is-empty) {
+    ^hyperfine --help
+    return
+  }
+  let is_default = true
+  for $i in $rest {
+    if ($i | str starts-with "-") {
+      let is_default = false
+      break
+    }
+  }
+  if $is_default {
+    ^hyperfine --warmup 3 ...$rest
+  } else {
+    ^hyperfine ...$rest
+  }
+}

@@ -1,0 +1,27 @@
+{
+  lib,
+  config,
+  options,
+  ...
+}:
+with lib;
+with lib.my; let
+  cfg = config.modules.service.proxy;
+  cft = config.modules.proxy;
+in {
+  options.modules.service.proxy = {
+    enable = mkBoolOpt cft.service.enable;
+  };
+
+  config = mkIf cfg.enable (let
+    log_file = "${config.user.home}/Library/Logs/org.nixos.proxy.log";
+  in {
+    launchd.user.agents.proxy = {
+      path = [config.modules.service.path];
+      serviceConfig.RunAtLoad = cft.service.startup;
+      serviceConfig.StandardOutPath = log_file;
+      serviceConfig.ProgramArguments = ["${cft.service.pkg}/bin/${cft.service.pkg.name}"];
+      serviceConfig.ProcessType = "Background";
+    };
+  });
+}
