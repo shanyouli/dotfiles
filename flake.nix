@@ -36,6 +36,8 @@
       imports = [
         ./parts/lib
         ./parts/vars
+        ./parts/overlays
+        ./parts/pkgs
       ];
 
       perSystem = {
