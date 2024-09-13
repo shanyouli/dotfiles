@@ -1,0 +1,2 @@
+* 参考
+- [[https://github.com/scanhex/dotfiles/blob/master/flakes/home-manager.nix][scanhex/dotfiles/flakes/home-manager.nix]]
