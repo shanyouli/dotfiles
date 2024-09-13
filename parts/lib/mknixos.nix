@@ -3,13 +3,13 @@
   inputs,
   ...
 }: let
-  inherit (inputs) darwin-stable home-manager darwin;
+  inherit (inputs) nixos-stable home-manager;
 in {
-  mkdarwin = {
+  mknixos = {
     withSystem,
     self,
     name ? "localhost",
-    system ? "aarch64-darwin",
+    system ? "x86_64-linux",
     nixpkgs ? null,
     overlays ? [],
     config ? {},
@@ -23,14 +23,14 @@ in {
         myvars,
         ...
       }:
-        darwin.lib.darwinSystem (
+        nixos-stable.lib.nixosSystem (
           let
             usePkgs = let
               isUpPkgs = ! (builtins.isNull nixpkgs);
               mypkgs =
                 if isUpPkgs
                 then nixpkgs
-                else darwin-stable;
+                else nixos-stable;
             in
               if (isUpPkgs || config != {})
               then
@@ -54,9 +54,9 @@ in {
                   nixpkgs.overlays = overlays;
                   networking.hostName = name;
                 })
-                home-manager.darwinModules.home-manager
+                home-manager.nixosModules.home-manager
               ]
-              ++ self.darwinModules.default
+              ++ self.nixosModules.default
               ++ modules;
           }
         )

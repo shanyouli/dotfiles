@@ -35,7 +35,7 @@ in {
                   else nixos-stable
                 );
           in
-            if (isUpPkgs || config != {} || overlays != [])
+            if (isUpPkgs || config != {})
             then
               import mypkgs (lib.recursiveUpdate {
                   inherit system;
@@ -49,7 +49,14 @@ in {
             inherit self myvars;
             inherit (self) inputs lib;
           };
-          modules = [] ++ self.homeModules.default ++ modules;
+          modules =
+            [
+              ({...}: {
+                nixpkgs.overlays = overlays;
+              })
+            ]
+            ++ self.homeModules.default
+            ++ modules;
         }
     );
 }

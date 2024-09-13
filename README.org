@@ -1,2 +1,2 @@
 * 参考
-- [[https://github.com/scanhex/dotfiles/blob/master/flakes/home-manager.nix][scanhex/dotfiles/flakes/home-manager.nix]]
+- [[https://github.com/scanhex/dotfiles/blob/master/flakes/home-manager.nix][scanhex/dotfiles/flakes/home-manager.nix]] , 定制 mkhome 函数和 apps.init 系列函数

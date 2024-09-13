@@ -45,6 +45,7 @@
           ./parts/pkgs
           ./parts/home-modules.nix
           ./parts/darwin-modules.nix
+          ./parts/nixos-modules.nix
         ];
 
         perSystem = {
@@ -54,11 +55,8 @@
         }: {
           legacyPackages.homeConfigurations.test = self.lib.my.mkhome {
             inherit system withSystem self;
-            modules = [(self.lib.my.relativeToRoot "hosts/test/home-manager.nix")
-                       {
-                         nixpkgs.overlays = [self.overlays.python];
-                       }
-                      ];
+            overlays = [self.overlays.python];
+            modules = [(self.lib.my.relativeToRoot "hosts/test/home-manager.nix")];
           };
         };
 
@@ -75,18 +73,40 @@
             "test@aarch64-darwin" = self.lib.my.mkdarwin {
               system = "aarch64-darwin";
               inherit withSystem self;
+              overlays = [self.overlays.python];
               modules = [(self.lib.my.relativeToRoot "hosts/test/home-manager.nix")];
             };
             "test@x86_64-darwin" = self.lib.my.mkdarwin {
               inherit withSystem self;
               system = "x86_64-darwin";
+              overlays = [self.overlays.python];
               modules = [(self.lib.my.relativeToRoot "hosts/test/home-manager.nix")];
             };
             "lyeli@aarch64-darwin" = self.lib.my.mkdarwin {
               system = "aarch64-darwin";
               inherit withSystem self;
+              overlays = [self.overlays.python];
               name = "home-box";
               modules = [(self.lib.my.relativeToRoot "hosts/homebox.nix")];
+            };
+          };
+          nixosConfigurations = {
+            "test@aarch64-linux" = self.lib.my.mknixos {
+              inherit withSystem self;
+              system = "aarch64-linux";
+              overlays = [self.overlays.python];
+              modules = [
+                (self.lib.my.relativeToRoot "hosts/test/orbstack")
+                (self.lib.my.relativeToRoot "hosts/test/home-manager.nix")
+              ];
+            };
+            "test@x86_64-linux" = self.lib.my.mknixos {
+              inherit withSystem self;
+              overlays = [self.overlays.python];
+              modules = [
+                (self.lib.my.relativeToRoot "hosts/test/nixos-x86_64")
+                (self.lib.my.relativeToRoot "hosts/test/home-manager.nix")
+              ];
             };
           };
         };
