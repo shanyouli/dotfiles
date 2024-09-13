@@ -29,36 +29,49 @@
     nurpkgs.inputs.flake-parts.follows = "flake-parts";
   };
 
-  outputs = inputs @ {self, ...}:
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
-      debug = true;
-      systems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin"];
-      imports = [
-        ./parts/lib
-        ./parts/vars
-        ./parts/overlays
-        ./parts/pkgs
-        ./parts/mkhome.nix
-        ./parts/home-modules.nix
-      ];
-
-      perSystem = {
-        pkgs,
-        system,
+  outputs = inputs @ {flake-parts, ...}:
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} (
+      {
+        withSystem,
+        self,
         ...
-      }:{
-      };
+      }: {
+        debug = true;
+        systems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin"];
+        imports = [
+          ./parts/lib
+          ./parts/vars
+          ./parts/overlays
+          ./parts/pkgs
+          ./parts/home-modules.nix
+        ];
 
-      flake = {
-        # All home-manager configurations are kept here.
-        # homeModules.default = {pkgs, ...}: {
-        #   imports = [];
-        #   programs = {
-        #     git.enable = true;
-        #     starship.enable = true;
-        #     bash.enable = true;
-        #   };
-        # };
-      };
-    };
+        perSystem = {
+          pkgs,
+          system,
+          ...
+        }: {
+          legacyPackages.homeConfigurations.test = self.lib.my.mkhome {
+            inherit system withSystem self;
+            modules = [(self.lib.my.relativeToRoot "hosts/test/home-manager.nix")
+                       {
+                         nixpkgs.overlays = [self.overlays.python];
+                       }
+                      ];
+          };
+        };
+
+        flake = {
+          # All home-manager configurations are kept here.
+          # homeModules.default = {pkgs, ...}: {
+          #   imports = [];
+          #   programs = {
+          #     git.enable = true;
+          #     starship.enable = true;
+          #     bash.enable = true;
+          #   };
+          # };
+        };
+      }
+    );
 }
