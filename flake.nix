@@ -10,36 +10,33 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
-    # nixos-flake.url = "github:srid/nixos-flake";
+
+    darwin.url = "github:LnL7/nix-darwin";
+    darwin.inputs.nixpkgs.follows = "darwin-stable";
+
+    # 需要同步的 flake
+    flake-utils.url = "github:numtide/flake-utils";
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
+
+    nurpkgs.url = "github:shanyouli/nur-packages/stable";
+    nurpkgs.inputs.nixpkgs.follows = "nixpkgs";
+    nurpkgs.inputs.nixpkgs-stable.follows = "nixos-stable";
+    nurpkgs.inputs.flake-utils.follows = "flake-utils";
+    nurpkgs.inputs.flake-compat.follows = "flake-compat";
+    nurpkgs.inputs.flake-parts.follows = "flake-parts";
   };
 
-  outputs = inputs @ {self, ...}: let
-    lib = inputs.nixpkgs.lib.extend (self: super: {
-      my = import ./lib {
-        inherit inputs;
-        lib = self;
-      };
-    });
-    genSpecialArgs = system: let
-      lib = inputs.nixpkgs.lib.extend (self: super: {
-        my = import ./lib {
-          inherit inputs;
-          lib = self;
-        };
-        var = import ./vars {
-          inherit inputs;
-          lib = inputs.nixpkgs.lib;
-          system = system;
-        };
-        hm = inputs.home-manager.lib.hm;
-      });
-    in {inherit inputs lib self;};
-    isDarwin = system: builtins.elem system lib.platforms.darwin;
-  in
+  outputs = inputs @ {self, ...}:
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
       debug = true;
       systems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin"];
-      imports = [];
+      imports = [
+        ./parts/lib
+        ./parts/vars
+      ];
 
       perSystem = {
         pkgs,
@@ -47,53 +44,32 @@
         ...
       }: let
         # TODO: Change username
-        myUserName = "lyeli";
+        # myUserName = "lyeli";
+        # myvar = myvarFun system;
       in {
-        legacyPackages.homeConfigurations.${myUserName} = inputs.home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          extraSpecialArgs = genSpecialArgs system;
-          modules = [
-            ({pkgs, ...}: {
-              imports = [self.homeModules.default];
-              home.username = myUserName;
-              home.homeDirectory = "/${
-                if pkgs.stdenv.isDarwin
-                then "Users"
-                else "home"
-              }/${myUserName}";
-              home.stateVersion = "24.11";
-              nix.settings.use-xdg-base-directories = true;
-              nix.enable = true;
-              nix.package = pkgs.nix;
-            })
-          ];
-        };
-
-        # Make our overlay available to the devShell
-        _module.args = {
-          pkgs = let
-            mypkgs =
-              if isDarwin system
-              then inputs.darwin-stable
-              else inputs.nixos-stable;
-          in
-            import mypkgs {
-              inherit system;
-              overlays = [];
-            };
-          lib = inputs.nixpkgs.lib.extend (self: super: {
-            my = import ./lib {
-              inherit inputs;
-              lib = self;
-            };
-            var = import ./vars {
-              inherit inputs;
-              lib = inputs.nixpkgs.lib;
-              system = system;
-            };
-            hm = inputs.home-manager.lib.hm;
-          });
-        };
+        # legacyPackages.homeConfigurations.${myvar.user} = inputs.home-manager.lib.homeManagerConfiguration {
+        #   inherit pkgs;
+        #   extraSpecialArgs = {inherit myvar inputs self;};
+        #   modules = [
+        #     ({
+        #       pkgs,
+        #       myvar,
+        #       ...
+        #     }: {
+        #       imports = [self.homeModules.default];
+        #       home.username = myvar.user;
+        #       home.homeDirectory = "/${
+        #         if pkgs.stdenv.isDarwin
+        #         then "Users"
+        #         else "home"
+        #       }/${myUserName}";
+        #       home.stateVersion = "24.11";
+        #       nix.settings.use-xdg-base-directories = true;
+        #       nix.enable = true;
+        #       nix.package = pkgs.nix;
+        #     })
+        #   ];
+        # };
       };
 
       flake = {

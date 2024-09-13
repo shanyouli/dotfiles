@@ -40,6 +40,4 @@ with lib; rec {
     if cond
     then result
     else null;
-
-  relativeToRoot = lib.path.append ../.;
 }
