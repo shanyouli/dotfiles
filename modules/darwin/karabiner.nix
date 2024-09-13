@@ -2,6 +2,7 @@
   lib,
   config,
   options,
+  myvars,
   ...
 }:
 with lib;
@@ -16,7 +17,7 @@ in {
     # better using caplocks @see https://github.com/Eason0210/karabiner-config/blob/master/karabiner.json
     homebrew.casks = ["karabiner-elements"];
     home.configFile."karabiner/assets/complex_modifications" = {
-      source = "${lib.var.dotfiles.config}/karabiner";
+      source = "${myvars.dotfiles.config}/karabiner";
       recursive = true;
     };
   };

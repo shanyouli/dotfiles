@@ -3,6 +3,7 @@
   lib,
   config,
   options,
+  myvars,
   ...
 }:
 with lib;
@@ -23,7 +24,7 @@ in {
   config = mkIf cfg.enable {
     user.packages = [pkgs.unstable.darwinapps.yabai-zsh-completions];
     home.configFile."yabai" = {
-      source = "${lib.var.dotfiles.config}/yabai";
+      source = "${myvars.dotfiles.config}/yabai";
       recursive = true;
     };
     environment.systemPackages = [cfg.package];

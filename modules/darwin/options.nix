@@ -3,6 +3,7 @@
   lib,
   config,
   options,
+  myvars,
   ...
 }:
 with lib;
@@ -102,7 +103,7 @@ in {
         optionalString config.modules.app.editor.emacs.enable "${baseDir}/Emacs.app/Contents/MacOS/Emacs";
 
       environment.variables = config.modules.xdg.value;
-      time.timeZone = mkDefault lib.var.timezone;
+      time.timeZone = mkDefault myvars.timezone;
 
       modules.shell.nushell.rcInit = ''
         # 修复macos上nushell自带的open和外部命令open的冲突

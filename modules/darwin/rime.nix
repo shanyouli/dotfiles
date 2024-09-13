@@ -2,6 +2,7 @@
   lib,
   config,
   options,
+  myvars,
   ...
 }:
 with lib;
@@ -28,7 +29,7 @@ in {
       desc = "配置rime输入法";
       text = cfm.rime.script;
     };
-    home.file."Library/Rime/squirrel.custom.yaml".source = "${lib.var.dotfiles.config}/rime/squirrel.custom.yaml";
-    home.file."Library/Rime/default.custom.yaml".source = "${lib.var.dotfiles.config}/rime/default.custom.yaml";
+    home.file."Library/Rime/squirrel.custom.yaml".source = "${myvars.dotfiles.config}/rime/squirrel.custom.yaml";
+    home.file."Library/Rime/default.custom.yaml".source = "${myvars.dotfiles.config}/rime/default.custom.yaml";
   };
 }

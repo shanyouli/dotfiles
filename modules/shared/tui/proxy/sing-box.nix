@@ -15,7 +15,7 @@ with lib.my; let
 in {
   options.modules.proxy.sing-box = {
     enable = mkBoolOpt false;
-    configFile = mkOpt' types.path (
+    configFile = mkOpt' types.str (
       if cfp.default == "sing-box"
       then cfp.configFile
       else "${config.home.configDir}/sing-box/config.json"

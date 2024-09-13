@@ -15,7 +15,7 @@ with lib.my; let
 in {
   options.modules.proxy.clash = {
     enable = mkBoolOpt false;
-    configFile = mkOpt' types.path (
+    configFile = mkOpt' types.str (
       if (cfp.default == "clash")
       then cfp.configFile
       else "${config.home.configDir}/clash-meta/clash.yaml"
