@@ -62,13 +62,12 @@
         };
 
         flake = {
-          # All home-manager configurations are kept here.
-          # homeModules.default = {pkgs, ...}: {
-          #   imports = [];
-          #   programs = {
-          #     git.enable = true;
-          #     starship.enable = true;
-          #     bash.enable = true;
+          # homeConfigurations 自定义配置
+          # homeConfigurations  = {
+          #   "lyeli" = self.lib.my.mkhome {
+          #     inherit withSystem self;
+          #     system = "x86_64-linux";
+          #     modules = [(self.lib.my.relativeToRoot "hosts/test/home-manager.nix")];
           #   };
           # };
         };
