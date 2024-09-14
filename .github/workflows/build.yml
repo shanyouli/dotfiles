@@ -34,6 +34,36 @@ jobs:
         with:
           # Shallow clones won't work
           fetch-depth: 0
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        with:
+          # this might remove tools that are actually needed,
+          # if set to "true" but frees about 6 GB
+          tool-cache: false
+
+          # all of these default to true, but feel free to set to
+          # "false" if necessary for your workflow
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+      - name: Free Disk Space (macos)
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: |
+          df -h
+          brew list
+          [[ -d /Applications/Xcode_16.1_beta.app ]] && sudo rm -rf /Applications/Xcode_16.1_beta.app
+          [[ -d /Applications/Xcode_16_beta_6.app ]] && sudo rm -rf /Applications/Xcode_16_beta_6.app
+          [[ -d /Applications/Xcode_15.1.app ]] && sudo rm -rf /Applications/Xcode_15.1.app
+          [[ -d /Applications/Xcode_15.2.app ]] && sudo rm -rf  /Applications/Xcode_15.2.app
+          [[ -d /Applications/Xcode_15.3.app ]] && sudo rm -rf  /Applications/Xcode_15.3.app
+          [[ -d /Applications/Xcode_14.3.1.app ]] && sudo rm -rf /Applications/Xcode_14.3.1.app
+          [[ -d /Applications/Xcode_15.0.1.app ]] && sudo rm -rf /Applications/Xcode_15.0.1.app
+          brew uninstall --zap google-chrome
+          df -h
       - uses: cachix/install-nix-action@V28
         with:
           extra_nix_config: |
