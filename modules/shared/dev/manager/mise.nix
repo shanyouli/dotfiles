@@ -33,7 +33,7 @@ in {
     '';
     modules.dev.manager.mise.text = let
       mise_core_plugins = ["python" "bun" "deno" "erlang" "go" "java" "ruby" "rust" "node"];
-      finalNeedPlugins = lib.filterAttrs (k: v: !(builtins.elem v [null false])) cfg.plugins;
+      finalNeedPlugins = lib.filterAttrs (_k: v: !(builtins.elem v [null false])) cfg.plugins;
       mise_in_plugin_fn = v: ''${cfbin} p add ${v} -y'';
       mise_ver_base_fn = p: v: ''
         echo-info "Use ${p} ${v} ..."

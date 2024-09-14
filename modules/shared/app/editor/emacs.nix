@@ -45,7 +45,7 @@ in {
       '';
     };
     extraPkgs = mkOption {
-      default = self: [];
+      default = _self: [];
       type = selectorFunction;
       defaultText = "epkgs: []";
       example = literalExample "epkgs: [epkgs.emms epkgs.magit ]";
@@ -56,7 +56,7 @@ in {
       '';
     };
     overrides = mkOption {
-      default = self: super: {};
+      default = _self: _super: {};
       type = overlayFunction;
       defaultText = "self: super: {}";
       example = literalExample ''

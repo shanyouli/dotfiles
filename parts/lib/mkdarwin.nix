@@ -1,8 +1,4 @@
-{
-  lib,
-  inputs,
-  ...
-}: let
+{inputs, ...}: let
   inherit (inputs) darwin-stable home-manager darwin;
 in {
   mkdarwin = {

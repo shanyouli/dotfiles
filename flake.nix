@@ -28,8 +28,8 @@
     nurpkgs.inputs.flake-compat.follows = "flake-compat";
     nurpkgs.inputs.flake-parts.follows = "flake-parts";
 
-    treefmt.url = "github:numtide/treefmt-nix";
-    treefmt.inputs.nixpkgs.follows = "nixpkgs";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ {flake-parts, ...}:
@@ -49,13 +49,10 @@
           ./parts/home-modules.nix
           ./parts/darwin-modules.nix
           ./parts/nixos-modules.nix
+          ./parts/treefmt.nix
         ];
 
-        perSystem = {
-          pkgs,
-          system,
-          ...
-        }: {
+        perSystem = {system, ...}: {
           legacyPackages.homeConfigurations.test = self.lib.my.mkhome {
             inherit system withSystem self;
             overlays = [self.overlays.python];

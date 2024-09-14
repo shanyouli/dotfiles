@@ -1,7 +1,7 @@
-final: prev: (let
-  packageOverrides = pfinal: pprev: {
+_final: prev: (let
+  packageOverrides = _pfinal: pprev: {
     # gssapi = inputs.nurpkgs.packages.${prev.system}.python-apps-gssapi;
-    aria2p = pprev.aria2p.overrideAttrs (old: {
+    aria2p = pprev.aria2p.overrideAttrs (_old: {
       doCheck = false;
       doInstallCheck = false;
     });

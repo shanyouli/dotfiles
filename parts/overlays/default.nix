@@ -7,13 +7,13 @@
     base = inputs.nurpkgs.overlays.default;
     python = import ./python.nix;
 
-    default = final: prev: {
+    default = _final: prev: {
       unstable = import inputs.nixpkgs rec {
         inherit (prev) system;
         config.allowUnfree = true;
         overlays = [
           self.overlays.base
-          (ffinal: pprev: {
+          (_ffinal: _pprev: {
             my = {
               nix-index = inputs.nurpkgs.packages.${prev.system}.nix-index;
               emacs = inputs.nurpkgs.packages.${prev.system}.emacs;

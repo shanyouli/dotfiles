@@ -9,12 +9,7 @@ in {
     owner = common;
     defautl = base ++ self.homeModules.common ++ owner;
   };
-  perSystem = {
-    self',
-    inputs',
-    pkgs,
-    ...
-  }: {
+  perSystem = {pkgs, ...}: {
     apps.init-nixos.program = pkgs.writeScriptBin "init-darwin" ''
       #!${pkgs.lib.getExe pkgs.nushell}
       print $env.FILE_PWD

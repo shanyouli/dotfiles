@@ -12,47 +12,47 @@ local msg = require("mp.msg")
 local fb = require("file-browser")
 local is_windows = mp.get_property_native("platform") == "windows"
 if is_windows then
-    -- returns a list of windows drives
-    local function get_drives()
-        local result = mp.command_native({
-            name = "subprocess",
-            playback_only = false,
-            capture_stdout = true,
-            args = { "wmic", "logicaldisk", "get", "caption" },
-        })
-        if result.status ~= 0 then
-            return msg.error("could not read windows root")
-        end
+	-- returns a list of windows drives
+	local function get_drives()
+		local result = mp.command_native({
+			name = "subprocess",
+			playback_only = false,
+			capture_stdout = true,
+			args = { "wmic", "logicaldisk", "get", "caption" },
+		})
+		if result.status ~= 0 then
+			return msg.error("could not read windows root")
+		end
 
-        local root = {}
-        for drive in result.stdout:gmatch("%a:") do
-            table.insert(root, drive .. "/")
-        end
-        return root
-    end
+		local root = {}
+		for drive in result.stdout:gmatch("%a:") do
+			table.insert(root, drive .. "/")
+		end
+		return root
+	end
 
-    -- adds windows drives to the root if they are not already present
-    local function import_drives()
-        local drives = get_drives()
+	-- adds windows drives to the root if they are not already present
+	local function import_drives()
+		local drives = get_drives()
 
-        for _, drive in ipairs(drives) do
-            fb.register_root_item(drive)
-        end
-    end
+		for _, drive in ipairs(drives) do
+			fb.register_root_item(drive)
+		end
+	end
 
-    local keybind = {
-        key = "Ctrl+r",
-        name = "import_root_drives",
-        command = import_drives,
-        parser = "root",
-        passthrough = true,
-    }
+	local keybind = {
+		key = "Ctrl+r",
+		name = "import_root_drives",
+		command = import_drives,
+		parser = "root",
+		passthrough = true,
+	}
 
-    return {
-        version = "1.4.0",
-        setup = import_drives,
-        keybinds = { keybind },
-    }
+	return {
+		version = "1.4.0",
+		setup = import_drives,
+		keybinds = { keybind },
+	}
 else
-    return { version = "1.4.0" }
+	return { version = "1.4.0" }
 end

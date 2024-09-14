@@ -19,7 +19,7 @@ in {
   options.modules.dev.lua = {
     enable = mkBoolOpt false;
     extraPkgs = mkOption {
-      default = self: [];
+      default = _self: [];
       example = literalExample "ps: [ ps.luarocks-nix ]";
       type = selectorFunction;
     };

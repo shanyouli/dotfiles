@@ -8,7 +8,7 @@
   inherit (self.attrs) mapFilterAttrs;
 in rec {
   mapModule = dir: fn: {namefn ? (n: removeSuffix ".nix" n), ...}:
-    mapAttrs' (name: type: {
+    mapAttrs' (name: _type: {
       name = namefn name;
       value = fn (dir + "/${name}");
     }) (filterAttrs (name: type:

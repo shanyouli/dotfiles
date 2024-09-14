@@ -135,7 +135,7 @@ in {
           ${ver}
 
         ''))
-        (lib.filterAttrs (k: v: !(builtins.elem v [null false])) cfg.plugins));
+        (lib.filterAttrs (_k: v: !(builtins.elem v [null false])) cfg.plugins));
     in ''
       ${cfg.prevInit}
       export ASDF_CONFIG_FILE=${asdfConfigFile}

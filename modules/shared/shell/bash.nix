@@ -23,7 +23,7 @@ in {
       historyFileSize = 1000000;
       historyControl = ["ignorespace" "ignoredups" "erasedups"];
       historyIgnore = ["ls" "cd" "z" "exit"];
-      sessionVariables = filterAttrs (n: v: n != "PATH") cfp.env;
+      sessionVariables = filterAttrs (n: _v: n != "PATH") cfp.env;
       shellAliases = mkAliasDefinitions options.modules.shell.aliases;
       profileExtra = mkAliasDefinitions options.modules.shell.bash.envInit;
       bashrcExtra = mkAliasDefinitions options.modules.shell.bash.prevInit;

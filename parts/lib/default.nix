@@ -16,8 +16,8 @@
       mapModules ./.
       (file: import file {inherit self lib inputs;}));
 
-  mylibs = lib.extend (self: super: {
-    my = mylib.extend (sself: ssuper: foldr (a: b: a // b) {} (attrValues ssuper));
+  mylibs = lib.extend (_self: _super: {
+    my = mylib.extend (_sself: ssuper: foldr (a: b: a // b) {} (attrValues ssuper));
     hm = inputs.home-manager.lib.hm;
   });
 in {

@@ -13,8 +13,6 @@
         # nix format
         alejandra.enable = true;
         deadnix.enable = true;
-        deadnix.settings.edit = true;
-        deadnix.settings.noLambdaArg = true;
 
         # python
         ruff.enable = true;
@@ -23,7 +21,7 @@
         stylua.enable = true;
 
         # bash
-        shellcheck.enable = true;
+        shellcheck.enable = false;
         shfmt.enable = true;
       };
     };

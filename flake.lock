@@ -332,7 +332,7 @@
         "nixos-stable": "nixos-stable",
         "nixpkgs": "nixpkgs",
         "nurpkgs": "nurpkgs",
-        "treefmt": "treefmt"
+        "treefmt-nix": "treefmt-nix"
       }
     },
     "systems": {
@@ -350,7 +350,7 @@
         "type": "github"
       }
     },
-    "treefmt": {
+    "treefmt-nix": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"

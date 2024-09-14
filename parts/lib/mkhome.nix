@@ -1,8 +1,4 @@
-{
-  lib,
-  inputs,
-  ...
-}: let
+{inputs, ...}: let
   inherit (inputs) darwin-stable nixos-stable home-manager;
 in {
   mkhome = {

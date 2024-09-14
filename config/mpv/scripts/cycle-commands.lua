@@ -50,44 +50,44 @@ local iterators = {}
 
 --main function to identify and run the cycles
 local function main(osd, ...)
-    local commands = { ... }
+	local commands = { ... }
 
-    local reverse = commands[1] == "!reverse"
-    if reverse then
-        table.remove(commands, 1)
-    end
+	local reverse = commands[1] == "!reverse"
+	if reverse then
+		table.remove(commands, 1)
+	end
 
-    --to identify the specific cycle we'll concatenate all the strings together to use as our table key
-    local str = ("%d> %s"):format(#commands, table.concat(commands, "|"))
-    msg.trace("recieved:", str)
+	--to identify the specific cycle we'll concatenate all the strings together to use as our table key
+	local str = ("%d> %s"):format(#commands, table.concat(commands, "|"))
+	msg.trace("recieved:", str)
 
-    -- we'll initialise the iterator at 0 (an invalid position) to support forward or backwards iteration
-    if iterators[str] == nil then
-        msg.debug("unknown cycle, creating iterator")
-        iterators[str] = 0
-    end
+	-- we'll initialise the iterator at 0 (an invalid position) to support forward or backwards iteration
+	if iterators[str] == nil then
+		msg.debug("unknown cycle, creating iterator")
+		iterators[str] = 0
+	end
 
-    iterators[str] = iterators[str] + (reverse and -1 or 1)
-    if iterators[str] > #commands then
-        iterators[str] = 1
-    end
-    if iterators[str] < 1 then
-        iterators[str] = #commands
-    end
+	iterators[str] = iterators[str] + (reverse and -1 or 1)
+	if iterators[str] > #commands then
+		iterators[str] = 1
+	end
+	if iterators[str] < 1 then
+		iterators[str] = #commands
+	end
 
-    --mp.command should run the commands exactly as if they were entered in input.conf.
-    --This should provide universal support for all input.conf command syntax
-    local cmd = commands[iterators[str]]
-    msg.verbose("sending command:", cmd)
-    if osd then
-        mp.osd_message(cmd)
-    end
-    mp.command(cmd)
+	--mp.command should run the commands exactly as if they were entered in input.conf.
+	--This should provide universal support for all input.conf command syntax
+	local cmd = commands[iterators[str]]
+	msg.verbose("sending command:", cmd)
+	if osd then
+		mp.osd_message(cmd)
+	end
+	mp.command(cmd)
 end
 
 mp.register_script_message("cycle-commands", function(...)
-    main(false, ...)
+	main(false, ...)
 end)
 mp.register_script_message("cycle-commands/osd", function(...)
-    main(true, ...)
+	main(true, ...)
 end)

@@ -1,8 +1,4 @@
-{
-  lib,
-  inputs,
-  ...
-}: let
+{inputs, ...}: let
   inherit (inputs) nixos-stable home-manager;
 in {
   mknixos = {

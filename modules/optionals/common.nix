@@ -14,7 +14,7 @@ in {
     home.programs = mkOpt' attrs {} "home-manager programs";
     env = mkOption {
       type = attrsOf (oneOf [str path (listOf (either str path))]);
-      apply = mapAttrs (n: v:
+      apply = mapAttrs (_n: v:
         if isList v
         then concatMapStringsSep ":" toString v
         else (toString v));

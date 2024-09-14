@@ -14,7 +14,7 @@ with lib.my; let
     if pkgs.stdenvNoCC.isLinux
     then pkgs.qtpass
     else
-      pkgs.qtpass.overrideAttrs (old: {
+      pkgs.qtpass.overrideAttrs (_old: {
         postInstall = ''
           if [[ -d $out/bin/QtPass.app ]]; then
             mkdir -p $out/Applications

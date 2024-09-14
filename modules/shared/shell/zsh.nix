@@ -129,7 +129,7 @@ in {
           fi
         ''}
         # alias 别名，设置
-        ${concatStringsSep "\n" (mapAttrsToList (n: v: ''alias ${n}="${v}"'') (filterAttrs (n: v: v != "") cfp.aliases))}
+        ${concatStringsSep "\n" (mapAttrsToList (n: v: ''alias ${n}="${v}"'') (filterAttrs (_n: v: v != "") cfp.aliases))}
       '';
     };
 

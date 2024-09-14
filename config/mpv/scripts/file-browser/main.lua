@@ -27,7 +27,7 @@ local user_input_loaded, input = pcall(require, "user-input-module")
 setup.root()
 addons.load_internal_parsers()
 if o.addons then
-    addons.load_external_addons()
+	addons.load_external_addons()
 end
 
 --these need to be below the addon setup in case any parsers add custom entries
@@ -53,7 +53,7 @@ mp.add_key_binding("MENU", "browse-files", controls.toggle)
 mp.add_key_binding("Ctrl+o", "open-browser", controls.open)
 
 if user_input_loaded then
-    mp.add_key_binding("Alt+o", "browse-directory/get-user-input", function()
-        input.get_user_input(controls.browse_directory, { request_text = "open directory:" })
-    end)
+	mp.add_key_binding("Alt+o", "browse-directory/get-user-input", function()
+		input.get_user_input(controls.browse_directory, { request_text = "open directory:" })
+	end)
 end

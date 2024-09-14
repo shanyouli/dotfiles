@@ -40,7 +40,7 @@ in {
               else value;
           in {"direnv/lib/${newname}.sh".source = newvalue;}
         ))
-        (filterAttrs (n: v: !(builtins.isNull v)) cfg.stdlib)))
+        (filterAttrs (_n: v: !(builtins.isNull v)) cfg.stdlib)))
     ];
     modules.shell.nushell.rcInit = ''
       $env.config = ($env | default {} config).config
