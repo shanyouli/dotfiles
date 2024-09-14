@@ -47,7 +47,7 @@ in {
           };
           modules =
             [
-              ({...}: {
+              (_: {
                 nixpkgs.overlays = overlays;
               })
             ]

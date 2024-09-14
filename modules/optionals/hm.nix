@@ -41,7 +41,7 @@ with lib.my; let
 
     ${config.home.actionscript}
   '';
-  homedir = myvars.homedir;
+  inherit (myvars) homedir;
 in {
   imports = [./common.nix];
   config = mkMerge [

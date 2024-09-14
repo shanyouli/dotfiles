@@ -127,7 +127,7 @@ in {
       '';
       text = concatStringsSep "\n" (mapAttrsToList (n: v: (let
           ver =
-            if v == true
+            if v
             then ""
             else asdfInPlugins n v;
         in ''

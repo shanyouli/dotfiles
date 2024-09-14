@@ -1,4 +1,4 @@
-{...}: {
+_: {
   modules = {
     app.qbittorrent.enable = true;
     app.qbittorrent.enGui = true;

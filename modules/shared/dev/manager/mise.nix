@@ -45,7 +45,7 @@ in {
         else concatMapStrings (v: mise_ver_base_fn p v) vers;
       text = concatStringsSep "\n" (mapAttrsToList (n: v: ''
           echo-info "Using mise to manage versions of ${n}"
-          ${lib.optionalString (v != true) ''${mise_plugin_ver_fn n v}''}
+          ${lib.optionalString (!v) ''${mise_plugin_ver_fn n v}''}
           ${lib.optionalString (! elem n mise_core_plugins) ''${mise_in_plugin_fn n}''}
         '')
         finalNeedPlugins);

@@ -17,7 +17,7 @@ with lib.my; let
     else "${mozillaConfDir}/firefox";
 
   wrapPackage = package: let
-    fcfg = {enableGnomeExtensions = cfg.enableGnomeExtensions;};
+    fcfg = {inherit (cfg) enableGnomeExtensions;};
   in
     if package == null
     then null

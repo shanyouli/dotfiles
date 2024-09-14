@@ -70,11 +70,10 @@ in {
       };
       homebrew.brewPrefix = let
         inherit (pkgs.stdenvNoCC) isAarch64 isAarch32;
-      in (
+      in
         if isAarch64 || isAarch32
         then "/opt/homebrew/bin"
-        else "/usr/local/bin"
-      );
+        else "/usr/local/bin";
       homebrew.taps = ["buo/cask-upgrade" "shanyouli/tap"];
 
       homebrew.casks =

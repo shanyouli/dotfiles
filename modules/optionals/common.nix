@@ -8,7 +8,7 @@
 }:
 with lib;
 with lib.my; let
-  homedir = myvars.homedir;
+  inherit (myvars) homedir;
 in {
   options = with types; {
     home.programs = mkOpt' attrs {} "home-manager programs";

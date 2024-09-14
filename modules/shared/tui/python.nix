@@ -70,7 +70,7 @@ in {
               ${lib.optionalString use_rye_p ''
             export PIPX_DEFAULT_PYTHON="$(readlink -f $(${global_python_path} | jq -r '[.[] | select(.name | contains("${cmdp.global}"))].[0].path'))"
           ''}
-              ${lib.optionalString (use_rye_p == false) ''
+              ${lib.optionalString (!use_rye_p) ''
             export PIPX_DEFAULT_PYTHON="$(readlink -f $(${global_python_path})/bin/python)"
           ''}
             fi
@@ -92,7 +92,7 @@ in {
                   ${lib.optionalString use_rye_p ''
             let pipx_default_python = (${global_python_path} | from json | where ($it.name | str contains "${cmdp.global}") | get path | first | readlink -f $in)
           ''}
-                  ${lib.optionalString (use_rye_p == false) ''
+                  ${lib.optionalString (!use_rye_p) ''
             let pipx_default_python = ([( ${global_python_path} ), "bin", "python" ] | path join | readlink -f $in)
           ''}
                   with-env {PIPX_DEFAULT_PYTHON: $pipx_default_python } {

@@ -13,7 +13,7 @@ with lib.my; let
   in
     # epkgs.overrideScope' cfg.overrides;
     epkgs.overrideScope cfg.overrides;
-  emacsWithPackages = emacsPackages.emacsWithPackages;
+  inherit (emacsPackages) emacsWithPackages;
 in {
   options.modules.app.editor.emacs = {
     enable = mkBoolOpt false;
@@ -144,7 +144,7 @@ in {
 
         pkgs.emacs-lsp-booster # emacs-lsp-booster , 更快的使用 lsp 服务
 
-        (mkIf (config.modules.gpg.enable)
+        (mkIf config.modules.gpg.enable
           pkgs.pinentry-emacs) # in emacs gnupg prompts
       ];
       modules.python.extraPkgs = ps:

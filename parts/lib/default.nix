@@ -18,7 +18,7 @@
 
   mylibs = lib.extend (_self: _super: {
     my = mylib.extend (_sself: ssuper: foldr (a: b: a // b) {} (attrValues ssuper));
-    hm = inputs.home-manager.lib.hm;
+    inherit (inputs.home-manager.lib) hm;
   });
 in {
   perSystem._module.args.lib = mylibs;

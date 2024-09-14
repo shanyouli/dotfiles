@@ -17,12 +17,12 @@ in {
 
   config = mkIf cfg.enable {
     macos.userScript.initNginx = {
-      enable = cfg.enable;
+      inherit (cfg) enable;
       text = cfb.uScript;
       desc = "init nginx user settings";
     };
     macos.systemScript.initNginx = {
-      enable = cfg.enable;
+      inherit (cfg) enable;
       text = cfb.sScript;
       desc = "init nginx System Privilege Configuration";
     };

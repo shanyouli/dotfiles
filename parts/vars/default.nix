@@ -17,8 +17,7 @@
       envDotfiles = builtins.getEnv "DOTFILES";
       defaultPath = builtins.toString ../../.;
       dotfilesList =
-        []
-        ++ optionals (envDotfiles != "") [envDotfiles]
+        optionals (envDotfiles != "") [envDotfiles]
         ++ [
           "/mnt/etc/dotfiles"
           "/etc/dotfiles"

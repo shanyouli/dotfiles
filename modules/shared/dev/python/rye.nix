@@ -53,7 +53,7 @@ in {
       modules.shell.env.RYE_HOME = "${config.home.dataDir}/rye";
       modules.shell.env.RYE_NO_AUTO_INSTALL = "1";
     }
-    (mkIf (cfg.manager == false) {
+    (mkIf (!cfg.manager) {
       modules.dev.manager.extInit = let
         asdf_fn = v: "$(${config.modules.dev.manager.asdf.package}/bin/asdf where python ${v})";
         mise_fn = v: "$(${config.modules.dev.manager.mise.package}/bin/mise where python@${v})";

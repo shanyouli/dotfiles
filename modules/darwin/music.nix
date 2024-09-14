@@ -8,7 +8,7 @@ with lib;
 with lib.my; let
   cfg = config.modules.macos.music;
   scfg = config.modules.media.music;
-  netease = scfg.netease;
+  inherit (scfg) netease;
   mpdDir = "${config.home.cacheDir}/mpd";
   mpdfifo = "/private/tmp/mpd.fifo";
 in {
@@ -73,7 +73,7 @@ in {
         };
         ncmpcpp = {
           desc = "初始化ncmpcpp";
-          enable = scfg.mpd.ncmpcpp.enable;
+          inherit (scfg.mpd.ncmpcpp) enable;
           text = let
             ncmpcpp_dir = "${config.home.cacheDir}/ncmpcpp";
             lyrics_dir = "${config.user.home}/Music/LyricsX";

@@ -166,12 +166,12 @@ in {
         defaults write -g NSWindowShouldDragOnGesture YES
       '';
       macos.userScript.initRust = {
-        enable = config.modules.dev.rust.enable;
+        inherit (config.modules.dev.rust) enable;
         desc = "init rust";
         text = config.modules.dev.rust.initScript;
       };
       macos.userScript.initNvim = {
-        enable = config.modules.app.editor.nvim.enable;
+        inherit (config.modules.app.editor.nvim) enable;
         desc = "Init nvim";
         text = config.modules.app.editor.nvim.script;
       };
@@ -185,7 +185,7 @@ in {
         text = config.modules.app.qbittorrent.webScript;
       };
       macos.userScript.initMysql = {
-        enable = config.modules.db.mysql.enable;
+        inherit (config.modules.db.mysql) enable;
         text = config.modules.db.mysql.script;
         desc = "init mysql ...";
       };
@@ -223,10 +223,10 @@ in {
       macos.userScript.initDevInit = {
         enable = config.modules.dev.lang != [];
         desc = "Init dev language manager ...";
-        text = config.modules.dev.manager.text;
+        inherit (config.modules.dev.manager) text;
       };
       macos.userScript.initNuShell = {
-        enable = config.modules.shell.nushell.enable;
+        inherit (config.modules.shell.nushell) enable;
         desc = "Init nushell source file";
         text = ''
           ${config.modules.shell.nushell.cachePrev}

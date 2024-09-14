@@ -31,11 +31,10 @@ with lib; rec {
 
   strDeletePrefix = prefix: str: let
     lenPrefix = stringLength prefix;
-  in (
+  in
     if (substring 0 lenPrefix str == prefix)
     then substring (stringLength prefix) (stringLength str) str
-    else ""
-  );
+    else "";
   optionalNull = cond: result:
     if cond
     then result

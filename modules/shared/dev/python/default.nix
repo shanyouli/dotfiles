@@ -99,7 +99,7 @@ in {
         };
       };
     }
-    (mkIf ((cfg.manager != "rye") || (cfg.rye.manager == false)) {
+    (mkIf ((cfg.manager != "rye") || (!cfg.rye.manager)) {
       modules.dev.lang.python = cfg.versions;
       modules.dev.manager.extInit = lib.optionalString (cfg.global != "") ''
         ${lib.optionalString (config.modules.dev.manager.default == "asdf") (let

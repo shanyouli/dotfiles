@@ -26,7 +26,7 @@ in {
       package = pkgs.vscode;
       enableUpdateCheck = false;
       enableExtensionUpdateCheck = false;
-      extensions = cfg.extensions;
+      inherit (cfg) extensions;
       userSettings = {
         "nix.serverPath" = "nil";
         "nix.enableLanguageServer" = true;

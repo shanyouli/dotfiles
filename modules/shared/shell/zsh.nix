@@ -162,7 +162,7 @@ in {
             "''${ZDOTDIR}/zshrc.zsh" \
             "''${ZDOTDIR}/cache/extra.zshrc" \
             "''${HOME}/.zshrc_local"
-          alias vish="${EDITOR:-vim} ~/.zshrc_local"
+          alias vish="''${EDITOR:-vim} ~/.zshrc_local"
         '';
       }
       // (baseFunction cfg.cmpFiles "completions")

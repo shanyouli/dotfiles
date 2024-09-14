@@ -11,7 +11,7 @@
 with lib;
 with lib.my; let
   name = myvars.user;
-  homedir = myvars.homedir;
+  inherit (myvars) homedir;
 in {
   imports = [./common.nix];
   options = with types; {
@@ -193,7 +193,7 @@ in {
           ];
       };
     }
-    (mkIf (config.modules.shell.zsh.enable) {
+    (mkIf config.modules.shell.zsh.enable {
       programs.zsh = {
         enable = true;
         # 我将自动启用bashcompinit 和compinit配置

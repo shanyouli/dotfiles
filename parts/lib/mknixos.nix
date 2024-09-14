@@ -45,7 +45,7 @@ in {
             };
             modules =
               [
-                ({...}: {
+                (_: {
                   nixpkgs.pkgs = usePkgs;
                   nixpkgs.overlays = overlays;
                   networking.hostName = name;

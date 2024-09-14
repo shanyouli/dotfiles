@@ -11,8 +11,9 @@
 
       programs = {
         # nix format
-        alejandra.enable = true;
-        deadnix.enable = true;
+        statix.enable = true; # nix static analysis
+        deadnix.enable = true; # find dead nix code
+        alejandra.enable = true; # nix fmt tools
 
         # python
         ruff.enable = true;

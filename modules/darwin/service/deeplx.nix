@@ -11,7 +11,7 @@ with lib.my; let
   cfg = cfm.service.deeplx;
   cft = cfm.translate.deeplx;
   log_file = "${config.user.home}/Library/Logs/deeplx.log";
-  deeplx = pkgs.unstable.deeplx;
+  inherit (pkgs.unstable) deeplx;
 in {
   options.modules.service.deeplx = {
     enable = mkBoolOpt cft.service.enable;
