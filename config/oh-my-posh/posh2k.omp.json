@@ -431,7 +431,9 @@
           "trailing_diamond": "\ue0b0",
           "background": "#21c7a8",
           "foreground": "#000",
-          "foreground_templates": ["{{ if gt .Code 0 }}#c10e39{{ end }}"],
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}#c10e39{{ end }}"
+          ],
           "template": "{{ if gt .Code 0 }}\uf00d[{{ .Code }}]{{ else }}\uf135 \uf054{{ end }}",
           "properties": {
             "always_enabled": true

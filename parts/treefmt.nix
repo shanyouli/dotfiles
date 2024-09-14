@@ -23,6 +23,9 @@
         # bash
         shellcheck.enable = false;
         shfmt.enable = true;
+
+        # json
+        jsonfmt.enable = true;
       };
     };
     formatter = config.treefmt.build.wrapper;
