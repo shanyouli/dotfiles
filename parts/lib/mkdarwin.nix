@@ -51,8 +51,9 @@ in {
                   networking.hostName = name;
                 })
                 home-manager.darwinModules.home-manager
+                self.homeModules.common
+                self.darwinModules.default
               ]
-              ++ self.darwinModules.default
               ++ modules;
           }
         )

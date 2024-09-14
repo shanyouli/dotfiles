@@ -3,11 +3,11 @@
 in {
   flake.homeModules = let
     basemodule = [(relativeToRoot "modules/optionals/hm.nix")];
-    common = mapModulesRec' (relativeToRoot "modules/shared") import;
+    commonModule = mapModulesRec' (relativeToRoot "modules/shared") import;
   in {
     base = {...}: {imports = basemodule;};
-    common = {...}: {imports = basemodule;};
-    default = {...}: {imports = basemodule ++ common;};
+    common = {...}: {imports = commonModule;};
+    default = {...}: {imports = basemodule ++ commonModule;};
   };
   perSystem = {
     self',

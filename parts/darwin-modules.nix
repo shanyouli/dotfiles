@@ -1,10 +1,13 @@
 {self, ...}: let
   inherit (self.lib.my) relativeToRoot mapModulesRec';
 in {
-  flake.darwinModules = rec {
-    base = [(relativeToRoot "modules/optionals/os.nix")];
-    owner = mapModulesRec' (relativeToRoot "modules/darwin") import;
-    default = base ++ self.homeModules.common ++ owner;
+  flake.darwinModules = let
+    basemodule = [(relativeToRoot "modules/optionals/os.nix")];
+    ownermodule = mapModulesRec' (relativeToRoot "modules/darwin") import;
+  in {
+    base = {...}: {imports = basemodule;};
+    owner = {...}: {imports = ownermodule;};
+    default = {...}: {imports = basemodule ++ ownermodule;};
   };
   perSystem = {
     self',
