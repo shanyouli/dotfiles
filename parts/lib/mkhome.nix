@@ -50,8 +50,8 @@ in {
               (_: {
                 nixpkgs.overlays = overlays;
               })
+              self.homeModules.default
             ]
-            ++ self.homeModules.default
             ++ modules;
         }
     );

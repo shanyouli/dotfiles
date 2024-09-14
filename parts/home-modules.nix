@@ -1,10 +1,13 @@
 {self, ...}: let
   inherit (self.lib.my) relativeToRoot mapModulesRec';
 in {
-  flake.homeModules = rec {
-    base = [(relativeToRoot "modules/optionals/hm.nix")];
+  flake.homeModules = let
+    basemodule = [(relativeToRoot "modules/optionals/hm.nix")];
     common = mapModulesRec' (relativeToRoot "modules/shared") import;
-    default = base ++ common;
+  in {
+    base = {...}: {imports = basemodule;};
+    common = {...}: {imports = basemodule;};
+    default = {...}: {imports = basemodule ++ common;};
   };
   perSystem = {
     self',
