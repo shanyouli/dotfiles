@@ -3,6 +3,7 @@
   options,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 with lib;
@@ -41,30 +42,7 @@ with lib.my; let
   '';
   homedir = lib.var.homedir;
 in {
-  options = with types; {
-    home.programs = mkOpt' attrs {} "home-manager programs";
-    env = mkOption {
-      type = attrsOf (oneOf [str path (listOf (either str path))]);
-      apply = mapAttrs (n: v:
-        if isList v
-        then concatMapStringsSep ":" toString v
-        else (toString v));
-      default = {};
-      description = "Configuring System Environment Variables";
-    };
-    home.actionscript = mkOpt' lines "" "激活时，运行代码";
-
-    home.configFile = mkOpt' attrs {} "Files to place directly in $XDG_CONFIG_HOME";
-    home.dataFile = mkOpt' attrs {} "Files to place in $XDG_CONFIG_HOME";
-
-    home.dataDir = mkOpt' path "${homedir}/.local/share" "xdg_data_home";
-    home.stateDir = mkOpt' path "${homedir}/.local/state" "xdg_state_home";
-    home.binDir = mkOpt' path "${homedir}/.local/bin" "xdg_bin_home";
-    home.configDir = mkOpt' path "${homedir}/.config" "xdg_config_home";
-    home.cacheDir = mkOpt' path "${homedir}/.cache" "xdg_cache_home";
-
-    home.services = mkOpt' attrs {} "home-manager user script";
-  };
+  imports = [./common.nix];
   config = mkMerge [
     {
       # home.packages = [pkgs.zsh];
@@ -107,5 +85,46 @@ in {
     (mkIf config.modules.gui.enable {
       home.packages = config.modules.gui.fonts;
     })
+    {
+      xdg.configFile = {
+        "nixpath/home-manager".source = inputs.home-manager;
+        "nixpath/nixpkgs-unstable".source = inputs.nixpkgs;
+        "nixpath/nixpkgs".source =
+          if pkgs.stdenvNoCC.isDarwin
+          then inputs.darwin-stable
+          else inputs.nixos-stable;
+      };
+      nix = let
+        filterFn =
+          if pkgs.stdenvNoCC.isLinux
+          then (n: _: n != "self" && n != "darwin-stable")
+          else (n: _: n != "self" && n != "nixos-stable");
+        filteredInputs = filterAttrs filterFn inputs;
+        nixPathInputs = mapAttrsToList (n: v:
+          if (hasSuffix "stable" n)
+          then "nixpkgs=${v}"
+          else if n == "nixpkgs"
+          then "nixpkgs-unstable=${v}"
+          else "${n}=${v}")
+        filteredInputs;
+        registryInputs = mapAttrs (_: v: {flake = v;}) filteredInputs;
+      in {
+        registry = mkForce registryInputs // {dotfiles.flake = inputs.self;};
+        nixPath =
+          [
+            "nixpkgs=${config.home.configDir}/nixpath/nixpkgs"
+            "nixpkgs-unstable=${config.home.configDir}/nixpath/nixpkgs-unstable"
+            "home-manager=${config.home.configDir}/nixpath/home-manager"
+          ]
+          ++ (builtins.filter (x:
+            !((hasPrefix "nixpkgs=" x)
+              || (hasPrefix "nixpkgs-unstable=" x)
+              || (hasPrefix "home-manager=" x)))
+          nixPathInputs)
+          ++ [
+            "dotfiles=${lib.var.dotfiles.dir}"
+          ];
+      };
+    }
   ];
 }

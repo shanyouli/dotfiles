@@ -12,38 +12,19 @@ with lib.my; let
   name = lib.var.user;
   homedir = lib.var.homedir;
 in {
+  imports = [./common.nix];
   options = with types; {
     # user = mkOpt attrs {};
     user = mkOption {type = options.users.users.type.functor.wrapped;};
     home = {
       file = mkOpt' attrs {} "Files to place directly in $HOME";
-      configFile = mkOpt' attrs {} "Files to place directly in $XDG_CONFIG_HOME";
-      dataFile = mkOpt' attrs {} "Files to place in $XDG_CONFIG_HOME";
       packages = mkOpt' (listOf package) [] "home-manager packages alias";
-      programs = mkOpt' attrs {} "home-manager programs";
       profileBinDir = mkOpt' path "${homedir}/.nix-profile/bin" "home-manager profile-directory bin";
       activation = mkOpt' attrs {} "home-manager activation script";
-      services = mkOpt' attrs {} "home-manager services";
-
-      dataDir = mkOpt' path "${homedir}/.local/share" "xdg_data_home";
-      stateDir = mkOpt' path "${homedir}/.local/state" "xdg_state_home";
-      binDir = mkOpt' path "${homedir}/.local/bin" "xdg_bin_home";
-      configDir = mkOpt' path "${homedir}/.config" "xdg_config_home";
-      cacheDir = mkOpt' path "${homedir}/.cache" "xdg_cache_home";
 
       profileDirectory = mkOpt' path "" "";
-
-      actionscript = mkOpt' lines "" "激活时，执行脚本";
     };
-    env = mkOption {
-      type = attrsOf (oneOf [str path (listOf (either str path))]);
-      apply = mapAttrs (n: v:
-        if isList v
-        then concatMapStringsSep ":" toString v
-        else (toString v));
-      default = {};
-      description = "Configuring System Environment Variables";
-    };
+    modules.xdg.value = mkOpt types.attrs {};
   };
   config = mkMerge [
     {
@@ -101,12 +82,6 @@ in {
       };
 
       users.users.${config.user.name} = mkAliasDefinitions options.user;
-      nix.settings = let
-        users = ["root" config.user.name "@admin" "@wheel"];
-      in {
-        trusted-users = users;
-        allowed-users = users;
-      };
 
       environment.extraInit = mkOrder 10 (let
         inherit (pkgs.stdenvNoCC) isAarch64 isAarch32 isDarwin;
@@ -137,6 +112,22 @@ in {
         + optionalString (config.nix.envVars != {}) ''
           unset all_proxy http_proxy https_proxy
         '');
+      # 用来提示还有那些可以规范的文件。如何使用, 使用 my-xdg 脚本取代
+      # environment.systemPackages = [pkgs.xdg-ninja];
+      modules.xdg.value = {
+        # These are the defaults, and xdg.enable does set them, but due to load
+        # order, they're not set before environment.variables are set, which could
+        # cause race conditions.
+        XDG_CACHE_HOME = "${config.home.cacheDir}";
+        XDG_CONFIG_HOME = "${config.home.configDir}";
+        XDG_DATA_HOME = "${config.home.dataDir}";
+        XDG_STATE_HOME = "${config.home.stateDir}";
+        XDG_BIN_HOME = "${config.home.binDir}";
+        XDG_RUNTIME_DIR =
+          if pkgs.stdenvNoCC.isDarwin
+          then "/tmp/user/${toString config.user.uid}"
+          else "/run/user/${toString config.user.uid}";
+      };
     }
     (mkIf config.modules.gui.enable {
       fonts.packages = config.modules.gui.fonts;
@@ -167,7 +158,38 @@ in {
             else "${inputs.nixos-stable}";
         };
         # list of acceptable shells in /etc/shells
-        shells = with pkgs; [bash zsh];
+        shells = [pkgs.bash] ++ optionals config.modules.shell.zsh.enable [pkgs.zsh];
+      };
+      nix = let
+        filterFn =
+          if pkgs.stdenvNoCC.isLinux
+          then (n: _: n != "self" && n != "darwin-stable")
+          else (n: _: n != "self" && n != "nixos-stable");
+        filteredInputs = filterAttrs filterFn inputs;
+        nixPathInputs = mapAttrsToList (n: v:
+          if (hasSuffix "stable" n)
+          then "nixpkgs=${v}"
+          else if n == "nixpkgs"
+          then "nixpkgs-unstable=${v}"
+          else "${n}=${v}")
+        filteredInputs;
+        registryInputs = mapAttrs (_: v: {flake = v;}) filteredInputs;
+      in {
+        registry = mkForce registryInputs // {dotfiles.flake = inputs.self;};
+        nixPath =
+          [
+            "nixpkgs=/etc/nixpkgs"
+            "nixpkgs-unstable=/etc/nixpkgs-unstable"
+            "home-manager=/etc/home-manager"
+          ]
+          ++ (builtins.filter (x:
+            !((hasPrefix "nixpkgs=" x)
+              || (hasPrefix "nixpkgs-unstable=" x)
+              || (hasPrefix "home-manager=" x)))
+          nixPathInputs)
+          ++ [
+            "dotfiles=${lib.var.dotfiles.dir}"
+          ];
       };
     }
     (mkIf (config.modules.shell.zsh.enable) {

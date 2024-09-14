@@ -242,7 +242,7 @@ in {
             config.modules.shell.nushell.cacheCmd)}
         '';
       };
-      environment.profiles = mkOrder 800 ["${config.user.home}/.local/status/nix/profile"];
+      environment.profiles = mkOrder 800 ["${config.home.stateDir}/nix/profile"];
     }
     (mkIf config.modules.gpg.enable {
       modules.service.env.GNUPGHOME = config.env.GNUPGHOME;

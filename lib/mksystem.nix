@@ -10,7 +10,7 @@
   default-darwin-modules = mapModulesRec' (relativeToRoot "modules/darwin") import;
   default-nixos-modules = mapModulesRec' (relativeToRoot "modules/nixos") import;
   default-shared-modules = mapModulesRec' (relativeToRoot "modules/shared") import;
-  baseOption = import (relativeToRoot "modules/common.nix");
+  baseOption = import (relativeToRoot "modules/optionals/os.nix");
 in rec {
   mkDarwin = {
     system,

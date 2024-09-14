@@ -124,7 +124,7 @@
               nixpkgs.pkgs = allPkgs."${system}";
               networking.hostName = "test";
             }
-            ./options/common.nix
+            ./modules/optionals/os.nix
             inputs.home-manager.darwinModules.home-manager
           ]
           ++ (lib.my.mapModulesRec' ./modules/shared import)
@@ -171,7 +171,7 @@
         extraSpecialArgs = genSpecialArgs "aarch64-darwin";
         modules =
           [
-            ./modules/home-manager.nix
+            ./modules/optionals/hm.nix
           ]
           ++ (lib.my.mapModulesRec' ./modules/shared import)
           ++ [./hosts/test-home-manager.nix];

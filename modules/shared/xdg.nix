@@ -1,83 +1,56 @@
-{
-  lib,
-  config,
-  options,
-  pkgs,
-  ...
-}:
+{lib, ...}:
 with lib;
 with lib.my; {
-  options.modules.xdg = {
-    value = mkOpt types.attrs {};
-  };
-  config = {
-    # 用来提示还有那些可以规范的文件。如何使用, 使用 my-xdg 脚本取代
-    # environment.systemPackages = [pkgs.xdg-ninja];
-    modules.xdg.value = {
-      # These are the defaults, and xdg.enable does set them, but due to load
-      # order, they're not set before environment.variables are set, which could
-      # cause race conditions.
-      XDG_CACHE_HOME = "${config.home.cacheDir}";
-      XDG_CONFIG_HOME = "${config.home.configDir}";
-      XDG_DATA_HOME = "${config.home.dataDir}";
-      XDG_STATE_HOME = "${config.home.stateDir}";
-      XDG_BIN_HOME = "${config.home.binDir}";
-      XDG_RUNTIME_DIR =
-        if pkgs.stdenvNoCC.isDarwin
-        then "/tmp/user/${toString config.user.uid}"
-        else "/run/user/${toString config.user.uid}";
-    };
-    # Get Nix (2.14+) itself to respect XDG. I.e.
-    # ~/.nix-defexpr -> $XDG_DATA_HOME/nix/defexpr
-    # ~/.nix-profile -> $XDG_DATA_HOME/nix/profile
-    # ~/.nix-channels -> $XDG_DATA_HOME/nix/channels
-    nix.settings.use-xdg-base-directories = true;
-    env = {
-      DOTFILES = lib.var.dotfiles.dir;
-      NIXPKGS_ALLOW_UNFREE = "1";
+  # Get Nix (2.14+) itself to respect XDG. I.e.
+  # ~/.nix-defexpr -> $XDG_DATA_HOME/nix/defexpr
+  # ~/.nix-profile -> $XDG_DATA_HOME/nix/profile
+  # ~/.nix-channels -> $XDG_DATA_HOME/nix/channels
+  nix.settings.use-xdg-base-directories = true;
+  env = {
+    DOTFILES = lib.var.dotfiles.dir;
+    NIXPKGS_ALLOW_UNFREE = "1";
 
-      # Conform more programs to XDG conventions. The rest are handled by their
-      # respective modules.
-      __GL_SHADER_DISK_CACHE_PATH = ''"$XDG_CACHE_HOME"/nv'';
-      ASPELL_CONF = ''
-        per-conf "$XDG_CONFIG_HOME"/aspell/aspell.conf;
-        personal "$XDG_CONFIG_HOME"/aspell/en_US.pws;
-        repl "$XDG_CONFIG_HOME"/aspell/en.prepl;
-      '';
-      CUDA_CACHE_PATH = ''"$XDG_CACHE_HOME"/nv'';
-      HISTFILE = ''"$XDG_DATA_HOME"/bash/history'';
-      INPUTRC = ''"$XDG_CONFIG_HOME"/readline/inputrc'';
-      LESSHISTFILE = ''"$XDG_CACHE_HOME"/lesshst'';
+    # Conform more programs to XDG conventions. The rest are handled by their
+    # respective modules.
+    __GL_SHADER_DISK_CACHE_PATH = ''"$XDG_CACHE_HOME"/nv'';
+    ASPELL_CONF = ''
+      per-conf "$XDG_CONFIG_HOME"/aspell/aspell.conf;
+      personal "$XDG_CONFIG_HOME"/aspell/en_US.pws;
+      repl "$XDG_CONFIG_HOME"/aspell/en.prepl;
+    '';
+    CUDA_CACHE_PATH = ''"$XDG_CACHE_HOME"/nv'';
+    HISTFILE = ''"$XDG_DATA_HOME"/bash/history'';
+    INPUTRC = ''"$XDG_CONFIG_HOME"/readline/inputrc'';
+    LESSHISTFILE = ''"$XDG_CACHE_HOME"/lesshst'';
 
-      # Tools I don't use
-      SUBVERSION_HOME = ''"$XDG_CONFIG_HOME"/subversion'';
-      BZRPATH = ''"$XDG_CONFIG_HOME"/bazaar'';
-      BZR_PLUGIN_PATH = ''"$XDG_DATA_HOME"/bazaar'';
-      BZR_HOME = ''"$XDG_CACHE_HOME"/bazaar'';
-      ICEAUTHORITY = ''"$XDG_CACHE_HOME"/ICEauthority'';
+    # Tools I don't use
+    SUBVERSION_HOME = ''"$XDG_CONFIG_HOME"/subversion'';
+    BZRPATH = ''"$XDG_CONFIG_HOME"/bazaar'';
+    BZR_PLUGIN_PATH = ''"$XDG_DATA_HOME"/bazaar'';
+    BZR_HOME = ''"$XDG_CACHE_HOME"/bazaar'';
+    ICEAUTHORITY = ''"$XDG_CACHE_HOME"/ICEauthority'';
 
-      # .dotnet 文件 to $XDG_DATA_HOME/dotnet
-      DOTNET_CLI_HOME = ''"$XDG_DATA_HOME"/dotnet'';
+    # .dotnet 文件 to $XDG_DATA_HOME/dotnet
+    DOTNET_CLI_HOME = ''"$XDG_DATA_HOME"/dotnet'';
 
-      # .gem to $XDG_CACHE_HOME
-      GEM_HOME = ''"$XDG_DATA_HOME"/gem'';
-      GEM_SPAC_CACHE = ''"$XDG_CACHE_HOME"/gem'';
+    # .gem to $XDG_CACHE_HOME
+    GEM_HOME = ''"$XDG_DATA_HOME"/gem'';
+    GEM_SPAC_CACHE = ''"$XDG_CACHE_HOME"/gem'';
 
-      # .bundle
-      BUNDLE_USER_CONFIG = ''"$XDG_CONFIG_HOME"/bundle'';
-      BUNDLE_USER_CACHE = ''"$XDG_CACHE_HOME"/bundle'';
-      BUNDLE_USER_PLUGIN = ''"$XDG_DATA_HOME"/bundle'';
-      # .sqlite_history
-      SQLITE_HISTORY = ''"$XDG_CACHE_HOME"/sqlite_history'';
+    # .bundle
+    BUNDLE_USER_CONFIG = ''"$XDG_CONFIG_HOME"/bundle'';
+    BUNDLE_USER_CACHE = ''"$XDG_CACHE_HOME"/bundle'';
+    BUNDLE_USER_PLUGIN = ''"$XDG_DATA_HOME"/bundle'';
+    # .sqlite_history
+    SQLITE_HISTORY = ''"$XDG_CACHE_HOME"/sqlite_history'';
 
-      # MPLCONFIGDIR
-      MPLCONFIGDIR = ''"$XDG_CACHE_HOME"/matplotlib'';
+    # MPLCONFIGDIR
+    MPLCONFIGDIR = ''"$XDG_CACHE_HOME"/matplotlib'';
 
-      # .openjfx to $XDG_CACHE_DIR
-      _JAVA_OPTIONS = "-Djava.util.prefs.userRoot=$XDG_CACHE_DIR/java -Djavafx.cachedir=$XDG_CACHE_DIR/openjfx";
+    # .openjfx to $XDG_CACHE_DIR
+    _JAVA_OPTIONS = "-Djava.util.prefs.userRoot=$XDG_CACHE_DIR/java -Djavafx.cachedir=$XDG_CACHE_DIR/openjfx";
 
-      # .docker
-      DOCKER_CONFIG = ''"$XDG_CONFIG_HOME"/docker'';
-    };
+    # .docker
+    DOCKER_CONFIG = ''"$XDG_CONFIG_HOME"/docker'';
   };
 }
