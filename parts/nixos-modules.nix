@@ -1,13 +1,17 @@
 {self, ...}: let
   inherit (self.lib.my) relativeToRoot mapModulesRec';
 in {
-  flake.nixosCommonModules = rec {
-    base = [(relativeToRoot "modules/optionals/os.nix")];
-    hardware = mapModulesRec' (relativeToRoot "modules/hardware") import;
-    common = mapModulesRec' (relativeToRoot "modules/nixos") import;
+  flake.nixosModules = let
+    baseMD = [(relativeToRoot "modules/optionals/os.nix")];
+    hardwareMD = mapModulesRec' (relativeToRoot "modules/hardware") import;
+    commonMD = mapModulesRec' (relativeToRoot "modules/nixos") import;
+  in rec {
+    base = {...}: {imports = baseMD;};
+    hardware = {...}: {imports = hardwareMD;};
+    common = {...}: {imports = commonMD;};
     # owner = hardware ++ common; # 暂时没有使用 hardware 模块
-    owner = common;
-    default = base ++ self.homeModules.common ++ owner;
+    owner = {...}: {imports = commonMD ++ self.lib.optionals false hardwareMD;};
+    default = {...}: {imports = [base owner self.homeModules.common];};
   };
   perSystem = {pkgs, ...}: {
     apps.init-nixos.program = pkgs.writeScriptBin "init-darwin" ''

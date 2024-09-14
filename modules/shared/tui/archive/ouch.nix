@@ -17,7 +17,9 @@ in {
     enable = mkEnableOption "Whether to use ouch packages";
   };
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ouch rar];
+    home.packages = with pkgs;
+      [ouch]
+      ++ lib.optionals (pkgs.stdenvNoCC.hostPlatform.config != "aarch64-linux") [rar];
     modules.shell.aliases.unzip = "ouch decompress";
     modules.shell.aliases.zip = "ouch compress";
   };

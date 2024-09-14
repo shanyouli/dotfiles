@@ -51,8 +51,8 @@ in {
                   networking.hostName = lib.mkDefault name;
                 })
                 home-manager.nixosModules.home-manager
+                self.nixosModules.default
               ]
-              ++ self.nixosCommonModules.default
               ++ modules;
           }
         )

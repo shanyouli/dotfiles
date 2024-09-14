@@ -102,7 +102,6 @@
               overlays = [self.overlays.python];
               modules = [
                 (self.lib.my.relativeToRoot "hosts/test/orbstack")
-                (self.lib.my.relativeToRoot "hosts/test/home-manager.nix")
               ];
             };
             "test@x86_64-linux" = self.lib.my.mknixos {

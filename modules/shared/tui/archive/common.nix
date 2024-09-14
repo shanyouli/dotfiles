@@ -20,10 +20,8 @@ in {
       p7zip
       zip
       unzip
-      rar
       unrar
-      (mkIf (builtins.elem pkgs.stdenvNoCC.hostPlatform.config ["aarch64-darwin" "i686-linux" "x86_64-darwin" "x86_64-linux"])
-        rar)
+      rar
     ];
   };
 }
