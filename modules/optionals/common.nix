@@ -43,7 +43,7 @@ in {
       #   all_proxy = "http://127.0.0.1:7890";
 
       # };
-      package = pkgs.nix;
+      package = mkDefault pkgs.nix;
       gc = {
         automatic = mkDefault true;
         options = mkDefault "--delete-older-than 7d";

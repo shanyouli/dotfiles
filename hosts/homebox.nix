@@ -8,7 +8,7 @@
     gc = {user = config.user.name;};
     # Auto upgrade nix package and the daemon service.
     # services.nix-daemon.enable = true;
-    # nix.package = pkgs.nix;
+    package = pkgs.nixVersions.latest;
     # maxJobs = 4;
     settings.cores = 4;
   };
@@ -167,4 +167,6 @@
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild chang/nix/store/6xnavkbxd3kkkyssqds9p9rw9r47cj1q-gnupg-2.4.1/bin/gpg-connect-agentelog
   system.stateVersion = 4;
+
+  # squoia-nixbld-user-migration.sh
 }
