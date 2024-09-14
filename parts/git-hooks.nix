@@ -1,13 +1,13 @@
 {inputs, ...}: {
   imports = [inputs.git-hooks-nix.flakeModule];
-  preSystem.pre-commit = {
+  perSystem.pre-commit = {
     check.enable = true;
-    settings.excludes = ["hosts/**/hardware-*.nix$"];
+    settings.excludes = ["^hosts/.*/hardware-.*\.nix$"];
     settings.hooks = {
       alejandra.enable = true;
       deadnix.enable = true;
       ruff.enable = true;
-      ruff.check = true;
+      # ruff.check = true;
       # lua
       stylua.enable = true;
 
@@ -16,7 +16,7 @@
       shfmt.enable = true;
 
       # json
-      jsonfmt.enable = true;
-    }
-  }
+      # jsonfmt.enable = true;
+    };
+  };
 }
