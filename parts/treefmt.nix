@@ -26,6 +26,8 @@
 
         # json
         jsonfmt.enable = true;
+        # justfile
+        just.enable = true;
       };
     };
     formatter = config.treefmt.build.wrapper;
