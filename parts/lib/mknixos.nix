@@ -4,7 +4,7 @@ in {
   mknixos = {
     withSystem,
     self,
-    name ? "localhost",
+    # name ? "localhost",
     system ? "x86_64-linux",
     nixpkgs ? null,
     overlays ? [],
@@ -48,7 +48,7 @@ in {
                 (_: {
                   nixpkgs.pkgs = usePkgs;
                   nixpkgs.overlays = overlays;
-                  networking.hostName = lib.mkDefault name;
+                  # networking.hostName = lib.mkDefault name;
                 })
                 home-manager.nixosModules.home-manager
                 self.nixosModules.default

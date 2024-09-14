@@ -1,12 +1,12 @@
 #!/usr/bin/env zsh
 
 if [[ -z $DOTFILES ]]; then
-    for i in "/etc/dotfiles" "/etc/nixos" "$HOME/.config/dotfiles" "$HOME/.dotfiles" "$HOME/.nixpkgs"; do
-        if [ -d $i ] && [[ -d $i/.git ]] && [[ -f $i/flake.nix ]]; then
-            export DOTFILES=$i
-            break
-        fi
-    done
+	for i in "/etc/dotfiles" "/etc/nixos" "$HOME/.config/dotfiles" "$HOME/.dotfiles" "$HOME/.nixpkgs"; do
+		if [ -d $i ] && [[ -d $i/.git ]] && [[ -f $i/flake.nix ]]; then
+			export DOTFILES=$i
+			break
+		fi
+	done
 fi
 
 : ${XDG_CONFIG_HOME:=~/.config}
@@ -16,12 +16,12 @@ fi
 
 # source file, When file exits
 function _source {
-    local file
-    for file in "$@"; do
-        if [[ -r $file ]]; then
-            source $file
-        fi
-    done
+	local file
+	for file in "$@"; do
+		if [[ -r $file ]]; then
+			source $file
+		fi
+	done
 }
 
 export LANGUAGE=en_US # :zh_CN
@@ -30,10 +30,10 @@ export LANGUAGE=en_US # :zh_CN
 
 # 用 typeset -U path 给它设置 unique 属性，使得 $PATH 自动去重
 typeset -U path
-path=( $path )
+path=($path)
 
 typeset -U fpath
-fpath=(  $fpath )
+fpath=($fpath)
 
 # _comps 全局变量, zsh 内置补全
 typeset -g -A _comps

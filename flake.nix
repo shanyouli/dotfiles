@@ -109,7 +109,6 @@
               overlays = [self.overlays.python];
               modules = [
                 (self.lib.my.relativeToRoot "hosts/test/nixos-x86_64")
-                (self.lib.my.relativeToRoot "hosts/test/home-manager.nix")
               ];
             };
           };

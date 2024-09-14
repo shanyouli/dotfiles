@@ -19,7 +19,7 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs;
       [ouch]
-      ++ lib.optionals (pkgs.stdenvNoCC.hostPlatform.config != "aarch64-linux") [rar];
+      ++ lib.optionals (stdenvNoCC.isDarwin || stdenvNoCC.isx86_64) [rar];
     modules.shell.aliases.unzip = "ouch decompress";
     modules.shell.aliases.zip = "ouch compress";
   };
