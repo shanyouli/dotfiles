@@ -89,12 +89,13 @@ jobs:
       #     echo "Cores: $(nproc), Arch: $(uname -p)"
       - name: Run Flake Checks
         run: |
-          nix run --impure .#checks
-          if [[ $(uname) == "Darwin" ]]; then
-            nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake .#test@aarch64-darwin -b backup --show-trace
-          else
-            nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake .#test@x86_64-linux -b backup --show-trace
-          fi
+          nix flake check --show-trace --impure
+          # nix run --impure .#checks
+          # if [[ $(uname) == "Darwin" ]]; then
+          #   nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake .#test@aarch64-darwin -b backup --show-trace
+          # else
+          #   nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake .#test@x86_64-linux -b backup --show-trace
+          # fi
         timeout-minutes: 240
 
   merge-to-master:
