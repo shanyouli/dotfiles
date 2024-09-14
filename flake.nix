@@ -49,17 +49,13 @@
         systems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin"];
         imports = let
           inherit (inputs.nixpkgs.lib) filterAttrs mapAttrsToList hasSuffix hasPrefix;
-          mapLoad = dir: fn: (let
-            filterFn = v:
-              filterAttrs (name: type:
-                (type == "directory" && builtins.pathExists "${builtins.toString ./parts}/${name}/default.nix")
-                || (type == "regular" && hasSuffix ".nix" name && name != "default.nix" && !(hasPrefix "_" name)))
-              v;
-            dirs = mapAttrsToList (k: _: "${dir}/${k}") (filterFn (builtins.readDir dir));
-          in
-            map fn dirs);
+          filterFn = v:
+            filterAttrs (name: type:
+              (type == "directory" && builtins.pathExists ./parts/${name}/default.nix)
+              || (type == "regular" && hasSuffix ".nix" name && name != "default.nix" && !(hasPrefix "_" name)))
+            v;
         in
-          mapLoad ./parts import;
+          mapAttrsToList (k: _: ./parts/${k}) (filterFn (builtins.readDir ./parts));
 
         perSystem = {system, ...}: {
           legacyPackages.homeConfigurations.test = self.lib.my.mkhome {
