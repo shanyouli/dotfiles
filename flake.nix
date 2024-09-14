@@ -1,7 +1,7 @@
 {
   inputs = {
     # Principle inputs (updated by `nix run .#update`)
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
     nixos-stable.url = "github:nixos/nixpkgs/nixos-24.05";
@@ -27,6 +27,9 @@
     nurpkgs.inputs.flake-utils.follows = "flake-utils";
     nurpkgs.inputs.flake-compat.follows = "flake-compat";
     nurpkgs.inputs.flake-parts.follows = "flake-parts";
+
+    treefmt.url = "github:numtide/treefmt-nix";
+    treefmt.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ {flake-parts, ...}:
