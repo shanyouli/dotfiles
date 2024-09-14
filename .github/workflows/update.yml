@@ -80,7 +80,7 @@ jobs:
           git checkout -b flakebot
           git branch --set-upstream-to=origin/flakebot
           git pull
-      - uses: cachix/cachix-action@v14
+      - uses: cachix/cachix-action@v15
         with:
           name: shanyouli
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
