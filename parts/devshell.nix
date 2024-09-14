@@ -17,6 +17,7 @@
       in
         [] ++ pre-commitPackags;
       # packages = [pkgs.cachix];
+      packages = [pkgs.cachix pkgs.just];
       shellHook = "" + lib.optionalString (inputs ? git-hooks-nix) config.pre-commit.settings.installationScript;
     };
   };

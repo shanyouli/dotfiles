@@ -1,0 +1,7 @@
+* 配置来源
+- https://github.com/2KAbhishek/posh2k/tree/main
+* 可选项：
+前缀: config.modules.shell.prompt.oh-my-posh
+| 选项 | 类型    | 默认值 | 含意                |
+|--------+---------+--------+---------------------|
+| enable | boolean | false  | 是否使用 oh-my-posh |
