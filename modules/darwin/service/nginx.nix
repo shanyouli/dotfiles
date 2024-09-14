@@ -28,19 +28,21 @@ in {
     };
 
     launchd.user.agents.nginx = {
-      serviceConfig.ProgramArguments = [
-        "${cfb.package}/bin/nginx"
-        "-p"
-        work_dir
-        "-e"
-        "logs/error.log"
-        "-c"
-        "conf/nginx.conf"
-        "-g"
-        "daemon off;"
-      ];
-      serviceConfig.WorkingDirectory = work_dir;
-      serviceConfig.RunAtLoad = true;
+      serviceConfig = {
+        ProgramArguments = [
+          "${cfb.package}/bin/nginx"
+          "-p"
+          work_dir
+          "-e"
+          "logs/error.log"
+          "-c"
+          "conf/nginx.conf"
+          "-g"
+          "daemon off;"
+        ];
+        WorkingDirectory = work_dir;
+        RunAtLoad = true;
+      };
     };
   };
 }

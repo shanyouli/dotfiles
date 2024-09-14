@@ -33,15 +33,19 @@ in {
     finalPkg = mkPkgReadOpt "lua env";
   };
   config = mkIf cfg.enable {
-    modules.dev.lua.extraPkgs = ps: with ps; [luarocks-nix lua-cjson luacheck];
-    modules.dev.lua.package = pkgs.lua5_4;
-    modules.dev.lua.finalPkg = cfg.package.withPackages cfg.extraPkgs;
+    modules = {
+      app.editor.nvim.lsp = ["lua_ls"];
+      dev.lua = {
+        extraPkgs = ps: with ps; [luarocks-nix lua-cjson luacheck];
+        package = pkgs.lua5_4;
+        finalPkg = cfg.package.withPackages cfg.extraPkgs;
+      };
+    };
     home.packages = with pkgs; [
       cfg.finalPkg
       # lua54Packages.luarocks-nix
       stylua # fmt
       sumneko-lua-language-server # lsp
     ];
-    modules.app.editor.nvim.lsp = ["lua_ls"];
   };
 }

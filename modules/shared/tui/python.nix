@@ -22,22 +22,26 @@ in {
   };
   config = mkMerge [
     {
-      modules.shell.aliases = {
-        py = "python";
-        py2 = "python2";
-        py3 = "python3";
+      modules = {
+        shell = {
+          aliases = {
+            py = "python";
+            py2 = "python2";
+            py3 = "python3";
+          };
+          env = {
+            PIP_CONFIG_FILE = "$XDG_CONFIG_HOME/pip/pip.conf";
+            PIP_LOG_FILE = "$XDG_DATA_HOME/pip/log";
+            PYTHONSTARTUP = "$XDG_CONFIG_HOME/python/config.py";
+            PYTON_EGG_CACHE = "$XDG_CACHE_HOME/python-eggs";
+            JUPYTER_CONFIG_DIR = "$XDG_DATA_HOME/jupyter";
+          };
+        };
+        python.finalPkg =
+          if cfg.extraPkgs != null
+          then pkgs.python3.withPackages cfg.extraPkgs
+          else pkgs.python3;
       };
-      modules.shell.env = {
-        PIP_CONFIG_FILE = "$XDG_CONFIG_HOME/pip/pip.conf";
-        PIP_LOG_FILE = "$XDG_DATA_HOME/pip/log";
-        PYTHONSTARTUP = "$XDG_CONFIG_HOME/python/config.py";
-        PYTON_EGG_CACHE = "$XDG_CACHE_HOME/python-eggs";
-        JUPYTER_CONFIG_DIR = "$XDG_DATA_HOME/jupyter";
-      };
-      modules.python.finalPkg =
-        if cfg.extraPkgs != null
-        then pkgs.python3.withPackages cfg.extraPkgs
-        else pkgs.python3;
       home.packages = [cfg.finalPkg];
     }
     (mkIf cfg.pipx.enable (
@@ -82,27 +86,31 @@ in {
         '';
       in {
         # A better python command line installation tool
-        home.packages = [pkgs.pipx];
-        modules.shell.zsh.rcInit = lib.optionalString (global_python_path != "") pipx_function_text;
-        home.programs.bash.initExtra = lib.optionalString (global_python_path != "") pipx_function_text;
+        modules.shell = {
+          zsh.rcInit = lib.optionalString (global_python_path != "") pipx_function_text;
+          nushell.rcInit = lib.optionalString (global_python_path != "") ''
+            export def --wrapped pipx [...rest: string] {
+                if ($env | get --ignore-errors PIPX_DEFAULT_PYTHON | is-empty) {
+                    ${lib.optionalString use_rye_p ''
+              let pipx_default_python = (${global_python_path} | from json | where ($it.name | str contains "${cmdp.global}") | get path | first | readlink -f $in)
+            ''}
+                    ${lib.optionalString (!use_rye_p) ''
+              let pipx_default_python = ([( ${global_python_path} ), "bin", "python" ] | path join | readlink -f $in)
+            ''}
+                    with-env {PIPX_DEFAULT_PYTHON: $pipx_default_python } {
+                        ^pipx ...$rest
+                    }
+                } else {
+                    ^pipx ...$rest
+                }
+            }
+          '';
+        };
+        home = {
+          packages = [pkgs.pipx];
+          programs.bash.initExtra = lib.optionalString (global_python_path != "") pipx_function_text;
+        };
         # nushell.cmpFiles = ["${myvars.dotfiles.config}/pipx/pipx-completions.nu"];
-        modules.shell.nushell.rcInit = lib.optionalString (global_python_path != "") ''
-          export def --wrapped pipx [...rest: string] {
-              if ($env | get --ignore-errors PIPX_DEFAULT_PYTHON | is-empty) {
-                  ${lib.optionalString use_rye_p ''
-            let pipx_default_python = (${global_python_path} | from json | where ($it.name | str contains "${cmdp.global}") | get path | first | readlink -f $in)
-          ''}
-                  ${lib.optionalString (!use_rye_p) ''
-            let pipx_default_python = ([( ${global_python_path} ), "bin", "python" ] | path join | readlink -f $in)
-          ''}
-                  with-env {PIPX_DEFAULT_PYTHON: $pipx_default_python } {
-                      ^pipx ...$rest
-                  }
-              } else {
-                  ^pipx ...$rest
-              }
-          }
-        '';
       }
     ))
   ];

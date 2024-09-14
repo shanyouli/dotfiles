@@ -1,7 +1,7 @@
 # TMUX config , 当 TMUX_AUTOSTART=True,不在emacs，vim，inter执行zsh时，自动启动tmux
 # https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/tmux/tmux.plugin.zsh
-if [[ -z $TMUX && "$TMUX_AUTOSTART" == "True" && -z "$INSIDE_EMACS" && -z $EMACS && -z $VIM && -z "$INTELLIJ_ENVIRONMENT_READER" && $- == *i* ]]; then
-    if (( $+commands[tmux] )); then
+if [[ -z $TMUX && $TMUX_AUTOSTART == "True" && -z $INSIDE_EMACS && -z $EMACS && -z $VIM && -z $INTELLIJ_ENVIRONMENT_READER && $- == *i* ]]; then
+    if (($ + commands[tmux])); then
         if tmux has-session -t TMUX >/dev/null 2>&1; then
             exec tmux attach -t TMUX
         else
@@ -11,7 +11,7 @@ if [[ -z $TMUX && "$TMUX_AUTOSTART" == "True" && -z "$INSIDE_EMACS" && -z $EMACS
 fi
 
 if [[ -n $TMUX ]]; then
-  export FZF_TMUX=1
+    export FZF_TMUX=1
 fi
 
 function _zt { zinit depth"1" lucid ${1/#[0-9][a-c]/wait"$1"} "${@:2}"; }
@@ -23,20 +23,21 @@ function _zsnippet() {
         shift
     fi
     for i in "$@"; do
-        zinit ice silent "$second" ; zinit snippet "$i"
+        zinit ice silent "$second"
+        zinit snippet "$i"
     done
 }
 function _zice {
-  local _all=( "$@" )
-  local _wait
-  local _package
-  if [[ ${_all[1]} == [0-9][a-c] ]]; then
-  _wait=wait"${_all[1]}"
-  shift _all
-  fi
-  _package=${_all[-1]}
-  zinit ice lucid depth'1' $_wait ${_all:0:-1}
-  zinit load $_package
+    local _all=("$@")
+    local _wait
+    local _package
+    if [[ ${_all[1]} == [0-9][a-c] ]]; then
+        _wait=wait"${_all[1]}"
+        shift _all
+    fi
+    _package=${_all[-1]}
+    zinit ice lucid depth'1' $_wait ${_all:0:-1}
+    zinit load $_package
 }
 
 # ============ 加载函数 ====
@@ -82,7 +83,7 @@ zstyle ':completion:files' sort false
 _zt 0b light-mode for \
     pick'autopair.zsh' nocompletions atload'bindkey "^H" backward-kill-word;
     ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(autopair-insert)' \
-      hlissner/zsh-autopair
+    hlissner/zsh-autopair
 
 # alias 提示
 _zice 0c atload'YSU_MESSAGE_POSITION="after"' MichaelAquilina/zsh-you-should-use
@@ -111,7 +112,7 @@ done
 
 # _zsnippet "0a" $ZDOTDIR/plugins/*.plugin.zsh(:)
 for i in $ZDOTDIR/plugins/*.plugin.zsh; do
-  source $i
+    source $i
 done
 
 # ==== 加载并配置 fzf-tab ====

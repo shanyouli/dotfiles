@@ -42,10 +42,12 @@ in {
           isNormalUser = true;
         })
       ];
-      home.programs.home-manager.enable = true;
-      home.profileBinDir = "${config.home-manager.users."${config.user.name}".home.profileDirectory}/bin";
+      home = {
+        programs.home-manager.enable = true;
+        profileBinDir = "${config.home-manager.users."${config.user.name}".home.profileDirectory}/bin";
 
-      home.profileDirectory = "${config.home-manager.users."${config.user.name}".home.profileDirectory}";
+        profileDirectory = "${config.home-manager.users."${config.user.name}".home.profileDirectory}";
+      };
 
       home-manager = {
         extraSpecialArgs = {inherit inputs;};

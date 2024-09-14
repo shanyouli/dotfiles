@@ -26,18 +26,26 @@ in {
   };
   config = mkMerge [
     (mkIf (cfg.default == "asdf") {
-      modules.dev.manager.asdf.enable = true;
-      modules.dev.manager.asdf.plugins = cfp.lang;
-      modules.dev.manager.asdf.extInit = cfg.extInit;
-      modules.dev.manager.asdf.prevInit = cfg.prevInit;
-      modules.dev.manager.text = config.modules.dev.manager.asdf.text;
+      modules.dev.manager = {
+        asdf = {
+          enable = true;
+          plugins = cfp.lang;
+          inherit (cfg) extInit;
+          inherit (cfg) prevInit;
+        };
+        inherit (config.modules.dev.manager.asdf) text;
+      };
     })
     (mkIf (cfg.default == "mise") {
-      modules.dev.manager.mise.enable = true;
-      modules.dev.manager.mise.plugins = cfp.lang;
-      modules.dev.manager.mise.extInit = cfg.extInit;
-      modules.dev.manager.mise.prevInit = cfg.prevInit;
-      modules.dev.manager.text = config.modules.dev.manager.mise.text;
+      modules.dev.manager = {
+        mise = {
+          enable = true;
+          plugins = cfp.lang;
+          inherit (cfg) extInit;
+          inherit (cfg) prevInit;
+        };
+        inherit (config.modules.dev.manager.mise) text;
+      };
     })
   ];
 }

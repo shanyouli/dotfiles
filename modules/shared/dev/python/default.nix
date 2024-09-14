@@ -48,20 +48,57 @@ in {
       modules.dev.python.rye.enable = true;
     })
     {
-      modules.python.extraPkgs = ps:
-        with ps; [
-          pip
-          ipython
-          setuptools
-          isort
-          nose
-          pytest
-          pygments
-          rich
-          pylint
-          pylint-venv
-        ];
-      modules.app.editor.nvim.lsp = ["basedpyright"];
+      modules = {
+        python.extraPkgs = ps:
+          with ps; [
+            pip
+            ipython
+            setuptools
+            isort
+            nose
+            pytest
+            pygments
+            rich
+            pylint
+            pylint-venv
+          ];
+        app.editor = {
+          nvim.lsp = ["basedpyright"];
+          helix = {
+            # extraPackages = with pkgs; [];
+            languages = {
+              language = [
+                {
+                  name = "python";
+                  language-servers = ["ruff-lsp" "pyright"];
+                  formatter = {
+                    command = "ruff";
+                    args = ["--quiet" "-"];
+                  };
+                }
+              ];
+              language-server = {
+                pyright.config.python.analysis.typeCheckingMode = "basic";
+                ruff-lsp = {
+                  command = "ruff-lsp";
+                  config.settings.args = ["--ignore" "E501"];
+                };
+              };
+            };
+          };
+        };
+        shell = {
+          env = {
+            PYLINTHOME = "${config.home.dataDir}/pylint";
+            PYLINTRC = "${config.home.configDir}/pylint/pylintrc";
+            IPYTHONDIR = "${config.home.configDir}/ipython";
+          };
+          aliases = {
+            ipy = "ipython --no-banner";
+            ipylab = "ipython --pylab=qt5 --no-banner";
+          };
+        };
+      };
       home.packages = with pkgs; [
         ruff
         python3.pkgs.ruff-lsp
@@ -69,52 +106,25 @@ in {
         unstable.basedpyright
         pipenv
       ];
-      modules.shell = {
-        env = {
-          PYLINTHOME = "${config.home.dataDir}/pylint";
-          PYLINTRC = "${config.home.configDir}/pylint/pylintrc";
-          IPYTHONDIR = "${config.home.configDir}/ipython";
-        };
-        aliases = {
-          ipy = "ipython --no-banner";
-          ipylab = "ipython --pylab=qt5 --no-banner";
-        };
-      };
-      modules.app.editor.helix = {
-        # extraPackages = with pkgs; [];
-        languages = {
-          language = [
-            {
-              name = "python";
-              language-servers = ["ruff-lsp" "pyright"];
-              formatter = {
-                command = "ruff";
-                args = ["--quiet" "-"];
-              };
-            }
-          ];
-          language-server.pyright.config.python.analysis.typeCheckingMode = "basic";
-          language-server.ruff-lsp.command = "ruff-lsp";
-          language-server.ruff-lsp.config.settings.args = ["--ignore" "E501"];
-        };
-      };
     }
     (mkIf ((cfg.manager != "rye") || (!cfg.rye.manager)) {
-      modules.dev.lang.python = cfg.versions;
-      modules.dev.manager.extInit = lib.optionalString (cfg.global != "") ''
-        ${lib.optionalString (config.modules.dev.manager.default == "asdf") (let
-          asdfbin = "${config.modules.dev.manager.asdf.package}/bin/asdf";
-        in ''
-          echo-info "python global version ${cfg.global}"
-          ${asdfbin} global python ${cfg.global}
-        '')}
-        ${lib.optionalString (config.modules.dev.manager.default == "mise") (let
-          misebin = "${config.modules.dev.manager.mise.package}/bin/mise";
-        in ''
-          echo-info "python global version ${cfg.global}"
-          ${misebin} global -q python@${cfg.global}
-        '')}
-      '';
+      modules.dev = {
+        lang.python = cfg.versions;
+        manager.extInit = lib.optionalString (cfg.global != "") ''
+          ${lib.optionalString (config.modules.dev.manager.default == "asdf") (let
+            asdfbin = "${config.modules.dev.manager.asdf.package}/bin/asdf";
+          in ''
+            echo-info "python global version ${cfg.global}"
+            ${asdfbin} global python ${cfg.global}
+          '')}
+          ${lib.optionalString (config.modules.dev.manager.default == "mise") (let
+            misebin = "${config.modules.dev.manager.mise.package}/bin/mise";
+          in ''
+            echo-info "python global version ${cfg.global}"
+            ${misebin} global -q python@${cfg.global}
+          '')}
+        '';
+      };
     })
   ]);
 }

@@ -51,20 +51,23 @@ in {
     enable = mkEnableOption "Whether to use mysql";
     package = mkPkgOpt pkgs.mysql "mysql package";
     script = mkOpt' types.lines "" "初始化脚本";
-
-    service.enable = mkBoolOpt cfg.enable;
-    service.startup = mkBoolOpt false;
-    service.workdir = mkOpt' types.path "${config.home.cacheDir}/mysql" "default mysql workdir";
-    service.port = mkOpt' types.number 3306 "mysql use port";
-    service.cmd = mkOpt' types.str "${mysqldService}/bin/mysqld-service" "";
+    service = {
+      enable = mkBoolOpt cfg.enable;
+      startup = mkBoolOpt false;
+      workdir = mkOpt' types.path "${config.home.cacheDir}/mysql" "default mysql workdir";
+      port = mkOpt' types.number 3306 "mysql use port";
+      cmd = mkOpt' types.str "${mysqldService}/bin/mysqld-service" "";
+    };
   };
   config = mkIf cfg.enable {
     home.packages = [cfg.package mysqldService];
-    modules.db.mysql.script = mysqlInit;
-    modules.shell.zsh.rcInit = ''
-      mysql_init() {
-        ${mysqlInit}
-      }
-    '';
+    modules = {
+      db.mysql.script = mysqlInit;
+      shell.zsh.rcInit = ''
+        mysql_init() {
+          ${mysqlInit}
+        }
+      '';
+    };
   };
 }

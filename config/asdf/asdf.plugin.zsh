@@ -48,7 +48,8 @@ asdf-shell() {
         fi
     fi
 }
-if (( $+commands[direnv] )) && [[ -e $ASDF_DATA_DIR/plugins/direnv ]]; then
+# FIXME: https://github.com/mvdan/sh/issues/987, 无法使用 shfmt 进行格式化
+if (($+commands[direnv])) && [[ -e $ASDF_DATA_DIR/plugins/direnv ]]; then
     asdf() {
         if [[ $1 == "local" ]] || [[ $1 == "shell" ]]; then
             command asdf direnv $@

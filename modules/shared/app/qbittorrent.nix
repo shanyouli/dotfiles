@@ -33,16 +33,18 @@ in {
     };
     webScript = mkStrOpt "";
     # 目前如果使用第三方的 web UI 存在 bug，建议不使用，但第三方 web UI 非常好看。
-    service.enable = mkOption {
-      type = types.bool;
-      default = false;
-      apply = v:
-        if cfg.enGui
-        then false
-        else v;
+    service = {
+      enable = mkOption {
+        type = types.bool;
+        default = false;
+        apply = v:
+          if cfg.enGui
+          then false
+          else v;
+      };
+      startup = mkBoolOpt true;
+      port = mkOpt' types.number 6801 "";
     };
-    service.startup = mkBoolOpt true;
-    service.port = mkOpt' types.number 6801 "";
   };
   config = mkIf cfg.enable {
     home.packages = [cfg.package];

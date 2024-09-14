@@ -18,10 +18,12 @@ in {
   in {
     launchd.user.agents.proxy = {
       path = [config.modules.service.path];
-      serviceConfig.RunAtLoad = cft.service.startup;
-      serviceConfig.StandardOutPath = log_file;
-      serviceConfig.ProgramArguments = ["${cft.service.pkg}/bin/${cft.service.pkg.name}"];
-      serviceConfig.ProcessType = "Background";
+      serviceConfig = {
+        RunAtLoad = cft.service.startup;
+        StandardOutPath = log_file;
+        ProgramArguments = ["${cft.service.pkg}/bin/${cft.service.pkg.name}"];
+        ProcessType = "Background";
+      };
     };
   });
 }

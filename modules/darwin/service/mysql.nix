@@ -16,10 +16,12 @@ in {
   config = mkIf cfg.enable {
     launchd.user.agents.mysql = {
       path = [config.modules.service.path];
-      serviceConfig.RunAtLoad = cft.service.startup;
-      serviceConfig.WorkingDirectory = "${cft.service.workdir}/data";
-      serviceConfig.ProcessType = "Background";
-      serviceConfig.ProgramArguments = [cft.service.cmd];
+      serviceConfig = {
+        RunAtLoad = cft.service.startup;
+        WorkingDirectory = "${cft.service.workdir}/data";
+        ProcessType = "Background";
+        ProgramArguments = [cft.service.cmd];
+      };
     };
   };
 }

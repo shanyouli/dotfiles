@@ -7,6 +7,7 @@
         "hosts/**/hardware-*.nix"
         "*.gpg"
         "*.lock"
+        "orbstack.nix"
       ];
 
       programs = {
@@ -23,7 +24,10 @@
 
         # bash
         shellcheck.enable = false;
-        shfmt.enable = true;
+        shfmt = {
+          enable = true;
+          indent_size = 4;
+        };
 
         # json
         jsonfmt.enable = true;

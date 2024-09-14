@@ -47,39 +47,41 @@ in {
   config = mkMerge [
     {
       # home.packages = [pkgs.zsh];
-      home.stateVersion = "24.05";
-      home.username = myvars.user;
-      home.homeDirectory = myvars.homedir;
+      home = {
+        stateVersion = "24.05";
+        username = myvars.user;
+        homeDirectory = myvars.homedir;
+        sessionVariables.XDG_BIN_HOME = config.home.binDir;
+        sessionVariablesExtra = ''
+          ${concatStringsSep "\n" (mapAttrsToList (n: v: (
+              if "${n}" == "PATH"
+              then ''export ${n}="${v}:''${PATH:+:}$PATH"''
+              else ''export ${n}="${v}"''
+            ))
+            config.env)}
+        '';
+
+        programs.home-manager.enable = true;
+        activation.zzScript = "${cfgscript}\n";
+      };
 
       # home.sessionVariables = filterAttrs (n: v: n != "PATH" ) config.env;
       # home.sessionPath =
       #   if builtins.hasAttr "PATH" config.env
       #   then config.env.PATH ++ [''''${PATH}'' ]
       #   else [];
-      home.sessionVariables.XDG_BIN_HOME = config.home.binDir;
-      home.sessionVariablesExtra = ''
-        ${concatStringsSep "\n" (mapAttrsToList (n: v: (
-            if "${n}" == "PATH"
-            then ''export ${n}="${v}:''${PATH:+:}$PATH"''
-            else ''export ${n}="${v}"''
-          ))
-          config.env)}
-      '';
       programs = mkAliasDefinitions options.home.programs;
 
-      home.programs.home-manager.enable = true;
+      xdg = {
+        enable = true;
 
-      xdg.enable = true;
-
-      home.activation = mkOrder 5000 {
-        zzScript = "${cfgscript}\n";
+        configFile = mkAliasDefinitions options.home.configFile;
+        dataFile = mkAliasDefinitions options.home.dataFile;
+        dataHome = mkAliasDefinitions options.home.dataDir;
+        cacheHome = mkAliasDefinitions options.home.cacheDir;
+        configHome = mkAliasDefinitions options.home.configDir;
+        stateHome = mkAliasDefinitions options.home.stateDir;
       };
-      xdg.configFile = mkAliasDefinitions options.home.configFile;
-      xdg.dataFile = mkAliasDefinitions options.home.dataFile;
-      xdg.dataHome = mkAliasDefinitions options.home.dataDir;
-      xdg.cacheHome = mkAliasDefinitions options.home.cacheDir;
-      xdg.configHome = mkAliasDefinitions options.home.configDir;
-      xdg.stateHome = mkAliasDefinitions options.home.stateDir;
 
       services = mkAliasDefinitions options.home.services;
     }

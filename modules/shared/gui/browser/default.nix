@@ -34,44 +34,46 @@ in {
   };
   config = mkMerge [
     {
-      modules.gui.browser.configDir = builtins.listToAttrs (map (n: {
-          name = n;
-          value =
-            if n == "brave"
-            then
-              if pkgs.stdenv.isDarwin
-              then "Library/Application Support/BraveSoftware/Brave-Browser"
-              else ".config/BraveSoftware/Brave-Browser"
-            else if n == "chrome"
-            then
-              if pkgs.stdenv.isDarwin
-              then "Library/Application Support/Google/Chrome"
-              else ".config/google-chrome"
-            else if n == "chromium"
-            then
-              if pkgs.stdenv.isDarwin
-              then "Library/Application Support/Chromium"
-              else ".config/chromium"
-            else if n == "firefox"
-            then
-              if pkgs.stdenv.isDarwin
-              then "Library/Application Support/Mozilla"
-              else ".mozilla"
-            else if n == "librewolf"
-            then
-              if pkgs.stdenv.isDarwin
-              then "Library/Application Support/LibreWolf"
-              else ".librewolf"
-            else if n == "vivaldi"
-            then
-              if pkgs.stdenv.isDarwin
-              then "Library/Application Support/Vivaldi"
-              else ".config/vivaldi"
-            else throw "unknown browser ${n}";
-        })
-        browsers);
-      modules.gui.browser.firefox.enable = mkDefault (builtins.elem "firefox" [cfg.default cfg.fallback]);
-      modules.gui.browser.chrome.enable = mkDefault (builtins.elem "chrome" [cfg.default cfg.fallback]);
+      modules.gui.browser = {
+        configDir = builtins.listToAttrs (map (n: {
+            name = n;
+            value =
+              if n == "brave"
+              then
+                if pkgs.stdenv.isDarwin
+                then "Library/Application Support/BraveSoftware/Brave-Browser"
+                else ".config/BraveSoftware/Brave-Browser"
+              else if n == "chrome"
+              then
+                if pkgs.stdenv.isDarwin
+                then "Library/Application Support/Google/Chrome"
+                else ".config/google-chrome"
+              else if n == "chromium"
+              then
+                if pkgs.stdenv.isDarwin
+                then "Library/Application Support/Chromium"
+                else ".config/chromium"
+              else if n == "firefox"
+              then
+                if pkgs.stdenv.isDarwin
+                then "Library/Application Support/Mozilla"
+                else ".mozilla"
+              else if n == "librewolf"
+              then
+                if pkgs.stdenv.isDarwin
+                then "Library/Application Support/LibreWolf"
+                else ".librewolf"
+              else if n == "vivaldi"
+              then
+                if pkgs.stdenv.isDarwin
+                then "Library/Application Support/Vivaldi"
+                else ".config/vivaldi"
+              else throw "unknown browser ${n}";
+          })
+          browsers);
+        firefox.enable = mkDefault (builtins.elem "firefox" [cfg.default cfg.fallback]);
+        chrome.enable = mkDefault (builtins.elem "chrome" [cfg.default cfg.fallback]);
+      };
     }
     (mkIf (cfg.fallback != "") (
       let

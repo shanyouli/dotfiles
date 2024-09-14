@@ -66,83 +66,88 @@ in {
     '';
   };
   config = mkIf cfg.enable {
-    modules.gopass.browsers = ["firefox"];
-    modules.gui.browser.firefox.extensions = mkDefault (with pkgs.unstable.firefox-addons; [
-      (mkIf config.modules.gopass.enable browserpass-ce)
-      noscript
-      ublock-origin
-      download-with-aria2
-      sidebery
-      darkreader
-      surfingkeys_ff
-      auto-tab-discard
-      user-agent-string-switcher
-      violentmonkey
-      styl-us
-      immersive-translate # kiss-translator # 翻译插件
-      chrome-mask
-      zeroomega
-      easy-image-blocker
-      raindropio
-    ]);
-    modules.gui.browser.firefox.finalPackage = wrapPackage cfg.package;
+    modules = {
+      gopass.browsers = ["firefox"];
+      gui.browser.firefox = {
+        extensions = mkDefault (with pkgs.unstable.firefox-addons; [
+          (mkIf config.modules.gopass.enable browserpass-ce)
+          noscript
+          ublock-origin
+          download-with-aria2
+          sidebery
+          darkreader
+          surfingkeys_ff
+          auto-tab-discard
+          user-agent-string-switcher
+          violentmonkey
+          styl-us
+          immersive-translate # kiss-translator # 翻译插件
+          chrome-mask
+          zeroomega
+          easy-image-blocker
+          raindropio
+        ]);
+        finalPackage = wrapPackage cfg.package;
+      };
+    };
+    home = {
+      packages =
+        [cfg.finalPackage] ++ optionals cfg.dev.enable [pkgs.unstable.geckodriver];
+      file = mkMerge [
+        {
+          "${cfgConfDir}/profiles.ini".text = ''
+            [General]
+            StartWithLastProfile=1
 
-    home.packages =
-      [cfg.finalPackage] ++ optionals cfg.dev.enable [pkgs.unstable.geckodriver];
-    home.file = mkMerge [
-      {
-        "${cfgConfDir}/profiles.ini".text = ''
-          [General]
-          StartWithLastProfile=1
+            [Profile0]
+            Default=1
+            IsRelative=1
+            Name=${cfg.profileName}
+            Path=Profiles/${lib.toLower cfg.profileName}
 
-          [Profile0]
-          Default=1
-          IsRelative=1
-          Name=${cfg.profileName}
-          Path=Profiles/${lib.toLower cfg.profileName}
+            [Profile1]
+            Default=0
+            IsRelative=1
+            Name=shit
+            Path=Profiles/shit
+          '';
+          "${profilePath}/.keep".text = "";
+          "${profilePath}/chrome/userChrome.css" = mkIf (cfg.userChrome != "") {text = cfg.userChrome;};
+          "${profilePath}/chrome/userContent.css" = mkIf (cfg.userContent != "") {text = cfg.userContent;};
+          "${profilePath}/user.js".text = ''
+            ${builtins.readFile "${myvars.dotfiles.config}/firefox/user.js"}
 
-          [Profile1]
-          Default=0
-          IsRelative=1
-          Name=shit
-          Path=Profiles/shit
-        '';
-        "${profilePath}/.keep".text = "";
-        "${profilePath}/chrome/userChrome.css" = mkIf (cfg.userChrome != "") {text = cfg.userChrome;};
-        "${profilePath}/chrome/userContent.css" = mkIf (cfg.userContent != "") {text = cfg.userContent;};
-        "${profilePath}/user.js".text = ''
-          ${builtins.readFile "${myvars.dotfiles.config}/firefox/user.js"}
-
-          ${cfg.extraConfig}
-        '';
-        "${profilePath}/extensions" = mkIf (cfg.extensions
-          != null
-          || cfg.extensions != []
-          || ((builtins.typeOf cfg.extensions) == "set") && (! builtins.elem cfg.extensions.content [null []])) {
-          source = let
-            extensionsEnvPkg = pkgs.buildEnv {
-              name = "my-firefox-extensions";
-              paths = cfg.extensions;
-            };
-          in "${extensionsEnvPkg}/share/mozilla/${extensionPath}";
-          recursive = true;
-          force = true;
-        };
-      }
-      (mkIf (cfg.userChrome == "") {
-        "${profilePath}/chrome/userChrome.css".source = let
-          name =
-            if pkgs.stdenvNoCC.isDarwin
-            then "userChrome-darwin.css"
-            else "userChrome-linux.css";
-        in "${myvars.dotfiles.config}/firefox/chrome/${name}";
-      })
-      {
-        "${profilePath}/chrome/" = {
-          source = "${pkgs.unstable.userChromeJS}";
-          recursive = true;
-        };
-      }
-    ];
+            ${cfg.extraConfig}
+          '';
+          "${profilePath}/extensions" = mkIf (cfg.extensions
+            != null
+            || cfg.extensions != []
+            || ((builtins.typeOf cfg.extensions) == "set") && (! builtins.elem cfg.extensions.content [null []])) {
+            source = let
+              extensionsEnvPkg = pkgs.buildEnv {
+                name = "my-firefox-extensions";
+                paths = cfg.extensions;
+              };
+            in "${extensionsEnvPkg}/share/mozilla/${extensionPath}";
+            recursive = true;
+            force = true;
+          };
+        }
+        (mkIf (cfg.userChrome == "") {
+          "${profilePath}/chrome/userChrome.css".source = let
+            name =
+              if pkgs.stdenvNoCC.isDarwin
+              then "userChrome-darwin.css"
+              else "userChrome-linux.css";
+          in "${myvars.dotfiles.config}/firefox/chrome/${name}";
+        })
+        {
+          "${profilePath}/chrome/" = {
+            source = "${pkgs.unstable.userChromeJS}";
+            recursive = true;
+          };
+        }
+      ];
+    };
   };
 }

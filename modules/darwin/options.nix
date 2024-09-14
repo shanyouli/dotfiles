@@ -94,24 +94,29 @@ in {
             withNotify = true;
           })
         ];
-      modules.shell.aliases.emacs = let
-        baseDir =
-          if config.modules.macos.app.enable
-          then config.modules.macos.app.path
-          else "${config.modules.app.editor.emacs.pkg}/Applications";
-      in
-        optionalString config.modules.app.editor.emacs.enable "${baseDir}/Emacs.app/Contents/MacOS/Emacs";
-
-      environment.variables = config.modules.xdg.value;
+      environment = {
+        profiles = mkOrder 800 ["${config.home.stateDir}/nix/profile"];
+        variables = config.modules.xdg.value;
+      };
       time.timeZone = mkDefault myvars.timezone;
+      modules = {
+        shell = {
+          aliases.emacs = let
+            baseDir =
+              if config.modules.macos.app.enable
+              then config.modules.macos.app.path
+              else "${config.modules.app.editor.emacs.pkg}/Applications";
+          in
+            optionalString config.modules.app.editor.emacs.enable "${baseDir}/Emacs.app/Contents/MacOS/Emacs";
+          nushell.rcInit = ''
+            # 修复macos上nushell自带的open和外部命令open的冲突
+            alias nuopen = open
+            alias open = ^open
+          '';
+        };
 
-      modules.shell.nushell.rcInit = ''
-        # 修复macos上nushell自带的open和外部命令open的冲突
-        alias nuopen = open
-        alias open = ^open
-      '';
-
-      modules.gui.enable = mkDefault true;
+        gui.enable = mkDefault true;
+      };
 
       system.activationScripts.postActivation.text = ''
         # activateSettings -u will reload the settings from the database and apply them to the current session,
@@ -127,123 +132,129 @@ in {
           nix store diff-closures /run/current-system $systemConfig
         fi
       '';
-      macos.systemScript.removeNixApps.text = ''
-        echo-info "Remove /Applications/Nix\ Apps ..."
-        if [[ -e '/Applications/Nix Apps' ]]; then
-          $DRY_RUN_CMD rm -rf '/Applications/Nix Apps'
-        fi
-      '';
-      macos.systemScript.zshell.text = ''
-        echo-info "setting Default Shell"
-        chsh -s /run/current-system/sw/bin/zsh ${config.user.name}
-      '';
-      macos.userScript.clear_zsh.text = ''
-        echo-info "Clear zsh ..."
-        if command -v fd >/dev/null 2>&1; then
-          if [[ -d  ${config.env.ZDOTDIR} ]]; then
-            fd . ${config.env.ZDOTDIR} -e zwc -t f -X command rm  -vf {}
-          fi
-          if [[ -d ${config.env.ZSH_CACHE}/cache ]]; then
-            fd . ${config.env.ZSH_CACHE} -e zwc -t f -X command rm -vf {}
-          fi
-        else
-          if [[ -d  ${config.env.ZDOTDIR} ]]; then
-            find ${config.env.ZDOTDIR} -name "*.zwc" -type f -exec command rm -vf {} \;
-          fi
-          if [[ -d ${config.env.ZSH_CACHE}/cache ]]; then
-            find ${config.env.ZSH_CACHE} -name "*.zwc" -type f -exec command rm -vf {} \;
-          fi
-        fi
-        if [[ -f ''${XDG_CACHE_HOME:-~/.cache}/themes/default/zshrc.zwc ]] ; then
-          $DRY_RUN_CMD rm -vf ''${XDG_CACHE_HOME:-~/.cache}/themes/default/zshrc.zwc
-        fi
-        # 禁止在 USB 卷创建元数据文件, .DS_Store
-        defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
-        # 禁止在网络卷创建元数据文件
-        defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
-        # https://github.com/nikitabobko/AeroSpace?tab=readme-ov-file
-        #  you can move windows by holding ctrl+cmd and dragging any part of the window (not necessarily the window title)
-        defaults write -g NSWindowShouldDragOnGesture YES
-      '';
-      macos.userScript.initRust = {
-        inherit (config.modules.dev.rust) enable;
-        desc = "init rust";
-        text = config.modules.dev.rust.initScript;
-      };
-      macos.userScript.initNvim = {
-        inherit (config.modules.app.editor.nvim) enable;
-        desc = "Init nvim";
-        text = config.modules.app.editor.nvim.script;
-      };
-      macos.userScript.initTheme = {
-        enable = config.modules.theme.default != "";
-        desc = "init themes";
-        text = config.modules.theme.script;
-      };
-      macos.userScript.initQbWebUI = {
-        enable = config.modules.app.qbittorrent.webScript != "";
-        text = config.modules.app.qbittorrent.webScript;
-      };
-      macos.userScript.initMysql = {
-        inherit (config.modules.db.mysql) enable;
-        text = config.modules.db.mysql.script;
-        desc = "init mysql ...";
-      };
-      macos.systemScript.initXDG = {
-        enable = true;
-        text = ''
-          if ! [[ -d ${config.modules.xdg.value.XDG_RUNTIME_DIR} ]] ; then
-            mkdir -p ${config.modules.xdg.value.XDG_RUNTIME_DIR}
-            chown -R "${config.user.name}" ${config.modules.xdg.value.XDG_RUNTIME_DIR}
-            chmod +755 ${config.modules.xdg.value.XDG_RUNTIME_DIR}
-          fi
-        '';
-      };
-      macos.userScript.linkChromeApp = let
-        appEn = config.modules.macos.app.enable;
-        mchrome = config.modules.gui.browser.chrome;
-        enable = mchrome.enable && mchrome.dev.enable && appEn && (! mchrome.useBrew);
-      in {
-        inherit enable;
-        desc = "Link Google Chrome.app";
-        level = 100;
-        text = ''
-          if [[ -e "${config.user.home}/Applications/Myapps/Chromium.app" ]]; then
-            _google_chrome_app="/Applications/Google Chrome.app"
-            if [[ -e $_google_chrome_app ]]; then
-              $DRI_RUN_CMD rm -rf "$_google_chrome_app"
+      macos = {
+        systemScript = {
+          removeNixApps.text = ''
+            echo-info "Remove /Applications/Nix\ Apps ..."
+            if [[ -e '/Applications/Nix Apps' ]]; then
+              $DRY_RUN_CMD rm -rf '/Applications/Nix Apps'
             fi
-            $DRY_RUN_CMD ln -sf "${config.user.home}/Applications/Myapps/Chromium.app" "$_google_chrome_app"
-            unset _google_chrome_app
-          elif [[ -e "${config.user.home}/Applications/Myapps/Google Chrome.app" ]]; then
-            $DRY_RUN_CMD ln -sf "${config.user.home}/Applications/Myapps/Google Chrome.app" "/Applications/"
-          fi
-        '';
+          '';
+          zshell.text = ''
+            echo-info "setting Default Shell"
+            chsh -s /run/current-system/sw/bin/zsh ${config.user.name}
+          '';
+          initXDG = {
+            enable = true;
+            text = ''
+              if ! [[ -d ${config.modules.xdg.value.XDG_RUNTIME_DIR} ]] ; then
+                mkdir -p ${config.modules.xdg.value.XDG_RUNTIME_DIR}
+                chown -R "${config.user.name}" ${config.modules.xdg.value.XDG_RUNTIME_DIR}
+                chmod +755 ${config.modules.xdg.value.XDG_RUNTIME_DIR}
+              fi
+            '';
+          };
+        };
+
+        userScript = {
+          clear_zsh.text = ''
+            echo-info "Clear zsh ..."
+            if command -v fd >/dev/null 2>&1; then
+              if [[ -d  ${config.env.ZDOTDIR} ]]; then
+                fd . ${config.env.ZDOTDIR} -e zwc -t f -X command rm  -vf {}
+              fi
+              if [[ -d ${config.env.ZSH_CACHE}/cache ]]; then
+                fd . ${config.env.ZSH_CACHE} -e zwc -t f -X command rm -vf {}
+              fi
+            else
+              if [[ -d  ${config.env.ZDOTDIR} ]]; then
+                find ${config.env.ZDOTDIR} -name "*.zwc" -type f -exec command rm -vf {} \;
+              fi
+              if [[ -d ${config.env.ZSH_CACHE}/cache ]]; then
+                find ${config.env.ZSH_CACHE} -name "*.zwc" -type f -exec command rm -vf {} \;
+              fi
+            fi
+            if [[ -f ''${XDG_CACHE_HOME:-~/.cache}/themes/default/zshrc.zwc ]] ; then
+              $DRY_RUN_CMD rm -vf ''${XDG_CACHE_HOME:-~/.cache}/themes/default/zshrc.zwc
+            fi
+            # 禁止在 USB 卷创建元数据文件, .DS_Store
+            defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+            # 禁止在网络卷创建元数据文件
+            defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+            # https://github.com/nikitabobko/AeroSpace?tab=readme-ov-file
+            #  you can move windows by holding ctrl+cmd and dragging any part of the window (not necessarily the window title)
+            defaults write -g NSWindowShouldDragOnGesture YES
+          '';
+          initRust = {
+            inherit (config.modules.dev.rust) enable;
+            desc = "init rust";
+            text = config.modules.dev.rust.initScript;
+          };
+          initNvim = {
+            inherit (config.modules.app.editor.nvim) enable;
+            desc = "Init nvim";
+            text = config.modules.app.editor.nvim.script;
+          };
+          initTheme = {
+            enable = config.modules.theme.default != "";
+            desc = "init themes";
+            text = config.modules.theme.script;
+          };
+          initQbWebUI = {
+            enable = config.modules.app.qbittorrent.webScript != "";
+            text = config.modules.app.qbittorrent.webScript;
+          };
+          initMysql = {
+            inherit (config.modules.db.mysql) enable;
+            text = config.modules.db.mysql.script;
+            desc = "init mysql ...";
+          };
+          linkChromeApp = let
+            appEn = config.modules.macos.app.enable;
+            mchrome = config.modules.gui.browser.chrome;
+            enable = mchrome.enable && mchrome.dev.enable && appEn && (! mchrome.useBrew);
+          in {
+            inherit enable;
+            desc = "Link Google Chrome.app";
+            level = 100;
+            text = ''
+              if [[ -e "${config.user.home}/Applications/Myapps/Chromium.app" ]]; then
+                _google_chrome_app="/Applications/Google Chrome.app"
+                if [[ -e $_google_chrome_app ]]; then
+                  $DRI_RUN_CMD rm -rf "$_google_chrome_app"
+                fi
+                $DRY_RUN_CMD ln -sf "${config.user.home}/Applications/Myapps/Chromium.app" "$_google_chrome_app"
+                unset _google_chrome_app
+              elif [[ -e "${config.user.home}/Applications/Myapps/Google Chrome.app" ]]; then
+                $DRY_RUN_CMD ln -sf "${config.user.home}/Applications/Myapps/Google Chrome.app" "/Applications/"
+              fi
+            '';
+          };
+          initDevInit = {
+            enable = config.modules.dev.lang != [];
+            desc = "Init dev language manager ...";
+            inherit (config.modules.dev.manager) text;
+          };
+          initNuShell = {
+            inherit (config.modules.shell.nushell) enable;
+            desc = "Init nushell source file";
+            text = ''
+              ${config.modules.shell.nushell.cachePrev}
+              function nushell_cache() {
+                  local cache_dir="${config.home.cacheDir}/nushell"
+                  [[ -d "$cache_dir" ]] || mkdir -p "$cache_dir"
+                  local name="$(basename "$1").nu"
+                  echo-info  "cache $name ..."
+                  "$@" >"$cache_dir/$name"
+              }
+              ${optionalString (config.modules.shell.nushell.cacheCmd != []) (concatMapStrings (s: ''
+                  nushell_cache ${s}
+                '')
+                config.modules.shell.nushell.cacheCmd)}
+            '';
+          };
+        };
       };
-      macos.userScript.initDevInit = {
-        enable = config.modules.dev.lang != [];
-        desc = "Init dev language manager ...";
-        inherit (config.modules.dev.manager) text;
-      };
-      macos.userScript.initNuShell = {
-        inherit (config.modules.shell.nushell) enable;
-        desc = "Init nushell source file";
-        text = ''
-          ${config.modules.shell.nushell.cachePrev}
-          function nushell_cache() {
-              local cache_dir="${config.home.cacheDir}/nushell"
-              [[ -d "$cache_dir" ]] || mkdir -p "$cache_dir"
-              local name="$(basename "$1").nu"
-              echo-info  "cache $name ..."
-              "$@" >"$cache_dir/$name"
-          }
-          ${optionalString (config.modules.shell.nushell.cacheCmd != []) (concatMapStrings (s: ''
-              nushell_cache ${s}
-            '')
-            config.modules.shell.nushell.cacheCmd)}
-        '';
-      };
-      environment.profiles = mkOrder 800 ["${config.home.stateDir}/nix/profile"];
     }
     (mkIf config.modules.gpg.enable {
       modules.service.env.GNUPGHOME = config.env.GNUPGHOME;

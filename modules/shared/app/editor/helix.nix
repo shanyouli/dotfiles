@@ -31,61 +31,67 @@ in {
     themes = mkOpt' (types.attrsOf tomlFormat.type) {} "Each theme is written to ~/.config/helix/themes/xx.toml";
   };
   config = mkIf cfg.enable {
-    home.packages =
-      if cfg.extraPackages != []
-      then [
-        (pkgs.symlinkJoin {
-          name = "${getName cfg.package}-wrapped-${getVersion cfg.package}";
-          paths = [cfg.package];
-          preferLocalBuild = true;
-          nativeBuildInputs = [pkgs.makeWrapper];
-          postBuild = ''
-            wrapProgram $out/bin/hx --prefix PATH : ${makeBinPath cfg.extraPackages}"
-          '';
-        })
-      ]
-      else [cfg.package];
-
     modules.app.editor.helix.settings = {
-      editor.line-number = "relative";
-      editor.mouse = false;
-      editor.completion-trigger-len = 1;
+      editor = {
+        line-number = "relative";
+        mouse = false;
+        completion-trigger-len = 1;
+        cursor-shape = {
+          insert = "bar";
+          normal = "block";
+          select = "underline";
+        };
 
-      editor.cursor-shape.insert = "bar";
-      editor.cursor-shape.normal = "block";
-      editor.cursor-shape.select = "underline";
+        file-picker.hidden = false;
 
-      editor.file-picker.hidden = false;
-
-      editor.statusline = {
-        left = ["mode" "spinner"];
-        center = ["file-name"];
-        right = ["diagnostics" "selections" "position" "file-encoding" "file-line-ending" "file-type"];
-        separator = "│";
-        mode.normal = "N";
-        mode.insert = "I";
-        mode.select = "S";
+        statusline = {
+          left = ["mode" "spinner"];
+          center = ["file-name"];
+          right = ["diagnostics" "selections" "position" "file-encoding" "file-line-ending" "file-type"];
+          separator = "│";
+          mode = {
+            normal = "N";
+            insert = "I";
+            select = "S";
+          };
+        };
       };
     };
+    home = {
+      packages =
+        if cfg.extraPackages != []
+        then [
+          (pkgs.symlinkJoin {
+            name = "${getName cfg.package}-wrapped-${getVersion cfg.package}";
+            paths = [cfg.package];
+            preferLocalBuild = true;
+            nativeBuildInputs = [pkgs.makeWrapper];
+            postBuild = ''
+              wrapProgram $out/bin/hx --prefix PATH : ${makeBinPath cfg.extraPackages}"
+            '';
+          })
+        ]
+        else [cfg.package];
 
-    home.configFile = let
-      settings = {
-        "helix/config.toml" = mkIf (cfg.settings != {}) {
-          source = tomlFormat.generate "helix-config" cfg.settings;
+      configFile = let
+        settings = {
+          "helix/config.toml" = mkIf (cfg.settings != {}) {
+            source = tomlFormat.generate "helix-config" cfg.settings;
+          };
+          "helix/languages.toml" = mkIf (cfg.languages != {}) {
+            source = tomlFormat.generate "helix-languages-config" cfg.languages;
+          };
+          "helix/ignore" = mkIf (cfg.ignores != []) {
+            text = concatStringsSep "\n" cfg.ignores + "\n";
+          };
         };
-        "helix/languages.toml" = mkIf (cfg.languages != {}) {
-          source = tomlFormat.generate "helix-languages-config" cfg.languages;
-        };
-        "helix/ignore" = mkIf (cfg.ignores != []) {
-          text = concatStringsSep "\n" cfg.ignores + "\n";
-        };
-      };
-      themes = mapAttrs' (n: v:
-        nameValuePair "helix/themes/${n}.toml" {
-          source = tomlFormat.generate "helix-theme-${n}" v;
-        })
-      cfg.themes;
-    in
-      settings // themes;
+        themes = mapAttrs' (n: v:
+          nameValuePair "helix/themes/${n}.toml" {
+            source = tomlFormat.generate "helix-theme-${n}" v;
+          })
+        cfg.themes;
+      in
+        settings // themes;
+    };
   };
 }

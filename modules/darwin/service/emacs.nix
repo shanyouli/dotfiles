@@ -16,12 +16,14 @@ in {
   };
   config = mkIf cfg.enable {
     launchd.user.agents.emacs = {
-      serviceConfig.RunAtLoad = cft.service.startup;
-      serviceConfig.KeepAlive = cft.service.keep;
-      serviceConfig.EnvironmentVariables = {
-        PATH = "${emacsPkg}/bin:${config.modules.service.path}";
+      serviceConfig = {
+        RunAtLoad = cft.service.startup;
+        KeepAlive = cft.service.keep;
+        EnvironmentVariables = {
+          PATH = "${emacsPkg}/bin:${config.modules.service.path}";
+        };
+        ProgramArguments = ["${emacsPkg}/Applications/Emacs.app/Contents/MacOS/Emacs" "--fg-daemon=main"];
       };
-      serviceConfig.ProgramArguments = ["${emacsPkg}/Applications/Emacs.app/Contents/MacOS/Emacs" "--fg-daemon=main"];
     };
   };
 }

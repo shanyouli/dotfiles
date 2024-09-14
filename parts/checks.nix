@@ -17,11 +17,13 @@
       osConfig."test@${system}".config.system.build.toplevel;
     homecheck = self.legacyPackages.${system}.homeConfigurations.test.activationPackage;
   in {
-    checks.os = oscheck;
-    checks.home = homecheck;
-    checks.default =
-      if (inputs ? treefmt-nix)
-      then self.checks.${system}.treefmt
-      else homecheck;
+    checks = {
+      os = oscheck;
+      home = homecheck;
+      default =
+        if (inputs ? treefmt-nix)
+        then self.checks.${system}.treefmt
+        else homecheck;
+    };
   };
 }

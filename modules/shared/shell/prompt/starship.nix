@@ -50,30 +50,34 @@ in {
     };
   };
   config = mkIf cfg.enable {
-    home.packages = [pkgs.starship];
-    modules.shell.prompt.starship.settings = {
-      add_newline = false;
-      character = {
-        success_symbol = "[[♥](green) ❯](maroon)";
-        error_symbol = "[❯](red)";
-        vicmd_symbol = "[❮](green)";
-      };
-      directory = {
-        truncation_length = 4;
-        style = "bold lavender";
-      };
+    home = {
+      packages = [pkgs.starship];
+      programs.bash.initExtra = lib.optionalString cfm.bash.enable ''
+        eval `starship init bash --print-full-init`
+      '';
+      configFile."starship.toml" =
+        mkIf ((cfg.settings != {}) && (config.modules.theme.default == ""))
+        {
+          source = tomlFormat.generate "starship-config" cfg.settings;
+        };
     };
-    modules.shell.zsh.rcInit = lib.optionalString cfm.zsh.enable ''
-      _cache starship init zsh --print-full-init
-    '';
-    home.programs.bash.initExtra = lib.optionalString cfm.bash.enable ''
-      eval `starship init bash --print-full-init`
-    '';
-    modules.shell.nushell.cacheCmd = ["${pkgs.starship}/bin/starship init nu"];
-    home.configFile."starship.toml" =
-      mkIf ((cfg.settings != {}) && (config.modules.theme.default == ""))
-      {
-        source = tomlFormat.generate "starship-config" cfg.settings;
+    modules.shell = {
+      prompt.starship.settings = {
+        add_newline = false;
+        character = {
+          success_symbol = "[[♥](green) ❯](maroon)";
+          error_symbol = "[❯](red)";
+          vicmd_symbol = "[❮](green)";
+        };
+        directory = {
+          truncation_length = 4;
+          style = "bold lavender";
+        };
       };
+      zsh.rcInit = lib.optionalString cfm.zsh.enable ''
+        _cache starship init zsh --print-full-init
+      '';
+      nushell.cacheCmd = ["${pkgs.starship}/bin/starship init nu"];
+    };
   };
 }

@@ -24,9 +24,11 @@ in {
     directory = mkOpt' types.path "${myvars.homedir}/Music" "Music Directory";
   };
   config = mkIf (cfg.default != "") {
-    modules.media.music.netease.enable = mkDefault (cfg.default == "netease");
-    modules.media.music.mpd.enable = mkDefault (cfg.default == "mpd");
-    modules.media.music.cmus.enable = mkDefault (cfg.default == "cmus");
-    modules.media.music.musikcube.enable = mkDefault (cfg.default == "musikcube");
+    modules.media.music = {
+      netease.enable = mkDefault (cfg.default == "netease");
+      mpd.enable = mkDefault (cfg.default == "mpd");
+      cmus.enable = mkDefault (cfg.default == "cmus");
+      musikcube.enable = mkDefault (cfg.default == "musikcube");
+    };
   };
 }

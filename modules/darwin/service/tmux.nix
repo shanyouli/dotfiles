@@ -17,13 +17,17 @@ in {
   config = mkIf cfg.enable {
     launchd.user.agents.tmux = {
       path = ["${pkgs.tmux}/bin" config.modules.service.path];
-      serviceConfig.ProgramArguments = [
-        "${pkgs.tmux}/bin/tmux"
-        "-D"
-      ];
-      serviceConfig.EnvironmentVariables.TMUX_HOME = "${config.home.configDir}/tmux";
-      serviceConfig.EnvironmentVariables.XDG_CONFIG_HOME = "${config.home.configDir}";
-      serviceConfig.RunAtLoad = cft.service.startup;
+      serviceConfig = {
+        ProgramArguments = [
+          "${pkgs.tmux}/bin/tmux"
+          "-D"
+        ];
+        EnvironmentVariables = {
+          TMUX_HOME = "${config.home.configDir}/tmux";
+          XDG_CONFIG_HOME = "${config.home.configDir}";
+        };
+        RunAtLoad = cft.service.startup;
+      };
     };
   };
 }

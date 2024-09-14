@@ -18,9 +18,11 @@ in {
   options.modules.app.editor.emacs = {
     enable = mkBoolOpt false;
 
-    service.enable = mkBoolOpt cfg.enable;
-    service.startup = mkBoolOpt true;
-    service.keep = mkBoolOpt true;
+    service = {
+      enable = mkBoolOpt cfg.enable;
+      startup = mkBoolOpt true;
+      keep = mkBoolOpt true;
+    };
 
     rimeEnable = mkBoolOpt true;
 
@@ -81,102 +83,110 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      modules.app.editor.emacs.doom.confInit = ''
-        ;; (setq mydotfile "/etc/nixos")
-      '';
-      modules.app.editor.emacs.extraPkgs = epkgs:
-        [
-          epkgs.emacsql-sqlite-builtin
-          # epkgs.telega
-          epkgs.vterm
-          epkgs.pdf-tools
-          epkgs.saveplace-pdf-view
+      modules.app.editor.emacs = {
+        doom.confInit = ''
+          ;; (setq mydotfile "/etc/nixos")
+        '';
+        extraPkgs = epkgs:
+          [
+            epkgs.emacsql-sqlite-builtin
+            # epkgs.telega
+            epkgs.vterm
+            epkgs.pdf-tools
+            epkgs.saveplace-pdf-view
 
-          epkgs.puni
-          epkgs.ef-themes
-          epkgs.rainbow-mode
-          epkgs.noflet
-          # (epkgs.treesit-grammars.with-grammars
-          #   (grammars:
-          #     with grammars; [
-          #       tree-sitter-bash
-          #     ]))
-          epkgs.treesit-grammars.with-all-grammars
-          epkgs.elvish-mode
-        ]
-        ++ optionals cfg.rimeEnable [
-          (epkgs.rime.overrideAttrs (esuper: {
-            buildInputs = (esuper.buildInputs or []) ++ [pkgs.librime];
-            nativeBuildInputs = [pkgs.gnumake pkgs.gcc];
-            preBuild = "";
-            postInstall = let
-              suffix =
-                if pkgs.stdenvNoCC.isDarwin
-                then ".dylib"
-                else ".so";
-            in ''
-              export MODULE_FILE_SUFFIX="${suffix}"
-              pushd source
-              make lib
-              install -m444 -t $out/share/emacs/site-lisp/elpa/rime-** librime-emacs''${MODULE_FILE_SUFFIX}
-              rm -r $out/share/emacs/site-lisp/elpa/rime-*/{lib.c,Makefile}
-              popd
-            '';
-          }))
-        ]
-        ++ optionals config.modules.just.enable [epkgs.just-mode epkgs.justl]
-        ++ optionals config.modules.shell.nushell.enable [epkgs.nushell-ts-mode];
-      modules.app.editor.emacs.pkg = emacsWithPackages cfg.extraPkgs;
+            epkgs.puni
+            epkgs.ef-themes
+            epkgs.rainbow-mode
+            epkgs.noflet
+            # (epkgs.treesit-grammars.with-grammars
+            #   (grammars:
+            #     with grammars; [
+            #       tree-sitter-bash
+            #     ]))
+            epkgs.treesit-grammars.with-all-grammars
+            epkgs.elvish-mode
+          ]
+          ++ optionals cfg.rimeEnable [
+            (epkgs.rime.overrideAttrs (esuper: {
+              buildInputs = (esuper.buildInputs or []) ++ [pkgs.librime];
+              nativeBuildInputs = [pkgs.gnumake pkgs.gcc];
+              preBuild = "";
+              postInstall = let
+                suffix =
+                  if pkgs.stdenvNoCC.isDarwin
+                  then ".dylib"
+                  else ".so";
+              in ''
+                export MODULE_FILE_SUFFIX="${suffix}"
+                pushd source
+                make lib
+                install -m444 -t $out/share/emacs/site-lisp/elpa/rime-** librime-emacs''${MODULE_FILE_SUFFIX}
+                rm -r $out/share/emacs/site-lisp/elpa/rime-*/{lib.c,Makefile}
+                popd
+              '';
+            }))
+          ]
+          ++ optionals config.modules.just.enable [epkgs.just-mode epkgs.justl]
+          ++ optionals config.modules.shell.nushell.enable [epkgs.nushell-ts-mode];
+        pkg = emacsWithPackages cfg.extraPkgs;
+      };
     }
     {
-      home.packages = [
-        cfg.pkg
+      home = {
+        packages = [
+          cfg.pkg
 
-        pkgs.graphviz
-        pkgs.pandoc
+          pkgs.graphviz
+          pkgs.pandoc
 
-        #dirvish 包需要的工具
-        # poppler
-        pkgs.ffmpegthumbnailer
-        pkgs.mediainfo
-        # grip markdown 预览配置
-        pkgs.python3Packages.grip
+          #dirvish 包需要的工具
+          # poppler
+          pkgs.ffmpegthumbnailer
+          pkgs.mediainfo
+          # grip markdown 预览配置
+          pkgs.python3Packages.grip
 
-        pkgs.emacs-lsp-booster # emacs-lsp-booster , 更快的使用 lsp 服务
+          pkgs.emacs-lsp-booster # emacs-lsp-booster , 更快的使用 lsp 服务
 
-        (mkIf config.modules.gpg.enable
-          pkgs.pinentry-emacs) # in emacs gnupg prompts
-      ];
-      modules.python.extraPkgs = ps:
-        with ps; [
-          epc
-          orjson
-          six
-          paramiko
-          rapidfuzz
-          sexpdata # 0.0.3, or lsp-bridge
+          (mkIf config.modules.gpg.enable
+            pkgs.pinentry-emacs) # in emacs gnupg prompts
         ];
-      modules.shell = {
-        env.PATH = ["$XDG_CONFIG_HOME/emacs/bin"];
-        env.GRIPHOME = "$XDG_CONFIG_HOME/grip";
-        zsh.pluginFiles = ["emacs"];
+        configFile = let
+          data-dir =
+            if pkgs.stdenvNoCC.isLinux
+            then "${pkgs.brise}/share/rime-data"
+            else "/Library/Input Methods/Squirrel.app/Contents/SharedSupport";
+        in {
+          "doom/config.init.el".text = ''
+            ${lib.optionalString cfg.rimeEnable ''
+              (setq rime-emacs-module-header-root "${cfg.package}/include")
+              (setq rime-librime-root "${pkgs.librime}")
+              (setq rime-share-data-dir "${data-dir}")
+              (setq rime-user-data-dir "${config.home.configDir}/emacs-rime")
+            ''}
+            (setq lsp-bridge-python-command "${config.modules.python.finalPkg}/bin/python3")
+            ${cfg.doom.confInit}
+          '';
+        };
       };
-      home.configFile = let
-        data-dir =
-          if pkgs.stdenvNoCC.isLinux
-          then "${pkgs.brise}/share/rime-data"
-          else "/Library/Input Methods/Squirrel.app/Contents/SharedSupport";
-      in {
-        "doom/config.init.el".text = ''
-          ${lib.optionalString cfg.rimeEnable ''
-            (setq rime-emacs-module-header-root "${cfg.package}/include")
-            (setq rime-librime-root "${pkgs.librime}")
-            (setq rime-share-data-dir "${data-dir}")
-            (setq rime-user-data-dir "${config.home.configDir}/emacs-rime")
-          ''}
-          (setq lsp-bridge-python-command "${config.modules.python.finalPkg}/bin/python3")
-          ${cfg.doom.confInit}
-        '';
+      modules = {
+        python.extraPkgs = ps:
+          with ps; [
+            epc
+            orjson
+            six
+            paramiko
+            rapidfuzz
+            sexpdata # 0.0.3, or lsp-bridge
+          ];
+        shell = {
+          env = {
+            PATH = ["$XDG_CONFIG_HOME/emacs/bin"];
+            GRIPHOME = "$XDG_CONFIG_HOME/grip";
+          };
+          zsh.pluginFiles = ["emacs"];
+        };
       };
     }
   ]);

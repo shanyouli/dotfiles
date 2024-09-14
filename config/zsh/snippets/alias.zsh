@@ -25,12 +25,12 @@ alias zln="zmv -L"
 alias mysudo='sudo -E env "PATH=$PATH"'
 
 # proxy 配置
-function isInt() {
+function isInt {
     local re='^[0-9]+$'
     [[ $1 =~ $re ]]
 }
 
-function proxy() {
+function proxy {
     local url=http://127.0.0.1:${1:-10801}
     export http_proxy=$url
     export https_proxy=$url
@@ -43,12 +43,12 @@ function proxy() {
     echo "proxy=$url"
 }
 
-function unproxy() {
-    unset http_proxy https_proxy all_proxy no_proxy  \
-      HTTP_PROXY HTTPS_PROXY ALL_PROXY NO_PROXY
+function unproxy {
+    unset http_proxy https_proxy all_proxy no_proxy \
+        HTTP_PROXY HTTPS_PROXY ALL_PROXY NO_PROXY
 }
 
-function pp() {
+function pp {
     local port=10801
     if isInt $1; then
         port=$1
@@ -58,5 +58,5 @@ function pp() {
     env http_proxy="$url" \
         httpS_proxy="$url" \
         HTTP_PROXY="$url" \
-        HTTPS_PROXY="$url"  "$@"
+        HTTPS_PROXY="$url" "$@"
 }

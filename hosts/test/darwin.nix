@@ -18,99 +18,138 @@
 
     # tui 工具
     archive.default = "ouch";
+    translate = {
+      enable = true;
+      deeplx = {
+        enable = false;
+        service.startup = false;
+      };
+    };
+    download = {
+      aria2 = {
+        service.startup = false;
+        aria2p = true;
+      };
+      enable = true;
+    };
+    db = {
+      enable = true;
+      mysql = {
+        enable = true;
+        service.startup = false;
+      };
+    };
+    media = {
+      enable = true;
+      stream.enable = true;
+      music = {
+        default = "mpd";
+        netease.enable = true;
+        mpd.service.startup = true;
+        cmus.enable = true;
+        musikcube.enable = true;
+        mpd.default = "ncmpcpp";
+      };
 
-    translate.enable = true;
-    translate.deeplx.enable = false;
-    translate.deeplx.service.startup = false;
+      # 比较后选择
+      # media.music.mpd.ncmpcpp.enable = true;
+    };
+    nginx = {
+      enable = true;
+      workDir = "/opt/nginx";
+    };
+    proxy = {
+      default = "sing-box";
+      sing-box.package = pkgs.unstable.sing-box;
+      service.enable = true;
+      configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/singbox.json";
+    };
 
-    download.enable = true;
-    download.aria2.aria2p = true;
-    download.aria2.service.startup = false;
-
-    db.enable = true;
-    db.mysql.enable = true;
-    db.mysql.service.startup = false;
-
-    media.enable = true;
-    media.stream.enable = true;
-    media.music.default = "mpd";
-    media.music.netease.enable = true;
-    media.music.mpd.service.startup = true;
-
-    gui.media.music.netease.enable = false;
-
-    gui.media.video.default = "mpv";
-
-    # 比较后选择
-    media.music.cmus.enable = true;
-    media.music.musikcube.enable = true;
-    media.music.mpd.default = "ncmpcpp";
-    # media.music.mpd.ncmpcpp.enable = true;
-
-    nginx.enable = true;
-    nginx.workDir = "/opt/nginx";
-
-    proxy.default = "sing-box";
-    proxy.sing-box.package = pkgs.unstable.sing-box;
-    proxy.service.enable = true;
-    proxy.configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/singbox.json";
-
-    alist.enable = true;
-    alist.service.startup = false;
+    alist = {
+      enable = true;
+      service.startup = false;
+    };
 
     rsync.enable = true;
     # app
-    app.qbittorrent.enGui = false;
-    app.qbittorrent.service.startup = false;
-    app.qbittorrent.service.enable = true;
+    app = {
+      qbittorrent = {
+        enGui = false;
+        service = {
+          startup = false;
+          enable = true;
+        };
+      };
+      editor = {
+        emacs = {
+          enable = true;
+          service.enable = true;
+        };
 
-    app.editor.emacs.enable = true;
-    app.editor.emacs.service.enable = true;
-
-    app.editor.default = "nvim";
-    # app.editor.nvim.enable = true;
-    app.editor.nvim.enGui = false; # GUI 编辑工具为emacs
-    app.editor.vscode.enable = true;
+        default = "nvim";
+        # nvim.enable = true;
+        nvim.enGui = false; # GUI 编辑工具为emacs
+        vscode.enable = true;
+      };
+    };
 
     # gui
-    gui.terminal.default = "kitty";
+    gui = {
+      media = {
+        music.netease.enable = false;
+        flameshot.enable = true;
 
-    gui.localsend.enable = true; # 需要gui，局域网文件传输工具
+        video.default = "mpv";
+      };
+      terminal.default = "kitty";
 
-    gui.browser.default = "firefox";
-    # browser.firefox.extensions = lib.mkForce [];
-    gui.browser.fallback = "chrome";
-    # browser.fallback = pkgs.unstable.darwinapps.vivaldi;
-    gui.media.flameshot.enable = true;
+      localsend.enable = true; # 需要gui，局域网文件传输工具
+      browser = {
+        default = "firefox";
+        # firefox.extensions = lib.mkForce [];
+        fallback = "chrome";
+        # fallback = pkgs.unstable.darwinapps.vivaldi;
+      };
+    };
 
-    shell.prompt.default = "oh-my-posh";
-    shell.default = "zsh";
-    shell.bash.enable = true;
-    shell.nix-your-shell.enable = true;
-    shell.zsh.zinit.enable = true;
+    shell = {
+      prompt.default = "oh-my-posh";
+      default = "zsh";
+      bash.enable = true;
+      nix-your-shell.enable = true;
+      zsh.zinit.enable = true;
 
-    shell.vivid.enable = true;
-    shell.zoxide.enable = true;
-    shell.atuin.enable = true;
-    shell.nix-index.enable = true;
-    shell.direnv.enable = true;
+      vivid.enable = true;
+      zoxide.enable = true;
+      atuin.enable = true;
+      nix-index.enable = true;
+      direnv.enable = true;
+
+      nushell.enable = true;
+      carapace.enable = true;
+    };
 
     navi.enable = true;
-    tmux.enable = true;
-    tmux.service.startup = true;
+    tmx = {
+      enable = true;
+      service.startup = true;
+    };
     adb.enable = true;
     ugrep.enable = true;
-    gpg.enable = true;
-    gpg.cacheTTL = 360000;
-    git.enable = true;
-    git.enGui = false; # 使用网页管理 github
-    gopass.enable = true;
-    gopass.enGui = false;
+    gpg = {
+      enable = true;
+      cacheTTL = 360000;
+    };
+    git = {
+      enable = true;
+      enGui = false; # 使用网页管理 github
+    };
+    gopass = {
+      enable = true;
+      enGui = false;
+    };
     trash.enable = true;
     just.enable = true;
-
-    shell.nushell.enable = true;
-    shell.carapace.enable = true;
 
     modern.enable = true;
 
@@ -118,45 +157,53 @@
     # media.music.netease.enGui = false;
     # media.video.enable = true;
 
-    dev.bash.enable = true;
+    dev = {
+      bash.enable = true;
+      python = {
+        enable = true;
+        versions = ["3.12" "3.10" "3.11"];
+        global = "3.11";
+        manager = "rye";
+        rye.manager = true;
+        poetry.enable = false;
+      };
 
-    dev.python.enable = true;
-    dev.python.versions = ["3.12" "3.10" "3.11"];
-    dev.python.global = "3.11";
-    dev.python.manager = "rye";
-    dev.python.rye.manager = true;
-    dev.python.poetry.enable = false;
-
-    dev.nix.enable = true;
-    dev.java.enable = true;
-    dev.java.versions = ["oracle-21.0.1" "liberica-8u392+9"];
-    dev.java.global = "oracle-21.0.1";
-    dev.lua.enable = true;
-    dev.cc.enable = true;
-    dev.node.enable = true;
-    dev.toml.fmt = true;
-    dev.enWebReport = true;
-    dev.rust.enable = true;
+      nix.enable = true;
+      java = {
+        enable = true;
+        versions = ["oracle-21.0.1" "liberica-8u392+9"];
+        global = "oracle-21.0.1";
+      };
+      lua.enable = true;
+      cc.enable = true;
+      node.enable = true;
+      toml.fmt = true;
+      enWebReport = true;
+      rust.enable = true;
+    };
 
     # macos
-    macos.enable = true;
-    macos.docker.enable = true;
-    macos.app.enable = true;
-    macos.arc.enable = true;
-    macos.karabiner.enable = true;
-    macos.safari.enable = true;
-    macos.stopAutoReopen = true;
-    macos.music.lx.enable = true;
+    macos = {
+      enable = true;
+      docker.enable = true;
+      app.enable = true;
+      arc.enable = true;
+      karabiner.enable = true;
+      safari.enable = true;
+      stopAutoReopen = true;
+      music.lx.enable = true;
 
-    macos.games.enable = true;
-    macos.hammerspoon.enable = true;
-    macos.rime.enable = true;
-    macos.brew.mirror = "tuna";
-    macos.duti.enable = true;
-    macos.netdriver.enable = true;
-
-    service.battery.enable = false;
-    service.yabai.enable = true;
+      games.enable = true;
+      hammerspoon.enable = true;
+      rime.enable = true;
+      brew.mirror = "tuna";
+      duti.enable = true;
+      netdriver.enable = true;
+    };
+    service = {
+      battery.enable = false;
+      yabai.enable = true;
+    };
   };
   # 如果你想使用macos别名请查看
   # https://github.com/LnL7/nix-darwin/issues/139#issuecomment-1230728610

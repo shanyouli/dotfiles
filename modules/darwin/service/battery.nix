@@ -43,13 +43,15 @@ in {
   config = mkIf cfg.enable {
     homebrew.casks = ["battery"]; # "aldente" # 电池管理
     launchd.user.agents.battery = {
-      serviceConfig.ProgramArguments = ["${batter-script}/bin/battery-service"];
-      serviceConfig.RunAtLoad = true;
-      # serviceConfig.StandardOutPath = "${config.user.home}/Library/Logs/mybatter.log";
-      serviceConfig.StandardErrorPath = "${config.user.home}/Library/Logs/mybatter.error.log";
+      serviceConfig = {
+        ProgramArguments = ["${batter-script}/bin/battery-service"];
+        RunAtLoad = true;
+        StandardErrorPath = "${config.user.home}/Library/Logs/mybatter.error.log";
+        StartInterval = 600;
+        # serviceConfig.StandardOutPath = "${config.user.home}/Library/Logs/mybatter.log";
+        # serviceConfig.StartCalendarInterval = [{Minute = 10;}];
+      };
       path = [config.modules.service.path];
-      serviceConfig.StartInterval = 600;
-      # serviceConfig.StartCalendarInterval = [{Minute = 10;}];
     };
   };
 }

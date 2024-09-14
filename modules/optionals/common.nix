@@ -21,18 +21,20 @@ in {
       default = {};
       description = "Configuring System Environment Variables";
     };
-    home.actionscript = mkOpt' lines "" "激活时，运行代码";
+    home = {
+      actionscript = mkOpt' lines "" "激活时，运行代码";
 
-    home.configFile = mkOpt' attrs {} "Files to place directly in $XDG_CONFIG_HOME";
-    home.dataFile = mkOpt' attrs {} "Files to place in $XDG_CONFIG_HOME";
+      configFile = mkOpt' attrs {} "Files to place directly in $XDG_CONFIG_HOME";
+      dataFile = mkOpt' attrs {} "Files to place in $XDG_CONFIG_HOME";
 
-    home.dataDir = mkOpt' path "${homedir}/.local/share" "xdg_data_home";
-    home.stateDir = mkOpt' path "${homedir}/.local/state" "xdg_state_home";
-    home.binDir = mkOpt' path "${homedir}/.local/bin" "xdg_bin_home";
-    home.configDir = mkOpt' path "${homedir}/.config" "xdg_config_home";
-    home.cacheDir = mkOpt' path "${homedir}/.cache" "xdg_cache_home";
+      dataDir = mkOpt' path "${homedir}/.local/share" "xdg_data_home";
+      stateDir = mkOpt' path "${homedir}/.local/state" "xdg_state_home";
+      binDir = mkOpt' path "${homedir}/.local/bin" "xdg_bin_home";
+      configDir = mkOpt' path "${homedir}/.config" "xdg_config_home";
+      cacheDir = mkOpt' path "${homedir}/.cache" "xdg_cache_home";
 
-    home.services = mkOpt' attrs {} "home-manager user script";
+      services = mkOpt' attrs {} "home-manager user script";
+    };
   };
   config = {
     # documentation.man.enable = mkDefault true;

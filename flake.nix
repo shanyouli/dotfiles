@@ -6,13 +6,17 @@
     darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
     nixos-stable.url = "github:nixos/nixpkgs/nixos-24.05";
 
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 
-    darwin.url = "github:LnL7/nix-darwin";
-    darwin.inputs.nixpkgs.follows = "darwin-stable";
+    darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "darwin-stable";
+    };
 
     # 需要同步的 flake
     flake-utils.url = "github:numtide/flake-utils";
@@ -20,22 +24,30 @@
       url = "github:edolstra/flake-compat";
       flake = false;
     };
-
-    nurpkgs.url = "github:shanyouli/nur-packages/stable";
-    nurpkgs.inputs.nixpkgs.follows = "nixpkgs";
-    nurpkgs.inputs.nixpkgs-stable.follows = "nixos-stable";
-    nurpkgs.inputs.flake-utils.follows = "flake-utils";
-    nurpkgs.inputs.flake-compat.follows = "flake-compat";
-    nurpkgs.inputs.flake-parts.follows = "flake-parts";
+    nurpkgs = {
+      url = "github:shanyouli/nur-packages/stable";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        nixpkgs-stable.follows = "nixos-stable";
+        flake-utils.follows = "flake-utils";
+        flake-compat.follows = "flake-compat";
+        flake-parts.follows = "flake-parts";
+      };
+    };
 
     # nix fmt 进行格式化, 对应配置 ./parts/treefmt.nix
-    treefmt-nix.url = "github:numtide/treefmt-nix";
-    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
-
-    git-hooks-nix.url = "github:cachix/git-hooks.nix";
-    git-hooks-nix.inputs.nixpkgs.follows = "nixpkgs";
-    git-hooks-nix.inputs.nixpkgs-stable.follows = "nixos-stable";
-    git-hooks-nix.inputs.flake-compat.follows = "flake-compat";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    git-hooks-nix = {
+      url = "github:cachix/git-hooks.nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        nixpkgs-stable.follows = "nixos-stable";
+        flake-compat.follows = "flake-compat";
+      };
+    };
   };
 
   outputs = inputs @ {flake-parts, ...}:

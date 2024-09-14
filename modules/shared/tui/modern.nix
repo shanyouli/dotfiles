@@ -30,10 +30,14 @@ in {
       xh # curl
       dog # dig
     ];
-    modules.shell.aliases.df = "duf";
-    modules.shell.aliases.cat = "bat -p"; # or bat -pp
-    modules.shell.aliases.du = "dua";
-    modules.shell.aliases.htop = "btm --basic --mem_as_value";
-    modules.shell.zsh.pluginFiles = ["exa"];
+    modules.shell = {
+      aliases = {
+        df = "duf";
+        cat = "bat -p"; # or bat -pp
+        du = "dua";
+        htop = "btm --basic --mem_as_value";
+      };
+      zsh.pluginFiles = ["exa"];
+    };
   };
 }

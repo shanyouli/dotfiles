@@ -19,39 +19,43 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       home.packages = [cpkg];
-      modules.shell.direnv.stdlib.rye = pkgs.writeScript "rye" ''
-        #!/usr/bin/env bash
-        # 基本工作流程:
-        # 1. ~rye init new-project~. 项目初始化，创建要给 pyproject.toml 文件,如果项目已存在则直接运行第二步
-        # 2. ~cd new-project~
-        # 3. ~touch .envrc && echo 'use rye' > .envrc~
-        # 4. ~direnv allow~  将执行 ~rye sync~ 创建一个虚拟环境，并激活该虚拟环境
-        # 5. 开始工作
+      modules.shell = {
+        env = {
+          RYE_HOME = "${config.home.dataDir}/rye";
+          RYE_NO_AUTO_INSTALL = "1";
+        };
+        direnv.stdlib.rye = pkgs.writeScript "rye" ''
+          #!/usr/bin/env bash
+          # 基本工作流程:
+          # 1. ~rye init new-project~. 项目初始化，创建要给 pyproject.toml 文件,如果项目已存在则直接运行第二步
+          # 2. ~cd new-project~
+          # 3. ~touch .envrc && echo 'use rye' > .envrc~
+          # 4. ~direnv allow~  将执行 ~rye sync~ 创建一个虚拟环境，并激活该虚拟环境
+          # 5. 开始工作
 
-        use_rye() {
-            PYPROJECT_TOML="''${PYPROJECT_TOML:-pyproject.toml}"
-            if [[ ! -f "''${PYPROJECT_TOML}" ]]; then
-                log_status "No pyproject.toml found. Executing \`rye init\` to create a \`$PYPROJECT_TOML\` first."
-                rye init
-            fi
+          use_rye() {
+              PYPROJECT_TOML="''${PYPROJECT_TOML:-pyproject.toml}"
+              if [[ ! -f "''${PYPROJECT_TOML}" ]]; then
+                  log_status "No pyproject.toml found. Executing \`rye init\` to create a \`$PYPROJECT_TOML\` first."
+                  rye init
+              fi
 
-            if [[ -d ".venv" ]]; then
-                VIRTUAL_ENV="$(pwd)/.venv"
-            fi
+              if [[ -d ".venv" ]]; then
+                  VIRTUAL_ENV="$(pwd)/.venv"
+              fi
 
-            if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
-                log_status "No virtual environment exists. Executing \`rye sync\` to create one."
-                rye sync
-                VIRTUAL_ENV="$(pwd)/.venv"
-            fi
+              if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
+                  log_status "No virtual environment exists. Executing \`rye sync\` to create one."
+                  rye sync
+                  VIRTUAL_ENV="$(pwd)/.venv"
+              fi
 
-            PATH_add "$VIRTUAL_ENV/bin"
-            export RYE_ACTIVE=1
-            export VIRTUAL_ENV
-        }
-      '';
-      modules.shell.env.RYE_HOME = "${config.home.dataDir}/rye";
-      modules.shell.env.RYE_NO_AUTO_INSTALL = "1";
+              PATH_add "$VIRTUAL_ENV/bin"
+              export RYE_ACTIVE=1
+              export VIRTUAL_ENV
+          }
+        '';
+      };
     }
     (mkIf (!cfg.manager) {
       modules.dev.manager.extInit = let
@@ -82,44 +86,48 @@ in {
       '';
     })
     (mkIf cfg.manager {
-      modules.python.pipx.enable = mkDefault false;
-      modules.shell.env.PATH = mkBefore ["${config.home.dataDir}/rye/shims"];
-      modules.shell.zsh.pluginFiles = ["rye"];
-      modules.shell.nushell.scriptFiles = ["rye"];
-      modules.dev.manager.extInit = mkAfter (let
-        isNumeric = character: builtins.match "[0-9]" character != null;
-        checkFirstCharIsNumber = str:
-          if builtins.stringLength str > 0
-          then isNumeric (builtins.substring 0 1 str)
-          else false;
-        global_python_msg = lib.optionalString (cfp.global != "") ''
-          echo-info "Setting python global version"
-          ${
-            if (checkFirstCharIsNumber cfp.global)
-            then ''
-              ${cfb} config --set default.toolchain=cpython@${cfp.global}
-            ''
-            else ''
-              ${cfb} config --set default.toolchain=${cfp.global}
-            ''
-          }
-          ${cfb} config --set-bool behavior.global-python=true
-        '';
-        rye_fn = v: ''
-          echo-info "rye install python ${v}"
-          ${cfb} fetch ${v}
-        '';
-        version_msg =
-          if builtins.isString cfp.versions
-          then rye_fn cfp.versions
-          else if (builtins.elem cfp.versions [null false true []])
-          then ""
-          else concatMapStrings rye_fn cfp.versions;
-      in ''
-        export RYE_HOME="${config.home.dataDir}/rye"
-        ${version_msg}
-        ${global_python_msg}
-      '');
+      modules = {
+        python.pipx.enable = mkDefault false;
+        shell = {
+          env.PATH = mkBefore ["${config.home.dataDir}/rye/shims"];
+          zsh.pluginFiles = ["rye"];
+          nushell.scriptFiles = ["rye"];
+        };
+        dev.manager.extInit = mkAfter (let
+          isNumeric = character: builtins.match "[0-9]" character != null;
+          checkFirstCharIsNumber = str:
+            if builtins.stringLength str > 0
+            then isNumeric (builtins.substring 0 1 str)
+            else false;
+          global_python_msg = lib.optionalString (cfp.global != "") ''
+            echo-info "Setting python global version"
+            ${
+              if (checkFirstCharIsNumber cfp.global)
+              then ''
+                ${cfb} config --set default.toolchain=cpython@${cfp.global}
+              ''
+              else ''
+                ${cfb} config --set default.toolchain=${cfp.global}
+              ''
+            }
+            ${cfb} config --set-bool behavior.global-python=true
+          '';
+          rye_fn = v: ''
+            echo-info "rye install python ${v}"
+            ${cfb} fetch ${v}
+          '';
+          version_msg =
+            if builtins.isString cfp.versions
+            then rye_fn cfp.versions
+            else if (builtins.elem cfp.versions [null false true []])
+            then ""
+            else concatMapStrings rye_fn cfp.versions;
+        in ''
+          export RYE_HOME="${config.home.dataDir}/rye"
+          ${version_msg}
+          ${global_python_msg}
+        '');
+      };
     })
   ]);
 }

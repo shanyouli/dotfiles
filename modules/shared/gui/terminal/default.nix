@@ -20,9 +20,11 @@ in {
         else "";
       description = "Default terminal simulators";
     };
-    font.size = mkNumOpt 10;
-    font.family = mkStrOpt "Cascadia Code";
-    font.package = mkPkgOpt pkgs.cascadia-code "Cascadia Code font";
+    font = {
+      size = mkNumOpt 10;
+      family = mkStrOpt "Cascadia Code";
+      package = mkPkgOpt pkgs.cascadia-code "Cascadia Code font";
+    };
   };
   config = mkIf ((cfg.default != "") && config.modules.gui.enable) (
     mkMerge [

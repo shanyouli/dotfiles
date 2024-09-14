@@ -15,7 +15,7 @@
           then with config.pre-commit; settings.enabledPackages ++ [settings.package]
           else [];
       in
-        pre-commitPackags;
+        pre-commitPackags ++ lib.optionals (inputs ? treefmt-nix) [config.treefmt.build.wrapper];
       # packages = [pkgs.cachix];
       packages = [pkgs.cachix pkgs.just];
       shellHook = "" + lib.optionalString (inputs ? git-hooks-nix) config.pre-commit.settings.installationScript;

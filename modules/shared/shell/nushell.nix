@@ -32,40 +32,47 @@ in {
     scriptFiles = with types; mkOpt' (listOf (either str path)) [] "nushell scripts";
   };
   config = mkIf cfg.enable {
-    home.packages = [pkgs.unstable.nushell];
-    modules.app.editor.helix = {
-      languages = {
-        language = [
-          {
-            name = "nu";
-            language-servers = ["nushell-lsp"];
-          }
-        ];
-        language-server.nushell-lsp.command = "nu";
-        language-server.nushell-lsp.args = ["--lsp"];
-      };
+    home = {
+      packages = [pkgs.unstable.nushell];
+      configFile =
+        {
+          "nushell/cache/extrarc.nu".text = ''
+            ${optionalString (cfg.cacheCmd != []) (concatMapStrings (s: let
+                x = builtins.baseNameOf (builtins.head (builtins.split " " s));
+              in ''
+                source ${config.home.cacheDir}/nushell/${x}.nu
+              '')
+              cfg.cacheCmd)}
+            ${concatStringsSep "\n" (map (x: "use ${x} *") cfg.cmpFiles)}
+            ${concatStringsSep "\n" (mapAttrsToList (n: v: ''alias ${n} = ${v}'')
+                (filterAttrs (n: v: v != "" && n != "rm" && n != "rmi") config.modules.shell.aliases))}
+            ${cfg.rcInit}
+            alias nure = exec nu
+            ${concatMapStringsSep "\n" (x: "use ${getBaseName x}.nu *") cfg.scriptFiles}
+          '';
+        }
+        // (scriptHomeFunc cfg.scriptFiles);
     };
-    modules.app.editor.nvim.lsp = ["nushell"];
-    modules.app.editor.vscode.extensions = with pkgs.unstable.vscode-extensions; [
-      thenuprojectcontributors.vscode-nushell-lang
-    ];
-    home.configFile =
-      {
-        "nushell/cache/extrarc.nu".text = ''
-          ${optionalString (cfg.cacheCmd != []) (concatMapStrings (s: let
-              x = builtins.baseNameOf (builtins.head (builtins.split " " s));
-            in ''
-              source ${config.home.cacheDir}/nushell/${x}.nu
-            '')
-            cfg.cacheCmd)}
-          ${concatStringsSep "\n" (map (x: "use ${x} *") cfg.cmpFiles)}
-          ${concatStringsSep "\n" (mapAttrsToList (n: v: ''alias ${n} = ${v}'')
-              (filterAttrs (n: v: v != "" && n != "rm" && n != "rmi") config.modules.shell.aliases))}
-          ${cfg.rcInit}
-          alias nure = exec nu
-          ${concatMapStringsSep "\n" (x: "use ${getBaseName x}.nu *") cfg.scriptFiles}
-        '';
-      }
-      // (scriptHomeFunc cfg.scriptFiles);
+    modules.app.editor = {
+      helix = {
+        languages = {
+          language = [
+            {
+              name = "nu";
+              language-servers = ["nushell-lsp"];
+            }
+          ];
+
+          language-server = {
+            nushell-lsp.command = "nu";
+            nushell-lsp.args = ["--lsp"];
+          };
+        };
+      };
+      nvim.lsp = ["nushell"];
+      vscode.extensions = with pkgs.unstable.vscode-extensions; [
+        thenuprojectcontributors.vscode-nushell-lang
+      ];
+    };
   };
 }

@@ -52,50 +52,89 @@ in {
     dirs = mkOpt' types.attrs {} "Files by path";
   };
   config = mkIf cfg.enable {
-    modules.theme.catppuccin.texts = builtins.listToAttrs (map (n: {
-        name = n;
-        value = {
-          zshrc = ''
-            #!/usr/bin/env zsh
-            ${lib.optionalString cm.shell.vivid.enable ''
-              export LS_COLORS=$(${pkgs.vivid.out}/bin/vivid generate catppuccin-${n})
-            ''}
-            if [[ -z $INSIDE_EMACS ]]; then
-              ${fzf."${n}"}
+    modules = {
+      theme = {
+        script =
+          ''
+            if [[ -d "${defaultDir}" ]]; then
+              rm -rf "${defaultDir}"
             fi
-            ${lib.optionalString cm.shell.prompt.starship.enable ''
-              export STARSHIP_CONFIG="${defaultDir}/starship.toml"
-            ''}
+            ln -sf "${linkDir}/${cfg.name}" "${defaultDir}"
+          ''
+          + optionalString cm.modern.enable ''
+            echo-info "Handling bat theme management..."
+            [[ -d "${config.home.configDir}/bat/themes" ]] || mkdir -p "${config.home.configDir}/bat/themes"
+            ln -sf "${defaultDir}/bat.tmTheme"  "${config.home.configDir}/bat/themes/catppuccin.tmTheme"
+            command -v bat >/dev/null && bat cache --build >/dev/null
+          ''
+          + optionalString cm.app.editor.helix.enable ''
+            echo-info "Handling helix theme management..."
+            [[ -d "${config.home.configDir}/helix/themes" ]] || mkdir -p "${config.home.configDir}/helix/themes"
+            ln -sf "${defaultDir}/helix.toml"  "${config.home.configDir}/helix/themes/catppuccin.toml"
           '';
-          "tmux" = optionalString cm.tmux.enable ''
-            set -g @catppuccin_flavour '${n}'
-            run-shell '${pkgs.tmuxPlugins.catppuccin}/share/tmux-plugins/catppuccin/catppuccin.tmux'
-          '';
-        };
-      })
-      themes);
-    modules.theme.catppuccin.dirs = builtins.listToAttrs (map (n: {
-        name = n;
-        value = {
-          "kitty.conf" = optionalString config.modules.gui.terminal.kitty.enable "${configDir}/kitty/${n}.conf";
-          "bat.tmTheme" = "${configDir}/bat/Catppuccin-${n}.tmTheme";
-          "helix.toml" = optionalString cm.app.editor.helix.enable "${configDir}/helix/${n}.toml";
-          "starship.toml" = optionalString cm.shell.prompt.starship.enable (let
-            colors = builtins.fromTOML (builtins.readFile "${configDir}/starship/${n}.toml");
-            allSettings =
-              cm.shell.prompt.starship.settings
-              // {
-                palettes.${n} = colors;
-                palette = "${n}";
+        catppuccin = {
+          texts = builtins.listToAttrs (map (n: {
+              name = n;
+              value = {
+                zshrc = ''
+                  #!/usr/bin/env zsh
+                  ${lib.optionalString cm.shell.vivid.enable ''
+                    export LS_COLORS=$(${pkgs.vivid.out}/bin/vivid generate catppuccin-${n})
+                  ''}
+                  if [[ -z $INSIDE_EMACS ]]; then
+                    ${fzf."${n}"}
+                  fi
+                  ${lib.optionalString cm.shell.prompt.starship.enable ''
+                    export STARSHIP_CONFIG="${defaultDir}/starship.toml"
+                  ''}
+                '';
+                "tmux" = optionalString cm.tmux.enable ''
+                  set -g @catppuccin_flavour '${n}'
+                  run-shell '${pkgs.tmuxPlugins.catppuccin}/share/tmux-plugins/catppuccin/catppuccin.tmux'
+                '';
               };
-            result = let
-              tomlFormat = pkgs.formats.toml {};
-            in
-              tomlFormat.generate "starship-config" allSettings;
-          in "${result}");
+            })
+            themes);
+          dirs = builtins.listToAttrs (map (n: {
+              name = n;
+              value = {
+                "kitty.conf" = optionalString config.modules.gui.terminal.kitty.enable "${configDir}/kitty/${n}.conf";
+                "bat.tmTheme" = "${configDir}/bat/Catppuccin-${n}.tmTheme";
+                "helix.toml" = optionalString cm.app.editor.helix.enable "${configDir}/helix/${n}.toml";
+                "starship.toml" = optionalString cm.shell.prompt.starship.enable (let
+                  colors = builtins.fromTOML (builtins.readFile "${configDir}/starship/${n}.toml");
+                  allSettings =
+                    cm.shell.prompt.starship.settings
+                    // {
+                      palettes.${n} = colors;
+                      palette = "${n}";
+                    };
+                  result = let
+                    tomlFormat = pkgs.formats.toml {};
+                  in
+                    tomlFormat.generate "starship-config" allSettings;
+                in "${result}");
+              };
+            })
+            themes);
         };
-      })
-      themes);
+      };
+      shell = {
+        zsh.envInit = ''
+          export BAT_THEME='catppuccin'
+        '';
+        zsh.prevInit = ''
+          _source "${defaultDir}/zshrc"
+        '';
+      };
+
+      gui.terminal.kitty.settings = ''
+        include ${defaultDir}/kitty.conf
+      '';
+      tmux.rcFiles = mkBefore ["${defaultDir}/tmux"];
+
+      app.editor.helix.settings.theme = "catppuccin";
+    };
     home.file = let
       filterFn = _: v: v != "";
       texts_fn = n:
@@ -124,36 +163,5 @@ in {
       // (recursiveMerge (map dirs_fn themes))
       // {
       };
-    modules.gui.terminal.kitty.settings = ''
-      include ${defaultDir}/kitty.conf
-    '';
-    modules.shell.zsh.envInit = ''
-      export BAT_THEME='catppuccin'
-    '';
-    modules.shell.zsh.prevInit = ''
-      _source "${defaultDir}/zshrc"
-    '';
-    modules.tmux.rcFiles = mkBefore ["${defaultDir}/tmux"];
-
-    modules.app.editor.helix.settings.theme = "catppuccin";
-
-    modules.theme.script =
-      ''
-        if [[ -d "${defaultDir}" ]]; then
-          rm -rf "${defaultDir}"
-        fi
-        ln -sf "${linkDir}/${cfg.name}" "${defaultDir}"
-      ''
-      + optionalString cm.modern.enable ''
-        echo-info "Handling bat theme management..."
-        [[ -d "${config.home.configDir}/bat/themes" ]] || mkdir -p "${config.home.configDir}/bat/themes"
-        ln -sf "${defaultDir}/bat.tmTheme"  "${config.home.configDir}/bat/themes/catppuccin.tmTheme"
-        command -v bat >/dev/null && bat cache --build >/dev/null
-      ''
-      + optionalString cm.app.editor.helix.enable ''
-        echo-info "Handling helix theme management..."
-        [[ -d "${config.home.configDir}/helix/themes" ]] || mkdir -p "${config.home.configDir}/helix/themes"
-        ln -sf "${defaultDir}/helix.toml"  "${config.home.configDir}/helix/themes/catppuccin.toml"
-      '';
   };
 }

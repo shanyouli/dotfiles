@@ -19,11 +19,13 @@ in {
   };
   config = mkIf cfg.enable {
     launchd.user.agents.deeplx = {
-      serviceConfig.ProgramArguments = ["${deeplx}/bin/deeplx" "-p" "${toString cfg.port}"];
+      serviceConfig = {
+        ProgramArguments = ["${deeplx}/bin/deeplx" "-p" "${toString cfg.port}"];
+        RunAtLoad = cft.service.startup;
+        # serviceConfig.KeepAlive.NetworkState = true;
+        StandardOutPath = log_file;
+      };
       path = [config.modules.service.path];
-      serviceConfig.RunAtLoad = cft.service.startup;
-      # serviceConfig.KeepAlive.NetworkState = true;
-      serviceConfig.StandardOutPath = log_file;
     };
   };
 }

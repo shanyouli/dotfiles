@@ -57,8 +57,8 @@ yabai -m rule --add title="^(.*[Cc]onsole|FloatTerm)$" manage=off
 yabai -m rule --add app="Parallels Desktop" title="Control Center" manage=off
 
 yabai -m rule --add app="^Safari$" \
-	title="(Passwords|General|Tabs|AutoFill|Search|Security|Privacy|Websites|Extensions|Advanced)" \
-	manage=off
+    title="(Passwords|General|Tabs|AutoFill|Search|Security|Privacy|Websites|Extensions|Advanced)" \
+    manage=off
 
 yabai -m rule --add app="^(Nutstore|Karabiner-|GPG [Kk]eychain|IINA|Raycast|LuLu|DaisyDisk).*$" manage=off
 
@@ -73,12 +73,12 @@ yabai -m rule --add title="Picture-in-Picture" opacity=1
 # fi
 
 if [[ -d /Applications/Hammerspoon.app ]]; then
-	pgrep -x "Hammerspoon" >/dev/null 2>&1 || open -a /Applications/Hammerspoon.app
+    pgrep -x "Hammerspoon" >/dev/null 2>&1 || open -a /Applications/Hammerspoon.app
 fi
 
 yabai -m rule --add title="Picture-in-Picture" opacity=1 manage=off
 
 yabai -m signal --add event=window_destroyed \
-	action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
+    action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
 yabai -m signal --add event=application_terminated \
-	action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
+    action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"

@@ -12,7 +12,6 @@ alias ga='git add'
 alias ga.='git add .'
 alias gau='git add -u'
 
-
 # 切换为一个已存在的分支
 alias gb='git branch -a | fzf | cut -c 3- | xargs git switch'
 alias gbb='git switch -' # 返回上一个branch
