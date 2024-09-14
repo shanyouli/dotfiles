@@ -1,0 +1,61 @@
+name: 'system build'
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'hosts/hostname.nix'
+      - 'hosts/linux-test/**'
+      - 'flake.lock'
+
+  pull_request_target:
+    branches:
+      - master
+    paths:
+      - 'modules/shared/**'
+      - 'hosts/hostname.nix'
+      - 'hosts/linux-test/**'
+      - 'flake.lock'
+  # schedule:
+  #   # run this daily at 8am UTC, or roughly 4am eastern
+  #   - cron: '45 2 * * 6'
+  workflow_dispatch:
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Shallow clones won't work
+          fetch-depth: 0
+      - uses: cachix/install-nix-action@v25
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            # access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - uses: cachix/cachix-action@v14
+        with:
+          name: shanyouli
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: Print CPU info
+        run: |
+          if command -v nproc >/dev/null ; then
+            echo "Cores: $(nproc), Arch: $(uname -p)"
+          else
+            echo "Cores: $(nix shell nixpkgs#coreutils-full -c nproc) , Arch: $(uname -p)"
+          fi
+      - name: Run Flake Checks
+        run: |
+          nix run --impure .#checks
+          if [[ $(uname) == "Darwin" ]]; then
+            nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake .#test@aarch64-darwin -b backup --show-trace
+          else
+            nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake .#test@x86_64-linux -b backup --show-trace
+          fi
+        timeout-minutes: 240
