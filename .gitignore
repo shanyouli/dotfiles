@@ -2,4 +2,4 @@
 /.direnv/
 /.pre-commit-config.yaml
 /.devenv/
-/.DS_Store
+.DS_Store
