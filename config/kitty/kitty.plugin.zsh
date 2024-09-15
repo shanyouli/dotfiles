@@ -17,14 +17,14 @@ function kitten-theme() {
     if [[ ! $theme ]]; then
         local _cmd
         if [[ -d ${themes_dir} ]]; then
-            if (($ + commands[fd])); then
+            if (($+commands[fd])); then
                 _cmd="fd kitty.conf  ${themes_dir}; "
             else
                 _cmd="find ${themes_dir} -name 'kitty.conf'"
             fi
         fi
         if [[ -d ${kitty_themes} ]]; then
-            if (($ + commands[fd])); then
+            if (($+commands[fd])); then
                 _cmd="$_cmd fd . ${kitty_themes} -e conf ;"
             else
                 _cmd="$_cmd find ${kitty_themes} -name '*.conf' ;"

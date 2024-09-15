@@ -1,7 +1,7 @@
 # TMUX config , 当 TMUX_AUTOSTART=True,不在emacs，vim，inter执行zsh时，自动启动tmux
 # https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/tmux/tmux.plugin.zsh
 if [[ -z $TMUX && $TMUX_AUTOSTART == "True" && -z $INSIDE_EMACS && -z $EMACS && -z $VIM && -z $INTELLIJ_ENVIRONMENT_READER && $- == *i* ]]; then
-    if (($ + commands[tmux])); then
+    if (($+commands[tmux])); then
         if tmux has-session -t TMUX >/dev/null 2>&1; then
             exec tmux attach -t TMUX
         else
