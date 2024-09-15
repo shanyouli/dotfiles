@@ -1,5 +1,5 @@
 {inputs, ...}: let
-  inherit (inputs) nixos-stable home-manager;
+  inherit (inputs) nixos-stable home-manager nh_darwin;
 in {
   mknixos = {
     withSystem,
@@ -51,6 +51,7 @@ in {
                   # networking.hostName = lib.mkDefault name;
                 })
                 home-manager.nixosModules.home-manager
+                nh_darwin.nixosModules.default
                 self.nixosModules.default
               ]
               ++ modules;

@@ -1,5 +1,5 @@
 {inputs, ...}: let
-  inherit (inputs) darwin-stable home-manager darwin;
+  inherit (inputs) darwin-stable home-manager darwin nh_darwin;
 in {
   mkdarwin = {
     withSystem,
@@ -51,6 +51,8 @@ in {
                   networking.hostName = name;
                 })
                 home-manager.darwinModules.home-manager
+                nh_darwin.nixDarwinModules.prebuiltin
+                # inputs.nh_darwin.nixDarwinModules.default
                 self.homeModules.common
                 self.darwinModules.default
               ]

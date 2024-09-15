@@ -203,6 +203,9 @@
       netdriver.enable = true;
     };
 
+    nh = {
+      enable = true;
+    };
     service = {
       battery.enable = false;
       yabai.enable = true;

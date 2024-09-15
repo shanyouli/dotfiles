@@ -50,7 +50,8 @@ in {
       # };
       package = mkDefault pkgs.nix;
       gc = {
-        automatic = mkDefault true;
+        # 如果使用 nh 进行 gc，请不要使用 nix.gc.automatic, 二者冲突了。
+        automatic = mkDefault (!(config.modules.nh.clean.enable && config.modules.nh.enable));
         options = mkDefault "--delete-older-than 7d";
       };
       extraOptions = ''

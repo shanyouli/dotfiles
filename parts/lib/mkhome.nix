@@ -1,5 +1,5 @@
 {inputs, ...}: let
-  inherit (inputs) darwin-stable nixos-stable home-manager;
+  inherit (inputs) darwin-stable nixos-stable home-manager nh_darwin;
 in {
   mkhome = {
     withSystem,
@@ -51,6 +51,8 @@ in {
                 nixpkgs.overlays = overlays;
               })
               self.homeModules.default
+              # nh_darwin.homeManagerModules.default
+              nh_darwin.homeManagerModules.prebuiltin
             ]
             ++ modules;
         }
