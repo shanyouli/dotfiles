@@ -52,101 +52,10 @@ jobs:
           PASS_ON_ERROR: true
           PULL_REQUEST_UPDATE: true
           PULL_REQUEST_TITLE: 'Update Flake Inputs'
-
-  test_update_ci:
-    needs:
-      - update
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          # Shallow clones won't work
-          fetch-depth: 0
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        with:
-          # this might remove tools that are actually needed,
-          # if set to "true" but frees about 6 GB
-          tool-cache: false
-
-          # all of these default to true, but feel free to set to
-          # "false" if necessary for your workflow
-          android: true
-          dotnet: true
-          haskell: true
-          large-packages: true
-          docker-images: true
-          swap-storage: true
-      - name: Free Disk Space (macos)
-        if: ${{ matrix.os == 'macos-latest' }}
+      - name: Trigger second workflow
         run: |
-          df -h
-          brew list
-          [[ -d /Applications/Xcode_16.1_beta.app ]] && sudo rm -rf /Applications/Xcode_16.1_beta.app
-          [[ -d /Applications/Xcode_16_beta_6.app ]] && sudo rm -rf /Applications/Xcode_16_beta_6.app
-          [[ -d /Applications/Xcode_15.1.app ]] && sudo rm -rf /Applications/Xcode_15.1.app
-          [[ -d /Applications/Xcode_15.2.app ]] && sudo rm -rf  /Applications/Xcode_15.2.app
-          [[ -d /Applications/Xcode_15.3.app ]] && sudo rm -rf  /Applications/Xcode_15.3.app
-          [[ -d /Applications/Xcode_14.3.1.app ]] && sudo rm -rf /Applications/Xcode_14.3.1.app
-          [[ -d /Applications/Xcode_15.0.1.app ]] && sudo rm -rf /Applications/Xcode_15.0.1.app
-          brew uninstall --zap google-chrome
-          df -h
-      - uses: cachix/install-nix-action@V28
-        with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-            # access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-      - name: Prepare flakebot branch
-        run: |
-          git config --local user.email "flakebot@users.noreply.github.com"
-          git config --local user.name "flakebot"
-          git checkout -b flakebot
-          git branch --set-upstream-to=origin/flakebot
-          git pull
-      - uses: cachix/cachix-action@v15
-        with:
-          name: shanyouli
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      # - name: Print CPU info
-      #   run: |
-      #     echo "Cores: $(nproc), Arch: $(uname -p)"
-      - name: Run Flake Checks
-        run: |
-          nix flake check --show-trace --impure
-          # nix run --impure .#checks
-          # if [[ $(uname) == "Darwin" ]]; then
-          #   nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake .#test@aarch64-darwin -b backup --show-trace
-          # else
-          #   nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake .#test@x86_64-linux -b backup --show-trace
-          # fi
-        timeout-minutes: 240
-
-  merge-to-master:
-    needs:
-      - test_update_ci
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
-          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
-      - name: Prepare flakebot branch
-        run: |
-          git config --local user.email "flakebot@users.noreply.github.com"
-          git config --local user.name "flakebot"
-          git checkout -b flakebot
-          git branch --set-upstream-to=origin/flakebot
-          git pull
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
-          force: true
+          curl -X POST \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.everest-preview+json" \
+          https://api.github.com/repos/${{ github.repository }}/dispatches \
+          -d '{"event_type": "trigger-build-workflow"}'

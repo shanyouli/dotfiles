@@ -1,20 +1,22 @@
 name: 'system build'
 on:
+  repository_dispatch:
+    types: [trigger-build-workflow]
   push:
     branches:
       - master
     paths:
-      - 'hosts/hostname.nix'
-      - 'hosts/linux-test/**'
+      - 'hosts/tests/**/*.nix'
+      - 'parts/**/*.nix'
       - 'flake.lock'
 
   pull_request_target:
     branches:
       - master
     paths:
-      - 'modules/shared/**'
-      - 'hosts/hostname.nix'
-      - 'hosts/linux-test/**'
+      - 'parts/**/*.nix'
+      - 'modules/**.nix'
+      - 'hosts/**/*.nix'
       - 'flake.lock'
   # schedule:
   #   # run this daily at 8am UTC, or roughly 4am eastern
@@ -64,6 +66,33 @@ jobs:
           [[ -d /Applications/Xcode_15.0.1.app ]] && sudo rm -rf /Applications/Xcode_15.0.1.app
           brew uninstall --zap google-chrome
           df -h
+      - name: get last commit time of master branch
+        id: get_master_time
+        run: |
+          git fetch origin master
+          MASTER_COMMIT_TIME=$(git log -1 --format=%ct origin/master)
+          echo "MASTER_COMMIT_TIME=${MASTER_COMMIT_TIME}" >> $GITHUB_ENV
+      - name: get last commit time of flakebot
+        id: get_flakebot_time
+        run: |
+          git fetch origin flakebot
+          MASTER_COMMIT_TIME=$(git log -1 --format=%ct origin/flakebot)
+          echo "FLAKEBOT_COMMIT_TIME=${FLAKEBOT_COMMIT_TIME}" >> $GITHUB_ENV
+      - name: use target branch
+        id: determine_branch
+        run: |
+          if [ "${MASTER_COMMIT_TIME}" -gt "${FLAKEBOT_COMMIT_TIME}" ]; then
+            echo "TARGET_BRANCH=master" >> $GITHUB_ENV
+            echo "::set-output name=runbranch::master"
+          else
+            echo "TARGET_BRANCH=flakebot" >> $GITHUB_ENV
+            echo "::set-output name=runbranch::flakebot"
+          fi
+      - name: checkout target branch
+        run: |
+          git fetch
+          git checkout ${{ env.TARGET_BRANCH }}
+          echo "Working on ${{ env.TARGET_BRANCH }} branch"
       - uses: cachix/install-nix-action@V28
         with:
           extra_nix_config: |
@@ -90,3 +119,26 @@ jobs:
           #   nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake .#test@x86_64-linux -b backup --show-trace
           # fi
         timeout-minutes: 240
+  merge-to-master:
+    needs:
+      - build
+    if: needs.build.outputs.runbranch == 'flakebot'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+      - name: Prepare flakebot branch
+        run: |
+          git config --local user.email "flakebot@users.noreply.github.com"
+          git config --local user.name "flakebot"
+          git checkout -b flakebot
+          git branch --set-upstream-to=origin/flakebot
+          git pull
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
+          force: true
