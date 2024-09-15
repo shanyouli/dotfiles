@@ -63,6 +63,7 @@ in {
 
         programs.home-manager.enable = true;
         activation.zzScript = "${cfgscript}\n";
+        useos = false;
       };
 
       # home.sessionVariables = filterAttrs (n: v: n != "PATH" ) config.env;

@@ -34,6 +34,9 @@ in {
       cacheDir = mkOpt' path "${homedir}/.cache" "xdg_cache_home";
 
       services = mkOpt' attrs {} "home-manager user script";
+      # 系统级使用 nix 是指: 使用 darwin-rebuild 或 nixos-rebuild 管理
+      # 用户级使用 nix 是指: 使用 home-manager 管理
+      useos = mkOpt' bool false "系统级使用 nix 还是用户级使用 nix";
     };
   };
   config = {

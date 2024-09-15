@@ -47,6 +47,7 @@ in {
         profileBinDir = "${config.home-manager.users."${config.user.name}".home.profileDirectory}/bin";
 
         profileDirectory = "${config.home-manager.users."${config.user.name}".home.profileDirectory}";
+        useos = true;
       };
 
       home-manager = {
