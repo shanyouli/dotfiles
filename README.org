@@ -9,8 +9,13 @@
 :END:
 
 1. [[https://github.com/nix-community/awesome-nix][awesome-nix]] : 最全面的 nix 信息收集工具
-2. [[https://nixos-and-flakes.thiscute.world/zh/][NixOS 与 Flakes | 主页]]： 推荐的入门工具
-3. [[https://learnxinyminutes.com/docs/nix/][Learn nix in Y Minutes]]： 让你了解 nix的基本语法
+2. [[https://learnxinyminutes.com/docs/nix/][Learn nix in Y Minutes]]： 让你了解 nix的基本语法
+3. [[https://nixos-and-flakes.thiscute.world/zh/][NixOS 与 Flakes | 主页]]： 推荐的入门工具
+4. [[https://ianthehenry.com/posts/how-to-learn-nix/][How to Learn Nix]]: 一个系列讲述如何学习 nix 的
+
+* TODOS:
+
+** 添加加密
 
 * 版本信息
 
@@ -23,3 +28,4 @@
 - [[https://github.com/scanhex/dotfiles/blob/master/flakes/home-manager.nix][scanhex/dotfiles/flakes/home-manager.nix]] , 定制 mkhome 函数和 apps.init 系列函数
 - [[https://github.com/tiiuae/ghaf/raw/main/nix/devshell.nix][ghaf/nix/devshell.nix]], devshell 的使用方法
 - [[https://github.com/srid/nixos-config][srid/nixos-config: KISS NixOS]] , flake-part 使用方法
+- [[https://github.com/ryan4yin/nix-config][ryan4yin/nix-config]]: 又一个可供参考的配置

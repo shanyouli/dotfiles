@@ -57,7 +57,7 @@
         self,
         ...
       }: {
-        debug = true;
+        # debug = true;
         systems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin"];
         imports = let
           inherit (inputs.nixpkgs.lib) filterAttrs mapAttrsToList hasSuffix hasPrefix;
