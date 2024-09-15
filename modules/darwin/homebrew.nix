@@ -18,6 +18,7 @@ with lib.my; let
 in {
   options.modules.macos.brew = {
     enable = mkBoolOpt true;
+    gui.enable = mkBoolOpt true; # homebrew GUI 显示工具
     useMirror = mkBoolOpt true;
     mirror = mkOption {
       type = types.str;
@@ -187,7 +188,8 @@ in {
           ++ optionals (config.modules.gui.enable && (config.modules.proxy.default != "")) [
             "shanyouli/tap/clash-verge"
             (mkIf (config.modules.proxy.default == "sing-box") "sfm")
-          ];
+          ]
+          ++ optionals cfg.gui.enable ["applite"];
         brews = [
           # "macos-trash" # trash-cli
           # "mysql"

@@ -1,3 +1,25 @@
+
+* nixos 信息
+
+建议在使用前阅读: https://github.com/hlissner/dotfiles#frequently-asked-questions
+
+** 相关资源
+:PROPERTIES:
+:ID:       176ac0fb-8926-4a48-bbc0-e21f04827d55
+:END:
+
+1. [[https://github.com/nix-community/awesome-nix][awesome-nix]] : 最全面的 nix 信息收集工具
+2. [[https://nixos-and-flakes.thiscute.world/zh/][NixOS 与 Flakes | 主页]]： 推荐的入门工具
+3. [[https://learnxinyminutes.com/docs/nix/][Learn nix in Y Minutes]]： 让你了解 nix的基本语法
+
+* 版本信息
+
+- [[https://github.com/hlissner/dotfiles][hlissner/dotfiles]]： 最初配置来源, 配置tag 为 ~archive/branch-2021-nix~ , 不支持 macos
+- [[https://github.com/kclejeune/system][kclejeune/system]]: 之后的版本，最后使用配置 tag 为 ~2024.09.14~ , 主要为 macos 配置，兼容 nixos 和 home-manager
+- 现在的版本在 ~kclejeune/system~ 之后，用 flake-parts 模块重写。
+
 * 参考
+
 - [[https://github.com/scanhex/dotfiles/blob/master/flakes/home-manager.nix][scanhex/dotfiles/flakes/home-manager.nix]] , 定制 mkhome 函数和 apps.init 系列函数
 - [[https://github.com/tiiuae/ghaf/raw/main/nix/devshell.nix][ghaf/nix/devshell.nix]], devshell 的使用方法
+- [[https://github.com/srid/nixos-config][srid/nixos-config: KISS NixOS]] , flake-part 使用方法
