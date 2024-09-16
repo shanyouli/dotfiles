@@ -14,9 +14,10 @@ in {
     enable = mkBoolOpt cfs.enable;
   };
   config = mkIf cfg.enable {
-    programs.nh = {
-      inherit (cfs) enable alias clean;
-      os.flake = cfs.flake;
-    };
+    environment.systemPackages = [cfs.package];
+    # programs.nh = {
+    #   inherit (cfs) enable clean;
+    #   os.flake = cfs.flake;
+    # };
   };
 }

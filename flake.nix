@@ -48,14 +48,6 @@
         flake-compat.follows = "flake-compat";
       };
     };
-
-    nh_darwin = {
-      url = "github:toyvo/nh_darwin";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
-      };
-    };
   };
 
   outputs = inputs @ {flake-parts, ...}:

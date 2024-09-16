@@ -111,6 +111,7 @@ _: {
       };
     };
 
+    nh.enable = true; # nh 不支持 --impure
     nginx.enable = true;
     proxy = {
       default = "sing-box";
