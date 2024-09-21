@@ -83,7 +83,7 @@ jobs:
       - name: use target branch
         id: determine_branch
         run: |
-          if [ "${MASTER_COMMIT_TIME}" -gt "${FLAKEBOT_COMMIT_TIME}" ]; then
+          if [[ "${MASTER_COMMIT_TIME}" -gt "${FLAKEBOT_COMMIT_TIME}" ]]; then
             echo "TARGET_BRANCH=master" >> $GITHUB_ENV
             echo "runbranch=master" >> $GITHUB_OUTPUT
           else
