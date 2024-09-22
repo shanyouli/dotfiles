@@ -73,12 +73,14 @@ jobs:
         run: |
           git fetch origin master
           MASTER_COMMIT_TIME=$(git log -1 --format=%ct origin/master)
+          echo "Current flakebot Last commit time is ${MASTER_COMMIT_TIME}"
           echo "MASTER_COMMIT_TIME=${MASTER_COMMIT_TIME}" >> $GITHUB_ENV
       - name: get last commit time of flakebot
         id: get_flakebot_time
         run: |
           git fetch origin flakebot
-          MASTER_COMMIT_TIME=$(git log -1 --format=%ct origin/flakebot)
+          FLAKEBOT_COMMIT_TIME=$(git log -1 --format=%ct origin/flakebot)
+          echo "Current flakebot Last commit time is ${FLAKEBOT_COMMIT_TIME}"
           echo "FLAKEBOT_COMMIT_TIME=${FLAKEBOT_COMMIT_TIME}" >> $GITHUB_ENV
       - name: use target branch
         id: determine_branch
