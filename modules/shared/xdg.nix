@@ -39,7 +39,7 @@ with lib.my; {
 
     # .gem to $XDG_CACHE_HOME
     GEM_HOME = ''"$XDG_DATA_HOME"/gem'';
-    GEM_SPAC_CACHE = ''"$XDG_CACHE_HOME"/gem'';
+    GEM_SPEC_CACHE = ''"$XDG_CACHE_HOME"/gem'';
 
     # .bundle
     BUNDLE_USER_CONFIG = ''"$XDG_CONFIG_HOME"/bundle'';
