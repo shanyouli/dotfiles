@@ -1,11 +1,11 @@
 {
-  self,
   lib,
+  attrs,
   ...
 }: let
   inherit (builtins) attrValues readDir pathExists concatLists;
   inherit (lib) id mapAttrsToList filterAttrs hasPrefix hasSuffix nameValuePair removeSuffix mapAttrs';
-  inherit (self.attrs) mapFilterAttrs;
+  inherit (attrs) mapFilterAttrs;
 in rec {
   mapModule = dir: fn: {namefn ? (n: removeSuffix ".nix" n), ...}:
     mapAttrs' (name: _type: {
