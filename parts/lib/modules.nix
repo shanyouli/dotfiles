@@ -5,7 +5,7 @@
 }: let
   inherit (builtins) attrValues readDir pathExists concatLists;
   inherit (lib) id mapAttrsToList filterAttrs hasPrefix hasSuffix nameValuePair removeSuffix mapAttrs';
-  inherit (attrs) mapFilterAttrs;
+  inherit (attrs) mapFilterAttrs';
 in rec {
   mapModule = dir: fn: {namefn ? (n: removeSuffix ".nix" n), ...}:
     mapAttrs' (name: _type: {
@@ -23,11 +23,7 @@ in rec {
     (readDir dir));
 
   mapModules = dir: fn:
-    mapFilterAttrs
-    (n: v:
-      v
-      != null
-      && !(hasPrefix "_" n))
+    mapFilterAttrs'
     (n: v: let
       path = "${toString dir}/${n}";
     in
@@ -40,24 +36,29 @@ in rec {
         && hasSuffix ".nix" n
       then nameValuePair (removeSuffix ".nix" n) (fn path)
       else nameValuePair "" null)
+    (n: v:
+      v
+      != null
+      && !(hasPrefix "_" n))
     (readDir dir);
 
   mapModules' = dir: fn:
     attrValues (mapModules dir fn);
 
   mapModulesRec = dir: fn:
-    mapFilterAttrs
-    (n: v:
-      v
-      != null
-      && !(hasPrefix "_" n))
+    mapFilterAttrs'
     (n: v: let
       path = "${toString dir}/${n}";
     in
       if v == "directory"
       then nameValuePair n (mapModulesRec path fn)
       else if v == "regular" && n != "default.nix" && hasSuffix ".nix" n
-      then nameValuePair (removeSuffix ".nix" n) (fn path)
+      then
+        nameValuePair (removeSuffix ".nix" n) (fn path)
+        (n: v:
+          v
+          != null
+          && !(hasPrefix "_" n))
       else nameValuePair "" null)
     (readDir dir);
 

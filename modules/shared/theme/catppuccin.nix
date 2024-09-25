@@ -143,25 +143,7 @@ in {
       dirs_fn = n:
         concatMapAttrs (name: value: {"${configPath}/${n}/${name}".source = value;})
         (filterAttrs filterFn cfg.dirs.${n});
-      recursiveMerge = with builtins;
-        attrList: let
-          f = attrPath:
-            zipAttrsWith (
-              n: values:
-                if tail values == []
-                then head values
-                else if all isList values
-                then unique (concatLists values)
-                else if all isAttrs values
-                then f (attrPath ++ [n]) values
-                else last values
-            );
-        in
-          f [] attrList;
     in
-      (recursiveMerge (map texts_fn themes))
-      // (recursiveMerge (map dirs_fn themes))
-      // {
-      };
+      mergeAttrs' ((map texts_fn themes) ++ (map dirs_fn themes));
   };
 }
