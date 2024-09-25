@@ -26,12 +26,14 @@ in {
 
       configFile = mkOpt' attrs {} "Files to place directly in $XDG_CONFIG_HOME";
       dataFile = mkOpt' attrs {} "Files to place in $XDG_CONFIG_HOME";
+      fakeFile = mkOpt' attrs {} "Files to place in $XDG_FAKE_HOME";
 
       dataDir = mkOpt' path "${homedir}/.local/share" "xdg_data_home";
       stateDir = mkOpt' path "${homedir}/.local/state" "xdg_state_home";
       binDir = mkOpt' path "${homedir}/.local/bin" "xdg_bin_home";
       configDir = mkOpt' path "${homedir}/.config" "xdg_config_home";
       cacheDir = mkOpt' path "${homedir}/.cache" "xdg_cache_home";
+      fakeDir = mkOpt' path "${homedir}/.local/user" "Fake Home";
 
       services = mkOpt' attrs {} "home-manager user script";
       # 系统级使用 nix 是指: 使用 darwin-rebuild 或 nixos-rebuild 管理

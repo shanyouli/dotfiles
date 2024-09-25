@@ -1,9 +1,9 @@
-{inputs, ...}: {
-  perSystem = {
-    pkgs,
-    self',
-    ...
-  }: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
+  perSystem = {self', ...}: {
     apps.update.program = let
       allInputs = builtins.attrNames inputs;
       filterFn = v: let

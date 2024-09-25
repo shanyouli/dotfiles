@@ -1,4 +1,8 @@
-{inputs, ...}: let
+{
+  inputs,
+  pkgs,
+  ...
+}: let
   inherit (inputs.nixpkgs) lib;
   inherit (lib) makeExtensible attrValues foldr;
   inherit (modules) mapModules;
@@ -14,7 +18,7 @@
   mylib = makeExtensible (self:
     with self;
       mapModules ./.
-      (file: import file {inherit self lib inputs;}));
+      (file: import file {inherit self lib inputs pkgs;}));
 
   mylibs = lib.extend (_self: _super: {
     my = mylib.extend (_sself: ssuper: foldr (a: b: a // b) {} (attrValues ssuper));

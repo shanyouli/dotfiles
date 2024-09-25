@@ -51,7 +51,10 @@ in {
         stateVersion = "24.05";
         username = myvars.user;
         homeDirectory = myvars.homedir;
-        sessionVariables.XDG_BIN_HOME = config.home.binDir;
+        sessionVariables = {
+          XDG_BIN_HOME = config.home.binDir;
+          XDG_FAKE_HOME = config.home.fakeDir;
+        };
         sessionVariablesExtra = ''
           ${concatStringsSep "\n" (mapAttrsToList (n: v: (
               if "${n}" == "PATH"
@@ -89,6 +92,9 @@ in {
     (mkIf config.modules.gui.enable {
       home.packages = config.modules.gui.fonts;
     })
+    {
+      home.file = mapAttrs' (k: v: nameValuePair "${config.home.fakeDir}/${k}" v) config.home.fakeFile;
+    }
     {
       xdg.configFile = {
         "nixpath/home-manager".source = inputs.home-manager;

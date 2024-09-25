@@ -48,6 +48,7 @@ in {
 
         profileDirectory = "${config.home-manager.users."${config.user.name}".home.profileDirectory}";
         useos = true;
+        file = mapAttrs' (k: v: nameValuePair "${config.home.fakeDir}/${k}" v) config.home.fakeFile;
       };
 
       home-manager = {
@@ -127,6 +128,7 @@ in {
         XDG_DATA_HOME = "${config.home.dataDir}";
         XDG_STATE_HOME = "${config.home.stateDir}";
         XDG_BIN_HOME = "${config.home.binDir}";
+        XDG_FAKE_HOME = "${config.home.fakeDir}";
         XDG_RUNTIME_DIR =
           if pkgs.stdenvNoCC.isDarwin
           then "/tmp/user/${toString config.user.uid}"
