@@ -1,10 +1,11 @@
 {
   lib,
   config,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfp = config.modules.shell.prompt;
 in {
   config = mkIf (! cfp.zsh.enable) {

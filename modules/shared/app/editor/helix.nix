@@ -3,11 +3,12 @@
   lib,
   config,
   options,
+  my,
   ...
 }:
 #see @https://github.com/helix-editor/helix/wiki/Language-Server-Configurations#json
 with lib;
-with lib.my; let
+with my; let
   cfm = config.modules;
   cfg = cfm.app.editor.helix;
   tomlFormat = pkgs.formats.toml {};

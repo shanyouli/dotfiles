@@ -57,7 +57,7 @@
         self,
         ...
       }: {
-        # debug = true;
+        debug = true;
         systems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin"];
         imports = let
           inherit (inputs.nixpkgs.lib) filterAttrs mapAttrsToList hasSuffix hasPrefix;
@@ -70,57 +70,57 @@
           mapAttrsToList (k: _: ./parts/${k}) (filterFn (builtins.readDir ./parts));
 
         perSystem = {system, ...}: {
-          legacyPackages.homeConfigurations.test = self.lib.my.mkhome {
+          legacyPackages.homeConfigurations.test = self.my.mkhome {
             inherit system withSystem self;
             overlays = [self.overlays.python];
-            modules = [(self.lib.my.relativeToRoot "hosts/test/home-manager.nix")];
+            modules = [(self.my.relativeToRoot "hosts/test/home-manager.nix")];
           };
         };
 
         flake = {
           # homeConfigurations 自定义配置
           # homeConfigurations  = {
-          #   "lyeli" = self.lib.my.mkhome {
+          #   "lyeli" = self.my.mkhome {
           #     inherit withSystem self;
           #     system = "x86_64-linux";
-          #     modules = [(self.lib.my.relativeToRoot "hosts/test/home-manager.nix")];
+          #     modules = [(self.my.relativeToRoot "hosts/test/home-manager.nix")];
           #   };
           # };
           darwinConfigurations = {
-            "test@aarch64-darwin" = self.lib.my.mkdarwin {
+            "test@aarch64-darwin" = self.my.mkdarwin {
               system = "aarch64-darwin";
               inherit withSystem self;
               overlays = [self.overlays.python];
-              modules = [(self.lib.my.relativeToRoot "hosts/test/home-manager.nix")];
+              modules = [(self.my.relativeToRoot "hosts/test/home-manager.nix")];
             };
-            "test@x86_64-darwin" = self.lib.my.mkdarwin {
+            "test@x86_64-darwin" = self.my.mkdarwin {
               inherit withSystem self;
               system = "x86_64-darwin";
               overlays = [self.overlays.python];
-              modules = [(self.lib.my.relativeToRoot "hosts/test/home-manager.nix")];
+              modules = [(self.my.relativeToRoot "hosts/test/home-manager.nix")];
             };
-            "lyeli@aarch64-darwin" = self.lib.my.mkdarwin {
+            "lyeli@aarch64-darwin" = self.my.mkdarwin {
               system = "aarch64-darwin";
               inherit withSystem self;
               overlays = [self.overlays.python];
               name = "home-box";
-              modules = [(self.lib.my.relativeToRoot "hosts/homebox.nix")];
+              modules = [(self.my.relativeToRoot "hosts/homebox.nix")];
             };
           };
           nixosConfigurations = {
-            "test@aarch64-linux" = self.lib.my.mknixos {
+            "test@aarch64-linux" = self.my.mknixos {
               inherit withSystem self;
               system = "aarch64-linux";
               overlays = [self.overlays.python];
               modules = [
-                (self.lib.my.relativeToRoot "hosts/test/orbstack")
+                (self.my.relativeToRoot "hosts/test/orbstack")
               ];
             };
-            "test@x86_64-linux" = self.lib.my.mknixos {
+            "test@x86_64-linux" = self.my.mknixos {
               inherit withSystem self;
               overlays = [self.overlays.python];
               modules = [
-                (self.lib.my.relativeToRoot "hosts/test/nixos-x86_64")
+                (self.my.relativeToRoot "hosts/test/nixos-x86_64")
               ];
             };
           };

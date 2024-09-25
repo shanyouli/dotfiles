@@ -3,10 +3,11 @@
   lib,
   config,
   options,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.shell;
   shell_list = ["zsh" "bash" "nu" "fish"];
   my-nix-script = pkgs.stdenv.mkDerivation rec {

@@ -6,10 +6,11 @@
   lib,
   config,
   options,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfp = config.modules.media.music.mpd;
   cfg = cfp.rmpc;
 in {

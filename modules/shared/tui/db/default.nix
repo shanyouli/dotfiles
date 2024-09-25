@@ -3,14 +3,14 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 # mycli mysql 一个好用的客户端
 # usql 可以的多平台客户端,PostgreSQL, MySQL, Oracle Database, SQLite3, Microsoft SQL Server, and many other databases including NoSQL and non-relational databases!
 # pgcli Postgres CLI with autocompletion and syntax highlighting
 with lib;
-with lib.my; let
+with my; let
   cfm = config.modules;
   cfg = cfm.db;
 in {
@@ -31,7 +31,7 @@ in {
       modules.shell.zsh.prevInit = ''
         MYCLI_HISTFILE="${config.home.cacheDir}/mycli/mycli.history"
       '';
-      home.configFile."mycli/myclirc".source = "${myvars.dotfiles.config}/mycli/myclirc";
+      home.configFile."mycli/myclirc".source = "${my.dotfiles.config}/mycli/myclirc";
     })
     (mkIf cfg.dblab.enable {
       home.packages = [pkgs.dblab];

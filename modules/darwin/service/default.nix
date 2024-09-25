@@ -1,12 +1,13 @@
 {
   pkgs,
   lib,
+  my,
   config,
   options,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfm = config.modules;
   cfg = cfm.service;
   envScript = pkgs.writeScriptBin "launchdenv-service" ''

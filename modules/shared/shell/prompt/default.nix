@@ -2,10 +2,11 @@
   lib,
   config,
   options,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfp = config.modules.shell;
   cfg = cfp.prompt;
   support_tools = ["starship" "oh-my-posh"];

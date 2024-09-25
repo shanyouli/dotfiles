@@ -3,14 +3,14 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfm = config.modules;
   cfg = cfm.dev.node;
-  homeDir = myvars.homedir;
+  homeDir = my.homedir;
   npm_config_userconfig = "${homeDir}/.config/npm/config";
   npm_config_cache = "${homeDir}/.cache/npm";
   # NPM_CONFIG_TMP = "$XDG_RUNTIME_DIR/npm";

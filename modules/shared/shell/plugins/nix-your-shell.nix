@@ -3,10 +3,11 @@
   lib,
   config,
   options,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfp = config.modules.shell;
   cfg = cfp.nix-your-shell;
   cfgpkg = pkgs.nix-your-shell;

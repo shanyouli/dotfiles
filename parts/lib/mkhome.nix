@@ -1,4 +1,8 @@
-{inputs, ...}: let
+{
+  inputs,
+  lib,
+  ...
+}: let
   inherit (inputs) darwin-stable nixos-stable home-manager;
 in {
   mkhome = {
@@ -12,10 +16,9 @@ in {
   }:
     withSystem system (
       {
-        lib,
         pkgs,
         system,
-        myvars,
+        my,
         ...
       }:
         home-manager.lib.homeManagerConfiguration {
@@ -42,8 +45,8 @@ in {
                 })
             else pkgs;
           extraSpecialArgs = {
-            inherit self myvars;
-            inherit (self) inputs lib;
+            inherit self my;
+            inherit (self) inputs;
           };
           modules =
             [

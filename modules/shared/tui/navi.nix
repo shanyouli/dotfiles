@@ -3,11 +3,11 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfm = config.modules;
   cfg = cfm.navi;
   dataDir =
@@ -26,6 +26,6 @@ in {
     home.programs.bash.initExtra = ''
       eval `navi widget bash`
     '';
-    modules.shell.env.NAVI_PATH = "${myvars.dotfiles.config}/navi/cheats:${dataDir}";
+    modules.shell.env.NAVI_PATH = "${my.dotfiles.config}/navi/cheats:${dataDir}";
   };
 }

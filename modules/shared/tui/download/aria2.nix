@@ -3,10 +3,11 @@
   pkgs,
   lib,
   options,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.download.aria2;
 in {
   options = {

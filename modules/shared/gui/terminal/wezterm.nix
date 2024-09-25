@@ -3,11 +3,11 @@
   options,
   pkgs,
   lib,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.gui.terminal.wezterm;
 in {
   options.modules.gui.terminal.wezterm = with types; {
@@ -16,7 +16,7 @@ in {
   config = mkIf cfg.enable {
     home.packages = [pkgs.wezterm];
     home.configFile."wezterm" = {
-      source = "${myvars.dotfiles.config}/wezterm";
+      source = "${my.dotfiles.config}/wezterm";
       recursive = true;
     };
   };

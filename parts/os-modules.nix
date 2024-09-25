@@ -1,5 +1,5 @@
 {self, ...}: let
-  inherit (self.lib.my) relativeToRoot mapModulesRec';
+  inherit (self.my) relativeToRoot mapModulesRec';
 in {
   flake = {
     nixosModules = let

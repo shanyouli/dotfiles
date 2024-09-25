@@ -3,15 +3,15 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfp = config.modules.shell;
   cfg = cfp.zsh;
   getLastFunction = str: last (splitString "/" str);
-  configDir = myvars.dotfiles.config;
+  configDir = my.dotfiles.config;
   plFn = ext: l: (let
     _resultFn =
       if ext == "completions"
@@ -143,7 +143,7 @@ in {
       '';
       configFile =
         {
-          "zsh".source = "${myvars.dotfiles.config}/zsh";
+          "zsh".source = "${my.dotfiles.config}/zsh";
           "zsh".recursive = true;
           "zsh/cache/prev.zshrc".text = cfg.prevInit;
           "zsh/cache/extra.zshrc".text = cfg.rcInit;

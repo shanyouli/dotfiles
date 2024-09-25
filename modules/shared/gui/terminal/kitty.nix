@@ -3,11 +3,11 @@
   options,
   pkgs,
   lib,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.gui.terminal.kitty;
 in {
   options.modules.gui.terminal.kitty = with types; {
@@ -25,7 +25,7 @@ in {
     '';
     home.configFile = {
       "kitty" = {
-        source = "${myvars.dotfiles.config}/kitty";
+        source = "${my.dotfiles.config}/kitty";
         recursive = true;
       };
       "kitty/add.conf".text = ''

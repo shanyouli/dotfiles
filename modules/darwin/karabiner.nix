@@ -1,12 +1,12 @@
 {
   lib,
+  my,
   config,
   options,
-  myvars,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfm = config.modules;
   cfg = cfm.macos.karabiner;
 in {
@@ -17,7 +17,7 @@ in {
     # better using caplocks @see https://github.com/Eason0210/karabiner-config/blob/master/karabiner.json
     homebrew.casks = ["karabiner-elements"];
     home.configFile."karabiner/assets/complex_modifications" = {
-      source = "${myvars.dotfiles.config}/karabiner";
+      source = "${my.dotfiles.config}/karabiner";
       recursive = true;
     };
   };

@@ -3,11 +3,11 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfm = config.modules;
   cfg = cfm.shell.nushell;
   getBaseName = str: builtins.head (lib.splitString "." (lib.last (lib.splitString "/" str)));
@@ -18,8 +18,8 @@ with lib.my; let
           if hasPrefix "/" vl
           then x
           else if hasInfix "/" vl
-          then "${myvars.dotfiles.config}/${vl}"
-          else "${myvars.dotfiles.config}/${vl}/${vl}.script.nu";
+          then "${my.dotfiles.config}/${vl}"
+          else "${my.dotfiles.config}/${vl}/${vl}.script.nu";
       })
       l));
 in {

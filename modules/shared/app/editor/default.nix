@@ -2,10 +2,11 @@
   lib,
   config,
   options,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfm = config.modules.app;
   cfg = cfm.editor;
 in {

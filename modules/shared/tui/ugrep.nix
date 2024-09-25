@@ -3,10 +3,11 @@
   lib,
   config,
   options,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.ugrep;
 in {
   options.modules.ugrep = {

@@ -1,5 +1,5 @@
 {self, ...}: let
-  inherit (self.lib.my) relativeToRoot mapModulesRec';
+  inherit (self.my) relativeToRoot mapModulesRec';
 in {
   flake.homeModules = let
     basemodule = [(relativeToRoot "modules/optionals/hm.nix")];

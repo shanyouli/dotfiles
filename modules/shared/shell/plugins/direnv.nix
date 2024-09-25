@@ -3,10 +3,11 @@
   options,
   lib,
   pkgs,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.shell.direnv;
 in {
   options.modules.shell.direnv = {

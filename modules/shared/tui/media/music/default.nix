@@ -2,11 +2,11 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfp = config.modules.media;
   cfg = cfp.music;
   music_list = ["netease" "mpd" "cmus"];
@@ -21,7 +21,7 @@ in {
         else "";
       description = "default music manager";
     };
-    directory = mkOpt' types.path "${myvars.homedir}/Music" "Music Directory";
+    directory = mkOpt' types.path "${my.homedir}/Music" "Music Directory";
   };
   config = mkIf (cfg.default != "") {
     modules.media.music = {

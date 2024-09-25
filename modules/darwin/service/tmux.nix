@@ -1,12 +1,13 @@
 {
   pkgs,
   lib,
+  my,
   config,
   options,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfp = config.modules.services;
   cfg = cfp.tmux;
   cft = config.modules.tmux;

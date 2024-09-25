@@ -3,11 +3,11 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.app.editor.nvim;
 in {
   options = with lib; {
@@ -24,7 +24,7 @@ in {
     home = {
       actionscript = ''
         echo-info "Synchronizing nvim configurations..."
-        ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${myvars.dotfiles.config}/nvim/ ${config.home.configDir}/nvim/
+        ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${my.dotfiles.config}/nvim/ ${config.home.configDir}/nvim/
       '';
       configFile."nvim/plugin_list.lua".text = ''        return {
                 ${concatMapStringsSep ",\n" (v: ''"${v}"'') cfg.lsp}

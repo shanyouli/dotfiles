@@ -2,11 +2,11 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.macos.rime;
   cfm = config.modules;
 in {
@@ -36,8 +36,8 @@ in {
       text = cfm.rime.script;
     };
     home.file = {
-      "Library/Rime/squirrel.custom.yaml".source = "${myvars.dotfiles.config}/rime/squirrel.custom.yaml";
-      "Library/Rime/default.custom.yaml".source = "${myvars.dotfiles.config}/rime/default.custom.yaml";
+      "Library/Rime/squirrel.custom.yaml".source = "${my.dotfiles.config}/rime/squirrel.custom.yaml";
+      "Library/Rime/default.custom.yaml".source = "${my.dotfiles.config}/rime/default.custom.yaml";
     };
   };
 }

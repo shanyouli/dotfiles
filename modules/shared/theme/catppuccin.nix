@@ -3,11 +3,11 @@
   config,
   pkgs,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.theme.catppuccin;
   cm = config.modules;
   themes = ["mocha" "latte" "macchiato" "frappe"];
@@ -37,10 +37,10 @@ with lib.my; let
         --color=marker:#f2d5cf,fg+:#c6d0f5,prompt:#ca9ee6,hl+:#e78284"
     '';
   };
-  configDir = "${myvars.dotfiles.config}/themes/catppuccin";
+  configDir = "${my.dotfiles.config}/themes/catppuccin";
   configPath = ".cache/themes/catppucin";
-  linkDir = "${myvars.homedir}/${configPath}";
-  defaultDir = "${myvars.homedir}/.cache/themes/default";
+  linkDir = "${my.homedir}/${configPath}";
+  defaultDir = "${my.homedir}/.cache/themes/default";
 in {
   # https://github.com/catppuccin
   options.modules.theme.catppuccin = {

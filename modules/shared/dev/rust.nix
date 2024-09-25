@@ -3,14 +3,14 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfm = config.modules;
   cfg = cfm.dev.rust;
-  homeDir = myvars.homedir;
+  homeDir = my.homedir;
   rustup_dir = "${homeDir}/.local/share/rustup";
   package = pkgs.rustup;
 in {

@@ -3,10 +3,11 @@
   config,
   options,
   pkgs,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.service.battery;
   batter-script = pkgs.writeScriptBin "battery-service" ''
     #!${pkgs.stdenv.shell}

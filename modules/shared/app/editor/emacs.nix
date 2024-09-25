@@ -2,10 +2,11 @@
   config,
   pkgs,
   lib,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   # emacs 29.0.50 It is not stable
   cfg = config.modules.app.editor.emacs;
   emacsPackages = let

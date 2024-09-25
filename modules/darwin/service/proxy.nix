@@ -1,11 +1,12 @@
 {
   lib,
+  my,
   config,
   options,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.service.proxy;
   cft = config.modules.proxy;
 in {

@@ -5,13 +5,13 @@
   pkgs,
   inputs,
   home-manager,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
-  name = myvars.user;
-  inherit (myvars) homedir;
+with my; let
+  name = my.user;
+  inherit (my) homedir;
 in {
   imports = [./common.nix];
   options = with types; {
@@ -194,7 +194,7 @@ in {
               || (hasPrefix "home-manager=" x)))
           nixPathInputs)
           ++ [
-            "dotfiles=${myvars.dotfiles.dir}"
+            "dotfiles=${my.dotfiles.dir}"
           ];
       };
     }

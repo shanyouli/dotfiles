@@ -3,10 +3,11 @@
   config,
   options,
   pkgs,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfp = config.modules.download;
   cfg = cfp.wget;
   toWgetConfig = opts:

@@ -6,7 +6,7 @@
   perSystem = {system, ...}: {
     _module.args.pkgs = let
       inherit (inputs) darwin-stable nixos-stable;
-      inherit (self.lib) my;
+      inherit (self) my;
       mypkgs =
         if my.isDarwin system
         then darwin-stable

@@ -4,11 +4,11 @@
   lib,
   pkgs,
   inputs,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfgscript = pkgs.writeScript "home-user-active" ''
     #!${pkgs.stdenv.shell}
     # HACK: Unable to use nix installed git in scripts
@@ -41,7 +41,7 @@ with lib.my; let
 
     ${config.home.actionscript}
   '';
-  inherit (myvars) homedir;
+  inherit (my) homedir;
 in {
   imports = [./common.nix];
   config = mkMerge [
@@ -49,8 +49,8 @@ in {
       # home.packages = [pkgs.zsh];
       home = {
         stateVersion = "24.05";
-        username = myvars.user;
-        homeDirectory = myvars.homedir;
+        username = my.user;
+        homeDirectory = my.homedir;
         sessionVariables = {
           XDG_BIN_HOME = config.home.binDir;
           XDG_FAKE_HOME = config.home.fakeDir;
@@ -132,7 +132,7 @@ in {
               || (hasPrefix "home-manager=" x)))
           nixPathInputs)
           ++ [
-            "dotfiles=${myvars.dotfiles.dir}"
+            "dotfiles=${my.dotfiles.dir}"
           ];
       };
     }

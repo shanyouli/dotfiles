@@ -2,11 +2,11 @@
   config,
   lib,
   pkgs,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.git;
 in {
   options.modules.git = with types; {
@@ -25,10 +25,10 @@ in {
     home.programs.git = {
       enable = true;
       package = pkgs.git;
-      userName = mkDefault myvars.fullName;
-      userEmail = mkDefault myvars.useremail;
+      userName = mkDefault my.fullName;
+      userEmail = mkDefault my.useremail;
       signing = {
-        key = mkDefault myvars.useremail;
+        key = mkDefault my.useremail;
         signByDefault = true;
       };
       extraConfig = {

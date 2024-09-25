@@ -3,10 +3,11 @@
   config,
   options,
   pkgs,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.dev.java;
 in {
   options.modules.dev.java = with types; {

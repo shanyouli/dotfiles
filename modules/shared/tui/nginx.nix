@@ -3,11 +3,11 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.nginx;
 in {
   options.modules.nginx = {
@@ -35,11 +35,11 @@ in {
           [[ -d ${cfg.workDir}/$i ]] || mkdir -p ${cfg.workDir}/$i
         done
         ln -sf ${cfg.package}/conf/mime.types ${cfg.workDir}/conf
-        [[ -f ${myvars.dotfiles.config}/nginx/nginx.conf ]] && {
+        [[ -f ${my.dotfiles.config}/nginx/nginx.conf ]] && {
           if [[ -e ${cfg.workDir}/conf/nginx.conf ]] && [[ ! -h ${cfg.workDir}/conf/nginx.conf ]]; then
             mv ${cfg.workDir}/conf/nginx.conf ${cfg.workDir}/conf/nginx.conf.backup
           fi
-          ln -sf ${myvars.dotfiles.config}/nginx/nginx.conf ${cfg.workDir}/conf/nginx.conf
+          ln -sf ${my.dotfiles.config}/nginx/nginx.conf ${cfg.workDir}/conf/nginx.conf
         }
       '';
     };

@@ -3,12 +3,12 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
-  inherit (myvars) homedir;
+with my; let
+  inherit (my) homedir;
 in {
   options = with types; {
     home.programs = mkOpt' attrs {} "home-manager programs";
@@ -64,7 +64,7 @@ in {
         experimental-features = nix-command flakes
       '';
       settings = let
-        users = ["root" myvars.user "@admin" "@wheel"];
+        users = ["root" my.user "@admin" "@wheel"];
       in {
         trusted-users = users;
         allowed-users = users;

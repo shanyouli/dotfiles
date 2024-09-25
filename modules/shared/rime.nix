@@ -2,11 +2,11 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.rime;
   cfm = config.modules;
   # 移除 home目录后的部分
@@ -15,16 +15,16 @@ in {
   options.modules.rime = {
     enable = mkBoolOpt false;
     backupDir =
-      mkOpt' types.path "${myvars.homedir}/.config/rime-bak" "rime 词库同步文件";
+      mkOpt' types.path "${my.homedir}/.config/rime-bak" "rime 词库同步文件";
     userDir =
-      mkOpt' types.path "${myvars.homedir}/.config/fcitx/rime"
+      mkOpt' types.path "${my.homedir}/.config/fcitx/rime"
       "rime 用户文件保存位置";
     script = mkOpt' types.str "" "执行脚本";
     extraScript = mkOpt' types.lines "" "额外的执行内容";
     backupid = mkOpt' types.str "" "rime 同步id";
     ice = {
       enable = mkBoolOpt true;
-      dir = mkOpt' types.path "${myvars.homedir}/.cache/rime-ice" "保存雾凇拼音仓库位置";
+      dir = mkOpt' types.path "${my.homedir}/.cache/rime-ice" "保存雾凇拼音仓库位置";
     };
   };
   config = mkIf cfg.enable (mkMerge [
@@ -83,7 +83,7 @@ in {
       '';
     }
     (mkIf useEmacs {
-      home.configFile."emacs-rime/default.custom.yaml".source = "${myvars.dotfiles.config}/rime/default.custom.yaml";
+      home.configFile."emacs-rime/default.custom.yaml".source = "${my.dotfiles.config}/rime/default.custom.yaml";
       # FIXME: 显示拼音问题解决方法: https://github.com/iDvel/rime-ice/issues/431
       home.configFile."emacs-rime/rime_ice.custom.yaml".text = ''
         patch:

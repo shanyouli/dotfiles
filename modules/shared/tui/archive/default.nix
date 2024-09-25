@@ -2,10 +2,11 @@
   lib,
   config,
   options,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfp = config.modules;
   cfg = cfp.archive;
   cfg_list = ["atool" "ouch" "common"];

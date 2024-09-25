@@ -3,11 +3,11 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfm = config.modules;
   cfg = cfm.dev.nix;
 in {
@@ -24,7 +24,7 @@ in {
       nurl # better nix-prefetch-xxx
     ];
     home.configFile."nix-init/config.toml".text = ''
-      maintainers = [ "${myvars.user}" ]
+      maintainers = [ "${my.user}" ]
       nixpkgs = "<nixpkgs>"
     '';
     modules.app.editor.emacs.doom.confInit = ''

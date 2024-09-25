@@ -3,10 +3,11 @@
   config,
   options,
   pkgs,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfm = config.modules;
   cfg = cfm.shell.nix-index;
   cfgpkg = pkgs.unstable.my.nix-index;

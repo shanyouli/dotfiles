@@ -1,11 +1,12 @@
 {
   lib,
+  my,
   config,
   options,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.service.alist;
   cft = config.modules.alist;
 in {

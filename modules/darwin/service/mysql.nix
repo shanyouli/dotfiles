@@ -1,11 +1,12 @@
 {
   lib,
+  my,
   config,
   options,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfm = config.modules;
   cfg = cfm.service.mysql;
   cft = cfm.db.mysql;

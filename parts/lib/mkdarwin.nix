@@ -1,4 +1,8 @@
-{inputs, ...}: let
+{
+  inputs,
+  lib,
+  ...
+}: let
   inherit (inputs) darwin-stable home-manager darwin;
 in {
   mkdarwin = {
@@ -13,10 +17,9 @@ in {
   }:
     withSystem system (
       {
-        lib,
         pkgs,
         system,
-        myvars,
+        my,
         ...
       }:
         darwin.lib.darwinSystem (
@@ -40,8 +43,8 @@ in {
               else pkgs;
           in {
             specialArgs = {
-              inherit self myvars;
-              inherit (self) inputs lib;
+              inherit self my;
+              inherit (self) inputs;
             };
             modules =
               [

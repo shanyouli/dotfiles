@@ -3,10 +3,11 @@
   lib,
   config,
   options,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfm = config.modules;
   cfg = cfm.proxy;
   proxy_commands = ["sing-box" "clash"];

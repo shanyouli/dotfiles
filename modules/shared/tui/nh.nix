@@ -2,12 +2,12 @@
   lib,
   config,
   options,
-  myvars,
   pkgs,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfp = config.modules;
   cfg = cfp.nh;
 in {
@@ -26,7 +26,7 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       modules.nh = {
-        flake = mkDefault myvars.dotfiles.dir;
+        flake = mkDefault my.dotfiles.dir;
       };
       env = mkMerge [
         (mkIf config.home.useos {NH_OS_FLAKE = cfg.flake;})

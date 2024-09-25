@@ -2,10 +2,11 @@
   lib,
   config,
   options,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.macos.music;
   scfg = config.modules.media.music;
   inherit (scfg) netease;

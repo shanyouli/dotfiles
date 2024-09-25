@@ -9,10 +9,11 @@
   options,
   lib,
   pkgs,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   devCfg = config.modules.dev;
   cfg = devCfg.lua;
 in {

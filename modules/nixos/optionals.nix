@@ -3,10 +3,11 @@
   lib,
   config,
   options,
+  my,
   ...
 }:
 with lib;
-with lib.my; {
+with my; {
   options.modules.nixos = {
   };
   config = mkMerge [

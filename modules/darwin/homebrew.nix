@@ -1,12 +1,13 @@
 {
   pkgs,
   lib,
+  my,
   config,
   options,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.macos.brew;
   mirrors = {
     bfsu = "https://mirrors.bfsu.edu.cn"; # 北外

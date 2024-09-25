@@ -3,11 +3,11 @@
   options,
   pkgs,
   lib,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.tmux;
   cft = config.modules.theme;
 in {
@@ -25,7 +25,7 @@ in {
 
     home.configFile = {
       "tmux" = {
-        source = "${myvars.dotfiles.config}/tmux";
+        source = "${my.dotfiles.config}/tmux";
         recursive = true;
       };
       "tmux/extraInit" = {

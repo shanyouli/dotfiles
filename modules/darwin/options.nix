@@ -1,13 +1,13 @@
 {
   pkgs,
   lib,
+  my,
   config,
   options,
-  myvars,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.macos;
   filterEnabledTexts = dict: let
     attrList = lib.attrValues dict;
@@ -98,7 +98,7 @@ in {
         profiles = mkOrder 800 ["${config.home.stateDir}/nix/profile"];
         variables = config.modules.xdg.value;
       };
-      time.timeZone = mkDefault myvars.timezone;
+      time.timeZone = mkDefault my.timezone;
       modules = {
         shell = {
           aliases.emacs = let

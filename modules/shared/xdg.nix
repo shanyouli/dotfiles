@@ -1,17 +1,17 @@
 {
   lib,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; {
+with my; {
   # Get Nix (2.14+) itself to respect XDG. I.e.
   # ~/.nix-defexpr -> $XDG_DATA_HOME/nix/defexpr
   # ~/.nix-profile -> $XDG_DATA_HOME/nix/profile
   # ~/.nix-channels -> $XDG_DATA_HOME/nix/channels
   nix.settings.use-xdg-base-directories = true;
   env = {
-    DOTFILES = myvars.dotfiles.dir;
+    DOTFILES = my.dotfiles.dir;
     NIXPKGS_ALLOW_UNFREE = "1";
 
     # Conform more programs to XDG conventions. The rest are handled by their

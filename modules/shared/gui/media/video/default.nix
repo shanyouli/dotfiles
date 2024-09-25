@@ -2,10 +2,11 @@
   lib,
   config,
   options,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfp = config.modules.gui.media;
   cfg = cfp.video;
   video_apps = ["mpv" "vlc"];

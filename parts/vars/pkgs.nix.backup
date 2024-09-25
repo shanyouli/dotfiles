@@ -1,0 +1,35 @@
+{
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit (pkgs) symlinkJoin makeWrapper;
+  inherit (lib) removeAttrs;
+in rec {
+  mkHomePkg' = package: dir: args_ @ {
+    paths ? [],
+    nativeBuildInputs ? [],
+    postBuild ? "",
+    ...
+  }: let
+    name = "${package.pname}-wrapper-${package.version}";
+    nativeBuildInputs = args_.nativeBuildInputs ++ [makeWrapper];
+    paths = args_.paths ++ [package];
+    postBuild = ''
+      if [[ -d $out/bin ]]; then
+        for i in $out/bin/* ; do
+          wrapProgram $out/bin/$(basename ''${i}) --set HOME "${dir}"
+        done
+      fi
+      ${args_.postBuild}
+    '';
+    # args =
+    #   (removeAttrs args_ ["nativeBuildInputs" "paths" "postBuild"])
+    #   // {
+    #     inherit name nativebuildInputs paths postBuild;
+    #   };
+    args = {};
+  in
+    symlinkJoin args;
+  mkHomePkg = package: dir: mkHomePkg' dir package {};
+}

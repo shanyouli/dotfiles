@@ -6,10 +6,11 @@
   lib,
   config,
   options,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfp = config.modules.archive;
   cfg = cfp.ouch;
 in {

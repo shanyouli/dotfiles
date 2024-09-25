@@ -2,10 +2,11 @@
   config,
   lib,
   pkgs,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.python;
 in {
   options.modules.python = with types; {
@@ -110,7 +111,7 @@ in {
           packages = [pkgs.pipx];
           programs.bash.initExtra = lib.optionalString (global_python_path != "") pipx_function_text;
         };
-        # nushell.cmpFiles = ["${myvars.dotfiles.config}/pipx/pipx-completions.nu"];
+        # nushell.cmpFiles = ["${my.dotfiles.config}/pipx/pipx-completions.nu"];
       }
     ))
   ];

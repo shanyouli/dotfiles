@@ -1,11 +1,12 @@
 {
   lib,
+  my,
   config,
   ...
 }:
 with builtins;
 with lib;
-with lib.my; let
+with my; let
   cfg = config.modules.macos;
 in {
   options = with lib; {

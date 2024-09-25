@@ -3,11 +3,11 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfp = config.modules.gui.terminal;
   cfg = cfp.alacritty;
   cfgPkg = let
@@ -35,7 +35,7 @@ in {
     home.packages = [cfgPkg];
     home.configFile = {
       "alacritty" = {
-        source = "${myvars.dotfiles.config}/alacritty";
+        source = "${my.dotfiles.config}/alacritty";
         recursive = true;
       };
       # TODO: 更多可选配置

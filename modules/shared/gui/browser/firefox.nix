@@ -3,11 +3,11 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfm = config.modules.gui;
   cfg = cfm.browser.firefox;
   mozillaConfDir = cfm.browser.configDir.firefox;
@@ -115,7 +115,7 @@ in {
           "${profilePath}/chrome/userChrome.css" = mkIf (cfg.userChrome != "") {text = cfg.userChrome;};
           "${profilePath}/chrome/userContent.css" = mkIf (cfg.userContent != "") {text = cfg.userContent;};
           "${profilePath}/user.js".text = ''
-            ${builtins.readFile "${myvars.dotfiles.config}/firefox/user.js"}
+            ${builtins.readFile "${my.dotfiles.config}/firefox/user.js"}
 
             ${cfg.extraConfig}
           '';
@@ -139,7 +139,7 @@ in {
               if pkgs.stdenvNoCC.isDarwin
               then "userChrome-darwin.css"
               else "userChrome-linux.css";
-          in "${myvars.dotfiles.config}/firefox/chrome/${name}";
+          in "${my.dotfiles.config}/firefox/chrome/${name}";
         })
         {
           "${profilePath}/chrome/" = {

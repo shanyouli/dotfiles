@@ -3,11 +3,11 @@
   lib,
   config,
   options,
-  myvars,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   cfp = config.modules.media.music.mpd;
   cfg = cfp.ncmpcpp;
 in {
@@ -19,14 +19,14 @@ in {
     home.packages = [(pkgs.ncmpcpp.override {visualizerSupport = true;})];
     home.configFile."ncmpcpp/config".text = let
       ncmpcpp_dir = "${config.home.cacheDir}/ncmpcpp";
-      lyrics_dir = "${myvars.homedir}/Music/LyricsX";
+      lyrics_dir = "${my.homedir}/Music/LyricsX";
     in ''
       mpd_music_dir = ${config.modules.media.music.directory}
       lyrics_directory = ${lyrics_dir}
       ncmpcpp_directory = ${ncmpcpp_dir}
       mpd_port = "${toString cfp.port}"
 
-      ${builtins.readFile "${myvars.dotfiles.config}/ncmpcpp/config"}
+      ${builtins.readFile "${my.dotfiles.config}/ncmpcpp/config"}
 
       ${cfg.config}
     '';

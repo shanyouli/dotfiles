@@ -3,10 +3,11 @@
   lib,
   config,
   options,
+  my,
   ...
 }:
 with lib;
-with lib.my; let
+with my; let
   # TODO: 设置更好的管理配置文件的方法
   cfp = config.modules.proxy;
   cfg = cfp.clash;
