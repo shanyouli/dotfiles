@@ -1,6 +1,7 @@
 {
   lib,
   my,
+  config,
   ...
 }:
 with lib;
@@ -57,4 +58,11 @@ with my; {
     # .docker
     DOCKER_CONFIG = ''"$XDG_CONFIG_HOME"/docker'';
   };
+  home.actionscript = ''
+    echo-info "Create fakeHome"
+    fakehome="${config.home.fakeDir}"
+    mkdir -p "$fakehome" -m 755
+    [[ -e "$fakehome/.local" ]] || ln -sf ~/.local "$fakehome/.local"
+    [[ -e "$fakehome/.config" ]] || ln -sf ~/.config "$fakehome/.config"
+  '';
 }

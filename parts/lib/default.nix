@@ -2,7 +2,7 @@
   inherit (builtins) intersectAttrs functionArgs;
   # inherit (builtins) mapAttrs intersectAttrs functionArgs getEnv fromJSON;
   inherit (inputs.nixpkgs) lib;
-  inherit (lib) attrValues foldr foldl;
+  inherit (lib) attrValues foldr foldl makeExtensible;
 
   # mapModules gets special treatment because it's needed early!
   inherit (attrs) attrsToList mergeAttrs';

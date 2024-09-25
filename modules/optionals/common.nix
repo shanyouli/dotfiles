@@ -11,7 +11,6 @@ with my; let
   inherit (my) homedir;
 in {
   options = with types; {
-    home.programs = mkOpt' attrs {} "home-manager programs";
     env = mkOption {
       type = attrsOf (oneOf [str path (listOf (either str path))]);
       apply = mapAttrs (_n: v:
@@ -39,6 +38,8 @@ in {
       # 系统级使用 nix 是指: 使用 darwin-rebuild 或 nixos-rebuild 管理
       # 用户级使用 nix 是指: 使用 home-manager 管理
       useos = mkOpt' bool false "系统级使用 nix 还是用户级使用 nix";
+
+      programs = mkOpt' attrs {} "home-manager programs";
     };
   };
   config = {
