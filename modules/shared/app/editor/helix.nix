@@ -11,7 +11,6 @@ with lib;
 with my; let
   cfm = config.modules;
   cfg = cfm.app.editor.helix;
-  tomlFormat = pkgs.formats.toml {};
 in {
   options.modules.app.editor.helix = {
     enable = mkEnableOption "Whether to use helix";
@@ -77,10 +76,10 @@ in {
       configFile = let
         settings = {
           "helix/config.toml" = mkIf (cfg.settings != {}) {
-            source = tomlFormat.generate "helix-config" cfg.settings;
+            source = toTomlFile cfg.settings;
           };
           "helix/languages.toml" = mkIf (cfg.languages != {}) {
-            source = tomlFormat.generate "helix-languages-config" cfg.languages;
+            source = toTomlFile cfg.languages;
           };
           "helix/ignore" = mkIf (cfg.ignores != []) {
             text = concatStringsSep "\n" cfg.ignores + "\n";
@@ -88,7 +87,7 @@ in {
         };
         themes = mapAttrs' (n: v:
           nameValuePair "helix/themes/${n}.toml" {
-            source = tomlFormat.generate "helix-theme-${n}" v;
+            source = toTomlFile v;
           })
         cfg.themes;
       in

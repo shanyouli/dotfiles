@@ -109,11 +109,8 @@ in {
                       palettes.${n} = colors;
                       palette = "${n}";
                     };
-                  result = let
-                    tomlFormat = pkgs.formats.toml {};
-                  in
-                    tomlFormat.generate "starship-config" allSettings;
-                in "${result}");
+                in
+                  toTomlFile allSettings);
               };
             })
             themes);

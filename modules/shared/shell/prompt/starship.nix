@@ -10,7 +10,6 @@ with lib;
 with my; let
   cfm = config.modules.shell.prompt;
   cfg = cfm.starship;
-  tomlFormat = pkgs.formats.toml {};
 in {
   options.modules.shell.prompt.starship = {
     enable = mkBoolOpt false;
@@ -59,7 +58,7 @@ in {
       configFile."starship.toml" =
         mkIf ((cfg.settings != {}) && (config.modules.theme.default == ""))
         {
-          source = tomlFormat.generate "starship-config" cfg.settings;
+          source = toTomlFile cfg.settings;
         };
     };
     modules.shell = {

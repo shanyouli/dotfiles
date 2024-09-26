@@ -3,7 +3,6 @@
   pkgs,
   ...
 }: let
-  inherit (pkgs) symlinkJoin makeWrapper;
   inherit (lib) removeAttrs optionals optionalString;
 in rec {
   # package -> pkg
@@ -11,7 +10,7 @@ in rec {
   # args_ -> attrs
   mkHomePkg' = package: dir: args_: let
     name = "${package.pname}-wrapper-${package.version}";
-    _nativeBuildInputs = [makeWrapper] ++ optionals (args_ ? nativeBuildInputs) args_.nativeBuildInputs;
+    _nativeBuildInputs = [pkgs.makeWrapper] ++ optionals (args_ ? nativeBuildInputs) args_.nativeBuildInputs;
     paths = [package] ++ optionals (args_ ? paths) args_.paths;
     postBuild = ''
       if [[ -d $out/bin ]]; then
@@ -29,6 +28,12 @@ in rec {
       };
     # args = {};
   in
-    symlinkJoin arg_;
+    pkgs.symlinkJoin arg_;
   mkHomePkg = package: dir: mkHomePkg' package dir {};
+
+  # toJsonFile :: (attrs -> jsonFile)
+  toJsonFile = attrs: (pkgs.formats.json {}).generate "prettyJSON" attrs;
+
+  # toTomlFile :: (attrs -> tomlFile)
+  toTomlFile = attrs: (pkgs.formats.toml {}).generate "prettyTOML" attrs;
 }
