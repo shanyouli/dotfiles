@@ -1,9 +1,10 @@
-{
-  inputs,
-  pkgs,
-  ...
-}: {
-  perSystem = {self', ...}: {
+{inputs, ...}: {
+  perSystem = {
+    self',
+    my,
+    pkgs,
+    ...
+  }: {
     apps.update.program = let
       allInputs = builtins.attrNames inputs;
       filterFn = v: let
@@ -16,10 +17,10 @@
       stableInputs = filterFn allInputs;
       baseInputs = builtins.filter (x: !(builtins.elem x ["nixos" "darwin" "darwin-stable" "self"])) allInputs;
     in
-      pkgs.writeScriptBin "update-flake" ''
-        #!${pkgs.lib.getExe pkgs.nushell}
+      my.writeNuScriptBin "update-flake" ''
         use std log
         log info $"The execution file path is ($env.FILE_PWD)/update-flake"
+        exit 0
         # nix flake update inputs
         def main [--all(-a), --stable(-s)] {
           if $all {

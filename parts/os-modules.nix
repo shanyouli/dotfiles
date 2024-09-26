@@ -27,14 +27,14 @@ in {
     pkgs,
     inputs',
     self',
+    my,
     ...
   }: {
     packages.os-rebuild =
       if pkgs.stdenvNoCC.isDarwin
       then inputs'.darwin.packages.default
       else pkgs.nixos-rebuild;
-    apps.init-os.program = pkgs.writeScriptBin "init-os" ''
-      #!${pkgs.lib.getExe pkgs.nushell}
+    apps.init-os.program = my.writeNuScriptBin "init-os" ''
       print $env.FILE_PWD
       let uname_info = uname
       let arch = if (($uname_info | get machine | str downcase) == "arm64") {
