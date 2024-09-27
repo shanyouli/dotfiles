@@ -1,400 +1,404 @@
-/* Hide the tab-close button until hover */
-.tabbrowser-tab:not(\[pinned\]):not(:hover) .tab-close-button {
-    visibility: collapse !important;
+@media (prefers-color-scheme:dark){
+   :root{
+      --bg: #1a1b26;
+
+      --urlbar-bg: #0d0d15;
+      --urlbar-border-top: #000;
+      --urldrop-bg: #0d0d15;
+      --urlbar-border-bottom: #404040;
+      --urlbar-outline: #414868;
+
+      --fullscreen-warn: rgb(25,25,25);
+
+      --arrowpanel-background: var(--urlbar-bg) !important;
+      --button-hover-bgcolor: rgba(159, 159, 159, 0.35) !important;
+      --button-active-bgcolor: rgba(255, 255, 255, .2) !important;
+      --button-bgcolor: rgba(117, 117, 117, 0.9) !important;
+      --toolbarbutton-icon-fill-opacity: 0.8 !important;
+      --arrowpanel-border-color: rgb(55, 55, 55) !important;
+      --identity-btn-hover-color: rgba(117,117,117) !important;
+
+      --dark-menu-background-color: rgba(34, 34, 36, .5) !important;
+      --dark-menu-border-color: rgb(55, 55, 55) !important;
+      --dark-menuitem-hover-background-color: rgba(159, 159, 159, 0.35) !important;
+   }
 }
 
-.tabbrowser-tab:not(\[pinned\]):hover .tab-close-button {
-    visibility: visible !important;
-    display: block !important;
+@media (prefers-color-scheme:light){
+   :root{
+      --bg: #f1f5f9;
+
+      --urlbar-bg: #cbd5e1;
+      --urlbar-border-top: #9ca3af;
+      --urlbar-border-bottom: #fff;
+      --urldrop-bg: #cbd5e1;
+      --urlbar-outline: #94a3b8;
+
+      --fullscreen-warn: rgb(25,25,25);
+
+      --arrowpanel-background: #e2e8f0 !important;
+      --button-hover-bgcolor: #cbd5e1 !important;
+      --button-active-bgcolor: #cbd5e1 !important;
+      --identity-btn-hover-color: white !important;
+   }
 }
 
-/* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/hide_tabs_toolbar_osx.css made available under Mozilla Public License v. 2.0
-See the above repository for updates as well as full license text. */
+ /* Suppress Connecting/Waiting/Reading/Transerring */
+/*  #statuspanel[type="status"] {
+   display: none !important;
+ } */
 
-/* Hides tabs toolbar - OSX only */
+ /* Suppress Link Destination Overlay */
+/*  #statuspanel[type="overLink"] {
+   display: none !important;
+ } */
 
-/* IMPORTANT */
-/*
-Get window_control_placeholder_support.css
-Window controls will be all wrong without it
-*/
-
-:root {
-    --uc-toolbar-height: 28px;
+/* URL BAR */
+#urlbar {
+   border-radius: 30px !important;
+   border: 0 !important;
 }
 
-:root:not([uidensity="compact"]) {
-    --uc-toolbar-height: 32px
+#urlbar:not(.megabar):not([focused="true"]):hover {
+  outline: 1px solid var(--urlbar-outline) !important;
 }
 
-#TabsToolbar>* {
-    visibility: collapse !important
+#urlbar[focused="true"] {
+   border: 0 !important;
+   border-top: 1px solid var(--urlbar-border-top) !important;
+   border-bottom: 1px solid var(--urlbar-border-bottom) !important;
+   border-radius: 30px !important;
 }
 
-:root[sizemode="fullscreen"] #TabsToolbar>#window-controls {
-    visibility: visible !important;
-    z-index: 2
+#urlbar[breakout][breakout-extend]{
+   border: none !important;
+   box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px,
+      rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px,
+      rgba(0, 0, 0, 0.09) 0px 32px 16px !important;
+   top: calc(
+      (var(--urlbar-toolbar-height) - var(--urlbar-height)) / 2 ) !important;
+   left: 0 !important;
+   width: 100% !important;
 }
 
-#TabsToolbar>.titlebar-buttonbox-container {
-    visibility: visible !important;
-    height: var(--uc-toolbar-height) !important;
+#urlbar-container{
+   margin-bottom: 4px;
+   display: initial;
+
 }
+
+#urlbar-background {
+   box-shadow: none !important;
+   border-radius: 30px !important;
+   background: var(--urlbar-bg) !important;
+}
+
+#urlbar[focused="true"] #urlbar-background{
+   box-shadow: inset 1px 1px 1px 0px rgba(0, 0, 0, 0.35) !important;
+   outline: none !important;
+}
+
+#wrapper-urlbar-container #urlbar {
+  height: 30px !important;
+}
+
+ /* Active Address/Search Field Dropdown */
+#urlbar[breakout][breakout-extend] > #urlbar-background {
+   outline: none !important;
+   box-shadow: none !important;
+   background: var(--urldrop-bg) !important;
+   border-radius: 15px !important;
+}
+
+#urlbar[breakout][breakout-extend] > #urlbar-input-container,
+#urlbar-input-container {
+  height: var(--urlbar-height) !important;
+  padding-block: 0px !important;
+  padding-inline: 0px !important;
+  transition: none !important;
+}
+
+/* Idendity icon button */
+#identity-icon-box.identity-box-button{
+   margin: 3px 0 3px 3px;
+   border-radius: 14px !important;
+   background-color: var(--bg) !important;
+   opacity: 0.8
+}
+
+#identity-icon-box.identity-box-button:hover{
+   cursor: pointer;
+   background-color: var(--identity-btn-hover-color) !important;
+}
+
+/* Track protection icon */
+#tracking-protection-icon-container{
+   border-radius: 16px !important;
+}
+
+#tracking-protection-icon-container:hover{
+   cursor: pointer !important;
+}
+
+/* Star button */
+#star-button-box{
+   border-radius: 16px !important;
+}
+
+#star-button-box:hover{
+   cursor: pointer !important;
+}
+
+ /* | Borders | */
+
+ .tabbrowser-tab::after {
+    border: 0 !important;
+ }
+ .titlebar-spacer[type="pre-tabs"] {
+    border: 0 !important;
+ }
+ #navigator-toolbox {
+    border: 1 !important;
+ }
+
+ .titlebar-spacer[type="pre-tabs"] {
+    border: 0 !important;
+ }
+
+ .tabbrowser-tab::after {
+    border: 0 !important;
+ }
+
+ #urlbar-background {
+    border: 0 !important;
+ }
+
+#urlbar[open] > .urlbarView > .urlbarView-body-outer > .urlbarView-body-inner {
+     border-top: 0 !important;
+ }
+
+
+ /* Active Tab */
+ :root:not([lwt-default-theme-in-dark-mode]) .tab-background[selected],
+ .tab-background[multiselected="true"] {
+    background: rgba(0,0,0,.05) !important;
+ }
+
+ :root[lwt-default-theme-in-dark-mode] .tab-background[selected],
+ .tab-background[multiselected="true"] {
+    background: rgba(0,0,0,.2) !important;
+ }
+
+
+ /* Navigation Bar */
 
 #nav-bar {
-    margin-top: calc(0px - var(--uc-toolbar-height));
+   margin-top: -22px;
+   background-color: var(--bg) !important;
 }
 
-:root[inFullscreen] #navigator-toolbox {
-    margin-top: 11px
+#nav-bar[inFullscreen="true"]{
+   margin-top: -10px;
 }
 
-/* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/window_control_placeholder_support.css made available under Mozilla Public License v. 2.0
-See the above repository for updates as well as full license text. */
+ /* Bookmarks Bar */
+#PersonalToolbar {
+    background-color: var(--bg) !important;
+ }
 
-/* Creates placeholders for window controls */
-/* This is a supporting file used by other stylesheets */
+ /* Navigation Bar Separator */
+#navigator-toolbox {
+   border-color: var(--bg) !important;
+   background-color: var(--bg) !important;
+   padding-top: 5px;
+ }
 
-/* This stylesheet is pretty much unnecessary if window titlebar is enabled */
-
-/* This file should preferably be imported before other stylesheets */
-
-/* Defaults for window controls on RIGHT side of the window */
-/* Modify these values to match your preferences */
-:root:is([tabsintitlebar], [sizemode="fullscreen"]) {
-    --uc-window-control-width: 138px;
-    /* Space reserved for window controls (Win10) */
-    /* Extra space reserved on both sides of the nav-bar to be able to drag the window */
-    --uc-window-drag-space-pre: 30px;
-    /* left side*/
-    --uc-window-drag-space-post: 30px;
-    /* right side*/
+ /* Navigation bar Buttons */
+toolbarbutton{
+   margin-top: -5px !important;
 }
 
-:root:is([tabsintitlebar][sizemode="maximized"], [sizemode="fullscreen"]) {
-    --uc-window-drag-space-pre: 0px;
-    /* Remove pre space */
+toolbarbutton:hover{
+   cursor: pointer;
 }
 
-@media (-moz-platform: windows-win7),
-(-moz-platform: windows-win8) {
-    :root:is([tabsintitlebar], [sizemode="fullscreen"]) {
-        --uc-window-control-width: 105px;
-    }
+ /* Show Tab close button on hover */
+.tabbrowser-tab:not([pinned]) .tab-close-button {
+  display: -moz-box !important;
+  opacity: 0;
+  visibility: collapse !important;
+  transition: opacity 0.25s, visibility 0.25s ease-in !important;
+}
+.tabbrowser-tab:not([pinned]):hover .tab-close-button {
+  opacity: 1;
+  visibility: visible !important;
+  border-radius: 3px 3px 3px 3px !important;
 }
 
-@media (-moz-gtk-csd-available) {
-    :root:is([tabsintitlebar], [sizemode="fullscreen"]) {
-        --uc-window-control-width: 84px;
-    }
+/* Show URL buttons on Hover */
+   #nav-bar:not([customizing="true"])
+  > #nav-bar-customization-target
+  > #urlbar-container:not(:hover)
+  > #urlbar:not([focused])
+  > #urlbar-input-container
+  > #page-action-buttons {
+  opacity: 0;
+}
+#page-action-buttons {
+  transition: opacity 0.15s ease;
+}
+#nav-bar:not([customizing="true"])
+  > #nav-bar-customization-target
+  > #urlbar-container:not(:hover)
+  > #urlbar:not([focused])
+  > #urlbar-input-container
+  > #tracking-protection-icon-container {
+  opacity: 0;
+}
+#tracking-protection-icon-container {
+  transition: opacity 0.15s ease;
 }
 
-@media (-moz-platform: macos) {
-    :root:is([tabsintitlebar], [sizemode="fullscreen"]) {
-        --uc-window-control-width: 72px;
-    }
+
+/*Full Screen Warning*/
+
+#fullscreen-warning{
+   background-color: var(--fullscreen-warn) !important;
+   border-color: var(--fullscreen-warn) !important;
+   max-width: 500px !important;
+   max-height: 50px !important;
+   border-radius: 50px !important;
+   font-size: 12px !important;
+   opacity: 0.8 !important;
 }
 
-.titlebar-buttonbox,
-#window-controls {
-    color: var(--toolbar-color)
+.pointerlockfswarning-generic-text,
+.pointerlockfswarning-domain-text{
+    font-size: 15px !important;
+    color: rgb(255,255,255) !important;
+    text-shadow: none !important;
 }
 
-:root[sizemode="fullscreen"] .titlebar-buttonbox-container {
-    display: none
+
+/* Uncomment to Hide tabs bar for Tree style tabs (Credit u/jfgxyz on Reddit) */
+toolbar#TabsToolbar {
+    height: 0px;
+    min-height: 0 !important;
+    padding-top: 2px;
+    background-color: var(--bg) !important;
+}
+.toolbar-items {
+   visibility: collapse;
+}
+hbox#nav-bar-customization-target {
+    padding-left: 80px !important;
 }
 
-:root[sizemode="fullscreen"] #navigator-toolbox {
-    position: relative;
-}
+/* SIDEBERY */
 
-:root[sizemode="fullscreen"] #TabsToolbar>.titlebar-buttonbox-container:last-child,
-:root[sizemode="fullscreen"] #window-controls {
-    position: absolute;
-    display: flex;
-    top: 0;
-    right: 0;
-    height: 40px;
-}
-
-:root[sizemode="fullscreen"] #TabsToolbar>.titlebar-buttonbox-container:last-child,
-:root[uidensity="compact"][sizemode="fullscreen"] #window-controls {
-    height: 32px
-}
-
-#nav-bar {
-    border-inline: var(--uc-window-drag-space-pre, 0px) solid transparent;
-    border-inline-style: solid !important;
-    border-right-width: calc(var(--uc-window-control-width, 0px) + var(--uc-window-drag-space-post, 0px));
-    background-clip: border-box !important;
-}
-
-/* Rules for window controls on left layout */
-@media (-moz-bool-pref: "userchrome.force-window-controls-on-left.enabled"),
-(-moz-gtk-csd-reversed-placement),
-(-moz-platform: macos) {
-    :root[tabsintitlebar="true"] #nav-bar {
-        border-inline-width: calc(var(--uc-window-control-width, 0px) + var(--uc-window-drag-space-post, 0px)) var(--uc-window-drag-space-pre, 0px)
-    }
-
-    :root[sizemode="fullscreen"] #TabsToolbar>.titlebar-buttonbox-container:last-child,
-    :root[sizemode="fullscreen"] #window-controls {
-        right: unset
-    }
-}
-
-@media (-moz-bool-pref: "userchrome.force-window-controls-on-left.enabled") {
-    .titlebar-buttonbox-container {
-        order: -1 !important;
-    }
-
-    .titlebar-buttonbox {
-        flex-direction: row-reverse;
-    }
-}
-
-/* This pref can be used to force window controls on left even if that is not normal behavior on your OS */
-@supports -moz-bool-pref("userchrome.force-window-controls-on-left.enabled") {
-    :root[tabsintitlebar="true"] #nav-bar {
-        border-inline-width: calc(var(--uc-window-control-width, 0px) + var(--uc-window-drag-space-post, 0px)) var(--uc-window-drag-space-pre, 0px)
-    }
-
-    :root[sizemode="fullscreen"] #TabsToolbar>.titlebar-buttonbox-container:last-child,
-    :root[sizemode="fullscreen"] #window-controls {
-        right: unset;
-    }
-
-    .titlebar-buttonbox-container {
-        order: -1 !important;
-    }
-
-    .titlebar-buttonbox {
-        flex-direction: row-reverse;
-    }
-}
-
-/**
- * Decrease size of the sidebar header
- */
+/* hides the sidebar header */
 #sidebar-header {
-    font-size: 1.2em !important;
-    padding: 2px 6px 2px 3px !important;
+	display: none !important;
 }
 
-#sidebar-header #sidebar-close {
-    padding: 3px !important;
+.tab[selected="true"] {
+	visibility: collapse;
+	height: 0px;
 }
 
-#sidebar-header #sidebar-close .toolbarbutton-icon {
-    width: 14px !important;
-    height: 14px !important;
-    opacity: 0.6 !important;
+.tabbrowser-tab {
+	visibility: collapse;
+	height: 0px;
 }
 
-/* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/autohide_sidebar.css made available under Mozilla Public License v. 2.0
-See the above repository for updates as well as full license text. */
-
-/* Show sidebar only when the cursor is over it  */
-/* The border controlling sidebar width will be removed so you'll need to modify these values to change width */
-
-#sidebar-box{
-  --uc-sidebar-width: 40px;
-  --uc-sidebar-hover-width: 260px;
-  --uc-autohide-sidebar-delay: 600ms; /* Wait 0.6s before hiding sidebar */
-  --uc-autohide-transition-duration: 115ms;
-  --uc-autohide-transition-type: linear;
-  position: relative;
-  min-width: var(--uc-sidebar-width) !important;
-  width: var(--uc-sidebar-width) !important;
-  max-width: var(--uc-sidebar-width) !important;
-  z-index:1;
+.tabbrowser-tab[visuallyselected="true"] {
+	visibility: collapse;
+	height: 0px;
 }
 
-#sidebar-box[positionend]{ direction: rtl }
-#sidebar-box[positionend] > *{ direction: ltr }
+/* AUTO HIDE SIDE BAR */
 
-#sidebar-box[positionend]:-moz-locale-dir(rtl){ direction: ltr }
-#sidebar-box[positionend]:-moz-locale-dir(rtl) > *{ direction: rtl }
-
-#main-window[sizemode="fullscreen"] #sidebar-box{ --uc-sidebar-width: 00px; }
-
-#sidebar-splitter{ display: none }
-
-#sidebar-header{
-  overflow: hidden;
-  color: var(--chrome-color, inherit) !important;
-  padding-inline: 0 !important;
+#sidebar-box {
+	--uc-sidebar-width: 44px;
+	--uc-sidebar-hover-width: 260px;
+	--uc-autohide-sidebar-delay: 1ms; /* Waiting time before hiding sidebar */
+	position: relative;
+	min-width: var(--uc-sidebar-width) !important;
+	width: var(--uc-sidebar-width) !important;
+	max-width: var(--uc-sidebar-width) !important;
+	z-index: 100;
 }
 
-#sidebar-header::before,
-#sidebar-header::after{
-  content: "";
-  display: flex;
-  padding-left: 8px;
+#sidebar-box[positionend] {
+	direction: rtl;
+}
+#sidebar-box[positionend] > * {
+	direction: ltr;
 }
 
-#sidebar-header,
-#sidebar{
-  transition: min-width var(--uc-autohide-transition-duration) var(--uc-autohide-transition-type) var(--uc-autohide-sidebar-delay) !important;
-  min-width: var(--uc-sidebar-width) !important;
-  will-change: min-width;
+#sidebar-box[positionend]:-moz-locale-dir(rtl) {
+	direction: ltr;
 }
-#sidebar-box:hover > #sidebar-header,
-#sidebar-box:hover > #sidebar{
-  min-width: var(--uc-sidebar-hover-width) !important;
-  transition-delay: 0ms !important;
+#sidebar-box[positionend]:-moz-locale-dir(rtl) > * {
+	direction: rtl;
 }
 
-.sidebar-panel{
-  background-color: transparent !important;
-  color: var(--newtab-text-primary-color) !important;
+/* HIDE SIDE BAR IN FULL SCREEN */
+/* #main-window[inFullscreen="true"] #sidebar-box {
+	--uc-sidebar-width: 0px;
+} */
+
+#sidebar-splitter {
+	display: none;
 }
 
-.sidebar-panel #search-box{
-  -moz-appearance: none !important;
-  background-color: rgba(249,249,250,0.1) !important;
-  color: inherit !important;
+#sidebar-header {
+	overflow: hidden;
+	color: var(--chrome-color, inherit) !important;
+}
+
+#sidebar {
+	transition: min-width 115ms linear var(--uc-autohide-sidebar-delay) !important;
+	min-width: var(--uc-sidebar-width) !important;
+	will-change: min-width;
+}
+
+#sidebar-box:hover > #sidebar {
+	min-width: var(--uc-sidebar-hover-width) !important;
+	transition-delay: 0ms !important;
+}
+
+.sidebar-panel {
+	background-color: transparent !important;
+	color: var(--newtab-text-primary-color) !important;
+}
+
+.sidebar-panel #search-box {
+	-moz-appearance: none !important;
+	background-color: rgba(249, 249, 250, 0.1) !important;
+	color: inherit !important;
 }
 
 /* Add sidebar divider and give it background */
 
 #sidebar,
-#sidebar-header{
-  background-color: inherit !important;
-  border-inline: 1px solid rgb(80,80,80);
-  border-inline-width: 0px 1px;
+#sidebar-header {
+	background-color: inherit !important;
+/* 	border-inline: 1px solid rgb(80, 80, 80); */
+	border-inline-width: 0px 1px;
 }
 
 #sidebar-box:not([positionend]) > :-moz-locale-dir(rtl),
-#sidebar-box[positionend] > *{
-  border-inline-width: 1px 0px;
+#sidebar-box[positionend] > * {
+	border-inline-width: 1px 0px;
 }
 
 /* Move statuspanel to the other side when sidebar is hovered so it doesn't get covered by sidebar */
 
-#sidebar-box:not([positionend]):hover ~ #appcontent #statuspanel{
-  inset-inline: auto 0px !important;
+#sidebar-box:not([positionend]):hover ~ #appcontent #statuspanel {
+	inset-inline: auto 0px !important;
 }
-#sidebar-box:not([positionend]):hover ~ #appcontent #statuspanel-label{
-  margin-inline: 0px !important;
-  border-left-style: solid !important;
-}
-
-/* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/floating_findbar_on_top.css made available under Mozilla Public License v. 2.0
-See the above repository for updates as well as full license text. */
-
-/* This style makes findbar appear as floating box at the top-left of the content area.
- * If you want the findbar on right side instead then create a new pref
- * userchrome.floating-findbar-on-right.enabled and set it to true and restart Firefox
- *
- * Note that privacy.resistFingerprinting.letterboxing prevents this from working properly
- */
-
-findbar{
-  order: -1;
-  margin-bottom: -33px;
-  position: relative;
-  border-top: none !important;
-  padding: 0 !important;
-  transition: transform 82ms linear, opacity 82ms linear 32ms !important;
-  background: none !important;
-  pointer-events: none;
-  z-index: 1;
-  white-space: nowrap;
-}
-
-.findbar-container > .findbar-find-fast{
-  padding: var(--toolbarbutton-inner-padding) 1px;
-  margin: 0 !important;
-}
-
-findbar[hidden]{ transform: translateY(-30px);}
-
-findbar > .findbar-container,
-findbar > .close-icon{
-  border: 1px solid var(--chrome-content-separator-color);
-  border-width: 0 0 1px 0px;
-  background-color: var(--lwt-accent-color) !important;
-  background-image: linear-gradient(var(--toolbar-bgcolor),var(--toolbar-bgcolor)),var(--lwt-header-image,none);
-  pointer-events: auto;
-}
-
-findbar > .findbar-container{
-  border-bottom-right-radius: 4px;
-  border-right-width: 1px;
-  height: initial !important;
-  margin-inline: 0px !important;
-  overflow-inline: visible !important;
-}
-
-.findbar-find-status{
-  display: flex;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-grow: 1;
-}
-
-.findbar-closebutton{
-  margin: 0 !important;
-  border-radius: 0 !important;
-  padding: 5px !important;
-  width: initial !important;
-  order: -1;
-}
-.findbar-closebutton > image{ padding: 3px }
-.findbar-closebutton:hover > image{
-  background: var(--toolbarbutton-hover-background) !important;
-  border-radius: 4px
-}
-findbar > .findbar-container > hbox{ margin: 0 5px }
-
-findbar::after{
-  content:"";
-  display: flex;
-  flex-grow: 100;
-}
-
-@media (-moz-bool-pref: "userchrome.floating-findbar-on-right.enabled"){
-  findbar{
-    flex-direction: row-reverse;
-  }
-  findbar > .findbar-container{
-    flex-direction: row-reverse;
-    border-inline-width: 1px 0px;
-    border-bottom-right-radius: 0px;
-    border-bottom-left-radius: 4px;
-  }
-  /*
-  Move findbar so it isn't over the scrollbar
-  Delete if you want findbar to begin from right window edge
-  */
-  findbar{
-    margin-right: 16px;
-    border-right: 1px solid var(--chrome-content-separator-color);
-  }
-}
-
-@supports -moz-bool-pref("userchrome.floating-findbar-on-right.enabled"){
-  findbar{
-    flex-direction: row-reverse;
-  }
-  findbar > .findbar-container{
-    flex-direction: row-reverse;
-    border-inline-width: 1px 0px;
-    border-bottom-right-radius: 0px;
-    border-bottom-left-radius: 4px;
-  }
-  /*
-  Move findbar so it isn't over the scrollbar
-  Delete if you want findbar to begin from right window edge
-  */
-  findbar{
-    margin-right: 16px;
-    border-right: 1px solid var(--chrome-content-separator-color);
-  }
-}
-
-/* ~~~~~~~~ Hidden elements styles ~~~~~~~~~ */
-#sidebar-header {
-	display: none !important;
+#sidebar-box:not([positionend]):hover ~ #appcontent #statuspanel-label {
+	margin-inline: 0px !important;
+	border-left-style: solid !important;
 }

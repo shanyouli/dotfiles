@@ -150,7 +150,7 @@ in {
             # "windterm" # 比较好用的 ssh 客户端，可以使用 vscode 的 ssh 插件取代
             # "doll" # 在 menubar 上显示 消息提示
             "zed"
-            "qutebrowser"
+            # "qutebrowser" # 浏览器
 
             "shanyouli/tap/nextchat" # gptchat, 客户端，需要密钥
             "shanyouli/tap/upic" # or "picgo"

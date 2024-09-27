@@ -113,8 +113,9 @@ in rec {
     Type: AttrSet
     */
     derivationArgs ? {},
+    nushell ? pkgs.nushell,
   }:
-    writeTextFile {
+    pkgs.writeTextFile {
       inherit name meta derivationArgs;
       executable = true;
       destination = "/bin/${name}";

@@ -229,6 +229,20 @@ mapkey(",oc", "Org Capture", function() {
   Front.showBanner("org Captured!")
 })
 
+// 来源: https://update.greasyfork.org/scripts/487681/%E5%9B%BE%E7%89%87%E6%A0%B7%E5%BC%8F%E5%B1%8F%E8%94%BD%E5%99%A8.user.js
+// 暂时不显示图片，便于阅读
+mapkey(",tm", "Toggle images blocker", function() {
+  let style  = document.getElementById("my-image-blocker");
+  if (style) {
+    style.remove();
+  } else {
+    style = document.createElement('style');
+    style.id = "my-image-blocker";
+    style.innerHTML = `img,[style*='height:'][style*='width:'] {display: none !important;visibility: hidden; opacity: 0; z-index: -999; width: 0; height: 0; pointer-events: none; position: absolute; left: -9999px; top: -9999px;}`;
+    document.head.appendChild(style);
+  }
+})
+
 // [[https://notes.fe-mm.com/efficiency/bookmark-scripts][书签脚本 | 茂茂物语]]
 mapkey("op", "display password", function() {
   document.querySelectorAll('input[type=password]'.forEach(function(dom) {

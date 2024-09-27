@@ -57,6 +57,8 @@ with my; {
 
     # .docker
     DOCKER_CONFIG = ''"$XDG_CONFIG_HOME"/docker'';
+    # wakatime
+    WAKATIME_HOME = ''"$XDG_CONFIG_HOME/wakatime"'';
   };
   home.actionscript = ''
     echo-info "Create fakeHome"
@@ -64,5 +66,8 @@ with my; {
     mkdir -p "$fakehome" -m 755
     [[ -e "$fakehome/.local" ]] || ln -sf ~/.local "$fakehome/.local"
     [[ -e "$fakehome/.config" ]] || ln -sf ~/.config "$fakehome/.config"
+
+    echo-info "chreate wakatime_home"
+    mkdir -p "${config.home.configDir}/wakatime"
   '';
 }
