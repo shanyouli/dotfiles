@@ -1,50 +1,69 @@
 -- Customize Mason plugins
+--
+-- NOTE: Issue - mason.nvim does not support NixOS:
+-- https://github.com/williamboman/mason.nvim/issues/428
 
 ---@type LazySpec
 return {
 	-- use mason-lspconfig to configure LSP installations
 	{
 		"williamboman/mason-lspconfig.nvim",
-		-- overrides `require("mason-lspconfig").setup(...)`
 		-- mason is unusable on NixOS, disable it.
 		-- ensure_installed nothing
 		opts = function(_, opts)
 			opts.ensure_installed = nil
 			opts.automatic_installation = false
 		end,
-		-- opts = {
-		--   ensure_installed = {
+
+		-- overrides `require("mason-lspconfig").setup(...)`
+		-- opts = function(_, opts)
+		--   -- add more things to the ensure_installed table protecting against community packs modifying it
+		--   opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, {
 		--     "lua_ls",
 		--     -- add more arguments for adding more language servers
-		--   },
-		-- },
+		--   })
+		-- end,
 	},
 	-- use mason-null-ls to configure Formatters/Linter installation for null-ls sources
 	{
 		"jay-babu/mason-null-ls.nvim",
-		-- overrides `require("mason-null-ls").setup(...)`
+		-- mason is unusable on NixOS, disable it.
 		-- ensure_installed nothing
 		opts = function(_, opts)
 			opts.ensure_installed = nil
 			opts.automatic_installation = false
 		end,
-		-- opts = {
-		--   ensure_installed = {
+
+		-- -- overrides `require("mason-null-ls").setup(...)`
+		-- opts = function(_, opts)
+		--   -- add more things to the ensure_installed table protecting against community packs modifying it
+		--   opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, {
+		--     "prettier",
 		--     "stylua",
 		--     -- add more arguments for adding more null-ls sources
-		--   },
-		-- },
+		--   })
+		-- end,
 	},
 	{
+		-- https://docs.astronvim.com/recipes/dap/
 		"jay-babu/mason-nvim-dap.nvim",
+		-- mason is unusable on NixOS, disable it.
+		-- ensure_installed nothing
+		-- opts = function(_, opts)
+		--   opts.ensure_installed = nil
+		--   opts.automatic_installation = false
+		-- end,
+
 		-- overrides `require("mason-nvim-dap").setup(...)`
-		-- opts = {
-		--   ensure_installed = {
+		-- opts = function(_, opts)
+		--   -- add more things to the ensure_installed table protecting against community packs modifying it
+		--   opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, {
 		--     "python",
 		--     -- add more arguments for adding more debuggers
-		--   },
-		-- },
+		--   })
+		-- end,
 	},
+
 	{
 		"williamboman/mason.nvim",
 		opts = function(_, opts)

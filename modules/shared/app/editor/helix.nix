@@ -11,6 +11,7 @@ with lib;
 with my; let
   cfm = config.modules;
   cfg = cfm.app.editor.helix;
+  tomlFormat = pkgs.formats.toml {};
 in {
   options.modules.app.editor.helix = {
     enable = mkEnableOption "Whether to use helix";

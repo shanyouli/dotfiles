@@ -10,7 +10,7 @@ return {
 	opts = {
 		-- Configure core features of AstroNvim
 		features = {
-			large_buf = { size = 1024 * 256, lines = 10000 }, -- set global limits for large files for disabling features like treesitter
+			large_buf = { size = 1024 * 500, lines = 10000 }, -- set global limits for large files for disabling features like treesitter
 			autopairs = true, -- enable autopairs at start
 			cmp = true, -- enable completion at start
 			diagnostics_mode = 3, -- diagnostic mode on start (0 = off, 1 = no signs/virtual text, 2 = no virtual text, 3 = on)
@@ -25,34 +25,32 @@ return {
 		-- vim options can be configured here
 		options = {
 			opt = { -- vim.opt.<key>
-				relativenumber = true, -- sets vim.opt.relativenumber
-				number = true, -- sets vim.opt.number
-				spell = false, -- sets vim.opt.spell
-				signcolumn = "yes", -- sets vim.opt.signcolumn to yes
-				wrap = false, -- sets vim.opt.wrap
+				relativenumber = true, -- Show relative numberline
+				signcolumn = "auto", -- Show sign column when used only
+				spell = false, -- Spell checking
+				swapfile = false, -- Swapfile
+				smartindent = false, -- fix https://github.com/ryan4yin/nix-config/issues/4
+				title = true, -- Set the title of window to `filename [+=-] (path) - NVIM`
+				-- The percentage of 'columns' to use for the title
+				-- When the title is longer, only the end of the path name is shown.
+				titlelen = 20,
 			},
 			g = { -- vim.g.<key>
 				-- configure global vim variables (vim.g)
-				-- NOTE: `mapleader` and `maplocalleader` must be set in the AstroNvim opts or before `lazy.setup`
+				-- NOTE: `mapLeader` and `maplocalLeader` must be set in the AstroNvim opts or before `lazy.setup`
 				-- This can be found in the `lua/lazy_setup.lua` file
 			},
 		},
 		-- Mappings can be configured through AstroCore as well.
+		-- https://docs.astronvim.com/recipes/mappings/
 		-- NOTE: keycodes follow the casing in the vimdocs. For example, `<Leader>` must be capitalized
 		mappings = {
 			-- first key is the mode
 			n = {
 				-- second key is the lefthand side of the map
 
+				-- second key is the lefthand side of the map
 				-- mappings seen under group name "Buffer"
-				["<Leader>bd"] = {
-					function()
-						require("astroui.status.heirline").buffer_picker(function(bufnr)
-							require("astrocore.buffer").close(bufnr)
-						end)
-					end,
-					desc = "Close buffer from tabline",
-				},
 				["<Leader>bn"] = { "<cmd>tabnew<cr>", desc = "New tab" },
 				-- quick save
 				-- ["<C-s>"] = { ":w!<cr>", desc = "Save File" },
@@ -101,12 +99,6 @@ return {
 					"<cmd>lua require('goto-preview').goto_preview_references()<CR>",
 					desc = "goto_preview_references",
 				},
-				-- tables with just a `desc` key will be registered with which-key if it's installed
-				-- this is useful for naming menus
-				-- ["<Leader>b"] = { desc = "Buffers" },
-
-				-- setting a mapping to false will disable it
-				-- ["<C-S>"] = false,
 			},
 			t = {
 				-- setting a mapping to false will disable it
@@ -115,10 +107,7 @@ return {
 			-- Visual mode
 			v = {
 				-- search and replace globally
-				["<Leader>sw"] = {
-					'<esc><cmd>lua require("spectre").open_visual()<CR>',
-					desc = "Search current word",
-				},
+				["<Leader>sw"] = { '<esc><cmd>lua require("spectre").open_visual()<CR>', desc = "Search current word" },
 			},
 		},
 	},

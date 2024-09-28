@@ -20,7 +20,6 @@
       my.writeNuScriptBin "update-flake" ''
         use std log
         log info $"The execution file path is ($env.FILE_PWD)/update-flake"
-        exit 0
         # nix flake update inputs
         def main [--all(-a), --stable(-s)] {
           if $all {

@@ -41,13 +41,13 @@ return {
 	{ import = "astrocommunity.pack.cmake" },
 	{ import = "astrocommunity.pack.cpp" },
 	-- { import = "astrocommunity.pack.nix" },  -- manually add config for nix, comment this one.
-	-- { import = "astrocommunity.pack.proto" },
+	{ import = "astrocommunity.pack.proto" },
 
 	---- Operation & Cloud Native
-	-- { import = "astrocommunity.pack.terraform" },
+	{ import = "astrocommunity.pack.terraform" },
 	{ import = "astrocommunity.pack.bash" },
 	{ import = "astrocommunity.pack.docker" },
-	-- { import = "astrocommunity.pack.helm" },
+	{ import = "astrocommunity.pack.helm" },
 
 	-- colorscheme
 	{ import = "astrocommunity.colorscheme.catppuccin" },
@@ -55,5 +55,5 @@ return {
 	-- Lua implementation of CamelCaseMotion, with extra consideration of punctuation.
 	{ import = "astrocommunity.motion.nvim-spider" },
 	-- AI Assistant
-	-- { import = "astrocommunity.completion.copilot-lua-cmp" },
+	{ import = "astrocommunity.completion.copilot-lua-cmp" },
 }
