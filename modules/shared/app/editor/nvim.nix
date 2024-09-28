@@ -26,10 +26,28 @@ in {
         echo-info "Synchronizing nvim configurations..."
         ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${my.dotfiles.config}/nvim/ ${config.home.configDir}/nvim/
       '';
-      configFile."nvim/plugin_list.lua".text = ''        return {
-                ${concatMapStringsSep ",\n" (v: ''"${v}"'') cfg.lsp}
-              }
+      configFile."nvim/nix.lua".text = ''
+        _G.use_nix = true;
+        _G.nix = {
+          lazypath = "${pkgs.unstable.vimPlugins.lazy-nvim}",
+          tressitSoPath = "${config.home.dataDir}/nvim-treesit-parsers",
+        }
+        vim.opt.runtimepath:prepend("${config.home.dataDir}/nvim-treesit-parsers/parser")
       '';
+      dataFile."nvim-treesit-parsers" = {
+        source = let
+          treesit-so-path = pkgs.symlinkJoin {
+            name = "treesitter-parsers";
+            paths = pkgs.vimPlugins.nvim-treesitter.withAllGrammars.dependencies;
+          };
+        in
+          treesit-so-path;
+        recursive = true;
+      };
+      # configFile."nvim/plugin_list.lua".text = ''        return {
+      #           ${concatMapStringsSep ",\n" (v: ''"${v}"'') cfg.lsp}
+      #         }
+      # '';
       # @https://discourse.nixos.org/t/stuck-writing-my-first-package/19022/4
       packages = [
         # (pkgs.lunarvim.override {
@@ -69,6 +87,7 @@ in {
         #  https://github.com/b-src/lazy-nix-helper.nvim
         plugins = with pkgs.vimPlugins; [
           # search all the plugins using https://search.nixos.org/packages
+          pkgs.unstable.vimPlugins.lazy-nvim # nvim 包管理器
           telescope-fzf-native-nvim
           nvim-treesitter.withAllGrammars
         ];
