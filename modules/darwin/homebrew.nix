@@ -152,7 +152,6 @@ in {
             "zed"
             # "qutebrowser" # 浏览器
 
-            "shanyouli/tap/nextchat" # gptchat, 客户端，需要密钥
             "shanyouli/tap/upic" # or "picgo"
 
             "pearcleaner" # app 卸载工具 or "appcleaner"
@@ -163,8 +162,6 @@ in {
             "shanyouli/tap/calibre-cjk" #"koodo-reader", 书籍管理和阅读
             "shanyouli/tap/alexandria" # 阅读工具
             "shanyouli/tap/airbattery" # 设备电量显示
-
-            "anythingllm" # LLM 管理工具。AI 相关
           ]
           ++ optionals config.modules.adb.enable [
             # # 使用第三方工具取代openmtp，MacDroid.app
@@ -186,26 +183,32 @@ in {
           ++ optionals (config.modules.app.editor.nvim.enGui && config.modules.app.editor.nvim.enable) [
             "shanyouli/tap/neovide"
           ]
-          ++ optionals (config.modules.gui.enable && (config.modules.proxy.default != "")) [
-            "shanyouli/tap/clash-verge"
-            (mkIf (config.modules.proxy.default == "sing-box") "sfm")
-          ]
+          # ++ optionals (config.modules.gui.enable && (config.modules.proxy.default != "")) [
+          # 使用 macos 商店的工具取代它
+          #   # "shanyouli/tap/clash-verge"
+          #   # (mkIf (config.modules.proxy.default == "sing-box") "sfm")
+          # ]
           ++ optionals cfg.gui.enable ["applite"];
         brews = [
           # "macos-trash" # trash-cli
           # "mysql"
           "mist-cli"
         ];
-        masApps = {
-          "Amphetamine" = 937984704;
-          # "mineweeper" = 1475921958; # 扫雷
-          "text-scaner" = 1452523807;
-          "pipad-calc" = 1482575592; # 高颜值的计算器
-          # "localSend" = 1661733229;
-          # "vidhub" = 1659622164; # 视频管理,需要网速足够好
-          # "medis" = 1579200037; # redis 管理工具, 可免费使用，
-          # "devhub" = 6476452351; # 试用小工具合集
-        };
+        masApps = mkMerge [
+          (mkIf (config.modules.gui.enable && (config.modules.proxy.default != "")) {
+            karing = 6472431552; # 美区账号登录，一个兼容 clash-meta 的 sing-box vpn 工具
+          })
+          {
+            "Amphetamine" = 937984704; # 咖啡因，防止系统休眠
+            "text-scaner" = 1452523807; # 文本扫描
+            "pipad-calc" = 1482575592; # 高颜值的计算器
+            # "localSend" = 1661733229; # 使用 nixpkgs 安装
+            # "vidhub" = 1659622164; # 视频管理,需要网速足够好
+            # "medis" = 1579200037; # redis 管理工具, 可免费使用，
+            # "devhub" = 6476452351; # 试用小工具合集
+            # "mineweeper" = 1475921958; # 扫雷
+          }
+        ];
       };
     }
   ]);

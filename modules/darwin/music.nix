@@ -16,6 +16,8 @@ in {
   options.modules.macos.music = {
     enable = mkBoolOpt (scfg.default != "");
     lx.enable = mkBoolOpt false;
+    apprhyme.enable = mkBoolOpt false;
+    spotube.enable = mkBoolOpt false;
     fifo.enable = mkBoolOpt false;
   };
   config = mkIf cfg.enable (mkMerge [
@@ -24,9 +26,10 @@ in {
       # vox or foobar2000 auralplayer
       homebrew.casks =
         ["shanyouli/tap/lyricsx" "shanyouli/tap/auralplayer"]
-        ++ lib.optionals config.modules.gui.media.music.netease.enable ["yesplaymusic"]
+        ++ optionals config.modules.gui.media.music.netease.enable ["yesplaymusic"]
         ++ optionals cfg.lx.enable ["lx-music"]
-        ++ optionals (! cfg.lx.enable) ["shanyouli/tap/spotube"];
+        ++ optionals cfg.apprhyme.enable ["shanyouli/tap/apprhyme"]
+        ++ optionals cfg.spotube.enable ["shanyouli/tap/spotube"];
     }
     (mkIf scfg.mpd.enable {
       modules.media.music.mpd = {

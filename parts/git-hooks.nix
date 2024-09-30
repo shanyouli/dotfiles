@@ -5,7 +5,13 @@
     settings.excludes = ["^hosts/.*/hardware-.*\.nix$" ".*orbstack\.nix$"];
     settings.hooks = {
       alejandra.enable = true;
-      deadnix.enable = true;
+      deadnix = {
+        enable = true;
+        settings = {
+          edit = true;
+          noLambdaArg = true;
+        };
+      };
       statix.enable = true;
       statix.args = ["-i" "orbstack.nix"];
 

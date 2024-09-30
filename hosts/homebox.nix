@@ -193,7 +193,9 @@
       karabiner.enable = true;
       safari.enable = true;
       stopAutoReopen = true;
-      music.lx.enable = true;
+      # music.lx.enable = true;
+      music.apprhyme.enable = true;
+      # music.spotube.enable = true;
 
       games.enable = true;
       hammerspoon.enable = true;
@@ -201,6 +203,8 @@
       brew.mirror = "tuna";
       duti.enable = true;
       netdriver.enable = true;
+      chat.enable = true;
+      # chat.local.enable = true;
     };
 
     nh = {

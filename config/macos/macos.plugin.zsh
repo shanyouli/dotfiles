@@ -1,20 +1,20 @@
 #!/usr/bin/env zsh
 
-function random_el_in_arr() {
+function random_el_in_arr {
     local arr=("$@")
     printf '%s' "${arr[RANDOM % $#]}"
 }
 
-function _setDNS() {
+function _setDNS {
     local IFS=$'\n'
     for i in $(networksetup -listallnetworkservices | tail -n +2); do
         networksetup -setdnsservers "$i" "$@"
     done
 }
 
-function clear_dns() { _setDNS 'Empty'; }
+function clear_dns { _setDNS 'Empty'; }
 
-function set_dns() {
+function set_dns {
   # 使用 阿里云，百度云，114DNS，CNNIC DNS， 腾讯
     local all_dns=("223.5.5.5" "223.6.6.6" \
         "114.114.114.114" "114.114.115.115" \
@@ -29,39 +29,70 @@ function set_dns() {
 # 清理dns缓存
 alias clearDNS="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
 
-function getAliasPath() {
-    osascript -e "
-      tell application \"Finder\"
-        set theItem to (POSIX file \"$1\") as alias
-        if the kind of theItem is \"alias\" then
-          get the POSIX path of ((original item of theItem) as text)
-        end if
-      end tell
-    "
+function getAliasPath {
+    osascript <<EOF
+tell application "Finder"
+    set theItem to (POSIX file "$1") as alias
+    if the kind of theItem is "alias" then
+        get the POSIX path of ((original item of theItem) as text)
+    end if
+end tell
+EOF
 }
 
-function setAliasPath() {
-    osascript -e "
-      set originalPath to \"$1\"
-      set aliasPath to \"$2\"
+function setAliasPath {
+    local original_path="$1"
+    local alias_path="$2"
+    if [[ -z $original_path ]] || [[ -z $alias_path ]]; then
+        echo "need 2 values."
+        return 1
+    fi
 
-      tell application \"Finder\"
-        set originalFile to POSIX file originalPath as alias
-        make new alias file at folder (POSIX file aliasPath as alias) to originalFile
-      end tell
-    "
+    # 让目录成为绝对路径
+    if ! [[ -e $original_path ]]; then
+        echo "$1 not exits."
+        return 1
+    fi
+
+    #shellcheck disable=SC2164
+    original_path=$(cd "$(dirname "$original_path")"; pwd)/$(basename "$original_path")
+
+    # 确保目录存在
+    local alias_dir
+    alias_dir=$(dirname "$alias_path")
+    local alias_name
+    alias_name=$(basename "$alias_path")
+    mkdir -p "$alias_dir" || {
+        echo "$(dirname "$alias_path") Catalog could not be created"
+        return 1
+    }
+    #shellcheck disable=SC2164
+    alias_path=$(cd "$alias_dir"; pwd)/"$alias_name"
+    # 调试
+    # echo "Original Path: $original_path"
+    # echo "Alias Path: $alias_path"
+    # echo "Alias Directory: $alias_dir"
+
+    osascript <<EOF
+tell application "Finder"
+    set originalPath to POSIX file "$original_path"
+    set aliasPath to POSIX file "$alias_dir"
+    make alias file to originalPath at aliasPath
+    set name of result to "$alias_name"
+end tell
+EOF
 }
 
-function clearAppsAlias() {
-    for i in $HOME/Applications/Myapps/*; do
-        aliasPath=$(getAliasPath $i)
+function clearAppsAlias {
+    for i in "$HOME"/Applications/Myapps/*; do
+        aliasPath=$(getAliasPath "$i")
         if [[ ! -e ${aliasPath} ]]; then
-            rm -rf $i
+            rm -rf "$i"
         fi
     done
 }
 
-function sc() {
+function sc {
     local server_name=""
     if [[ "${2}" == *"."* ]]; then
         server_name="$2"
@@ -78,14 +109,14 @@ function sc() {
 }
 
 
-function restart-sc() {
+function restart-sc {
     for i in $(launchctl list | grep -i nix | awk '($1 == "-" && $2 != "0") {print $3}'); do
         launchctl start $i
     done
 }
 
 
-function cleards() {
+function cleards {
     local _dirname=${1:-$HOME}
     if (( $+commands[fd] )); then
         fd '.DS_Store' -I -H --type f $_dirname -x rm -rf {}
@@ -108,7 +139,7 @@ if (( $+commands[brew] )); then
     alias bri='brew list | fzf | xargs brew reinstall'
     alias brm='brew list | fzf | xargs brew uininstall'
     alias bcl='brew cleanup'
-    function brew-set-mirror() {
+    function brew-set-mirror {
         local domain="https://mirrors.bfsu.edu.cn"
         if [[ -n $1 ]] && [[ $1 == "tuna" ]]; then
             domain="https://mirrors.tuna.tsinghua.edu.cn"
@@ -122,7 +153,7 @@ if (( $+commands[brew] )); then
     }
 fi
 
-function upclash() {
+function upclash {
     local _clash_verge="Clash Nyanpasu.app"
     if [[ -d "/Applications/${_clash_verge}" ]]; then
         _clash_verge="/Applications/${_clash_verge}"
@@ -156,9 +187,9 @@ mmac-reopen() {
     fi
 }
 
-function poweroff() { sudo /sbin/shutdown -h now ; }
+function poweroff { sudo /sbin/shutdown -h now ; }
 
-function sbackup() {
+function sbackup {
     case $1 in
         start) tmutil startbackup;;
         stop) tmutil stopbackup;;

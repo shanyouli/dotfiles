@@ -9,8 +9,7 @@ default:
 
 [group('neovim')]
 nvim-test:
-    rm -rf "${HOME}/.config/nvim"
-    rsync -avz --copy-links --chmod=D2755,F744 config/nvim/ ${HOME}/.config/nvim/
+    rsync -avz --copy-links --chmod=D2755,F744 config/nvim/ ${HOME}/.config/nvim/ --exclude="nix.lua"
 
 [group('neovim')]
 nvim-clean:

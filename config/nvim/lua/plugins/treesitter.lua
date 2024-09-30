@@ -18,7 +18,18 @@ return {
 			},
 		}
 		opts.ignore_install = { "gotmpl", "wing" }
+		opts.auto_install = true
+		opts.sync_install = false
 
+		opts.parser_install_dir = (function()
+			if _G.use_nix then
+				if _G.nix.tressitSoPath then
+					vim.opt.runtimepath:prepend(_G.nix.tressitSoPath)
+					return _G.nix.tressitSoPath
+				end
+			end
+			return nil
+		end)()
 		-- add more things to the ensure_installed table protecting against community packs modifying it
 		-- https://github.com/nvim-treesitter/nvim-treesitter/tree/master
 		opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, {

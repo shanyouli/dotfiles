@@ -37,7 +37,7 @@ in {
     modules = {
       app.editor.nvim.lsp = ["lua_ls"];
       dev.lua = {
-        extraPkgs = ps: with ps; [luarocks-nix lua-cjson luacheck];
+        extraPkgs = ps: with ps; [luarocks-nix lua-cjson];
         package = pkgs.lua5_4;
         finalPkg = cfg.package.withPackages cfg.extraPkgs;
       };
@@ -47,6 +47,7 @@ in {
       # lua54Packages.luarocks-nix
       stylua # fmt
       sumneko-lua-language-server # lsp
+      selene # a fast modern lua linter. 比 luacheck 更好
     ];
   };
 }
