@@ -14,6 +14,11 @@ in {
   };
 
   config = mkIf cfg.enable {
-    homebrew.casks = ["openemu" "shanyouli/tap/ryujinx" "shanyouli/tap/rpcs3"];
+    homebrew.casks = [
+      "openemu"
+      "shanyouli/tap/ryujinx"
+      "shanyouli/tap/rpcs3"
+      "hstracker" # 炉石传说插件
+    ];
   };
 }
