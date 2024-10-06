@@ -10,12 +10,12 @@
       filterFn = v: let
         filterList =
           if pkgs.stdenvNoCC.isDarwin
-          then ["nixos" "self"]
+          then ["nixos-stable" "self"]
           else ["darwin" "darwin-stable" "self"];
       in
         builtins.filter (x: ! (builtins.elem x filterList)) v;
       stableInputs = filterFn allInputs;
-      baseInputs = builtins.filter (x: !(builtins.elem x ["nixos" "darwin" "darwin-stable" "self"])) allInputs;
+      baseInputs = builtins.filter (x: !(builtins.elem x ["nixos-stable" "darwin" "darwin-stable" "self"])) allInputs;
     in
       my.writeNuScriptBin "update-flake" ''
         use std log
