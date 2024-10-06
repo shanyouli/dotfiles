@@ -155,6 +155,7 @@ in {
             "shanyouli/tap/upic" # or "picgo"
 
             "pearcleaner" # app 卸载工具 or "appcleaner"
+            "prettyclean" # 清理工具
             "shanyouli/tap/quickrecorder" # 录屏
             "shanyouli/tap/tmexclude"
 

@@ -63,11 +63,11 @@
           inherit (inputs.nixpkgs.lib) filterAttrs mapAttrsToList hasSuffix hasPrefix;
           filterFn = v:
             filterAttrs (name: type:
-              (type == "directory" && builtins.pathExists ./parts/${name}/default.nix)
+              (type == "directory" && builtins.pathExists ./nix/${name}/default.nix)
               || (type == "regular" && hasSuffix ".nix" name && name != "default.nix" && !(hasPrefix "_" name)))
             v;
         in
-          mapAttrsToList (k: _: ./parts/${k}) (filterFn (builtins.readDir ./parts));
+          mapAttrsToList (k: _: ./nix/${k}) (filterFn (builtins.readDir ./nix));
 
         perSystem = {system, ...}: {
           legacyPackages.homeConfigurations.test = self.my.mkhome {
