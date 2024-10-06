@@ -1,4 +1,4 @@
-_: {
+{pkgs, ...}: {
   modules = {
     app = {
       qbittorrent = {
@@ -41,7 +41,7 @@ _: {
 
       browser = {
         default = "firefox";
-        chrome.enable = true;
+        chrome.enable = pkgs.stdenv.isDarwin || pkgs.stdenv.isx86_64;
       };
       media = {
         flameshot.enable = true;

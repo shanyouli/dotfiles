@@ -109,16 +109,10 @@
               inherit withSystem self;
               system = "aarch64-linux";
               overlays = [self.overlays.python];
-              modules = [
-                (self.my.relativeToRoot "hosts/test/orbstack")
-              ];
             };
             "test@x86_64-linux" = self.my.mknixos {
               inherit withSystem self;
               overlays = [self.overlays.python];
-              modules = [
-                (self.my.relativeToRoot "hosts/test/nixos-x86_64")
-              ];
             };
           };
         };
