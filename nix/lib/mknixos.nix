@@ -8,7 +8,7 @@ in {
   mknixos = {
     withSystem,
     self,
-    # name ? "localhost",
+    name ? "localhost",
     system ? "x86_64-linux",
     nixpkgs ? null,
     overlays ? [],
@@ -46,7 +46,19 @@ in {
               inherit self my;
               inherit (self) inputs;
             };
-            modules =
+            modules = let
+              base =
+                if builtins.elem name ["localhost" "test"]
+                then
+                  if system == "x86_64-linux"
+                  then [(my.relativeToRoot "hosts/test/nixos-x86_64")]
+                  else [(my.relativeToRoot "hosts/test/nixos-aarch64")]
+                else if (lib.pathExists (my.relativeToRoot "hosts/${name}"))
+                then [(my.relativeToRoot "hosts/${name}")]
+                else if (lib.pathExists (my.relativeToRoot "hosts/${name}.nix"))
+                then [(my.relativeToRoot "hosts/${name}.nix")]
+                else [];
+            in
               [
                 (_: {
                   nixpkgs.pkgs = usePkgs;
@@ -56,6 +68,7 @@ in {
                 home-manager.nixosModules.home-manager
                 self.nixosModules.default
               ]
+              ++ base
               ++ modules;
           }
         )

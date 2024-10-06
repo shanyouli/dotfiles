@@ -13,6 +13,7 @@ in {
     overlays ? [],
     config ? {},
     modules ? [],
+    name ? "test",
   }:
     withSystem system (
       {
@@ -55,6 +56,7 @@ in {
               })
               self.homeModules.default
             ]
+            ++ lib.optionals (name == "test") [(my.relativeToRoot "hosts/test/home-manager.nix")]
             ++ modules;
         }
     );

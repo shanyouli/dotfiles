@@ -130,7 +130,7 @@
     };
 
     navi.enable = true;
-    tmx = {
+    tmux = {
       enable = true;
       service.startup = true;
     };

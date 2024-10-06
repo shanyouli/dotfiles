@@ -49,6 +49,7 @@ in {
       # home.packages = [pkgs.zsh];
       home = {
         stateVersion = "24.05";
+        enableNixpkgsReleaseCheck = false; # ignore nixpkgs and state
         username = my.user;
         homeDirectory = my.homedir;
         sessionVariables = {

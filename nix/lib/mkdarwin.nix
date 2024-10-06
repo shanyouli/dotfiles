@@ -57,6 +57,7 @@ in {
                 self.homeModules.common
                 self.darwinModules.default
               ]
+              ++ lib.optionals (name == "localhost") [(my.relativeToRoot "hosts/test/darwin.nix")]
               ++ modules;
           }
         )

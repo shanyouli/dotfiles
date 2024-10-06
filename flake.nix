@@ -73,7 +73,6 @@
           legacyPackages.homeConfigurations.test = self.my.mkhome {
             inherit system withSystem self;
             overlays = [self.overlays.python];
-            modules = [(self.my.relativeToRoot "hosts/test/home-manager.nix")];
           };
         };
 
@@ -91,13 +90,11 @@
               system = "aarch64-darwin";
               inherit withSystem self;
               overlays = [self.overlays.python];
-              modules = [(self.my.relativeToRoot "hosts/test/home-manager.nix")];
             };
             "test@x86_64-darwin" = self.my.mkdarwin {
               inherit withSystem self;
               system = "x86_64-darwin";
               overlays = [self.overlays.python];
-              modules = [(self.my.relativeToRoot "hosts/test/home-manager.nix")];
             };
             "lyeli@aarch64-darwin" = self.my.mkdarwin {
               system = "aarch64-darwin";

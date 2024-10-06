@@ -17,4 +17,4 @@ nvim-clean:
 
 [group('home-maanger')]
 home-build:
-    nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake .#test@aarch64-darwin -b backup --show-trace
+    nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake .#test -b backup --show-trace
