@@ -97,7 +97,7 @@ jobs:
           git fetch
           git checkout ${{ env.TARGET_BRANCH }}
           echo "Working on ${{ env.TARGET_BRANCH }} branch"
-      - uses: cachix/install-nix-action@v29
+      - uses: cachix/install-nix-action@v30
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
