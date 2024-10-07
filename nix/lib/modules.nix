@@ -4,9 +4,18 @@
   ...
 }: let
   inherit (builtins) attrValues readDir pathExists concatLists;
-  inherit (lib) id mapAttrsToList filterAttrs hasPrefix hasSuffix nameValuePair removeSuffix mapAttrs';
+  inherit (lib) id mapAttrsToList filterAttrs hasPrefix hasSuffix nameValuePair removeSuffix mapAttrs' pathIsDirectory;
   inherit (attrs) mapFilterAttrs';
 in rec {
+  loadFile = fn: path: let
+    filePath = toString path;
+  in
+    if pathIsDirectory filePath
+    then fn (filePath + "/default.nix")
+    else if pathExists (filePath + ".nix")
+    then fn (filePath + ".nix")
+    else throw "unknown path ${path}";
+
   mapModule = dir: fn: {namefn ? (n: removeSuffix ".nix" n), ...}:
     mapAttrs' (name: _type: {
       name = namefn name;
