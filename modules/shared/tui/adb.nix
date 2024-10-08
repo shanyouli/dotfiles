@@ -16,11 +16,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # home.packages = with pkgs; [android-tools payload-dumper-go];
     home.packages = [package pkgs.payload-dumper-go];
-    # modules.shell.env.ANDROID_USER_HOME = "$XDG_DATA_HOME/android";
-    # modules.shell.zsh.rcInit = ''
-    #   alias adb='HOME="$XDG_DATA_HOME"/android adb'
-    # '';
+    modules.shell.env.ANDROID_USER_HOME = "${config.home.fakeDir}/.android";
   };
 }

@@ -86,6 +86,7 @@ in {
           lporg
           switchaudio-osx
           # aerospace
+          pkgs.unstable.mkalias
         ]
         ++ optionals config.modules.app.editor.emacs.enable [
           pkgs.unstable.darwinapps.pngpaste
