@@ -156,6 +156,7 @@ in {
 
             "pearcleaner" # app 卸载工具 or "appcleaner"
             "prettyclean" # 清理工具
+
             "shanyouli/tap/quickrecorder" # 录屏
             "shanyouli/tap/tmexclude"
 
@@ -163,6 +164,8 @@ in {
             "shanyouli/tap/calibre-cjk" #"koodo-reader", 书籍管理和阅读
             "shanyouli/tap/alexandria" # 阅读工具
             "shanyouli/tap/airbattery" # 设备电量显示
+
+            "bbackupp" # ios 备份工具
           ]
           ++ optionals config.modules.adb.enable [
             # # 使用第三方工具取代openmtp，MacDroid.app

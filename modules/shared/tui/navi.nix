@@ -8,24 +8,63 @@
 }:
 with lib;
 with my; let
-  cfm = config.modules;
-  cfg = cfm.navi;
-  dataDir =
-    if pkgs.stdenvNoCC.isLinux
-    then "${config.home.dataDir}/navi/cheats"
-    else "$HOME/Library/Application Support/navi/cheats";
+  cfg = config.modules.nginx;
+  defaultConfig = pkgs.writeText "default.conf" ''
+    server {
+        listen       80;
+        server_name  localhost;
+
+        # charset koi8-r;
+        # root /Users/lyeli/Code/www/;
+        # access_log  logs/host.access.log  main;
+        ${cfg.config}
+
+        error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    }
+  '';
 in {
-  options.modules.navi = {
-    enable = mkEnableOption "Whether to use navi";
+  options.modules.nginx = {
+    enable = mkBoolOpt false;
+    workDir = mkStrOpt "/etc/nginx";
+    sScript = mkOpt' types.lines "" "nginx 需要 root 运行的初始化脚本";
+    uScript = mkOpt' types.lines "" "nginx 需要的 user 初始化脚本";
+    package = mkPkgOpt pkgs.nginx "nginx package";
+    service.enable = mkOpt' types.bool cfg.enable "是否生成 nginx 服务";
+    service.startup = mkOpt' types.bool true "是否开机启动 nginx 服务";
+    # TODO: 配置文件
+    config = mkOpt' types.lines "" "nginx 官方配置";
   };
+
   config = mkIf cfg.enable {
-    home.packages = [pkgs.navi];
-    modules.shell.zsh.rcInit = ''
-      _cache -v ${pkgs.navi.version} navi widget zsh
-    '';
-    home.programs.bash.initExtra = ''
-      eval `navi widget bash`
-    '';
-    modules.shell.env.NAVI_PATH = "${my.dotfiles.config}/navi/cheats:${dataDir}";
+    home.packages = [cfg.package];
+    modules.nginx = {
+      sScript = ''
+        [[ -d ${cfg.workDir} ]] || {
+           mkdir -p ${cfg.workDir}
+           chown -R ${config.user.name} ${cfg.workDir}
+        }
+      '';
+      uScript = ''
+        for i in "conf" "logs" "www" "conf.d" ; do
+          [[ -d ${cfg.workDir}/$i ]] || mkdir -p ${cfg.workDir}/$i
+        done
+        ln -sf ${cfg.package}/conf/mime.types ${cfg.workDir}/conf
+        [[ -f ${my.dotfiles.config}/nginx/nginx.conf ]] && {
+          if [[ -e ${cfg.workDir}/conf/nginx.conf ]] && [[ ! -h ${cfg.workDir}/conf/nginx.conf ]]; then
+            mv ${cfg.workDir}/conf/nginx.conf ${cfg.workDir}/conf/nginx.conf.backup
+          fi
+          ln -sf ${my.dotfiles.config}/nginx/nginx.conf ${cfg.workDir}/conf/nginx.conf
+        }
+        ln -sf ${defaultConfig} ${cfg.workDir}/conf.d/default.conf
+      '';
+    };
+    modules.shell.aliases.nginx = "nginx -p ${cfg.workDir} -e logs/error.log -c conf/nginx.conf";
   };
 }

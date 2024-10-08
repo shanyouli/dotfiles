@@ -50,15 +50,34 @@ in {
   config = mkIf cfg.enable {
     home.packages = [cfg.package];
 
-    modules.app.qbittorrent.webScript = optionalString cfg.webui ''
-      [[ -d ${config.home.cacheDir}/qbittorrent/ui/public ]] || {
-        echo-info "init qb Web UI"
-        mkdir -p "${config.home.cacheDir}/qbittorrent/ui"
-        git clone --depth 1 -b gh-pages https://github.com/CzBiX/qb-web.git \
-          ${config.home.cacheDir}/qbittorrent/ui/public
-        echo-info "Please configure the webUI path manually..."
-        echo Open Web UI Options dialog, Set "Files location" of "alternative Web UI" to this folder
-      }
-    '';
+    modules = {
+      app.qbittorrent.webScript = optionalString cfg.webui ''
+        [[ -d ${config.home.cacheDir}/qbittorrent/ui/public ]] || {
+          echo-info "init qb Web UI"
+          mkdir -p "${config.home.cacheDir}/qbittorrent/ui"
+          git clone --depth 1 -b gh-pages https://github.com/CzBiX/qb-web.git \
+            ${config.home.cacheDir}/qbittorrent/ui/public
+          echo-info "Please configure the webUI path manually..."
+          echo Open Web UI Options dialog, Set "Files location" of "alternative Web UI" to this folder
+        }
+      '';
+      nginx.config = optionalString cfg.service.enable ''
+        location /qt/ {
+            client_max_body_size 10m;
+            proxy_redirect off;
+            proxy_set_header   X-Forwarded-Host   $http_host;
+            proxy_set_header   X-Forwarded-For    $remote_addr;
+            proxy_set_header Host 127.0.0.1:6801;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header Range $http_range;
+            proxy_set_header If-Range $http_if_range;
+            proxy_buffering off;
+            proxy_pass http://127.0.0.1:6801/;
+
+            proxy_cookie_path  / /qt/;
+            proxy_set_header   Cookie $http_cookie;
+        }
+      '';
+    };
   };
 }

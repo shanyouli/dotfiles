@@ -76,6 +76,16 @@ in {
             ${cfg.service.cmd}
           '');
       };
+      nginx.config =
+        if cfg.service.enable
+        then ''
+          location /proxy {
+            client_max_body_size 0;
+            proxy_redirect off;
+            proxy_pass http://127.0.0.1:9090/ui/;
+          }
+        ''
+        else "";
     };
   };
 }

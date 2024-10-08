@@ -33,6 +33,20 @@ in {
     (mkIf cfg.aria2p {
       modules.python.extraPkgs = ps: with ps; [aria2p] ++ aria2p.optional-dependencies.tui;
     })
+    (mkIf cfg.service.enable {
+      modules.nginx.config = let
+        aria2Index = pkgs.fetchurl {
+          url = "https://github.com/Aria2ng/aria2ng.github.io/raw/03ee10f/index.html";
+          sha256 = "163xk1wfvs8xpyd5nxpdinqrkph2vvldzz5rk07jhy8ymksf6hb3";
+        };
+      in ''
+        location /aria2 {
+          charset utf-8;
+          default_type text/html;
+          alias ${aria2Index};
+        }
+      '';
+    })
   ]);
   # TODO: alias
 }

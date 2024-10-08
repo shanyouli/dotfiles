@@ -99,5 +99,13 @@ in {
         modules.gopass.browsers = fallback_browser;
       }
     ))
+    (mkIf (cfg.chrome.enable || cfg.firefox.enable) {
+      modules.nginx.config = ''
+        location /surfingkeys.js {
+           charset utf-8;
+           alias ${my.dotfiles.config}/firefox/surfingkeys.js;
+        }
+      '';
+    })
   ];
 }
