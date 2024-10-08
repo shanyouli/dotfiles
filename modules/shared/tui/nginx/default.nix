@@ -15,7 +15,7 @@ with my; let
         server_name  localhost;
 
         # charset koi8-r;
-        # root /Users/lyeli/Code/www/;
+        ${optionalString cfg.www.enable "root ${config.home.cacheDir}/startpage;"}
         # access_log  logs/host.access.log  main;
         ${cfg.config}
 

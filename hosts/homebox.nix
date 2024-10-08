@@ -61,6 +61,7 @@
     nginx = {
       enable = true;
       workDir = "/opt/nginx";
+      www.enable = true;
     };
 
     proxy = {

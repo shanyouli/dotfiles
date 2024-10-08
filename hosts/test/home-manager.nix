@@ -112,7 +112,10 @@
     };
 
     nh.enable = true; # nh 不支持 --impure
-    nginx.enable = true;
+    nginx = {
+      enable = true;
+      www.enable = true;
+    };
     proxy = {
       default = "sing-box";
       # proxy.sing-box.package = pkgs.unstable.sing-box;
