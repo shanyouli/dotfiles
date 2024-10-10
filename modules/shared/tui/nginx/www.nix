@@ -67,9 +67,9 @@ with my; let
             </div>
             <div class="link">
               <ul>
-                ${optionalString config.modules.proxy.service.enable ''<li><a href="http://127.0.0.1/proxy">Proxy UI</a></li>''}
+                ${optionalString config.modules.proxy.service.enable ''<li><a href="http://127.0.0.1/proxy/">Proxy UI</a></li>''}
                 ${optionalString config.modules.alist.service.enable ''<li><a href="http://127.0.0.1/alist">Alist</a></li>''}
-                ${optionalString config.modules.aria2.service.enable ''<li><a href="http://127.0.0.1/aria2">Aria2</a></li>''}
+                ${optionalString config.modules.download.aria2.service.enable ''<li><a href="http://127.0.0.1/aria2">Aria2</a></li>''}
                 ${optionalString config.modules.app.qbittorrent.service.enable ''<li><a href="http://127.0.0.1/qt">Qbittorrent UI</a></li>''}
               </ul>
             </div>
@@ -116,6 +116,9 @@ in {
     enable = mkEnableOption "Whether to use startpage";
   };
   config = mkIf cfg.enable {
+    modules.gui.browser.firefox.extraConfig = ''
+      user_pref("browser.startup.homepage", "http://127.0.0.1");
+    '';
     home.file = {
       ".cache/startpage" = {
         recursive = true;

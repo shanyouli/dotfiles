@@ -120,10 +120,6 @@ in {
       };
 
       system.activationScripts.postActivation.text = ''
-        # activateSettings -u will reload the settings from the database and apply them to the current session,
-        # so we do not need to logout and login again to make the changes take effect.
-        /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-
         echo "System script executed after system activation"
         ${systemScripts}
         echo "User script excuted after system activation"

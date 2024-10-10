@@ -15,7 +15,7 @@ return {
 	-- { import = "astrocommunity.utility.noice-nvim" },
 	-- Fully featured & enhanced replacement for copilot.vim
 	-- <Tab> work with both auto completion in cmp and copilot
-	{ import = "astrocommunity.media.vim-wakatime" },
+	-- { import = "astrocommunity.media.vim-wakatime" },
 	{ import = "astrocommunity.motion.leap-nvim" },
 	{ import = "astrocommunity.motion.flit-nvim" },
 	{ import = "astrocommunity.scrolling.nvim-scrollbar" },
@@ -40,14 +40,14 @@ return {
 	{ import = "astrocommunity.pack.java" },
 	{ import = "astrocommunity.pack.cmake" },
 	{ import = "astrocommunity.pack.cpp" },
-	-- { import = "astrocommunity.pack.nix" },  -- manually add config for nix, comment this one.
+	{ import = "astrocommunity.pack.nix" }, -- manually add config for nix, comment this one.
 	{ import = "astrocommunity.pack.proto" },
 
 	---- Operation & Cloud Native
-	{ import = "astrocommunity.pack.terraform" },
+	-- { import = "astrocommunity.pack.terraform" },
 	{ import = "astrocommunity.pack.bash" },
 	{ import = "astrocommunity.pack.docker" },
-	{ import = "astrocommunity.pack.helm" },
+	-- { import = "astrocommunity.pack.helm" },
 
 	-- colorscheme
 	{ import = "astrocommunity.colorscheme.catppuccin" },
@@ -55,5 +55,5 @@ return {
 	-- Lua implementation of CamelCaseMotion, with extra consideration of punctuation.
 	{ import = "astrocommunity.motion.nvim-spider" },
 	-- AI Assistant
-	{ import = "astrocommunity.completion.copilot-lua-cmp" },
+	-- { import = "astrocommunity.completion.copilot-lua-cmp" },
 }

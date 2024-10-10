@@ -1,2 +1,5 @@
 -- Undo tree
-return { "debugloop/telescope-undo.nvim" }
+return {
+	{ "debugloop/telescope-undo.nvim" },
+	{ "yorumicolors/yorumi.nvim" },
+}
