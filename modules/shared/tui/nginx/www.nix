@@ -88,25 +88,27 @@ with my; let
             let time = hours + ":" + minutes + " " + ampm;
             document.getElementById("time").innerHTML = time;
             setTimeout(updateClock, 1000);
-          }
-
-          updateClock();
-         function searchBox() {
-           document.getElementById('search-form').addEventListener('submit', function(event) {
-             event.preventDefault();
-             const form = event.target;
-             const selectedEngine = form.engine.value;
-             const query = form.q.value;
-             let url;
-             if (selectedEngine === 'https://www.baidu.com/s') {
-               url = `''${selectedEngine}?wd=''${encodeURIComponent(query)}`;
-             } else {
-               url = `''${selectedEngine}?q=''${encodeURIComponent(query)}`;
-             }
-             window.location.href = url;
-           })
-         }
-         searchBox();
+          };
+          function searchBox() {
+            document.getElementById('search-form').addEventListener('submit', function(event) {
+              event.preventDefault();
+              const form = event.target;
+              const selectedEngine = form.engine.value;
+              const query = form.q.value;
+              let url;
+              if (selectedEngine === 'https://www.baidu.com/s') {
+                url = `''${selectedEngine}?wd=''${encodeURIComponent(query)}`;
+              } else {
+                url = `''${selectedEngine}?q=''${encodeURIComponent(query)}`;
+              }
+              window.location.href = url;
+            })
+          };
+          window.onload = function() {
+            document.getElementById('search-bar-input').focus();
+            updateClock();
+            searchBox();
+          };
         </script>
       </body>
     </html>
