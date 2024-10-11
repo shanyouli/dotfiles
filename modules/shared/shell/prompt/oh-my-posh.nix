@@ -11,7 +11,7 @@ with my; let
   cfp = config.modules.shell.prompt;
   cfg = cfp.oh-my-posh;
   package = pkgs.oh-my-posh;
-  formatFn = shell: "${package}/bin/oh-my-posh init ${shell} --config ${my.dotfiles.config}/oh-my-posh/posh2k.omp.json --print";
+  formatFn = shell: "${package}/bin/oh-my-posh init ${shell} --config ${my.dotfiles.config}/oh-my-posh/posh2k.omp.yaml --print";
 in {
   options.modules.shell.prompt.oh-my-posh = {
     enable = mkEnableOption "Whether to use oh-my-posh";

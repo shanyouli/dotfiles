@@ -119,6 +119,7 @@
     shell = {
       prompt.default = "oh-my-posh";
       default = "zsh";
+      fish.enable = true;
       bash.enable = true;
       nushell.enable = true;
       carapace.enable = true;

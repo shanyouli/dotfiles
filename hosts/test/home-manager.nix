@@ -64,7 +64,7 @@
     shell = {
       default = "zsh";
       bash.enable = true; # 2024-09-11 添加 bash 配置
-
+      fish.enable = true;
       prompt.default = "oh-my-posh";
       nix-your-shell.enable = true;
       zsh.zinit.enable = true;
