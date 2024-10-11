@@ -9,38 +9,6 @@
 }:
 with lib;
 with my; let
-  cfgscript = pkgs.writeScript "home-user-active" ''
-    #!${pkgs.stdenv.shell}
-    # HACK: Unable to use nix installed git in scripts
-    export PATH=/usr/bin:$PATH
-    export TERM="xterm-256color"
-
-    # 一些echo 函数
-    if command -v tput >/dev/null 2>&1; then
-        ncolors=$(tput colors)
-    fi
-    if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
-        RED="$(tput setaf 1)"
-        GREEN="$(tput setaf 2)"
-        YELLOW="$(tput setaf 3)"
-        BLUE="$(tput setaf 4)"
-        BOLD="$(tput bold)"
-        NORMAL="$(tput sgr0)"
-    else
-        RED="\e[31m"
-        GREEN="\e[32m"
-        YELLOW="\e[33m"
-        BLUE="\e[34m"
-        BOLD="\e[1m"
-        NORMAL="\e[0m"
-    fi
-    echo-debug() { printf "''${BLUE}''${BOLD}$*''${NORMAL}\n"; }
-    echo-info() { printf "''${GREEN}''${BOLD}$*''${NORMAL}\n"; }
-    echo-warn() { printf "''${YELLOW}''${BOLD}$*''${NORMAL}\n"; }
-    echo-error() { printf "''${RED}''${BOLD}$*''${NORMAL}\n"; }
-
-    ${config.home.actionscript}
-  '';
   inherit (my) homedir;
 in {
   imports = [./common.nix];
@@ -66,7 +34,10 @@ in {
         '';
 
         programs.home-manager.enable = true;
-        activation.zzScript = "${cfgscript}\n";
+        initExtra = ''
+          print $"Please use source (ansi cyan)${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh(ansi reset)"
+        '';
+        activation.zzScript = "${config.home.initScript}/bin/init-user\n";
         useos = false;
       };
 

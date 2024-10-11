@@ -136,11 +136,10 @@ in {
     };
     home = {
       packages = [pkgs.zsh];
-      actionscript = mkOrder 5000 ''
-        echo-info "If you use home-manager manage config."
-        echo-info "Please add '. ${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh' to ~/.zshenv."
-        echo-info "Please add 'export ZDOTDIR=''${XDG_CONFIG_HOME:-$HOME/.config}/zsh' to ~/.zshenv."
-      '';
+      initExtra = optionalString (! config.home.useos) (mkOrder 5000 ''
+        print $"(ansi green_bold)If you use home-manager manage config.(ansi reset)"
+        print $"Please add (ansi b)'export ZDOTDIR=''${XDG_CONFIG_HOME:-$HOME/.config}/zsh'(ansi reset) to ~/.zshenv."
+      '');
       configFile =
         {
           "zsh".source = "${my.dotfiles.config}/zsh";

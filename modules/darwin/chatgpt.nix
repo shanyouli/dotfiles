@@ -24,11 +24,9 @@ in {
         "shanyouli/tap/snapbox" # 本地集合工具
         # "anythingllm" # LLM 管理工具。AI 相关
       ];
-    home.actionscript = mkOrder 5000 (''
-      ''
-      + optionalString cfg.local.enable ''
-        echo-info "Please run 'ollama pull llama3.2', install llame model."
-        echo-info "Please see: https://ollama.com/library"
-      '');
+    home.initExtra = optionalString cfg.local.enable (mkOrder 10000 ''
+      print $"Please run \"(ansi green_underline)ollama pull lama3.2(ansi reset)\"."
+      print $"more modal, see (ansi u)https://ollama.com/library(ansi reset)"
+    '');
   };
 }

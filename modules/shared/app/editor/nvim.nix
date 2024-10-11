@@ -22,8 +22,8 @@ in {
   config = mkIf cfg.enable {
     env.MANPAGER = "nvim +Man!";
     home = {
-      actionscript = ''
-        echo-info "Synchronizing nvim configurations..."
+      initExtra = ''
+        print $"(ansi u)Synchronizing nvim configurations(ansi reset)..."
         ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${my.dotfiles.config}/nvim/ ${config.home.configDir}/nvim/
       '';
       configFile."nvim/nix.lua".text = ''

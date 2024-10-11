@@ -21,8 +21,6 @@ in {
       description = "Configuring System Environment Variables";
     };
     home = {
-      actionscript = mkOpt' lines "" "激活时，运行代码";
-
       configFile = mkOpt' attrs {} "Files to place directly in $XDG_CONFIG_HOME";
       dataFile = mkOpt' attrs {} "Files to place in $XDG_CONFIG_HOME";
       fakeFile = mkOpt' attrs {} "Files to place in $XDG_FAKE_HOME";
@@ -40,9 +38,16 @@ in {
       useos = mkOpt' bool false "系统级使用 nix 还是用户级使用 nix";
 
       programs = mkOpt' attrs {} "home-manager programs";
+      initScript = mkPkgReadOpt "初始化用户脚本";
+      initExtra = mkOpt' lines "" "激活时，需要执行 nu 代码"; # nushell 语言
     };
   };
   config = {
+    home.initScript = writeNuScriptBin "init-user" ''
+      use std log
+      print $"(ansi green_bold)Init user script commands...(ansi reset)"
+      ${config.home.initExtra}
+    '';
     # documentation.man.enable = mkDefault true;
     nix = {
       # envVars = {
