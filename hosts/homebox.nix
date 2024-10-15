@@ -205,8 +205,13 @@
       brew.mirror = "tuna";
       duti.enable = true;
       netdriver.enable = true;
-      chat.enable = true;
-      # chat.local.enable = true;
+      chat = {
+        enable = true;
+        nextchat.enable = false;
+      };
+      ui = {
+        ice.enable = false;
+      };
     };
 
     nh = {

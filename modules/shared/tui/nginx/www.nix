@@ -54,6 +54,7 @@ with my; let
               <ul>
                 <li><a href="https://github.com">github</a></li>
                 <li><a href="https://linux.do">Linux.Do</a></li>
+                <li><a href="https://emacs-china.org">Emacs China</a></li>
                 <li><a href="https://miniflux.shanyouli.gq">RSS</a></li>
                 <li><a href="https://bm.shanyouli.gq">Bookmark</a></li>
               </ul>

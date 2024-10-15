@@ -145,8 +145,6 @@ in {
             "command-x" # Cut files
             "logseq" # 笔记工具
 
-            "jordanbaird-ice" # tab 自动隐藏, 其他 "dozer" # 菜单栏管理,
-
             # "windterm" # 比较好用的 ssh 客户端，可以使用 vscode 的 ssh 插件取代
             # "doll" # 在 menubar 上显示 消息提示
             "zed"
