@@ -59,8 +59,6 @@ jobs:
   build:
     needs:
       - use_branch
-    env:
-      MY_TARGET_BRANCH: ${{ needs.use_branch.outupts.MY_TARGET_BRANCH }}
     strategy:
       fail-fast: false
       matrix:
@@ -68,6 +66,8 @@ jobs:
           - ubuntu-latest
           - macos-latest
     runs-on: ${{ matrix.os }}
+    env:
+      MY_TARGET_BRANCH: ${{ needs.use_branch.outputs.MY_TARGET_BRANCH }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -132,7 +132,7 @@ jobs:
     needs:
       - use_branch
       - build
-    if: needs.use_branch.outupts.MY_TARGET_BRANCH == 'flakebot'
+    if: needs.use_branch.outputs.MY_TARGET_BRANCH == 'flakebot'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
