@@ -19,11 +19,13 @@ with my; let
 in {
   options.modules.dev.lua = {
     enable = mkBoolOpt false;
+
     extraPkgs = mkOption {
       default = _self: [];
       example = literalExample "ps: [ ps.luarocks-nix ]";
       type = selectorFunction;
     };
+
     package = mkOption {
       type = types.package;
       default = pkgs.lua;
@@ -31,13 +33,14 @@ in {
       example = literalExample "pkgs.lua5_4";
       description = "The Lua Package to use.";
     };
+
     finalPkg = mkPkgReadOpt "lua env";
   };
   config = mkIf cfg.enable {
     modules = {
       app.editor.nvim.lsp = ["lua_ls"];
       dev.lua = {
-        extraPkgs = ps: with ps; [luarocks-nix lua-cjson];
+        extraPkgs = ps: with ps; [luarocks-nix];
         package = pkgs.lua5_4;
         finalPkg = cfg.package.withPackages cfg.extraPkgs;
       };
