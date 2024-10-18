@@ -25,7 +25,8 @@ in {
   };
   config = mkIf cfg.enable {
     homebrew.casks =
-      optionals cfg.nextchat.enable ["shanyouli/tap/nextchat"]
+      ["shanyouli/tap/cherry-studio"]
+      ++ optionals cfg.nextchat.enable ["shanyouli/tap/nextchat"]
       ++ optionals cfg.local.enable ["ollama"]
       ++ optionals cfg.snapbox.enable ["shanyouli/tap/snapbox"];
     home.initExtra = optionalString cfg.local.enable (mkOrder 10000 ''

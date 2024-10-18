@@ -163,7 +163,7 @@ in {
             "shanyouli/tap/alexandria" # 阅读工具
             "shanyouli/tap/airbattery" # 设备电量显示
 
-            "bbackupp" # ios 备份工具
+            "bbackupp" # ios 备份工具 #
           ]
           ++ optionals config.modules.adb.enable [
             # # 使用第三方工具取代openmtp，MacDroid.app

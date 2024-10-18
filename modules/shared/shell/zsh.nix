@@ -48,6 +48,7 @@ in {
     envFiles = mkOptA (listOf (either str path)) [] (plFn "env");
     cmpFiles = mkOptA (listOf (either str path)) [] (plFn "completions");
     pluginFiles = mkOptA (listOf (either str path)) [] (plFn "plugin");
+    package = mkPkgOpt pkgs.zsh "default shell";
   };
   config = mkIf cfg.enable {
     env = {
@@ -135,7 +136,7 @@ in {
       };
     };
     home = {
-      packages = [pkgs.zsh];
+      packages = [cfg.package];
       initExtra = optionalString (! config.home.useos) (mkOrder 5000 ''
         print $"(ansi green_bold)If you use home-manager manage config.(ansi reset)"
         print $"Please add (ansi b)'export ZDOTDIR=''${XDG_CONFIG_HOME:-$HOME/.config}/zsh'(ansi reset) to ~/.zshenv."

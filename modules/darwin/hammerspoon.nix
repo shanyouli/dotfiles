@@ -58,7 +58,12 @@ in {
         '';
       in ''
         ${luaPaths}
-
+        ${optionalString useDevLua ''
+          package.path = package.path .. ";${config.home.dataDir}/luarocks/share/lua/5.4/?.lua;${config.home.dataDir}/share/lua/5.4/?/init.lua"
+          package.cpath = package.cpath .. ";${config.home.dataDir}/luarocks/lib/lua/5.4/?.so;${config.home.dataDir}/luarocks/lib/lua/5.4/?.dylib"
+        ''}
+        local fennel = require("fennel")
+        table.insert(package.loaders or package.searchers, fennel.searcher)
         return {
           ${yabaiCmd}
           ${emacsClient}
@@ -72,6 +77,7 @@ in {
         '';
         desc = "Init Hammerspoon File";
       };
+      modules.macos.hammerspoon.luaExtensions = ps: with ps; [fennel];
     }
     (mkIf useDevLua {
       modules.dev.lua.extraPkgs = cfg.luaExtensions;

@@ -18,7 +18,8 @@ in {
     homebrew.casks =
       [
         "iina"
-        # "handbrake" # 视频压缩工具, 使用 ffmpeg 取代
+        "handbrake" # 视频压缩工具, 使用 ffmpeg 取代
+        "shanyouli/tap/compressO" # 主要用来读出参数，实验的
       ]
       ++ optionals (config.modules.media.stream.enable && config.modules.gui.enable) [
         "iina+"

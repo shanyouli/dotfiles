@@ -212,6 +212,10 @@
       ui = {
         ice.enable = false;
       };
+      wine = {
+        enable = true;
+        crossover.enable = true;
+      };
     };
 
     nh = {

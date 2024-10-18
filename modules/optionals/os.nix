@@ -164,7 +164,12 @@ in {
             else "${inputs.nixos-stable}";
         };
         # list of acceptable shells in /etc/shells
-        shells = [pkgs.bash] ++ optionals config.modules.shell.zsh.enable [pkgs.zsh];
+        shells = let
+          pre-shell = config.modules.shell;
+        in
+          [pre-shell.bash.package]
+          ++ optionals pre-shell.zsh.enable [pre-shell.zsh.package]
+          ++ optionals pre-shell.fish.enable [pre-shell.fish.package];
       };
       nix = let
         filterFn =
@@ -197,6 +202,17 @@ in {
             "dotfiles=${my.dotfiles.dir}"
           ];
       };
+
+      user.shell = let
+        pre-shell = config.modules.shell;
+      in
+        if pre-shell.default == "zsh"
+        then pre-shell.zsh.package
+        else if pre-shell.default == "bash"
+        then pre-shell.bash.package
+        else if pre-shell.default == "fish"
+        then pre-shell.fish.package
+        else [pre-shell.zsh.package];
     }
     (mkIf config.modules.shell.zsh.enable {
       programs.zsh = {
@@ -207,8 +223,13 @@ in {
         promptInit = "";
       };
     })
-    (mkIf (config.modules.shell.default == "zsh") {
-      user.shell = pkgs.zsh;
+    (mkIf config.modules.shell.bash.enable {
+      programs.bash = {
+        enable = true;
+      };
+    })
+    (mkIf config.modules.shell.fish.enable {
+      programs.fish.enable = true;
     })
   ];
 }

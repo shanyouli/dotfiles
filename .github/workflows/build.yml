@@ -14,7 +14,7 @@ on:
     branches:
       - master
     paths:
-      - 'parts/**/*.nix'
+      - 'parts/**.nix'
       - 'modules/**.nix'
       - 'hosts/**/*.nix'
       - 'flake.lock'

@@ -15,9 +15,11 @@ in {
     envInit = mkOpt' types.lines "" "~/.profile files";
     prevInit = mkOpt' types.lines "" "~/.bashrc prefix init";
     rcInit = mkOpt' types.lines "" "~/.bashrc rc init";
+    package = mkPkgOpt pkgs.bashInteractive "default bash";
   };
   config = mkIf cfg.enable {
     home.programs.bash = {
+      inherit (cfg) package;
       enable = true;
       historySize = 100000;
       historyFile = ''''${XDG_CACHE_HOME:-~/.cache}/bash_history'';

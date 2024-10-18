@@ -205,6 +205,8 @@
       duti.enable = true;
       netdriver.enable = true;
       chat.enable = true;
+      wine.enable = true;
+      ui.ice.enable = true;
     };
     service = {
       battery.enable = false;
