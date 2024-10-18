@@ -22,7 +22,7 @@ in {
       type = attrsOf (oneOf [str (nullOr bool) (listOf str)]);
       default = {};
     };
-    package = mkPkgOpt pkgs.asdf-vm "asdf package";
+    package = mkPackageOption pkgs "asdf" {};
 
     text = mkOpt' lines "" "init asdf script";
     prevInit = mkOpt' lines "" "prev asdf env";

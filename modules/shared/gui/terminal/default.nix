@@ -24,7 +24,7 @@ in {
     font = {
       size = mkNumOpt 10;
       family = mkStrOpt "Cascadia Code";
-      package = mkPkgOpt pkgs.cascadia-code "Cascadia Code font";
+      package = mkPackageOption pkgs "cascadia-code" {};
     };
   };
   config = mkIf ((cfg.default != "") && config.modules.gui.enable) (

@@ -48,7 +48,7 @@ in {
     envFiles = mkOptA (listOf (either str path)) [] (plFn "env");
     cmpFiles = mkOptA (listOf (either str path)) [] (plFn "completions");
     pluginFiles = mkOptA (listOf (either str path)) [] (plFn "plugin");
-    package = mkPkgOpt pkgs.zsh "default shell";
+    package = mkPackageOption pkgs "zsh" {};
   };
   config = mkIf cfg.enable {
     env = {

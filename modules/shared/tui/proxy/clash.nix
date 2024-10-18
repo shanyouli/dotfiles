@@ -21,7 +21,7 @@ in {
       then cfp.configFile
       else "${config.home.configDir}/clash-meta/clash.yaml"
     ) ''clash 配置文件保存位置'';
-    package = mkPkgOpt pkgs.mihomo "clash service";
+    package = mkPackageOption pkgs "mihomo" {};
   };
   config = mkIf cfg.enable (mkMerge [
     {

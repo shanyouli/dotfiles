@@ -19,8 +19,7 @@ in {
       type = attrsOf (oneOf [str (nullOr bool) (listOf str)]);
       default = {};
     };
-    package = mkPkgOpt pkgs.unstable.mise "mise package";
-
+    package = mkPackageOption pkgs.unstable "mise" {};
     text = mkOpt' lines "" "init mise script";
     prevInit = mkOpt' lines "" "prev mise env";
     extInit = mkOpt' lines "" "extra mise Init";

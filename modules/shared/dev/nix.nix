@@ -13,8 +13,8 @@ with my; let
 in {
   options.modules.dev.nix = {
     enable = mkEnableOption "Whether to Nix Language";
-    lspPkg = mkPkgOpt pkgs.nil "Nix LSP pkg";
-    fmtPkg = mkPkgOpt pkgs.alejandra "Nix Format";
+    lspPkg = mkPackageOption pkgs "nil" {};
+    fmtPkg = mkPackageOption pkgs "alejandra" {};
   };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [

@@ -14,7 +14,7 @@ in {
   options.modules.shell.fish = {
     enable = mkEnableOption "Whether to use fish";
     rcInit = mkOpt' types.lines "" "Init fish shell";
-    package = mkPkgOpt pkgs.fish "Default package";
+    package = mkPackageOption pkgs "fish" {};
   };
   config = mkIf cfg.enable {
     home.packages = [cfg.package];

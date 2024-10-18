@@ -35,7 +35,7 @@ in {
     workDir = mkStrOpt "/etc/nginx";
     sScript = mkOpt' types.lines "" "nginx 需要 root 运行的初始化脚本";
     uScript = mkOpt' types.lines "" "nginx 需要的 user 初始化脚本";
-    package = mkPkgOpt pkgs.nginx "nginx package";
+    package = mkPackageOption pkgs "nginx" {};
     service.enable = mkOpt' types.bool cfg.enable "是否生成 nginx 服务";
     service.startup = mkOpt' types.bool true "是否开机启动 nginx 服务";
     # TODO: 配置文件

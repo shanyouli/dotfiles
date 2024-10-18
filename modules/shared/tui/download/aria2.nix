@@ -13,7 +13,7 @@ in {
   options = {
     modules.download.aria2 = {
       enable = mkBoolOpt config.modules.download.enable;
-      package = mkPkgOpt pkgs.aria2 "aria2 package";
+      package = mkPackageOption pkgs "aria2" {};
       aria2p = mkEnableOption "aria2c daemon python cli";
       service = {
         enable = mkBoolOpt cfg.enable;

@@ -21,7 +21,7 @@ in {
       then cfp.configFile
       else "${config.home.configDir}/sing-box/config.json"
     ) ''sing-box 配置文件保存位置'';
-    package = mkPkgOpt pkgs.sing-box "sing-box service";
+    package = mkPackageOption pkgs "sing-box" {};
   };
   config = mkIf cfg.enable (mkMerge [
     {
