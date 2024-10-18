@@ -88,35 +88,6 @@ in {
 
       users.users.${config.user.name} = mkAliasDefinitions options.user;
 
-      environment.extraInit = mkOrder 10 (let
-        inherit (pkgs.stdenvNoCC) isAarch64 isAarch32 isDarwin;
-        darwinPath = optionalString isDarwin (let
-          brewHome =
-            if isAarch64 || isAarch32
-            then "/opt/homebrew/bin"
-            else "/usr/local/bin";
-          prevPath =
-            builtins.replaceStrings ["$USER" "$HOME"] [config.user.name homedir]
-            (pkgs.lib.makeBinPath (builtins.filter (x: x != "/nix/var/nix/profiles/default") config.environment.profiles));
-        in ''
-          PATH=""
-          eval $(/usr/libexec/path_helper -s)
-          [ -d ${brewHome} ] && eval $(${brewHome}/brew shellenv)
-          PATH=${prevPath}''${PATH:+:}$PATH
-        '');
-      in
-        ''
-          ${darwinPath}
-        ''
-        + concatStringsSep "\n" (mapAttrsToList (n: v: (
-            if "${n}" == "PATH"
-            then ''export ${n}="${v}:''${PATH:+:}$PATH"''
-            else ''export ${n}="${v}"''
-          ))
-          config.env)
-        + optionalString (config.nix.envVars != {}) ''
-          unset all_proxy http_proxy https_proxy
-        '');
       # 用来提示还有那些可以规范的文件。如何使用, 使用 my-xdg 脚本取代
       # environment.systemPackages = [pkgs.xdg-ninja];
       modules.xdg.value = {
@@ -133,6 +104,20 @@ in {
           if pkgs.stdenvNoCC.isDarwin
           then "/tmp/user/${toString config.user.uid}"
           else "/run/user/${toString config.user.uid}";
+      };
+      environment = {
+        extraInit = mkOrder 300 ''
+          ${concatStringsSep "\n" (mapAttrsToList (n: v: (
+              if "${n}" == "PATH"
+              then optionalString pkgs.stdenvNoCC.isLinux ''export ${n}="${v}''${PATH:+:}$PATH"''
+              else ''export ${n}="${v}"''
+            ))
+            config.env)}
+          ${optionalString (config.nix.envVars != {}) ''
+            unset all_proxy http_proxy https_proxy
+          ''}
+        '';
+        variables = config.modules.xdg.value;
       };
     }
     (mkIf config.modules.gui.enable {

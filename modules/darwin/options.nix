@@ -94,10 +94,6 @@ in {
             withNotify = true;
           })
         ];
-      environment = {
-        profiles = mkOrder 800 ["${config.home.stateDir}/nix/profile"];
-        variables = config.modules.xdg.value;
-      };
       time.timeZone = mkDefault my.timezone;
       modules = {
         shell = {
