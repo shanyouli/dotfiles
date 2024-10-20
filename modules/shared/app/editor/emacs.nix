@@ -187,6 +187,7 @@ in {
             GRIPHOME = "$XDG_CONFIG_HOME/grip";
           };
           zsh.pluginFiles = ["emacs"];
+          nushell.scriptFiles = ["emacs"];
         };
       };
     }

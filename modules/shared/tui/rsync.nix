@@ -16,6 +16,9 @@ in {
   };
   config = mkIf cfg.enable {
     home.packages = [cfg.package];
-    modules.shell.zsh.pluginFiles = ["rsync"];
+    modules.shell = {
+      zsh.pluginFiles = ["rsync"];
+      nushell.scriptFiles = ["rsync"];
+    };
   };
 }

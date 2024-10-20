@@ -100,9 +100,11 @@ in {
         XDG_STATE_HOME = "${config.home.stateDir}";
         XDG_BIN_HOME = "${config.home.binDir}";
         XDG_FAKE_HOME = "${config.home.fakeDir}";
+        # 关于 linux 和 macos 上， xdg_runtime_dir 的不同位置
+        # see@https://stackoverflow.com/questions/14237142/xdg-runtime-dir-on-mac-os-x
         XDG_RUNTIME_DIR =
           if pkgs.stdenvNoCC.isDarwin
-          then "/tmp/user/${toString config.user.uid}"
+          then "$(getconf DARWIN_USER_TEMP_DIR)"
           else "/run/user/${toString config.user.uid}";
       };
       environment = {
@@ -197,24 +199,21 @@ in {
         then pre-shell.bash.package
         else if pre-shell.default == "fish"
         then pre-shell.fish.package
-        else [pre-shell.zsh.package];
+        else pre-shell.zsh.package;
+
+      programs = let
+        pre-shell = config.modules.shell;
+      in {
+        zsh = {
+          inherit (pre-shell.zsh) enable;
+          # 用bashcompinit 和compinit配置
+          enableCompletion = false;
+          enableBashCompletion = false;
+          promptInit = "";
+        };
+        bash.enable = pre-shell.bash.enable;
+        fish.enable = pre-shell.fish.enable;
+      };
     }
-    (mkIf config.modules.shell.zsh.enable {
-      programs.zsh = {
-        enable = true;
-        # 我将自动启用bashcompinit 和compinit配置
-        enableCompletion = false;
-        enableBashCompletion = false;
-        promptInit = "";
-      };
-    })
-    (mkIf config.modules.shell.bash.enable {
-      programs.bash = {
-        enable = true;
-      };
-    })
-    (mkIf config.modules.shell.fish.enable {
-      programs.fish.enable = true;
-    })
   ];
 }

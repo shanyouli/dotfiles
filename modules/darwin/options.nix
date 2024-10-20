@@ -227,24 +227,6 @@ in {
             desc = "Init dev language manager ...";
             inherit (config.modules.dev.manager) text;
           };
-          initNuShell = {
-            inherit (config.modules.shell.nushell) enable;
-            desc = "Init nushell source file";
-            text = ''
-              ${config.modules.shell.nushell.cachePrev}
-              function nushell_cache() {
-                  local cache_dir="${config.home.cacheDir}/nushell"
-                  [[ -d "$cache_dir" ]] || mkdir -p "$cache_dir"
-                  local name="$(basename "$1").nu"
-                  echo-info  "cache $name ..."
-                  "$@" >"$cache_dir/$name"
-              }
-              ${optionalString (config.modules.shell.nushell.cacheCmd != []) (concatMapStrings (s: ''
-                  nushell_cache ${s}
-                '')
-                config.modules.shell.nushell.cacheCmd)}
-            '';
-          };
         };
       };
     }

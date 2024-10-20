@@ -1,7 +1,7 @@
 
 * nixos 信息
 
-建议在使用前阅读: https://github.com/hlissner/dotfiles#frequently-asked-questions
+建议在使用前阅读: https://github.com/hlissner/dotfiles#frequently-asked-questions 和 [[https://lantian.pub/article/modify-website/nixos-why.lantian/][NixOS 系列（一）：我为什么心动了]]
 
 ** 相关资源
 :PROPERTIES:
@@ -14,8 +14,13 @@
 4. [[https://ianthehenry.com/posts/how-to-learn-nix/][How to Learn Nix]]: 一个系列讲述如何学习 nix 的
 
 * TODOS:
+** TODO 添加加密
 
-** 添加加密
+** TODO fish 配置
+
+** TODO xdg 优化
+
+** TODO 集成 nushell 配置
 
 * 版本信息
 

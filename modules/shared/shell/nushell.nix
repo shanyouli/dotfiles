@@ -26,7 +26,6 @@ in {
   options.modules.shell.nushell = {
     enable = mkEnableOption "A more modern shell";
     cacheCmd = with types; mkOpt' (listOf str) [] "cache file";
-    cachePrev = mkOpt' types.lines "" "Initialization script at build time";
     rcInit = mkOpt' types.lines "" "Init nushell";
     cmpFiles = with types; mkOpt' (listOf (either str path)) [] "nushell plugins";
     scriptFiles = with types; mkOpt' (listOf (either str path)) [] "nushell scripts";
@@ -36,13 +35,13 @@ in {
       packages = [pkgs.unstable.nushell];
       configFile =
         {
-          "nushell/cache/extrarc.nu".text = ''
-            ${optionalString (cfg.cacheCmd != []) (concatMapStrings (s: let
+          "nushell/sources/config".text = ''
+            ${concatMapStrings (s: let
                 x = builtins.baseNameOf (builtins.head (builtins.split " " s));
               in ''
-                source ${config.home.cacheDir}/nushell/${x}.nu
+                source (($SOURCE_PATH | path join "${x}") | path expand)
               '')
-              cfg.cacheCmd)}
+              cfg.cacheCmd}
             ${concatStringsSep "\n" (map (x: "use ${x} *") cfg.cmpFiles)}
             ${concatStringsSep "\n" (mapAttrsToList (n: v: ''alias ${n} = ${v}'')
                 (filterAttrs (n: v: v != "" && n != "rm" && n != "rmi") config.modules.shell.aliases))}
@@ -52,6 +51,18 @@ in {
           '';
         }
         // (scriptHomeFunc cfg.scriptFiles);
+      initExtra = let
+        appnameFn = s: lib.head (lib.splitString " " s);
+      in ''
+        let nu_sources = "${config.home.configDir}" | path join "nushell" "sources"
+        if (not ($nu_sources | path exists)) {
+          ^mkdir -p $nu_sources -m 755
+        }
+        ${concatMapStrings (s: ''
+            ${s} | save -f ($nu_sources | path join ("${appnameFn s}" | path basename))
+          '')
+          cfg.cacheCmd}
+      '';
     };
     modules.app.editor = {
       helix = {
