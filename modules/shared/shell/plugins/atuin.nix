@@ -11,43 +11,27 @@ with lib;
 with my; let
   cfm = config.modules;
   cfg = cfm.shell.atuin;
+  package = pkgs.unstable.atuin;
 in {
   options.modules.shell.atuin = {
     enable = mkEnableOption "Using the database to manage shell history";
   };
   config = mkIf cfg.enable {
-    home.packages = [pkgs.unstable.atuin];
-    # modules.shell.zsh.pluginFiles = [ "atuin" ];
+    home.packages = [package];
     modules = {
       shell = {
         zsh.rcInit = ''
           [[ -f $XDG_DATA_HOME/atuin/history.db ]] || atuin import auto
-          export ATUIN_NOBIND="true"
-          _cache -v ${pkgs.unstable.atuin.version} atuin init zsh
-          bindkey '^r' _atuin_search_widget
+          _cache -v ${package.version} atuin init zsh --disable-up-arrow
         '';
         bash.rcInit = ''
           [[ -f $XDG_DATA_HOME/atuin/history.db ]] || atuin import auto
-          eval "$(atuin init bash)"
+          eval "$(atuin init bash --disable-up-arrow)"
         '';
-        nushell = {
-          cacheCmd = ["${pkgs.unstable.atuin}/bin/atuin init nu"];
-          cachePrev = "export ATUIN_NOBIND=true";
-          rcInit = ''
-            $env.config = (
-                $env.config | upsert keybindings (
-                    $env.config.keybindings
-                    | append {
-                        name: atuin
-                        modifier: control
-                        keycode: char_r
-                        mode: [emacs, vi_normal, vi_insert]
-                        event: { send: executehostcommand cmd: (_atuin_search_cmd) }
-                    }
-                )
-            )
-          '';
-        };
+
+        # BUG: https://github.com/atuinsh/atuin/issues/2423
+        # nushell version 0.99.0
+        nushell.cacheCmd = ["${package}/bin/atuin init nu --disable-up-arrow"];
       };
     };
   };
