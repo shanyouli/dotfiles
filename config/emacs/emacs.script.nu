@@ -52,7 +52,7 @@ module doom {
 
 }
 
-export def emacsclient [...rest] {
+export def --wrapped emacsclient [...rest] {
   mut base_name = "emacs"
   if ((sys host | get name) == "Darwin") {
     $base_name = "Emacs"
@@ -68,7 +68,7 @@ export def emacsclient [...rest] {
   }
 }
 export alias ec = emacsclient
-export alias ecn = emacsclient -nw -n
+export alias ecn = emacsclient -n -w
 export alias ecc = emacsclient -n -c
 
 export use doom

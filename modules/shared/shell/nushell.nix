@@ -29,10 +29,11 @@ in {
     rcInit = mkOpt' types.lines "" "Init nushell";
     cmpFiles = with types; mkOpt' (listOf (either str path)) [] "nushell plugins";
     scriptFiles = with types; mkOpt' (listOf (either str path)) [] "nushell scripts";
+    package = mkPackageOption pkgs.unstable "nushell" {};
   };
   config = mkIf cfg.enable {
     home = {
-      packages = [pkgs.unstable.nushell];
+      packages = [cfg.package pkgs.unstable.bash-env-json];
       configFile =
         {
           "nushell/sources/config".text = ''

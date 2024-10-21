@@ -43,11 +43,18 @@ in {
     };
   };
   config = {
-    home.initScript = writeNuScriptBin "init-user" ''
-      use std log
-      print $"(ansi green_bold)Init user script commands...(ansi reset)"
-      ${config.home.initExtra}
-    '';
+    home.initScript = writeNuScript' {
+      name = "init-user";
+      text = ''
+        use std log
+        print $"(ansi green_bold)Init user script commands...(ansi reset)"
+        ${config.home.initExtra}
+      '';
+      nushell =
+        if config.modules.shell.nushell.enable
+        then config.modules.shell.nushell.package
+        else pkgs.nushell;
+    };
     # documentation.man.enable = mkDefault true;
     nix = {
       # envVars = {

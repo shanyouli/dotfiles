@@ -95,5 +95,5 @@ function emacsclient() {
 }
 
 alias ec=emacsclient
-alias ecn="emacsclient -nw -n"
+alias ecn="emacsclient -nw"
 alias ecc="emacsclient -n -c"

@@ -37,7 +37,7 @@ in {
         initExtra = ''
           print $"Please use source (ansi cyan)${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh(ansi reset)"
         '';
-        activation.zzScript = "${config.home.initScript}/bin/init-user\n";
+        activation.zzScript = "${config.home.initScript}\n";
         useos = false;
       };
 

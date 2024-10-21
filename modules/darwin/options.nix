@@ -67,7 +67,7 @@ with my; let
   userScripts = pkgs.writeScript "postUserScript" ''
     ${prevtext}
     ${filterEnabledTexts cfg.userScript}
-    ${config.home.initScript}/bin/init-user
+    ${config.home.initScript}
   '';
   systemScripts = pkgs.writeScript "postSystemScript" ''
     ${prevtext}
