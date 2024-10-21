@@ -37,17 +37,11 @@ in {
       configFile =
         {
           "nushell/sources/config".text = ''
-            ${concatMapStrings (s: let
-                x = builtins.baseNameOf (builtins.head (builtins.split " " s));
-              in ''
-                source (($SOURCE_PATH | path join "${x}") | path expand)
-              '')
-              cfg.cacheCmd}
+            ${concatMapStrings (s: "source ${builtins.baseNameOf (builtins.head (builtins.split " " s))}\n") cfg.cacheCmd}
             ${concatStringsSep "\n" (map (x: "use ${x} *") cfg.cmpFiles)}
             ${concatStringsSep "\n" (mapAttrsToList (n: v: ''alias ${n} = ${v}'')
                 (filterAttrs (n: v: v != "" && n != "rm" && n != "rmi") config.modules.shell.aliases))}
             ${cfg.rcInit}
-            alias nure = exec nu
             ${concatMapStringsSep "\n" (x: "use ${getBaseName x}.nu *") cfg.scriptFiles}
           '';
         }
@@ -55,6 +49,8 @@ in {
       initExtra = let
         appnameFn = s: lib.head (lib.splitString " " s);
       in ''
+        print $"(ansi u)Synchronizing nushell configurations(ansi reset) ..."
+        ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${my.dotfiles.config}/nushell/ ${config.home.configDir}/nushell/
         let nu_sources = "${config.home.configDir}" | path join "nushell" "sources"
         if (not ($nu_sources | path exists)) {
           ^mkdir -p $nu_sources -m 755

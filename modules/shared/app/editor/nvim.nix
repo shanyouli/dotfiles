@@ -20,7 +20,7 @@ in {
   };
   # 使用lazyvim为基本配置: https://github.com/LazyVim/starter
   config = mkIf cfg.enable {
-    env.MANPAGER = "nvim +Man!";
+    env.MANPAGER = "nvm +Man!";
     home = {
       initExtra = ''
         print $"(ansi u)Synchronizing nvim configurations(ansi reset)..."

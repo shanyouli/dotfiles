@@ -18,3 +18,11 @@ nvim-clean:
 [group('home-maanger')]
 home-build:
     nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake .#test -b backup --show-trace
+
+[group("shell")]
+nu-test:
+    rsync -avz --copy-links --chmod=D2755,F744 config/nushell ${HOME}/.config/nushell
+
+[group("shell")]
+nu-clean:
+    rm -rf "$HOME/.config/nushell"
