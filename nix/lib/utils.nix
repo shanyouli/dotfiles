@@ -5,8 +5,10 @@ with builtins; rec {
 
   relativeToRoot = lib.path.append ../../.;
 
-  sudoNotPass = username: cmd: ''
-    ${username} ALL = (root) NOPASSWD: sha256:${builtins.hashFile "sha256" "${cmd}"} ${cmd}
+  sudoNotPass = cmd: let
+    basecmd = head (builtins.split " " cmd);
+  in ''
+    %admin ALL=(root) NOPASSWD: sha256:${builtins.hashFile "sha256" "${basecmd}"} ${cmd}
   '';
 
   strToLists = sep: str:
