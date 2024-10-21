@@ -1,3 +1,10 @@
+# nushell 目前还不适合作为一个常用的 shell 使用，原因:
+# 1. 补全虽然有第三工具 carapace 使用，但 carapace 仅覆盖了日常使用中的 80% 的命令
+# 2. 如果作为一个 login 的 shell 来使用，它会从 /etc/profile 中继承环境变量，
+#    没有自己的系统级配置文件。类似 /etc/nushell/env.nu etc.
+# 3. alias 不支持 | 符号
+# 4. source 无法动态加载文件，可以通过特殊方法让它加载成功
+# 5. nushell 现在会不稳定，配置或脚本存在兼容性问题。
 {
   pkgs,
   lib,
@@ -8,8 +15,8 @@
 }:
 with lib;
 with my; let
-  cfm = config.modules;
-  cfg = cfm.shell.nushell;
+  cfm = config.modules.shell;
+  cfg = cfm.nushell;
   getBaseName = str: builtins.head (lib.splitString "." (lib.last (lib.splitString "/" str)));
   scriptHomeFunc = l:
     concatMapAttrs (n: v: {"nushell/scripts/${n}.nu".source = v;}) (builtins.listToAttrs (map (vl: {
@@ -39,7 +46,9 @@ in {
       packages = [cfg.package pkgs.unstable.bash-env-json];
       configFile = mkMerge [
         (mkIf useCmpFn {
+          # see@https://www.nushell.sh/cookbook/external_completers.html#putting-it-all-together
           "nushell/sources/completer".text = ''
+             # -*- mode: nushell; -*-
              ${optionalString cfm.fish.enable ''
               let fish_completer = {|spans|
                 ${cfm.fish.package}/bin/fish --command $'complete "--do-complete=($spans | str join " ")"'
@@ -56,7 +65,7 @@ in {
             ''}
              ${cfg.cmpFn}
              # The completer will use carace by default
-             let external_completer = {
+             let external_completer = {|spans|
                let expanded_alias = scope aliases
                | where name == $spans.0
                | get -i 0.expansion
@@ -64,22 +73,22 @@ in {
                let spans = if $expanded_alias != null {
                  $spans
                  | skip 1
-                 | prepend ($expanded-alias | split row ' ' | take 1)
+                 | prepend ($expanded_alias | split row ' ' | take 1)
                } else {
                  $spans
                }
                match $spans.0 {
                  ${concatStringsSep "\n" (mapAttrsToList (n: v: "${n} => \$${v}") cfg.cmpTable)}
-                 ${optionalString cfg.fish.enable ''
+                 ${optionalString cfm.fish.enable ''
               # carapace completions are incorrect for nu
               nu => $fish_completer
               # fish completes commits and branch names in a nicer way
               git => $fish_completer
               # carapace doesn't have completions for asdf
               asdf => $fish_completer
-              ${optionalString (! cfg.carapace.enable) "_ => $fish_completer"}
+              ${optionalString (! cfm.carapace.enable) "_ => $fish_completer"}
             ''}
-                 ${optionalString cfg.carapace.enable "_ => $carapace_completer"}
+                 ${optionalString cfm.carapace.enable "_ => $carapace_completer"}
                } | do $in $spans
              }
             mut current = (($env | default {} config).config | default {} completions)
@@ -93,7 +102,8 @@ in {
         })
         {
           "nushell/sources/config".text = ''
-            ${optionalString cfg.carapace.enable (let
+            # -*- mode: nushell; -*-
+            ${optionalString cfm.carapace.enable (let
               carapace_path =
                 if pkgs.stdenvNoCC.isDarwin
                 then ''($env.HOME | path join "Library" "Application Support" "carapace" "bin" | path expand)''
@@ -101,6 +111,7 @@ in {
             in ''
               $env.PATH = ($env.PATH | split row (char esep) | prepend ${carapace_path})
             '')}
+            ${optionalString useCmpFn "source completer"}
             ${concatMapStrings (s: "source ${builtins.baseNameOf (builtins.head (builtins.split " " s))}\n") cfg.cacheCmd}
             ${concatStringsSep "\n" (map (x: "use ${x} *") cfg.cmpFiles)}
             ${concatStringsSep "\n" (mapAttrsToList (n: v: ''alias ${n} = ${v}'')

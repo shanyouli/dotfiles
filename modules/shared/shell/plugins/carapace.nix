@@ -21,6 +21,6 @@ in {
   };
   config = mkIf cfg.enable {
     home.packages = [cfg.package];
-    module.shell.nushell.cacheCmd = optionals workInNushell ["${cfg.package}/bin/carapace _carapace nushell"];
+    modules.shell.nushell.cacheCmd = optionals workInNushell ["${cfg.package}/bin/carapace _carapace nushell"];
   };
 }
