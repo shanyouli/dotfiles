@@ -49,6 +49,7 @@ in {
           rcInit = ''_cache -v ${pkgs.direnv.version} direnv hook zsh'';
           pluginFiles = ["direnv"];
         };
+        fish.rcInit = ''_cache -v${pkgs.direnv.version} direnv hook fish'';
         nushell.rcInit = ''
           $env.config = ($env | default {} config).config
           $env.config = ($env.config | default {} hooks)

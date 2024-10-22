@@ -24,9 +24,10 @@ in {
         eval "$(${formatFn "bash"})"
       fi
     '';
-    modules.shell.nushell.cacheCmd = ["${formatFn "nu"}"];
-    modules.shell.zsh.rcInit = lib.optionalString cfp.zsh.enable ''
-      _cache ${formatFn "zsh"}
-    '';
+    modules.shell = {
+      nushell.cacheCmd = ["${formatFn "nu"}"];
+      zsh.rcInit = lib.optionalString cfp.zsh.enable ''_cache ${formatFn "zsh"}'';
+      fish.rcInit = ''_cahe ${formatFn "fish"}'';
+    };
   };
 }

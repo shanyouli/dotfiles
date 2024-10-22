@@ -67,6 +67,7 @@ in {
           }
         '';
         nushell.cacheCmd = ["${cfbin} activate nu"];
+        fish.rcInit = ''_cache -v${cfg.package.version} mise activate fish'';
       };
     };
   };

@@ -32,6 +32,10 @@ in {
         # BUG: https://github.com/atuinsh/atuin/issues/2423
         # nushell version 0.99.0
         nushell.cacheCmd = ["${package}/bin/atuin init nu --disable-up-arrow"];
+        fish.rcInit = ''
+          test -f $XDG_DATA_HOME/atuin/history.db || atuin import auto
+          _cache -v${package.version} atuin init fish --disable-up-arrow
+        '';
       };
     };
   };
