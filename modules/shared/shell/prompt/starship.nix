@@ -78,7 +78,7 @@ in {
         _cache starship init zsh --print-full-init
       '';
       nushell.cacheCmd = ["${pkgs.starship}/bin/starship init nu"];
-      fish.rcInit = ''_cache starship init fish --print-full-init'';
+      fish.rcInit = optionalString cfm.fish.enable ''_cache starship init fish --print-full-init'';
     };
   };
 }

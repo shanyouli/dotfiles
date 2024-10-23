@@ -11,7 +11,7 @@ with my; let
   cfp = config.modules.shell.prompt;
   cfg = cfp.oh-my-posh;
   package = pkgs.oh-my-posh;
-  formatFn = shell: "${package}/bin/oh-my-posh init ${shell} --config ${my.dotfiles.config}/oh-my-posh/posh2k.omp.yaml --print";
+  formatFn = shell: "${package}/bin/oh-my-posh init ${shell}  --print"; # --config ${my.dotfiles.config}/oh-my-posh/posh2k.omp.yaml
 in {
   options.modules.shell.prompt.oh-my-posh = {
     enable = mkEnableOption "Whether to use oh-my-posh";
@@ -25,9 +25,11 @@ in {
       fi
     '';
     modules.shell = {
+      # 使用声明环境变量的方法取代 --config 参数
+      env.POSH_THEME = "$DOTFILES/config/oh-my-posh/posh2k.omp.yaml";
       nushell.cacheCmd = ["${formatFn "nu"}"];
       zsh.rcInit = lib.optionalString cfp.zsh.enable ''_cache ${formatFn "zsh"}'';
-      fish.rcInit = ''_cache ${formatFn "fish"}'';
+      fish.rcInit = optionalString cfp.fish.enable ''_cache ${formatFn "fish"}'';
     };
   };
 }

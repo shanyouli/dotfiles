@@ -13,7 +13,8 @@ with my; let
 in {
   options.modules.shell.prompt = {
     bash.enable = mkBoolOpt true;
-    zsh.enable = mkEnableOption "whether to use powerlevel10 k config";
+    zsh.enable = mkEnableOption "whether to use powerlevel10k config";
+    fish.enable = mkEnableOption "Whether to use tide prompt";
     default = mkOption {
       type = types.str;
       default = "";
