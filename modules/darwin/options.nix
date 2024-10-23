@@ -86,6 +86,7 @@ in {
           switchaudio-osx
           # aerospace
           pkgs.unstable.mkalias
+          pkgs.terminal-notifier
         ]
         ++ optionals config.modules.app.editor.emacs.enable [
           pkgs.unstable.darwinapps.pngpaste

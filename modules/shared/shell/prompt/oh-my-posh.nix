@@ -27,7 +27,7 @@ in {
     modules.shell = {
       nushell.cacheCmd = ["${formatFn "nu"}"];
       zsh.rcInit = lib.optionalString cfp.zsh.enable ''_cache ${formatFn "zsh"}'';
-      fish.rcInit = ''_cahe ${formatFn "fish"}'';
+      fish.rcInit = ''_cache ${formatFn "fish"}'';
     };
   };
 }

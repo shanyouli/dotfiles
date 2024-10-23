@@ -134,7 +134,6 @@ in rec {
           $env.PATH = ${toNu (makeBinPathArray runtimeInputs)} ++ $env.PATH
         ''
         + ''
-
           ${text}
         '';
       checkPhase =

@@ -90,16 +90,23 @@ in {
 
       # 用来提示还有那些可以规范的文件。如何使用, 使用 my-xdg 脚本取代
       # environment.systemPackages = [pkgs.xdg-ninja];
-      modules.xdg.value = {
+      modules.xdg.value = let
+        fn = s: let
+          lastsuffix = removePrefix homedir s;
+        in
+          if s == lastsuffix
+          then s
+          else "$HOME${lastsuffix}";
+      in {
         # These are the defaults, and xdg.enable does set them, but due to load
         # order, they're not set before environment.variables are set, which could
         # cause race conditions.
-        XDG_CACHE_HOME = "${config.home.cacheDir}";
-        XDG_CONFIG_HOME = "${config.home.configDir}";
-        XDG_DATA_HOME = "${config.home.dataDir}";
-        XDG_STATE_HOME = "${config.home.stateDir}";
-        XDG_BIN_HOME = "${config.home.binDir}";
-        XDG_FAKE_HOME = "${config.home.fakeDir}";
+        XDG_CACHE_HOME = fn config.home.cacheDir;
+        XDG_CONFIG_HOME = fn config.home.configDir;
+        XDG_DATA_HOME = fn config.home.dataDir;
+        XDG_STATE_HOME = fn config.home.stateDir;
+        XDG_BIN_HOME = fn config.home.binDir;
+        XDG_FAKE_HOME = fn config.home.fakeDir;
         # 关于 linux 和 macos 上， xdg_runtime_dir 的不同位置
         # see@https://stackoverflow.com/questions/14237142/xdg-runtime-dir-on-mac-os-x
         XDG_RUNTIME_DIR =
