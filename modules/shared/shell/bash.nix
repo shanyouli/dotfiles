@@ -38,7 +38,7 @@ in {
     '');
     modules.shell.bash.rcInit = mkOrder 5000 ''
       alias vish="''${EDITOR:-vim} ~/.bashrc_local"
-      [[ -f ~/.bashrc_local ]] && source ~/.bashrc_local
+      [ -f ~/.bashrc_local ] && source ~/.bashrc_local
     '';
   };
 }

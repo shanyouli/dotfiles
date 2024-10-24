@@ -72,7 +72,7 @@ in {
       my-nix-script
       pkgs.unstable.python3.pkgs.sd
     ];
-    env.PATH = [''''${XDG_BIN_HOME:-$HOME/.local/bin}''];
+    env.PATH = [''''${XDG_BIN_HOME}''];
 
     modules.shell.zsh.enable = cfg.default == "zsh";
   };
