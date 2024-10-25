@@ -1,4 +1,4 @@
-function kittenr() {
+function kittenr {
     local pid=$(ps -eo pid,ppid,start,command |
         grep -E '^[[:space:]]*[0-9]+[[:space:]]+1[[:space:]]+' |
         grep -i -e 'kitty' | grep -v grep |
@@ -10,7 +10,7 @@ function kittenr() {
     fi
 }
 
-function kitten-theme() {
+function kitten-theme {
     local theme=$1
     local kitty_themes="${XDG_CONFIG_HOME:-$HOME/.config}/kitty/themes"
     local themes_dir="${XDG_CACHE_HOME:-$HOME/.cache}/themes"

@@ -225,6 +225,8 @@
       battery.enable = false;
       yabai.enable = true;
     };
+
+    themes.default = "wal";
   };
   # 如果你想使用macos别名请查看
   # https://github.com/LnL7/nix-darwin/issues/139#issuecomment-1230728610

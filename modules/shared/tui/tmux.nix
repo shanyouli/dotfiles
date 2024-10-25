@@ -9,7 +9,7 @@
 with lib;
 with my; let
   cfg = config.modules.tmux;
-  cft = config.modules.theme;
+  cft = config.modules.themes;
 in {
   options.modules.tmux = with types; {
     enable = mkBoolOpt false;

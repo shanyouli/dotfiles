@@ -93,7 +93,7 @@
         vscode.enable = true;
       };
     };
-
+    themes.default = "wal";
     # gui
     gui = {
       media = {

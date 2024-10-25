@@ -12,6 +12,7 @@
         vscode.enable = true;
       };
     };
+    themes.default = "wal";
     dev = {
       manager.default = "mise";
       bash.enable = true;

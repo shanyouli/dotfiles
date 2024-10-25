@@ -188,11 +188,6 @@ in {
             desc = "Init nvim";
             text = config.modules.app.editor.nvim.script;
           };
-          initTheme = {
-            enable = config.modules.theme.default != "";
-            desc = "init themes";
-            text = config.modules.theme.script;
-          };
           initQbWebUI = {
             enable = config.modules.app.qbittorrent.webScript != "";
             text = config.modules.app.qbittorrent.webScript;
