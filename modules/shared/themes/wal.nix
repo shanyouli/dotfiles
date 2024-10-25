@@ -1,3 +1,5 @@
+# see https://github.com/eylles/pywal16/wiki/Customization#pywal-extras
+# pywal16 是一个非常使用的主题管理工具，它基于 Xresources 配色管理。
 {
   pkgs,
   lib,

@@ -30,6 +30,7 @@ in {
         ++ optionals cfg.lx.enable ["lx-music"]
         ++ optionals cfg.apprhyme.enable ["shanyouli/tap/apprhyme"]
         ++ optionals cfg.spotube.enable ["shanyouli/tap/spotube"];
+      user.packages = [(mkIf (pkgs.unstable.darwinapps ? nowplaying-cli) pkgs.unstable.darwinapps.nowplaying-cli)];
     }
     (mkIf scfg.mpd.enable {
       modules.media.music.mpd = {

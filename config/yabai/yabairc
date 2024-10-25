@@ -3,6 +3,20 @@
 sudo yabai --load-sa
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
+if command -v borders >/dev/null; then
+    if pgrep -x borders >/dev/null; then
+        kill --KILL $(pgrep -x borders)
+    fi
+    if [[ -f $HOME/.cache/wal/colors.sh ]]; then
+        source $HOME/.cache/wal/colors.sh || true
+        CABAK=${color0#?}
+        CFORE=${color2#?}
+        borders active_color=0xff$CFORE inactive_color=0xff$CBACK width=5.0 &
+    else
+        borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0 &
+    fi
+fi
+
 # yabai -m config debug_output on # 调试日志
 
 # 窗口间距设置
