@@ -3,6 +3,7 @@
   config,
   options,
   my,
+  pkgs,
   ...
 }:
 with lib;

@@ -80,6 +80,7 @@ in {
   };
   config = mkMerge [
     {
+      programs.bash.enable = config.modules.shell.bash.enable;
       user.packages = with pkgs.unstable.darwinapps;
         [
           lporg

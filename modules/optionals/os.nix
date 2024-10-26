@@ -218,7 +218,6 @@ in {
           enableBashCompletion = false;
           promptInit = "";
         };
-        bash.enable = pre-shell.bash.enable;
         fish.enable = pre-shell.fish.enable;
       };
     }
