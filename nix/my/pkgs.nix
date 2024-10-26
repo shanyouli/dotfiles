@@ -36,4 +36,14 @@ in rec {
 
   # toTomlFile :: (attrs -> tomlFile)
   toTomlFile = attrs: (pkgs.formats.toml {}).generate "prettyTOML" attrs;
+
+  sudoNotPass = cmd: let
+    basecmd = lib.head (builtins.split " " cmd);
+  in
+    pkgs.runCommand "sudoers-cmd" {} ''
+      SHASUM=$(sha256sum "${basecmd}" | cut -d' ' -f1)
+      cat <<EOF >"$out"
+      %admin ALL=(root) NOPASSWD: sha256:$SHASUM ${cmd}
+      EOF
+    '';
 }

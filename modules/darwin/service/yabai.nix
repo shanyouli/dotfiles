@@ -39,7 +39,6 @@ in {
     };
     # The scripting addition needs root access to load, which we want to do automatically when logging in.
     # Disable the password requirement for it so that a service can do so without user interaction.
-    environment.etc."sudoers.d/yabai-load-sa".text =
-      sudoNotPass "${cfg.package}/bin/yabai --load-sa";
+    environment.etc."sudoers.d/yabai-load-sa".source = sudoNotPass "${cfg.package}/bin/yabai --load-sa";
   };
 }

@@ -234,10 +234,10 @@ in {
       modules.service.env.PASSWORD_STORE_DIR = config.env.PASSWORD_STORE_DIR;
     })
     (mkIf config.modules.proxy.sing-box.enable {
-      environment.etc."sudoers.d/singbox".text = sudoNotPass (lib.getExe config.modules.proxy.sing-box.package);
+      environment.etc."sudoers.d/singbox".source = sudoNotPass (lib.getExe config.modules.proxy.sing-box.package);
     })
     (mkIf config.modules.proxy.sing-box.enable {
-      environment.etc."sudoers.d/clash".text = sudoNotPass (lib.getExe config.modules.proxy.clash.package);
+      environment.etc."sudoers.d/clash".source = sudoNotPass (lib.getExe config.modules.proxy.clash.package);
     })
   ];
 }
