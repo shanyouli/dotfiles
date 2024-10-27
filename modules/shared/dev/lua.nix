@@ -59,7 +59,7 @@ in {
             }
           }
         '';
-        fish.rcInit = ''alias luarocks="luarocks --tree=$LUAROCKS_HOME"'';
+        fish.rcInit = ''alias luarocks ${escapeShellArg "luarocks --tree=$LUAROCKS_HOME"}'';
       };
     };
     home = {
