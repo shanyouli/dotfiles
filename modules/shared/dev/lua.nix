@@ -63,12 +63,17 @@ in {
       };
     };
     home = {
-      packages = with pkgs; [
-        cfg.finalPkg
-        stylua # fmt
-        sumneko-lua-language-server # lsp
-        selene # a fast modern lua linter. 比 luacheck 更好
-      ];
+      packages = with pkgs;
+        [
+          cfg.finalPkg
+          stylua # fmt
+          sumneko-lua-language-server # lsp
+          selene # a fast modern lua linter. 比 luacheck 更好
+        ]
+        ++ optionals cfg.fennel.enable [
+          fennel-ls
+          (mkIf (pkgs.unstable ? antifennel) pkgs.unstable.antifennel)
+        ];
       initExtra = ''
         print $"Init (ansi green_bold)Luarocks(ansi reset) ..."
         let lua_configDir = $env.HOME + "/.config/luarocks"
