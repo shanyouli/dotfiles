@@ -190,7 +190,6 @@
     macos = {
       enable = true;
       docker.enable = true;
-      app.enable = true;
       arc.enable = true;
       karabiner.enable = true;
       safari.enable = true;

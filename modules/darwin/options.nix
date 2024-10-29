@@ -101,7 +101,7 @@ in {
         shell = {
           aliases.emacs = let
             baseDir =
-              if config.modules.macos.app.enable
+              if config.modules.macos.app.way == "copy"
               then config.modules.macos.app.path
               else "${config.modules.app.editor.emacs.pkg}/Applications";
           in
@@ -199,7 +199,7 @@ in {
             desc = "init mysql ...";
           };
           linkChromeApp = let
-            appEn = config.modules.macos.app.enable;
+            appEn = config.modules.macos.app.way == "copy";
             mchrome = config.modules.gui.browser.chrome;
             enable = mchrome.enable && mchrome.dev.enable && appEn && (! mchrome.useBrew);
           in {
