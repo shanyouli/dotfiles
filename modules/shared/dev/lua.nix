@@ -73,6 +73,7 @@ in {
         ++ optionals cfg.fennel.enable [
           fennel-ls
           (mkIf (pkgs.unstable ? antifennel) pkgs.unstable.antifennel)
+          fnlfmt
         ];
       initExtra = ''
         print $"Init (ansi green_bold)Luarocks(ansi reset) ..."

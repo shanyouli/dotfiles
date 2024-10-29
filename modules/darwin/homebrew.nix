@@ -147,7 +147,7 @@ in {
 
             # "windterm" # 比较好用的 ssh 客户端，可以使用 vscode 的 ssh 插件取代
             # "doll" # 在 menubar 上显示 消息提示
-            "zed"
+            # "zed" # 还是没有 vscode 好用
             # "qutebrowser" # 浏览器
 
             "shanyouli/tap/upic" # or "picgo"
@@ -182,9 +182,9 @@ in {
           ++ optionals (config.modules.git.enable && config.modules.git.enGui) [
             "github" # github客户端
           ]
-          ++ optionals (config.modules.app.editor.nvim.enGui && config.modules.app.editor.nvim.enable) [
-            "shanyouli/tap/neovide"
-          ]
+          # ++ optionals (config.modules.app.editor.nvim.enGui && config.modules.app.editor.nvim.enable) [
+          #   "shanyouli/tap/neovide"
+          # ]
           # ++ optionals (config.modules.gui.enable && (config.modules.proxy.default != "")) [
           # 使用 macos 商店的工具取代它
           #   # "shanyouli/tap/clash-verge"

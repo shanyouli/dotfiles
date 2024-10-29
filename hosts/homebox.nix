@@ -93,7 +93,7 @@
 
         default = "nvim";
         # app.editor.nvim.enable = true;
-        nvim.enGui = false; # GUI 编辑工具为emacs
+        nvim.enGui = true; # GUI 编辑工具为emacs
         vscode.enable = true;
       };
     };

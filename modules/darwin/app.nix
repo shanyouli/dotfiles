@@ -27,7 +27,7 @@ in {
       name = "my-manager-applications";
       paths =
         config.user.packages
-        ++ config.home.packages
+        ++ config.home-manager.users.${config.user.name}.home.packages
         ++ config.environment.systemPackages;
       pathsToLink = "/Applications";
     };

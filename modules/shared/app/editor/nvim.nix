@@ -55,7 +55,7 @@ in {
         #   viAlias = true;
         #   vimAlias = true;
         # })
-        (mkIf (cfg.enGui && pkgs.stdenvNoCC.isLinux) pkgs.unstable.neovide)
+        (mkIf cfg.enGui pkgs.unstable.neovide)
         pkgs.glow
       ];
       programs.neovim = {
