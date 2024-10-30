@@ -127,7 +127,7 @@ in {
         recursive = true;
         source = "${my.dotfiles.config}/startpage";
       };
-      ".cache/startpage/index.html".text = builtins.readFile cfghtml;
+      ".cache/startpage/index.html".source = cfghtml;
     };
   };
 }

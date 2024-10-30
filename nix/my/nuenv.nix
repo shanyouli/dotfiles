@@ -3,13 +3,12 @@
   pkgs,
   ...
 }: let
-  toNu = v: "(\"${lib.escape ["\"" "\\"] (builtins.toJSON v)}\" | from json)";
-
   makeBinPathArray = packages: let
     binOutputs = builtins.filter (x: x != null) (map (pkg: lib.getOutput "bin" pkg) packages);
   in
     map (output: output + "/bin") binOutputs;
 in rec {
+  toNu = v: "(\"${lib.escape ["\"" "\\"] (builtins.toJSON v)}\" | from json)";
   writeNuScript' = {
     /*
     The name of the script to write
