@@ -32,6 +32,7 @@
         flake-utils.follows = "flake-utils";
         flake-compat.follows = "flake-compat";
         flake-parts.follows = "flake-parts";
+        treefmt-nix.follows = "treefmt-nix";
       };
     };
 

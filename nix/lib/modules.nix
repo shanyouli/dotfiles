@@ -62,13 +62,12 @@ in rec {
       if v == "directory"
       then nameValuePair n (mapModulesRec path fn)
       else if v == "regular" && n != "default.nix" && hasSuffix ".nix" n
-      then
-        nameValuePair (removeSuffix ".nix" n) (fn path)
-        (n: v:
-          v
-          != null
-          && !(hasPrefix "_" n))
+      then nameValuePair (removeSuffix ".nix" n) (fn path)
       else nameValuePair "" null)
+    (n: v:
+      v
+      != null
+      && !(hasPrefix "_" n))
     (readDir dir);
 
   mapModulesRec' = dir: fn: let

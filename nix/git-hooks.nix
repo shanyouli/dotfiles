@@ -14,7 +14,7 @@
       };
       statix = {
         enable = true;
-        ignore = ["orbstack.nix"];
+        settings.ignore = ["orbstack.nix"];
       };
 
       ruff.enable = true;

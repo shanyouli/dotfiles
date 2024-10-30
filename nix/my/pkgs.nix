@@ -26,7 +26,6 @@ in rec {
         inherit name paths postBuild;
         nativeBuildInputs = _nativeBuildInputs;
       };
-    # args = {};
   in
     pkgs.symlinkJoin arg_;
   mkHomePkg = package: dir: mkHomePkg' package dir {};
