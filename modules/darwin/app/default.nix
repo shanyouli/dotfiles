@@ -2,10 +2,19 @@
 # 1. 使用符号连接，将所有 app 存放在 applications 上，spotilight 无法显示 应用
 # 2. copy 的优点；使用 copy 将所有 gui.app 复制到指定位置，可以很好的解决该问题，
 #    但占用内存过大，这也是 homebrew 使用的方法，
-# 3. alias 缺点，使用该方法可以在 spotilight 上显示(但不再归类与应用)，软件更新后需要重新授权
-#    无法作为默认应用打开程序, 但有多个 app 版本时，使用 spotilight 或 raycast 打开
-#    程序版本可能不是最新的版本，但占用内存很小。较为推荐
-# 4.
+# 3. alias 缺点，
+#    a. 使用该方法可以在 spotilight 上显示(但不再归类与应用)，
+#    b. 软件更新后需要重新授权
+#    c. 无法作为默认应用打开程序, 但有多个 app 版本时，使用 spotilight 或 raycast 打开
+#       程序版本可能不是最新的版本，
+#    d. 更新后，dock 上的图标也需要更新。
+#    e. launchpad 上的图标很不好看。
+#    优点： 占用内存很小。较为推荐
+# 4. mac-app-util 方案 优点
+#   a. 占用内存小
+#   b. Pinning in Dock works across updates
+#   C. 可以从 spotilight 启动
+#   d. 是一个完成的 app
 #
 # 更多讨论见：@https://github.com/LnL7/nix-darwin/issues/214#issuecomment-2050027696
 {

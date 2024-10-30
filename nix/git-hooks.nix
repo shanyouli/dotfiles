@@ -12,8 +12,10 @@
           noLambdaArg = true;
         };
       };
-      statix.enable = true;
-      statix.args = ["-i" "orbstack.nix"];
+      statix = {
+        enable = true;
+        ignore = ["orbstack.nix"];
+      };
 
       ruff.enable = true;
       # ruff.check = true;

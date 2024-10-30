@@ -10,7 +10,7 @@ with lib;
 with my; let
   cfm = config.modules;
   cfg = cfm.shell.nix-index;
-  cfgpkg = pkgs.unstable.my.nix-index;
+  cfgpkg = pkgs.unstable.nix-index;
 in {
   options.modules.shell.nix-index = {
     enable = mkEnableOption "Whether to nix-index";
