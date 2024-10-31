@@ -35,23 +35,23 @@ in {
       };
       initExtra =
         ''
-          printf $"(ansi yellow_bold)Start set themes ...(ansi reset)"
+          print $"(ansi yellow_bold)Start set themes ...(ansi reset)"
         ''
         + optionalString (cfp.use == "dark") ''
-          printf $"(ansi green_bold)Apply ${cfg.dark} theme(ansi reset)"
+          print $"(ansi green_bold)Apply ${cfg.dark} theme(ansi reset)"
           ${cfg.package}/bin/wal --theme ${cfg.dark} -q
         ''
         + optionalString (cfp.use == "light") ''
-          printf $"(ansi green_bold)Apply ${cfg.light} theme(ansi reset)"
+          print $"(ansi green_bold)Apply ${cfg.light} theme(ansi reset)"
           ${cfg.package}/bin/wal --theme ${cfg.light} -q -l
         ''
         + optionalString (cfp.use == "auto") ''
           let is_Dark = (osascript -e "tell application \"System Events\" to tell appearance preferences to return dark mode")
           if ($is_Dark == "false") {
-            printf $"(ansi green_bold)Apply ${cfg.light} theme(ansi reset)"
+            print $"(ansi green_bold)Apply ${cfg.light} theme(ansi reset)"
             ${cfg.package}/bin/wal --theme ${cfg.light} -q -l
           } else {
-            printf $"(ansi green_bold)Apply ${cfg.dark} theme(ansi reset)"
+            print $"(ansi green_bold)Apply ${cfg.dark} theme(ansi reset)"
             ${cfg.package}/bin/wal --theme ${cfg.dark} -q
           }
         '';
