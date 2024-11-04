@@ -33,6 +33,7 @@
         flake-compat.follows = "flake-compat";
         flake-parts.follows = "flake-parts";
         treefmt-nix.follows = "treefmt-nix";
+        git-hooks-nix.follows = "git-hooks-nix";
       };
     };
 
