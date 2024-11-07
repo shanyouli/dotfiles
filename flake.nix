@@ -50,6 +50,7 @@
         flake-compat.follows = "flake-compat";
       };
     };
+    mac-app-util.url = "github:hraban/mac-app-util";
   };
 
   outputs = inputs @ {flake-parts, ...}:

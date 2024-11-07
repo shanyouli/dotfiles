@@ -41,11 +41,11 @@ in {
     way = mkOption {
       description = "连接到一个目录的方法";
       type = types.str;
-      default = "alias";
+      default = "util";
       apply = s:
-        if s == "copy"
+        if builtins.elem s ["copy" "alias" "util"]
         then s
-        else "alias";
+        else "util";
     };
   };
   config = {

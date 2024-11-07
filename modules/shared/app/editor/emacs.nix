@@ -180,6 +180,7 @@ in {
             paramiko
             rapidfuzz
             sexpdata # 0.0.3, or lsp-bridge
+            watchdog
           ];
         shell = {
           env = {

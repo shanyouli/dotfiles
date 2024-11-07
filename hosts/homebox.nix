@@ -67,7 +67,10 @@
     proxy = {
       default = "sing-box";
       sing-box.package = pkgs.unstable.sing-box;
-      service.enable = true;
+      service = {
+        enable = true;
+        startup = false;
+      };
       configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/singbox.json";
     };
 
