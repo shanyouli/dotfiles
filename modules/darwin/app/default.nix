@@ -14,7 +14,9 @@
 #   a. 占用内存小
 #   b. Pinning in Dock works across updates
 #   C. 可以从 spotilight 启动
-#   d. 是一个完成的 app
+#   d. 是一个完整的 app
+#   缺点:
+#   1. 右键无法使用
 #
 # 更多讨论见：@https://github.com/LnL7/nix-darwin/issues/214#issuecomment-2050027696
 {
@@ -41,11 +43,11 @@ in {
     way = mkOption {
       description = "连接到一个目录的方法";
       type = types.str;
-      default = "util";
+      default = "alias";
       apply = s:
         if builtins.elem s ["copy" "alias" "util"]
         then s
-        else "util";
+        else "alias";
     };
   };
   config = {

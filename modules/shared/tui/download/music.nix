@@ -3,7 +3,6 @@
   config,
   options,
   my,
-  pkgs,
   ...
 }:
 with lib;
@@ -16,7 +15,8 @@ in {
   };
   config = mkIf cfg.enable {
     # pkgs.python3.pkgs.musicdl # 以不可用
-    home.packages = [pkgs.unstable.musicn];
+    # 目前没有合适的命令行下载工具
+    # home.packages = [pkgs.unstable.musicn];
     # home.initExtra = ''
     #   print $"(ansi green_bold)Please install musicn by yourself using npm
     #     the current (ansi red_bold)musicn(ansi reset) can tool properly, but when installing, there is a problem.(ansi reset)"
