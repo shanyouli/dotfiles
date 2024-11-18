@@ -87,7 +87,10 @@
         service.startup = false;
         service.enable = true;
       };
-
+      tg = {
+        enable = true;
+        package = pkgs.unstable.telegram-desktop;
+      };
       editor = {
         emacs = {
           enable = true;
@@ -98,6 +101,10 @@
         # app.editor.nvim.enable = true;
         nvim.enGui = true; # GUI 编辑工具为emacs
         vscode.enable = true;
+        zed = {
+          # package = pkgs.unstable.zed-editor;
+          enable = true;
+        };
       };
     };
 

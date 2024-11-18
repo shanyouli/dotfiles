@@ -84,7 +84,7 @@ in {
       user.packages = with pkgs.unstable.darwinapps;
         [
           lporg
-          # switchaudio-osx # broken
+          switchaudio-osx # broken
           # aerospace
           pkgs.unstable.mkalias
           pkgs.terminal-notifier

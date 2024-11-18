@@ -86,7 +86,7 @@ in {
             "raycast" # 取代 spotlight
             # "stats" # 状态显示, 目前无法显示温度。
             "macs-fan-control" # 用来控制 fan 的工具
-            "forkgram-telegram"
+            # "forkgram-telegram"
             "easydict" # 翻译软件
             "jetbrains-toolbox"
             # "syncthing" 同步
@@ -149,6 +149,7 @@ in {
             # "doll" # 在 menubar 上显示 消息提示
             # "zed" # 还是没有 vscode 好用
             # "qutebrowser" # 浏览器
+            "zen-browser"
 
             "shanyouli/tap/upic" # or "picgo"
 

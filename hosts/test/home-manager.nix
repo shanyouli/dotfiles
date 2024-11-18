@@ -10,7 +10,9 @@
         helix.enable = true;
         emacs.enable = true;
         vscode.enable = true;
+        zed.enable = true;
       };
+      tg.enable = true;
     };
     themes.default = "wal";
     dev = {
