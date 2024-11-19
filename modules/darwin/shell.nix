@@ -68,7 +68,7 @@ in {
             unset __new_path
           '')
           (mkIf config.modules.macos.brew.enable (let
-            prefix = removeSuffix config.homebrew.brewPrefix "/bin";
+            prefix = removeSuffix "/bin" config.homebrew.brewPrefix;
           in ''
             export HOMEBREW_PREFIX=${prefix}
             export HOMEBREW_CELLAR=${prefix}/Cellar

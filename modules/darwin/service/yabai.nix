@@ -12,13 +12,7 @@ with my; let
 in {
   options.modules.service.yabai = {
     enable = mkBoolOpt false;
-    package = mkOption {
-      type = types.package;
-      default = pkgs.unstable.darwinapps.yabai;
-      defaultText = literalExample "pkgs.yabai";
-      example = literalExample "pkgs.yabai";
-      description = "The Yabai Package to use.";
-    };
+    package = mkPackageOption pkgs.unstable "yabai" {};
   };
 
   config = mkIf cfg.enable {
