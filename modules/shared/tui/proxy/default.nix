@@ -25,7 +25,7 @@ in {
     };
     service = {
       pkg = mkPkgReadOpt "proxy service Packages";
-      enable = mkOpt' types.bool (cfp.default != "") "为 proxy 配置服务";
+      enable = mkOpt' types.bool (cfg.default != "") "为 proxy 配置服务";
       startup = mkOpt' types.bool true "开机启动 proxy置服务";
       cmd = mkOpt' types.str "" "默认proxy 启动命令，一般不需要自定义";
     };

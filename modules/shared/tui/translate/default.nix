@@ -16,7 +16,7 @@ in {
     sdcv.enable = mkBoolOpt true;
     remote.enable = mkBoolOpt true;
     deeplx = {
-      enable = mkBoolOpt true;
+      enable = mkBoolOpt cfg.enable;
       service = {
         enable = mkBoolOpt cfg.deeplx.enable;
         startup = mkBoolOpt true;

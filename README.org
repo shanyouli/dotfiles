@@ -12,6 +12,19 @@
 2. [[https://learnxinyminutes.com/docs/nix/][Learn nix in Y Minutes]]： 让你了解 nix的基本语法
 3. [[https://nixos-and-flakes.thiscute.world/zh/][NixOS 与 Flakes | 主页]]： 推荐的入门工具
 4. [[https://ianthehenry.com/posts/how-to-learn-nix/][How to Learn Nix]]: 一个系列讲述如何学习 nix 的
+* 安装教程
+
+** 非 nixos 安装 nix 脚本
+
+#+begin_src bash
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+#+end_src
+
+** 构建
+
+#+begin_src bash
+nix run #.init-os -- switch
+#+end_src
 
 * TODOS:
 ** TODO 添加加密

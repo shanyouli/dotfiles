@@ -56,7 +56,7 @@ in {
         #   vimAlias = true;
         # })
         # https://github.com/NixOS/nixpkgs/pull/352727
-        (mkIf (cfg.enGui && (! pkgs.stdenvNoCC.isDarwin)) pkgs.unstable.neovide)
+        (mkIf cfg.enGui pkgs.unstable.neovide)
         pkgs.glow
       ];
       programs.neovim = {

@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   # user.name = "lyeli";
@@ -13,6 +14,7 @@
     settings.cores = 4;
   };
   user.uid = 501; # uid macos 创建的用户 默认 uid 为 501
+  # modules.macos.brew.enable = false;
   modules = {
     # shared
 
@@ -245,7 +247,5 @@
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild chang/nix/store/6xnavkbxd3kkkyssqds9p9rw9r47cj1q-gnupg-2.4.1/bin/gpg-connect-agentelog
-  system.stateVersion = 4;
-
-  # squoia-nixbld-user-migration.sh
+  system.stateVersion = lib.mkForce 5;
 }

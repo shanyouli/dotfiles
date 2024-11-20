@@ -91,7 +91,12 @@ in {
           "https://shanyouli.cachix.org"
         ];
         # Using hard links
-        auto-optimise-store = mkDefault true;
+        # a BUG: about darwin see@https://github.com/NixOS/nix/issues/7273
+        auto-optimise-store = mkDefault (
+          if pkgs.stdenvNoCC.isDarwin
+          then false
+          else true
+        );
         trusted-public-keys = [
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
           "shanyouli.cachix.org-1:19ndCE7zQfn5vIVLbBZk6XG0D7Ago7oRNNgIRV/Oabw="
