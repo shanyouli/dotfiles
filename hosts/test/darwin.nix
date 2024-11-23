@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   # user.name = "lyeli";
@@ -208,5 +209,5 @@
       yabai.enable = true;
     };
   };
-  system.stateVersion = 5;
+  system.stateVersion = lib.mkForce 5;
 }
