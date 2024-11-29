@@ -33,7 +33,15 @@ in {
   };
   config = mkIf cfg.enable {
     home = {
-      packages = with pkgs; [pkgs.mpd pkgs.mpc-cli];
+      packages = let
+        mpc =
+          if pkgs.stdenvNoCC.hostPlatform.isDarwin
+          then
+            pkgs.mpc-cli.overrideAttrs (_: {
+              env = {NIX_LDFLAGS = "-liconv";};
+            })
+          else pkgs.mpc-cli;
+      in [pkgs.mpd mpc];
 
       configFile."mpd/mpd.conf".text = ''
         music_directory "${cfp.directory}"

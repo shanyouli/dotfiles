@@ -56,7 +56,7 @@ in {
             ipython
             setuptools
             isort
-            nose
+            # nose # nose 目前不支持 python3.12
             pytest
             pygments
             rich
@@ -102,7 +102,7 @@ in {
       };
       home.packages = with pkgs; [
         ruff
-        python3.pkgs.ruff-lsp
+        ruff-lsp
         # pyright
         unstable.basedpyright
         pipenv

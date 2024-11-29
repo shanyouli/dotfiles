@@ -50,7 +50,7 @@ with my; let
 in {
   options.modules.db.mysql = {
     enable = mkEnableOption "Whether to use mysql";
-    package = mkPackageOption pkgs "mysql" {};
+    package = mkPackageOption pkgs "mariadb" {};
     script = mkOpt' types.lines "" "初始化脚本";
     service = {
       enable = mkBoolOpt cfg.enable;

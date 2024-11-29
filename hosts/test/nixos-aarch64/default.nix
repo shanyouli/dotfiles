@@ -64,7 +64,7 @@
   # As this is intended as a stadalone image, undo some of the minimal profile stuff
   # documentation.enable = true;
   documentation.nixos.enable = true;
-  environment.noXlibs = false;
+  # environment.noXlibs = false;
 
   # modules config
   modules = {

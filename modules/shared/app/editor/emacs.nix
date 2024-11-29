@@ -109,24 +109,25 @@ in {
             epkgs.elvish-mode
           ]
           ++ optionals cfg.rimeEnable [
-            (epkgs.rime.overrideAttrs (esuper: {
-              buildInputs = (esuper.buildInputs or []) ++ [pkgs.librime];
-              nativeBuildInputs = [pkgs.gnumake pkgs.gcc];
-              preBuild = "";
-              postInstall = let
-                suffix =
-                  if pkgs.stdenvNoCC.isDarwin
-                  then ".dylib"
-                  else ".so";
-              in ''
-                export MODULE_FILE_SUFFIX="${suffix}"
-                pushd source
-                make lib
-                install -m444 -t $out/share/emacs/site-lisp/elpa/rime-** librime-emacs''${MODULE_FILE_SUFFIX}
-                rm -r $out/share/emacs/site-lisp/elpa/rime-*/{lib.c,Makefile}
-                popd
-              '';
-            }))
+            epkgs.rime
+            # (epkgs.rime.overrideAttrs (esuper: {
+            #   buildInputs = (esuper.buildInputs or []) ++ [pkgs.librime];
+            #   nativeBuildInputs = [pkgs.gnumake pkgs.gcc];
+            #   preBuild = "";
+            #   postInstall = let
+            #     suffix =
+            #       if pkgs.stdenvNoCC.isDarwin
+            #       then ".dylib"
+            #       else ".so";
+            #   in ''
+            #     export MODULE_FILE_SUFFIX="${suffix}"
+            #     pushd source
+            #     make lib
+            #     install -m444 -t $out/share/emacs/site-lisp/elpa/rime-** librime-emacs''${MODULE_FILE_SUFFIX}
+            #     rm -r $out/share/emacs/site-lisp/elpa/rime-*/{lib.c,Makefile}
+            #     popd
+            #   '';
+            # }))
           ]
           ++ optionals config.modules.just.enable [epkgs.just-mode epkgs.justl]
           ++ optionals config.modules.shell.nushell.enable [epkgs.nushell-ts-mode];

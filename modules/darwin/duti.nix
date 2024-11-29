@@ -17,10 +17,19 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      user.packages = [pkgs.duti];
+      user.packages = [
+        # fix: ./util.c:1:10: fatal error: 'CoreFoundation/CoreFoundation.h' file not found
+        (pkgs.duti.overrideAttrs (old: {
+          buildInputs = (old.buildInputs or []) ++ [pkgs.apple-sdk_13];
+          configureFlags = [
+            "--with-macosx-sdk=${pkgs.apple-sdk_13.sdkroot}"
+            "--host=x86_64-apple-darwin18"
+          ];
+        }))
+      ];
     }
     (mkIf cfg.wrapper.enable {
-      user.packages = [pkgs.dutis];
+      user.packages = [pkgs.unstable.darwinapps.dutis];
       # If dutis is used, homebrew must be installed.It only supports apps in the /Applications directory.
     })
   ]);
