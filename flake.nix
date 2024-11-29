@@ -3,8 +3,8 @@
     # Principle inputs (updated by `nix run .#update`)
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
-    darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
-    nixos-stable.url = "github:nixos/nixpkgs/nixos-24.05";
+    darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-24.11-darwin";
+    nixos-stable.url = "github:nixos/nixpkgs/nixos-24.11";
 
     home-manager = {
       url = "github:nix-community/home-manager";
