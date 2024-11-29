@@ -1,3 +1,4 @@
+# 安装 adb 工具， rom 解包工具， scrcpy 交互工具
 {
   pkgs,
   lib,
@@ -16,7 +17,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = [package pkgs.payload-dumper-go];
+    home.packages = [package pkgs.payload-dumper-go pkgs.scrcpy];
     modules.shell.env.ANDROID_USER_HOME = "${config.home.fakeDir}/.android";
   };
 }

@@ -202,7 +202,7 @@
     macos = {
       enable = true;
       docker.enable = true;
-      arc.enable = true;
+      # arc.enable = true;
       karabiner.enable = true;
       safari.enable = true;
       stopAutoReopen = true;
