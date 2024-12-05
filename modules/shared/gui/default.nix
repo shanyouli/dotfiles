@@ -20,6 +20,7 @@ in {
       fantasque-sans-mono
       lxgw-wenkai
       unifont
+      pkgs.unstable.sarasa-term
       (nerdfonts.override {
         fonts = [
           "FantasqueSansMono"

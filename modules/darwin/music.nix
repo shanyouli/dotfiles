@@ -30,7 +30,7 @@ in {
           "shanyouli/tap/lyricsx"
           # "shanyouli/tap/auralplayer" # 无法支持多项选择
           "foobar2000"
-          "notunes" # 阻止 applemusic 自启动
+          # "notunes" # 阻止 applemusic 自启动
         ]
         ++ optionals config.modules.gui.media.music.netease.enable ["yesplaymusic"]
         ++ optionals cfg.lx.enable ["lx-music"]

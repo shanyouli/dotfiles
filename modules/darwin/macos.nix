@@ -77,10 +77,10 @@ in {
             PMPrintingExpandedStateForPrint2 = true;
             # see@ https://github.com/jordanbaird/Ice/issues/201
             # ice 工具目前无法在总是隐藏 menubar 的状态下工作
-            _HIHideMenuBar =
-              if config.modules.macos.ui.ice.enable
-              then false
-              else true;
+            _HIHideMenuBar = true;
+            # if config.modules.macos.ui.ice.enable
+            # then false
+            # else true;
             # com.apple.mouse.tapBehavior = 1;
             # com.apple.sound.beep.feedback = 0;
             # com.apple.springing.delay = 0;
