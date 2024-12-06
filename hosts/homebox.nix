@@ -221,7 +221,7 @@
         nextchat.enable = false;
       };
       ui = {
-        ice.enable = false;
+        ice.enable = true;
       };
       wine = {
         enable = true;

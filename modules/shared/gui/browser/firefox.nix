@@ -75,17 +75,14 @@ in {
           ublock-origin
           download-with-aria2
           sidebery
-          darkreader
           surfingkeys_ff
           auto-tab-discard
           user-agent-string-switcher
           violentmonkey
           styl-us
-          immersive-translate # kiss-translator # 翻译插件
+          # immersive-translate # kiss-translator # 翻译插件,使用脚本取代
           chrome-mask
           zeroomega
-          easy-image-blocker
-          raindropio
         ]);
         finalPackage = wrapPackage cfg.package;
       };
