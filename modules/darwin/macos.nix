@@ -102,7 +102,7 @@ in {
 
             dashboard-in-overlay = true;
             expose-animation-duration = 0.1;
-            expose-group-by-app = true;
+            expose-group-apps = true;
             launchanim = false;
             mineffect = "genie";
             minimize-to-application = true;

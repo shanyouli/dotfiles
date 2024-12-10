@@ -56,12 +56,12 @@ in {
         #   vimAlias = true;
         # })
         # https://github.com/NixOS/nixpkgs/pull/352727
-        (mkIf cfg.enGui pkgs.unstable.neovide)
+        (mkIf cfg.enGui pkgs.neovide)
         pkgs.glow
       ];
       programs.neovim = {
         enable = true;
-        package = pkgs.unstable.neovim-unwrapped;
+        package = pkgs.neovim-unwrapped;
         defaultEditor = true;
         viAlias = true;
         vimAlias = true;

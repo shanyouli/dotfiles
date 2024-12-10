@@ -24,15 +24,15 @@
         def main [--all(-a), --stable(-s)] {
           if $all {
             log info "update all flake inputs."
-            ^nix flake lock --commit-lock-file
+            ^nix flake update --commit-lock-file
             return 0
           }
           if $stable {
             log info $"(ansi blue_bold)>>>(ansi reset) update (ansi blue_bold)${pkgs.lib.concatStringsSep " " stableInputs}(ansi reset)"
-            ^nix flake lock ${pkgs.lib.concatMapStringsSep " " (x: "--update-input ${x}") stableInputs} --commit-lock-file
+            ^nix flake update ${pkgs.lib.concatStringsSep " " stableInputs} --commit-lock-file
           } else {
             log info $"(ansi blue_bold)>>>(ansi reset) update (ansi blue_bold)${pkgs.lib.concatStringsSep " " baseInputs}(ansi reset)"
-            ^nix flake lock ${pkgs.lib.concatMapStringsSep " " (x: "--update-input ${x}") baseInputs} --commit-lock-file
+            ^nix flake lock ${pkgs.lib.concatStringsSep " " baseInputs} --commit-lock-file
           }
         }
       '';

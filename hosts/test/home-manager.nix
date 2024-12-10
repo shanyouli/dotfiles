@@ -44,7 +44,7 @@
 
       browser = {
         default = "firefox";
-        chrome.enable = pkgs.stdenv.isDarwin || pkgs.stdenv.isx86_64;
+        chrome.enable = pkgs.stdenv.hostPlatform.isDarwin || pkgs.stdenv.hostPlatform.isx86_64;
       };
       media = {
         flameshot.enable = true;

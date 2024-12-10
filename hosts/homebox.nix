@@ -169,10 +169,6 @@
 
     modern.enable = true;
 
-    # media.music.enable = true;
-    # media.music.netease.enGui = false;
-    # media.video.enable = true;
-
     dev = {
       bash.enable = true;
 
@@ -239,13 +235,5 @@
 
     themes.default = "wal";
   };
-  # 如果你想使用macos别名请查看
-  # https://github.com/LnL7/nix-darwin/issues/139#issuecomment-1230728610
-  # Use a custom configuration.nix location.
-  # $ darwin-rebuild switch -I darwin-config =$HOME/.config/nixpkgs/darwin/configuration.nix
-  # environment.darwinConfig                 = "$HOME/.config/nixpkgs/darwin/configuration.nix";
-
-  # Used for backwards compatibility, please read the changelog before changing.
-  # $ darwin-rebuild chang/nix/store/6xnavkbxd3kkkyssqds9p9rw9r47cj1q-gnupg-2.4.1/bin/gpg-connect-agentelog
   system.stateVersion = lib.mkForce 5;
 }

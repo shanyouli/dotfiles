@@ -62,7 +62,7 @@ in {
             # Necessary for home-manager to work with flakes, otherwise it will
             # look for a nixpkgs channel.
             stateVersion =
-              if pkgs.stdenv.isDarwin
+              if pkgs.stdenv.hostPlatform.isDarwin
               then "24.05"
               else config.system.stateVersion;
             username = config.user.name;
@@ -147,7 +147,7 @@ in {
           (ripgrep.override {withPCRE2 = true;})
           #
           curl
-          pkgs.unstable.cached-nix-shell # Better nix-shell
+          pkgs.cached-nix-shell # Better nix-shell
         ];
         etc = {
           home-manager.source = "${inputs.home-manager}";

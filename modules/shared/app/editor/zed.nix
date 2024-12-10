@@ -13,7 +13,7 @@ with my; let
 in {
   options.modules.app.editor.zed = {
     enable = mkEnableOption "Whether to use zed editor";
-    package = mkPackageOption pkgs.unstable "zed-editor" {};
+    package = mkPackageOption pkgs "zed-editor" {};
   };
   config = mkIf cfg.enable {
     home.packages = [cfg.package];
