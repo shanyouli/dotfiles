@@ -219,6 +219,16 @@ in {
               fi
             '';
           };
+          linkFirefox = let
+            cfirefox = config.modules.gui.browser.firefox;
+          in {
+            enable = cfirefox.enable && cfirefox.dev.enable;
+            level = 2000;
+            desc = "Link Firefox.app";
+            text = ''
+              $DRY_RUN_CMD ln -sf "${cfirefox.finalPackage}/Applications/Firefox.app" /Applications/
+            '';
+          };
           initDevInit = {
             enable = config.modules.dev.lang != [];
             desc = "Init dev language manager ...";
