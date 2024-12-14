@@ -28,6 +28,10 @@ in {
           # "CascadiaCode" # cascadiaCode 自带
         ];
       })
+      pkgs.unstable.pragmasevka
+      pkgs.unstable.pragmasevka-nerd
+      pkgs.unstable.pragmasevka-serif
+      pkgs.unstable.pragmasevka-sans
     ];
     # fonts = {
     #   # fontDir.enable = true;

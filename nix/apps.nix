@@ -32,7 +32,7 @@
             ^nix flake update ${pkgs.lib.concatStringsSep " " stableInputs} --commit-lock-file
           } else {
             log info $"(ansi blue_bold)>>>(ansi reset) update (ansi blue_bold)${pkgs.lib.concatStringsSep " " baseInputs}(ansi reset)"
-            ^nix flake lock ${pkgs.lib.concatStringsSep " " baseInputs} --commit-lock-file
+            ^nix flake update ${pkgs.lib.concatStringsSep " " baseInputs} --commit-lock-file
           }
         }
       '';

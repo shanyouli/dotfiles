@@ -16,7 +16,7 @@ in {
     enable = mkEnableOption "Whether to use nh";
     alias = mkEnableOption "将 nh_darwin 软链接到 nh";
     flake = mkOpt' (types.nullOr types.path) null "flake root 目录";
-    package = mkPackageOption pkgs.unstable "nh_darwin" {};
+    package = mkPackageOption pkgs.unstable "nh" {};
     # 目前无法很好的控制 .direnv 目录下的缓存，不推荐运用
     clean = {
       enable = mkEnableOption "periodic garbage collection with nh_darwin clean all";
