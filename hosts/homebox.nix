@@ -230,7 +230,10 @@
     };
     service = {
       battery.enable = false;
-      yabai.enable = true;
+      yabai = {
+        enable = true;
+        border.enable = false;
+      };
     };
 
     themes.default = "wal";

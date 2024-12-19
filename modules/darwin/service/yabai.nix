@@ -12,11 +12,14 @@ with my; let
 in {
   options.modules.service.yabai = {
     enable = mkBoolOpt false;
+    border.enable = mkBoolOpt cfg.enable;
     package = mkPackageOption pkgs.unstable "yabai" {};
   };
 
   config = mkIf cfg.enable {
-    user.packages = [pkgs.unstable.darwinapps.yabai-zsh-completions pkgs.unstable.darwinapps.borders];
+    user.packages =
+      [pkgs.unstable.darwinapps.yabai-zsh-completions]
+      ++ lib.optionals cfg.border.enable [pkgs.unstable.darwinapps.borders];
     home.configFile."yabai" = {
       source = "${my.dotfiles.config}/yabai";
       recursive = true;
