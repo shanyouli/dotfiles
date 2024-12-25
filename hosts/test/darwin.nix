@@ -194,6 +194,7 @@
         spotube.enable = true;
       };
 
+      read.enable = true;
       games.enable = true;
       hammerspoon.enable = true;
       rime.enable = true;

@@ -99,8 +99,6 @@ in {
             "wpsoffice-cn" # "microsoft-office" , 手动安装
             "mactex"
 
-            "skim" # PDF
-
             # "displaperture" # screen 曲线图
             # "imageoptim" # 图片压缩
             # "licecap" # GIF kap
@@ -162,8 +160,6 @@ in {
             "shanyouli/tap/tmexclude"
 
             "shanyouli/tap/vimmotion" # 使用 vim 全局操作
-            "shanyouli/tap/calibre-cjk" #"koodo-reader", 书籍管理和阅读
-            "shanyouli/tap/alexandria" # 阅读工具
             "shanyouli/tap/airbattery" # 设备电量显示
 
             "bbackupp" # ios 备份工具 #

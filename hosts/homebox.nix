@@ -223,6 +223,7 @@
         enable = true;
         crossover.enable = true;
       };
+      read.enable = true;
     };
 
     nh = {
