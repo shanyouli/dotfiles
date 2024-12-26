@@ -174,10 +174,9 @@
 
       python = {
         enable = true;
-        versions = ["3.12" "3.10" "3.11"];
-        global = "3.11";
-        manager = "rye";
-        rye.manager = true;
+        versions = ["3.13" "3.10" "3.11" "3.12"];
+        global = "3.12";
+        venv = "uv";
       };
 
       nix.enable = true;

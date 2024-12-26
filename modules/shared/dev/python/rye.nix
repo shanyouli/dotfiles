@@ -10,7 +10,7 @@ with lib;
 with my; let
   cfp = config.modules.dev.python;
   cfg = cfp.rye;
-  cpkg = pkgs.unstable.rye;
+  cpkg = pkgs.rye;
   cfb = "${cpkg}/bin/rye";
 in {
   options.modules.dev.python.rye = {

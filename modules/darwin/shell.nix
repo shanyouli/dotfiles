@@ -39,9 +39,9 @@ with my; let
     text = ''
       def main [s1: string, s2: string ] -> string {
         let base = $s2 | split row (char esep) | uniq
-        let newlist = $s1 | split row (char esep) | uniq | filter {|x| ("$x" not-in $base) or ("$x" not-in [" " ":"]) }
+        let newlist = $s1 | split row (char esep) | uniq | filter {|x| ($x not-in $base) } | filter {|x| ($x not-in [" " ":"]) }
         if ($newlist | is-empty) {
-          $s2
+          $base | str join (char esep)
         } else {
           [
             ...$newlist

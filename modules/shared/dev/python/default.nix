@@ -10,13 +10,15 @@ with lib;
 with my; let
   cfm = config.modules;
   cfg = cfm.dev.python;
-  managers = ["poetry" "rye"];
+  managers = ["rye" "uv" "mise" "asdf"];
+  venvs = ["poetry" "rye" "uv"];
 in {
   options.modules.dev.python = with types; {
     enable = mkEnableOption "Whether to python";
     # 如果使用 asdf 管理版本。versions 的值需要符合：`asdf list all python` 的结果
     # 如果使用 mise 管理版本的值需要符合 `mise ls-remote python` 的结果
     # 如果使用 rye 管理版本，versions 需要符合 `rye toolchain list --include-downloadable` 的结果
+    # 如果使用 uv 管理版本， versions 需要符合 'uv python list --all-versions' 的结果。
     versions = mkOpt' (oneOf [str (nullOr bool) (listOf (nullOr str))]) [] "Use asdf install python version";
     global = mkOption {
       description = "python default version";
@@ -31,25 +33,44 @@ in {
         then s
         else "";
     };
-    manager = mkOption {
-      description = "python virtual environment management tools";
+    venv = mkOption {
+      description = "python virtual environment management tool.";
       type = str;
       default = "poetry";
       apply = s:
-        if builtins.elem s managers
+        if builtins.elem s venvs
         then s
         else "";
     };
+    manager = mkOption {
+      description = "python versions management tool.";
+      type = str;
+      default = "";
+      apply = s:
+        if builtins.elem s managers
+        then s
+        else
+          (
+            if builtins.elem cfg.venv managers
+            then cfg.venv
+            else cfm.dev.manager.default
+          );
+    };
   };
   config = mkIf cfg.enable (mkMerge [
-    (mkIf (cfg.manager == "poetry") {
-      modules.dev.python.poetry.enable = true;
-    })
-    (mkIf (cfg.manager == "rye") {
-      modules.dev.python.rye.enable = true;
-    })
     {
       modules = {
+        dev.python = {
+          poetry.enable = mkDefault (cfg.venv == "poetry");
+          rye = {
+            enable = mkDefault (cfg.venv == "rye");
+            manager = mkDefault (cfg.manager == "rye");
+          };
+          uv = {
+            enable = mkDefault (cfg.venv == "uv");
+            manager = mkDefault (cfg.manager == "uv");
+          };
+        };
         python.extraPkgs = ps:
           with ps; [
             pip
@@ -108,7 +129,7 @@ in {
         pipenv
       ];
     }
-    (mkIf ((cfg.manager != "rye") || (!cfg.rye.manager)) {
+    (mkIf (builtins.elem cfg.manager ["misc" "asdf"]) {
       modules.dev = {
         lang.python = cfg.versions;
         manager.extInit = lib.optionalString (cfg.global != "") ''

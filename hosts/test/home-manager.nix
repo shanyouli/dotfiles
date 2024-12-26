@@ -31,9 +31,9 @@
         enable = true;
         versions = ["3.12" "3.10" "3.11"];
         global = "3.11";
-        manager = "rye";
-        rye.manager = true;
+        venv = "rye";
         poetry.enable = true;
+        uv.enable = true;
       };
       node.enable = true;
     };
