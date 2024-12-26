@@ -24,7 +24,7 @@ in {
       assertions = [
         {
           assertion = !cfp.rye.manager;
-          message = "and config.modules.dev.python.rye.manager only set one to true.";
+          message = "Do not use rye and uv to manage python versions at the same time.";
         }
       ];
       modules = {

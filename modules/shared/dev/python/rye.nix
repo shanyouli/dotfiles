@@ -87,6 +87,12 @@ in {
       '';
     })
     (mkIf cfg.manager {
+      assertions = [
+        {
+          assertion = !uv.rye.manager;
+          message = "Do not use rye and uv to manage python versions at the same time.";
+        }
+      ];
       modules = {
         python.pipx.enable = mkDefault false;
         shell = {
