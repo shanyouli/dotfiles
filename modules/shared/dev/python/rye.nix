@@ -89,7 +89,7 @@ in {
     (mkIf cfg.manager {
       assertions = [
         {
-          assertion = !uv.rye.manager;
+          assertion = !config.modules.dev.python.uv.manager;
           message = "Do not use rye and uv to manage python versions at the same time.";
         }
       ];

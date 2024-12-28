@@ -48,7 +48,7 @@ in rec {
         if checkPhase == null
         then ''
           runHook preCheck
-          ${nushell}/bin/nu --commands "nu-check --debug '$target'"
+          ${nushell}/bin/nu --commands "nu-check '$target'"
           runHook postCheck
         ''
         else checkPhase;
@@ -139,7 +139,7 @@ in rec {
         if checkPhase == null
         then ''
           runHook preCheck
-          ${nushell}/bin/nu --commands "nu-check --debug '$target'"
+          ${nushell}/bin/nu --commands "nu-check '$target'"
           runHook postCheck
         ''
         else checkPhase;
