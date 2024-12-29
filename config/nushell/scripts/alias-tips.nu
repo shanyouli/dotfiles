@@ -29,7 +29,7 @@ def alias_tip [] {
 def --env add-hook [field: cell-path new_hook: any] {
   let old_config = $env.config? | default {}
   let old_hooks = $old_config | get $field --ignore-errors | default []
-  $env.config = ($old_config | upsert $field ($old_hooks ++ $new_hook))
+  $env.config = ($old_config | upsert $field ($old_hooks | append $new_hook))
 }
 export-env {
   let alias_tips_hook = { alias_tip }

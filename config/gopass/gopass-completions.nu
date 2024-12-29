@@ -43,11 +43,11 @@ export extern "gopass templates" [
   --help(-h)                   # show help
 ]
 
-def "nu-completion gopass secrets" [] noting -> list<string> {
+def "nu-completion gopass secrets" []: nothing -> list<string> {
   ^gopass list --flat | lines
 }
 
-def "nu-completion gopass folders" [] noting -> list<string> {
+def "nu-completion gopass folders" []: nothing -> list<string> {
   ^gopass list --flat --folders | lines
 }
 

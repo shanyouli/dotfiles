@@ -189,7 +189,11 @@ in {
           #   # "shanyouli/tap/clash-verge"
           #   # (mkIf (config.modules.proxy.default == "sing-box") "sfm")
           # ]
-          ++ optionals cfg.gui.enable ["applite"];
+          ++ optionals cfg.gui.enable [
+            "applite"
+            (mkIf (config.modules.proxy.default == "sing-box") "shanyouli/tap/gui-for-singbox")
+            (mkIf (config.modules.proxy.default == "clash") "shanyouli/tap/gui-for-clash")
+          ];
         brews = [
           # "macos-trash" # trash-cli
           # "mysql"

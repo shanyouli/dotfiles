@@ -37,7 +37,7 @@ with my; let
   fix_path = writeNuScript' {
     name = "fix_PATH.nu";
     text = ''
-      def main [s1: string, s2: string ] -> string {
+      def main [s1: string, s2: string ]: nothing -> string {
         let base = $s2 | split row (char esep) | uniq
         let newlist = $s1 | split row (char esep) | uniq | filter {|x| ($x not-in $base) } | filter {|x| ($x not-in [" " ":"]) }
         if ($newlist | is-empty) {
