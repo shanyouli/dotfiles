@@ -79,7 +79,6 @@ yabai -m rule --add app="^(Nutstore|Karabiner-|GPG [Kk]eychain|IINA|Raycast|LuLu
 # 视频播放程序,不透明度设置为1
 yabai -m rule --add app="^([Mm]pv|IINA|VidHub|BaiduNetdisk)$" opacity=1
 
-yabai -m rule --add title="Picture-in-Picture" opacity=1
 # yabai -m rule --add app="^[Ee]macs$" title="^Edit File.*" manage=off
 
 # if command -v jq >/dev/null 2>&1 && [[ $(yabai -m query --displays | jq -rj '. | length') -gt 1  ]]; then
@@ -92,7 +91,8 @@ fi
 
 yabai -m rule --add title="Picture-in-Picture" opacity=1 manage=off
 
-yabai -m signal --add event=window_destroyed \
-    action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
-yabai -m signal --add event=application_terminated \
-    action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
+# 不需要自动聚焦，
+# yabai -m signal --add event=window_destroyed \
+#     action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
+# yabai -m signal --add event=application_terminated \
+#     action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
