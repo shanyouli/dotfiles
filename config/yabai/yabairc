@@ -62,7 +62,7 @@ yabai -m config window_gap 4
 yabai -m rule --add title="(Copy|Bin|About This Mac|Info)" manage=off
 # Do not manage some apps which are not resizable
 yabai -m rule --add app="^(Calculator|System Preferences|[sS]tats|[Jj]et[Bb]rains [Tt]ool[Bb]ox|系统设置|System Settings|Hearthstone|Battle.net|Clash for Window|Dash|Ryujinx|OpenMTP|Tencent Lemon|Android File Transfer|BaiduNetdisk|Finder|VOX|mpv|Easydict)$" manage=off
-
+yabai -m rule --add app="^(Simple Live)$" manage=off sub-layer=above
 yabai -m rule --add title="^(.*[Cc]onsole|FloatTerm)$" manage=off
 # if [[ $(yabai -m query --displays | jq -rj '. | length') -gt 1  ]]; then
 #   yabai -m rule --add app="^Firefox$" display=2
@@ -87,6 +87,7 @@ yabai -m rule --add app="^([Mm]pv|IINA|VidHub|BaiduNetdisk)$" opacity=1
 
 if [[ -d /Applications/Hammerspoon.app ]]; then
     pgrep -x "Hammerspoon" >/dev/null 2>&1 || open -a /Applications/Hammerspoon.app
+    yabai -m rule --add app="^Hammerspoon$" manage=off sticky=on
 fi
 
 yabai -m rule --add title="Picture-in-Picture" opacity=1 manage=off
