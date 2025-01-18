@@ -30,7 +30,8 @@ in {
     {
       homebrew.casks = ["hammerspoon"];
       homebrew.brews = ["blueutil"];
-      user.packages = [pkgs.defaultbrowser];
+      # 使用 hammerspoon 来管理 如何打开 url
+      # user.packages = [pkgs.defaultbrowser];
       home.configFile."hammerspoon/nixpath.lua".text = let
         luaPaths = ''
           -- 使用nix中安装的lua环境
@@ -53,9 +54,6 @@ in {
         emacsClient = lib.optionalString config.modules.app.editor.emacs.enable ''
           emacsClient = "${config.modules.app.editor.emacs.pkg}/bin/emacsclient",
         '';
-        defaultBrowser = ''
-          defaultbrowser = "${pkgs.defaultbrowser}/bin/defaultbrowser",
-        '';
       in ''
         ${luaPaths}
         ${optionalString useDevLua ''
@@ -67,7 +65,6 @@ in {
         return {
           ${yabaiCmd}
           ${emacsClient}
-          ${defaultBrowser}
         }
       '';
       macos.userScript.setHMInitFile = {
