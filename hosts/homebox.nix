@@ -73,7 +73,7 @@
         enable = true;
         startup = false;
       };
-      configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/singbox.json";
+      configFile = "${config.user.home}/Nutstore Files/我的坚果云/代理相关/singbox.json";
     };
 
     alist = {

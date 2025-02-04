@@ -1,0 +1,28 @@
+#!/usr/bin/env nu
+# 说明：
+#  该脚本的作用是切换 mac wifi 的 ip 为静态 ip 或切换为动态。
+def  main [ ...rest: string ] {
+  let WIFI_INFO = networksetup -getinfo WI-FI | lines
+  if ($WIFI_INFO | get 0 | str contains "DHCP") {
+    if ($rest | is-empty) {
+      print "将自动设置 wifi 的静态ip 为 192.168.43.212"
+      print $"设置之前的 网关为 ($WIFI_INFO | get 3 | split row ":" | get 1 | str trim)"
+      networksetup -setmanual "WI-FI" 192.168.43.212 255.255.255.0 192.168.43.1
+      networksetup -setdnsservers "WI-FI" 192.168.43.1 
+    } else {
+      let rounter = $WIFI_INFO | get 3 | split row ":" | get 1 | str trim
+      print $"设置之前的 网关为 ($rounter)"
+      if ($rest | length) > 1 {
+        networksetup -setmanual "WI-FI" ...$rest
+      } else {
+        let ip =  $rounter | split row "." | drop 1 | append ($rest | get 0) | str join "."
+        networksetup -setmanual "WI-FI" $ip 255.255.255.0 $rounter
+      }
+    }
+  } else {
+    networksetup -setdhcp WI-FI
+    networksetup -setdnsservers "WI-FI" Empty
+  }
+  sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
+}
+
