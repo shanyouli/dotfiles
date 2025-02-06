@@ -268,6 +268,27 @@
         "type": "github"
       }
     },
+    "nh-olverlay": {
+      "inputs": {
+        "nixpkgs": [
+          "nurpkgs",
+          "nixpkgs-stable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1738579718,
+        "narHash": "sha256-HcNEFumdZ4Y59CBB1h1IzOyPxwn0u/Wson6hhzItXCA=",
+        "owner": "viperML",
+        "repo": "nh",
+        "rev": "8ef70b642b8351c010a48f43dda6a1ebf038f5d9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "viperML",
+        "repo": "nh",
+        "type": "github"
+      }
+    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -365,6 +386,7 @@
         "git-hooks-nix": [
           "git-hooks-nix"
         ],
+        "nh-olverlay": "nh-olverlay",
         "nix-index-database": "nix-index-database",
         "nixpkgs": [
           "nixpkgs"
@@ -378,11 +400,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1738741835,
-        "narHash": "sha256-QZRE1m4U6CTlQuLo1GeA+WelCHYFxkleco0jaTNFLzc=",
+        "lastModified": 1738746135,
+        "narHash": "sha256-sl5NBT+0tzJPHWl0uZw1mUvEth9T6WnZjXIlgkys6DE=",
         "owner": "shanyouli",
         "repo": "nur-packages",
-        "rev": "787e72061459c78c87b39ba23cb5080ab62f1029",
+        "rev": "5a19a19250e5a965c5c878d40a6515c4dd907984",
         "type": "github"
       },
       "original": {

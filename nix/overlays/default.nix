@@ -14,8 +14,7 @@
         config.allowUnfree = true;
         overlays = [
           (lib.composeExtensions self.overlays.base (_ffinal: _pprev: {
-            inherit (inputs.nurpkgs.packages.${prev.system}) nix-index;
-            inherit (inputs.nurpkgs.packages.${prev.system}) emacs;
+            inherit (inputs.nurpkgs.packages.${prev.system}) emacs nix-index nh;
             emacs-git = inputs.nurpkgs.packages.${prev.system}.emacsGit;
           }))
         ];
