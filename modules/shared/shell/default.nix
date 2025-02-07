@@ -71,6 +71,7 @@ in {
       fzf
       my-nix-script
       pkgs.unstable.python3.pkgs.sd
+      nvd
     ];
     env.PATH = [''''${XDG_BIN_HOME}''];
 
