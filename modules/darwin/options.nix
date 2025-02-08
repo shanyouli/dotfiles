@@ -121,10 +121,11 @@ in {
         ${systemScripts}
         echo "User script excuted after system activation"
         sudo -u ${config.user.name} --set-home ${userScripts}
-        if [[ -e /run/current-system ]]; then
-          echo "Update software version changes..."
-          nix store diff-closures /run/current-system $systemConfig
-        fi
+        # 使用 nvd 取代
+        # if [[ -e /run/current-system ]]; then
+        #   echo "Update software version changes..."
+        #   nix store diff-closures /run/current-system $systemConfig
+        # fi
       '';
       macos = {
         systemScript = {
