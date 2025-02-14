@@ -16,7 +16,7 @@ in {
   config = mkIf cfg.enable {
     homebrew.casks = [
       "skim" # PDF
-      "shanyouli/tap/calibre-cjk" #"koodo-reader", 书籍管理和阅读
+      "calibre" #"koodo-reader", 书籍管理和阅读
       # "shanyouli/tap/alexandria" # 阅读工具
       "shanyouli/tap/readest"
     ];
