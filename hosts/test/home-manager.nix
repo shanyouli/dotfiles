@@ -16,6 +16,7 @@
     };
     themes.default = "wal";
     dev = {
+      scheme.enable = true;
       manager.default = "mise";
       bash.enable = true;
       cc.enable = true;

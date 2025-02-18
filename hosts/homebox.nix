@@ -191,6 +191,7 @@
       toml.fmt = true;
       enWebReport = true;
       rust.enable = true;
+      scheme.enable = true;
     };
 
     # macos
