@@ -23,6 +23,7 @@ def  main [ ...rest: string ] {
     networksetup -setdhcp WI-FI
     networksetup -setdnsservers "WI-FI" Empty
   }
-  sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
+  sudo dscacheutil -flushcache
+  sudo killall -HUP mDNSResponder
 }
 
