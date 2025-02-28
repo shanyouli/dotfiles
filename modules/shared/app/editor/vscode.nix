@@ -25,14 +25,16 @@ in {
     home.programs.vscode = {
       enable = true;
       package = pkgs.vscode;
-      enableUpdateCheck = false;
-      enableExtensionUpdateCheck = false;
-      inherit (cfg) extensions;
-      userSettings = {
-        "nix.serverPath" = "nil";
-        "nix.enableLanguageServer" = true;
-        "nix.formatterPath" = "alejandra";
-        "security.workspace.trust.enabled" = false; # 禁用全局工作区询问是否信任
+      profiles.default = {
+        inherit (cfg) extensions;
+        enableUpdateCheck = false;
+        enableExtensionUpdateCheck = false;
+        userSettings = {
+          "nix.serverPath" = "nil";
+          "nix.enableLanguageServer" = true;
+          "nix.formatterPath" = "alejandra";
+          "security.workspace.trust.enabled" = false; # 禁用全局工作区询问是否信任
+        };
       };
     };
   };
