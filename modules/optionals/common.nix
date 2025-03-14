@@ -83,9 +83,9 @@ in {
         allowed-users = users;
         max-jobs = 4;
         substituters = pkgs.lib.mkBefore [
-          "https://mirror.sjtu.edu.cn/nix-channels/store"
-          "https://mirrors.ustc.edu.cn/nix-channels/store"
           "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+          "https://mirrors.ustc.edu.cn/nix-channels/store"
+          "https://mirror.sjtu.edu.cn/nix-channels/store"
           # "https://cache.nixos.org"
           "https://nix-community.cachix.org"
           "https://shanyouli.cachix.org"
