@@ -101,10 +101,13 @@ in {
     programs = {
       bash.interactiveShellInit = ''
         # /etc/profile 的执行导致 bash 中 PATH 出现问题，这里重新声明 PATH
-        [ -z $__BASE_NIX_DARWIN_PATH ] && . ${env-paths}
-        __new_path="$(${fix_path} "$PATH" "$__BASE_NIX_DARWIN_PATH")"
-        export PATH=$__new_path
-        unset __new_path
+        # HACK: 当使用 nix-shell -p 安装测试 commands 时，不执行 PATH 更新
+        [[ -z $IN_NIX_SHELL ]] && {
+          [[ -z $__BASE_NIX_DARWIN_PATH ]] && . ${env-paths}
+          __new_path="$(${fix_path} "$PATH" "$__BASE_NIX_DARWIN_PATH")"
+          export PATH=$__new_path
+          unset __new_path
+        }
       '';
     };
   };
