@@ -171,6 +171,7 @@
 
     dev = {
       bash.enable = true;
+      go.enable = true;
 
       python = {
         enable = true;

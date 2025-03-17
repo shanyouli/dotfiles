@@ -50,7 +50,8 @@ in {
         useos = true;
         file = mapAttrs' (k: v: nameValuePair "${config.home.fakeDir}/${k}" v) config.home.fakeFile;
       };
-
+      # add lib
+      lib.file.mkOutOfStoreSymlink = config.home-manager.users."${config.user.name}".lib.file.mkOutOfStoreSymlink;
       home-manager = {
         extraSpecialArgs = {inherit inputs;};
         useGlobalPkgs = true;

@@ -39,7 +39,10 @@ with my; let
     text = ''
       def main [s1: string, s2: string ]: nothing -> string {
         let base = $s2 | split row (char esep) | uniq
-        let newlist = $s1 | split row (char esep) | uniq | filter {|x| ($x not-in $base) } | filter {|x| ($x not-in [" " ":"]) }
+        let newlist = $s1 | split row (char esep)
+                          | uniq
+                          | filter {|x| ($x not-in $base) }
+                          | filter {|x| ($x not-in [" " ":" "/nix/var/nix/profiles/default"]) }
         if ($newlist | is-empty) {
           $base | str join (char esep)
         } else {

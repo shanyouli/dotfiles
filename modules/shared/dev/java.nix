@@ -24,10 +24,13 @@ in {
       apply = s:
         if builtins.isString cfg.versions
         then cf.versions
-        else if (builtins.elem cfg.versions [null false true []])
-        then ""
-        else if builtins.elem s cfg.versions
-        then s
+        else if (builtins.isList cfg.versions) && ((builtins.length cfg.versions) > 0)
+        then
+          (
+            if (builtins.elem s cfg.versions)
+            then s
+            else builtins.head cfg.versions
+          )
         else "";
     };
   };
