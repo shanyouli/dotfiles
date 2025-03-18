@@ -135,9 +135,9 @@ in {
               $DRY_RUN_CMD rm -rf '/Applications/Nix Apps'
             fi
           '';
-          zshell.text = ''
-            echo-info "setting Default Shell"
-            chsh -s /run/current-system/sw/bin/zsh ${config.user.name}
+          defaultShell.text = ''
+            echo-info "Setting Default Shell"
+            chsh -s /run/current-system/sw/bin/${config.modules.shell.default} ${config.user.name}
           '';
           initXDG = {
             enable = true;

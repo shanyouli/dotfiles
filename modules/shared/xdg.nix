@@ -18,11 +18,7 @@ with my; {
     # Conform more programs to XDG conventions. The rest are handled by their
     # respective modules.
     __GL_SHADER_DISK_CACHE_PATH = ''"$XDG_CACHE_HOME"/nv'';
-    ASPELL_CONF = ''
-      per-conf "$XDG_CONFIG_HOME"/aspell/aspell.conf;
-      personal "$XDG_CONFIG_HOME"/aspell/en_US.pws;
-      repl "$XDG_CONFIG_HOME"/aspell/en.prepl;
-    '';
+    ASPELL_CONF = ''per-conf "$XDG_CONFIG_HOME"/aspell/aspell.conf; personal "$XDG_CONFIG_HOME"/aspell/en_US.pws; repl "$XDG_CONFIG_HOME"/aspell/en.prepl;'';
     CUDA_CACHE_PATH = ''"$XDG_CACHE_HOME"/nv'';
     HISTFILE = ''"$XDG_DATA_HOME"/bash/history'';
     INPUTRC = ''"$XDG_CONFIG_HOME"/readline/inputrc'';

@@ -75,6 +75,12 @@ in {
     ];
     env.PATH = [''''${XDG_BIN_HOME}''];
 
-    modules.shell.zsh.enable = cfg.default == "zsh";
+    modules.shell = {
+      zsh.enable = mkDefault (cfg.default == "zsh");
+      bash.enable = mkDefault (cfg.default == "bash");
+      fish.enable = mkDefault (cfg.default == "fish");
+      # nushell 目前不适合作为默认 shell 使用
+      # nushell.enable = mkDefault (cfg.default == "nu");
+    };
   };
 }

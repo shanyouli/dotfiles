@@ -130,8 +130,9 @@
 
     shell = {
       prompt.default = "oh-my-posh";
-      default = "zsh";
-      fish.enable = true;
+      default = "fish";
+      # fish.enable = true;
+      zsh.enable = true;
       bash.enable = true;
       nushell.enable = true;
       carapace.enable = true;
