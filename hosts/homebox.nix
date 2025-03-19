@@ -100,6 +100,10 @@
         };
 
         default = "nvim";
+        nvim = {
+          treesit = "all";
+          # lazy.enable = true;
+        };
         # app.editor.nvim.enable = true;
         nvim.enGui = true; # GUI 编辑工具为emacs
         vscode.enable = true;

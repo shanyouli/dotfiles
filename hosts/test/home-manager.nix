@@ -7,6 +7,10 @@
       };
       editor = {
         default = "nvim";
+        nvim = {
+          lazy.enable = true;
+          treesit = "all";
+        };
         helix.enable = true;
         emacs.enable = true;
         vscode.enable = true;
