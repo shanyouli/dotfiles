@@ -104,10 +104,6 @@ in {
           -- 额外的自定义配置
           ${cfg.rc}
         '';
-        # configFile."nvim/plugin_list.lua".text = ''        return {
-        #           ${concatMapStringsSep ",\n" (v: ''"${v}"'') cfg.lsp}
-        #         }
-        # '';
         # @https://discourse.nixos.org/t/stuck-writing-my-first-package/19022/4
         packages = [
           # https://github.com/NixOS/nixpkgs/pull/352727
@@ -145,16 +141,16 @@ in {
           inherit (cfg) plugins;
         };
       };
-      modules.app.editor.nvim.plugins = with pkgs.vimPlugins; [
-        # search all the plugins using https://search.nixos.org/packages
-        telescope-fzf-native-nvim
-        astrotheme
-      ];
     }
     (mkIf cfg.lazy.enable {
       modules.app.editor.nvim = {
-        plugins = [pkgs.vimPlugins.lazy-nvim];
-        rc = mkOrder 1000 (let
+        plugins = with pkgs.vimPlugins; [
+          # search all the plugins using https://search.nixos.org/packages
+          telescope-fzf-native-nvim
+          astrotheme
+          lazy-nvim
+        ];
+        rc = mkOrder 10000 (let
           mkEntryFromDrv = drv:
             if isDerivation drv
             then {
