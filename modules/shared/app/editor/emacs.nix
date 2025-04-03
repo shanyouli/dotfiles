@@ -139,7 +139,7 @@ in {
         configFile = let
           data-dir =
             if pkgs.stdenvNoCC.isLinux
-            then "${pkgs.brise}/share/rime-data"
+            then "${pkgs.rime-data}/share/rime-data"
             else "/Library/Input Methods/Squirrel.app/Contents/SharedSupport";
         in {
           "doom/config.init.el".text = ''

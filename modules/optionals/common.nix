@@ -47,8 +47,35 @@ in {
       name = "init-user";
       text = ''
         use std log
-        print $"(ansi green_bold)Init user script commands...(ansi reset)"
+        $env.NU_LOG_FORMAT = "%ANSI_START%%LEVEL%: %MSG%%ANSI_STOP%"
+        let log_level = log log-level | get INFO
+        let term_col = term size | get columns
+        def tip [--end (-e), ...msg] {
+          let msg_str = $msg | str join " "
+          if $end {
+            let msg_str = $" ($msg_str), END " | fill --alignment c --character "-" --width $term_col
+            log custom -a (ansi blue_dimmed) $msg_str "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
+          } else {
+            let msg_str = $" ($msg_str), BEGIN " |  fill --alignment c --character "-" --width $term_col
+            log custom -a (ansi blue_bold) $msg_str "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
+          }
+        }
+
+        $env.__counter = 1
+
+        def --env "log tip" [--end(-e), ...msg] {
+          if $end {
+            log custom -a (ansi green_dimmed) "}}}\n" "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
+          } else {
+            let current_count = $env.__counter | fill --alignment r --width 2 -c "0"
+            let msg_str = $msg | str join " " | $"Tips ($current_count): ($in) {{{"
+            log custom -a (ansi green_bold) $msg_str "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
+            $env.__counter += 1
+          }
+        }
+        tip "Init user script commands"
         ${config.home.initExtra}
+        tip -e "Init user script commands"
       '';
       nushell =
         if config.modules.shell.nushell.enable

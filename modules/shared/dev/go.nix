@@ -44,6 +44,7 @@ in {
 
           # https://github.com/golangci/golangci-lint
           golangci-lint
+          gopls
         ];
         modules.shell.env.GOPROXY = "https://proxy.golang.com.cn,direct";
       }

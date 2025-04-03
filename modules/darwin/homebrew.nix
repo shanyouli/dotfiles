@@ -104,7 +104,7 @@ in {
             # "licecap" # GIF kap
             # "imazing" # 手机备份管理
             (mkIf (! config.modules.gui.media.flameshot.enable) "shottr") # 截图
-            # "betterdisplay" # 其他替代工具
+            "betterdisplay" # 其他替代工具
             "maczip" # 压缩解压GUI
             # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
             "findergo" # 快捷方式，在finder中打开终端
@@ -198,6 +198,7 @@ in {
           # "macos-trash" # trash-cli
           # "mysql"
           "mist-cli"
+          "p7zip" # "Rpc3 依赖工具"
         ];
         masApps = mkMerge [
           (mkIf (config.modules.gui.enable && (config.modules.proxy.default != "")) {

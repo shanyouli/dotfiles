@@ -1,3 +1,4 @@
+# -*- mode: nix -*-
 {
   lib,
   config,
