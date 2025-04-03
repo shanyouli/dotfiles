@@ -34,13 +34,15 @@ in {
         '';
 
         programs.home-manager.enable = true;
-        initExtra = ''
-          print $"Please use source (ansi cyan)${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh(ansi reset)"
+        activation.zzScript = ''
+          echo "User activation script"
+          ${config.my.user.script}
         '';
-        activation.zzScript = "${config.home.initScript}\n";
         useos = false;
       };
-
+      my.user.extra = ''
+        log debug $"Please use 'source ${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh'"
+      '';
       # home.sessionVariables = filterAttrs (n: v: n != "PATH" ) config.env;
       # home.sessionPath =
       #   if builtins.hasAttr "PATH" config.env

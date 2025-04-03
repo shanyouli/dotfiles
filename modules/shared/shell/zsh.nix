@@ -135,12 +135,12 @@ in {
         '';
       };
     };
+    my.user.extra = optionalString (! config.home.useos) (mkOrder 5000 ''
+      log debug $"If you use home-manager manage config."
+      log debug $"Please add (ansi b)'export ZDOTDIR=''${XDG_CONFIG_HOME:-$HOME/.config}/zsh'(ansi n) to ~/.zshenv."
+    '');
     home = {
       packages = [cfg.package];
-      initExtra = optionalString (! config.home.useos) (mkOrder 5000 ''
-        print $"(ansi green_bold)If you use home-manager manage config.(ansi reset)"
-        print $"Please add (ansi b)'export ZDOTDIR=''${XDG_CONFIG_HOME:-$HOME/.config}/zsh'(ansi reset) to ~/.zshenv."
-      '');
       configFile =
         {
           "zsh".source = "${my.dotfiles.config}/zsh";

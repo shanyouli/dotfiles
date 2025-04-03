@@ -13,21 +13,13 @@ with my; let
 in {
   config = mkIf (cfp.way == "util") {
     user.packages = [cfgPkg];
-    home.initExtra = let
-      apps = pkgs.buildEnv {
-        name = "my-manager-applications";
-        paths =
-          config.user.packages
-          ++ config.home-manager.users.${config.user.name}.home.packages
-          ++ config.environment.systemPackages;
-        pathsToLink = "/Applications";
-      };
+    my.user.init.UseMacAppUtilSetAPPPath = let
       syncbin = "${cfgPkg}/bin/mac-app-util";
     in ''
       let workdir = ("${cfp.path}" | path expand)
-      let appSource = ("${apps}/Applications" | path expand)
+      let appSource = ("${cfp.linkDir}/Applications" | path expand)
       mkdir $workdir
-      print $"sync (ansi green_bold)($appSource)(ansi reset) to (ansi yellow)($workdir)(ansi reset)"
+      log debug "sync ($appSource) to ($workdir)"
       ${syncbin} sync-trampolines $appSource $workdir
     '';
   };

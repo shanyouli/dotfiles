@@ -75,15 +75,15 @@ in {
           (mkIf (pkgs.unstable ? antifennel) pkgs.unstable.antifennel)
           fnlfmt
         ];
-      initExtra = ''
-        print $"Init (ansi green_bold)Luarocks(ansi reset) ..."
-        let lua_configDir = $env.HOME + "/.config/luarocks"
-        let lua_configFile = $lua_configDir + "/config_${cfg_version}.lua"
-        ^mkdir -p $lua_configDir
-        if (not ($lua_configFile | path expand | path exists)) {
-          touch $lua_configFile
-        }
-      '';
     };
+    my.user.init.setLua = ''
+      log debug $"Init Luarocks ..."
+      let lua_configDir = $env.HOME + "/.config/luarocks"
+      let lua_configFile = $lua_configDir + "/config_${cfg_version}.lua"
+      ^mkdir -p $lua_configDir
+      if (not ($lua_configFile | path expand | path exists)) {
+        touch $lua_configFile
+      }
+    '';
   };
 }

@@ -24,6 +24,7 @@
   config,
   options,
   my,
+  pkgs,
   ...
 }:
 with lib;
@@ -40,6 +41,7 @@ in {
       visible = false;
       readOnly = true;
     };
+    linkDir = mkPkgReadOpt "将所有gui程序link一个路径。";
     way = mkOption {
       description = "连接到一个目录的方法";
       type = types.str;
@@ -51,16 +53,28 @@ in {
     };
   };
   config = {
-    modules.macos.app.path =
-      if cfg.user.enable
-      then "${homedir}/Applications/${cfg.name}"
-      else "/Applications/${cfg.name}";
-    home.initExtra = ''
-      let homeManagerApps = ($env.HOME | path join "Applications" "Home Manager apps")
-      if (($homeManagerApps | path type) == "symlink") {
-         print $"(ansi green_bold)rmove Home Manager generation link.(ansi reset)"
+    modules.macos.app = {
+      path =
+        if cfg.user.enable
+        then "${homedir}/Applications/${cfg.name}"
+        else "/Applications/${cfg.name}";
+      linkDir = pkgs.buildEnv {
+        name = "my-manager-applications";
+        paths =
+          config.user.packages
+          ++ config.home-manager.users.${config.user.name}.home.packages
+          ++ config.environment.systemPackages;
+        pathsToLink = "/Applications";
+      };
+    };
+    my.user.init.removeHomeManagerApps = {
+      desc = "Remove Home Manager apps generation link.";
+      text = ''
+        let homeManagerApps = ($env.HOME | path join "Applications" "Home Manager apps")
+        if (($homeManagerApps | path type) == "symlink") {
           rm -rf $homeManagerApps
-      }
-    '';
+        }
+      '';
+    };
   };
 }

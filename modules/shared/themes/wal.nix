@@ -33,28 +33,25 @@ in {
           recursive = true;
         };
       };
-      initExtra =
-        ''
-          print $"(ansi yellow_bold)Start set themes ...(ansi reset)"
-        ''
-        + optionalString (cfp.use == "dark") ''
-          print $"(ansi green_bold)Apply ${cfg.dark} theme(ansi reset)"
-          ${cfg.package}/bin/wal --theme ${cfg.dark} -q
-        ''
-        + optionalString (cfp.use == "light") ''
-          print $"(ansi green_bold)Apply ${cfg.light} theme(ansi reset)"
-          ${cfg.package}/bin/wal --theme ${cfg.light} -q -l
-        ''
-        + optionalString (cfp.use == "auto") ''
-          let is_Dark = (osascript -e "tell application \"System Events\" to tell appearance preferences to return dark mode")
-          if ($is_Dark == "false") {
-            print $"(ansi green_bold)Apply ${cfg.light} theme(ansi reset)"
-            ${cfg.package}/bin/wal --theme ${cfg.light} -q -l
-          } else {
-            print $"(ansi green_bold)Apply ${cfg.dark} theme(ansi reset)"
-            ${cfg.package}/bin/wal --theme ${cfg.dark} -q
-          }
-        '';
     };
+    my.user.init.setTheme =
+      optionalString (cfp.use == "dark") ''
+        log debug $"Apply ${cfg.dark} theme"
+        ${cfg.package}/bin/wal --theme ${cfg.dark} -q
+      ''
+      + optionalString (cfp.use == "light") ''
+        log debug $"Apply ${cfg.light} theme"
+        ${cfg.package}/bin/wal --theme ${cfg.light} -q -l
+      ''
+      + optionalString (cfp.use == "auto") ''
+        let is_Dark = (osascript -e "tell application \"System Events\" to tell appearance preferences to return dark mode")
+        if ($is_Dark == "false") {
+          log debug $"Apply ${cfg.light} theme"
+          ${cfg.package}/bin/wal --theme ${cfg.light} -q -l
+        } else {
+          log debug $"Apply ${cfg.dark} theme"
+          ${cfg.package}/bin/wal --theme ${cfg.dark} -q
+        }
+      '';
   };
 }

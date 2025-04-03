@@ -124,21 +124,20 @@ in {
         }
         (scriptHomeFunc cfg.scriptFiles)
       ];
-      initExtra = let
-        appnameFn = s: lib.head (lib.splitString " " s);
-      in ''
-        print $"(ansi u)Synchronizing nushell configurations(ansi reset) ..."
-        ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${my.dotfiles.config}/nushell/ ${config.home.configDir}/nushell/
-        let nu_sources = "${config.home.configDir}" | path join "nushell" "sources"
-        if (not ($nu_sources | path exists)) {
-          ^mkdir -p $nu_sources -m 755
-        }
-        ${concatMapStrings (s: ''
-            ${s} | save -f ($nu_sources | path join ("${appnameFn s}" | path basename))
-          '')
-          cfg.cacheCmd}
-      '';
     };
+    my.user.init.syncNuConfig = let
+      appnameFn = s: lib.head (lib.splitString " " s);
+    in ''
+      ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${my.dotfiles.config}/nushell/ ${config.home.configDir}/nushell/
+      let nu_sources = "${config.home.configDir}" | path join "nushell" "sources"
+      if (not ($nu_sources | path exists)) {
+        ^mkdir -p $nu_sources -m 755
+      }
+      ${concatMapStrings (s: ''
+          ${s} | save -f ($nu_sources | path join ("${appnameFn s}" | path basename))
+        '')
+        cfg.cacheCmd}
+    '';
     modules.app.editor = {
       helix = {
         languages = {

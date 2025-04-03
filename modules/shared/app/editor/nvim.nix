@@ -92,11 +92,10 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       env.MANPAGER = "nvim +Man!";
+      my.user.init.SyncNvim = ''
+        ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${my.dotfiles.config}/nvim/ ${config.home.configDir}/nvim/
+      '';
       home = {
-        initExtra = ''
-          print $"(ansi u)Synchronizing nvim configurations(ansi reset)..."
-          ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${my.dotfiles.config}/nvim/ ${config.home.configDir}/nvim/
-        '';
         configFile."nvim/nix.lua".text = ''
            -- -*- mode: lua; -*-
            _G.use_nix = true;

@@ -29,9 +29,9 @@ in {
       ++ optionals cfg.nextchat.enable ["shanyouli/tap/nextchat"]
       ++ optionals cfg.local.enable ["ollama"]
       ++ optionals cfg.snapbox.enable ["shanyouli/tap/snapbox"];
-    home.initExtra = optionalString cfg.local.enable (mkOrder 10000 ''
-      print $"Please run \"(ansi green_underline)ollama pull lama3.2(ansi reset)\"."
-      print $"more modal, see (ansi u)https://ollama.com/library(ansi reset)"
+    my.user.extra = optionalString cfg.local.enable (mkOrder 10000 ''
+      log info "Please run \"ollama pull lama3.2\" install modal."
+      log info $"more modal, see \"(ansi u)https://ollama.com/library(ansi n)\""
     '');
   };
 }

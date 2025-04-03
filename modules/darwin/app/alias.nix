@@ -10,20 +10,12 @@ with my; let
   cfp = config.modules.macos.app;
 in {
   config = mkIf (cfp.way == "alias") {
-    home.initExtra = let
-      apps = pkgs.buildEnv {
-        name = "my-manager-applications";
-        paths =
-          config.user.packages
-          ++ config.home-manager.users.${config.user.name}.home.packages
-          ++ config.environment.systemPackages;
-        pathsToLink = "/Applications";
-      };
+    my.user.init.SetAppPathByAlias = let
       bin = getExe pkgs.mkalias;
     in ''
-      print $"settings up (ansi blue_bold)${cfp.path}(ansi reset)."
+      log debug "settings up ${cfp.path}"
       let workdir = ("${cfp.path}" | path expand)
-      let appSource = ("${apps}/Applications" | path expand)
+      let appSource = ("${cfp.linkDir}/Applications" | path expand)
       if ($workdir | path exists) {
         chmod -R +w $workdir
         ls $workdir | get name
@@ -36,7 +28,7 @@ in {
       for i in $basename_apps {
         let real_app = $appSource | path join $i |readlink -f $in
         let target = $workdir | path join $i
-        print $"Start creating aliases for application (ansi green)($i | path parse | get stem)(ansi reset)"
+        log debug $"Start creating aliases for application ($i | path parse | get stem)"
         ${bin} $real_app $target
       }
     '';

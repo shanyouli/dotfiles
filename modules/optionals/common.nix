@@ -31,7 +31,7 @@ with my; let
       sortFn = la: sort (x: y: x.level <= y.level) la;
     in
       concatMapStrings (x: ''
-        log tip $(x.desc)
+        log tip ${x.desc}
         ${x.text}
       '') (sortFn (filter (x: x.enable) dict-list));
     text = ''
@@ -148,19 +148,13 @@ in {
       useos = mkOpt' bool false "系统级使用 nix 还是用户级使用 nix";
 
       programs = mkOpt' attrs {} "home-manager programs";
-      initScript = mkPkgReadOpt "初始化用户脚本";
-      initExtra = mkOpt' lines "" "激活时，需要执行 nu 代码"; # nushell 语言
     };
   };
   config = {
     my = {
-      user = {
-        extra = config.home.initExtra;
-        script = makeNuScript "user" config.my.user;
-      };
+      user.script = makeNuScript "user" config.my.user;
       system.script = makeNuScript "system" config.my.user;
     };
-    home.initScript = makeNuScript "user" config.my.user;
     # documentation.man.enable = mkDefault true;
     nix = {
       # envVars = {

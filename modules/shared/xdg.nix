@@ -56,8 +56,8 @@ with my; {
     # wakatime
     WAKATIME_HOME = ''"$XDG_CONFIG_HOME/wakatime"'';
   };
-  home.initExtra = ''
-    print  $"(ansi green_bold)Create fakeHome(ansi reset)"
+  my.user.pre = ''
+    log debug "Create fakeHome"
     let fakehome = "${config.home.fakeDir}"
     ^mkdir -p $"($fakehome)" -m 755
     if (not ($"($fakehome)/.local" | path expand | path exists)) {
@@ -66,7 +66,7 @@ with my; {
     if (not ($"($fakehome)/.config" | path expand | path exists)) {
       ln -sf ~/.config $"($fakehome)/.config"
     }
-    print $"(ansi b)create wakatime_home(ansi reset)..."
+    log debug "Create wakatime_home"
     ^mkdir -p "${config.home.configDir}/wakatime"
   '';
 }
