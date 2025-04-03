@@ -38,7 +38,11 @@ in rec {
     destination ? "",
   }:
     pkgs.writeTextFile {
-      inherit name destination;
+      inherit destination;
+      name =
+        if destination == ""
+        then "${name}.nu"
+        else name;
       executable = true;
       text = ''
         #!${nushell}/bin/nu

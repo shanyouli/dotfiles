@@ -35,7 +35,7 @@ with my; let
     echo "export __BASE_NIX_DARWIN_PATH;" >> $out
   '');
   fix_path = writeNuScript' {
-    name = "fix_PATH.nu";
+    name = "fix_PATH";
     text = ''
       def main [s1: string, s2: string ]: nothing -> string {
         let base = $s2 | split row (char esep) | uniq
