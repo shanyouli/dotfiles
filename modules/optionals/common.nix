@@ -9,6 +9,94 @@
 with lib;
 with my; let
   inherit (my) homedir;
+  makeNuScript = name: x: let
+    filterEnabledTexts = dict: let
+      dict-list =
+        mapAttrsToList (name: value: (
+          if builtins.isString value
+          then {
+            desc = name;
+            level = 50;
+            text = value;
+            enable = true;
+          }
+          else {
+            inherit (value) text;
+            desc = value.desc or name;
+            level = value.level or 50;
+            enable = value.enable or true;
+          }
+        ))
+        dict;
+      sortFn = la: sort (x: y: x.level <= y.level) la;
+    in
+      concatMapStrings (x: ''
+        log tip $(x.desc)
+        ${x.text}
+      '') (sortFn (filter (x: x.enable) dict-list));
+    text = ''
+      use std log
+      $env.NU_LOG_FORMAT = "%ANSI_START%%LEVEL%: %MSG%%ANSI_STOP%"
+      let log_level = log log-level | get INFO
+      let term_col = term size | get columns
+      def tip [--end (-e), ...msg] {
+        let msg_str = $msg | str join " "
+        if $end {
+          let msg_str = $" ($msg_str), END " | fill --alignment c --character "-" --width $term_col
+          log custom -a (ansi blue_dimmed) $msg_str "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
+        } else {
+          let msg_str = $" ($msg_str), BEGIN " |  fill --alignment c --character "-" --width $term_col
+          log custom -a (ansi blue_bold) $msg_str "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
+        }
+      }
+      def "log t" [--end (-e), ...msg] {
+        let msg_str = $msg | str join " "
+        if $end {
+          let msg_str = $" ($msg_str), END " | fill --alignment c --character "=" --width $term_col
+          log custom -a (ansi blue_dimmed) $msg_str "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
+        } else {
+          let msg_str = $" ($msg_str), BEGIN " |  fill --alignment c --character "=" --width $term_col
+          log custom -a (ansi blue_bold) $msg_str "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
+        }
+      }
+
+      $env.__counter = 1
+
+      def --env "log tip" [--end(-e), ...msg] {
+        if $end {
+          log custom -a (ansi green_dimmed) "}}}\n" "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
+        } else {
+          let current_count = $env.__counter | fill --alignment r --width 2 -c "0"
+          let msg_str = $msg | str join " " | $"Tips ($current_count): ($in) {{{"
+          log custom -a (ansi green_bold) $msg_str "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
+          $env.__counter += 1
+        }
+      }
+      log set-level 10
+      log debug $"The script file path is ($env.CURRENT_FILE)"
+      tip "Init ${name} script commands"
+      ${optionalString (x.pre != "") ''
+        log t Priority activation section
+        ${x.pre}
+        log t -e Priority activation section
+      ''}
+      log t Execution of parts in order of need
+      ${filterEnabledTexts x.init}
+      log t -e Execution of parts in order of need
+      ${optionalString (x.extra != "") ''
+        log t Finally, execute the command
+        ${x.extra}
+        log t -e Finally, execute the command
+      ''}
+
+      tip -e "Init ${name} script commands"
+    '';
+    nushell =
+      if config.modules.shell.nushell.enable
+      then config.modules.shell.nushell.package
+      else pkgs.nushell;
+  in
+    writeNuScript' {inherit name text nushell;};
 in {
   options = with types; {
     env = mkOption {
@@ -19,6 +107,28 @@ in {
         else (toString v));
       default = {};
       description = "Configuring System Environment Variables";
+    };
+    # 用来执行自己编写的需要在构建系统时，执行的配置。
+    my = {
+      user = {
+        script = mkPkgReadOpt "初始化用户 nushell 脚本。";
+        extra = mkOpt' lines "" "激活时，运行的额外 nu 代码.";
+        pre = mkOpt' lines "" "激活系统时，先执行的 nu 代码.";
+        # init 的 key 的 values 类型有 string，attrs
+        # 当 values 为 attrs 时， 可用 key:
+        # - level 代码优先级
+        # - enable 是否加载代码
+        # - text 代码
+        # - desc 描述
+        init = mkOpt' attrs {} "激活时执行的 nu 代码.";
+      };
+      # like user,但是执行的代码需要 root 权限。 暂时不支持 home-manager
+      system = {
+        script = mkPkgReadOpt "初始化system nushell 脚本。";
+        extra = mkOpt' lines "" "激活时，运行的额外 nu 代码.";
+        pre = mkOpt' lines "" "激活系统时，先执行的 nu 代码.";
+        init = mkOpt' attrs {} "激活时执行的 nu 代码.";
+      };
     };
     home = {
       configFile = mkOpt' attrs {} "Files to place directly in $XDG_CONFIG_HOME";
@@ -43,45 +153,14 @@ in {
     };
   };
   config = {
-    home.initScript = writeNuScript' {
-      name = "init-user";
-      text = ''
-        use std log
-        $env.NU_LOG_FORMAT = "%ANSI_START%%LEVEL%: %MSG%%ANSI_STOP%"
-        let log_level = log log-level | get INFO
-        let term_col = term size | get columns
-        def tip [--end (-e), ...msg] {
-          let msg_str = $msg | str join " "
-          if $end {
-            let msg_str = $" ($msg_str), END " | fill --alignment c --character "-" --width $term_col
-            log custom -a (ansi blue_dimmed) $msg_str "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
-          } else {
-            let msg_str = $" ($msg_str), BEGIN " |  fill --alignment c --character "-" --width $term_col
-            log custom -a (ansi blue_bold) $msg_str "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
-          }
-        }
-
-        $env.__counter = 1
-
-        def --env "log tip" [--end(-e), ...msg] {
-          if $end {
-            log custom -a (ansi green_dimmed) "}}}\n" "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
-          } else {
-            let current_count = $env.__counter | fill --alignment r --width 2 -c "0"
-            let msg_str = $msg | str join " " | $"Tips ($current_count): ($in) {{{"
-            log custom -a (ansi green_bold) $msg_str "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
-            $env.__counter += 1
-          }
-        }
-        tip "Init user script commands"
-        ${config.home.initExtra}
-        tip -e "Init user script commands"
-      '';
-      nushell =
-        if config.modules.shell.nushell.enable
-        then config.modules.shell.nushell.package
-        else pkgs.nushell;
+    my = {
+      user = {
+        extra = config.home.initExtra;
+        script = makeNuScript "user" config.my.user;
+      };
+      system.script = makeNuScript "system" config.my.user;
     };
+    home.initScript = makeNuScript "user" config.my.user;
     # documentation.man.enable = mkDefault true;
     nix = {
       # envVars = {
