@@ -218,9 +218,9 @@
         enable = true;
         nextchat.enable = false;
       };
-      ui = {
-        ice.enable = true;
-      };
+      # ui = {
+      #   ice.enable = true;
+      # };
       wine = {
         enable = true;
         crossover.enable = true;
