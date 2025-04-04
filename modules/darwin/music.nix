@@ -67,30 +67,39 @@ in {
           visualizer_data_source = "${mpdfifo}"
         '';
       };
-      macos.userScript = {
+      my.user.init = {
         mpd = {
-          enable = true;
-          desc = "初始化mpd";
+          desc = "初始化 mpd 配置。";
           text = ''
-            if [[ ! -d ${mpdDir} ]]; then
-              mkdir -p ${mpdDir}
-            fi
-
-            if [[ ! -f ${mpdDir}/mpd.db ]]; then
-              touch ${mpdDir}/mpd{.db,.log,.pid,state}
-              mkdir -p ${mpdDir}/playlists
-            fi
+            let mpd_dir = "${mpdDir}"
+            log debug $"init ($mpd_dir)"
+            if (not ($mpd_dir | path exists )) {
+              mkdir $mpd_dir
+            }
+            for i in ["db", "log", "pid", "state"] {
+              let _file = $mpd_dir | path join $"mpd.($i)"
+              if (not ($_file | path exists)) {
+                touch $_file
+              }
+            }
+            let _playlist = $mpd_dir | path join "playlists"
+            if (not ($_playlist | path exists)) {
+              mkdir $_playlist
+            }
           '';
         };
         ncmpcpp = {
-          desc = "初始化ncmpcpp";
+          desc = "初始化 ncmpcpp";
           inherit (scfg.mpd.ncmpcpp) enable;
-          text = let
-            ncmpcpp_dir = "${config.home.cacheDir}/ncmpcpp";
-            lyrics_dir = "${config.user.home}/Music/LyricsX";
-          in ''
-            [[ -d ${lyrics_dir} ]] || mkdir -p ${lyrics_dir}
-            [[ -d ${ncmpcpp_dir} ]] || mkdir -p ${ncmpcpp_dir}
+          text = ''
+            let ncmpcpp_dir = "${config.home.cacheDir}" | path join "ncmpcpp"
+            let lyrics_dir = "${config.user.home}" | path join "Music" "LyricsX"
+            if (not ($ncmpcpp_dir | path exists)) {
+              mkdir $ncmpcpp_dir
+            }
+            if (not ($lyrics_dir | path exists)) {
+              mkdir $lyrics_dir
+            }
           '';
         };
       };

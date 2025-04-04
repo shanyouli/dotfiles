@@ -75,7 +75,7 @@ in {
     package = mkOption {
       type = types.package;
       # default = inputs.nurpkgs.currentSystem.packages.emacs;
-      default = pkgs.unstable.emacs;
+      default = pkgs.unstable.emacs-stable;
       defaultText = literalExample "pkgs.emacs";
       example = literalExample "pkgs.emacs26-nox";
       description = "The Emacs Package to use.";
