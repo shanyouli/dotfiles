@@ -24,8 +24,10 @@ in {
       startup = mkBoolOpt true;
       keep = mkBoolOpt true;
     };
-
-    rimeEnable = mkBoolOpt true;
+    rime = {
+      enable = mkBoolOpt config.modules.rime.enable;
+      dir = mkOpt' types.str ".local/share/emacs-rime" "emacs-rime build 缓存内容文件";
+    };
 
     doom = {
       enable = mkBoolOpt true;
@@ -75,7 +77,7 @@ in {
     package = mkOption {
       type = types.package;
       # default = inputs.nurpkgs.currentSystem.packages.emacs;
-      default = pkgs.unstable.emacs-stable;
+      default = pkgs.unstable.emacs;
       defaultText = literalExample "pkgs.emacs";
       example = literalExample "pkgs.emacs26-nox";
       description = "The Emacs Package to use.";
@@ -108,7 +110,7 @@ in {
             epkgs.treesit-grammars.with-all-grammars
             epkgs.elvish-mode
           ]
-          ++ optionals cfg.rimeEnable [
+          ++ optionals cfg.rime.enable [
             epkgs.rime
           ]
           ++ optionals config.modules.just.enable [epkgs.just-mode epkgs.justl]
@@ -136,23 +138,27 @@ in {
           (mkIf config.modules.gpg.enable
             pkgs.pinentry-emacs) # in emacs gnupg prompts
         ];
-        configFile = let
-          data-dir =
-            if pkgs.stdenvNoCC.isLinux
-            then "${pkgs.rime-data}/share/rime-data"
-            else "/Library/Input Methods/Squirrel.app/Contents/SharedSupport";
-        in {
-          "doom/config.init.el".text = ''
-            ${lib.optionalString cfg.rimeEnable ''
-              (setq rime-emacs-module-header-root "${cfg.package}/include")
-              (setq rime-librime-root "${pkgs.librime}")
-              (setq rime-share-data-dir "${data-dir}")
-              (setq rime-user-data-dir "${config.home.configDir}/emacs-rime")
-            ''}
+        configFile."doom/config.init.el".text =
+          ''
+            ;;; config.init.el -*- lexical-binding: t; -*-
             (setq lsp-bridge-python-command "${config.modules.python.finalPkg}/bin/python3")
+          ''
+          + optionalString cfg.rime.enable (let
+            rime-data-dir =
+              if config.modules.rime.enable
+              then "${config.modules.rime.dataPkg}/share/rime-data"
+              else if pkgs.stdenvNoCC.hostPlatform.isDarwin
+              then "/Library/Input Methods/Squirrel.app/Contents/SharedSupport"
+              else "${pkgs.rime-data}/share/rime-data";
+          in ''
+            (setq rime-emacs-module-header-root "${cfg.package}/include")
+            (setq rime-librime-root "${pkgs.librime}")
+            (setq rime-share-data-dir "${rime-data-dir}")
+            (setq rime-user-data-dir "${config.user.home}/${cfg.rime.dir}")
+          '')
+          + ''
             ${cfg.doom.confInit}
           '';
-        };
       };
       modules = {
         python.extraPkgs = ps:

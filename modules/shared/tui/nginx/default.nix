@@ -44,26 +44,45 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = [cfg.package];
-    modules.nginx = {
-      sScript = ''
-        [[ -d ${cfg.workDir} ]] || {
-           mkdir -p ${cfg.workDir}
-           chown -R ${config.user.name} ${cfg.workDir}
+    my = {
+      system.init.setUpNginxDir = ''
+        let nginx_dir = "${cfg.workDir}"
+        log debug $"create (nginx_dir)"
+        if (not ($nginx_dir | path exists)) {
+          mkdir $nginx_dir
         }
+        chown -R ${config.user.name} $nginx_dir
       '';
-      uScript = ''
-        for i in "conf" "logs" "www" "conf.d" ; do
-          [[ -d ${cfg.workDir}/$i ]] || mkdir -p ${cfg.workDir}/$i
-        done
-        ln -sf ${cfg.package}/conf/mime.types ${cfg.workDir}/conf
-        [[ -f ${my.dotfiles.config}/nginx/nginx.conf ]] && {
-          if [[ -e ${cfg.workDir}/conf/nginx.conf ]] && [[ ! -h ${cfg.workDir}/conf/nginx.conf ]]; then
-            mv ${cfg.workDir}/conf/nginx.conf ${cfg.workDir}/conf/nginx.conf.backup
-          fi
-          ln -sf ${my.dotfiles.config}/nginx/nginx.conf ${cfg.workDir}/conf/nginx.conf
-        }
-        ln -sf ${defaultConfig} ${cfg.workDir}/conf.d/default.conf
-      '';
+      user.init.initNginx = {
+        enable = config.home.useos;
+        text = ''
+          let nginx_dir = "${cfg.workDir}"
+          for i in ["conf", "logs", "www", "conf.d"] {
+            let _dir = $nginx_dir | path join $i
+            if (not ($_dir | path exists)) {
+              log debug $"create ($_dir)"
+              mkdir $_dir
+            }
+          }
+
+          log debug $"Link mime.types"
+          $nginx_dir | path join "conf" |ln -sf "${cfg.package}/conf/mime.types" $in
+
+          log debug $"Link default.conf"
+          $nginx_dir | path join "conf.d" "default.conf" | ln -sf "${defaultConfig}" $in
+
+          let nginx_conf = $nginx_dir | path join "conf" "nginx.conf"
+          let default_nginx_conf = "${my.dotfiles.config}" | path join "nginx" "nginx.conf"
+          if ($default_nginx_conf | path exists) {
+            log debug $"Link nginx.conf"
+            if (($nginx_conf | path exists) and (not (($nginx_conf | path type) == "symlink"))) {
+              let nginx_conf_backup = $"($nginx_conf).backup"
+              mv $nginx_conf $nginx_conf_backup
+            }
+            ln -sf $default_nginx_conf $nginx_conf
+          }
+        '';
+      };
     };
     modules.shell.aliases.nginx = "nginx -p ${cfg.workDir} -e logs/error.log -c conf/nginx.conf";
   };
