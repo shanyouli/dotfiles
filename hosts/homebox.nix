@@ -196,6 +196,7 @@
       scheme.enable = true;
     };
 
+    rime.method = "wanxiang";
     # macos
     macos = {
       enable = true;

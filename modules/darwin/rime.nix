@@ -11,8 +11,6 @@ with my; let
 in {
   options.modules.macos.rime = {
     enable = mkBoolOpt false;
-    backupDir =
-      mkOpt' types.path "${config.user.home}/Repos/Rime-bak" "rime 词库同步文件";
   };
 
   config = mkIf cfg.enable {

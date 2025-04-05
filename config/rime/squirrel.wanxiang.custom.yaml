@@ -1,0 +1,5 @@
+patch:
+  "style/color_scheme": mac_light
+  "style/color_scheme_dark": mac_dark
+  "style/text_orientation": horizontal # vertical
+  "style/candidate_list_layout": linear # 拼音位于： 候选框 false | 行内 true

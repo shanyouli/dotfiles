@@ -1,3 +1,4 @@
+# custom 配置方法参考 see @https://github.com/amzxyz/rime_wanxiang_pro/blob/main/custom/custom%E6%96%87%E4%BB%B6%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.md
 {
   pkgs,
   lib,
@@ -48,30 +49,52 @@ in {
       modules.rime.dataPkg =
         if cfg.method == "ice"
         then pkgs.unstable.rime-ice
-        else pkgs.rime-data;
+        else pkgs.unstable.rime-wanxiang;
       home.file = let
-        default_custom_text =
-          if cfg.method == "ice"
-          then ''
-            patch:
-              "menu/page_size": 7
-              "ascii_composer/switch_key/Shift_L": commit_code
-              "switcher/hotkeys":
-                - F4
-                - Control+grave
-          ''
-          else ''
-          '';
+        default_custom_text = ''
+          patch:
+            "menu/page_size": 7
+            "ascii_composer/switch_key/Shift_L": commit_code
+            "switcher/hotkeys":
+              - F4
+              - Control+grave
+        '';
+        wanxiang-custom = ''
+          patch:
+            speller/algebra:
+              __patch:
+              - wanxiang.schema:/全拼
+              - wanxiang.schema:/fuzhu_moqi
+        '';
+        wanxiang-en = ''
+          patch:
+            speller/algebra:
+              __include: wanxiang_en.schema:/全拼
+        '';
+        wanxiang-radical = ''
+          patch:
+            speller/algebra:
+              __include: wanxiang_radical.schema:/全拼
+        '';
       in
         mkMerge [
           (mkIf pkgs.stdenvNoCC.hostPlatform.isDarwin {
-            "${userDir}/squirrel.custom.yaml".source = "${my.dotfiles.config}/rime/squirrel.custom.yaml";
+            "${userDir}/squirrel.custom.yaml".source =
+              if cfg.method == "ice"
+              then "${my.dotfiles.config}/rime/squirrel.custom.yaml"
+              else "${my.dotfiles.config}/rime/squirrel.wanxiang.custom.yaml";
           })
           {
             "${userDir}/default.custom.yaml".text = default_custom_text;
+            "${userDir}/wanxiang.custom.yaml".text = wanxiang-custom;
+            "${userDir}/wanxiang_en.custom.yaml".text = wanxiang-en;
+            "${userDir}/wanxiang_radical.custom.yaml".text = wanxiang-radical;
           }
           (mkIf useEmacs {
             "${cemacs.rime.dir}/default.custom.yaml".text = default_custom_text;
+            "${cemacs.rime.dir}/wanxiang.custom.yaml".text = wanxiang-custom;
+            "${cemacs.rime.dir}/wanxiang_en.custom.yaml".text = wanxiang-en;
+            "${cemacs.rime.dir}/wanxiang_radical.custom.yaml".text = wanxiang-radical;
             # FIXME: 显示拼音问题解决方法: https://github.com/iDvel/rime-ice/issues/431
             "${cemacs.rime.dir}/rime_ice.custom.yaml".text = ''
               patch:
@@ -86,15 +109,6 @@ in {
         recursive = true;
         onChange = deploy-cmd;
       };
-      # my.user.init.setDefaultRime = ''
-      #   let _rime_data_dir = "${config.user.home}" | path join "${userDir}"
-      #   let _rime_default_yaml = $_rime_data_dir | path join "default.yaml"
-      #   if (not ($_rime_default_yaml | path exists)) {
-      #     log debug "Initialize the rime default configuration file."
-      #     let _default_yaml =  ls $_rime_data_dir | get name | filter {|x| $x | str ends-with "suggestion.yaml"} | first
-      #     open ($_rime_data_dir | path join $_default_yaml) | to yaml | save -f $_rime_default_yaml
-      #   }
-      # '';
     })
     (mkIf cfg.backup.enable {
       my.user.init.InitRimeBackupDir = ''
