@@ -38,8 +38,8 @@ in {
                       return (brew which-formula --explain $cmd_name)
                   }
               } else {
-                  let out = ($attrs | each { |x| $x | str replace ".out" ""} | str join ", ")
-                  return $"\nThe program ($cmd_name) is not installed, but available from the following location\(s\):\n\n($out)"
+                  let out = $attrs | each { |x| $x | str replace ".out" "" | $"        nix-shell -p ($in)" } | str join "\n"
+                  return $"\nThe program ($cmd_name) is not installed, but available from the following location\(s\):\n($out)"
               }
           }
       }

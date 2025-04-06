@@ -42,7 +42,7 @@ with my; let
         let newlist = $s1 | split row (char esep)
                           | uniq
                           | filter {|x| ($x not-in $base) }
-                          | filter {|x| ($x not-in [" " ":" "/nix/var/nix/profiles/default"]) }
+                          | filter {|x| ($x not-in [" " ":" "/nix/var/nix/profiles/default/bin"]) }
         if ($newlist | is-empty) {
           $base | str join (char esep)
         } else {

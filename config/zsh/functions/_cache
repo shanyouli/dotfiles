@@ -2,7 +2,9 @@
 # 局部函数: https://www.zsh.org/mla/users/2011/msg00207.html
 local version
 local nextStep="cacheFunction"
-local cache_dir="$XDG_CACHE_HOME/${SHELL##*/}/cache"
+# 笔记: 如果你会在不同的 shell 中切换时，最好确定zsh
+# ${SHELL##*/} 删除 SHELL 变量的所在目录。
+local cache_dir="$XDG_CACHE_HOME/zsh/cache"
 ### Helpers
 {
 
