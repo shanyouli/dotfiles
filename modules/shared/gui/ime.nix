@@ -133,10 +133,10 @@ in {
           }
         }
         log debug $"Init system input method rime backup dir"
-        rime-init-backup ("${config.user.home}" | path join "${userDir}") "${cfg.backup.id}"
+        rime-init-backup ("${my.homedir}" | path join "${userDir}") "${cfg.backup.id}"
         ${optionalString useEmacs ''
           log debug $"Init emacs-rime backup dir"
-          rime-init-backup ("${config.user.home}" | path join "${cemacs.rime.dir}") "emacs"
+          rime-init-backup ("${my.homedir}" | path join "${cemacs.rime.dir}") "emacs"
         ''}
       '';
     })

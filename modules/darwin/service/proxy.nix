@@ -15,7 +15,7 @@ in {
   };
 
   config = mkIf cfg.enable (let
-    log_file = "${config.user.home}/Library/Logs/org.nixos.proxy.log";
+    log_file = "${my.homedir}/Library/Logs/org.nixos.proxy.log";
   in {
     launchd.user.agents.proxy = {
       path = [config.modules.service.path];

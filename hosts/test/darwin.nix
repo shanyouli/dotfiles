@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  my,
   ...
 }: {
   # user.name = "lyeli";
@@ -64,7 +65,7 @@
       default = "sing-box";
       sing-box.package = pkgs.unstable.sing-box;
       service.enable = true;
-      configFile = "${config.user.home}/Nutstore Files/我的坚果云/clash/singbox.json";
+      configFile = "${my.homedir}/Nutstore Files/我的坚果云/clash/singbox.json";
     };
 
     alist = {

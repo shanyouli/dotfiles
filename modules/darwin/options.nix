@@ -208,15 +208,15 @@ in {
             desc = "Link Google Chrome.app";
             level = 100;
             text = ''
-              if [[ -e "${config.user.home}/Applications/Myapps/Chromium.app" ]]; then
+              if [[ -e "${my.homedir}/Applications/Myapps/Chromium.app" ]]; then
                 _google_chrome_app="/Applications/Google Chrome.app"
                 if [[ -e $_google_chrome_app ]]; then
                   $DRI_RUN_CMD rm -rf "$_google_chrome_app"
                 fi
-                $DRY_RUN_CMD ln -sf "${config.user.home}/Applications/Myapps/Chromium.app" "$_google_chrome_app"
+                $DRY_RUN_CMD ln -sf "${my.homedir}/Applications/Myapps/Chromium.app" "$_google_chrome_app"
                 unset _google_chrome_app
-              elif [[ -e "${config.user.home}/Applications/Myapps/Google Chrome.app" ]]; then
-                $DRY_RUN_CMD ln -sf "${config.user.home}/Applications/Myapps/Google Chrome.app" "/Applications/"
+              elif [[ -e "${my.homedir}/Applications/Myapps/Google Chrome.app" ]]; then
+                $DRY_RUN_CMD ln -sf "${my.homedir}/Applications/Myapps/Google Chrome.app" "/Applications/"
               fi
             '';
           };

@@ -26,6 +26,8 @@ in {
       zsh.rcInit = ''
         _source ${cfgpkg}/etc/profile.d/command-not-found.sh
       '';
+      # see @https://github.com/nix-community/nix-index/issues/126#issuecomment-771210054
+      # see @https://github.com/viperML/dotfiles/raw/bbdfed65a743dac2ae0ac0271f47bce7d8bb83c2/packages/nix-index/command-not-found.fish
       fish.rcInit = ''
         function __fish_default_command_not_found_handler --on-event fish_command_not_found \
             --description "default command not found handler"

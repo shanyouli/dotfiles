@@ -47,9 +47,9 @@ in {
       serviceConfig = {
         ProgramArguments = ["${batter-script}/bin/battery-service"];
         RunAtLoad = true;
-        StandardErrorPath = "${config.user.home}/Library/Logs/mybatter.error.log";
+        StandardErrorPath = "${my.homedir}/Library/Logs/mybatter.error.log";
         StartInterval = 600;
-        # serviceConfig.StandardOutPath = "${config.user.home}/Library/Logs/mybatter.log";
+        # serviceConfig.StandardOutPath = "${my.homedir}/Library/Logs/mybatter.log";
         # serviceConfig.StartCalendarInterval = [{Minute = 10;}];
       };
       path = [config.modules.service.path];

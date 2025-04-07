@@ -19,7 +19,7 @@ in {
       serviceConfig = {
         RunAtLoad = capp.service.startup;
         # serviceConfig.KeepAlive.NetworkState = true;
-        StandardOutPath = "${config.user.home}/Library/Logs/qbittorrent-nox.log";
+        StandardOutPath = "${my.homedir}/Library/Logs/qbittorrent-nox.log";
         ProgramArguments = [
           "${capp.package}/bin/qbittorrent-nox"
           "--webui-port=${toString capp.service.port}"

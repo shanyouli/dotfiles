@@ -154,7 +154,7 @@ in {
             (setq rime-emacs-module-header-root "${cfg.package}/include")
             (setq rime-librime-root "${pkgs.librime}")
             (setq rime-share-data-dir "${rime-data-dir}")
-            (setq rime-user-data-dir "${config.user.home}/${cfg.rime.dir}")
+            (setq rime-user-data-dir "${my.homedir}/${cfg.rime.dir}")
           '')
           + ''
             ${cfg.doom.confInit}

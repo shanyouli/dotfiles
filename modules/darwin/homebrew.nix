@@ -62,6 +62,18 @@ in {
       };
     }))
     {
+      # see @https://github.com/malob/nixpkgs/raw/f4e414d9debe099ecce51fc5df863ce235170306/darwin/homebrew.nix#L16
+      # see @https://docs.brew.sh/Shell-Completion#configuring-completions-in-fish
+      programs.fish.interactiveShellInit = let
+        homebrew-home = removeSuffix "/bin" config.homebrew.brewPrefix;
+      in ''
+        if test -d "${homebrew-home}/share/fish/completions"
+          set -p fish_complete_path ${homebrew-home}/share/fish/completions
+        end
+        if test -d "${homebrew-home}/share/fish/vendor_completions.d"
+          set -p fish_complete_path ${homebrew-home}/share/fish/vendor_completions.d
+        end
+      '';
       homebrew = {
         enable = true; # 你需要手动安装homebrew
         onActivation = {

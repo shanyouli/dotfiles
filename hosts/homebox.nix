@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  my,
   ...
 }: {
   # user.name = "lyeli";
@@ -73,7 +74,7 @@
         enable = true;
         startup = false;
       };
-      configFile = "${config.user.home}/Nutstore Files/我的坚果云/代理相关/singbox.json";
+      configFile = "${my.homedir}/Nutstore Files/我的坚果云/代理相关/singbox.json";
     };
 
     alist = {

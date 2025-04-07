@@ -93,7 +93,7 @@ in {
           inherit (scfg.mpd.ncmpcpp) enable;
           text = ''
             let ncmpcpp_dir = "${config.home.cacheDir}" | path join "ncmpcpp"
-            let lyrics_dir = "${config.user.home}" | path join "Music" "LyricsX"
+            let lyrics_dir = "${my.homedir}" | path join "Music" "LyricsX"
             if (not ($ncmpcpp_dir | path exists)) {
               mkdir $ncmpcpp_dir
             }

@@ -30,7 +30,7 @@ in {
         enable = cfg.stopAutoReopen;
         text = ''
           mac_UUID=$(/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice | awk -F'"' '/IOPlatformUUID/{print $4}')
-          mac_loginFile=${config.user.home}/Library/Preferences/ByHost/com.apple.loginwindow.''${mac_UUID}.plist
+          mac_loginFile=${my.homedir}/Library/Preferences/ByHost/com.apple.loginwindow.''${mac_UUID}.plist
           if [[ -f $mac_loginFile ]]; then
             if $(grep ":TALAppsToRelaunchAtLogin" $mac_loginFile > /dev/null); then
               /usr/bin/chflags nouchg $mac_loginFile
