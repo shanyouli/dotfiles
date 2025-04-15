@@ -78,6 +78,7 @@ in {
         '';
       in
         mkMerge [
+          # rime-wanxiang 输入法暂时无法作为公共配置，目前放入用户配置文件中
           (mkIf pkgs.stdenvNoCC.hostPlatform.isDarwin {
             "${userDir}/squirrel.custom.yaml".source =
               if cfg.method == "ice"
@@ -91,6 +92,10 @@ in {
             "${userDir}/wanxiang_radical.custom.yaml".text = wanxiang-radical;
           }
           (mkIf useEmacs {
+            "${cemacs.rime.dir}" = mkIf (cfg.method == "wanxiang") {
+              source = "${cfg.dataPkg}/share/rime-data/";
+              recursive = true;
+            };
             "${cemacs.rime.dir}/default.custom.yaml".text = default_custom_text;
             "${cemacs.rime.dir}/wanxiang.custom.yaml".text = wanxiang-custom;
             "${cemacs.rime.dir}/wanxiang_en.custom.yaml".text = wanxiang-en;

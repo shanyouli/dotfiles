@@ -14,6 +14,7 @@ in {
     enable = mkBoolOpt false;
     border.enable = mkBoolOpt cfg.enable;
     package = mkPackageOption pkgs.unstable "yabai" {};
+    startup.enable = mkBoolOpt cfg.enable;
   };
 
   config = mkIf cfg.enable {
@@ -29,7 +30,7 @@ in {
     launchd.user.agents.yabai = {
       serviceConfig = {
         ProgramArguments = ["${cfg.package}/bin/yabai" "--config" "${config.home.configDir}/yabai/yabairc"];
-        KeepAlive = false;
+        KeepAlive = cfg.startup.enable;
         RunAtLoad = true;
         EnvironmentVariables.PATH = "${cfg.package}/bin:${config.modules.service.path}";
       };

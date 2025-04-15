@@ -134,6 +134,8 @@ in {
             "pictureview" # 看图
 
             "tencent-lemon" # 文件清理 or ""clean-me""
+            "pearcleaner" # app 卸载工具 or "appcleaner"
+            # "prettyclean" # 清理工具
 
             "charles" # "proxyman", 抓包
             "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
@@ -164,9 +166,6 @@ in {
             "zen-browser"
 
             "shanyouli/tap/upic" # or "picgo"
-
-            "pearcleaner" # app 卸载工具 or "appcleaner"
-            "prettyclean" # 清理工具
 
             "shanyouli/tap/quickrecorder" # 录屏
             "shanyouli/tap/tmexclude"
