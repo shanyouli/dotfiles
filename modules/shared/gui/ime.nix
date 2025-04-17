@@ -92,10 +92,6 @@ in {
             "${userDir}/wanxiang_radical.custom.yaml".text = wanxiang-radical;
           }
           (mkIf useEmacs {
-            "${cemacs.rime.dir}" = mkIf (cfg.method == "wanxiang") {
-              source = "${cfg.dataPkg}/share/rime-data/";
-              recursive = true;
-            };
             "${cemacs.rime.dir}/default.custom.yaml".text = default_custom_text;
             "${cemacs.rime.dir}/wanxiang.custom.yaml".text = wanxiang-custom;
             "${cemacs.rime.dir}/wanxiang_en.custom.yaml".text = wanxiang-en;
@@ -105,6 +101,9 @@ in {
               patch:
                 translator/spelling_hints: 0
             '';
+          })
+          (mkIf (useEmacs && cfg.method == "wanxiang") {
+            "${cemacs.rime.dir}/cn_dicts/corrections.dict.yaml".source = "${cfg.dataPkg}/share/rime-data/cn_dicts/corrections.dict.yaml";
           })
         ];
     }

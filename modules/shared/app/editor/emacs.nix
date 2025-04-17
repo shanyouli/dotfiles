@@ -145,7 +145,7 @@ in {
           ''
           + optionalString cfg.rime.enable (let
             rime-data-dir =
-              if (config.modules.rime.enable && config.modules.rime.method != "wanxiang")
+              if config.modules.rime.enable
               then "${config.modules.rime.dataPkg}/share/rime-data"
               else if pkgs.stdenvNoCC.hostPlatform.isDarwin
               then "/Library/Input Methods/Squirrel.app/Contents/SharedSupport"
