@@ -4,3 +4,4 @@
 /.devenv/
 .DS_Store
 /result-*
+/.treefmt.toml

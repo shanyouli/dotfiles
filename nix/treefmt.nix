@@ -13,7 +13,10 @@
       programs = {
         # nix format
         statix.enable = true; # nix static analysis
-        deadnix.enable = true; # find dead nix code
+        deadnix = {
+          no-lambda-arg = true;
+          enable = true;
+        };
         alejandra.enable = true; # nix fmt tools
 
         # python
@@ -23,7 +26,7 @@
         stylua.enable = true;
 
         # bash
-        shellcheck.enable = false;
+        shellcheck.enable = true;
         shfmt = {
           enable = true;
           indent_size = 4;
