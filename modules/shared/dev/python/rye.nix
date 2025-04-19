@@ -7,19 +7,21 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.dev.python;
   cfg = cfp.rye;
   cpkg = pkgs.rye;
   cfb = "${cpkg}/bin/rye";
-in {
+in
+{
   options.modules.dev.python.rye = {
     enable = mkEnableOption "Whether to use rye";
     manager = mkBoolOpt false; # 为 true时，使用 rye 管理 python 版本
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      home.packages = [cpkg];
+      home.packages = [ cpkg ];
       modules.shell = {
         env = {
           RYE_HOME = "${config.home.dataDir}/rye";
@@ -59,32 +61,39 @@ in {
       };
     }
     (mkIf (!cfg.manager) {
-      modules.dev.manager.extInit = let
-        asdf_fn = v: "$(${config.modules.dev.manager.asdf.package}/bin/asdf where python ${v})";
-        mise_fn = v: "$(${config.modules.dev.manager.mise.package}/bin/mise where python@${v})";
-        use_fn =
-          if config.modules.dev.manager.default == "mise"
-          then mise_fn
-          else asdf_fn;
-        base_fn = v: ''
-          if ! ${cfb} toolchain list | grep ${use_fn v} >/dev/null 2>&1; then
-            echo-info "rye Register python version ${v}"
-            ${cfb} toolchain register ${use_fn v}/bin/python
-          fi
+      modules.dev.manager.extInit =
+        let
+          asdf_fn = v: "$(${config.modules.dev.manager.asdf.package}/bin/asdf where python ${v})";
+          mise_fn = v: "$(${config.modules.dev.manager.mise.package}/bin/mise where python@${v})";
+          use_fn = if config.modules.dev.manager.default == "mise" then mise_fn else asdf_fn;
+          base_fn = v: ''
+            if ! ${cfb} toolchain list | grep ${use_fn v} >/dev/null 2>&1; then
+              echo-info "rye Register python version ${v}"
+              ${cfb} toolchain register ${use_fn v}/bin/python
+            fi
+          '';
+          ver_fn =
+            if builtins.isString cfp.versions then
+              ''
+                ${base_fn cfp.versions}
+              ''
+            else if
+              builtins.elem cfp.versions [
+                null
+                [ ]
+                true
+                false
+              ]
+            then
+              ''''
+            else
+              concatStrings (map base_fn cfp.versions);
+        in
+        ''
+          echo-info "Rye: Registering an existing python to rye management."
+          export RYE_HOME="${config.home.dataDir}/rye"
+          ${ver_fn}
         '';
-        ver_fn =
-          if builtins.isString cfp.versions
-          then ''
-            ${base_fn cfp.versions}
-          ''
-          else if builtins.elem cfp.versions [null [] true false]
-          then ''''
-          else concatStrings (map base_fn cfp.versions);
-      in ''
-        echo-info "Rye: Registering an existing python to rye management."
-        export RYE_HOME="${config.home.dataDir}/rye"
-        ${ver_fn}
-      '';
     })
     (mkIf cfg.manager {
       assertions = [
@@ -96,44 +105,54 @@ in {
       modules = {
         python.pipx.enable = mkDefault false;
         shell = {
-          env.PATH = mkBefore ["${config.home.dataDir}/rye/shims"];
-          zsh.pluginFiles = ["rye"];
-          nushell.scriptFiles = ["rye"];
+          env.PATH = mkBefore [ "${config.home.dataDir}/rye/shims" ];
+          zsh.pluginFiles = [ "rye" ];
+          nushell.scriptFiles = [ "rye" ];
         };
-        dev.manager.extInit = mkAfter (let
-          isNumeric = character: builtins.match "[0-9]" character != null;
-          checkFirstCharIsNumber = str:
-            if builtins.stringLength str > 0
-            then isNumeric (builtins.substring 0 1 str)
-            else false;
-          global_python_msg = lib.optionalString (cfp.global != "") ''
-            echo-info "Setting python global version"
-            ${
-              if (checkFirstCharIsNumber cfp.global)
-              then ''
-                ${cfb} config --set default.toolchain=cpython@${cfp.global}
-              ''
-              else ''
-                ${cfb} config --set default.toolchain=${cfp.global}
-              ''
-            }
-            ${cfb} config --set-bool behavior.global-python=true
-          '';
-          rye_fn = v: ''
-            echo-info "rye install python ${v}"
-            ${cfb} fetch ${v}
-          '';
-          version_msg =
-            if builtins.isString cfp.versions
-            then rye_fn cfp.versions
-            else if (builtins.elem cfp.versions [null false true []])
-            then ""
-            else concatMapStrings rye_fn cfp.versions;
-        in ''
-          export RYE_HOME="${config.home.dataDir}/rye"
-          ${version_msg}
-          ${global_python_msg}
-        '');
+        dev.manager.extInit = mkAfter (
+          let
+            isNumeric = character: builtins.match "[0-9]" character != null;
+            checkFirstCharIsNumber =
+              str: if builtins.stringLength str > 0 then isNumeric (builtins.substring 0 1 str) else false;
+            global_python_msg = lib.optionalString (cfp.global != "") ''
+              echo-info "Setting python global version"
+              ${
+                if (checkFirstCharIsNumber cfp.global) then
+                  ''
+                    ${cfb} config --set default.toolchain=cpython@${cfp.global}
+                  ''
+                else
+                  ''
+                    ${cfb} config --set default.toolchain=${cfp.global}
+                  ''
+              }
+              ${cfb} config --set-bool behavior.global-python=true
+            '';
+            rye_fn = v: ''
+              echo-info "rye install python ${v}"
+              ${cfb} fetch ${v}
+            '';
+            version_msg =
+              if builtins.isString cfp.versions then
+                rye_fn cfp.versions
+              else if
+                (builtins.elem cfp.versions [
+                  null
+                  false
+                  true
+                  [ ]
+                ])
+              then
+                ""
+              else
+                concatMapStrings rye_fn cfp.versions;
+          in
+          ''
+            export RYE_HOME="${config.home.dataDir}/rye"
+            ${version_msg}
+            ${global_python_msg}
+          ''
+        );
       };
     })
   ]);

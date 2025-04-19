@@ -6,9 +6,11 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.macos.rime;
-in {
+in
+{
   options.modules.macos.rime = {
     enable = mkBoolOpt false;
   };
@@ -16,7 +18,7 @@ in {
   config = mkIf cfg.enable {
     # 输入法
     homebrew = {
-      casks = ["squirrel"];
+      casks = [ "squirrel" ];
       masApps.squirrel_designer = 1530616498;
     };
     # modules.rime.enable = true;

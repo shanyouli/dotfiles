@@ -7,12 +7,17 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.media.music;
   cfg = cfp.mpd;
-  tui_list = ["ncmpcpp" "rmpc"];
+  tui_list = [
+    "ncmpcpp"
+    "rmpc"
+  ];
   mpd_dir = "${config.home.cacheDir}/mpd";
-in {
+in
+{
   options.modules.media.music.mpd = {
     enable = mkEnableOption "Whether to use mpd";
     port = mkOpt' types.number 6600 "Listen on port";
@@ -20,10 +25,7 @@ in {
     default = mkOption {
       type = types.str;
       default = "";
-      apply = s:
-        if builtins.elem s tui_list
-        then s
-        else "";
+      apply = s: if builtins.elem s tui_list then s else "";
       description = "Default tui mpd manager";
     };
     service = {
@@ -33,15 +35,22 @@ in {
   };
   config = mkIf cfg.enable {
     home = {
-      packages = let
-        mpc =
-          if pkgs.stdenvNoCC.hostPlatform.isDarwin
-          then
-            pkgs.mpc-cli.overrideAttrs (_: {
-              env = {NIX_LDFLAGS = "-liconv";};
-            })
-          else pkgs.mpc-cli;
-      in [pkgs.mpd mpc];
+      packages =
+        let
+          mpc =
+            if pkgs.stdenvNoCC.hostPlatform.isDarwin then
+              pkgs.mpc-cli.overrideAttrs (_: {
+                env = {
+                  NIX_LDFLAGS = "-liconv";
+                };
+              })
+            else
+              pkgs.mpc-cli;
+        in
+        [
+          pkgs.mpd
+          mpc
+        ];
 
       configFile."mpd/mpd.conf".text = ''
         music_directory "${cfp.directory}"

@@ -7,7 +7,8 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules;
   cfg = cfm.dev.node;
   homeDir = my.homedir;
@@ -17,7 +18,8 @@ with my; let
   npm_config_prefix = "${homeDir}/.local/share/npm";
   node_repl_history = "${homeDir}/.cache/node/repl_history";
   pnpm_home = "${config.home.dataDir}/pnpm";
-in {
+in
+{
   options.modules.dev.node = {
     enable = mkEnableOption "Whether to use node";
     package = mkOpt' types.package pkgs.nodejs "nodejs package";

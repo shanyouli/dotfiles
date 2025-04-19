@@ -39,7 +39,9 @@ return {
 			formatting.shfmt, -- Shell formatter
 			formatting.terraform_fmt, -- Terraform formatter
 			formatting.stylua, -- Lua formatter
-			formatting.alejandra, -- Nix formatter
+			formatting.nixfmt.with({
+				extra_args = { "--width", "100", "--strict" },
+			}),
 			formatting.sqlfluff.with({ -- SQL formatter
 				extra_args = { "--dialect", "postgres" }, -- change to your dialect
 			}),

@@ -7,15 +7,17 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.dev.python;
   cfg = cfp.poetry;
-in {
+in
+{
   options.modules.dev.python.poetry = {
     enable = mkEnableOption "Whether to using poetry";
   };
   config = mkIf cfg.enable {
-    home.packages = [pkgs.poetry];
+    home.packages = [ pkgs.poetry ];
     modules.shell.aliases.po = "poetry";
     modules.shell.direnv.stdlib.poetry = pkgs.writeScript "poetry" ''
       #!/usr/bin/env bash

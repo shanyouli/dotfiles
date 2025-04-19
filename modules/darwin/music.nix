@@ -7,13 +7,15 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.macos.music;
   scfg = config.modules.media.music;
   inherit (scfg) netease;
   mpdDir = "${config.home.cacheDir}/mpd";
   mpdfifo = "/private/tmp/mpd.fifo";
-in {
+in
+{
   options.modules.macos.music = {
     enable = mkBoolOpt (scfg.default != "");
     lx.enable = mkBoolOpt false;
@@ -32,11 +34,13 @@ in {
           "foobar2000"
           # "notunes" # 阻止 applemusic 自启动
         ]
-        ++ optionals config.modules.gui.media.music.netease.enable ["yesplaymusic"]
-        ++ optionals cfg.lx.enable ["lx-music"]
-        ++ optionals cfg.apprhyme.enable ["shanyouli/tap/apprhyme"]
-        ++ optionals cfg.spotube.enable ["shanyouli/tap/spotube"];
-      user.packages = [(mkIf (pkgs.unstable.darwinapps ? nowplaying-cli) pkgs.unstable.darwinapps.nowplaying-cli)];
+        ++ optionals config.modules.gui.media.music.netease.enable [ "yesplaymusic" ]
+        ++ optionals cfg.lx.enable [ "lx-music" ]
+        ++ optionals cfg.apprhyme.enable [ "shanyouli/tap/apprhyme" ]
+        ++ optionals cfg.spotube.enable [ "shanyouli/tap/spotube" ];
+      user.packages = [
+        (mkIf (pkgs.unstable.darwinapps ? nowplaying-cli) pkgs.unstable.darwinapps.nowplaying-cli)
+      ];
     }
     (mkIf scfg.mpd.enable {
       modules.media.music.mpd = {

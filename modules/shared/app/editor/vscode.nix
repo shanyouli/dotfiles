@@ -7,13 +7,15 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules;
   cfg = cfm.app.editor.vscode;
-in {
+in
+{
   options.modules.app.editor.vscode = {
     enable = mkEnableOption "Whether using vscode";
-    extensions = mkOpt' (types.listOf types.package) [] "VScode extensions";
+    extensions = mkOpt' (types.listOf types.package) [ ] "VScode extensions";
   };
   config = mkIf cfg.enable {
     modules.app.editor.vscode.extensions = with pkgs.unstable.vscode-extensions; [
@@ -32,7 +34,7 @@ in {
         userSettings = {
           "nix.serverPath" = "nil";
           "nix.enableLanguageServer" = true;
-          "nix.formatterPath" = "alejandra";
+          "nix.formatterPath" = "nixfmt";
           "security.workspace.trust.enabled" = false; # 禁用全局工作区询问是否信任
         };
       };

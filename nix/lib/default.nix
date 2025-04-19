@@ -1,28 +1,33 @@
-{inputs, ...}: let
+{ inputs, ... }:
+let
   inherit (builtins) intersectAttrs functionArgs;
   # inherit (builtins) mapAttrs intersectAttrs functionArgs getEnv fromJSON;
   inherit (inputs.nixpkgs) lib;
-  inherit (lib) attrValues foldr foldl makeExtensible;
+  inherit (lib)
+    attrValues
+    foldr
+    foldl
+    makeExtensible
+    ;
 
   # mapModules gets special treatment because it's needed early!
   inherit (attrs) attrsToList mergeAttrs';
   inherit (modules) mapModules;
-  attrs = import ./attrs.nix {inherit lib;};
-  modules = import ./modules.nix {inherit lib attrs;};
+  attrs = import ./attrs.nix { inherit lib; };
+  modules = import ./modules.nix { inherit lib attrs; };
 
   /*
-  Given an attrset of nix module partials, returns it as a sorted list of
-  NameValuePairs according to its callPackage-style dependencies from the
-  rest of the list.
+    Given an attrset of nix module partials, returns it as a sorted list of
+    NameValuePairs according to its callPackage-style dependencies from the
+    rest of the list.
 
-  sortLibsByDeps :: AttrSet -> [ AttrSet ... ]
+    sortLibsByDeps :: AttrSet -> [ AttrSet ... ]
 
-  Example:
-    sortLibsByDeps { libA = { libB, ... }: {}; libB = { ... }: { [...] }; }
-    => [ { libB = {...}: [...]; } { libA = { libB, ...}: [...]; } ]
+    Example:
+      sortLibsByDeps { libA = { libB, ... }: {}; libB = { ... }: { [...] }; }
+      => [ { libB = {...}: [...]; } { libA = { libB, ...}: [...]; } ]
   */
-  sortLibsByDeps = modules:
-    modules;
+  sortLibsByDeps = modules: modules;
 
   # TODO
   # let
@@ -39,43 +44,41 @@
   # arguments are dynamically passed as they are loaded, drawn from a running
   # list of loaded lib/*.nix modules (plus the nixpkgs 'lib' passed to this
   # module and the whole set altogether).
-  libConcat = a: b:
-    a
-    // {
-      ${b.name} = b.value (intersectAttrs (functionArgs b.value) a);
-    };
-  # FIXME: Lexicographical loading can cause race conditions. Sort them?
-  # libModules = sortLibsByDeps (mapModules ./. import);
-  # libs = foldl libConcat { inherit lib inputs; self = libs; } (attrsToList libModules);
-  # my = makeExtensible (self:
-  #   with self;
-  #     mapModules ./.
-  #     (file: import file {inherit self lib inputs attrs;}));
-  # libs = lib.extend (_self: _super: {
-  #   my = my.extend (_sself: ssuper: foldr (a: b: a // b) {} (attrValues ssuper));
-  #   inherit (inputs.home-manager.lib) hm;
-  # });
-  # libs = mapModules ./. (file: import file {inherit lib inputs attrs;});
-in {
+  libConcat = a: b: a // { ${b.name} = b.value (intersectAttrs (functionArgs b.value) a); };
+in
+# FIXME: Lexicographical loading can cause race conditions. Sort them?
+# libModules = sortLibsByDeps (mapModules ./. import);
+# libs = foldl libConcat { inherit lib inputs; self = libs; } (attrsToList libModules);
+# my = makeExtensible (self:
+#   with self;
+#     mapModules ./.
+#     (file: import file {inherit self lib inputs attrs;}));
+# libs = lib.extend (_self: _super: {
+#   my = my.extend (_sself: ssuper: foldr (a: b: a // b) {} (attrValues ssuper));
+#   inherit (inputs.home-manager.lib) hm;
+# });
+# libs = mapModules ./. (file: import file {inherit lib inputs attrs;});
+{
   # perSystem._module.args.lib = mys;
 
   # flake.my = libs // (mergeAttrs' (attrValues libs));
   flake = {
-    lib = let
-      libModules = sortLibsByDeps (mapModules ./. import);
-      libs = foldl libConcat {
-        inherit lib inputs;
-        self = libs;
-      } (attrsToList libModules);
-    in
+    lib =
+      let
+        libModules = sortLibsByDeps (mapModules ./. import);
+        libs = foldl libConcat {
+          inherit lib inputs;
+          self = libs;
+        } (attrsToList libModules);
+      in
       libs // (mergeAttrs' (attrValues libs));
-    my = let
-      libs = makeExtensible (self:
-        with self;
-          mapModules ./.
-          (file: import file {inherit lib inputs attrs;}));
+    my =
+      let
+        libs = makeExtensible (
+          self: with self; mapModules ./. (file: import file { inherit lib inputs attrs; })
+        );
+      in
       # libs = mapModules ./. (file: import file {inherit lib inputs attrs;});
-    in
-      libs.extend (_self: prev: foldr (a: b: a // b) {} (attrValues prev));
+      libs.extend (_self: prev: foldr (a: b: a // b) { } (attrValues prev));
   };
 }

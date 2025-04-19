@@ -10,14 +10,14 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.media.music.mpd;
   cfg = cfp.rmpc;
-in {
+in
+{
   options.modules.media.music.mpd.rmpc = {
     enable = mkEnableOption "Whether to use rmpc";
   };
-  config = mkIf cfg.enable {
-    home.packages = [pkgs.unstable.rmpc];
-  };
+  config = mkIf cfg.enable { home.packages = [ pkgs.unstable.rmpc ]; };
 }

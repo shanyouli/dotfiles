@@ -7,9 +7,11 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.gpg;
-in {
+in
+{
   options.modules.gpg = {
     enable = mkBoolOpt false;
     cacheTTL = mkOpt types.int 28800;
@@ -33,7 +35,7 @@ in {
       '';
     }
     (mkIf pkgs.stdenvNoCC.isLinux {
-      home.packages = [pkgs.tomb];
+      home.packages = [ pkgs.tomb ];
       home.services.gpg-agent = {
         enable = true;
         defaultCacheTtl = cfg.cacheTTL;

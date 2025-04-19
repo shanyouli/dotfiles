@@ -7,30 +7,29 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules;
   cfg = cfm.app.qbittorrent;
-in {
+in
+{
   options.modules.app.qbittorrent = {
     enable = mkBoolOpt config.modules.download.enable;
     enGui = mkBoolOpt config.modules.gui.enable;
-    package = with pkgs;
+    package =
+      with pkgs;
       mkOption {
         type = types.package;
         default = pkgs.unstable.qbittorrent-enhanced;
-        apply = _v:
-          if cfg.enGui
-          then pkgs.unstable.qbittorrent-enhanced
-          else pkgs.unstable.qbittorrent-enhanced-nox;
+        apply =
+          _v:
+          if cfg.enGui then pkgs.unstable.qbittorrent-enhanced else pkgs.unstable.qbittorrent-enhanced-nox;
         description = "qbittorrent use package";
       };
     webui = mkOption {
       type = types.bool;
       default = false;
-      apply = v:
-        if cfg.enGui
-        then false
-        else v;
+      apply = v: if cfg.enGui then false else v;
     };
     webScript = mkStrOpt "";
     # 目前如果使用第三方的 web UI 存在 bug，建议不使用，但第三方 web UI 非常好看。
@@ -38,17 +37,14 @@ in {
       enable = mkOption {
         type = types.bool;
         default = false;
-        apply = v:
-          if cfg.enGui
-          then false
-          else v;
+        apply = v: if cfg.enGui then false else v;
       };
       startup = mkBoolOpt true;
       port = mkOpt' types.number 6801 "";
     };
   };
   config = mkIf cfg.enable {
-    home.packages = [cfg.package];
+    home.packages = [ cfg.package ];
 
     modules = {
       app.qbittorrent.webScript = optionalString cfg.webui ''

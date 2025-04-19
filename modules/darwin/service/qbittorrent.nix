@@ -6,11 +6,13 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules;
   capp = cfm.app.qbittorrent;
   cfg = cfm.service.qbittorrent;
-in {
+in
+{
   options.modules.service.qbittorrent = {
     enable = mkBoolOpt capp.service.enable;
   };
@@ -25,7 +27,7 @@ in {
           "--webui-port=${toString capp.service.port}"
         ];
       };
-      path = [config.modules.service.path];
+      path = [ config.modules.service.path ];
     };
   };
 }

@@ -74,32 +74,45 @@
     mac-app-util.url = "github:hraban/mac-app-util";
   };
 
-  outputs = inputs @ {flake-parts, ...}:
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} (
+  outputs =
+    inputs@{ flake-parts, ... }:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (
+      { withSystem, self, ... }:
       {
-        withSystem,
-        self,
-        ...
-      }: {
         # debug = true;
-        systems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin"];
-        imports = let
-          inherit (inputs.nixpkgs.lib) filterAttrs mapAttrsToList hasSuffix hasPrefix;
-          filterFn = path:
-            filterAttrs (name: type:
-              (type == "directory" && (builtins.pathExists "${path}/${name}/default.nix"))
-              || (type == "regular" && hasSuffix ".nix" name && name != "default.nix" && !(hasPrefix "_" name)))
-            (builtins.readDir path);
-          fn = path: mapAttrsToList (k: _: "${path}/${k}") (filterFn path);
-        in
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
+          "aarch64-darwin"
+          "x86_64-darwin"
+        ];
+        imports =
+          let
+            inherit (inputs.nixpkgs.lib)
+              filterAttrs
+              mapAttrsToList
+              hasSuffix
+              hasPrefix
+              ;
+            filterFn =
+              path:
+              filterAttrs (
+                name: type:
+                (type == "directory" && (builtins.pathExists "${path}/${name}/default.nix"))
+                || (type == "regular" && hasSuffix ".nix" name && name != "default.nix" && !(hasPrefix "_" name))
+              ) (builtins.readDir path);
+            fn = path: mapAttrsToList (k: _: "${path}/${k}") (filterFn path);
+          in
           fn (builtins.toString ./nix);
 
-        perSystem = {system, ...}: {
-          legacyPackages.homeConfigurations.test = self.my.mkhome {
-            inherit system withSystem self;
-            overlays = [self.overlays.python];
+        perSystem =
+          { system, ... }:
+          {
+            legacyPackages.homeConfigurations.test = self.my.mkhome {
+              inherit system withSystem self;
+              overlays = [ self.overlays.python ];
+            };
           };
-        };
 
         flake = {
           # homeConfigurations 自定义配置
@@ -114,30 +127,30 @@
             "test@aarch64-darwin" = self.my.mkdarwin {
               system = "aarch64-darwin";
               inherit withSystem self;
-              overlays = [self.overlays.python];
+              overlays = [ self.overlays.python ];
             };
             "test@x86_64-darwin" = self.my.mkdarwin {
               inherit withSystem self;
               system = "x86_64-darwin";
-              overlays = [self.overlays.python];
+              overlays = [ self.overlays.python ];
             };
             "lyeli@aarch64-darwin" = self.my.mkdarwin {
               system = "aarch64-darwin";
               inherit withSystem self;
-              overlays = [self.overlays.python];
+              overlays = [ self.overlays.python ];
               name = "home-box";
-              modules = [(self.my.relativeToRoot "hosts/homebox.nix")];
+              modules = [ (self.my.relativeToRoot "hosts/homebox.nix") ];
             };
           };
           nixosConfigurations = {
             "test@aarch64-linux" = self.my.mknixos {
               inherit withSystem self;
               system = "aarch64-linux";
-              overlays = [self.overlays.python];
+              overlays = [ self.overlays.python ];
             };
             "test@x86_64-linux" = self.my.mknixos {
               inherit withSystem self;
-              overlays = [self.overlays.python];
+              overlays = [ self.overlays.python ];
             };
           };
         };

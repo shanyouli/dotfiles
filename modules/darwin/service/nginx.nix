@@ -6,12 +6,14 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.service.nginx;
   cfm = config.modules;
   cfb = cfm.nginx;
   work_dir = cfb.workDir;
-in {
+in
+{
   options.modules.service.nginx = {
     enable = mkBoolOpt cfb.service.enable;
   };

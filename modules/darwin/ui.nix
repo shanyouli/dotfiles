@@ -9,14 +9,13 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.macos;
   cfg = cfp.ui;
-  cfgPkg =
-    if cfg.ice.enable
-    then "jordanbaird-ice"
-    else "hiddenbar"; # or "dozer";
-in {
+  cfgPkg = if cfg.ice.enable then "jordanbaird-ice" else "hiddenbar"; # or "dozer";
+in
+{
   options.modules.macos.ui = {
     ice.enable = mkBoolOpt true;
   };

@@ -6,16 +6,19 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   # emacs 29.0.50 It is not stable
   cfg = config.modules.app.editor.emacs;
-  emacsPackages = let
-    epkgs = pkgs.emacsPackagesFor cfg.package;
-  in
+  emacsPackages =
+    let
+      epkgs = pkgs.emacsPackagesFor cfg.package;
+    in
     # epkgs.overrideScope' cfg.overrides;
     epkgs.overrideScope cfg.overrides;
   inherit (emacsPackages) emacsWithPackages;
-in {
+in
+{
   options.modules.app.editor.emacs = {
     enable = mkBoolOpt false;
 
@@ -35,12 +38,12 @@ in {
       pkg = {
         prefer = mkOption {
           type = with types; listOf str;
-          default = [];
+          default = [ ];
           description = "TODO";
         };
         disable = mkOption {
           type = with types; listOf str;
-          default = [];
+          default = [ ];
           description = "TODO";
         };
       };
@@ -50,7 +53,7 @@ in {
       '';
     };
     extraPkgs = mkOption {
-      default = _self: [];
+      default = _self: [ ];
       type = selectorFunction;
       defaultText = "epkgs: []";
       example = literalExample "epkgs: [epkgs.emms epkgs.magit ]";
@@ -61,7 +64,7 @@ in {
       '';
     };
     overrides = mkOption {
-      default = _self: _super: {};
+      default = _self: _super: { };
       type = overlayFunction;
       defaultText = "self: super: {}";
       example = literalExample ''
@@ -90,7 +93,8 @@ in {
         doom.confInit = ''
           ;; (setq mydotfile "/etc/nixos")
         '';
-        extraPkgs = epkgs:
+        extraPkgs =
+          epkgs:
           [
             epkgs.emacsql-sqlite-builtin
             # epkgs.telega
@@ -110,11 +114,12 @@ in {
             epkgs.treesit-grammars.with-all-grammars
             epkgs.elvish-mode
           ]
-          ++ optionals cfg.rime.enable [
-            epkgs.rime
+          ++ optionals cfg.rime.enable [ epkgs.rime ]
+          ++ optionals config.modules.just.enable [
+            epkgs.just-mode
+            epkgs.justl
           ]
-          ++ optionals config.modules.just.enable [epkgs.just-mode epkgs.justl]
-          ++ optionals config.modules.shell.nushell.enable [epkgs.nushell-ts-mode];
+          ++ optionals config.modules.shell.nushell.enable [ epkgs.nushell-ts-mode ];
         pkg = emacsWithPackages cfg.extraPkgs;
       };
     }
@@ -135,34 +140,37 @@ in {
 
           pkgs.emacs-lsp-booster # emacs-lsp-booster , 更快的使用 lsp 服务
 
-          (mkIf config.modules.gpg.enable
-            pkgs.pinentry-emacs) # in emacs gnupg prompts
+          (mkIf config.modules.gpg.enable pkgs.pinentry-emacs) # in emacs gnupg prompts
         ];
         configFile."doom/config.init.el".text =
           ''
             ;;; config.init.el -*- lexical-binding: t; -*-
             (setq lsp-bridge-python-command "${config.modules.python.finalPkg}/bin/python3")
           ''
-          + optionalString cfg.rime.enable (let
-            rime-data-dir =
-              if config.modules.rime.enable
-              then "${config.modules.rime.dataPkg}/share/rime-data"
-              else if pkgs.stdenvNoCC.hostPlatform.isDarwin
-              then "/Library/Input Methods/Squirrel.app/Contents/SharedSupport"
-              else "${pkgs.rime-data}/share/rime-data";
-          in ''
-            (setq rime-emacs-module-header-root "${cfg.package}/include")
-            (setq rime-librime-root "${pkgs.librime}")
-            (setq rime-share-data-dir "${rime-data-dir}")
-            (setq rime-user-data-dir "${my.homedir}/${cfg.rime.dir}")
-          '')
+          + optionalString cfg.rime.enable (
+            let
+              rime-data-dir =
+                if config.modules.rime.enable then
+                  "${config.modules.rime.dataPkg}/share/rime-data"
+                else if pkgs.stdenvNoCC.hostPlatform.isDarwin then
+                  "/Library/Input Methods/Squirrel.app/Contents/SharedSupport"
+                else
+                  "${pkgs.rime-data}/share/rime-data";
+            in
+            ''
+              (setq rime-emacs-module-header-root "${cfg.package}/include")
+              (setq rime-librime-root "${pkgs.librime}")
+              (setq rime-share-data-dir "${rime-data-dir}")
+              (setq rime-user-data-dir "${my.homedir}/${cfg.rime.dir}")
+            ''
+          )
           + ''
             ${cfg.doom.confInit}
           '';
       };
       modules = {
-        python.extraPkgs = ps:
-          with ps; [
+        python.extraPkgs =
+          ps: with ps; [
             epc
             orjson
             six
@@ -173,11 +181,11 @@ in {
           ];
         shell = {
           env = {
-            PATH = ["$XDG_CONFIG_HOME/emacs/bin"];
+            PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];
             GRIPHOME = "$XDG_CONFIG_HOME/grip";
           };
-          zsh.pluginFiles = ["emacs"];
-          nushell.scriptFiles = ["emacs"];
+          zsh.pluginFiles = [ "emacs" ];
+          nushell.scriptFiles = [ "emacs" ];
         };
       };
     }

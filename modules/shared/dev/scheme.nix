@@ -7,14 +7,14 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.dev;
   cfg = cfp.scheme;
-in {
+in
+{
   options.modules.dev.scheme = {
     enable = mkEnableOption "Whether to use scheme";
   };
-  config = mkIf cfg.enable {
-    home.packages = [pkgs.chez];
-  };
+  config = mkIf cfg.enable { home.packages = [ pkgs.chez ]; };
 }

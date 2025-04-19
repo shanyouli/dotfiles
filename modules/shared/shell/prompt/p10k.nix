@@ -5,10 +5,12 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.shell.prompt;
-in {
-  config = mkIf (! cfp.zsh.enable) {
+in
+{
+  config = mkIf (!cfp.zsh.enable) {
     modules.shell.zsh.rcInit = mkOrder 200 ''
       zinit ice depth=1
       zinit light romkatv/powerlevel10k

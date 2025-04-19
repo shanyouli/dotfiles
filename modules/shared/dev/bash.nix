@@ -7,10 +7,12 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules;
   cfg = cfm.dev.bash;
-in {
+in
+{
   options.modules.dev.bash = {
     enable = mkEnableOption "Whether to develop bash language";
   };

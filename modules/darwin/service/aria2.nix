@@ -6,17 +6,22 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.service.aria2;
   cft = config.modules.download.aria2;
-in {
+in
+{
   options.modules.service.aria2 = {
     enable = mkBoolOpt cft.service.enable;
   };
 
   config = mkIf cfg.enable {
     launchd.user.agents.aria2 = {
-      path = ["${cft.package}/bin" config.modules.service.path];
+      path = [
+        "${cft.package}/bin"
+        config.modules.service.path
+      ];
       serviceConfig = {
         ProgramArguments = [
           "${cft.package}/bin/aria2c"

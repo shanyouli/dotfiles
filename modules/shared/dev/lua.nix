@@ -13,17 +13,19 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   devCfg = config.modules.dev;
   cfg = devCfg.lua;
   cfg_version = versions.majorMinor cfg.package.version;
-in {
+in
+{
   options.modules.dev.lua = {
     enable = mkBoolOpt false;
     fennel.enable = mkBoolOpt cfg.enable;
 
     extraPkgs = mkOption {
-      default = _self: [];
+      default = _self: [ ];
       example = literalExample "ps: [ ps.luarocks-nix ]";
       type = selectorFunction;
     };
@@ -40,9 +42,13 @@ in {
   };
   config = mkIf cfg.enable {
     modules = {
-      app.editor.nvim.lsp = ["lua_ls"];
+      app.editor.nvim.lsp = [ "lua_ls" ];
       dev.lua = {
-        extraPkgs = ps: with ps; [luarocks-nix (mkIf cfg.fennel.enable fennel)];
+        extraPkgs =
+          ps: with ps; [
+            luarocks-nix
+            (mkIf cfg.fennel.enable fennel)
+          ];
         package = pkgs.lua5_4;
         finalPkg = cfg.package.withPackages cfg.extraPkgs;
       };
@@ -63,7 +69,8 @@ in {
       };
     };
     home = {
-      packages = with pkgs;
+      packages =
+        with pkgs;
         [
           cfg.finalPkg
           stylua # fmt

@@ -6,10 +6,12 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules;
   cfg = cfm.macos.docker;
-in {
+in
+{
   options.modules.macos.docker = {
     enable = mkEnableOption "Whether to use docker";
   };

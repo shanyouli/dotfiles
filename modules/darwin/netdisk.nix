@@ -6,14 +6,20 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.macos;
   cfg = cfp.netdriver;
-in {
+in
+{
   options.modules.macos.netdriver = {
     enable = mkEnableOption "Whether to net driver";
   };
   config = mkIf cfg.enable {
-    homebrew.casks = ["adrive" "baidunetdisk" "nutstore"];
+    homebrew.casks = [
+      "adrive"
+      "baidunetdisk"
+      "nutstore"
+    ];
   };
 }

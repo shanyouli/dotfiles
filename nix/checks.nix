@@ -1,29 +1,20 @@
+{ inputs, self, ... }:
 {
-  inputs,
-  self,
-  ...
-}: {
-  perSystem = {
-    system,
-    pkgs,
-    ...
-  }: let
-    oscheck = let
-      osConfig =
-        if pkgs.stdenvNoCC.isDarwin
-        then self.darwinConfigurations
-        else self.nixosConfigurations;
+  perSystem =
+    { system, pkgs, ... }:
+    let
+      oscheck =
+        let
+          osConfig = if pkgs.stdenvNoCC.isDarwin then self.darwinConfigurations else self.nixosConfigurations;
+        in
+        osConfig."test@${system}".config.system.build.toplevel;
+      homecheck = self.legacyPackages.${system}.homeConfigurations.test.activationPackage;
     in
-      osConfig."test@${system}".config.system.build.toplevel;
-    homecheck = self.legacyPackages.${system}.homeConfigurations.test.activationPackage;
-  in {
-    checks = {
-      os = oscheck;
-      home = homecheck;
-      default =
-        if (inputs ? treefmt-nix)
-        then self.checks.${system}.treefmt
-        else homecheck;
+    {
+      checks = {
+        os = oscheck;
+        home = homecheck;
+        default = if (inputs ? treefmt-nix) then self.checks.${system}.treefmt else homecheck;
+      };
     };
-  };
 }

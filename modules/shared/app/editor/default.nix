@@ -6,10 +6,12 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules.app;
   cfg = cfm.editor;
-in {
+in
+{
   options.modules.app.editor = {
     default = mkOpt types.str "nvim";
   };

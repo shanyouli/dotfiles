@@ -7,13 +7,13 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.fastfetch;
-in {
+in
+{
   options.modules.fastfetch = {
     enable = mkEnableOption "Whether to use fastfetch";
   };
-  config = mkIf cfg.enable {
-    home.packages = [pkgs.fastfetch];
-  };
+  config = mkIf cfg.enable { home.packages = [ pkgs.fastfetch ]; };
 }

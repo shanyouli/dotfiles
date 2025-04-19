@@ -7,11 +7,13 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules;
   cfg = cfm.shell.nix-index;
   cfgpkg = pkgs.unstable.nix-index;
-in {
+in
+{
   options.modules.shell.nix-index = {
     enable = mkEnableOption "Whether to nix-index";
   };

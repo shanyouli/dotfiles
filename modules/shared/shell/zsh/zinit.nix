@@ -7,16 +7,18 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules;
   cfg = cfm.shell.zsh.zinit;
   cpkgs = pkgs.zinit;
-in {
+in
+{
   options.modules.shell.zsh.zinit = {
     enable = mkEnableOption "WHether to use zsh plugin manager (zinit)";
   };
   config = mkIf cfg.enable {
     modules.shell.env.ZINIT_HOME = "${cpkgs}/share/zinit";
-    home.packages = [cpkgs];
+    home.packages = [ cpkgs ];
   };
 }

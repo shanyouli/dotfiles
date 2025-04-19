@@ -1,31 +1,49 @@
-{lib, ...}: let
-  inherit (lib) mkOption types mkOptionType isFunction concatMap getValues foldl' mergeAttrs;
-in rec {
-  mkOpt = type: default: mkOption {inherit type default;};
-  mkOpt' = type: default: description:
-    mkOption {inherit type default description;};
+{ lib, ... }:
+let
+  inherit (lib)
+    mkOption
+    types
+    mkOptionType
+    isFunction
+    concatMap
+    getValues
+    foldl'
+    mergeAttrs
+    ;
+in
+rec {
+  mkOpt = type: default: mkOption { inherit type default; };
+  mkOpt' =
+    type: default: description:
+    mkOption { inherit type default description; };
 
-  mkOptA = type: default: apply: mkOption {inherit type default apply;};
+  mkOptA =
+    type: default: apply:
+    mkOption { inherit type default apply; };
 
-  mkBoolOpt = default:
+  mkBoolOpt =
+    default:
     mkOption {
       inherit default;
       type = types.bool;
       example = true;
     };
-  mkStrOpt = default:
+  mkStrOpt =
+    default:
     mkOption {
       inherit default;
       type = with types; nullOr str;
       example = null;
     };
-  mkNumOpt = default:
+  mkNumOpt =
+    default:
     mkOption {
       inherit default;
       type = types.number;
       example = 10;
     };
-  mkPkgReadOpt = description:
+  mkPkgReadOpt =
+    description:
     mkOption {
       inherit description;
       type = types.package;
@@ -38,7 +56,9 @@ in rec {
       "Function that takes an attribute set and returns a list"
       + " containing a selection of the values of the input set";
     check = isFunction;
-    merge = _loc: defs: as: concatMap (select: select as) (getValues defs);
+    merge =
+      _loc: defs: as:
+      concatMap (select: select as) (getValues defs);
   };
   overlayFunction = mkOptionType {
     name = "overlayFunction";
@@ -46,7 +66,8 @@ in rec {
       "An overlay function, takes self and super and returns"
       + " an attribute set overriding the desired attributes.";
     check = isFunction;
-    merge = _loc: defs: self: super:
-      foldl' (res: def: mergeAttrs res (def.value self super)) {} defs;
+    merge =
+      _loc: defs: self: super:
+      foldl' (res: def: mergeAttrs res (def.value self super)) { } defs;
   };
 }

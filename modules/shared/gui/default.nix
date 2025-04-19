@@ -7,13 +7,15 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules;
   cfg = cfp.gui;
-in {
+in
+{
   options.modules.gui = {
     enable = mkEnableOption "whether to use gui apps";
-    fonts = mkOpt' (types.listOf types.package) [] "font install";
+    fonts = mkOpt' (types.listOf types.package) [ ] "font install";
   };
   config = mkIf cfg.enable {
     modules.gui.fonts = with pkgs; [

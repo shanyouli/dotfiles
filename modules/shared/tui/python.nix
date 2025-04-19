@@ -6,9 +6,11 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.python;
-in {
+in
+{
   options.modules.python = with types; {
     extraPkgs = mkOption {
       type = nullOr selectorFunction;
@@ -39,45 +41,39 @@ in {
           };
         };
         python.finalPkg =
-          if cfg.extraPkgs != null
-          then pkgs.python3.withPackages cfg.extraPkgs
-          else pkgs.python3;
+          if cfg.extraPkgs != null then pkgs.python3.withPackages cfg.extraPkgs else pkgs.python3;
       };
-      home.packages = [cfg.finalPkg];
+      home.packages = [ cfg.finalPkg ];
     }
     (mkIf cfg.pipx.enable (
       let
         cmdp = config.modules.dev.python;
         use_rye_p = (cmdp.manager == "rye") && cmdp.rye.manager;
         global_python_path =
-          if cmdp.enable && (cmdp.global != "")
-          then
+          if cmdp.enable && (cmdp.global != "") then
             (
-              if use_rye_p
-              then "rye toolchain list --format json"
+              if use_rye_p then
+                "rye toolchain list --format json"
               else
                 (
-                  if config.modules.dev.manager.default == "asdf"
-                  then "asdf where python ${cmdp.global}"
+                  if config.modules.dev.manager.default == "asdf" then
+                    "asdf where python ${cmdp.global}"
                   else
-                    (
-                      if config.modules.dev.manager.default == "mise"
-                      then "mise where python@${cmdp.global}"
-                      else ""
-                    )
+                    (if config.modules.dev.manager.default == "mise" then "mise where python@${cmdp.global}" else "")
                 )
             )
-          else "";
+          else
+            "";
         pipx_function_text = ''
           pipx() {
             local _is_pipx_default=$PIPX_DEFAULT_PYTHON
             if [[ -z $_is_pipx_default ]]; then
               ${lib.optionalString use_rye_p ''
-            export PIPX_DEFAULT_PYTHON="$(readlink -f $(${global_python_path} | jq -r '[.[] | select(.name | contains("${cmdp.global}"))].[0].path'))"
-          ''}
+                export PIPX_DEFAULT_PYTHON="$(readlink -f $(${global_python_path} | jq -r '[.[] | select(.name | contains("${cmdp.global}"))].[0].path'))"
+              ''}
               ${lib.optionalString (!use_rye_p) ''
-            export PIPX_DEFAULT_PYTHON="$(readlink -f $(${global_python_path})/bin/python)"
-          ''}
+                export PIPX_DEFAULT_PYTHON="$(readlink -f $(${global_python_path})/bin/python)"
+              ''}
             fi
             command pipx "$@"
             if [[ -z $_is_pipx_default ]]; then
@@ -85,7 +81,8 @@ in {
             fi
           };
         '';
-      in {
+      in
+      {
         # A better python command line installation tool
         modules.shell = {
           zsh.rcInit = lib.optionalString (global_python_path != "") pipx_function_text;
@@ -93,11 +90,11 @@ in {
             export def --wrapped pipx [...rest: string] {
                 if ($env | get --ignore-errors PIPX_DEFAULT_PYTHON | is-empty) {
                     ${lib.optionalString use_rye_p ''
-              let pipx_default_python = (${global_python_path} | from json | where ($it.name | str contains "${cmdp.global}") | get path | first | readlink -f $in)
-            ''}
+                      let pipx_default_python = (${global_python_path} | from json | where ($it.name | str contains "${cmdp.global}") | get path | first | readlink -f $in)
+                    ''}
                     ${lib.optionalString (!use_rye_p) ''
-              let pipx_default_python = ([( ${global_python_path} ), "bin", "python" ] | path join | readlink -f $in)
-            ''}
+                      let pipx_default_python = ([( ${global_python_path} ), "bin", "python" ] | path join | readlink -f $in)
+                    ''}
                     with-env {PIPX_DEFAULT_PYTHON: $pipx_default_python } {
                         ^pipx ...$rest
                     }
@@ -108,7 +105,7 @@ in {
           '';
         };
         home = {
-          packages = [pkgs.pipx];
+          packages = [ pkgs.pipx ];
           programs.bash.initExtra = lib.optionalString (global_python_path != "") pipx_function_text;
         };
         # nushell.cmpFiles = ["${my.dotfiles.config}/pipx/pipx-completions.nu"];

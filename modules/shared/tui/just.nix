@@ -9,14 +9,14 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules;
   cfg = cfm.just;
-in {
+in
+{
   options.modules.just = {
     enable = mkEnableOption "Whether to use just";
   };
-  config = mkIf cfg.enable {
-    home.packages = [pkgs.just];
-  };
+  config = mkIf cfg.enable { home.packages = [ pkgs.just ]; };
 }

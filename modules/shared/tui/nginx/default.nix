@@ -7,7 +7,8 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.nginx;
   defaultConfig = pkgs.writeText "default.conf" ''
     server {
@@ -29,13 +30,14 @@ with my; let
         }
     }
   '';
-in {
+in
+{
   options.modules.nginx = {
     enable = mkBoolOpt false;
     workDir = mkStrOpt "/etc/nginx";
     sScript = mkOpt' types.lines "" "nginx 需要 root 运行的初始化脚本";
     uScript = mkOpt' types.lines "" "nginx 需要的 user 初始化脚本";
-    package = mkPackageOption pkgs "nginx" {};
+    package = mkPackageOption pkgs "nginx" { };
     service.enable = mkOpt' types.bool cfg.enable "是否生成 nginx 服务";
     service.startup = mkOpt' types.bool true "是否开机启动 nginx 服务";
     # TODO: 配置文件
@@ -43,7 +45,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = [cfg.package];
+    home.packages = [ cfg.package ];
     my = {
       system.init.setUpNginxDir = ''
         let nginx_dir = "${cfg.workDir}"

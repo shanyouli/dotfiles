@@ -7,7 +7,8 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.download;
   cfg = cfp.video;
   bbdown = pkgs.writeScriptBin "bbdown" ''
@@ -34,7 +35,8 @@ with my; let
     }
     exec -a "$0" "$_dir/bbdown"  "$@"
   '';
-in {
+in
+{
   options.modules.download.video = {
     enable = mkBoolOpt cfp.enable;
   };

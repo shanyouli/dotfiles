@@ -7,40 +7,33 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.gui.terminal;
-  terminals = ["kitty" "wezterm" "alacritty"];
-in {
+  terminals = [
+    "kitty"
+    "wezterm"
+    "alacritty"
+  ];
+in
+{
   options.modules.gui.terminal = {
     default = mkOption {
       type = types.str;
       default = "";
-      apply = str:
-        if builtins.elem str terminals
-        then str
-        else "";
+      apply = str: if builtins.elem str terminals then str else "";
       description = "Default terminal simulators";
     };
     font = {
       size = mkNumOpt 10;
       family = mkStrOpt "Cascadia Code";
-      package = mkPackageOption pkgs "cascadia-code" {};
+      package = mkPackageOption pkgs "cascadia-code" { };
     };
   };
-  config = mkIf ((cfg.default != "") && config.modules.gui.enable) (
-    mkMerge [
-      {
-        modules.gui.fonts = with pkgs; [cfg.font.package];
-      }
-      (mkIf (cfg.default == "kitty") {
-        modules.gui.terminal.kitty.enable = true;
-      })
-      (mkIf (cfg.default == "wezterm") {
-        modules.gui.terminal.wezterm.enable = true;
-      })
-      (mkIf (cfg.default == "alacritty") {
-        modules.gui.terminal.alacritty.enable = true;
-      })
-    ]
-  );
+  config = mkIf ((cfg.default != "") && config.modules.gui.enable) (mkMerge [
+    { modules.gui.fonts = with pkgs; [ cfg.font.package ]; }
+    (mkIf (cfg.default == "kitty") { modules.gui.terminal.kitty.enable = true; })
+    (mkIf (cfg.default == "wezterm") { modules.gui.terminal.wezterm.enable = true; })
+    (mkIf (cfg.default == "alacritty") { modules.gui.terminal.alacritty.enable = true; })
+  ]);
 }

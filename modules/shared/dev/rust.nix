@@ -7,13 +7,15 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules;
   cfg = cfm.dev.rust;
   homeDir = my.homedir;
   rustup_dir = "${homeDir}/.local/share/rustup";
   package = pkgs.rustup;
-in {
+in
+{
   options.modules.dev.rust = {
     enable = mkEnableOption "Whether to dev rust";
     enSlsp = mkEnableOption "Whether to use system rust-lsp";
@@ -25,24 +27,26 @@ in {
       shell = {
         env = {
           RUSTUP_HOME = rustup_dir;
-          CARGO_HOME = let
-            cargoConfig = ''
-              [source.crates-io]
-              replace-with = 'ustc'
-              [source.ustc]
-              registry = "git://mirrors.ustc.edu.cn/crates.io-index"
+          CARGO_HOME =
+            let
+              cargoConfig = ''
+                [source.crates-io]
+                replace-with = 'ustc'
+                [source.ustc]
+                registry = "git://mirrors.ustc.edu.cn/crates.io-index"
 
-              [install]
-              root = "${homeDir}/.local"
-              # [build]
-              # target-dir = "${config.home.cacheDir}/cargo/target"
-            '';
-          in "${pkgs.runCommandLocal "cargo-home" {inherit cargoConfig;} ''
-            mkdir -p $out
-            ln -st $out "${config.home.cacheDir}"/cargo/{registry,git}
-            ln -st $out "${config.home.configDir}"/cargo/credentials.toml
-            echo -n "$cargoConfig" >$out/config.toml
-          ''}";
+                [install]
+                root = "${homeDir}/.local"
+                # [build]
+                # target-dir = "${config.home.cacheDir}/cargo/target"
+              '';
+            in
+            "${pkgs.runCommandLocal "cargo-home" { inherit cargoConfig; } ''
+              mkdir -p $out
+              ln -st $out "${config.home.cacheDir}"/cargo/{registry,git}
+              ln -st $out "${config.home.configDir}"/cargo/credentials.toml
+              echo -n "$cargoConfig" >$out/config.toml
+            ''}";
         };
         aliases = {
           up_cargo = "cargo install-update -a";

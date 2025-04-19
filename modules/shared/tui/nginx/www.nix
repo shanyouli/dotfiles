@@ -7,7 +7,8 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.nginx;
   cfg = cfp.www;
   cfghtml = pkgs.writeText "index.html" ''
@@ -114,7 +115,8 @@ with my; let
       </body>
     </html>
   '';
-in {
+in
+{
   options.modules.nginx.www = {
     enable = mkEnableOption "Whether to use startpage";
   };

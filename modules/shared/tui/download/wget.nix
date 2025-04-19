@@ -7,20 +7,22 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.download;
   cfg = cfp.wget;
-  toWgetConfig = opts:
-    concatStringsSep "\n" (mapAttrsToList (p: v: "${p} = ${toString v}") opts);
+  toWgetConfig = opts: concatStringsSep "\n" (mapAttrsToList (p: v: "${p} = ${toString v}") opts);
   cfbin = "${cfg.package}/bin/wget";
-in {
+in
+{
   options.modules.download.wget = {
     enable = mkBoolOpt cfp.enable;
     package = mkOpt' types.package pkgs.wget "Whether to package";
-    settings = with types;
+    settings =
+      with types;
       mkOption {
         type = attrs;
-        default = {};
+        default = { };
         example = liberalExpression ''
           {
             timeout = 60;
@@ -30,7 +32,7 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      home.packages = [cfg.package];
+      home.packages = [ cfg.package ];
       modules.download.wget.settings = {
         # Use the server-provided last modification date, if available
         timestamping = "on";
@@ -63,7 +65,7 @@ in {
       };
       modules.shell.aliases.wget = "${cfbin} --hsts-file ${config.home.cacheDir}/wget-hsts";
     }
-    (mkIf (cfg.settings != {}) {
+    (mkIf (cfg.settings != { }) {
       env.WGETRC = ''''${XDG_CONFIG_HOME:-~/.config}/wget/wgetrc'';
       home.configFile."wget/wgetrc".text = toWgetConfig cfg.settings;
     })

@@ -9,13 +9,15 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.themes;
   cfg = cfp.wal;
-in {
+in
+{
   options.modules.themes.wal = {
     enable = mkEnableOption "Whether to use pywal16";
-    package = mkPackageOption pkgs.unstable "pywal16" {};
+    package = mkPackageOption pkgs.unstable "pywal16" { };
     dark = mkOpt' types.str "catppuccin-frappe" "default dark";
     light = mkOpt' types.str "catppuccin-latte" "default light theme";
   };
@@ -26,7 +28,7 @@ in {
       shell.zsh.prevInit = mkOrder 100 "reload-color() { _source $XDG_CACHE_HOME/wal/colors.sh; }; reload-color\n";
     };
     home = {
-      packages = [cfg.package];
+      packages = [ cfg.package ];
       configFile = {
         "wal/colorschemes" = {
           source = "${dotfiles.config}/wal/themes";

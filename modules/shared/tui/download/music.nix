@@ -6,10 +6,12 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.download;
   cfg = cfp.music;
-in {
+in
+{
   options.modules.download.music = {
     enable = mkBoolOpt cfp.enable;
   };

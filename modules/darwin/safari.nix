@@ -6,10 +6,12 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.macos;
   cfg = cfp.safari;
-in {
+in
+{
   options.modules.macos.safari = {
     enable = mkEnableOption "Use some extensions on safari";
   };

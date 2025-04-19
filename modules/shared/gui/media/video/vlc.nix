@@ -6,10 +6,12 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.gui.media.video;
   cfg = cfp.vlc;
-in {
+in
+{
   options.modules.gui.media.video.vlc = {
     enable = mkEnableOption "Whether to use vlc";
   };

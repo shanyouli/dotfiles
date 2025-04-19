@@ -7,9 +7,9 @@
   ...
 }:
 with lib;
-with my; {
-  options.modules.nixos = {
-  };
+with my;
+{
+  options.modules.nixos = { };
   config = mkMerge [
     (mkIf (config.modules.shell.default == "zsh") {
       # only nixos

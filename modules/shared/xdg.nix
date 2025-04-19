@@ -5,7 +5,8 @@
   ...
 }:
 with lib;
-with my; {
+with my;
+{
   # Get Nix (2.14+) itself to respect XDG. I.e.
   # ~/.nix-defexpr -> $XDG_DATA_HOME/nix/defexpr
   # ~/.nix-profile -> $XDG_DATA_HOME/nix/profile

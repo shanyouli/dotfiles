@@ -7,55 +7,82 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules;
   cfg = cfm.dev.manager.mise;
   cfbin = "${cfg.package}/bin/mise";
-in {
+in
+{
   options.modules.dev.manager.mise = with types; {
     enable = mkEnableOption "Whether to use mise";
     plugins = mkOption {
       description = "mise install plugins";
-      type = attrsOf (oneOf [str (nullOr bool) (listOf str)]);
-      default = {};
+      type = attrsOf (oneOf [
+        str
+        (nullOr bool)
+        (listOf str)
+      ]);
+      default = { };
     };
-    package = mkPackageOption pkgs.unstable "mise" {};
+    package = mkPackageOption pkgs.unstable "mise" { };
     text = mkOpt' lines "" "init mise script";
     prevInit = mkOpt' lines "" "prev mise env";
     extInit = mkOpt' lines "" "extra mise Init";
   };
   config = mkIf cfg.enable {
     home = {
-      packages = [cfg.package];
+      packages = [ cfg.package ];
       programs.bash.initExtra = ''
         eval "$(mise activate bash)"
       '';
     };
     modules = {
-      dev.manager.mise.text = let
-        mise_core_plugins = ["python" "bun" "deno" "erlang" "go" "java" "ruby" "rust" "node"];
-        finalNeedPlugins = lib.filterAttrs (_k: v: !(builtins.elem v [null false])) cfg.plugins;
-        mise_in_plugin_fn = v: ''${cfbin} p add ${v} -y'';
-        mise_ver_base_fn = p: v: ''
-          echo-info "Use ${p} ${v} ..."
-          ${cfbin} install ${p}@${v}
+      dev.manager.mise.text =
+        let
+          mise_core_plugins = [
+            "python"
+            "bun"
+            "deno"
+            "erlang"
+            "go"
+            "java"
+            "ruby"
+            "rust"
+            "node"
+          ];
+          finalNeedPlugins = lib.filterAttrs (
+            _k: v:
+            !(builtins.elem v [
+              null
+              false
+            ])
+          ) cfg.plugins;
+          mise_in_plugin_fn = v: ''${cfbin} p add ${v} -y'';
+          mise_ver_base_fn = p: v: ''
+            echo-info "Use ${p} ${v} ..."
+            ${cfbin} install ${p}@${v}
+          '';
+          mise_plugin_ver_fn =
+            p: vers:
+            if builtins.isString vers then
+              mise_ver_base_fn p vers
+            else
+              concatMapStrings (v: mise_ver_base_fn p v) vers;
+          text = concatStringsSep "\n" (
+            mapAttrsToList (n: v: ''
+              echo-info "Using mise to manage versions of ${n}"
+              ${lib.optionalString (!elem n mise_core_plugins) ''${mise_in_plugin_fn n}''}
+              ${lib.optionalString ((builtins.typeOf v) != "bool" || (!v)) ''${mise_plugin_ver_fn n v}''}
+            '') finalNeedPlugins
+          );
+        in
+        ''
+          ${cfg.prevInit}
+          export MISE_CACHE_DIR="${config.home.cacheDir}/mise"
+          ${text}
+          ${cfg.extInit}
         '';
-        mise_plugin_ver_fn = p: vers:
-          if builtins.isString vers
-          then mise_ver_base_fn p vers
-          else concatMapStrings (v: mise_ver_base_fn p v) vers;
-        text = concatStringsSep "\n" (mapAttrsToList (n: v: ''
-            echo-info "Using mise to manage versions of ${n}"
-            ${lib.optionalString (! elem n mise_core_plugins) ''${mise_in_plugin_fn n}''}
-            ${lib.optionalString ((builtins.typeOf v) != "bool" || (!v)) ''${mise_plugin_ver_fn n v}''}
-          '')
-          finalNeedPlugins);
-      in ''
-        ${cfg.prevInit}
-        export MISE_CACHE_DIR="${config.home.cacheDir}/mise"
-        ${text}
-        ${cfg.extInit}
-      '';
       shell = {
         env.MISE_CACHE_DIR = "${config.home.cacheDir}/mise";
         zsh.rcInit = ''_cache -v ${cfg.package.version} mise activate zsh'';
@@ -66,7 +93,7 @@ in {
             direnv_load mise direnv exec
           }
         '';
-        nushell.cacheCmd = ["${cfbin} activate nu"];
+        nushell.cacheCmd = [ "${cfbin} activate nu" ];
         fish.rcInit = ''_cache -v${cfg.package.version} mise activate fish'';
       };
     };

@@ -6,20 +6,22 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.dev;
   cfg = cfp.manager;
-  managers = ["asdf" "mise"];
-in {
+  managers = [
+    "asdf"
+    "mise"
+  ];
+in
+{
   options.modules.dev.manager = with types; {
     default = mkOption {
       description = "use language manager, asdf, mise";
       type = str;
       default = "";
-      apply = s:
-        if builtins.elem s managers
-        then s
-        else "";
+      apply = s: if builtins.elem s managers then s else "";
     };
     text = mkOpt' lines "" "init dev Lang script";
     prevInit = mkOpt' lines "" "prev dev language env";

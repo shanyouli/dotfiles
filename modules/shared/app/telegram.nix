@@ -7,15 +7,15 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.app;
   cfg = cfp.tg;
-in {
+in
+{
   options.modules.app.tg = {
     enable = mkEnableOption "Whether to use tg";
-    package = mkPackageOption pkgs "telegram-desktop" {};
+    package = mkPackageOption pkgs "telegram-desktop" { };
   };
-  config = mkIf cfg.enable {
-    home.packages = [cfg.package];
-  };
+  config = mkIf cfg.enable { home.packages = [ cfg.package ]; };
 }

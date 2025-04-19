@@ -6,9 +6,11 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.macos.games;
-in {
+in
+{
   options.modules.macos.games = {
     enable = mkBoolOpt false;
   };

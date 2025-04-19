@@ -6,34 +6,34 @@
   ...
 }:
 with lib;
-with my; let
-  env-paths = pkgs.runCommandLocal "env-paths" {} (let
-    profilePath = makeBinPath (builtins.filter (x: x != "/nix/var/nix/profiles/default") config.environment.profiles);
-    configEnvPath =
-      if builtins.hasAttr "PATH" config.env
-      then config.env.PATH
-      else null;
-    prevPath =
-      if (configEnvPath != null)
-      then config.env.PATH + ":" + profilePath
-      else profilePath;
-    printOuts = optionalString config.modules.macos.brew.enable ''
-      if [[ -x ${config.homebrew.brewPrefix}/brew ]]; then
-        eval "$(${config.homebrew.brewPrefix}/brew shellenv bash)"
+with my;
+let
+  env-paths = pkgs.runCommandLocal "env-paths" { } (
+    let
+      profilePath = makeBinPath (
+        builtins.filter (x: x != "/nix/var/nix/profiles/default") config.environment.profiles
+      );
+      configEnvPath = if builtins.hasAttr "PATH" config.env then config.env.PATH else null;
+      prevPath = if (configEnvPath != null) then config.env.PATH + ":" + profilePath else profilePath;
+      printOuts = optionalString config.modules.macos.brew.enable ''
+        if [[ -x ${config.homebrew.brewPrefix}/brew ]]; then
+          eval "$(${config.homebrew.brewPrefix}/brew shellenv bash)"
+        fi
+      '';
+    in
+    ''
+      PATH=""
+      if [ -x /usr/libexec/path_helper ]; then
+        eval $(/usr/libexec/path_helper -s)
+      else
+        PATH=/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin
       fi
-    '';
-  in ''
-    PATH=""
-    if [ -x /usr/libexec/path_helper ]; then
-      eval $(/usr/libexec/path_helper -s)
-    else
-      PATH=/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin
-    fi
-    ${printOuts}
-    echo "__BASE_NIX_DARWIN_PATH=\"$PATH\";" > $out
-    echo '__BASE_NIX_DARWIN_PATH="${prevPath}''${__BASE_NIX_DARWIN_PATH:+:}$__BASE_NIX_DARWIN_PATH";' >> $out
-    echo "export __BASE_NIX_DARWIN_PATH;" >> $out
-  '');
+      ${printOuts}
+      echo "__BASE_NIX_DARWIN_PATH=\"$PATH\";" > $out
+      echo '__BASE_NIX_DARWIN_PATH="${prevPath}''${__BASE_NIX_DARWIN_PATH:+:}$__BASE_NIX_DARWIN_PATH";' >> $out
+      echo "export __BASE_NIX_DARWIN_PATH;" >> $out
+    ''
+  );
   fix_path = writeNuScript' {
     name = "fix_PATH";
     text = ''
@@ -54,15 +54,14 @@ with my; let
       }
     '';
     nushell =
-      if config.modules.shell.nushell.enable
-      then config.modules.shell.nushell.package
-      else pkgs.nushell;
+      if config.modules.shell.nushell.enable then config.modules.shell.nushell.package else pkgs.nushell;
   };
-in {
+in
+{
   config = {
     environment = mkMerge [
       {
-        profiles = mkOrder 800 ["${config.home.stateDir}/nix/profile"];
+        profiles = mkOrder 800 [ "${config.home.stateDir}/nix/profile" ];
         extraInit = mkMerge [
           (mkOrder 100 ''
             [ -z "$__BASE_NIX_DARWIN_PATH" ] && . ${env-paths}
@@ -70,15 +69,18 @@ in {
             export PATH="$__new_path"
             unset __new_path
           '')
-          (mkIf config.modules.macos.brew.enable (let
-            prefix = removeSuffix "/bin" config.homebrew.brewPrefix;
-          in ''
-            export HOMEBREW_PREFIX=${prefix}
-            export HOMEBREW_CELLAR=${prefix}/Cellar
-            export HOMEBREW_REPOSITORY=${prefix}
-            [ -z "''${MANPATH-}" ] || export MANPATH=":''${MANPATH#:}";
-            export INFOPATH="/opt/homebrew/share/info:''${INFOPATH:-}";
-          ''))
+          (mkIf config.modules.macos.brew.enable (
+            let
+              prefix = removeSuffix "/bin" config.homebrew.brewPrefix;
+            in
+            ''
+              export HOMEBREW_PREFIX=${prefix}
+              export HOMEBREW_CELLAR=${prefix}/Cellar
+              export HOMEBREW_REPOSITORY=${prefix}
+              [ -z "''${MANPATH-}" ] || export MANPATH=":''${MANPATH#:}";
+              export INFOPATH="/opt/homebrew/share/info:''${INFOPATH:-}";
+            ''
+          ))
         ];
       }
       (mkIf config.modules.shell.fish.enable {

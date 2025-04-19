@@ -6,7 +6,8 @@
   ...
 }:
 with lib;
-with my; {
+with my;
+{
   # imports = [inputs.home-manager.nixosModules.home-manager];
   boot = {
     kernelPackages = mkDefault pkgs.linuxKernel.packages.linux_6_1;

@@ -6,16 +6,18 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.nixos;
   cfg = cfp.nh;
   cfs = config.modules.nh;
-in {
+in
+{
   options.modules.nixos.nh = {
     enable = mkBoolOpt cfs.enable;
   };
   config = mkIf cfg.enable {
-    environment.systemPackages = [cfs.package];
+    environment.systemPackages = [ cfs.package ];
     # programs.nh = {
     #   inherit (cfs) enable clean;
     #   os.flake = cfs.flake;

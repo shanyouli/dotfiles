@@ -11,10 +11,12 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules;
   cfg = cfm.modern;
-in {
+in
+{
   options.modules.modern = {
     enable = mkEnableOption "Whether modern tools are used, eg:duf,exa .etc";
   };
@@ -38,7 +40,7 @@ in {
         du = "dua";
         htop = "btm --basic --mem_as_value";
       };
-      zsh.pluginFiles = ["exa"];
+      zsh.pluginFiles = [ "exa" ];
     };
   };
 }

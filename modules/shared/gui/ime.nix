@@ -8,7 +8,8 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules;
   cfg = cfp.rime;
   kernel-name = pkgs.stdenv.hostPlatform.parsed.kernel.name;
@@ -26,7 +27,8 @@ with my; let
     .${kernel-name};
   cemacs = cfp.app.editor.emacs;
   useEmacs = cemacs.enable && cemacs.rime.enable;
-in {
+in
+{
   options.modules.rime = {
     enable = mkEnableOption "Whether to use rime";
     backup = {
@@ -37,53 +39,60 @@ in {
     method = mkOption {
       type = types.str;
       default = "ice";
-      apply = s:
-        if builtins.elem s ["ice" "wanxiang"]
-        then s
-        else "ice";
+      apply =
+        s:
+        if
+          builtins.elem s [
+            "ice"
+            "wanxiang"
+          ]
+        then
+          s
+        else
+          "ice";
     };
     dataPkg = mkPkgReadOpt "rime-data package.";
   };
   config = mkIf cfg.enable (mkMerge [
     {
       modules.rime.dataPkg =
-        if cfg.method == "ice"
-        then pkgs.unstable.rime-ice
-        else pkgs.unstable.rime-wanxiang;
-      home.file = let
-        default_custom_text = ''
-          patch:
-            "menu/page_size": 7
-            "ascii_composer/switch_key/Shift_L": commit_code
-            "switcher/hotkeys":
-              - F4
-              - Control+grave
-        '';
-        wanxiang-custom = ''
-          patch:
-            speller/algebra:
-              __patch:
-              - wanxiang.schema:/全拼
-              - wanxiang.schema:/fuzhu_moqi
-        '';
-        wanxiang-en = ''
-          patch:
-            speller/algebra:
-              __include: wanxiang_en.schema:/全拼
-        '';
-        wanxiang-radical = ''
-          patch:
-            speller/algebra:
-              __include: wanxiang_radical.schema:/全拼
-        '';
-      in
+        if cfg.method == "ice" then pkgs.unstable.rime-ice else pkgs.unstable.rime-wanxiang;
+      home.file =
+        let
+          default_custom_text = ''
+            patch:
+              "menu/page_size": 7
+              "ascii_composer/switch_key/Shift_L": commit_code
+              "switcher/hotkeys":
+                - F4
+                - Control+grave
+          '';
+          wanxiang-custom = ''
+            patch:
+              speller/algebra:
+                __patch:
+                - wanxiang.schema:/全拼
+                - wanxiang.schema:/fuzhu_moqi
+          '';
+          wanxiang-en = ''
+            patch:
+              speller/algebra:
+                __include: wanxiang_en.schema:/全拼
+          '';
+          wanxiang-radical = ''
+            patch:
+              speller/algebra:
+                __include: wanxiang_radical.schema:/全拼
+          '';
+        in
         mkMerge [
           # rime-wanxiang 输入法暂时无法作为公共配置，目前放入用户配置文件中
           (mkIf pkgs.stdenvNoCC.hostPlatform.isDarwin {
             "${userDir}/squirrel.custom.yaml".source =
-              if cfg.method == "ice"
-              then "${my.dotfiles.config}/rime/squirrel.custom.yaml"
-              else "${my.dotfiles.config}/rime/squirrel.wanxiang.custom.yaml";
+              if cfg.method == "ice" then
+                "${my.dotfiles.config}/rime/squirrel.custom.yaml"
+              else
+                "${my.dotfiles.config}/rime/squirrel.wanxiang.custom.yaml";
           })
           {
             "${userDir}/default.custom.yaml".text = default_custom_text;
@@ -103,7 +112,8 @@ in {
             '';
           })
           (mkIf (useEmacs && cfg.method == "wanxiang") {
-            "${cemacs.rime.dir}/cn_dicts/corrections.dict.yaml".source = "${cfg.dataPkg}/share/rime-data/cn_dicts/corrections.dict.yaml";
+            "${cemacs.rime.dir}/cn_dicts/corrections.dict.yaml".source =
+              "${cfg.dataPkg}/share/rime-data/cn_dicts/corrections.dict.yaml";
           })
         ];
     }

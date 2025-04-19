@@ -7,13 +7,13 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules.gui;
   cfg = cfm.media.flameshot;
   basePkg = pkgs.flameshot;
   package =
-    if pkgs.stdenvNoCC.isDarwin
-    then
+    if pkgs.stdenvNoCC.isDarwin then
       basePkg.overrideAttrs (old: {
         postInstall =
           (optionalString (old ? postInstall) old.postInstall)
@@ -25,12 +25,12 @@ with my; let
             fi
           '';
       })
-    else basePkg;
-in {
+    else
+      basePkg;
+in
+{
   options.modules.gui.media.flameshot = {
     enable = mkEnableOption "Whether to use Flameshot";
   };
-  config = mkIf cfg.enable {
-    home.packages = [package];
-  };
+  config = mkIf cfg.enable { home.packages = [ package ]; };
 }

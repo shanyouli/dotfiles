@@ -7,20 +7,22 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules;
   cfg = cfm.proxy;
-  proxy_commands = ["sing-box" "clash"];
+  proxy_commands = [
+    "sing-box"
+    "clash"
+  ];
   proxy_url = "http://127.0.0.1:10801";
-in {
+in
+{
   options.modules.proxy = {
     default = mkOption {
       type = types.str;
       default = "";
-      apply = str:
-        if builtins.elem str proxy_commands
-        then str
-        else "";
+      apply = str: if builtins.elem str proxy_commands then str else "";
       description = "Default proxy command_lines";
     };
     service = {
@@ -39,7 +41,8 @@ in {
         clash.enable = mkDefault (cfg.default == "clash");
         sing-box.enable = mkDefault (cfg.default == "sing-box");
 
-        service.pkg = pkgs.writeScriptBin "proxy-service" (''
+        service.pkg = pkgs.writeScriptBin "proxy-service" (
+          ''
             #!${pkgs.stdenv.shell}
           ''
           + optionalString pkgs.stdenvNoCC.isDarwin ''
@@ -74,18 +77,20 @@ in {
           ''
           + ''
             ${cfg.service.cmd}
-          '');
+          ''
+        );
       };
       nginx.config =
-        if cfg.service.enable
-        then ''
-          location /proxy {
-            client_max_body_size 0;
-            proxy_redirect off;
-            proxy_pass http://127.0.0.1:9090/ui/;
-          }
-        ''
-        else "";
+        if cfg.service.enable then
+          ''
+            location /proxy {
+              client_max_body_size 0;
+              proxy_redirect off;
+              proxy_pass http://127.0.0.1:9090/ui/;
+            }
+          ''
+        else
+          "";
     };
   };
 }

@@ -6,16 +6,18 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.macos;
   cfg = cfp.nh;
   cfs = config.modules.nh;
-in {
+in
+{
   options.modules.macos.nh = {
     enable = mkBoolOpt cfs.enable;
   };
   config = mkIf cfg.enable {
-    environment.systemPackages = [cfs.package];
+    environment.systemPackages = [ cfs.package ];
     # programs.nh = {
     #   enable = true;
     #   inherit (cfs) alias clean;

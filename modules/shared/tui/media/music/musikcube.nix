@@ -7,14 +7,14 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.media.music;
   cfg = cfp.musikcube;
-in {
+in
+{
   options.modules.media.music.musikcube = {
     enable = mkEnableOption "Whether to using musikcube";
   };
-  config = mkIf cfg.enable {
-    home.packages = [pkgs.musikcube];
-  };
+  config = mkIf cfg.enable { home.packages = [ pkgs.musikcube ]; };
 }

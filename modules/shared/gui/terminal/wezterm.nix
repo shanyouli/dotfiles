@@ -7,14 +7,16 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.gui.terminal.wezterm;
-in {
+in
+{
   options.modules.gui.terminal.wezterm = with types; {
     enable = mkBoolOpt false;
   };
   config = mkIf cfg.enable {
-    home.packages = [pkgs.wezterm];
+    home.packages = [ pkgs.wezterm ];
     home.configFile."wezterm" = {
       source = "${my.dotfiles.config}/wezterm";
       recursive = true;

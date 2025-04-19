@@ -6,14 +6,14 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules;
   cfg = cfp.download;
-in {
+in
+{
   options.modules.download = {
     enable = mkEnableOption "Whether to using download manager";
   };
-  config =
-    mkIf cfg.enable {
-    };
+  config = mkIf cfg.enable { };
 }

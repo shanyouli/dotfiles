@@ -7,7 +7,8 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules;
   cfg = cfm.db.mysql;
 
@@ -32,8 +33,8 @@ with my; let
     finish() {
       ${cfg.package}/bin/mysqladmin -u root --socket=$MYSQL_UNIX_PORT shutdown
       ${optionalString pkgs.stdenvNoCC.isDarwin ''
-      /bin/launchctl unsetenv MYSQL_UNIX_PORT
-    ''}
+        /bin/launchctl unsetenv MYSQL_UNIX_PORT
+      ''}
       kill $MYSQL_PID
       wait $MYSQL_PID
     }
@@ -47,10 +48,11 @@ with my; let
         --datadir=${datadir} --basedir=${cfg.package} --pid-file=${mysqlPid}
     fi
   '';
-in {
+in
+{
   options.modules.db.mysql = {
     enable = mkEnableOption "Whether to use mysql";
-    package = mkPackageOption pkgs "mariadb" {};
+    package = mkPackageOption pkgs "mariadb" { };
     script = mkOpt' types.lines "" "初始化脚本";
     service = {
       enable = mkBoolOpt cfg.enable;
@@ -61,7 +63,10 @@ in {
     };
   };
   config = mkIf cfg.enable {
-    home.packages = [cfg.package mysqldService];
+    home.packages = [
+      cfg.package
+      mysqldService
+    ];
     modules = {
       db.mysql.script = mysqlInit;
       shell.zsh.rcInit = ''

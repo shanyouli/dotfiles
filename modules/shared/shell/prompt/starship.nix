@@ -7,23 +7,27 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules.shell.prompt;
   cfg = cfm.starship;
-in {
+in
+{
   options.modules.shell.prompt.starship = {
     enable = mkBoolOpt false;
 
     settings = mkOption {
-      type = with types; let
-        prim = either bool (either int str);
-        primOrPrimAttrs = either prim (attrsOf prim);
-        entry = either prim (listOf primOrPrimAttrs);
-        entryOrAttrsOf = t: either entry (attrsOf t);
-        entries = entryOrAttrsOf (entryOrAttrsOf entry);
-      in
-        attrsOf entries // {description = "Starship configuration";};
-      default = {};
+      type =
+        with types;
+        let
+          prim = either bool (either int str);
+          primOrPrimAttrs = either prim (attrsOf prim);
+          entry = either prim (listOf primOrPrimAttrs);
+          entryOrAttrsOf = t: either entry (attrsOf t);
+          entries = entryOrAttrsOf (entryOrAttrsOf entry);
+        in
+        attrsOf entries // { description = "Starship configuration"; };
+      default = { };
       example = literalExpression ''
         {
           add_newline = false;
@@ -51,15 +55,13 @@ in {
   };
   config = mkIf cfg.enable {
     home = {
-      packages = [pkgs.starship];
+      packages = [ pkgs.starship ];
       programs.bash.initExtra = lib.optionalString cfm.bash.enable ''
         eval `starship init bash --print-full-init`
       '';
-      configFile."starship.toml" =
-        mkIf ((cfg.settings != {}) && (config.modules.theme.default == ""))
-        {
-          source = toTomlFile cfg.settings;
-        };
+      configFile."starship.toml" = mkIf ((cfg.settings != { }) && (config.modules.theme.default == "")) {
+        source = toTomlFile cfg.settings;
+      };
     };
     modules.shell = {
       prompt.starship.settings = {
@@ -77,7 +79,7 @@ in {
       zsh.rcInit = lib.optionalString cfm.zsh.enable ''
         _cache starship init zsh --print-full-init
       '';
-      nushell.cacheCmd = ["${pkgs.starship}/bin/starship init nu"];
+      nushell.cacheCmd = [ "${pkgs.starship}/bin/starship init nu" ];
       fish.rcInit = optionalString cfm.fish.enable ''_cache starship init fish --print-full-init'';
     };
   };

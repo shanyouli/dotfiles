@@ -28,10 +28,12 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.macos;
   cfg = cfp.app;
-in {
+in
+{
   options.modules.macos.app = {
     name = mkOpt' types.str "Myapps" "存放使用 nix 安装的 gui 程序目录名";
     user.enable = mkBoolOpt true; # 默认在家目录的 Applications/${cfg.name} 目录下
@@ -46,18 +48,24 @@ in {
       description = "连接到一个目录的方法";
       type = types.str;
       default = "alias";
-      apply = s:
-        if builtins.elem s ["copy" "alias" "util"]
-        then s
-        else "alias";
+      apply =
+        s:
+        if
+          builtins.elem s [
+            "copy"
+            "alias"
+            "util"
+          ]
+        then
+          s
+        else
+          "alias";
     };
   };
   config = {
     modules.macos.app = {
       path =
-        if cfg.user.enable
-        then "${homedir}/Applications/${cfg.name}"
-        else "/Applications/${cfg.name}";
+        if cfg.user.enable then "${homedir}/Applications/${cfg.name}" else "/Applications/${cfg.name}";
       linkDir = pkgs.buildEnv {
         name = "my-manager-applications";
         paths =

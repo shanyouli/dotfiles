@@ -7,14 +7,14 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.media.music;
   cfg = cfp.cmus;
-in {
+in
+{
   options.modules.media.music.cmus = {
     enable = mkEnableOption "Whether to use cmus";
   };
-  config = mkIf cfg.enable {
-    home.packages = [pkgs.cmus];
-  };
+  config = mkIf cfg.enable { home.packages = [ pkgs.cmus ]; };
 }

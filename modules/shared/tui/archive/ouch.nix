@@ -10,17 +10,19 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.archive;
   cfg = cfp.ouch;
-in {
+in
+{
   options.modules.archive.ouch = {
     enable = mkEnableOption "Whether to use ouch packages";
   };
   config = mkIf cfg.enable {
-    home.packages = with pkgs;
-      [ouch]
-      ++ lib.optionals (stdenvNoCC.isDarwin || stdenvNoCC.isx86_64) [rar];
+    home.packages =
+      with pkgs;
+      [ ouch ] ++ lib.optionals (stdenvNoCC.isDarwin || stdenvNoCC.isx86_64) [ rar ];
     modules.shell.aliases.unzip = "ouch decompress";
     modules.shell.aliases.zip = "ouch compress";
   };

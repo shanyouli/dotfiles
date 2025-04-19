@@ -1,8 +1,5 @@
+{ lib, pkgs, ... }:
 {
-  lib,
-  pkgs,
-  ...
-}: {
   boot = {
     kernelPackages = lib.mkDefault pkgs.linuxKernel.packages.linux_6_1;
     loader = {

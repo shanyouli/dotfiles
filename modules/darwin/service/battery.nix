@@ -7,7 +7,8 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.service.battery;
   batter-script = pkgs.writeScriptBin "battery-service" ''
     #!${pkgs.stdenv.shell}
@@ -34,7 +35,8 @@ with my; let
         maintain $low
     fi
   '';
-in {
+in
+{
   options.modules.service.battery = {
     enable = mkBoolOpt false;
     maxPower = mkOpt (types.ints.between 0 100) 75;
@@ -42,17 +44,17 @@ in {
   };
 
   config = mkIf cfg.enable {
-    homebrew.casks = ["battery"]; # "aldente" # 电池管理
+    homebrew.casks = [ "battery" ]; # "aldente" # 电池管理
     launchd.user.agents.battery = {
       serviceConfig = {
-        ProgramArguments = ["${batter-script}/bin/battery-service"];
+        ProgramArguments = [ "${batter-script}/bin/battery-service" ];
         RunAtLoad = true;
         StandardErrorPath = "${my.homedir}/Library/Logs/mybatter.error.log";
         StartInterval = 600;
         # serviceConfig.StandardOutPath = "${my.homedir}/Library/Logs/mybatter.log";
         # serviceConfig.StartCalendarInterval = [{Minute = 10;}];
       };
-      path = [config.modules.service.path];
+      path = [ config.modules.service.path ];
     };
   };
 }

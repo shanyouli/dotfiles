@@ -7,30 +7,25 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.macos;
-  filterEnabledTexts = dict: let
-    attrList = lib.attrValues dict;
-    filterLambda = x:
-      if builtins.hasAttr "enable" x
-      then x.enable
-      else true;
-    sortLambda = x: y: let
-      levelx =
-        if builtins.hasAttr "level" x
-        then x.level
-        else 50;
-      levely =
-        if builtins.hasAttr "level" y
-        then y.level
-        else 50;
+  filterEnabledTexts =
+    dict:
+    let
+      attrList = lib.attrValues dict;
+      filterLambda = x: if builtins.hasAttr "enable" x then x.enable else true;
+      sortLambda =
+        x: y:
+        let
+          levelx = if builtins.hasAttr "level" x then x.level else 50;
+          levely = if builtins.hasAttr "level" y then y.level else 50;
+        in
+        levelx < levely;
+      sortFn = la: pkgs.lib.sort sortLambda la;
     in
-      levelx < levely;
-    sortFn = la: pkgs.lib.sort sortLambda la;
-  in
     lib.concatMapStrings (enableText: ''
-      ${lib.optionalString (hasAttr "desc" enableText)
-        "echo-info '${enableText.desc}' "}
+      ${lib.optionalString (hasAttr "desc" enableText) "echo-info '${enableText.desc}' "}
       ${enableText.text}
     '') (sortFn (lib.filter filterLambda attrList));
   prevtext = ''
@@ -73,15 +68,17 @@ with my; let
     ${prevtext}
     ${filterEnabledTexts cfg.systemScript}
   '';
-in {
+in
+{
   options.macos = with types; {
-    userScript = mkOpt attrs {};
-    systemScript = mkOpt attrs {};
+    userScript = mkOpt attrs { };
+    systemScript = mkOpt attrs { };
   };
   config = mkMerge [
     {
       programs.bash.enable = config.modules.shell.bash.enable;
-      user.packages = with pkgs.unstable.darwinapps;
+      user.packages =
+        with pkgs.unstable.darwinapps;
         [
           lporg
           switchaudio-osx # broken
@@ -99,12 +96,14 @@ in {
       time.timeZone = mkDefault my.timezone;
       modules = {
         shell = {
-          aliases.emacs = let
-            baseDir =
-              if config.modules.macos.app.way == "copy"
-              then config.modules.macos.app.path
-              else "${config.modules.app.editor.emacs.pkg}/Applications";
-          in
+          aliases.emacs =
+            let
+              baseDir =
+                if config.modules.macos.app.way == "copy" then
+                  config.modules.macos.app.path
+                else
+                  "${config.modules.app.editor.emacs.pkg}/Applications";
+            in
             optionalString config.modules.app.editor.emacs.enable "${baseDir}/Emacs.app/Contents/MacOS/Emacs";
           nushell.rcInit = ''
             # 修复macos上nushell自带的open和外部命令open的冲突
@@ -199,56 +198,62 @@ in {
             text = config.modules.db.mysql.script;
             desc = "init mysql ...";
           };
-          linkChromeApp = let
-            appEn = config.modules.macos.app.way == "copy";
-            mchrome = config.modules.gui.browser.chrome;
-            enable = mchrome.enable && mchrome.dev.enable && appEn && (! mchrome.useBrew);
-          in {
-            inherit enable;
-            desc = "Link Google Chrome.app";
-            level = 100;
-            text = ''
-              if [[ -e "${my.homedir}/Applications/Myapps/Chromium.app" ]]; then
-                _google_chrome_app="/Applications/Google Chrome.app"
-                if [[ -e $_google_chrome_app ]]; then
-                  $DRI_RUN_CMD rm -rf "$_google_chrome_app"
+          linkChromeApp =
+            let
+              appEn = config.modules.macos.app.way == "copy";
+              mchrome = config.modules.gui.browser.chrome;
+              enable = mchrome.enable && mchrome.dev.enable && appEn && (!mchrome.useBrew);
+            in
+            {
+              inherit enable;
+              desc = "Link Google Chrome.app";
+              level = 100;
+              text = ''
+                if [[ -e "${my.homedir}/Applications/Myapps/Chromium.app" ]]; then
+                  _google_chrome_app="/Applications/Google Chrome.app"
+                  if [[ -e $_google_chrome_app ]]; then
+                    $DRI_RUN_CMD rm -rf "$_google_chrome_app"
+                  fi
+                  $DRY_RUN_CMD ln -sf "${my.homedir}/Applications/Myapps/Chromium.app" "$_google_chrome_app"
+                  unset _google_chrome_app
+                elif [[ -e "${my.homedir}/Applications/Myapps/Google Chrome.app" ]]; then
+                  $DRY_RUN_CMD ln -sf "${my.homedir}/Applications/Myapps/Google Chrome.app" "/Applications/"
                 fi
-                $DRY_RUN_CMD ln -sf "${my.homedir}/Applications/Myapps/Chromium.app" "$_google_chrome_app"
-                unset _google_chrome_app
-              elif [[ -e "${my.homedir}/Applications/Myapps/Google Chrome.app" ]]; then
-                $DRY_RUN_CMD ln -sf "${my.homedir}/Applications/Myapps/Google Chrome.app" "/Applications/"
-              fi
-            '';
-          };
-          linkFirefox = let
-            cfirefox = config.modules.gui.browser.firefox;
-          in {
-            enable = cfirefox.enable && cfirefox.dev.enable;
-            level = 2000;
-            desc = "Link Firefox.app";
-            text = ''
-              $DRY_RUN_CMD ln -sf "${cfirefox.finalPackage}/Applications/Firefox.app" /Applications/
-            '';
-          };
+              '';
+            };
+          linkFirefox =
+            let
+              cfirefox = config.modules.gui.browser.firefox;
+            in
+            {
+              enable = cfirefox.enable && cfirefox.dev.enable;
+              level = 2000;
+              desc = "Link Firefox.app";
+              text = ''
+                $DRY_RUN_CMD ln -sf "${cfirefox.finalPackage}/Applications/Firefox.app" /Applications/
+              '';
+            };
           initDevInit = {
-            enable = config.modules.dev.lang != [];
+            enable = config.modules.dev.lang != [ ];
             desc = "Init dev language manager ...";
             inherit (config.modules.dev.manager) text;
           };
         };
       };
     }
-    (mkIf config.modules.gpg.enable {
-      modules.service.env.GNUPGHOME = config.env.GNUPGHOME;
-    })
+    (mkIf config.modules.gpg.enable { modules.service.env.GNUPGHOME = config.env.GNUPGHOME; })
     (mkIf config.modules.gopass.enable {
       modules.service.env.PASSWORD_STORE_DIR = config.env.PASSWORD_STORE_DIR;
     })
     (mkIf config.modules.proxy.sing-box.enable {
-      environment.etc."sudoers.d/singbox".source = sudoNotPass (lib.getExe config.modules.proxy.sing-box.package);
+      environment.etc."sudoers.d/singbox".source = sudoNotPass (
+        lib.getExe config.modules.proxy.sing-box.package
+      );
     })
     (mkIf config.modules.proxy.sing-box.enable {
-      environment.etc."sudoers.d/clash".source = sudoNotPass (lib.getExe config.modules.proxy.clash.package);
+      environment.etc."sudoers.d/clash".source = sudoNotPass (
+        lib.getExe config.modules.proxy.clash.package
+      );
     })
   ];
 }

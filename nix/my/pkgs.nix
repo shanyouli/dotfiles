@@ -1,45 +1,53 @@
-{
-  lib,
-  pkgs,
-  ...
-}: let
+{ lib, pkgs, ... }:
+let
   inherit (lib) removeAttrs optionals optionalString;
-in rec {
+in
+rec {
   # package -> pkg
   # dir -> path
   # args_ -> attrs
-  mkHomePkg' = package: dir: args_: let
-    name = "${package.pname}-wrapper-${package.version}";
-    _nativeBuildInputs = [pkgs.makeWrapper] ++ optionals (args_ ? nativeBuildInputs) args_.nativeBuildInputs;
-    paths = [package] ++ optionals (args_ ? paths) args_.paths;
-    postBuild = ''
-      if [[ -d $out/bin ]]; then
-        for i in $out/bin/* ; do
-          wrapProgram $out/bin/$(basename ''${i}) --set HOME "${dir}"
-        done
-      fi
-      ${optionalString (args_ ? postBuild) args_.postBuild}
-    '';
-    arg_ =
-      (removeAttrs args_ ["nativeBuildInputs" "paths" "postBuild"])
-      // {
-        inherit name paths postBuild;
-        nativeBuildInputs = _nativeBuildInputs;
-      };
-  in
+  mkHomePkg' =
+    package: dir: args_:
+    let
+      name = "${package.pname}-wrapper-${package.version}";
+      _nativeBuildInputs = [
+        pkgs.makeWrapper
+      ] ++ optionals (args_ ? nativeBuildInputs) args_.nativeBuildInputs;
+      paths = [ package ] ++ optionals (args_ ? paths) args_.paths;
+      postBuild = ''
+        if [[ -d $out/bin ]]; then
+          for i in $out/bin/* ; do
+            wrapProgram $out/bin/$(basename ''${i}) --set HOME "${dir}"
+          done
+        fi
+        ${optionalString (args_ ? postBuild) args_.postBuild}
+      '';
+      arg_ =
+        (removeAttrs args_ [
+          "nativeBuildInputs"
+          "paths"
+          "postBuild"
+        ])
+        // {
+          inherit name paths postBuild;
+          nativeBuildInputs = _nativeBuildInputs;
+        };
+    in
     pkgs.symlinkJoin arg_;
-  mkHomePkg = package: dir: mkHomePkg' package dir {};
+  mkHomePkg = package: dir: mkHomePkg' package dir { };
 
   # toJsonFile :: (attrs -> jsonFile)
-  toJsonFile = attrs: (pkgs.formats.json {}).generate "prettyJSON" attrs;
+  toJsonFile = attrs: (pkgs.formats.json { }).generate "prettyJSON" attrs;
 
   # toTomlFile :: (attrs -> tomlFile)
-  toTomlFile = attrs: (pkgs.formats.toml {}).generate "prettyTOML" attrs;
+  toTomlFile = attrs: (pkgs.formats.toml { }).generate "prettyTOML" attrs;
 
-  sudoNotPass = cmd: let
-    basecmd = lib.head (builtins.split " " cmd);
-  in
-    pkgs.runCommand "sudoers-cmd" {} ''
+  sudoNotPass =
+    cmd:
+    let
+      basecmd = lib.head (builtins.split " " cmd);
+    in
+    pkgs.runCommand "sudoers-cmd" { } ''
       SHASUM=$(sha256sum "${basecmd}" | cut -d' ' -f1)
       cat <<EOF >"$out"
       %admin ALL=(root) NOPASSWD: sha256:$SHASUM ${cmd}

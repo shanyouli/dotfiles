@@ -9,10 +9,12 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.archive;
   cfg = cfp.common;
-in {
+in
+{
   options.modules.archive.common = {
     enable = mkEnableOption "Whether to use archive";
   };

@@ -7,10 +7,12 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules;
   cfg = cfp.alist;
-in {
+in
+{
   options.modules.alist = {
     enable = mkEnableOption "Whether to use alist";
     pkg = mkOpt' types.package pkgs.unstable.alist "alist package";
@@ -21,7 +23,7 @@ in {
     };
   };
   config = mkIf cfg.enable {
-    home.packages = [cfg.pkg];
+    home.packages = [ cfg.pkg ];
     modules.shell.zsh.rcInit = ''
       alist() {
           if [[ "$*" == *--data* ]]; then

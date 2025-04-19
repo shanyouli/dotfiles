@@ -6,19 +6,21 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.gui.media;
   cfg = cfp.video;
-  video_apps = ["mpv" "vlc"];
-in {
+  video_apps = [
+    "mpv"
+    "vlc"
+  ];
+in
+{
   options.modules.gui.media.video = {
     default = mkOption {
       type = types.str;
       default = "";
-      apply = str:
-        if builtins.elem str video_apps
-        then str
-        else "";
+      apply = str: if builtins.elem str video_apps then str else "";
       description = "Video tools";
     };
   };

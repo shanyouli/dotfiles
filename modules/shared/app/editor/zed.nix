@@ -7,15 +7,15 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.app.editor;
   cfg = cfp.zed;
-in {
+in
+{
   options.modules.app.editor.zed = {
     enable = mkEnableOption "Whether to use zed editor";
-    package = mkPackageOption pkgs "zed-editor" {};
+    package = mkPackageOption pkgs "zed-editor" { };
   };
-  config = mkIf cfg.enable {
-    home.packages = [cfg.package];
-  };
+  config = mkIf cfg.enable { home.packages = [ cfg.package ]; };
 }

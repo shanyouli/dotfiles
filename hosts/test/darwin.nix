@@ -4,10 +4,13 @@
   lib,
   my,
   ...
-}: {
+}:
+{
   # user.name = "lyeli";
   nix = {
-    gc = {user = config.user.name;};
+    gc = {
+      user = config.user.name;
+    };
     # Auto upgrade nix package and the daemon service.
     # services.nix-daemon.enable = true;
     # nix.package = pkgs.nix;
@@ -160,7 +163,11 @@
       bash.enable = true;
       python = {
         enable = true;
-        versions = ["3.12" "3.10" "3.11"];
+        versions = [
+          "3.12"
+          "3.10"
+          "3.11"
+        ];
         global = "3.11";
         venv = "rye";
       };
@@ -168,7 +175,10 @@
       nix.enable = true;
       java = {
         enable = true;
-        versions = ["oracle-21.0.1" "liberica-8u392+9"];
+        versions = [
+          "oracle-21.0.1"
+          "liberica-8u392+9"
+        ];
         global = "oracle-21.0.1";
       };
       lua.enable = true;

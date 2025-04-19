@@ -6,19 +6,22 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfp = config.modules.media;
   cfg = cfp.music;
-  music_list = ["netease" "mpd" "cmus"];
-in {
+  music_list = [
+    "netease"
+    "mpd"
+    "cmus"
+  ];
+in
+{
   options.modules.media.music = {
     default = mkOption {
       type = types.str;
       default = "";
-      apply = s:
-        if builtins.elem s music_list
-        then s
-        else "";
+      apply = s: if builtins.elem s music_list then s else "";
       description = "default music manager";
     };
     directory = mkOpt' types.path "${my.homedir}/Music" "Music Directory";

@@ -7,7 +7,8 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.macos.brew;
   mirrors = {
     bfsu = "https://mirrors.bfsu.edu.cn"; # 北外
@@ -15,8 +16,14 @@ with my; let
     sust = "https://mirrors.sustech.edu.cn"; # 南方科技大学
     nju = "https://mirror.nju.edu.cn"; # 浙江大学
   };
-  can_mirror_taps = ["cask" "core" "services" "command-not-found"]; # cask-fonts
-in {
+  can_mirror_taps = [
+    "cask"
+    "core"
+    "services"
+    "command-not-found"
+  ]; # cask-fonts
+in
+{
   options.modules.macos.brew = {
     enable = mkBoolOpt true;
     gui.enable = mkBoolOpt true; # homebrew GUI 显示工具
@@ -24,56 +31,53 @@ in {
     mirror = mkOption {
       type = types.str;
       default = "bfsu";
-      apply = str:
-        if builtins.hasAttr str mirrors
-        then str
-        else "bfsu";
+      apply = str: if builtins.hasAttr str mirrors then str else "bfsu";
     };
     description = "homebrew 使用 mirror";
   };
 
   config = mkIf cfg.enable (mkMerge [
-    (mkIf (! cfg.useMirror) {
-      homebrew.taps = map (x: "homebrew/" + x) can_mirror_taps;
-    })
-    (mkIf cfg.useMirror (let
-      domain = mirrors."${cfg.mirror}";
-      need_git =
-        if cfg.mirror == "sust"
-        then ""
-        else "git/";
-      fmtfunc = x: {
-        name = "homebrew/" + x;
-        clone_target = domain + "/" + need_git + "homebrew/homebrew-" + x + ".git";
-      };
-    in {
-      homebrew.taps = map fmtfunc can_mirror_taps;
+    (mkIf (!cfg.useMirror) { homebrew.taps = map (x: "homebrew/" + x) can_mirror_taps; })
+    (mkIf cfg.useMirror (
+      let
+        domain = mirrors."${cfg.mirror}";
+        need_git = if cfg.mirror == "sust" then "" else "git/";
+        fmtfunc = x: {
+          name = "homebrew/" + x;
+          clone_target = domain + "/" + need_git + "homebrew/homebrew-" + x + ".git";
+        };
+      in
+      {
+        homebrew.taps = map fmtfunc can_mirror_taps;
 
-      # 不使用 api 来获取安装信息
-      modules.shell.env = {
-        HOMEBREW_NO_INSTALL_FROM_API = "1";
-        # 不自动更新 brew 仓库
-        # modules.shell.env.HOMEBREW_NO_AUTO_UPDATE = "1"; # or homebrew.global.autoUpdate = 1
-        HOMEBREW_API_DOMAIN = "${domain}/homebrew-bottles/api";
-        HOMEBREW_BOTTLE_DOMAIN = "${domain}/homebrew-bottles";
-        HOMEBREW_PIP_INDEX_URL = "${domain}/pypi/web/simple";
-        HOMEBREW_BREW_GIT_REMOTE = "${domain}/${need_git}homebrew/brew.git";
-        HOMEBREW_CORE_GIT_REMOTE = "${domain}/${need_git}homebrew/homebrew-core.git";
-      };
-    }))
+        # 不使用 api 来获取安装信息
+        modules.shell.env = {
+          HOMEBREW_NO_INSTALL_FROM_API = "1";
+          # 不自动更新 brew 仓库
+          # modules.shell.env.HOMEBREW_NO_AUTO_UPDATE = "1"; # or homebrew.global.autoUpdate = 1
+          HOMEBREW_API_DOMAIN = "${domain}/homebrew-bottles/api";
+          HOMEBREW_BOTTLE_DOMAIN = "${domain}/homebrew-bottles";
+          HOMEBREW_PIP_INDEX_URL = "${domain}/pypi/web/simple";
+          HOMEBREW_BREW_GIT_REMOTE = "${domain}/${need_git}homebrew/brew.git";
+          HOMEBREW_CORE_GIT_REMOTE = "${domain}/${need_git}homebrew/homebrew-core.git";
+        };
+      }
+    ))
     {
       # see @https://github.com/malob/nixpkgs/raw/f4e414d9debe099ecce51fc5df863ce235170306/darwin/homebrew.nix#L16
       # see @https://docs.brew.sh/Shell-Completion#configuring-completions-in-fish
-      programs.fish.interactiveShellInit = let
-        homebrew-home = removeSuffix "/bin" config.homebrew.brewPrefix;
-      in ''
-        if test -d "${homebrew-home}/share/fish/completions"
-          set -p fish_complete_path ${homebrew-home}/share/fish/completions
-        end
-        if test -d "${homebrew-home}/share/fish/vendor_completions.d"
-          set -p fish_complete_path ${homebrew-home}/share/fish/vendor_completions.d
-        end
-      '';
+      programs.fish.interactiveShellInit =
+        let
+          homebrew-home = removeSuffix "/bin" config.homebrew.brewPrefix;
+        in
+        ''
+          if test -d "${homebrew-home}/share/fish/completions"
+            set -p fish_complete_path ${homebrew-home}/share/fish/completions
+          end
+          if test -d "${homebrew-home}/share/fish/vendor_completions.d"
+            set -p fish_complete_path ${homebrew-home}/share/fish/vendor_completions.d
+          end
+        '';
       homebrew = {
         enable = true; # 你需要手动安装homebrew
         onActivation = {
@@ -86,13 +90,15 @@ in {
           autoUpdate = false;
           # noLock = true;
         };
-        brewPrefix = let
-          inherit (pkgs.stdenvNoCC) isAarch64 isAarch32;
-        in
-          if isAarch64 || isAarch32
-          then "/opt/homebrew/bin"
-          else "/usr/local/bin";
-        taps = ["buo/cask-upgrade" "shanyouli/tap"];
+        brewPrefix =
+          let
+            inherit (pkgs.stdenvNoCC) isAarch64 isAarch32;
+          in
+          if isAarch64 || isAarch32 then "/opt/homebrew/bin" else "/usr/local/bin";
+        taps = [
+          "buo/cask-upgrade"
+          "shanyouli/tap"
+        ];
         casks =
           [
             "raycast" # 取代 spotlight
@@ -115,7 +121,7 @@ in {
             # "imageoptim" # 图片压缩
             # "licecap" # GIF kap
             # "imazing" # 手机备份管理
-            (mkIf (! config.modules.gui.media.flameshot.enable) "shottr") # 截图
+            (mkIf (!config.modules.gui.media.flameshot.enable) "shottr") # 截图
             "betterdisplay" # 其他替代工具
             "maczip" # 压缩解压GUI
             # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
@@ -183,12 +189,10 @@ in {
             # "commander-one" # 速度可以，大文件也稳定，需要付费
             # "whoozle-android-file-transfer" # 速度一般，稳定
           ]
-          ++ optionals config.modules.gopass.enable [
-            "ente-auth"
-          ]
-          ++ optionals (config.modules.gui.browser.chrome.enable && config.modules.gui.browser.chrome.useBrew) [
-            "google-chrome"
-          ]
+          ++ optionals config.modules.gopass.enable [ "ente-auth" ]
+          ++ optionals (
+            config.modules.gui.browser.chrome.enable && config.modules.gui.browser.chrome.useBrew
+          ) [ "google-chrome" ]
           ++ optionals (config.modules.git.enable && config.modules.git.enGui) [
             "github" # github客户端
           ]

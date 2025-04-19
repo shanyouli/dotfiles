@@ -6,9 +6,11 @@
 }:
 with builtins;
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.macos;
-in {
+in
+{
   options = with lib; {
     modules.macos = {
       enable = mkEnableOption ''
@@ -20,7 +22,8 @@ in {
     };
   };
 
-  config = with lib;
+  config =
+    with lib;
     mkIf cfg.enable {
       environment.variables = {
         LANG = "en_US.UTF-8";
@@ -42,7 +45,7 @@ in {
         '';
         desc = "Stopping the repon program when starting up after a system shutdown!";
       };
-      modules.shell.zsh.pluginFiles = ["macos"];
+      modules.shell.zsh.pluginFiles = [ "macos" ];
       system = {
         defaults = {
           # ".GlobalPreferences".com.apple.sound.beep.sound = "Funk";

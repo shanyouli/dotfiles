@@ -6,10 +6,12 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.macos.video;
   mpvcfg = config.modules.gui.media.video;
-in {
+in
+{
   options.modules.macos.video = {
     enable = mkBoolOpt (mpvcfg.default != "");
   };

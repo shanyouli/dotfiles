@@ -7,13 +7,19 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.shell;
-  shell_list = ["zsh" "bash" "nu" "fish"];
+  shell_list = [
+    "zsh"
+    "bash"
+    "nu"
+    "fish"
+  ];
   my-nix-script = pkgs.stdenv.mkDerivation rec {
     name = "nix-scripts";
     src = relativeToRoot "bin";
-    buildInputs = [];
+    buildInputs = [ ];
     installPhase = ''
       mkdir -p $out/bin
       find . -maxdepth 1 -perm -a+x -not -name '*.*' \
@@ -24,25 +30,27 @@ with my; let
       description = "my scripts bin";
       homepage = "https://github.com/shanyouli/system";
       license = licenses.mit;
-      maintainers = with maintainers; [shanyouli];
+      maintainers = with maintainers; [ shanyouli ];
       platforms = platforms.all;
     };
   };
-in {
+in
+{
   options.modules.shell = with types; {
     default = mkOption {
       description = "use default shell";
       type = types.str;
       default = "zsh";
-      apply = s:
-        if builtins.elem s shell_list
-        then s
-        else "zsh";
+      apply = s: if builtins.elem s shell_list then s else "zsh";
     };
-    aliases = mkOpt (attrsOf (either str path)) {};
+    aliases = mkOpt (attrsOf (either str path)) { };
     env = mkOption {
-      type = attrsOf (oneOf [str path (listOf (either str path))]);
-      default = {};
+      type = attrsOf (oneOf [
+        str
+        path
+        (listOf (either str path))
+      ]);
+      default = { };
       description = "TODO";
     };
   };
@@ -73,7 +81,7 @@ in {
       pkgs.unstable.python3.pkgs.sd
       nvd
     ];
-    env.PATH = [''''${XDG_BIN_HOME}''];
+    env.PATH = [ ''''${XDG_BIN_HOME}'' ];
 
     modules.shell = {
       zsh.enable = mkDefault (cfg.default == "zsh");

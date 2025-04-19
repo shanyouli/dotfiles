@@ -8,14 +8,14 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfm = config.modules;
   cfg = cfm.shell.vivid;
-in {
+in
+{
   options.modules.shell.vivid = {
     enable = mkEnableOption "Whether to use vivid to manage LS_COLORS";
   };
-  config = mkIf cfg.enable {
-    home.packages = [pkgs.vivid];
-  };
+  config = mkIf cfg.enable { home.packages = [ pkgs.vivid ]; };
 }

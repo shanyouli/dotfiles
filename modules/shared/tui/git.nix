@@ -6,9 +6,11 @@
   ...
 }:
 with lib;
-with my; let
+with my;
+let
   cfg = config.modules.git;
-in {
+in
+{
   options.modules.git = with types; {
     enable = mkBoolOpt false;
     enGui = mkBoolOpt config.modules.gui.enable;
@@ -33,9 +35,7 @@ in {
       };
       extraConfig = {
         credential.helper =
-          if pkgs.stdenvNoCC.isDarwin
-          then "osxkeychain"
-          else "cache --timeout=1000000000";
+          if pkgs.stdenvNoCC.isDarwin then "osxkeychain" else "cache --timeout=1000000000";
         commit.verbose = true;
         fetch.prune = true;
         http.sslVerify = true;
