@@ -17,7 +17,7 @@ let
 in
 {
   options.modules.macos.ui = {
-    ice.enable = mkBoolOpt true;
+    ice.enable = mkBoolOpt false;
   };
   config = {
     homebrew.casks = [
