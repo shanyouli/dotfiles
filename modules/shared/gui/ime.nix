@@ -73,6 +73,7 @@ in
                 __patch:
                 - wanxiang.schema:/全拼
                 - wanxiang.schema:/fuzhu_moqi
+              cn_en/user_dict: en_dicts/pinyin
           '';
           wanxiang-en = ''
             patch:

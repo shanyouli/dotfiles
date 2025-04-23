@@ -19,9 +19,7 @@ in
     # 输入法
     homebrew = {
       casks = [ "squirrel" ];
-      masApps.squirrel_designer = 1530616498;
     };
-    # modules.rime.enable = true;
     modules.rime = {
       enable = true;
       backup.enable = mkDefault true;

@@ -75,7 +75,11 @@ in
         '';
         desc = "Init Hammerspoon File";
       };
-      modules.macos.hammerspoon.luaExtensions = ps: with ps; [ fennel ];
+      modules.macos.hammerspoon.luaExtensions =
+        ps: with ps; [
+          fennel
+          jeejah
+        ];
     }
     (mkIf useDevLua { modules.dev.lua.extraPkgs = cfg.luaExtensions; })
   ]);
