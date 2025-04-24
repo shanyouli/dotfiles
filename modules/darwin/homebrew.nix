@@ -122,11 +122,11 @@ in
             # "licecap" # GIF kap
             # "imazing" # 手机备份管理
             (mkIf (!config.modules.gui.media.flameshot.enable) "shottr") # 截图
-            "betterdisplay" # 其他替代工具
+            # "betterdisplay" # 其他替代工具
+            # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
             "maczip" # 压缩解压GUI
             # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
             "findergo" # 快捷方式，在finder中打开终端
-            # "coconutbattery" # 电量查看
             "zotero" # 文献管理
 
             # "warp" # next terminal, 不太好用
@@ -141,7 +141,6 @@ in
 
             "tencent-lemon" # 文件清理 or ""clean-me""
             "pearcleaner" # app 卸载工具 or "appcleaner"
-            # "prettyclean" # 清理工具
 
             "charles" # "proxyman", 抓包
             "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
@@ -157,7 +156,6 @@ in
             # "sequel-ace" # mysql
             # "navicat-premium"
 
-            # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
             # "maccy" # clip 剪切薄，使用raycast取代
             # "visual-studio-code" # other editors nix 管理
             "command-x" # Cut files
@@ -210,7 +208,6 @@ in
             (mkIf (config.modules.proxy.default == "clash") "shanyouli/tap/gui-for-clash")
           ];
         brews = [
-          # "macos-trash" # trash-cli
           # "mysql"
           "mist-cli"
           "p7zip" # "Rpc3 依赖工具"
@@ -223,7 +220,6 @@ in
             "Amphetamine" = 937984704; # 咖啡因，防止系统休眠
             "text-scaner" = 1452523807; # 文本扫描
             "pipad-calc" = 1482575592; # 高颜值的计算器
-            # "localSend" = 1661733229; # 使用 nixpkgs 安装
             # "vidhub" = 1659622164; # 视频管理,需要网速足够好
             # "medis" = 1579200037; # redis 管理工具, 可免费使用，
             # "devhub" = 6476452351; # 试用小工具合集
