@@ -122,8 +122,8 @@ in
             # "licecap" # GIF kap
             # "imazing" # 手机备份管理
             (mkIf (!config.modules.gui.media.flameshot.enable) "shottr") # 截图
-            # "betterdisplay" # 其他替代工具
-            "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
+            "betterdisplay" # 其他替代工具
+            # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
             "maczip" # 压缩解压GUI
             # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
             "findergo" # 快捷方式，在finder中打开终端
@@ -158,7 +158,7 @@ in
 
             # "maccy" # clip 剪切薄，使用raycast取代
             # "visual-studio-code" # other editors nix 管理
-            "command-x" # Cut files
+            # "command-x" # Cut files, need upgrade
             "logseq" # 笔记工具
 
             "markedit" # markdown 编辑器

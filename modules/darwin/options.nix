@@ -73,6 +73,9 @@ in
   options.macos = with types; {
     userScript = mkOpt attrs { };
     systemScript = mkOpt attrs { };
+    relaunchApp.enable = mkEnableOption ''
+      whether to relaunch app at login
+    '';
   };
   config = mkMerge [
     {

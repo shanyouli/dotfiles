@@ -218,7 +218,7 @@
       safari.enable = true;
       stopAutoReopen = true;
       # music.lx.enable = true;
-      music.apprhyme.enable = true;
+      # music.apprhyme.enable = true;
       # music.spotube.enable = true;
 
       games.enable = true;

@@ -22,7 +22,7 @@ in
   };
   config = {
     homebrew.casks = [
-      "onyx" # 系统配置修改 GUI 工具
+      # "onyx" # 系统配置修改 GUI 工具
       cfgPkg
       "launchpadder" # 排序 launchpad
     ];
