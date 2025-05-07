@@ -18,16 +18,17 @@ in
     fonts = mkOpt' (types.listOf types.package) [ ] "font install";
   };
   config = mkIf cfg.enable {
-    modules.gui.fonts = with pkgs; [
-      fantasque-sans-mono
-      lxgw-wenkai
-      unifont
-      pkgs.unstable.sarasa-term
-      (nerdfonts.override {
+    modules.gui.fonts = [
+      pkgs.fantasque-sans-mono
+      pkgs.lxgw-wenkai
+      pkgs.unifont
+      # pkgs.unstable.sarasa-term
+      pkgs.unstable.maple-mono.NF
+      pkgs.unstable.maple-mono.NF-CN
+      (pkgs.nerdfonts.override {
         fonts = [
           "FantasqueSansMono"
           "NerdFontsSymbolsOnly"
-          # "CascadiaCode" # cascadiaCode 自带
         ];
       })
       pkgs.unstable.pragmasevka
