@@ -123,6 +123,7 @@ in
             # "imazing" # 手机备份管理
             (mkIf (!config.modules.gui.media.flameshot.enable) "shottr") # 截图
             "betterdisplay" # 其他替代工具
+            "shanyouli/tap/stillcolor"
             # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
             "maczip" # 压缩解压GUI
             # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
@@ -167,7 +168,7 @@ in
             # "doll" # 在 menubar 上显示 消息提示
             # "zed" # 还是没有 vscode 好用
             # "qutebrowser" # 浏览器
-            "zen-browser"
+            "zen"
 
             "shanyouli/tap/upic" # or "picgo"
 

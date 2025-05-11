@@ -19,17 +19,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    macos.userScript.initNginx = {
-      inherit (cfg) enable;
-      text = cfb.uScript;
-      desc = "init nginx user settings";
-    };
-    macos.systemScript.initNginx = {
-      inherit (cfg) enable;
-      text = cfb.sScript;
-      desc = "init nginx System Privilege Configuration";
-    };
-
     launchd.user.agents.nginx = {
       serviceConfig = {
         ProgramArguments = [

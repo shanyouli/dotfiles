@@ -16,9 +16,6 @@ in
       enable = mkEnableOption ''
         Whether to enable macos module
       '';
-      stopAutoReopen = mkEnableOption ''
-        Stopping the repon program when starting up after a system shutdown!
-      '';
     };
   };
 
@@ -28,22 +25,6 @@ in
       environment.variables = {
         LANG = "en_US.UTF-8";
         LC_TIME = "en_US.UTF-8";
-      };
-      macos.systemScript.StopAutoReopen = {
-        enable = cfg.stopAutoReopen;
-        text = ''
-          mac_UUID=$(/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice | awk -F'"' '/IOPlatformUUID/{print $4}')
-          mac_loginFile=${my.homedir}/Library/Preferences/ByHost/com.apple.loginwindow.''${mac_UUID}.plist
-          if [[ -f $mac_loginFile ]]; then
-            if $(grep "TALAppsToRelaunchAtLogin" $mac_loginFile > /dev/null); then
-              /usr/bin/chflags nouchg $mac_loginFile
-              /usr/libexec/PlistBuddy -c 'Delete :TALAppsToRelaunchAtLogin' $mac_loginFile
-              /usr/bin/chflags uimmutable $mac_loginFile
-            fi
-          fi
-          unset mac_UUID mac_loginFile
-        '';
-        desc = "Stopping the repon program when starting up after a system shutdown!";
       };
       modules.shell.zsh.pluginFiles = [ "macos" ];
       system = {
