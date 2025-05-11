@@ -68,12 +68,11 @@ in
             ${emacsClient}
           }
         '';
-      macos.userScript.setHMInitFile = {
+      my.user.init.InitHammerspoon = {
+        desc = "change hammerspoon config Dir";
         text = ''
-          defaults write org.hammerspoon.Hammerspoon MJConfigFile \
-            "${config.home.configDir}/hammerspoon/init.lua"
+          defaults write org.hammerspoon.Hammerspoon MJConfigFile "${config.home.configDir}/hammerspoon/init.lua"
         '';
-        desc = "Init Hammerspoon File";
       };
       modules.macos.hammerspoon.luaExtensions =
         ps: with ps; [

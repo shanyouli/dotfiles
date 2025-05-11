@@ -74,7 +74,7 @@ let
             log custom -a (ansi green_dimmed) "}}}\n" "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
           } else {
             let current_count = $env.__counter | fill --alignment r --width 2 -c "0"
-            let msg_str = $msg | str join " " | $"Tips ($current_count): ($in) {{{"
+            let msg_str = $msg | str join " " | $"Tips ($current_count): ($in) >>>"
             log custom -a (ansi green_bold) $msg_str "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
             $env.__counter += 1
           }
@@ -159,7 +159,7 @@ in
   config = {
     my = {
       user.script = makeNuScript "user" config.my.user;
-      system.script = makeNuScript "system" config.my.user;
+      system.script = makeNuScript "system" config.my.system;
     };
     # documentation.man.enable = mkDefault true;
     nix = {
@@ -205,7 +205,7 @@ in
           ];
           # Using hard links
           # a BUG: about darwin see@https://github.com/NixOS/nix/issues/7273
-          auto-optimise-store = mkDefault (if pkgs.stdenvNoCC.isDarwin then false else true);
+          auto-optimise-store = mkDefault (!pkgs.stdenvNoCC.isDarwin);
           trusted-public-keys = [
             "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
             "shanyouli.cachix.org-1:19ndCE7zQfn5vIVLbBZk6XG0D7Ago7oRNNgIRV/Oabw="

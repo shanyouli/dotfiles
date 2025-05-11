@@ -196,7 +196,6 @@
       arc.enable = true;
       karabiner.enable = true;
       safari.enable = true;
-      stopAutoReopen = true;
       music = {
         lx.enable = true;
         apprhyme.enable = true;

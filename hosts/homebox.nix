@@ -216,7 +216,7 @@
       # arc.enable = true;
       karabiner.enable = true;
       safari.enable = true;
-      stopAutoReopen = true;
+      # relaunchApp.enable = true;
       # music.lx.enable = true;
       # music.apprhyme.enable = true;
       # music.spotube.enable = true;

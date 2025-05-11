@@ -64,15 +64,10 @@ let
     ${filterEnabledTexts cfg.userScript}
     ${config.my.user.script}
   '';
-  systemScripts = pkgs.writeScript "postSystemScript" ''
-    ${prevtext}
-    ${filterEnabledTexts cfg.systemScript}
-  '';
 in
 {
   options.macos = with types; {
     userScript = mkOpt attrs { };
-    systemScript = mkOpt attrs { };
     relaunchApp.enable = mkEnableOption ''
       whether to relaunch app at login
     '';
@@ -119,7 +114,7 @@ in
 
       system.activationScripts.postActivation.text = ''
         echo "System script executed after system activation"
-        ${systemScripts}
+        ${config.my.system.script}
         echo "User script excuted after system activation"
         sudo -u ${config.user.name} --set-home ${userScripts}
         # 使用 nvd 取代
@@ -129,29 +124,6 @@ in
         # fi
       '';
       macos = {
-        systemScript = {
-          removeNixApps.text = ''
-            echo-info "Remove /Applications/Nix\ Apps ..."
-            if [[ -e '/Applications/Nix Apps' ]]; then
-              $DRY_RUN_CMD rm -rf '/Applications/Nix Apps'
-            fi
-          '';
-          defaultShell.text = ''
-            echo-info "Setting Default Shell"
-            chsh -s /run/current-system/sw/bin/${config.modules.shell.default} ${config.user.name}
-          '';
-          initXDG = {
-            enable = true;
-            text = ''
-              if ! [[ -d ${config.modules.xdg.value.XDG_RUNTIME_DIR} ]] ; then
-                mkdir -p ${config.modules.xdg.value.XDG_RUNTIME_DIR}
-                chown -R "${config.user.name}" ${config.modules.xdg.value.XDG_RUNTIME_DIR}
-                chmod +755 ${config.modules.xdg.value.XDG_RUNTIME_DIR}
-              fi
-            '';
-          };
-        };
-
         userScript = {
           clear_zsh.text = ''
             echo-info "Clear zsh ..."
@@ -240,6 +212,46 @@ in
             desc = "Init dev language manager ...";
             inherit (config.modules.dev.manager) text;
           };
+        };
+      };
+      my = {
+        system.init = {
+          removeNixApps = ''
+            if ("/Applications/Nix Apps" | path exists) {
+              ^rm -rf "/Applications/Nix Apps"
+            }
+          '';
+          defaultShell = ''
+            chsh -s /run/current-system/sw/bin/${config.modules.shell.default} ${config.user.name}
+          '';
+        };
+        user = {
+          init = {
+            StopAutoReopen = {
+              enable = !config.macos.relaunchApp.enable;
+              text = ''
+                let mac_loginFile = [
+                  "${my.homedir}",
+                  "Library",
+                  "Preferences"
+                  "ByHost",
+                  $"com.apple.loginwindow.(/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice | awk -F'\"' '/IOPlatformUUID/{print $4}').plist"
+                ] | path join
+                if (open $mac_loginFile |decode utf-8 | into string | str contains "TALAppsToRelaunchAtLogin") {
+                   /usr/bin/chflags nouchg $mac_loginFile
+                   /usr/libexec/PlistBuddy -c 'Delete :TALAppsToRelaunchAtLogin' $mac_loginFile
+                   /usr/bin/chflags uimmutable $mac_loginFile
+                }
+              '';
+              desc = "Stop Auto Reopen app at login.";
+            };
+          };
+          extra = ''
+            ${optionalString config.macos.relaunchApp.enable ''
+              log warning $"If you previously set the config.macos.relaunchApp.enable option, execute the following code"
+              log warning $"    (ansi u)'/usr/bin/chflags nouchg ~/Library/Preferences/ByHost/com.apple.loginwindow.*.plist'(ansi n)"
+            ''}
+          '';
         };
       };
     }
