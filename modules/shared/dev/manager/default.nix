@@ -50,5 +50,6 @@ in
         inherit (config.modules.dev.manager.mise) text;
       };
     })
+    { my.user.init.init-dev = cfg.text; }
   ];
 }

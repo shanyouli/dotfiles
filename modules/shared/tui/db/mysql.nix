@@ -67,13 +67,17 @@ in
       cfg.package
       mysqldService
     ];
-    modules = {
-      db.mysql.script = mysqlInit;
-      shell.zsh.rcInit = ''
-        mysql_init() {
-          ${mysqlInit}
-        }
-      '';
-    };
+    my.user.init.init-mysql = ''
+      $env.MYSQL_UNIX_PORT = "${mysqlSocket}"
+      $env.MYSQL_HOME = "${cfg.service.workdir}"
+      if (not ("${cfg.service.workdir}" | path exists)) {
+        ${cfg.package}/bin/mysql_install_db --auth-root-authentication-method=normal --datadir=${datadir} --basedir=${cfg.package} --pid-file=${mysqlPid}
+      }
+    '';
+    modules.shell.zsh.rcInit = ''
+      mysql_init() {
+        ${mysqlInit}
+      }
+    '';
   };
 }

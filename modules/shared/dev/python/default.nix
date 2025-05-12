@@ -170,7 +170,7 @@ in
                 asdfbin = "${config.modules.dev.manager.asdf.package}/bin/asdf";
               in
               ''
-                echo-info "python global version ${cfg.global}"
+                log info "python global version ${cfg.global}"
                 ${asdfbin} global python ${cfg.global}
               ''
             )}
@@ -179,7 +179,7 @@ in
                 misebin = "${config.modules.dev.manager.mise.package}/bin/mise";
               in
               ''
-                echo-info "python global version ${cfg.global}"
+                log info "python global version ${cfg.global}"
                 ${misebin} global -q python@${cfg.global}
               ''
             )}

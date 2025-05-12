@@ -33,11 +33,11 @@ in
           let
             cfb = lib.getExe cfg.package;
             global_python_msg = optionalString (cfp.global != "") ''
-              echo-info "Setting python global version ${cfp.global}"
+              log info "Setting python global version ${cfp.global}"
               ${cfb} python install --default --preview "${cfp.global}"
             '';
             uv_install_fn = v: ''
-              echo-info "uv python install ${v}"
+              log info "uv python install ${v}"
               ${cfb} python install "${v}"
             '';
             version_msg =

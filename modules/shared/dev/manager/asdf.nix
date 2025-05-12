@@ -28,7 +28,7 @@ in
       ]);
       default = { };
     };
-    package = mkPackageOption pkgs "asdf" { };
+    package = mkPackageOption pkgs "asdf-vm" { };
 
     text = mkOpt' lines "" "init asdf script";
     prevInit = mkOpt' lines "" "prev asdf env";
@@ -106,82 +106,54 @@ in
         plugins.direnv = cfm.shell.direnv.enable;
         text =
           let
-            asdf_plugin_fn = v: ''
-              if ! echo $asdf_plugins | grep -w ${v} >/dev/null 2>&1 ; then
-                echo-info "asdf: install plugin ${v} ..."
+            asdf_install_plugin_fn = v: ''
+              if ("${v}" in $asdf_plugins) {
+                log info "asdf: ${v} plugin alread exists."
+              } else {
+                log debug "install plugin ${v}..."
                 ${cfbin} plugin add ${v}
-              fi
+              }
             '';
-            asdfInPlugins =
-              plugin: versions:
+            asdf_install_plugin_ver_fn =
+              p: vers:
               let
-                vers = if builtins.isString versions then [ versions ] else versions;
+                base_fn = v: ''
+                  if ("${v}" in $asdf_${p}) {
+                    log info "${p}-${v} alread installed."
+                  } else {
+                    log debug "Use ${p} ${v} ..."
+                    ${cfbin} install ${p} ${v}
+                  }
+                '';
               in
               ''
-                echo-info "Use asdf initialization development ${plugin}"
-                function asdf_${plugin}_init() {
-                  local _all_ver=""
-                  local is_install_p=0
-                  local _installed_version=$(${cfbin} list ${plugin})
-                  ${concatStrings (
-                    map (v: ''
-                      is_install_p=0
-                      if echo "$_installed_version" | tr ' ' '\n' | grep '${v}\|*${v}$' >/dev/null 2>&1; then
-                        is_install_p=1
-                        echo-debug "${v} version has been installed."
-                      fi
-                      if [[ $is_install_p == 0 ]]; then
-                        if [[ $_all_ver == "" ]]; then
-                          _all_ver=$(${cfbin} list all ${plugin})
-                        fi
-                        if echo "$_all_ver" | tr ' ' '\n' | grep '^${v}$' >/dev/null 2>&1 ; then
-                          echo-error "${plugin} version ${v} not found!"
-                        else
-                          echo-info "Install ${plugin} ${v} ..."
-                          ${cfbin} install ${plugin} ${v}
-                        fi
-                      fi
-                    '') vers
-                  )}
-                }
-                asdf_${plugin}_init
-              '';
-            text = concatStringsSep "\n" (
-              mapAttrsToList
-                (
-                  n: v:
-                  (
-                    let
-                      ver = if v then "" else asdfInPlugins n v;
-                    in
-                    ''
-                      ${asdf_plugin_fn n}
-                      ${ver}
-
-                    ''
-                  )
-                )
-                (
-                  lib.filterAttrs (
-                    _k: v:
-                    !(builtins.elem v [
-                      null
-                      false
-                    ])
-                  ) cfg.plugins
-                )
+                let asdf_${p} = ${cfbin} list ${p} | lines
+              ''
+              + (if builtins.isString vers then base_fn vers else concatMapStrings base_fn vers);
+            final_need_plugins = lib.filterAttrs (
+              _: v:
+              !(builtins.elem v [
+                null
+                false
+              ])
+            ) cfg.plugins;
+            contents_text = concatStringsSep "\n" (
+              mapAttrsToList (n: v: ''
+                log debug "Using asdf to manage versions of ${n}"
+                ${asdf_install_plugin_fn n}
+                ${lib.optionalString ((builtins.typeOf v) != "bool" || (!v)) ''${asdf_install_plugin_ver_fn n v}''}
+              '') final_need_plugins
             );
           in
           ''
             ${cfg.prevInit}
-            export ASDF_CONFIG_FILE=${asdfConfigFile}
-            export ASDF_DATA_DIR=${asdfDataDir}
+            $env.ASDF_CONFIG_FILE = "${asdfConfigFile}"
+            $env.ASDF_DATA_DIR = "${asdfDataDir}"
 
-            source ${cfg.package}/etc/profile.d/asdf-prepare.sh
-
-            asdf_plugins=$(${cfbin} plugin list)
-
-            ${text}
+            let asdf_plugins = ${cfbin} plugin list
+            log info  $"($asdf_plugins)"
+            ${contents_text}
+            log info  $"($asdf_plugins)"
             ${cfg.extInit}
           '';
       };

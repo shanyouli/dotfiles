@@ -68,7 +68,7 @@ in
           use_fn = if config.modules.dev.manager.default == "mise" then mise_fn else asdf_fn;
           base_fn = v: ''
             if ! ${cfb} toolchain list | grep ${use_fn v} >/dev/null 2>&1; then
-              echo-info "rye Register python version ${v}"
+              log info "rye Register python version ${v}"
               ${cfb} toolchain register ${use_fn v}/bin/python
             fi
           '';
@@ -90,7 +90,7 @@ in
               concatStrings (map base_fn cfp.versions);
         in
         ''
-          echo-info "Rye: Registering an existing python to rye management."
+          log info "Rye: Registering an existing python to rye management."
           export RYE_HOME="${config.home.dataDir}/rye"
           ${ver_fn}
         '';
@@ -115,7 +115,7 @@ in
             checkFirstCharIsNumber =
               str: if builtins.stringLength str > 0 then isNumeric (builtins.substring 0 1 str) else false;
             global_python_msg = lib.optionalString (cfp.global != "") ''
-              echo-info "Setting python global version"
+              log info "Setting python global version"
               ${
                 if (checkFirstCharIsNumber cfp.global) then
                   ''
@@ -129,7 +129,7 @@ in
               ${cfb} config --set-bool behavior.global-python=true
             '';
             rye_fn = v: ''
-              echo-info "rye install python ${v}"
+              log info "rye install python ${v}"
               ${cfb} fetch ${v}
             '';
             version_msg =
