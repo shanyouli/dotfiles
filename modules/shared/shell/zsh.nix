@@ -155,12 +155,22 @@ in
         '';
       };
     };
-    my.user.extra = optionalString (!config.home.useos) (
-      mkOrder 5000 ''
-        log debug $"If you use home-manager manage config."
-        log debug $"Please add (ansi b)'export ZDOTDIR=''${XDG_CONFIG_HOME:-$HOME/.config}/zsh'(ansi n) to ~/.zshenv."
-      ''
-    );
+    my.user = {
+      init.clear-zsh = ''
+        let zdotdir = "${config.modules.xdg.value.XDG_CONFIG_HOME}" | split row "/" | each  { |x| if ($x == "$HOME") { $env.HOME }  else { $x } }  | path join "zsh"
+        try {
+          ls ($zdotdir | path join "**/*.zwc" | into glob) | get name | rm ...$in
+        } catch {
+          log debug "No zwc files found that need to be cleaned up"
+        }
+      '';
+      extra = optionalString (!config.home.useos) (
+        mkOrder 5000 ''
+          log debug $"If you use home-manager manage config."
+          log debug $"Please add (ansi b)'export ZDOTDIR=''${XDG_CONFIG_HOME:-$HOME/.config}/zsh'(ansi n) to ~/.zshenv."
+        ''
+      );
+    };
     home = {
       packages = [ cfg.package ];
       configFile =

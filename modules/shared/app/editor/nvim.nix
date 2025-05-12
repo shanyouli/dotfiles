@@ -81,7 +81,6 @@ in
     modules.app.editor.nvim = {
       enable = mkEnableOption "Whether to enable nvim module";
       enGui = mkBoolOpt config.modules.gui.enable;
-      script = mkStrOpt "";
       plugins = mkOption {
         type = pluginsOptionType;
         default = [ ];

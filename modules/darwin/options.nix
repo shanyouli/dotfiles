@@ -125,88 +125,6 @@ in
       '';
       macos = {
         userScript = {
-          clear_zsh.text = ''
-            echo-info "Clear zsh ..."
-            if command -v fd >/dev/null 2>&1; then
-              if [[ -d  ${config.env.ZDOTDIR} ]]; then
-                fd . ${config.env.ZDOTDIR} -e zwc -t f -X command rm  -vf {}
-              fi
-              if [[ -d ${config.env.ZSH_CACHE}/cache ]]; then
-                fd . ${config.env.ZSH_CACHE} -e zwc -t f -X command rm -vf {}
-              fi
-            else
-              if [[ -d  ${config.env.ZDOTDIR} ]]; then
-                find ${config.env.ZDOTDIR} -name "*.zwc" -type f -exec command rm -vf {} \;
-              fi
-              if [[ -d ${config.env.ZSH_CACHE}/cache ]]; then
-                find ${config.env.ZSH_CACHE} -name "*.zwc" -type f -exec command rm -vf {} \;
-              fi
-            fi
-            if [[ -f ''${XDG_CACHE_HOME:-~/.cache}/themes/default/zshrc.zwc ]] ; then
-              $DRY_RUN_CMD rm -vf ''${XDG_CACHE_HOME:-~/.cache}/themes/default/zshrc.zwc
-            fi
-            # 禁止在 USB 卷创建元数据文件, .DS_Store
-            defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
-            # 禁止在网络卷创建元数据文件
-            defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
-            # https://github.com/nikitabobko/AeroSpace?tab=readme-ov-file
-            #  you can move windows by holding ctrl+cmd and dragging any part of the window (not necessarily the window title)
-            defaults write -g NSWindowShouldDragOnGesture YES
-          '';
-          initRust = {
-            inherit (config.modules.dev.rust) enable;
-            desc = "init rust";
-            text = config.modules.dev.rust.initScript;
-          };
-          initNvim = {
-            inherit (config.modules.app.editor.nvim) enable;
-            desc = "Init nvim";
-            text = config.modules.app.editor.nvim.script;
-          };
-          initQbWebUI = {
-            enable = config.modules.app.qbittorrent.webScript != "";
-            text = config.modules.app.qbittorrent.webScript;
-          };
-          initMysql = {
-            inherit (config.modules.db.mysql) enable;
-            text = config.modules.db.mysql.script;
-            desc = "init mysql ...";
-          };
-          linkChromeApp =
-            let
-              appEn = config.modules.macos.app.way == "copy";
-              mchrome = config.modules.gui.browser.chrome;
-              enable = mchrome.enable && mchrome.dev.enable && appEn && (!mchrome.useBrew);
-            in
-            {
-              inherit enable;
-              desc = "Link Google Chrome.app";
-              level = 100;
-              text = ''
-                if [[ -e "${my.homedir}/Applications/Myapps/Chromium.app" ]]; then
-                  _google_chrome_app="/Applications/Google Chrome.app"
-                  if [[ -e $_google_chrome_app ]]; then
-                    $DRI_RUN_CMD rm -rf "$_google_chrome_app"
-                  fi
-                  $DRY_RUN_CMD ln -sf "${my.homedir}/Applications/Myapps/Chromium.app" "$_google_chrome_app"
-                  unset _google_chrome_app
-                elif [[ -e "${my.homedir}/Applications/Myapps/Google Chrome.app" ]]; then
-                  $DRY_RUN_CMD ln -sf "${my.homedir}/Applications/Myapps/Google Chrome.app" "/Applications/"
-                fi
-              '';
-            };
-          linkFirefox =
-            let
-              cfirefox = config.modules.gui.browser.firefox;
-            in
-            {
-              enable = cfirefox.enable && cfirefox.dev.enable;
-              level = 2000;
-              desc = "Link Firefox.app";
-              text = ''
-                $DRY_RUN_CMD ln -sf "${cfirefox.finalPackage}/Applications/Firefox.app" /Applications/
-              '';
-            };
           initDevInit = {
             enable = config.modules.dev.lang != [ ];
             desc = "Init dev language manager ...";
@@ -227,6 +145,15 @@ in
         };
         user = {
           init = {
+            defaultUSB = ''
+              # 禁止在 USB 卷创建元数据文件, .DS_Store
+              defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+              # 禁止在网络卷创建元数据文件
+              defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+              # https://github.com/nikitabobko/AeroSpace?tab=readme-ov-file
+              #  you can move windows by holding ctrl+cmd and dragging any part of the window (not necessarily the window title)
+              defaults write -g NSWindowShouldDragOnGesture YES
+            '';
             StopAutoReopen = {
               enable = !config.macos.relaunchApp.enable;
               text = ''
