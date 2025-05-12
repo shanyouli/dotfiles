@@ -125,11 +125,11 @@ in
       '';
       macos = {
         userScript = {
-          initDevInit = {
-            enable = config.modules.dev.lang != [ ];
-            desc = "Init dev language manager ...";
-            inherit (config.modules.dev.manager) text;
-          };
+          # initDevInit = {
+          #   enable = config.modules.dev.lang != [ ];
+          #   desc = "Init dev language manager ...";
+          #   inherit (config.modules.dev.manager) text;
+          # };
         };
       };
       my = {

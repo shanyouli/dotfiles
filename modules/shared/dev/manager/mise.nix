@@ -60,7 +60,7 @@ in
           ) cfg.plugins;
           mise_in_plugin_fn = v: ''${cfbin} p add ${v} -y'';
           mise_ver_base_fn = p: v: ''
-            echo-info "Use ${p} ${v} ..."
+            log debug "Use ${p} ${v} ..."
             ${cfbin} install ${p}@${v}
           '';
           mise_plugin_ver_fn =
@@ -71,7 +71,7 @@ in
               concatMapStrings (v: mise_ver_base_fn p v) vers;
           text = concatStringsSep "\n" (
             mapAttrsToList (n: v: ''
-              echo-info "Using mise to manage versions of ${n}"
+              log debug "Using mise to manage versions of ${n}"
               ${lib.optionalString (!elem n mise_core_plugins) ''${mise_in_plugin_fn n}''}
               ${lib.optionalString ((builtins.typeOf v) != "bool" || (!v)) ''${mise_plugin_ver_fn n v}''}
             '') finalNeedPlugins
@@ -79,7 +79,7 @@ in
         in
         ''
           ${cfg.prevInit}
-          export MISE_CACHE_DIR="${config.home.cacheDir}/mise"
+          $env.MISE_CACHE_DIR = "${config.home.cacheDir}/mise"
           ${text}
           ${cfg.extInit}
         '';

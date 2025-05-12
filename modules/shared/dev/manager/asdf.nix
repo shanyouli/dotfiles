@@ -108,7 +108,7 @@ in
           let
             asdf_plugin_fn = v: ''
               if ! echo $asdf_plugins | grep -w ${v} >/dev/null 2>&1 ; then
-                echo-info "asdf: install plugin ${v} ..."
+                log info "asdf: install plugin ${v} ..."
                 ${cfbin} plugin add ${v}
               fi
             '';
@@ -118,7 +118,7 @@ in
                 vers = if builtins.isString versions then [ versions ] else versions;
               in
               ''
-                echo-info "Use asdf initialization development ${plugin}"
+                log info "Use asdf initialization development ${plugin}"
                 function asdf_${plugin}_init() {
                   local _all_ver=""
                   local is_install_p=0
@@ -128,16 +128,16 @@ in
                       is_install_p=0
                       if echo "$_installed_version" | tr ' ' '\n' | grep '${v}\|*${v}$' >/dev/null 2>&1; then
                         is_install_p=1
-                        echo-debug "${v} version has been installed."
+                        log debug "${v} version has been installed."
                       fi
                       if [[ $is_install_p == 0 ]]; then
                         if [[ $_all_ver == "" ]]; then
                           _all_ver=$(${cfbin} list all ${plugin})
                         fi
                         if echo "$_all_ver" | tr ' ' '\n' | grep '^${v}$' >/dev/null 2>&1 ; then
-                          echo-error "${plugin} version ${v} not found!"
+                          log error "${plugin} version ${v} not found!"
                         else
-                          echo-info "Install ${plugin} ${v} ..."
+                          log info "Install ${plugin} ${v} ..."
                           ${cfbin} install ${plugin} ${v}
                         fi
                       fi

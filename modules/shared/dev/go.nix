@@ -72,7 +72,7 @@ in
                 asdfbin = "${config.modules.dev.manager.asdf.package}/bin/asdf";
               in
               ''
-                echo-info "go global version ${cfg.global}"
+                log info "go global version ${cfg.global}"
                 ${asdfbin} global go ${cfg.global}
               ''
             )}
@@ -81,7 +81,7 @@ in
                 misebin = "${config.modules.dev.manager.mise.package}/bin/mise";
               in
               ''
-                echo-info "go version version ${cfg.global}"
+                log info "go version version ${cfg.global}"
                 ${misebin} global -q go@${cfg.global}
               ''
             )}

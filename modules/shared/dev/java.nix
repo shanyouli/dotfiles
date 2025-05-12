@@ -95,7 +95,7 @@ in
                 asdfbin = "${config.modules.dev.manager.asdf.package}/bin/asdf";
               in
               ''
-                echo-info "java global version ${cfg.global}"
+                log info "java global version ${cfg.global}"
                 ${asdfbin} global java ${cfg.global}
               ''
             )}
@@ -104,7 +104,7 @@ in
                 misebin = "${config.modules.dev.manager.mise.package}/bin/mise";
               in
               ''
-                echo-info "java global version ${cfg.global}"
+                log info "java global version ${cfg.global}"
                 ${misebin} global -q java@${cfg.global}
               ''
             )}
