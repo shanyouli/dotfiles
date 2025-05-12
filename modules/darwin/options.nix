@@ -8,66 +8,8 @@
 }:
 with lib;
 with my;
-let
-  cfg = config.macos;
-  filterEnabledTexts =
-    dict:
-    let
-      attrList = lib.attrValues dict;
-      filterLambda = x: if builtins.hasAttr "enable" x then x.enable else true;
-      sortLambda =
-        x: y:
-        let
-          levelx = if builtins.hasAttr "level" x then x.level else 50;
-          levely = if builtins.hasAttr "level" y then y.level else 50;
-        in
-        levelx < levely;
-      sortFn = la: pkgs.lib.sort sortLambda la;
-    in
-    lib.concatMapStrings (enableText: ''
-      ${lib.optionalString (hasAttr "desc" enableText) "echo-info '${enableText.desc}' "}
-      ${enableText.text}
-    '') (sortFn (lib.filter filterLambda attrList));
-  prevtext = ''
-    #!${pkgs.stdenv.shell}
-
-    # HACK: Unable to use nix installed git in scripts
-    export PATH=/usr/bin:$PATH
-    export TERM="xterm-256color"
-
-    # 一些echo 函数
-    if command -v tput >/dev/null 2>&1; then
-        ncolors=$(tput colors)
-    fi
-    if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
-        RED="$(tput setaf 1)"
-        GREEN="$(tput setaf 2)"
-        YELLOW="$(tput setaf 3)"
-        BLUE="$(tput setaf 4)"
-        BOLD="$(tput bold)"
-        NORMAL="$(tput sgr0)"
-    else
-        RED="\e[31m"
-        GREEN="\e[32m"
-        YELLOW="\e[33m"
-        BLUE="\e[34m"
-        BOLD="\e[1m"
-        NORMAL="\e[0m"
-    fi
-    echo-debug() { printf "''${BLUE}''${BOLD}$*''${NORMAL}\n"; }
-    echo-info() { printf "''${GREEN}''${BOLD}$*''${NORMAL}\n"; }
-    echo-warn() { printf "''${YELLOW}''${BOLD}$*''${NORMAL}\n"; }
-    echo-error() { printf "''${RED}''${BOLD}$*''${NORMAL}\n"; }
-  '';
-  userScripts = pkgs.writeScript "postUserScript" ''
-    ${prevtext}
-    ${filterEnabledTexts cfg.userScript}
-    ${config.my.user.script}
-  '';
-in
 {
   options.macos = with types; {
-    userScript = mkOpt attrs { };
     relaunchApp.enable = mkEnableOption ''
       whether to relaunch app at login
     '';
@@ -116,22 +58,13 @@ in
         echo "System script executed after system activation"
         ${config.my.system.script}
         echo "User script excuted after system activation"
-        sudo -u ${config.user.name} --set-home ${userScripts}
+        sudo -u ${config.user.name} --set-home ${config.my.user.script}
         # 使用 nvd 取代
         # if [[ -e /run/current-system ]]; then
         #   echo "Update software version changes..."
         #   nix store diff-closures /run/current-system $systemConfig
         # fi
       '';
-      macos = {
-        userScript = {
-          # initDevInit = {
-          #   enable = config.modules.dev.lang != [ ];
-          #   desc = "Init dev language manager ...";
-          #   inherit (config.modules.dev.manager) text;
-          # };
-        };
-      };
       my = {
         system.init = {
           removeNixApps = ''
