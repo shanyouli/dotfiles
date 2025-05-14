@@ -13,7 +13,7 @@
     };
     # Auto upgrade nix package and the daemon service.
     # services.nix-daemon.enable = true;
-    package = pkgs.nixVersions.latest;
+    package = pkgs.unstable.nixVersions.stable;
     # maxJobs = 4;
     settings.cores = 4;
   };

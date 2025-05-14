@@ -130,8 +130,17 @@ in
       modules.nginx.config = ''
         location /surfingkeys.js {
            charset utf-8;
-           alias ${my.dotfiles.config}/firefox/surfingkeys.js;
+           alias ./www/surfingkeys.js;
         }
+      '';
+      my.user.init.init-surfingkeys = ''
+        let nginx_work_dir = "${config.modules.nginx.workDir}" | path join "www"
+        let sufingkeys_js = "${my.dotfiles.config}" | path join "firefox/surfingkeys.js"
+        mkdir $nginx_work_dir
+        if ( $nginx_work_dir | path join "surfingkeys.js" | path exists) {
+          mv ($nginx_work_dir | path join "surfingkeys.js") ($nginx_work_dir | path join "surfingkeys.js.backup")
+        }
+        ln -st $nginx_work_dir $sufingkeys_js
       '';
     })
   ];
