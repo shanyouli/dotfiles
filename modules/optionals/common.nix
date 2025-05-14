@@ -80,8 +80,8 @@ let
           }
         }
         log set-level 10
-        log debug $"The script file path is ($env.CURRENT_FILE)"
         tip "Init ${name} script commands"
+        log debug $"The script file path is ($env.CURRENT_FILE)"
         ${optionalString (x.pre != "") ''
           log t Priority activation section
           ${x.pre}
