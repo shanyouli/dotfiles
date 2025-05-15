@@ -404,11 +404,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1746833584,
-        "narHash": "sha256-55bju5L7thjl1CUkg02SGsm5aG8nqFWc0XLI0N0iKng=",
+        "lastModified": 1747299527,
+        "narHash": "sha256-1rQN39nVFZDzPrahaqxEh9fNCIAxBvvNwXmUkMp1XNw=",
         "owner": "shanyouli",
         "repo": "nur-packages",
-        "rev": "97e9764cb737d78f0676f2edeace70c41588a442",
+        "rev": "7022494de481918f58af40d9554085132c4d54b3",
         "type": "github"
       },
       "original": {

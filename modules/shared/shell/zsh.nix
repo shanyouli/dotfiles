@@ -157,7 +157,7 @@ in
     };
     my.user = {
       init.clear-zsh = ''
-        let zdotdir = "${config.modules.xdg.value.XDG_CONFIG_HOME}" | split row "/" | each  { |x| if ($x == "$HOME") { $env.HOME }  else { $x } }  | path join "zsh"
+        let zdotdir = "${config.home.configDir}" | split row "/" | each  { |x| if ($x == "$HOME") { $env.HOME }  else { $x } }  | path join "zsh"
         try {
           ls ($zdotdir | path join "**/*.zwc" | into glob) | get name | rm ...$in
         } catch {
