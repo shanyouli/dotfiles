@@ -26,3 +26,13 @@ nu-test:
 [group("shell")]
 nu-clean:
     rm -rf "$HOME/.config/nushell"
+
+[group("os")]
+switch:
+    nix run .#buildci -- switch
+
+build:
+    nix run .#buildci -- build
+
+home:
+    nix run .#buildci -- build --type home

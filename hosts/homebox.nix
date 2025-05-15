@@ -101,6 +101,7 @@
         emacs = {
           enable = true;
           service.enable = true;
+          rime.ice.enable = true;
         };
 
         default = "nvim";

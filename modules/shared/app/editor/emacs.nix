@@ -28,6 +28,7 @@ in
       keep = mkBoolOpt true;
     };
     rime = {
+      ice.enable = mkBoolOpt false; # 目前由于性能原因，不推荐使用万象拼音。
       enable = mkBoolOpt config.modules.rime.enable;
       dir = mkOpt' types.str ".local/share/emacs-rime" "emacs-rime build 缓存内容文件";
     };
@@ -150,7 +151,9 @@ in
           + optionalString cfg.rime.enable (
             let
               rime-data-dir =
-                if config.modules.rime.enable then
+                if cfg.rime.ice.enable then
+                  "${pkgs.unstable.rime-ice}/share/rime-data"
+                else if config.modules.rime.enable then
                   "${config.modules.rime.dataPkg}/share/rime-data"
                 else if pkgs.stdenvNoCC.hostPlatform.isDarwin then
                   "/Library/Input Methods/Squirrel.app/Contents/SharedSupport"
@@ -168,6 +171,9 @@ in
             ${cfg.doom.confInit}
           '';
       };
+      my.user.extra = optionalString cfg.rime.enable ''
+        log debug "If you updated the emacs-rime input method, delete ${my.homedir}/${cfg.rime.dir}/build."
+      '';
       modules = {
         python.extraPkgs =
           ps: with ps; [

@@ -112,7 +112,7 @@ in
                 translator/spelling_hints: 0
             '';
           })
-          (mkIf (useEmacs && cfg.method == "wanxiang") {
+          (mkIf (useEmacs && cfg.method == "wanxiang" && !cemacs.rime.ice.enable) {
             "${cemacs.rime.dir}/cn_dicts/corrections.dict.yaml".source =
               "${cfg.dataPkg}/share/rime-data/cn_dicts/corrections.dict.yaml";
           })
