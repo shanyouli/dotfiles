@@ -118,6 +118,12 @@ rec {
       */
       derivationArgs ? { },
       nushell ? pkgs.nushell,
+      /*
+        Whether to allow the script to have access to stdin
+
+        Type: bool
+      */
+      useStdin ? true,
     }:
     pkgs.writeTextFile {
       inherit name meta derivationArgs;
@@ -127,7 +133,7 @@ rec {
       preferLocalBuild = false;
       tet =
         ''
-          #!${nushell}/bin/nu
+          #!/usr/bin/env -S ${(lib.getExe nushell) + lib.optionalString useStdin " --stdin"}
         ''
         + lib.optionalString (runtimeEnv != null) ''
 
