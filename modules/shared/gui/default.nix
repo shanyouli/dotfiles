@@ -33,8 +33,9 @@ in
       })
       pkgs.unstable.pragmasevka
       pkgs.unstable.pragmasevka-nerd
-      pkgs.unstable.pragmasevka-serif
       pkgs.unstable.pragmasevka-sans
+      pkgs.unstable.pragmasevka-sc-nf
+      pkgs.unstable.pragmasevka-serif
     ];
     # fonts = {
     #   # fontDir.enable = true;

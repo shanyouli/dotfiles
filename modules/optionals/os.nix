@@ -143,7 +143,8 @@ in
       environment = {
         systemPackages = with pkgs; [
           # standard toolset
-          coreutils-full
+          # coreutils-full
+          uutils-coreutils-noprefix # uutils-coreutils # coreutils-prefixed # GNUcoreutils 工具，mv，cp等
           wget
           git
           jq

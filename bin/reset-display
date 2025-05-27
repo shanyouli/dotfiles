@@ -8,6 +8,7 @@
     sudo rm -rf /Library/Displays/Contents/Resources/Overrides/*
     rm -rf ~/Library/Application\ Support/BetterDisplay
     sudo nvram -c
+    sudo nvram boot-args=-arm64e_preview_abi
     #rm -rf /Applications/BetterDisplay.app
     #osascript -e 'tell app "System Events" to restart'
 }

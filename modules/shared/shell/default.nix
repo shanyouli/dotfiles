@@ -72,7 +72,6 @@ in
       gifsicle # 命令行gif生成工具
       nix-your-shell # nix-shell Support for other shells(zsh,fish,nushell)
       gnused # sed 工具
-      uutils-coreutils-noprefix # uutils-coreutils # coreutils-prefixed # GNUcoreutils 工具，mv，cp等
 
       lnav # tailspin # 支持高亮的语法查看工具
 
