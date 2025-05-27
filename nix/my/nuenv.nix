@@ -119,11 +119,13 @@ rec {
       derivationArgs ? { },
       nushell ? pkgs.nushell,
       /*
-        Whether to allow the script to have access to stdin
+        Extra arguments to pass into nushell invoker
+        Defaults to allowing stdin with "--stdin".
+        See all arguments with `nu --help`
 
-        Type: bool
+        Type: [String]
       */
-      useStdin ? true,
+      nushellArgs ? [ "--stdin" ],
     }:
     pkgs.writeTextFile {
       inherit name meta derivationArgs;
@@ -133,7 +135,7 @@ rec {
       preferLocalBuild = false;
       tet =
         ''
-          #!/usr/bin/env -S ${(lib.getExe nushell) + lib.optionalString useStdin " --stdin"}
+          #!/usr/bin/env -S ${lib.concatStringsSep " " ([ (lib.getExe nushell) ] ++ nushellArgs)}
         ''
         + lib.optionalString (runtimeEnv != null) ''
 
