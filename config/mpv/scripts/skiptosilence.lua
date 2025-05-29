@@ -55,7 +55,7 @@ local o = {
 	min_skip_duration = 0,
 	max_skip_duration = 120,
 	force_mute_on_skip = false,
-};
+}
 
 (require("mp.options")).read_options(o)
 local mp = require("mp")

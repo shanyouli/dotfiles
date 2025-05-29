@@ -7,7 +7,7 @@ local opts = {
 	torrserver_init = false,
 	torrserver_path = "TorrServer",
 	search_for_external_tracks = true,
-};
+}
 
 (require("mp.options")).read_options(opts)
 local luacurl_available, cURL = pcall(require, "cURL")

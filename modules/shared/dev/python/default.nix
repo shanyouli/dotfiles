@@ -126,8 +126,9 @@ in
               language-server = {
                 pyright.config.python.analysis.typeCheckingMode = "basic";
                 ruff-lsp = {
-                  command = "ruff-lsp";
+                  command = "ruff";
                   config.settings.args = [
+                    "server"
                     "--ignore"
                     "E501"
                   ];
@@ -150,9 +151,9 @@ in
       };
       home.packages = with pkgs; [
         ruff
-        ruff-lsp
+        # ruff-lsp
         # pyright
-        unstable.basedpyright
+        basedpyright
         pipenv
       ];
     }

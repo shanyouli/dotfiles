@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   lib,
   my,
@@ -8,13 +7,6 @@
 {
   # user.name = "lyeli";
   nix = {
-    gc = {
-      user = config.user.name;
-    };
-    # Auto upgrade nix package and the daemon service.
-    # services.nix-daemon.enable = true;
-    # nix.package = pkgs.nix;
-    # maxJobs = 4;
     settings.cores = 4;
   };
   user.uid = 501; # uid macos 创建的用户 默认 uid 为 501

@@ -3,7 +3,7 @@ opts = {
 	whitelist = "",
 	remove_files_without_extension = false,
 	oneshot = true,
-};
+}
 (require("mp.options")).read_options(opts)
 local msg = require("mp.msg")
 

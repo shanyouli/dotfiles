@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   lib,
   my,
@@ -8,11 +7,6 @@
 {
   # user.name = "lyeli";
   nix = {
-    gc = {
-      user = config.user.name;
-    };
-    # Auto upgrade nix package and the daemon service.
-    # services.nix-daemon.enable = true;
     package = pkgs.unstable.nixVersions.stable;
     # maxJobs = 4;
     settings.cores = 4;

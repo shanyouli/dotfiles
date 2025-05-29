@@ -235,7 +235,7 @@ local o = {
 	]], --Keybind thats are ignored when list is open
 
 	---------------------------END OF USER CUSTOMIZATION SETTINGS---------------------------
-};
+}
 
 (require("mp.options")).read_options(o)
 local utils = require("mp.utils")

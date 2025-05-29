@@ -18,7 +18,7 @@ in
   imports = [ ./common.nix ];
   options = with types; {
     # user = mkOpt attrs {};
-    user = mkOption { type = options.users.users.type.functor.wrapped; };
+    user = mkOption { type = options.users.users.type.nestedTypes.elemType; };
     home = {
       file = mkOpt' attrs { } "Files to place directly in $HOME";
       packages = mkOpt' (listOf package) [ ] "home-manager packages alias";

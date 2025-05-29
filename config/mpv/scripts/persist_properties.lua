@@ -5,7 +5,7 @@ local msg = require("mp.msg")
 local opts = {
 	properties = "volume,sub-scale",
 	properties_path = "persistent_config.json",
-};
+}
 (require("mp.options")).read_options(opts, "persist_properties")
 
 local CONFIG_ROOT = mp.find_config_file(".")

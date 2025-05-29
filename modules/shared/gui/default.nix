@@ -25,12 +25,8 @@ in
       # pkgs.unstable.sarasa-term
       pkgs.unstable.maple-mono.NF
       pkgs.unstable.maple-mono.NF-CN
-      (pkgs.nerdfonts.override {
-        fonts = [
-          "FantasqueSansMono"
-          "NerdFontsSymbolsOnly"
-        ];
-      })
+      pkgs.nerd-fonts.fantasque-sans-mono
+      pkgs.nerd-fonts.symbols-only
       pkgs.unstable.pragmasevka
       pkgs.unstable.pragmasevka-nerd
       pkgs.unstable.pragmasevka-sans

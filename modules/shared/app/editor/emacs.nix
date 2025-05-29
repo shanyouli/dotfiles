@@ -97,7 +97,7 @@ in
         extraPkgs =
           epkgs:
           [
-            epkgs.emacsql-sqlite-builtin
+            epkgs.emacsql
             # epkgs.telega
             epkgs.vterm
             epkgs.pdf-tools

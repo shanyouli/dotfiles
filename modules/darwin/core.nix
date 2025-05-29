@@ -40,11 +40,11 @@
   '';
 
   # auto manage nixbld users with nix darwin
-  nix.configureBuildUsers = true;
-  # users.nix.configureBuildUsers = true;
+  # nix.configureBuildUsers = true;
+  # # users.nix.configureBuildUsers = true;
 
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
+  # # Auto upgrade nix package and the daemon service.
+  # services.nix-daemon.enable = true;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
