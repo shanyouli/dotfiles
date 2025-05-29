@@ -206,7 +206,8 @@ in
           ++ optionals cfg.gui.enable [
             "applite"
             (mkIf (config.modules.proxy.default == "sing-box") "shanyouli/tap/gui-for-singbox")
-            (mkIf (config.modules.proxy.default == "clash") "shanyouli/tap/gui-for-clash")
+            # (mkIf (config.modules.proxy.default == "clash") "shanyouli/tap/gui-for-clash")
+            "clash-verge-rev"
           ];
         brews = [
           # "mysql"
