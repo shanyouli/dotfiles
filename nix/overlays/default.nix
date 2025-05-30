@@ -21,8 +21,8 @@
                 nix-index
                 nh
                 emacs-stable
+                emacs-git
                 ;
-              emacs-git = inputs.nurpkgs.packages.${prev.system}.emacsGit;
             }
           ))
         ];

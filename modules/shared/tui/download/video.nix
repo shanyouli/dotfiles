@@ -59,7 +59,7 @@ in
       --live-from-start
       # 合并后的文件格式
       --merge-output-format mp4
-      --proxy http://127.0.0.1:10801
+      # --proxy http://127.0.0.1:10801
       # 拦截所有广告
       --sponsorblock-remove all
       # 字幕格式为 srt, ass
