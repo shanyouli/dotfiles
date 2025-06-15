@@ -26,15 +26,15 @@ in
 
     extraPkgs = mkOption {
       default = _self: [ ];
-      example = literalExample "ps: [ ps.luarocks-nix ]";
+      example = literalExpression "ps: [ ps.luarocks-nix ]";
       type = selectorFunction;
     };
 
     package = mkOption {
       type = types.package;
       default = pkgs.lua;
-      defaultText = literalExample "pkgs.lua5_4";
-      example = literalExample "pkgs.lua5_4";
+      defaultText = literalExpression "pkgs.lua5_4";
+      example = literalExpression "pkgs.lua5_4";
       description = "The Lua Package to use.";
     };
 

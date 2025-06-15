@@ -89,18 +89,19 @@
       };
       tg = {
         enable = true;
-        package = pkgs.unstable.telegram-desktop;
+        # package = pkgs.unstable.telegram-desktop;
       };
       editor = {
         emacs = {
           enable = true;
           service.enable = true;
           rime.ice.enable = true;
+          package = pkgs.unstable.emacs;
         };
 
         default = "nvim";
         nvim.treesit = "all";
-        nvim.enGui = true; # GUI 编辑工具为emacs
+        nvim.enGui = false; # GUI 编辑工具为emacs
         vscode.enable = true;
         zed = {
           # package = pkgs.unstable.zed-editor;
@@ -109,7 +110,7 @@
       };
     };
 
-    # gui
+    # # gui
     gui = {
       terminal.default = "kitty";
 

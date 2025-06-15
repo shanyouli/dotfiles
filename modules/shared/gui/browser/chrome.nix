@@ -20,8 +20,8 @@ in
     package = mkOption {
       type = types.package;
       default = if pkgs.stdenvNoCC.isLinux then pkgs.google-chrome else pkgs.unstable.darwinapps.chrome;
-      defaultText = literalExample "pkgs.google-chrome";
-      example = literalExample "pkgs.google-chrome";
+      defaultText = literalExpression "pkgs.google-chrome";
+      example = literalExpression "pkgs.google-chrome";
       description = "The Chrome module to use.";
     };
   };

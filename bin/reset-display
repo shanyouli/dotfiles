@@ -2,13 +2,13 @@
 [[ $(uname) == "Darwin" ]] && {
     killall BetterDisplay
     defaults delete pro.betterdisplay.BetterDisplay
-    sudo rm /Library/Preferences/com.apple.windowserver.displays.plist
-    rm ~/Library/Preferences/ByHost/com.apple.windowserver*.plist
-    sudo rm /Library/ColorSync/Profiles/Displays/*
-    sudo rm -rf /Library/Displays/Contents/Resources/Overrides/*
+    # sudo rm /Library/Preferences/com.apple.windowserver.displays.plist
+    # rm ~/Library/Preferences/ByHost/com.apple.windowserver*.plist
+    # sudo rm /Library/ColorSync/Profiles/Displays/*
+    # sudo rm -rf /Library/Displays/Contents/Resources/Overrides/*
     rm -rf ~/Library/Application\ Support/BetterDisplay
-    sudo nvram -c
-    sudo nvram boot-args=-arm64e_preview_abi
+    # sudo nvram -c
+    # sudo nvram boot-args=-arm64e_preview_abi
     #rm -rf /Applications/BetterDisplay.app
     #osascript -e 'tell app "System Events" to restart'
 }

@@ -20,7 +20,7 @@ in
 
     luaExtensions = mkOption {
       default = _self: [ ];
-      example = literalExample "ps: [ps.lyaml]";
+      example = literalExpression "ps: [ps.lyaml]";
       type = selectorFunction;
     };
   };

@@ -15,7 +15,7 @@ in
     extraPkgs = mkOption {
       type = nullOr selectorFunction;
       default = null;
-      example = literalExample "ps: [ ps.orjson]";
+      example = literalExpression "ps: [ ps.orjson]";
       description = ''
         Extra packages available to Python. To get a list of
       '';

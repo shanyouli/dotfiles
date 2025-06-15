@@ -57,7 +57,7 @@ in
       default = _self: [ ];
       type = selectorFunction;
       defaultText = "epkgs: []";
-      example = literalExample "epkgs: [epkgs.emms epkgs.magit ]";
+      example = literalExpression "epkgs: [epkgs.emms epkgs.magit ]";
       description = ''
         Extra packages available to Emacs. To get a list of
         available packages run:
@@ -68,7 +68,7 @@ in
       default = _self: _super: { };
       type = overlayFunction;
       defaultText = "self: super: {}";
-      example = literalExample ''
+      example = literalExpression ''
         self: super: rec {
           haskell-mode = self.melpaPackages.haskell-mode;
           # ...
@@ -81,9 +81,9 @@ in
     package = mkOption {
       type = types.package;
       # default = inputs.nurpkgs.currentSystem.packages.emacs;
-      default = pkgs.unstable.emacs-git;
-      defaultText = literalExample "pkgs.emacs";
-      example = literalExample "pkgs.emacs26-nox";
+      default = pkgs.emacs;
+      defaultText = literalExpression "pkgs.emacs";
+      example = literalExpression "pkgs.emacs26-nox";
       description = "The Emacs Package to use.";
     };
     pkg = mkPkgReadOpt "The emacs include overrides and plugins";
