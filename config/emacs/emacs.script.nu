@@ -6,11 +6,11 @@ module doom {
     if (($env.PATH | describe) == "string")  {
        $env.PATH | split row (char esep)
                  | path expand --no-symlink
-                 | filter {|x| (not ($x | str starts-with "/nix/store"))}
+                 | where {|x| (not ($x | str starts-with "/nix/store"))}
                  | str join (char esep)
     } else {
        $env.PATH | path expand --no-symlink
-                 | filter {|x| (not ($x | str starts-with "/nix/store"))}
+                 | where {|x| (not ($x | str starts-with "/nix/store"))}
                  | str join (char esep)
     }
   }

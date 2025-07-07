@@ -41,7 +41,8 @@ in
         pkgs.fishPlugins.foreign-env
         pkgs.unstable.fishPlugins.fisher
         pkgs.fishPlugins.done
-        pkgs.fishPlugins.autopair
+        # NOTE: 某些补全使用 autopair 存在 bug
+        # pkgs.fishPlugins.autopair
       ];
       home = {
         packages = [ cfg.package ];

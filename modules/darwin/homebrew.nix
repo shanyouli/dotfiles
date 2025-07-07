@@ -179,6 +179,8 @@ in
             "shanyouli/tap/airbattery" # 设备电量显示
 
             "bbackupp" # ios 备份工具 #
+
+            "shanyouli/tap/mountmate" # U 盘挂载管理工具
           ]
           ++ optionals config.modules.adb.enable [
             # # 使用第三方工具取代openmtp，MacDroid.app

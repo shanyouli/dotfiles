@@ -5,7 +5,7 @@ def "nu-completion gopass commands" [] {
   | lines --skip-empty
   | skip while { |line| (not ( $line | str starts-with "COMMANDS") ) }
   | take while { |line| (not ($line | str starts-with "GLOBAL"))}
-  | filter { str starts-with "  " }
+  | where { str starts-with "  " }
   | str trim
   | parse --regex '(?P<value>[^,\s]+).*\s{2,}(?P<description>.+)'
 }
@@ -32,7 +32,7 @@ def "nu-completion gopass templates" [] {
   | lines --skip-empty
   | skip while { |line| (not ( $line | str starts-with "COMMANDS") ) }
   | take while { |line| (not ($line | str starts-with "OPTIONS"))}
-  | filter { str starts-with "  " }
+  | where { str starts-with "  " }
   | str trim
   | parse --regex '(?P<value>[^,\s]+).*\s{2,}(?P<description>.+)'
 
@@ -85,7 +85,7 @@ def "nu-completion gopass recipients" [] {
   | lines --skip-empty
   | skip while { |line| (not ( $line | str starts-with "COMMANDS") ) }
   | take while { |line| (not ($line | str starts-with "OPTIONS"))}
-  | filter { str starts-with "  " }
+  | where { str starts-with "  " }
   | str trim
   | parse --regex '(?P<value>[^,\s]+).*\s{2,}(?P<description>.+)'
 }
@@ -132,7 +132,7 @@ def "nu-completion gopass mounts" [] {
   | lines --skip-empty
   | skip while { |line| (not ( $line | str starts-with "COMMANDS") ) }
   | take while { |line| (not ($line | str starts-with "OPTIONS"))}
-  | filter { str starts-with "  " }
+  | where { str starts-with "  " }
   | str trim
   | parse --regex '(?P<value>[^,\s]+).*\s{2,}(?P<description>.+)'
 }
@@ -240,7 +240,7 @@ def "nu-completion gopass completion" [] {
   | lines --skip-empty
   | skip while { |line| (not ( $line | str starts-with "COMMANDS") ) }
   | take while { |line| (not ($line | str starts-with "OPTIONS"))}
-  | filter { str starts-with "  " }
+  | where { str starts-with "  " }
   | str trim
   | parse --regex '(?P<value>[^,\s]+).*\s{2,}(?P<description>.+)'
 }

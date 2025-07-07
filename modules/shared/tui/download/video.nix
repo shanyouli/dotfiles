@@ -16,7 +16,7 @@ let
     # 配置缓存目录
     _dir=''${XDG_CACHE_HOME:-$HOME/.cache}/bbdown
     # 目录如果不存在则创建它
-    mkdir -p $dir
+    mkdir -p $_dir
     # 获取hash 值
     get_shasum() { shasum $1 | cut -d" " -f1 ; }
     # 更新执行程序
@@ -44,10 +44,8 @@ in
     home.packages = [
       pkgs.unstable.yt-dlp
       # pkgs.unstable.yutto # 使用 pipx 安装
-      # pkgs.unstable.bbdown # 使用 yutto 取代
       pkgs.unstable.lux
       pkgs.unstable.fav
-      # pkgs.unstable.bbdown
       bbdown
     ]; # yutto 下载bilibili
     home.configFile."yt-dlp/config".text = ''

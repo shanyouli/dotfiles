@@ -23,7 +23,7 @@ in
         if ($workdir | path exists) {
           chmod -R +w $workdir
           ls $workdir | get name
-                      | filter {|x| ($x | path parse | get extension) == "app" }
+                      | where {|x| ($x | path parse | get extension) == "app" }
                       | each {|x| rm -rf $x }
         } else {
           mkdir $workdir

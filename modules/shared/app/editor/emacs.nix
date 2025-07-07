@@ -8,7 +8,6 @@
 with lib;
 with my;
 let
-  # emacs 29.0.50 It is not stable
   cfg = config.modules.app.editor.emacs;
   emacsPackages =
     let
@@ -80,7 +79,6 @@ in
     };
     package = mkOption {
       type = types.package;
-      # default = inputs.nurpkgs.currentSystem.packages.emacs;
       default = pkgs.emacs;
       defaultText = literalExpression "pkgs.emacs";
       example = literalExpression "pkgs.emacs26-nox";

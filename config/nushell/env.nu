@@ -40,8 +40,8 @@ $env.ENV_CONVERSIONS = {
             $s | split row (char esep)
                | path expand --no-symlink
                | uniq
-               | filter  {|x| zpfx-filter-fn $x }
-               | filter {|x| nix-store-filter-fn $x}
+               | where  {|x| zpfx-filter-fn $x }
+               | where {|x| nix-store-filter-fn $x}
         }
         to_string: { |v| $v | path expand --no-symlink | str join (char esep) }
     }
@@ -50,8 +50,8 @@ $env.ENV_CONVERSIONS = {
             $s | split row (char esep)
                | uniqe
                | path expand --no-symlink
-               | filter  {|x| zpfx-filter-fn $x }
-               | filter {|x| nix-store-filter-fn $x}
+               | where  {|x| zpfx-filter-fn $x }
+               | where {|x| nix-store-filter-fn $x}
         }
         to_string: { |v| $v | path expand --no-symlink | str join (char esep) }
     }

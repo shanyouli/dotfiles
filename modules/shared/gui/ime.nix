@@ -85,6 +85,14 @@ in
               speller/algebra:
                 __include: wanxiang_radical.schema:/全拼
           '';
+          wanxiang-pro = ''
+            patch:
+              speller/algebra:
+                __patch:
+                  - wanxiang_pro.schema:/全拼
+                  - wanxiang_pro.schema:/间接辅助
+              cn_en/user_dict: en_dicts/pinyin
+          '';
         in
         mkMerge [
           # rime-wanxiang 输入法暂时无法作为公共配置，目前放入用户配置文件中
@@ -100,12 +108,14 @@ in
             "${userDir}/wanxiang.custom.yaml".text = wanxiang-custom;
             "${userDir}/wanxiang_en.custom.yaml".text = wanxiang-en;
             "${userDir}/wanxiang_radical.custom.yaml".text = wanxiang-radical;
+            "${userDir}/wanxiang_pro.custom.yaml".text = wanxiang-pro;
           }
           (mkIf useEmacs {
             "${cemacs.rime.dir}/default.custom.yaml".text = default_custom_text;
             "${cemacs.rime.dir}/wanxiang.custom.yaml".text = wanxiang-custom;
             "${cemacs.rime.dir}/wanxiang_en.custom.yaml".text = wanxiang-en;
             "${cemacs.rime.dir}/wanxiang_radical.custom.yaml".text = wanxiang-radical;
+            "${cemacs.rime.dir}/wanxiang_pro.custom.yaml".text = wanxiang-pro;
             # FIXME: 显示拼音问题解决方法: https://github.com/iDvel/rime-ice/issues/431
             "${cemacs.rime.dir}/rime_ice.custom.yaml".text = ''
               patch:
