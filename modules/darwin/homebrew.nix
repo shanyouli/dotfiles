@@ -137,7 +137,8 @@ in
 
             # "playcover-community" # 侧载工具
 
-            "mac-mouse-fix" # 鼠标fix
+            # "mac-mouse-fix" # 鼠标fix
+            "mos"
             "pictureview" # 看图
 
             "tencent-lemon" # 文件清理 or ""clean-me""

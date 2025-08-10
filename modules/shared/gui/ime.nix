@@ -163,6 +163,7 @@ in
           log debug $"Init emacs-rime backup dir"
           rime-init-backup ("${my.homedir}" | path join "${cemacs.rime.dir}") "emacs"
         ''}
+        log debug $"If the rime input method is updated and the input method does not work, delete the cache file for the pair to build and rebuild it."
       '';
     })
   ]);

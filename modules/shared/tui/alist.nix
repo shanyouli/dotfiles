@@ -15,7 +15,7 @@ in
 {
   options.modules.alist = {
     enable = mkEnableOption "Whether to use alist";
-    pkg = mkOpt' types.package pkgs.unstable.alist "alist package";
+    pkg = mkOpt' types.package pkgs.alist "alist package";
     service = {
       enable = mkBoolOpt cfg.enable;
       startup = mkBoolOpt true;

@@ -19,7 +19,7 @@ in
     homebrew.casks = [
       "openemu"
       "shanyouli/tap/ryujinx"
-      "shanyouli/tap/rpcs3"
+      # "shanyouli/tap/rpcs3"
       "hstracker" # 炉石传说插件
     ];
   };
