@@ -28,7 +28,6 @@ in
     ];
     user.packages = [
       pkgs.unstable.darwinapps.lporg # 自定义 launchpad 布局
-      pkgs.unstable.openlist
     ];
   };
 }
