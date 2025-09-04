@@ -27,6 +27,16 @@ let
     .${kernel-name};
   cemacs = cfp.app.editor.emacs;
   useEmacs = cemacs.enable && cemacs.rime.enable;
+  default_custom_fn = n ''
+    patch:
+      "menu/page_size": ${n}
+      "ascii_composer/switch_key/Shift_L": commit_code
+      "switcher/hotkeys":
+        - F4
+        - Control+grave
+  '';
+  default_ice_custom = default_custom_fn "9";
+  default_wanxiang_custom = default_custom_fn "6";
 in
 {
   options.modules.rime = {
@@ -57,37 +67,25 @@ in
       apply =
         p: if (cfg.method == "wanxiang") then pkgs.unstable.rime-wanxiang else pkgs.unstable.rime-ice;
     };
+    configDir = mkOption {
+      type = types.nullOr types.path;
+      default = null;
+      description = ''
+        rime-data config dir
+      '';
+    };
+    octagram = mkEnableOption "是否支持语言模型";
   };
   config = mkIf cfg.enable (mkMerge [
-    (mkIf (cfg.method == "ice") { })
-    {
+    (mkIf (cfg.method == "wanxiang") { modules.rime.octagram = mkForce true; })
+    (mkIf (cfg.configDir == null && cfg.method == "wanxiang") {
       home.file =
         let
-          default_custom_text = ''
-            patch:
-              "menu/page_size": 7
-              "ascii_composer/switch_key/Shift_L": commit_code
-              "switcher/hotkeys":
-                - F4
-                - Control+grave
-          '';
           wanxiang-custom = ''
             patch:
               speller/algebra:
                 __patch:
-                - wanxiang.schema:/全拼
-                - wanxiang.schema:/fuzhu_moqi
-              cn_en/user_dict: en_dicts/pinyin
-          '';
-          wanxiang-en = ''
-            patch:
-              speller/algebra:
-                __include: wanxiang_en.schema:/全拼
-          '';
-          wanxiang-radical = ''
-            patch:
-              speller/algebra:
-                __include: wanxiang_radical.schema:/全拼
+                  - wanxiang.schema:/全拼
           '';
           wanxiang-pro = ''
             patch:
@@ -95,43 +93,57 @@ in
                 __patch:
                   - wanxiang_pro.schema:/全拼
                   - wanxiang_pro.schema:/间接辅助
-              cn_en/user_dict: en_dicts/pinyin
+          '';
+          wanxiang-mixedcode = ''
+            patch:
+              speller/algebra:
+                __include: wanxiang_mixedcode.schema:/全拼
           '';
         in
         mkMerge [
-          # rime-wanxiang 输入法暂时无法作为公共配置，目前放入用户配置文件中
-          (mkIf pkgs.stdenvNoCC.hostPlatform.isDarwin {
-            "${userDir}/squirrel.custom.yaml".source =
-              if cfg.method == "ice" then
-                "${my.dotfiles.config}/rime/squirrel.custom.yaml"
-              else
-                "${my.dotfiles.config}/rime/squirrel.wanxiang.custom.yaml";
-          })
           {
-            "${userDir}/default.custom.yaml".text = default_custom_text;
+            "${userDir}/default.custom.yaml".text = default_wanxiang_custom;
             "${userDir}/wanxiang.custom.yaml".text = wanxiang-custom;
-            "${userDir}/wanxiang_en.custom.yaml".text = wanxiang-en;
-            "${userDir}/wanxiang_radical.custom.yaml".text = wanxiang-radical;
+            "${userDir}/wanxiang_mixedcode.custom.yaml".text = wanxiang-mixedcode;
+            "${userDir}/wanxiang_reverse.custom.yaml".text = wanxiang-reverse;
             "${userDir}/wanxiang_pro.custom.yaml".text = wanxiang-pro;
           }
-          (mkIf useEmacs {
-            "${cemacs.rime.dir}/default.custom.yaml".text = default_custom_text;
-            "${cemacs.rime.dir}/wanxiang.custom.yaml".text = wanxiang-custom;
-            "${cemacs.rime.dir}/wanxiang_en.custom.yaml".text = wanxiang-en;
-            "${cemacs.rime.dir}/wanxiang_radical.custom.yaml".text = wanxiang-radical;
-            "${cemacs.rime.dir}/wanxiang_pro.custom.yaml".text = wanxiang-pro;
-            # FIXME: 显示拼音问题解决方法: https://github.com/iDvel/rime-ice/issues/431
-            "${cemacs.rime.dir}/rime_ice.custom.yaml".text = ''
-              patch:
-                translator/spelling_hints: 0
-            '';
+          (mkIf pkgs.stdenvNoCC.hostPlatform.isDarwin {
+            "${userDir}/squirrel.custom.yaml".source =
+              "${my.dotfiles.config}/rime/squirrel.wanxiang.custom.yaml";
           })
-          (mkIf (useEmacs && cfg.method == "wanxiang" && !cemacs.rime.ice.enable) {
+          (mkIf (useEmacs && !cemacs.rime.ice.enable) {
             "${cemacs.rime.dir}/cn_dicts/corrections.dict.yaml".source =
               "${cfg.dataPkg}/share/rime-data/cn_dicts/corrections.dict.yaml";
+            "${cemacs.rime.dir}/default.custom.yaml".text = default_wanxiang_custom;
+            "${cemacs.rime.dir}/wanxiang.custom.yaml".text = wanxiang-custom;
+            "${cemacs.rime.dir}/wanxiang_mixedcode.custom.yaml".text = wanxiang-mixedcode;
+            "${cemacs.rime.dir}/wanxiang_reverse.custom.yaml".text = wanxiang-reverse;
+            "${cemacs.rime.dir}/wanxiang_pro.custom.yaml".text = wanxiang-pro;
           })
         ];
-    }
+    })
+    (mkIf (cfg.configDir == null && cfg.method == "ice") {
+      home.file = mkMerge [
+        # rime-wanxiang 输入法暂时无法作为公共配置，目前放入用户配置文件中
+        (mkIf pkgs.stdenvNoCC.hostPlatform.isDarwin {
+          "${userDir}/squirrel.custom.yaml".source = "${my.dotfiles.config}/rime/squirrel.custom.yaml";
+        })
+        { "${userDir}/default.custom.yaml".text = default_ice_custom; }
+      ];
+    })
+    (mkIf (cfg.configDir == null && useEmacs && cemacs.rime.ice.enable) {
+      home.file = {
+
+        "${cemacs.rime.dir}/default.custom.yaml".text = default_ice_custom;
+        # FIXME: 显示拼音问题解决方法: https://github.com/iDvel/rime-ice/issues/431
+        "${cemacs.rime.dir}/rime_ice.custom.yaml".text = ''
+          patch:
+            translator/spelling_hints: 0
+        '';
+      };
+    })
+
     (mkIf (pkgs.stdenvNoCC.hostPlatform.isDarwin || (!config.home.useos)) {
       home.file.${userDir} = {
         source = "${cfg.dataPkg}/share/rime-data/";
@@ -168,6 +180,28 @@ in
           rime-init-backup ("${my.homedir}" | path join "${cemacs.rime.dir}") "emacs"
         ''}
         log debug $"If the rime input method is updated and the input method does not work, delete the cache file for the pair to build and rebuild it."
+      '';
+    })
+    (mkIf (cfg.configDir != null) {
+      my.user.init.initRimeConfig = ''
+        let config_dir = $env.HOME | path join "${userDir}/"
+        if ("${cfg.configDir}" | path exists) {
+          ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${cfg.configDir}/ $config_dir
+        } else {
+          log warning $"${cfg.configDir} not found."
+        }
+      '';
+    })
+    (mkIf cfg.octagram {
+      my.user.init.InitRimeOctagram = ''
+        let gram_file = $env.HOME | path join "${userDir}/wanxiang-lts-zh-hans.gram"
+        if ( $gram_file | path exists) {
+          log debug $"Models have been downloaded, if you need to update them, please delete them manually ($gram_file)"
+        } else {
+          log debug "Models will be downloaded"
+          mkdir ($gram_file | path dirname)
+          wget -c https://cnb.cool/Mintimate/rime/oh-my-rime/-/releases/download/latest/wanxiang-lts-zh-hans.gram -O $gram_file
+        }
       '';
     })
   ]);
