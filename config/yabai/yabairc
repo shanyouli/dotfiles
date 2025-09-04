@@ -74,7 +74,7 @@ yabai -m rule --add app="^Safari$" \
     title="(Passwords|General|Tabs|AutoFill|Search|Security|Privacy|Websites|Extensions|Advanced)" \
     manage=off
 
-yabai -m rule --add app="^(Nutstore|Karabiner-|GPG [Kk]eychain|IINA|Raycast|LuLu|DaisyDisk|Snapbox).*$" manage=off
+yabai -m rule --add app="^(Nutstore|Karabiner-|GPG [Kk]eychain|IINA|Raycast|LuLu|DaisyDisk|Snapbox|MacZip).*$" manage=off
 
 # 视频播放程序,不透明度设置为1
 yabai -m rule --add app="^([Mm]pv|IINA|VidHub|BaiduNetdisk)$" opacity=1

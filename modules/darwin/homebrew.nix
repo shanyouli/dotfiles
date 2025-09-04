@@ -199,7 +199,7 @@ in
             "github" # github客户端
           ]
           # ++ optionals (config.modules.app.editor.nvim.enGui && config.modules.app.editor.nvim.enable) [
-          #   "shanyouli/tap/neovide"
+          #   "shanyouli/tap/neovide-pure"
           # ]
           # ++ optionals (config.modules.gui.enable && (config.modules.proxy.default != "")) [
           # 使用 macos 商店的工具取代它

@@ -51,12 +51,16 @@ in
         else
           "ice";
     };
-    dataPkg = mkPkgReadOpt "rime-data package.";
+    dataPkg = mkOption {
+      default = pkgs.unstable.rime-ice;
+      type = types.package;
+      apply =
+        p: if (cfg.method == "wanxiang") then pkgs.unstable.rime-wanxiang else pkgs.unstable.rime-ice;
+    };
   };
   config = mkIf cfg.enable (mkMerge [
+    (mkIf (cfg.method == "ice") { })
     {
-      modules.rime.dataPkg =
-        if cfg.method == "ice" then pkgs.unstable.rime-ice else pkgs.unstable.rime-wanxiang;
       home.file =
         let
           default_custom_text = ''
