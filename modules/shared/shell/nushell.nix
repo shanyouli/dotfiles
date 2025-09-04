@@ -58,6 +58,7 @@ in
       ];
       configFile = mkMerge [
         (mkIf useCmpFn {
+          # 暂停使用补全，使用默认补全
           # see@https://www.nushell.sh/cookbook/external_completers.html#putting-it-all-together
           "nushell/sources/completer".text = ''
              # -*- mode: nushell; -*-
@@ -80,7 +81,7 @@ in
              let external_completer = {|spans|
                let expanded_alias = scope aliases
                | where name == $spans.0
-               | get -i 0.expansion
+               | get -o 0.expansion
 
                let spans = if $expanded_alias != null {
                  $spans
@@ -107,7 +108,7 @@ in
             $current.completions = ($current.completions | default {} external)
             $current.completions.external = ($current.completions.external
             | default true enable
-            | default $external_completer completer)
+            | default {$external_completer} completer)
 
             $env.config = $current
           '';

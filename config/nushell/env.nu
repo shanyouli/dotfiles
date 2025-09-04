@@ -17,7 +17,7 @@ source (if (($SOURCE_PATH | path join "env") | path expand | path exists) { "env
 
 # Filter paths starting with $env.ZPFX parent directory
 def zpfx-filter-fn [ s: string ] {
-  if ($env | get --ignore-errors ZPFX | is-empty) {
+  if ($env | get -o ZPFX | is-empty) {
     true
   } else {
     let zpfx_dirname = ($env.ZPFX | path dirname)
@@ -27,7 +27,7 @@ def zpfx-filter-fn [ s: string ] {
 
 # filter paths starting with /nix/store as PATH
 def nix-store-filter-fn [s: string ] {
-  if ($env | get --ignore-errors IN_NIX_SHELL | is-empty) {
+  if ($env | get -o IN_NIX_SHELL | is-empty) {
     (not ( $s | str starts-with "/nix/store"))
   } else {
     true

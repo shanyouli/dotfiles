@@ -7,7 +7,7 @@ def is-rsync-p [] {
   if ($which_rsync | is-empty) {
     false
   } else {
-    ($os_system != "Darwin") or (not ($which_rsync | get --ignore-errors path | first | str starts-with "/usr/bin"))
+    ($os_system != "Darwin") or (not ($which_rsync | get -o path | first | str starts-with "/usr/bin"))
   }
 }
 

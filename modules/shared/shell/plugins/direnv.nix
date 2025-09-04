@@ -81,7 +81,7 @@ in
               $env.config | upsert hooks (
                   $env.config.hooks | upsert pre_prompt (
                       $env.config.hooks
-                      | get -i pre_prompt
+                      | get -o pre_prompt
                       | default []
                       | append { || ^direnv export json | from json | default {} | load-env}
                       )))

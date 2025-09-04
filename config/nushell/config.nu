@@ -26,7 +26,7 @@ def vish [] {
   if (not ($nu.cache-dir | path expand | path exists)) {
     mkdir $nu.cache-dir
   }
-  if ($env | get EDITOR -i | is-empty) {
+  if ($env | get -o EDITOR | is-empty) {
     print $"(ansi yellow_b)Please settings env EDITOR.(ansi reset)"
     return 1
   } else {

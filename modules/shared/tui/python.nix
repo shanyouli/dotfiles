@@ -88,7 +88,7 @@ in
           zsh.rcInit = lib.optionalString (global_python_path != "") pipx_function_text;
           nushell.rcInit = lib.optionalString (global_python_path != "") ''
             export def --wrapped pipx [...rest: string] {
-                if ($env | get --ignore-errors PIPX_DEFAULT_PYTHON | is-empty) {
+                if ($env | get -o PIPX_DEFAULT_PYTHON | is-empty) {
                     ${lib.optionalString use_rye_p ''
                       let pipx_default_python = (${global_python_path} | from json | where ($it.name | str contains "${cmdp.global}") | get path | first | readlink -f $in)
                     ''}
