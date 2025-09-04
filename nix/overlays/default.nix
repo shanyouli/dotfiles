@@ -27,8 +27,6 @@
           ))
         ];
       };
-      # NOTE: 这是一个临时方案，由于最新的 home-manager needs pkgs.formats.xml ;
-      # inherit (unstable) formats;
     };
   };
   flake.overlay = self.overlays.default;

@@ -65,7 +65,7 @@ in
             file = mkAliasDefinitions options.home.file;
             # Necessary for home-manager to work with flakes, otherwise it will
             # look for a nixpkgs channel.
-            stateVersion = if pkgs.stdenv.hostPlatform.isDarwin then "24.05" else config.system.stateVersion;
+            stateVersion = if pkgs.stdenv.hostPlatform.isDarwin then "25.05" else config.system.stateVersion;
             username = config.user.name;
 
             activation = mkAliasDefinitions options.home.activation;

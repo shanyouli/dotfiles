@@ -19,12 +19,14 @@
                   [
                     "nixos-stable"
                     "self"
+                    "home-manager"
                   ]
                 else
                   [
                     "darwin"
                     "darwin-stable"
                     "self"
+                    "home-manager"
                   ];
             in
             builtins.filter (x: !(builtins.elem x filterList)) v;
