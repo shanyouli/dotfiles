@@ -19,9 +19,9 @@
               inherit (inputs.nurpkgs.packages.${prev.system})
                 emacs
                 nix-index
-                nh
                 emacs-stable
                 emacs-git
+                emacs-igc
                 ;
             }
           ))

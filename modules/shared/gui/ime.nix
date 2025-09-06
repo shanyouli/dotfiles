@@ -200,7 +200,7 @@ in
         } else {
           log debug "Models will be downloaded"
           mkdir ($gram_file | path dirname)
-          wget -c https://cnb.cool/Mintimate/rime/oh-my-rime/-/releases/download/latest/wanxiang-lts-zh-hans.gram -O $gram_file
+          ${pkgs.wget}/bin/wget -c https://cnb.cool/Mintimate/rime/oh-my-rime/-/releases/download/latest/wanxiang-lts-zh-hans.gram -O $gram_file
         }
       '';
     })
