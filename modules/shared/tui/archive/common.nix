@@ -25,6 +25,7 @@ in
       unzip
       unrar
       rar
+      gnutar
     ];
   };
 }

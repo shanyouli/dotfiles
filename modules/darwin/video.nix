@@ -25,7 +25,7 @@ in
       ]
       ++ optionals (config.modules.media.stream.enable && config.modules.gui.enable) [
         "iina+"
-        "shanyouli/tap/simple-live"
+        # "shanyouli/tap/simple-live" , 不提供安装包了
       ];
   };
 }
