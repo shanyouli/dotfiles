@@ -14,6 +14,9 @@
     # shared
 
     # tui 工具
+    tui = {
+      yazi.enable = true;
+    };
     archive.default = "ouch";
     translate = {
       enable = true;

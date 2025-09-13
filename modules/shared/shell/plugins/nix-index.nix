@@ -35,7 +35,7 @@ in
             --description "default command not found handler"
             set cmd $argv[1]
             set attrs (
-              ${cfgpkg}/bin/nix-locate --minimal --no-group --type x --type s --top-level --whole-name --at-root "/bin/$cmd" \
+              ${cfgpkg}/bin/nix-locate --minimal --no-group --type x --type s --whole-name --at-root "/bin/$cmd" \
                 | string replace ".out" ""
             )
             set len (count $attrs)
@@ -71,7 +71,7 @@ in
         $env.config.hooks = ($env.config | default {} hooks).hooks
         $env.config.hooks.command_not_found = {|cmd_name|
             try {
-                let attrs = (${cfgpkg}/bin/nix-locate --minimal --no-group --type x --type s --top-level --whole-name --at-root $"/bin/($cmd_name)" | lines)
+                let attrs = (${cfgpkg}/bin/nix-locate --minimal --no-group --type x --type s --whole-name --at-root $"/bin/($cmd_name)" | lines)
                 if ($attrs | is-empty) {
                     if (which brew | is-empty) {
                         return null

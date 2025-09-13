@@ -1,6 +1,9 @@
 { pkgs, ... }:
 {
   modules = {
+    tui = {
+      yazi.enable = true;
+    };
     app = {
       qbittorrent = {
         enable = true;
