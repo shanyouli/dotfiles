@@ -97,9 +97,9 @@
       editor = {
         emacs = {
           enable = true;
-          service.enable = true;
+          service.enable = false;
           rime.ice.enable = true;
-          package = pkgs.unstable.emacs-igc;
+          package = pkgs.unstable.emacs-stable;
         };
 
         default = "nvim";

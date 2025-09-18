@@ -114,6 +114,7 @@ in
             "macfuse" # veracrypt 需要的工具
 
             "wechat"
+            "qq"
             "wpsoffice-cn" # "microsoft-office" , 手动安装
             "mactex"
 
