@@ -1,3 +1,6 @@
 * css 来源
- - https://github.com/yuzhi535/VerticalFox
 需要结合插件 sidebery 一起使用
+* Note
+1. 最初来源: https://github.com/yuzhi535/VerticalFox
+2. [[https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/autohide_sidebar.css][autohide sidebar]] 取代原来的 sidebar使用目标
+3. firefox 中 about:config 设置 ~sidebar.revamp~ 为 true

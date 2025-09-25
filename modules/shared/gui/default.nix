@@ -31,6 +31,7 @@ in
       pkgs.unstable.pragmasevka-nerd
       pkgs.unstable.pragmasevka-sans
       pkgs.unstable.pragmasevka-sc-nf
+      pkgs.unstable.pragmasevka-sc
       pkgs.unstable.pragmasevka-serif
     ];
     # fonts = {

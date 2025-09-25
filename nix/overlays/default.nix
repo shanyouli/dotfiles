@@ -19,7 +19,7 @@
               inherit (inputs.nurpkgs.packages.${prev.system})
                 emacs
                 nix-index
-                emacs-stable
+                emacs-unstable
                 emacs-git
                 emacs-igc
                 ;

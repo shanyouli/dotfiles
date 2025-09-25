@@ -99,7 +99,7 @@
           enable = true;
           service.enable = false;
           rime.ice.enable = true;
-          package = pkgs.unstable.emacs-stable;
+          package = pkgs.unstable.emacs;
         };
 
         default = "nvim";

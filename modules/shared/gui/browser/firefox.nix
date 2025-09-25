@@ -39,6 +39,7 @@ in
   options.modules.gui.browser.firefox = {
     enable = mkEnableOption "Whether to using firefox";
     dev.enable = mkBoolOpt true;
+    flex.enable = mkBoolOpt true;
     package = mkOption {
       type = with types; nullOr package;
       default = if pkgs.stdenvNoCC.isLinux then pkgs.firefox else pkgs.unstable.darwinapps.firefox;
@@ -125,11 +126,15 @@ in
             Path=Profiles/shit
           '';
           "${profilePath}/.keep".text = "";
-          "${profilePath}/chrome/userChrome.css" = mkIf (cfg.userChrome != "") { text = cfg.userChrome; };
-          "${profilePath}/chrome/userContent.css" = mkIf (cfg.userContent != "") { text = cfg.userContent; };
+          "${profilePath}/chrome/userChrome.css" = mkIf (cfg.userChrome != "" && (!cfg.flex.enable)) {
+            text = cfg.userChrome;
+          };
+          "${profilePath}/chrome/userContent.css" = mkIf (cfg.userContent != "" && (!cfg.flex.enable)) {
+            text = cfg.userContent;
+          };
           "${profilePath}/user.js".text = ''
+            ${lib.optionalString cfg.flex.enable (builtins.readFile "${pkgs.unstable.flexfox}/user.js")}
             ${builtins.readFile "${my.dotfiles.config}/firefox/user.js"}
-
             ${cfg.extraConfig}
           '';
           "${profilePath}/extensions" =
@@ -159,7 +164,13 @@ in
                 force = true;
               };
         }
-        (mkIf (cfg.userChrome == "") {
+        (mkIf cfg.flex.enable {
+          "${profilePath}/chrome/" = {
+            source = "${pkgs.unstable.flexfox}/chrome";
+            recursive = true;
+          };
+        })
+        (mkIf (cfg.userChrome == "" && (!cfg.flex.enable)) {
           "${profilePath}/chrome/userChrome.css".source =
             let
               name = if pkgs.stdenvNoCC.isDarwin then "userChrome-darwin.css" else "userChrome-linux.css";
@@ -167,8 +178,13 @@ in
             "${my.dotfiles.config}/firefox/chrome/${name}";
         })
         {
-          "${profilePath}/chrome/" = {
-            source = "${pkgs.unstable.userChromeJS}";
+          "${profilePath}/chrome/utils" = {
+            source = "${pkgs.unstable.userChromeJS}/utils";
+            recursive = true;
+          };
+          "${profilePath}/chrome/userChrome.js".source = "${pkgs.unstable.userChromeJS}/userChrome.js";
+          "${profilePath}/chrome/userChromeJS" = {
+            source = "${pkgs.unstable.userChromeJS}/userChromeJS";
             recursive = true;
           };
         }
