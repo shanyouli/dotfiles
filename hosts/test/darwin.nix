@@ -67,7 +67,7 @@
     };
 
     alist = {
-      enable = true;
+      enable = false;
       service.startup = false;
     };
 

@@ -142,7 +142,7 @@
     };
 
     alist = {
-      enable = true;
+      enable = false;
       service.startup = false;
     };
     rsync.enable = true;
