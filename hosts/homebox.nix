@@ -33,7 +33,7 @@
     download = {
       enable = true;
       aria2 = {
-        aria2p = true;
+        aria2p = !pkgs.stdenvNoCC.hostPlatform.isDarwin;
         service.startup = false;
       };
     };
