@@ -24,6 +24,7 @@ in
   };
   config = mkIf cfg.enable {
     home.packages = [ cfg.pkg ];
+    nixpkgs.config.permittedInsecurePackages = [ "alist-${cfg.pkg.version}" ];
     modules.shell.zsh.rcInit = ''
       alist() {
           if [[ "$*" == *--data* ]]; then
