@@ -42,13 +42,12 @@ in
           inherit self my;
           inherit (self) inputs;
         };
-        modules =
-          [
-            (_: { nixpkgs.overlays = overlays; })
-            self.homeModules.default
-          ]
-          ++ lib.optionals (name == "test") [ (my.relativeToRoot "hosts/test/home-manager.nix") ]
-          ++ modules;
+        modules = [
+          (_: { nixpkgs.overlays = overlays; })
+          self.homeModules.default
+        ]
+        ++ lib.optionals (name == "test") [ (my.relativeToRoot "hosts/test/home-manager.nix") ]
+        ++ modules;
       }
     );
 }

@@ -57,35 +57,34 @@ in
           OMZP::rust/_rustc
       '';
     };
-    my.user.init.init-rust =
-      ''
-        mkdir ("${config.home.cacheDir}" | path join "cargo/registry")
-        mkdir ("${config.home.cacheDir}" | path join "cargo/git")
-        mkdir ("${config.home.configDir}" | path join "cargo")
-        touch ("${config.home.configDir}" | path join "cargo/credentials.toml")
-        let rust_version = "${cfg.version}"
-        $env.RUSTUP_HOME = "${rustup_dir}"
-        if (${package}/bin/rustup toolchain list | str contains $rust_version) {
-          log debug "Rust alread installed."
-        } else {
-          ${package}/bin/rustup toolchain install $rust_version --component rust-src
-          ${package}/bin/rustup default $rust_version
+    my.user.init.init-rust = ''
+      mkdir ("${config.home.cacheDir}" | path join "cargo/registry")
+      mkdir ("${config.home.cacheDir}" | path join "cargo/git")
+      mkdir ("${config.home.configDir}" | path join "cargo")
+      touch ("${config.home.configDir}" | path join "cargo/credentials.toml")
+      let rust_version = "${cfg.version}"
+      $env.RUSTUP_HOME = "${rustup_dir}"
+      if (${package}/bin/rustup toolchain list | str contains $rust_version) {
+        log debug "Rust alread installed."
+      } else {
+        ${package}/bin/rustup toolchain install $rust_version --component rust-src
+        ${package}/bin/rustup default $rust_version
+      }
+    ''
+    + optionalString (!cfg.enSlsp) ''
+      if ("${config.home.binDir}" | path join "rust-analyzer" | path exists) {
+        log debug "Rust-analyzer alread installed."
+      } else if (${package}/bin/rustup component list | str contains "rust-analyzer") {
+        log debug "Start install rust-analyzer"
+        ${package}/bin/rustup component add rust-analyzer
+        if (not ("${config.home.binDir}" | path join "rust-analyzer" | path exists)) {
+          ln -st "${config.home.binDir}" (${package}/bin/rustup which rust-analyzer)
         }
-      ''
-      + optionalString (!cfg.enSlsp) ''
-        if ("${config.home.binDir}" | path join "rust-analyzer" | path exists) {
-          log debug "Rust-analyzer alread installed."
-        } else if (${package}/bin/rustup component list | str contains "rust-analyzer") {
-          log debug "Start install rust-analyzer"
-          ${package}/bin/rustup component add rust-analyzer
-          if (not ("${config.home.binDir}" | path join "rust-analyzer" | path exists)) {
-            ln -st "${config.home.binDir}" (${package}/bin/rustup which rust-analyzer)
-          }
-        } else {
-          log warning "Low version of rust!!!"
-          log warning "Please use cargo install or system command to install rust-analyzer"
-        }
-      '';
+      } else {
+        log warning "Low version of rust!!!"
+        log warning "Please use cargo install or system command to install rust-analyzer"
+      }
+    '';
     home.packages = with pkgs; [
       package
       (mkIf cfg.enSlsp rust-analyzer)

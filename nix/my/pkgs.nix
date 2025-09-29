@@ -12,7 +12,8 @@ rec {
       name = "${package.pname}-wrapper-${package.version}";
       _nativeBuildInputs = [
         pkgs.makeWrapper
-      ] ++ optionals (args_ ? nativeBuildInputs) args_.nativeBuildInputs;
+      ]
+      ++ optionals (args_ ? nativeBuildInputs) args_.nativeBuildInputs;
       paths = [ package ] ++ optionals (args_ ? paths) args_.paths;
       postBuild = ''
         if [[ -d $out/bin ]]; then

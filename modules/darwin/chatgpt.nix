@@ -23,11 +23,12 @@ in
     };
   };
   config = mkIf cfg.enable {
-    homebrew.casks =
-      [ "cherry-studio" ]
-      ++ optionals cfg.nextchat.enable [ "shanyouli/tap/nextchat" ]
-      ++ optionals cfg.local.enable [ "ollama" ]
-      ++ optionals cfg.snapbox.enable [ "shanyouli/tap/snapbox" ];
+    homebrew.casks = [
+      "cherry-studio"
+    ]
+    ++ optionals cfg.nextchat.enable [ "shanyouli/tap/nextchat" ]
+    ++ optionals cfg.local.enable [ "ollama" ]
+    ++ optionals cfg.snapbox.enable [ "shanyouli/tap/snapbox" ];
     my.user.extra = optionalString cfg.local.enable (
       mkOrder 10000 ''
         log info "Please run \"ollama pull lama3.2\" install modal."

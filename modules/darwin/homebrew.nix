@@ -99,120 +99,119 @@ in
           "buo/cask-upgrade"
           "shanyouli/tap"
         ];
-        casks =
-          [
-            "raycast" # 取代 spotlight
-            # "stats" # 状态显示, 目前无法显示温度。
-            "macs-fan-control" # 用来控制 fan 的工具
-            # "forkgram-telegram"
-            "easydict" # 翻译软件
-            "jetbrains-toolbox"
-            # "syncthing" 同步
-            # "downie"
-            "lulu" # 网络管理
-            "veracrypt" # "cryptomator" # 即时加密软件
-            "macfuse" # veracrypt 需要的工具
+        casks = [
+          "raycast" # 取代 spotlight
+          # "stats" # 状态显示, 目前无法显示温度。
+          "macs-fan-control" # 用来控制 fan 的工具
+          # "forkgram-telegram"
+          "easydict" # 翻译软件
+          "jetbrains-toolbox"
+          # "syncthing" 同步
+          # "downie"
+          "lulu" # 网络管理
+          "veracrypt" # "cryptomator" # 即时加密软件
+          "macfuse" # veracrypt 需要的工具
 
-            "wechat"
-            "qq"
-            "wpsoffice-cn" # "microsoft-office" , 手动安装
-            "mactex"
+          "wechat"
+          "qq"
+          "wpsoffice-cn" # "microsoft-office" , 手动安装
+          "mactex"
 
-            # "displaperture" # screen 曲线图
-            # "imageoptim" # 图片压缩
-            # "licecap" # GIF kap
-            # "imazing" # 手机备份管理
-            (mkIf (!config.modules.gui.media.flameshot.enable) "shottr") # 截图
-            "betterdisplay" # 其他替代工具
-            "shanyouli/tap/stillcolor"
-            # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
-            "maczip" # 压缩解压GUI
-            # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
-            "findergo" # 快捷方式，在finder中打开终端
-            "zotero" # 文献管理
+          # "displaperture" # screen 曲线图
+          # "imageoptim" # 图片压缩
+          # "licecap" # GIF kap
+          # "imazing" # 手机备份管理
+          (mkIf (!config.modules.gui.media.flameshot.enable) "shottr") # 截图
+          "betterdisplay" # 其他替代工具
+          "shanyouli/tap/stillcolor"
+          # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
+          "maczip" # 压缩解压GUI
+          # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
+          "findergo" # 快捷方式，在finder中打开终端
+          "zotero" # 文献管理
 
-            # "warp" # next terminal, 不太好用
+          # "warp" # next terminal, 不太好用
 
-            "syntax-highlight"
-            "qlmarkdown"
+          "syntax-highlight"
+          "qlmarkdown"
 
-            # "playcover-community" # 侧载工具
+          # "playcover-community" # 侧载工具
 
-            # "mac-mouse-fix" # 鼠标fix
-            "mos"
-            "pictureview" # 看图
+          # "mac-mouse-fix" # 鼠标fix
+          "mos"
+          "pictureview" # 看图
 
-            "tencent-lemon" # 文件清理 or ""clean-me""
-            "pearcleaner" # app 卸载工具 or "appcleaner"
+          "tencent-lemon" # 文件清理 or ""clean-me""
+          "pearcleaner" # app 卸载工具 or "appcleaner"
 
-            "charles" # "proxyman", 抓包
-            "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
-            "background-music" # 和一些工具冲突，eg mpd， yesplaymusic
+          "charles" # "proxyman", 抓包
+          "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
+          "background-music" # 和一些工具冲突，eg mpd， yesplaymusic
 
-            "postman"
-            "rapidapi" # "httpie"
-            "reqable"
+          "postman"
+          "rapidapi" # "httpie"
+          "reqable"
 
-            "paragon-ntfs"
+          "paragon-ntfs"
 
-            # "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
-            # "sequel-ace" # mysql
-            # "navicat-premium"
+          # "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
+          # "sequel-ace" # mysql
+          # "navicat-premium"
 
-            # "maccy" # clip 剪切薄，使用raycast取代
-            # "visual-studio-code" # other editors nix 管理
-            # "command-x" # Cut files, need upgrade
-            "logseq" # 笔记工具
+          # "maccy" # clip 剪切薄，使用raycast取代
+          # "visual-studio-code" # other editors nix 管理
+          # "command-x" # Cut files, need upgrade
+          "logseq" # 笔记工具
 
-            "markedit" # markdown 编辑器
+          "markedit" # markdown 编辑器
 
-            # "windterm" # 比较好用的 ssh 客户端，可以使用 vscode 的 ssh 插件取代
-            # "doll" # 在 menubar 上显示 消息提示
-            # "zed" # 还是没有 vscode 好用
-            # "qutebrowser" # 浏览器
-            "zen"
+          # "windterm" # 比较好用的 ssh 客户端，可以使用 vscode 的 ssh 插件取代
+          # "doll" # 在 menubar 上显示 消息提示
+          # "zed" # 还是没有 vscode 好用
+          # "qutebrowser" # 浏览器
+          "zen"
 
-            "shanyouli/tap/upic" # or "picgo"
+          "shanyouli/tap/upic" # or "picgo"
 
-            "shanyouli/tap/quickrecorder" # 录屏
-            "shanyouli/tap/tmexclude"
+          "shanyouli/tap/quickrecorder" # 录屏
+          "shanyouli/tap/tmexclude"
 
-            "shanyouli/tap/vimmotion" # 使用 vim 全局操作
-            "shanyouli/tap/airbattery" # 设备电量显示
+          "shanyouli/tap/vimmotion" # 使用 vim 全局操作
+          "shanyouli/tap/airbattery" # 设备电量显示
 
-            "bbackupp" # ios 备份工具 #
+          "bbackupp" # ios 备份工具 #
 
-            "shanyouli/tap/mountmate" # U 盘挂载管理工具
-          ]
-          ++ optionals config.modules.adb.enable [
-            # # 使用第三方工具取代openmtp，MacDroid.app
-            # "openmtp" # 目前不是很稳定
-            # “macdroid” # 付费app，使用adb传输，稳定性存疑
-            # "android-file-transfer" # 可用，稳定性一般
-            # "commander-one" # 速度可以，大文件也稳定，需要付费
-            # "whoozle-android-file-transfer" # 速度一般，稳定
-          ]
-          ++ optionals config.modules.gopass.enable [ "ente-auth" ]
-          ++ optionals (
-            config.modules.gui.browser.chrome.enable && config.modules.gui.browser.chrome.useBrew
-          ) [ "google-chrome" ]
-          ++ optionals (config.modules.git.enable && config.modules.git.enGui) [
-            "github" # github客户端
-          ]
-          # ++ optionals (config.modules.app.editor.nvim.enGui && config.modules.app.editor.nvim.enable) [
-          #   "shanyouli/tap/neovide-pure"
-          # ]
-          # ++ optionals (config.modules.gui.enable && (config.modules.proxy.default != "")) [
-          # 使用 macos 商店的工具取代它
-          #   # "shanyouli/tap/clash-verge"
-          #   # (mkIf (config.modules.proxy.default == "sing-box") "sfm")
-          # ]
-          ++ optionals cfg.gui.enable [
-            # "applite"
-            (mkIf (config.modules.proxy.default == "sing-box") "shanyouli/tap/gui-for-singbox")
-            # (mkIf (config.modules.proxy.default == "clash") "shanyouli/tap/gui-for-clash")
-            "clash-verge-rev"
-          ];
+          "shanyouli/tap/mountmate" # U 盘挂载管理工具
+        ]
+        ++ optionals config.modules.adb.enable [
+          # # 使用第三方工具取代openmtp，MacDroid.app
+          # "openmtp" # 目前不是很稳定
+          # “macdroid” # 付费app，使用adb传输，稳定性存疑
+          # "android-file-transfer" # 可用，稳定性一般
+          # "commander-one" # 速度可以，大文件也稳定，需要付费
+          # "whoozle-android-file-transfer" # 速度一般，稳定
+        ]
+        ++ optionals config.modules.gopass.enable [ "ente-auth" ]
+        ++ optionals (
+          config.modules.gui.browser.chrome.enable && config.modules.gui.browser.chrome.useBrew
+        ) [ "google-chrome" ]
+        ++ optionals (config.modules.git.enable && config.modules.git.enGui) [
+          "github" # github客户端
+        ]
+        # ++ optionals (config.modules.app.editor.nvim.enGui && config.modules.app.editor.nvim.enable) [
+        #   "shanyouli/tap/neovide-pure"
+        # ]
+        # ++ optionals (config.modules.gui.enable && (config.modules.proxy.default != "")) [
+        # 使用 macos 商店的工具取代它
+        #   # "shanyouli/tap/clash-verge"
+        #   # (mkIf (config.modules.proxy.default == "sing-box") "sfm")
+        # ]
+        ++ optionals cfg.gui.enable [
+          # "applite"
+          (mkIf (config.modules.proxy.default == "sing-box") "shanyouli/tap/gui-for-singbox")
+          # (mkIf (config.modules.proxy.default == "clash") "shanyouli/tap/gui-for-clash")
+          "clash-verge-rev"
+        ];
         brews = [
           # "mysql"
           "mist-cli"

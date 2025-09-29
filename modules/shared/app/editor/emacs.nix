@@ -141,33 +141,32 @@ in
 
           (mkIf config.modules.gpg.enable pkgs.pinentry-emacs) # in emacs gnupg prompts
         ];
-        configFile."doom/config.init.el".text =
+        configFile."doom/config.init.el".text = ''
+          ;;; config.init.el -*- lexical-binding: t; -*-
+          (setq lsp-bridge-python-command "${config.modules.python.finalPkg}/bin/python3")
+        ''
+        + optionalString cfg.rime.enable (
+          let
+            rime-data-dir =
+              if cfg.rime.ice.enable then
+                "${pkgs.unstable.rime-ice}/share/rime-data"
+              else if config.modules.rime.enable then
+                "${config.modules.rime.dataPkg}/share/rime-data"
+              else if pkgs.stdenvNoCC.hostPlatform.isDarwin then
+                "/Library/Input Methods/Squirrel.app/Contents/SharedSupport"
+              else
+                "${pkgs.rime-data}/share/rime-data";
+          in
           ''
-            ;;; config.init.el -*- lexical-binding: t; -*-
-            (setq lsp-bridge-python-command "${config.modules.python.finalPkg}/bin/python3")
+            (setq rime-emacs-module-header-root "${cfg.package}/include")
+            (setq rime-librime-root "${pkgs.librime}")
+            (setq rime-share-data-dir "${rime-data-dir}")
+            (setq rime-user-data-dir "${my.homedir}/${cfg.rime.dir}")
           ''
-          + optionalString cfg.rime.enable (
-            let
-              rime-data-dir =
-                if cfg.rime.ice.enable then
-                  "${pkgs.unstable.rime-ice}/share/rime-data"
-                else if config.modules.rime.enable then
-                  "${config.modules.rime.dataPkg}/share/rime-data"
-                else if pkgs.stdenvNoCC.hostPlatform.isDarwin then
-                  "/Library/Input Methods/Squirrel.app/Contents/SharedSupport"
-                else
-                  "${pkgs.rime-data}/share/rime-data";
-            in
-            ''
-              (setq rime-emacs-module-header-root "${cfg.package}/include")
-              (setq rime-librime-root "${pkgs.librime}")
-              (setq rime-share-data-dir "${rime-data-dir}")
-              (setq rime-user-data-dir "${my.homedir}/${cfg.rime.dir}")
-            ''
-          )
-          + ''
-            ${cfg.doom.confInit}
-          '';
+        )
+        + ''
+          ${cfg.doom.confInit}
+        '';
       };
       my.user.extra = optionalString cfg.rime.enable ''
         log debug "If you updated the emacs-rime input method, delete ${my.homedir}/${cfg.rime.dir}/build."

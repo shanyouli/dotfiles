@@ -15,15 +15,13 @@ let
   package =
     if pkgs.stdenvNoCC.isDarwin then
       basePkg.overrideAttrs (old: {
-        postInstall =
-          (optionalString (old ? postInstall) old.postInstall)
-          + ''
-            if [[ -d $out/bin/flameshot.app ]]; then
-              mkdir -p $out/Applications
-              mv $out/bin/*.app $out/Applications
-              ln -sf $out/Applications/flameshot.app/Contents/MacOS/flameshot $out/bin/flameshot
-            fi
-          '';
+        postInstall = (optionalString (old ? postInstall) old.postInstall) + ''
+          if [[ -d $out/bin/flameshot.app ]]; then
+            mkdir -p $out/Applications
+            mv $out/bin/*.app $out/Applications
+            ln -sf $out/Applications/flameshot.app/Contents/MacOS/flameshot $out/bin/flameshot
+          fi
+        '';
       })
     else
       basePkg;

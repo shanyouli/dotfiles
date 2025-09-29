@@ -195,16 +195,15 @@ in
           registry = mkForce registryInputs // {
             dotfiles.flake = inputs.self;
           };
-          nixPath =
-            [
-              "nixpkgs=/etc/nixpkgs"
-              "nixpkgs-unstable=/etc/nixpkgs-unstable"
-              "home-manager=/etc/home-manager"
-            ]
-            ++ (builtins.filter (
-              x: !((hasPrefix "nixpkgs=" x) || (hasPrefix "nixpkgs-unstable=" x) || (hasPrefix "home-manager=" x))
-            ) nixPathInputs)
-            ++ [ "dotfiles=${my.dotfiles.dir}" ];
+          nixPath = [
+            "nixpkgs=/etc/nixpkgs"
+            "nixpkgs-unstable=/etc/nixpkgs-unstable"
+            "home-manager=/etc/home-manager"
+          ]
+          ++ (builtins.filter (
+            x: !((hasPrefix "nixpkgs=" x) || (hasPrefix "nixpkgs-unstable=" x) || (hasPrefix "home-manager=" x))
+          ) nixPathInputs)
+          ++ [ "dotfiles=${my.dotfiles.dir}" ];
         };
 
       user.shell =

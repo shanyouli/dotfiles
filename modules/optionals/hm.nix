@@ -99,16 +99,15 @@ in
           registry = mkForce registryInputs // {
             dotfiles.flake = inputs.self;
           };
-          nixPath =
-            [
-              "nixpkgs=${config.home.configDir}/nixpath/nixpkgs"
-              "nixpkgs-unstable=${config.home.configDir}/nixpath/nixpkgs-unstable"
-              "home-manager=${config.home.configDir}/nixpath/home-manager"
-            ]
-            ++ (builtins.filter (
-              x: !((hasPrefix "nixpkgs=" x) || (hasPrefix "nixpkgs-unstable=" x) || (hasPrefix "home-manager=" x))
-            ) nixPathInputs)
-            ++ [ "dotfiles=${my.dotfiles.dir}" ];
+          nixPath = [
+            "nixpkgs=${config.home.configDir}/nixpath/nixpkgs"
+            "nixpkgs-unstable=${config.home.configDir}/nixpath/nixpkgs-unstable"
+            "home-manager=${config.home.configDir}/nixpath/home-manager"
+          ]
+          ++ (builtins.filter (
+            x: !((hasPrefix "nixpkgs=" x) || (hasPrefix "nixpkgs-unstable=" x) || (hasPrefix "home-manager=" x))
+          ) nixPathInputs)
+          ++ [ "dotfiles=${my.dotfiles.dir}" ];
         };
     }
   ];

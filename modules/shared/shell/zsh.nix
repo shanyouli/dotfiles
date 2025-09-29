@@ -173,35 +173,34 @@ in
     };
     home = {
       packages = [ cfg.package ];
-      configFile =
-        {
-          "zsh".source = "${my.dotfiles.config}/zsh";
-          "zsh".recursive = true;
-          "zsh/cache/prev.zshrc".text = cfg.prevInit;
-          "zsh/cache/extra.zshrc".text = cfg.rcInit;
-          "zsh/cache/extra.zshenv".text = cfg.envInit;
-          "zsh/.zshrc".text = ''
-            source ${pkgs.unstable.zpmod}/share/zpmod/zpmod.plugin.zsh
-            : ''${ZINIT_HOME:="''${XDG_DATA_HOME}/zinit/zinit.git"}
-            ${lib.optionalString (!cfg.zinit.enable) ''
-              [[ -d "''${ZINIT_HOME}" ]] || {
-                mkdir -p $(dirname "''${ZINIT_HOME}")
-                git clone --depth 1 https://github.com/zdharma-continuum/zinit.git "''${ZINIT_HOME}"
-              }
-            ''}
-            ZINIT[BIN_DIR]="$ZINIT_HOME"
-            _source "''${ZINIT_HOME}/zinit.zsh"
+      configFile = {
+        "zsh".source = "${my.dotfiles.config}/zsh";
+        "zsh".recursive = true;
+        "zsh/cache/prev.zshrc".text = cfg.prevInit;
+        "zsh/cache/extra.zshrc".text = cfg.rcInit;
+        "zsh/cache/extra.zshenv".text = cfg.envInit;
+        "zsh/.zshrc".text = ''
+          source ${pkgs.unstable.zpmod}/share/zpmod/zpmod.plugin.zsh
+          : ''${ZINIT_HOME:="''${XDG_DATA_HOME}/zinit/zinit.git"}
+          ${lib.optionalString (!cfg.zinit.enable) ''
+            [[ -d "''${ZINIT_HOME}" ]] || {
+              mkdir -p $(dirname "''${ZINIT_HOME}")
+              git clone --depth 1 https://github.com/zdharma-continuum/zinit.git "''${ZINIT_HOME}"
+            }
+          ''}
+          ZINIT[BIN_DIR]="$ZINIT_HOME"
+          _source "''${ZINIT_HOME}/zinit.zsh"
 
-            _source "''${ZDOTDIR}/cache/prev.zshrc" \
-              "''${ZDOTDIR}/zshrc.zsh" \
-              "''${ZDOTDIR}/cache/extra.zshrc" \
-              "''${HOME}/.zshrc_local"
-            alias vish="''${EDITOR:-vim} ~/.zshrc_local"
-          '';
-        }
-        // (baseFunction cfg.cmpFiles "completions")
-        // (baseFunction cfg.pluginFiles "plugins")
-        // (baseFunction cfg.envFiles "env");
+          _source "''${ZDOTDIR}/cache/prev.zshrc" \
+            "''${ZDOTDIR}/zshrc.zsh" \
+            "''${ZDOTDIR}/cache/extra.zshrc" \
+            "''${HOME}/.zshrc_local"
+          alias vish="''${EDITOR:-vim} ~/.zshrc_local"
+        '';
+      }
+      // (baseFunction cfg.cmpFiles "completions")
+      // (baseFunction cfg.pluginFiles "plugins")
+      // (baseFunction cfg.envFiles "env");
     };
   };
 }
