@@ -65,4 +65,7 @@
   # Firefox 102 introduced query parameter stripping like utm_source. Enabled by
   # default with Strict Enhanced Tracking Protection.
   "privacy.query_stripping" = true;
+
+  # 不使用 chat 侧边
+  "browser.ml.chat.enabled" = false;
 }

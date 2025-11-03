@@ -182,6 +182,8 @@ in
           "bbackupp" # ios 备份工具 #
 
           "shanyouli/tap/mountmate" # U 盘挂载管理工具
+
+          "macpacker" # zip 文件预览
         ]
         ++ optionals config.modules.adb.enable [
           # # 使用第三方工具取代openmtp，MacDroid.app

@@ -229,6 +229,8 @@
       chat = {
         enable = true;
         nextchat.enable = false;
+        snapbox.enable = false;
+        local.enable = lib.mkForce false;
       };
       # ui = {
       #   ice.enable = true;
