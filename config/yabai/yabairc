@@ -97,4 +97,4 @@ yabai -m rule --add title="Picture-in-Picture" opacity=1 manage=off
 #     action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
 # yabai -m signal --add event=application_terminated \
 #     action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
-yabai -m rule --add app="^PlantsVsZombiesRH\$" opacity=1 manage=off grid=4:4:0:0:4:3
+yabai -m rule --add app="^PlantsVsZombiesRH$" opacity=1 manage=off grid=4:4:0:0:4:3
