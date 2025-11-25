@@ -21,9 +21,7 @@ in
       mkOption {
         type = types.package;
         default = pkgs.unstable.qbittorrent-enhanced;
-        apply =
-          _v:
-          if cfg.enGui then pkgs.unstable.qbittorrent-enhanced else pkgs.unstable.qbittorrent-enhanced-nox;
+        apply = _v: if cfg.enGui then pkgs.qbittorrent-enhanced else pkgs.qbittorrent-enhanced-nox;
         description = "qbittorrent use package";
       };
     webui = mkOption {
