@@ -41,25 +41,26 @@ let
     patch:
       speller/algebra:
         __patch:
-          - wanxiang.schema:/全拼
+          - wanxiang_algebra:/base/全拼  
   '';
   wanxiang-pro = ''
     patch:
       speller/algebra:
         __patch:
-          - wanxiang_pro.schema:/全拼
-          - wanxiang_pro.schema:/间接辅助
+          - wanxiang_algebra:/pro/全拼  
+          - wanxiang_algebra:/pro/间接辅助
   '';
   wanxiang-mixedcode = ''
     patch:
       speller/algebra:
-        __include: wanxiang_mixedcode.schema:/全拼
+        __include: wanxiang_algebra:/mixed/通用派生规则
+         __patch: wanxiang_algebra:/mixed/全拼 
   '';
   wanxiang-reverse = ''
     patch:
       speller/algebra:
-        __include: wanxiang_reverse.schema:/全拼
-        __patch: wanxiang_reverse.schema:/hspzn
+        __include: wanxiang_algebra:/reverse/全拼
+        __patch: wanxiang_algebra:/reverse/hspzn
   '';
 in
 {
