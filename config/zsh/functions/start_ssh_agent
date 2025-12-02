@@ -1,0 +1,8 @@
+# ssh-agent 启动，不用每次可以输入 ssh 密码
+if [ -z "$SSH_AUTH_SOCK" ]; then
+  echo "Starting ssh-agent..."
+  eval $(ssh-agent -s)
+  # ssh-add ~/.ssh/id_edxx
+else
+  echo "ssh-agent already running."
+fi

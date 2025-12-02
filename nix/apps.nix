@@ -146,7 +146,8 @@
             if ($flakeType == "homeConfigurations") {
               nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- switch --flake $"${self}#($host)" -b backup --show-trace
             } else {
-              nix build $"${self}#($flakeType).($host).config.system.build.toplevel" ...$common_options ...$rest
+              log info $"${self}#($flakeType).($host).config.system.build.toplevel" (...$common_options) (...$rest)"
+              nix build -v --experimental-features "nix-command flakes" $"${self}#($flakeType).($host).config.system.build.toplevel" ...$common_options ...$rest
               match $flakeType {
                 "darwinConfigurations" => { ./result/sw/bin/darwin-rebuild switch --flake $"${self}#($host)" --impure },
                 "nixosConfigurations" => { ./result/sw/bin/nixos-rebuild switch --flake $"${self}#($host)" --impure },

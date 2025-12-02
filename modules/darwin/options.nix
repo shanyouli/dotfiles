@@ -97,10 +97,12 @@ with my;
                   "ByHost",
                   $"com.apple.loginwindow.(/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice | awk -F'\"' '/IOPlatformUUID/{print $4}').plist"
                 ] | path join
-                if (open $mac_loginFile |decode utf-8 | into string | str contains "TALAppsToRelaunchAtLogin") {
-                   /usr/bin/chflags nouchg $mac_loginFile
-                   /usr/libexec/PlistBuddy -c 'Delete :TALAppsToRelaunchAtLogin' $mac_loginFile
-                   /usr/bin/chflags uimmutable $mac_loginFile
+                if ( $mac_loginFile |path exists ) {
+                  if (open $mac_loginFile |decode utf-8 | into string | str contains "TALAppsToRelaunchAtLogin") {
+                     /usr/bin/chflags nouchg $mac_loginFile
+                     /usr/libexec/PlistBuddy -c 'Delete :TALAppsToRelaunchAtLogin' $mac_loginFile
+                     /usr/bin/chflags uimmutable $mac_loginFile
+                  }
                 }
               '';
               desc = "Stop Auto Reopen app at login.";
