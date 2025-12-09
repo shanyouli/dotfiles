@@ -57,6 +57,8 @@ with my;
       system.activationScripts.postActivation.text = ''
         echo "System script executed after system activation"
         ${config.my.system.script}
+        # 防止 CursorUIViewService 无响应，而停止使用它
+        defaults write /Library/Preferences/FeatureFlags/Domain/UIKit.plist redesigned_text_cursor -dict-add Enabled -NO
         echo "User script excuted after system activation"
         sudo -u ${config.user.name} --set-home ${config.my.user.script}
         # 使用 nvd 取代
