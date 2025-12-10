@@ -1,0 +1,29 @@
+#!/usr/bin/env nu
+use std log
+
+# shutdown macos
+def "main shutdown" [
+  --force(-f), # Force shutdown
+  --debug(-d), # show log
+]: nothing -> string {
+  if $force {
+    osascript -e 'tell app "System Events" to shut down'
+  } else {
+    osascript -e 'tell app "loginwindow" to «event aevtrsdn»'
+  }
+}
+
+# reboot macos
+def "main reboot" [
+  --force(-f), # Force reboot
+  --debug(-d), # show log
+]: nothing -> string {
+  if $force {
+    osascript -e 'tell app "System Events" to restart'
+  } else {
+    osascript -e 'tell app "loginwindow" to «event aevtrrst»'
+  }
+}
+
+# mac custom command
+def main []: nothing -> any { help main }
