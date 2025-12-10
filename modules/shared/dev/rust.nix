@@ -30,8 +30,12 @@ in
             cargoConfig = ''
               [source.crates-io]
               replace-with = 'ustc'
+
               [source.ustc]
-              registry = "git://mirrors.ustc.edu.cn/crates.io-index"
+              registry = "sparse+https://mirrors.ustc.edu.cn/crates.io-index/"
+
+              [registries.ustc]
+              index = "sparse+https://mirrors.ustc.edu.cn/crates.io-index/"
 
               [install]
               root = "${homeDir}/.local"

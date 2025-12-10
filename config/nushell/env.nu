@@ -16,7 +16,7 @@ $env.NU_LIB_DIRS = [
 source (if (($SOURCE_PATH | path join "env") | path expand | path exists) { "env" } else { $EMPTY_FILE })
 
 # Filter paths starting with $env.ZPFX parent directory
-def zpfx-filter-fn [ s: string ] {
+def zpfx-filter-fn [s: string]: list<any> -> bool {
   if ($env | get -o ZPFX | is-empty) {
     true
   } else {
@@ -26,7 +26,7 @@ def zpfx-filter-fn [ s: string ] {
 }
 
 # filter paths starting with /nix/store as PATH
-def nix-store-filter-fn [s: string ] {
+def nix-store-filter-fn [s: string]: list<any> -> any {
   if ($env | get -o IN_NIX_SHELL | is-empty) {
     (not ( $s | str starts-with "/nix/store"))
   } else {
@@ -40,8 +40,8 @@ $env.ENV_CONVERSIONS = {
             $s | split row (char esep)
                | path expand --no-symlink
                | uniq
-               | where  {|x| zpfx-filter-fn $x }
-               | where {|x| nix-store-filter-fn $x}
+               | where  (zpfx-filter-fn $it)
+               | where (nix-store-filter-fn $it)
         }
         to_string: { |v| $v | path expand --no-symlink | str join (char esep) }
     }
@@ -50,8 +50,8 @@ $env.ENV_CONVERSIONS = {
             $s | split row (char esep)
                | uniqe
                | path expand --no-symlink
-               | where  {|x| zpfx-filter-fn $x }
-               | where {|x| nix-store-filter-fn $x}
+               | where  (zpfx-filter-fn $it)
+               | where (nix-store-filter-fn $it)
         }
         to_string: { |v| $v | path expand --no-symlink | str join (char esep) }
     }

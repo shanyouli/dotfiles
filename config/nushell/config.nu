@@ -22,7 +22,7 @@ use alias-tips.nu
 
 # alias l = "ls -a | sort-by type name -i | grid -c | str trim"
 
-def vish [] {
+def vish []: string -> any {
   if (not ($nu.cache-dir | path expand | path exists)) {
     mkdir $nu.cache-dir
   }
@@ -30,7 +30,7 @@ def vish [] {
     print $"(ansi yellow_b)Please settings env EDITOR.(ansi reset)"
     return 1
   } else {
-    ^$"($env.EDITOR)" ($nu.cache-dir | path join "local.nu" | path expand)
+    run-external  $"($env.EDITOR)" ($nu.cache-dir | path join "local.nu" | path expand)
   }
 }
 alias resh = exec nu -l
