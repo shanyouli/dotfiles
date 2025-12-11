@@ -6,7 +6,6 @@
 # on a per-project basis.
 {
   config,
-  options,
   lib,
   pkgs,
   my,
@@ -74,7 +73,7 @@ in
         [
           cfg.finalPkg
           stylua # fmt
-          sumneko-lua-language-server # lsp
+          lua-language-server # lsp
           selene # a fast modern lua linter. 比 luacheck 更好
         ]
         ++ optionals cfg.fennel.enable [

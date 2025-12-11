@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  options,
   my,
   pkgs,
   ...
@@ -11,7 +10,6 @@ with my;
 let
   cfg = config.modules.macos.music;
   scfg = config.modules.media.music;
-  inherit (scfg) netease;
   mpdDir = "${config.home.cacheDir}/mpd";
   mpdfifo = "/private/tmp/mpd.fifo";
 in

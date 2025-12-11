@@ -122,19 +122,17 @@ in
             # three finger drag for space switching
             # TrackpadThreeFingerDrag = true;
           };
-          # firewall settings
-          alf = {
-            # 0 = disabled 1 = enabled 2 = blocks all connections except for essential services
-            globalstate = 1;
-            loggingenabled = 0;
-            stealthenabled = 1;
-          };
         };
 
         keyboard = {
           enableKeyMapping = true;
           # remapCapsLockToEscape = true;
         };
+      };
+      # firewall settings
+      networking.applicationFirewall = {
+        enableStealthMode = true;
+        enable = true;
       };
     };
 }

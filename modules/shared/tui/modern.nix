@@ -6,7 +6,6 @@
   pkgs,
   lib,
   config,
-  options,
   my,
   ...
 }:
@@ -29,7 +28,7 @@ in
       duf # df
       dua # gdu # du
       procs # ps(procps) 的替代工具
-      delta # diff
+      # delta # diff
       xh # curl
       dog # dig
     ];

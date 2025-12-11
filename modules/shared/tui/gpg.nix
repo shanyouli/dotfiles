@@ -2,7 +2,6 @@
   pkgs,
   lib,
   config,
-  options,
   my,
   ...
 }:
@@ -42,7 +41,7 @@ in
         defaultCacheTtlSsh = cfg.cacheTTL;
         maxCacheTtl = cfg.cacheTTL;
         maxCacheTtlSsh = cfg.cacheTTL;
-        pinentryPackage = pkgs.pinentry.gtk2;
+        pinentryPackage = pkgs.pinentry-gnome3;
       };
     })
     (mkIf pkgs.stdenvNoCC.isDarwin {

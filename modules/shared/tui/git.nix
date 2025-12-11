@@ -26,14 +26,15 @@ in
     ];
     home.programs.git = {
       enable = true;
-      package = pkgs.git;
-      userName = mkDefault my.fullName;
-      userEmail = mkDefault my.useremail;
-      signing = {
-        key = mkDefault my.useremail;
-        signByDefault = true;
-      };
-      extraConfig = {
+      settings = {
+        aliases = {
+          fix = "commit --amend --no-edit";
+          oops = "reset HEAD~1";
+          sub = "submodule update --init --recursive";
+          ignore = "!gi() { curl -sL https://www.toptal.com/developers/gitignore/api/$@ ;}; gi";
+        };
+        user.name = mkDefault my.fullName;
+        user.email = mkDefault my.useremail;
         credential.helper =
           if pkgs.stdenvNoCC.isDarwin then "osxkeychain" else "cache --timeout=1000000000";
         commit.verbose = true;
@@ -44,20 +45,19 @@ in
         push.followTags = true;
         core.quotePath = false;
       };
-      aliases = {
-        fix = "commit --amend --no-edit";
-        oops = "reset HEAD~1";
-        sub = "submodule update --init --recursive";
-        ignore = "!gi() { curl -sL https://www.toptal.com/developers/gitignore/api/$@ ;}; gi";
-      };
-      delta = {
-        enable = true;
-        options = {
-          side-by-side = true;
-          line-numbers = true;
-        };
+      package = pkgs.git;
+      signing = {
+        key = mkDefault my.useremail;
+        signByDefault = true;
       };
       lfs.enable = true;
+    };
+    home.programs.delta = {
+      enable = true;
+      options = {
+        side-by-side = true;
+        line-numbers = true;
+      };
     };
   };
 }

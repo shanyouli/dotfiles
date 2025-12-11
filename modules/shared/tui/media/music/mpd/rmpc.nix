@@ -5,7 +5,6 @@
   pkgs,
   lib,
   config,
-  options,
   my,
   ...
 }:

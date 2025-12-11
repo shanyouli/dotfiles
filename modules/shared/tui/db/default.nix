@@ -2,7 +2,6 @@
   pkgs,
   lib,
   config,
-  options,
   my,
   ...
 }:
@@ -35,6 +34,9 @@ in
       '';
       home.configFile."mycli/myclirc".source = "${my.dotfiles.config}/mycli/myclirc";
     })
-    (mkIf cfg.dblab.enable { home.packages = [ pkgs.dblab ]; })
+    (mkIf cfg.dblab.enable {
+      # NOTE: nixpkgs-25.11 dblab darwin build error
+      home.packages = if pkgs.stdenvNoCC.isDarwin then [ ] else [ pkgs.dblab ];
+    })
   ]);
 }

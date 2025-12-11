@@ -4,7 +4,6 @@
   lib,
   pkgs,
   inputs,
-  home-manager,
   my,
   ...
 }:

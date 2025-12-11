@@ -2,7 +2,6 @@
   pkgs,
   lib,
   config,
-  options,
   my,
   ...
 }:
@@ -22,9 +21,9 @@ in
       user.packages = [
         # fix: ./util.c:1:10: fatal error: 'CoreFoundation/CoreFoundation.h' file not found
         (pkgs.duti.overrideAttrs (old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.apple-sdk_13 ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.apple-sdk ];
           configureFlags = [
-            "--with-macosx-sdk=${pkgs.apple-sdk_13.sdkroot}"
+            "--with-macosx-sdk=${pkgs.apple-sdk.sdkroot}"
             "--host=x86_64-apple-darwin18"
           ];
         }))

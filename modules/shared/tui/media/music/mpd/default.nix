@@ -2,7 +2,6 @@
   pkgs,
   lib,
   config,
-  options,
   my,
   ...
 }:
@@ -39,13 +38,13 @@ in
         let
           mpc =
             if pkgs.stdenvNoCC.hostPlatform.isDarwin then
-              pkgs.mpc-cli.overrideAttrs (_: {
+              pkgs.mpc.overrideAttrs (_: {
                 env = {
                   NIX_LDFLAGS = "-liconv";
                 };
               })
             else
-              pkgs.mpc-cli;
+              pkgs.mpc;
         in
         [
           pkgs.mpd

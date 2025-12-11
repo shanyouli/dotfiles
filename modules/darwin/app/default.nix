@@ -22,7 +22,6 @@
 {
   lib,
   config,
-  options,
   my,
   pkgs,
   ...
@@ -72,7 +71,7 @@ in
           config.user.packages
           ++ config.home-manager.users.${config.user.name}.home.packages
           ++ config.environment.systemPackages;
-        pathsToLink = "/Applications";
+        pathsToLink = [ "/Applications" ];
       };
     };
     my.user.init.removeHomeManagerApps = {

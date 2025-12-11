@@ -9,9 +9,6 @@
 }:
 with lib;
 with my;
-let
-  inherit (my) homedir;
-in
 {
   imports = [ ./common.nix ];
   config = mkMerge [

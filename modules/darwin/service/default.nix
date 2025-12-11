@@ -3,7 +3,6 @@
   lib,
   my,
   config,
-  options,
   ...
 }:
 with lib;
