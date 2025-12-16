@@ -29,10 +29,10 @@ in
       # 使用声明环境变量的方法取代 --config 参数
       env.POSH_THEME = "$DOTFILES/config/oh-my-posh/posh2k.omp.yaml";
       # HACK: 目前的 nushell 不支持环境变量的写入，暂时使用植入的方法修改主题。
-      nushell.cacheCmd = [
-        "PATH=${makeBinPath [ config.modules.shell.nushell.package ]}:$PATH;"
-        "${formatFn "nu"} --config ${my.dotfiles.config}/oh-my-posh/posh2k.omp.yaml"
-      ];
+      nushell.rcInit = ''
+        $env.POSH_THEME = $env.DOTFILES | path join "config" "oh-my-posh" "posh2k.omp.yaml"
+        oh-my-posh init nu --config $env.POSH_THEME
+      '';
       zsh.rcInit = lib.optionalString cfp.zsh.enable ''_cache ${formatFn "zsh"}'';
       fish.rcInit = optionalString cfp.fish.enable ''_cache ${formatFn "fish"}'';
     };

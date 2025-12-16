@@ -154,6 +154,8 @@ in
         if (not ($nu_sources | path exists)) {
           ^mkdir -p $nu_sources -m 755
         }
+        use std/util "path add"
+        path add ${makeBinPath [ config.modules.shell.nushell.package ]}
         ${concatMapStrings (s: ''
           ${s} | save -f ($nu_sources | path join ("${appnameFn s}" | path basename))
         '') cfg.cacheCmd}

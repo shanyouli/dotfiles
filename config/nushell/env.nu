@@ -16,7 +16,7 @@ $env.NU_LIB_DIRS = [
 source (if (($SOURCE_PATH | path join "env") | path expand | path exists) { "env" } else { $EMPTY_FILE })
 
 # Filter paths starting with $env.ZPFX parent directory
-def zpfx-filter-fn [s: string]: list<any> -> bool {
+def zpfx-filter-fn [s: string]: string -> bool {
   if ($env | get -o ZPFX | is-empty) {
     true
   } else {
@@ -26,8 +26,8 @@ def zpfx-filter-fn [s: string]: list<any> -> bool {
 }
 
 # filter paths starting with /nix/store as PATH
-def nix-store-filter-fn [s: string]: list<any> -> any {
-  if ($env | get -o IN_NIX_SHELL | is-empty) {
+def nix-store-filter-fn [s: string]: string -> any {
+  if ($env | get -o in_nix_shell | is-empty) {
     (not ( $s | str starts-with "/nix/store"))
   } else {
     true
