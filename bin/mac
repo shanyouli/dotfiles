@@ -27,3 +27,16 @@ def "main reboot" [
 
 # mac custom command
 def main []: nothing -> any { help main }
+
+# ----------------------------------------
+# System check: Ensure running on macOS
+# ----------------------------------------
+def assert-macos [] {
+    let sys = (sys host | get name)
+    if $sys != "macos" and $sys != "Darwin" {
+        exit
+        # error make $"This command only works on macOS. Detected: ($sys)"
+    }
+}
+
+assert-macos
