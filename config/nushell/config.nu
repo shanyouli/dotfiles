@@ -23,19 +23,16 @@ use alias-tips.nu
 # alias l = "ls -a | sort-by type name -i | grid -c | str trim"
 
 def vish []: string -> any {
-  if (not ($nu.cache-dir | path expand | path exists)) {
-    mkdir $nu.cache-dir
+  let local_autoload_dir = $nu.default_config_dir | path join "autoload"
+  let local_file = $local_autoload_dir | paht join "zz_local.nu"
+  if (not ($local_autoload_dir | path exists)) {
+    mkdir $local_autoload_dir
   }
   if ($env | get -o EDITOR | is-empty) {
     print $"(ansi yellow_b)Please settings env EDITOR.(ansi reset)"
     return 1
   } else {
-    run-external  $"($env.EDITOR)" ($nu.cache-dir | path join "local.nu" | path expand)
+    run-external  $"($env.EDITOR)" $local_file
   }
 }
 alias resh = exec nu -l
-source (if (($nu.cache-dir | path join "local.nu") | path expand |  path exists ) {
-  ($nu.cache-dir | path join "local.nu") | path expand
-} else {
-  "empty"
-})

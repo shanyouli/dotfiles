@@ -59,7 +59,7 @@ in
         (mkIf useCmpFn {
           # 暂停使用补全，使用默认补全
           # see@https://www.nushell.sh/cookbook/external_completers.html#putting-it-all-together
-          "nushell/sources/completer".text = ''
+          "nushell/autoload/completer.nu".text = ''
              # -*- mode: nushell; -*-
              ${optionalString cfm.fish.enable ''
                let fish_completer = {|spans|
@@ -113,8 +113,7 @@ in
           '';
         })
         {
-          "nushell/sources/config".text = ''
-            # -*- mode: nushell; -*-
+          "nushell/autoload/zz_config.nu".text = ''
             ${optionalString cfm.carapace.enable (
               let
                 carapace_path =
@@ -127,7 +126,6 @@ in
                 $env.PATH = ($env.PATH | split row (char esep) | prepend ${carapace_path})
               ''
             )}
-            ${optionalString useCmpFn "source completer"}
             ${concatStringsSep "\n" (map (x: "use ${x} *") cfg.cmpFiles)}
             ${concatStringsSep "\n" (
               mapAttrsToList (n: v: ''alias ${n} = ${v}'') (
