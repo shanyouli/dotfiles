@@ -1,19 +1,12 @@
 #!/usr/bin/env nu
 
 # 文件导入源
-const SOURCE_PATH = ($nu.default-config-dir | path join "sources")
-const EMPTY_FILE = ($SOURCE_PATH | path join "empty")
-if (not ($SOURCE_PATH | path exists)) {
-  mkdir $SOURCE_PATH
-}
 
 $env.NU_LIB_DIRS = [
   ($nu.config-path | path dirname | path join 'scripts')
   ($nu.config-path | path dirname | path join 'completions')
-  $SOURCE_PATH
 ]
 
-source (if (($SOURCE_PATH | path join "env") | path expand | path exists) { "env" } else { $EMPTY_FILE })
 
 # Filter paths starting with $env.ZPFX parent directory
 def zpfx-filter-fn [s: string]: string -> bool {

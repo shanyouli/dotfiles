@@ -14,7 +14,6 @@ update_config ls {
 }
 update_config rm.always_trash true
 
-source (if (($SOURCE_PATH | path join "config") | path expand | path exists) { "config" } else { "empty" })
 
 alias clr = clear
 
