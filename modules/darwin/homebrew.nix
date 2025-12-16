@@ -77,11 +77,28 @@ in
             set -p fish_complete_path ${homebrew-home}/share/fish/vendor_completions.d
           end
         '';
+      # NOTE: update homebrew activation script
+      system.activationScripts.homebrew.text = mkForce ''
+        echo >&2 "Homebrew bundle..."
+        if [ -f "${config.homebrew.brewPrefix}/brew" ]; then
+          PATH="${config.homebrew.brewPrefix}:${makeBinPath [ pkgs.mas ]}:$PATH" \
+          sudo \
+            --preserve-env=PATH \
+            --user=${escapeShellArg config.user.name} \
+            --set-home \
+            env \
+            HOMEBREW_NO_INSTALL_FROM_API=1 \
+            ${config.homebrew.onActivation.brewBundleCmd}
+        else
+          echo -e "\e[1;31merror: Homebrew is not installed, skipping...\e[0m" >&2
+        fi
+      '';
       homebrew = {
         enable = true; # 你需要手动安装homebrew
         onActivation = {
           autoUpdate = false;
           cleanup = "zap";
+          # extraFlags = [ "--verbose"];
         };
         global = {
           brewfile = true;
@@ -233,6 +250,7 @@ in
           }
         ];
       };
+      user.packages = [ pkgs.mas ];
     }
   ]);
 }
