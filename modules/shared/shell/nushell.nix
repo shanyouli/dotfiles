@@ -128,9 +128,6 @@ in
               ''
             )}
             ${optionalString useCmpFn "source completer"}
-            ${concatMapStrings (
-              s: "source ${builtins.baseNameOf (builtins.head (builtins.split " " s))}\n"
-            ) cfg.cacheCmd}
             ${concatStringsSep "\n" (map (x: "use ${x} *") cfg.cmpFiles)}
             ${concatStringsSep "\n" (
               mapAttrsToList (n: v: ''alias ${n} = ${v}'') (
@@ -150,14 +147,14 @@ in
       in
       ''
         ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${my.dotfiles.config}/nushell/ ${config.home.configDir}/nushell/
-        let nu_sources = "${config.home.configDir}" | path join "nushell" "sources"
+        let nu_sources = "${config.home.configDir}" | path join "nushell" "autoload"
         if (not ($nu_sources | path exists)) {
           ^mkdir -p $nu_sources -m 755
         }
         use std/util "path add"
         path add ${makeBinPath [ config.modules.shell.nushell.package ]}
         ${concatMapStrings (s: ''
-          ${s} | save -f ($nu_sources | path join ("${appnameFn s}" | path basename))
+          ${s} | save -f ($nu_sources | path join (("${appnameFn s}" | path basename) + ".nu"))
         '') cfg.cacheCmd}
       '';
     modules.app.editor = {
