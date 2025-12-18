@@ -1,42 +1,126 @@
 #!/usr/bin/env nu
 use std log
 
-# shutdown macos
-def "main shutdown" [
-  --force(-f), # Force shutdown
-  --debug(-d), # show log
-]: nothing -> string {
-  if $force {
-    osascript -e 'tell app "System Events" to shut down'
-  } else {
-    osascript -e 'tell app "loginwindow" to «event aevtrsdn»'
-  }
-}
-
-# reboot macos
-def "main reboot" [
-  --force(-f), # Force reboot
-  --debug(-d), # show log
-]: nothing -> string {
-  if $force {
-    osascript -e 'tell app "System Events" to restart'
-  } else {
-    osascript -e 'tell app "loginwindow" to «event aevtrrst»'
-  }
-}
-
-# mac custom command
-def main []: nothing -> any { help main }
-
 # ----------------------------------------
 # System check: Ensure running on macOS
 # ----------------------------------------
 def assert-macos [] {
     let sys = (sys host | get name)
     if $sys != "macos" and $sys != "Darwin" {
-        exit
-        # error make $"This command only works on macOS. Detected: ($sys)"
+      error make {
+        msg: $"This command only works on macOS. Detected: ($sys)",
+      }
     }
 }
 
 assert-macos
+
+## utils
+
+# Helper: run or preview an AppleScript cmd
+def run-applescript [
+  cmd: string,
+  debug: bool,
+  dry_run: bool,
+] {
+  if $dry_run {
+    log info $"[dry-run] Would execute AppleScript : ($cmd)"
+    return $"osascript -e '($cmd)'"
+  }
+  if $debug {
+    log info $"Executing AppleScript: ($cmd)"
+  }
+  try {
+    osascript -e $cmd | str trim
+  } catch {
+    let err = (error-message)
+    log error $"AppleScript failed: ($err)"
+    error make {
+      msg: $"Failed to run: osascript -e '($cmd)'"
+    }
+  }
+}
+
+# shutdown macos
+def "main shutdown" [
+  --force(-f), # Force shutdown
+  --debug(-d), # show log
+  --dry-run, # Do not execute; show what would run
+]: nothing -> string {
+  let cmd = if $force {
+    'tell app "System Events" to shut down'
+  } else {
+    'tell app "loginwindow" to «event aevtrsdn»'
+  }
+  run-applescript $cmd $debug $dry_run
+}
+
+# reboot macos
+def "main reboot" [
+  --force(-f), # Force reboot
+  --debug(-d), # show log
+  --dry-run, # Do not execute; show what would run
+]: nothing -> string {
+  let cmd = if $force {
+    'tell app "System Events" to restart'
+  } else {
+    'tell app "loginwindow" to «event aevtrrst»'
+  }
+  run-applescript $cmd $debug $dry_run
+}
+
+# Trash some command
+
+# check privilege
+def check-transh-privilege [] {
+  try {
+    ls ($env.HOME | path join ".Trash")
+    return true
+  } catch {
+    log debug "This reuires Terminal 'Full Disk Access' permission to work properly."
+    return false
+  }
+}
+
+def trash-clean [
+  debug: bool, # show log
+  dry_run: bool, # Do not execute; show what would run
+] {
+  let cmd = 'tell application "Finder" to empty the trash'
+  run-applescript  $cmd  $debug $dry_run
+}
+
+def trash-status [] {
+  let trash_home = $env.Home | path join ".Trash"
+  let trash_size = du $trash_home | get physical | first
+  let trash_files = (glob $"($trash_home)/**" | length) - 1
+  print $"Size: ($trash_size)"
+  print $"Number of files: ($trash_files)"
+}
+
+# trash command
+def "main trash" [
+  --status(-s), # show the status of the trash
+  --clean(-c), # Clean the trash
+  --debug(-d), # show log
+  --dry-run # Do not execute; show what would run
+] {
+  if (check-transh-privilege) {
+    if $status {
+      trash-status
+      return
+    }
+    if $clean {
+      trash-clean $debug $dry_run
+      return
+    }
+    help main
+  } else {
+    error make {
+      msg: "This requires Terminal 'Full Disk Access' permission to work properly"
+    }
+  }
+}
+
+# mac custom command
+def main []: nothing -> any { help main }
