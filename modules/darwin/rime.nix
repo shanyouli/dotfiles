@@ -16,7 +16,7 @@ in
 
   config = mkIf cfg.enable {
     # 输入法
-    homebrew.casks = [ "squirrel" ];
+    homebrew.casks = [ "squirrel-app" ];
     modules.rime = {
       enable = true;
       backup.enable = mkDefault true;
