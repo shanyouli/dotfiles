@@ -200,7 +200,10 @@
       };
       lua.enable = true;
       cc.enable = true;
-      node.enable = true;
+      js = {
+        node.enable = true;
+        bun.enable = true;
+      };
       toml.fmt = true;
       enWebReport = true;
       rust.enable = true;

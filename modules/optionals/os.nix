@@ -118,22 +118,25 @@ in
               "/run/user/${toString config.user.uid}";
         };
       environment = {
-        extraInit = mkOrder 300 ''
-          ${concatStringsSep "\n" (
-            mapAttrsToList (
-              n: v:
-              (
-                if "${n}" == "PATH" then
-                  optionalString pkgs.stdenvNoCC.isLinux ''export ${n}="${v}''${PATH:+:}$PATH"''
-                else
-                  ''export ${n}="${v}"''
-              )
-            ) config.env
-          )}
-          ${optionalString (config.nix.envVars != { }) ''
-            unset all_proxy http_proxy https_proxy
-          ''}
-        '';
+        extraInit =
+          let
+            pathLine =
+              if config.env ? PATH then
+                optionalString pkgs.stdenvNoCC.isLinux ''export ${n}="${v}''${PATH:+:}$PATH"''
+              else
+                "";
+          in
+          mkOrder 300 (
+            concatStringsSep "\n" (
+              filter (s: s != "") [
+                (concatStringsSep "\n" (
+                  mapAttrsToList (n: v: ''export ${n}="${v}"'') (removeAttrs config.env [ "PATH" ])
+                ))
+                pathLine
+                (optionalString (config.nix.envVars != { }) ''unset all_proxy http_proxy https_proxy'')
+              ]
+            )
+          );
         variables = config.modules.xdg.value;
       };
     }

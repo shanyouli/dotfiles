@@ -79,7 +79,7 @@ in
       pkgs.unstable.python3.pkgs.sd
       nvd
     ];
-    env.PATH = [ ''''${XDG_BIN_HOME}'' ];
+    env.PATH = [ "$XDG_BIN_HOME" ];
 
     modules.shell = {
       zsh.enable = mkDefault (cfg.default == "zsh");

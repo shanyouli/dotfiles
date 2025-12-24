@@ -141,13 +141,14 @@ in
           "betterdisplay" # 其他替代工具
           "shanyouli/tap/stillcolor"
           # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
-          "maczip" # 压缩解压GUI
+          "keka" # 压缩解压GUI or "maczip"
           # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
           "findergo" # 快捷方式，在finder中打开终端
           "zotero" # 文献管理
 
           # "warp" # next terminal, 不太好用
-
+          #
+          # finder 插件
           "syntax-highlight"
           "qlmarkdown"
 

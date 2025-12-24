@@ -93,7 +93,7 @@ def trash-clean [
 def trash-status [] {
   let trash_home = $env.Home | path join ".Trash"
   let trash_size = du $trash_home | get physical | first
-  let trash_files = (glob $"($trash_home)/**" | length) - 1
+  let trash_files = (glob -D $"($trash_home)/**" | length) - 1
   print $"Size: ($trash_size)"
   print $"Number of files: ($trash_files)"
 }
@@ -120,6 +120,80 @@ def "main trash" [
       msg: "This requires Terminal 'Full Disk Access' permission to work properly"
     }
   }
+}
+
+## update command, 仅仅是 brew ， 系统等 方面的更新
+
+# check install brew
+def asssert-brew [] {
+  if (which brew | is-not-empty) {
+    log debug "brew is exists"
+    true
+  } else {
+    log error "Please install brew."
+    false
+  }
+}
+
+# brew update casks
+def brew-casks-update [] {
+  if assert-brew {
+    let casks_tap = "buo/cask-upgrade"
+    if ($casks_tap in (brew tap | lines)) {
+      brew cu --all --cleanup --yes
+    } else {
+      log warning $"If you want to be able to pin a certain cask use the tap of '($casks_tap)'"
+      brew update
+      brew upgrade --cask
+      brew cleanup
+    }
+  }
+}
+
+# brew update cli
+def brew-cli-update [] {
+  if assert-brew {
+    log debug "use brew update command."
+    brew update
+    brew upgrade
+  }
+}
+
+# software update
+def software-list-format [s: string] {
+  let info_lines = $s | lines --skip-empty | reduce -f { cur: "", out: [] } { |line, st|
+    let l = ($line | str trim)
+    if ($l | str starts-with '* Label:') {
+      if $st.cur != "" {
+        {
+          cur: $l
+          out: ($st.out | append $st.cur)
+        }
+      } else {
+        {
+          cur: $l
+          out: $st.out
+        }
+      }
+    } else if $st.cur != "" and $l != "" {
+      {
+        cur: $"($st.cur) ($l)"
+        out: $st.out
+      }
+    } else {
+      $st
+    }
+  } | update out {|st|
+    if $st.cur != "" {
+      $st.out | append $st.cur
+    } else {
+      $st.out
+    }
+  } | get out
+
+  # format
+  let reg_pares = '\* Label:\s*(?<label>.*)\s+Title:\s+(?<title>.*?),\s+Version:\s*(?<version>[0-9.]+),\s*Size:\s+(?<size>[0-9KiB]+),\s*Recommended:\s*(?<recommended>YES|NO),\s*Action:\s*(?<action>\w+),'
+  $info_lines | each {|x| $x | parse --regex $reg_pares } | flatten
 }
 
 # mac custom command

@@ -13,7 +13,6 @@ with my;
   imports = [ ./common.nix ];
   config = mkMerge [
     {
-      # home.packages = [pkgs.zsh];
       home = {
         stateVersion = "24.05";
         enableNixpkgsReleaseCheck = false; # ignore nixpkgs and state
@@ -23,15 +22,22 @@ with my;
           XDG_BIN_HOME = config.home.binDir;
           XDG_FAKE_HOME = config.home.fakeDir;
         };
-        sessionVariablesExtra = ''
-          ${concatStringsSep "\n" (
-            mapAttrsToList (
-              n: v:
-              (if "${n}" == "PATH" then ''export ${n}="${v}:''${PATH:+:}$PATH"'' else ''export ${n}="${v}"'')
-            ) config.env
-          )}
-        '';
-
+        sessionVariablesExtra =
+          let
+            pathLine =
+              if config.env ? PATH then
+                optionalString pkgs.stdenvNoCC.isLinux ''export ${n}="${v}''${PATH:+:}$PATH"''
+              else
+                "";
+          in
+          concatStringsSep "\n" (
+            filter (s: s != "") [
+              (concatStringsSep "\n" (
+                mapAttrsToList (n: v: ''export ${n}="${v}"'') (removeAttrs config.env [ "PATH" ])
+              ))
+              pathLine
+            ]
+          );
         programs.home-manager.enable = true;
         activation.zzScript = ''
           echo "User activation script"
@@ -42,11 +48,6 @@ with my;
       my.user.extra = ''
         log debug $"Please use 'source ${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh'"
       '';
-      # home.sessionVariables = filterAttrs (n: v: n != "PATH" ) config.env;
-      # home.sessionPath =
-      #   if builtins.hasAttr "PATH" config.env
-      #   then config.env.PATH ++ [''''${PATH}'' ]
-      #   else [];
       programs = mkAliasDefinitions options.home.programs;
 
       xdg = {

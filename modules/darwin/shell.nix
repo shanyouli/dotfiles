@@ -13,8 +13,6 @@ let
       profilePath = makeBinPath (
         builtins.filter (x: x != "/nix/var/nix/profiles/default") config.environment.profiles
       );
-      configEnvPath = if builtins.hasAttr "PATH" config.env then config.env.PATH else null;
-      prevPath = if (configEnvPath != null) then config.env.PATH + ":" + profilePath else profilePath;
       printOuts = optionalString config.modules.macos.brew.enable ''
         if [[ -x ${config.homebrew.brewPrefix}/brew ]]; then
           eval "$(${config.homebrew.brewPrefix}/brew shellenv bash)"
@@ -30,7 +28,7 @@ let
       fi
       ${printOuts}
       echo "__BASE_NIX_DARWIN_PATH=\"$PATH\";" > $out
-      echo '__BASE_NIX_DARWIN_PATH="${prevPath}''${__BASE_NIX_DARWIN_PATH:+:}$__BASE_NIX_DARWIN_PATH";' >> $out
+      echo '__BASE_NIX_DARWIN_PATH="${profilePath}''${__BASE_NIX_DARWIN_PATH:+:}$__BASE_NIX_DARWIN_PATH";' >> $out
       echo "export __BASE_NIX_DARWIN_PATH;" >> $out
     ''
   );
@@ -61,14 +59,34 @@ in
   config = {
     environment = mkMerge [
       {
-        profiles = mkOrder 800 [ "${config.home.stateDir}/nix/profile" ];
+        # NOTE: use $HOME replace ${config.home.stateDir}
+        profiles =
+          let
+            fn =
+              s:
+              let
+                lastsuffix = removePrefix my.homedir s;
+                prefix = if s == lastsuffix then s else "$HOME${lastsuffix}";
+              in
+              "${prefix}/nix/profile";
+          in
+          mkOrder 800 [ (fn config.home.stateDir) ];
+
         extraInit = mkMerge [
-          (mkOrder 100 ''
-            [ -z "$__BASE_NIX_DARWIN_PATH" ] && . ${env-paths}
-            __new_path="$(${fix_path} "$PATH" "$__BASE_NIX_DARWIN_PATH")"
-            export PATH="$__new_path"
-            unset __new_path
-          '')
+          (
+            let
+              envPathString = if config.env ? "PATH" then config.env.PATH else null;
+            in
+            mkOrder 350 ''
+              [ -z "$__BASE_NIX_DARWIN_PATH" ] && {
+                . ${env-paths}
+                __new_path="$(${fix_path} "$PATH" "$__BASE_NIX_DARWIN_PATH")"
+                export PATH="$__new_path"
+                unset __new_path
+              }
+              ${optionalString (envPathString != null) ''export PATH="${envPathString}:$PATH"''}
+            ''
+          )
           (mkIf config.modules.macos.brew.enable (
             let
               prefix = removeSuffix "/bin" config.homebrew.brewPrefix;
@@ -103,17 +121,5 @@ in
         ];
       })
     ];
-    programs = {
-      bash.interactiveShellInit = ''
-        # /etc/profile 的执行导致 bash 中 PATH 出现问题，这里重新声明 PATH
-        # HACK: 当使用 nix-shell -p 安装测试 commands 时，不执行 PATH 更新
-        [[ -z $IN_NIX_SHELL ]] && {
-          [[ -z $__BASE_NIX_DARWIN_PATH ]] && . ${env-paths}
-          __new_path="$(${fix_path} "$PATH" "$__BASE_NIX_DARWIN_PATH")"
-          export PATH=$__new_path
-          unset __new_path
-        }
-      '';
-    };
   };
 }

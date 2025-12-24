@@ -51,7 +51,11 @@
         poetry.enable = true;
         uv.enable = true;
       };
-      node.enable = true;
+      js = {
+              node.enable = true;
+
+              bun.enable = true;
+      };
     };
 
     gui = {
