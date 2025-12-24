@@ -92,7 +92,7 @@
       };
       tg = {
         enable = true;
-        # package = pkgs.unstable.telegram-desktop;
+        package = pkgs.ayugram-desktop;
       };
       editor = {
         emacs = {
