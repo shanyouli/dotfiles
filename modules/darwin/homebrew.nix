@@ -154,8 +154,8 @@ in
 
           # "playcover-community" # 侧载工具
 
-          # "mac-mouse-fix" # 鼠标fix
-          "mos"
+          "mac-mouse-fix" # 鼠标fix or "mos"
+
           "pictureview" # 看图
 
           "tencent-lemon" # 文件清理 or ""clean-me""
@@ -163,7 +163,7 @@ in
 
           "charles" # "proxyman", 抓包
           "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
-          "background-music" # 和一些工具冲突，eg mpd， yesplaymusic
+          # "background-music" # 和一些工具冲突，eg mpd， yesplaymusic
 
           "postman"
           "rapidapi" # "httpie"
