@@ -51,10 +51,10 @@
         poetry.enable = true;
         uv.enable = true;
       };
+      ai.enable = true;
       js = {
-              node.enable = true;
-
-              bun.enable = true;
+        node.enable = true;
+        bun.enable = true;
       };
     };
 

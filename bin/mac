@@ -196,5 +196,20 @@ def software-list-format [s: string] {
   $info_lines | each {|x| $x | parse --regex $reg_pares } | flatten
 }
 
+def "main update" [
+  --list(-l), #"display list packages"
+] {
+  let sys_str = softwareupdate --list
+  let sys_list = if ($sys_str | str contains "Label") {
+    software-list-format $sys_str
+  }
+  if $list {
+    if ($sys_list | is-empty) {
+      print $"Not found system update."
+    } else {
+      print $"system update find ($sys_list | length)..."
+    }
+  }
+}
 # mac custom command
 def main []: nothing -> any { help main }

@@ -208,6 +208,7 @@
       enWebReport = true;
       rust.enable = true;
       scheme.enable = true;
+      ai.enable = true;
     };
 
     rime.method = "wanxiang";

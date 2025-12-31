@@ -24,10 +24,12 @@ in
     };
     toml.fmt = mkBoolOpt false;
     enWebReport = mkBoolOpt false;
+    ai.enable = mkBoolOpt false;
   };
   config = mkMerge [
     (mkIf cfg.toml.fmt { home.packages = [ pkgs.taplo ]; })
     (mkIf cfg.enWebReport { home.packages = [ pkgs.allure ]; })
     (mkIf (cfg.lang != { }) { modules.dev.manager.default = mkDefault "mise"; })
+    (mkIf cfg.ai.enable { home.packages = [ pkgs.opencode ]; })
   ];
 }

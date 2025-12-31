@@ -40,20 +40,20 @@ let
     patch:
       speller/algebra:
         __patch:
-          - wanxiang_algebra:/base/全拼  
+          - wanxiang_algebra:/base/全拼
   '';
   wanxiang-pro = ''
     patch:
       speller/algebra:
         __patch:
-          - wanxiang_algebra:/pro/全拼  
+          - wanxiang_algebra:/pro/全拼
           - wanxiang_algebra:/pro/间接辅助
   '';
   wanxiang-mixedcode = ''
     patch:
       speller/algebra:
         __include: wanxiang_algebra:/mixed/通用派生规则
-         __patch: wanxiang_algebra:/mixed/全拼 
+         __patch: wanxiang_algebra:/mixed/全拼
   '';
   wanxiang-reverse = ''
     patch:
