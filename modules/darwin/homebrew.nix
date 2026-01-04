@@ -235,6 +235,7 @@ in
           # "mysql"
           "mist-cli"
           "p7zip" # "Rpc3 依赖工具"
+          "mole"
         ];
         masApps = mkMerge [
           (mkIf (config.modules.gui.enable && (config.modules.proxy.default != "")) {

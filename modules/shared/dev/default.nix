@@ -30,6 +30,6 @@ in
     (mkIf cfg.toml.fmt { home.packages = [ pkgs.taplo ]; })
     (mkIf cfg.enWebReport { home.packages = [ pkgs.allure ]; })
     (mkIf (cfg.lang != { }) { modules.dev.manager.default = mkDefault "mise"; })
-    (mkIf cfg.ai.enable { home.packages = [ pkgs.opencode ]; })
+    (mkIf cfg.ai.enable { home.packages = [ pkgs.unstable.opencode ]; })
   ];
 }
