@@ -21,11 +21,11 @@ in
 {
   options.modules.dev.js = {
     node = {
-    enable = mkEnableOption "Whether to use node";
-    package = mkOpt' types.package pkgs.nodejs "nodejs package";
-      
+      enable = mkEnableOption "Whether to use node";
+      package = mkOpt' types.package pkgs.nodejs "nodejs package";
+
     };
-    bun.enable =mkEnableOption "Whether to use bun";
+    bun.enable = mkEnableOption "Whether to use bun";
   };
   config = mkMerge [
     (mkIf cfg.node.enable {

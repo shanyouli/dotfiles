@@ -179,8 +179,8 @@
       lua.enable = true;
       cc.enable = true;
       js = {
-              node.enable = true;
-              bun.enable = true;
+        node.enable = true;
+        bun.enable = true;
       };
       toml.fmt = true;
       enWebReport = true;
