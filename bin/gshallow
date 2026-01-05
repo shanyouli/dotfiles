@@ -1,0 +1,88 @@
+#!/usr/bin/env nu
+use std log
+def is-git-repo [dir_path: string = "" ]: nothing -> bool {
+  if ($dir_path | is-empty) {
+    git rev-parse --is-inside-work-tree | into bool
+  } else {
+    git -C $dir_path rev-parse --is-inside-work-tree | into bool
+  }
+}
+def get-git-topdir [dir_path: string = ""]: nothing -> string {
+  if ($dir_path | is-empty) {
+    git rev-parse  --show-toplevel
+  } else {
+    git -C $dir_path rev-parse  --show-toplevel
+  }
+}
+
+def du-git-repo [dir_path: string = ""]: nothing -> filesize {
+  let git_path = if ($dir_path | is-empty) {
+    $env.PWD | path join ".git"
+  } else {
+    $dir_path | path join ".git"
+  }
+  du $git_path | get physical | first
+}
+
+
+def is-git-url [url: string]: nothing -> bool {
+  $url |  parse -r '^(?P<proto>https?://|ssh://|git@)(?P<host>[^:/]+)[:/]?(?P<path>.*)'
+       | is-not-empty
+}
+
+def main [
+  url: string = "", # 克隆链接
+  dir_path: string = "",
+  --force(-f), # 是否删除 本地 tag
+] {
+  mut _dir = $dir_path
+  if ($url != "") {
+    if (is-git-url $url) {
+      if ($dir_path | is-empty) {
+        log debug $"开始克隆 ($url)"
+        git clone --depth 1 $url
+        return 0MiB
+      } else {
+        let git_dir = $dir_path | path expand
+        if ($git_dir | path exists) {
+          log error $"($git_dir) 已经存在无法克隆。"
+          exit 1
+        } else {
+          mkdir ($git_dir | path dirname)
+          git clone --depth 1 $url $git_dir
+          log info "克隆完成"
+          return 0MiB
+        }
+      }
+    } else {
+      $_dir = $url | path expand
+    }
+  } else {
+    $_dir = $dir_path
+  }
+  if ( (is-git-repo  $_dir) != true ) {
+    log error $"当前路径 [($_dir)] 不是一个 git 仓库."
+    exit 1
+  }
+  let git_dir = get-git-topdir  $_dir
+  let initial_size = du-git-repo $git_dir
+  log info $"当前 .git 仓库大小: ($initial_size)"
+  # 转换为浅层仓库，只保留一次提交
+  let old_dir = $env.PWD
+  cd $git_dir
+  git fetch --depth 1 origin (git rev-parse --abbrev-ref HEAD)
+  # 彻底断开与旧历史的联系
+  if $force {
+    git tag -l | lines | each {|x| git tag -d $x }
+  }
+  git reflog expire --expire=now --all
+  git gc --prune=now --aggressive
+
+  let final_size = du-git-repo
+  log info $"清理后 .git 目录大小: ($final_size)"
+  # 计算节省大小
+  let saved_size = $initial_size - $final_size
+  log info $"共节省了约: (ansi defd)(ansi defu)($saved_size)(ansi reset)"
+  return $saved_size
+}
+
