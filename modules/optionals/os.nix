@@ -122,7 +122,7 @@ in
           let
             pathLine =
               if config.env ? PATH then
-                optionalString pkgs.stdenvNoCC.isLinux ''export ${n}="${v}''${PATH:+:}$PATH"''
+                optionalString pkgs.stdenvNoCC.isLinux ''export PATH="${config.env.PATH}''${PATH:+:}$PATH"''
               else
                 "";
           in
