@@ -20,6 +20,7 @@ in
       "iina"
       "handbrake-app" # 视频压缩工具, 使用 ffmpeg 取代
       "shanyouli/tap/compressO" # 主要用来读出参数，实验的
+      "shanyouli/tap/piliplus" # bilibil
     ]
     ++ optionals (config.modules.media.stream.enable && config.modules.gui.enable) [
       "iina+"

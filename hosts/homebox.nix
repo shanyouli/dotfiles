@@ -227,7 +227,7 @@
       games.enable = true;
       hammerspoon.enable = true;
       rime.enable = true;
-      brew.mirror = "tuna";
+      brew.mirror = "sust";
       duti.enable = true;
       netdriver.enable = true;
       chat = {

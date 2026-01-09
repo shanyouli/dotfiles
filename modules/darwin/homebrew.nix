@@ -18,8 +18,9 @@ let
   can_mirror_taps = [
     "cask"
     "core"
-    "services"
-    "command-not-found"
+    # 注：截止到 brew 4.6.12，homebrew-{services,bundle,homebrew-command-not-found} 均已被弃用，所有 tap 合并至 brew 仓库
+    # "services"
+    # "command-not-found"
   ]; # cask-fonts
 in
 {
