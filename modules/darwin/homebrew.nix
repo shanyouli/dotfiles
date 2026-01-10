@@ -15,13 +15,6 @@ let
     sust = "https://mirrors.sustech.edu.cn"; # 南方科技大学
     nju = "https://mirror.nju.edu.cn"; # 浙江大学
   };
-  can_mirror_taps = [
-    "cask"
-    "core"
-    # 注：截止到 brew 4.6.12，homebrew-{services,bundle,homebrew-command-not-found} 均已被弃用，所有 tap 合并至 brew 仓库
-    # "services"
-    # "command-not-found"
-  ]; # cask-fonts
 in
 {
   options.modules.macos.brew = {
@@ -37,30 +30,33 @@ in
   };
 
   config = mkIf cfg.enable (mkMerge [
-    (mkIf (!cfg.useMirror) { homebrew.taps = map (x: "homebrew/" + x) can_mirror_taps; })
+    {
+      environment.etc."homebrew/brew.env".text = ''
+        # 不自动更新
+        HOMEBREW_NO_AUTO_UPDATE=1
+        # 修改更新间隔
+        HOMEBREW_AUTO_UPDATE_SECS=2678400
+        HOMEBREW_API_AUTO_UPDATE_SECS=2678400
+        # cat
+        HOMEBREW_BAT=1
+      '';
+    }
+    # (mkIf (!cfg.useMirror) { homebrew.taps = map (x: "homebrew/" + x) can_mirror_taps; })
     (mkIf cfg.useMirror (
       let
         domain = mirrors."${cfg.mirror}";
         need_git = if cfg.mirror == "sust" then "" else "git/";
-        fmtfunc = x: {
-          name = "homebrew/" + x;
-          clone_target = domain + "/" + need_git + "homebrew/homebrew-" + x + ".git";
-        };
       in
       {
-        homebrew.taps = map fmtfunc can_mirror_taps;
-
+        # homebrew.taps = map fmtfunc can_mirror_taps;
         # 不使用 api 来获取安装信息
-        modules.shell.env = {
-          HOMEBREW_NO_INSTALL_FROM_API = "1";
-          # 不自动更新 brew 仓库
-          # modules.shell.env.HOMEBREW_NO_AUTO_UPDATE = "1"; # or homebrew.global.autoUpdate = 1
-          HOMEBREW_API_DOMAIN = "${domain}/homebrew-bottles/api";
-          HOMEBREW_BOTTLE_DOMAIN = "${domain}/homebrew-bottles";
-          HOMEBREW_PIP_INDEX_URL = "${domain}/pypi/web/simple";
-          HOMEBREW_BREW_GIT_REMOTE = "${domain}/${need_git}homebrew/brew.git";
-          HOMEBREW_CORE_GIT_REMOTE = "${domain}/${need_git}homebrew/homebrew-core.git";
-        };
+        environment.etc."homebrew/brew.env".text = mkAfter ''
+          HOMEBREW_API_DOMAIN=${domain}/homebrew-bottles/api
+          HOMEBREW_BOTTLE_DOMAIN=${domain}/homebrew-bottles
+          HOMEBREW_PIP_INDEX_URL=${domain}/pypi/web/simple
+          HOMEBREW_BREW_GIT_REMOTE=${domain}/${need_git}homebrew/brew.git
+          HOMEBREW_CORE_GIT_REMOTE=${domain}/${need_git}homebrew/homebrew-core.git
+        '';
       }
     ))
     {
@@ -79,21 +75,6 @@ in
           end
         '';
       # NOTE: update homebrew activation script
-      system.activationScripts.homebrew.text = mkForce ''
-        echo >&2 "Homebrew bundle..."
-        if [ -f "${config.homebrew.brewPrefix}/brew" ]; then
-          PATH="${config.homebrew.brewPrefix}:${makeBinPath [ pkgs.mas ]}:$PATH" \
-          sudo \
-            --preserve-env=PATH \
-            --user=${escapeShellArg config.user.name} \
-            --set-home \
-            env \
-            HOMEBREW_NO_INSTALL_FROM_API=1 \
-            ${config.homebrew.onActivation.brewBundleCmd}
-        else
-          echo -e "\e[1;31merror: Homebrew is not installed, skipping...\e[0m" >&2
-        fi
-      '';
       homebrew = {
         enable = true; # 你需要手动安装homebrew
         onActivation = {
@@ -105,7 +86,6 @@ in
           brewfile = true;
           lockfiles = true;
           autoUpdate = false;
-          # noLock = true;
         };
         brewPrefix =
           let
