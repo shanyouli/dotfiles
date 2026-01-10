@@ -190,8 +190,8 @@ in
       ];
     };
     modules.gui.browser.firefox.extraConfig = lib.optionalString cfg.flex.enable ''
-      user_pref("uc.flex.allow-addons-to-change-toolbar-color", true)
-      user_pref("uc.flex.enable-colored-bookmarks-folder-icons", 1)
+      user_pref("uc.flex.allow-addons-to-change-toolbar-color", true);
+      user_pref("uc.flex.enable-colored-bookmarks-folder-icons", 1);
     '';
   };
 }

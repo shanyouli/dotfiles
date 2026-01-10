@@ -244,9 +244,9 @@ user_pref("layout.word_select.eat_space_to_next_word", false);
  * END: BETTERFOX                                                           *
 ****************************************************************************/
 // additionalConfigurations
-user_pref("svg.context-properties.content.enabled", true)
+user_pref("svg.context-properties.content.enabled", true);
 // 自动更新相关
-user_pref("app.update.auto", false)
-user_pref("app.update.enabled", false)
+user_pref("app.update.auto", false);
+user_pref("app.update.enabled", false);
 // 不显示 sidebar 设置栏
-user_pref("sidebar.revamp", false)
+// user_pref("sidebar.revamp", false);
