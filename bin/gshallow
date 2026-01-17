@@ -43,7 +43,7 @@ def main [
   url: string = "", # 克隆链接
   dir_path: string = "",
   --force(-f), # 是否删除 本地 tag
-  --local(-l), # 是否不获取远程最新 commit
+  --remote(-r), # 是否不获取远程最新 commit
 ] {
   mut target_dir = ""
   if ($url != "") {
@@ -83,33 +83,7 @@ def main [
   # 转换为浅层仓库，只保留一次提交
   cd $git_dir
   let main_branch = git rev-parse --abbrev-ref HEAD
-  if $local {
-    git reset --hard HEAD
-    git clean -ffd
-    try {
-      git replace --graft HEAD
-    } catch {
-      log info $"($env.PWD) is already compact"
-    }
-    git tag -l | lines | each {|x| git tag -d $x }
-    let local_branch = git branch | lines | each { |it| $it | str trim} | where ($it | str starts-with "*") != true
-    if ($local_branch | is-not-empty) {
-      $local_branch | each { |it| git branch -D $it }
-    }
-    # git branch -r | awk -F'/' '{print $1"/"$2}' | xargs -n2 git branch -r -d
-    let remote_branch = git branch -r | lines
-                                      | each { |it| $it | str trim }
-                                      | where (($it | str ends-with $main_branch ) != true)
-    if ($remote_branch | is-not-empty) {
-      $remote_branch | each { |it|
-        let parts = ($it | str trim | split row "/")
-        if ($parts | length) == 2 {
-            let remote_ref = $"($parts.0)/($parts.1)"
-            git branch -r -d $remote_ref
-        }
-      }
-    }
-  } else {
+  if $remote {
     git fetch --depth 1 origin $main_branch
     if $force {
       let tags = (git tag -l --sort=creatordate | lines)
@@ -136,18 +110,46 @@ def main [
           log debug "只有一个标签或无标签，无需清理。"
       }
     }
+  } else {
+    git reset --hard HEAD
+    git clean -ffd
+    try {
+      git replace --graft HEAD
+    } catch {
+      log info $"($env.PWD) is already compact"
+    }
+    git tag -l | lines | each {|x| git tag -d $x }
+    let local_branch = git branch | lines | each { |it| $it | str trim} | where ($it | str starts-with "*") != true
+    if ($local_branch | is-not-empty) {
+      $local_branch | each { |it| git branch -D $it }
+    }
+    # git branch -r | awk -F'/' '{print $1"/"$2}' | xargs -n2 git branch -r -d
+    let remote_branch = git branch -r | lines
+                                      | each { |it| $it | str trim }
+                                      | where (($it | str ends-with $main_branch ) != true)
+    if ($remote_branch | is-not-empty) {
+      $remote_branch | each { |it|
+        let parts = ($it | str trim | split row "/")
+        if ($parts | length) == 2 {
+            let remote_ref = $"($parts.0)/($parts.1)"
+            git branch -r -d $remote_ref
+        }
+      }
+    }
   }
 
   # 彻底断开与旧历史的联系
   try {
     # git repack -a -d --depth=1 --window=1
-    git repack -a -d -f -F --window=250 --depth=250
+    if force {
+        git repack -a -d -f -F --window=250 --depth=250
+    }
     git reflog expire --expire=now --all
     git gc --prune=now --aggressive --force
-    if $local {
-      let shallow_file = get-git-dir $git_dir | path join "shallow"
-      git rev-parse HEAD | save -f $shallow_file
-    }
+    # if ($remote == false) {
+      # let shallow_file = get-git-dir $git_dir | path join "shallow"
+      # git rev-parse HEAD | save -f $shallow_file
+    # }
   } catch {
     let broken_commit = git fsck --full | lines | where ($it | str starts-with  "broken")  | each {|$it| $it | str trim | parse -r 'broken link from\s+commit\s+(?P<commit>.*)' } | get commit | each {|it| $it.0 }
     let _git_dir = get-git-dir
