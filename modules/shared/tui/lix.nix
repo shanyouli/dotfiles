@@ -14,15 +14,14 @@ in
 {
   options.modules.tui.lix = {
     enable = mkEnableOption "Whether to use lix";
-    package = mkPackageOption pkgs.lixPackageSets.stable "lix";
+    package = mkOpt' types.package pkgs.lixPackageSets.stable.lix "lix package";
   };
   config = mkIf cfg.enable {
     nix.package = mkForce cfg.package;
     nixpkgs.overlays = [
-      (prev: final: {
-        inherit (final.lixPackageSets.stable)
+      (final: prev: {
+        inherit (prev.lixPackageSets.stable)
           nixpkgs-review
-          nix-direnv
           nix-eval-jobs
           nix-fast-build
           colmena

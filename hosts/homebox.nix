@@ -19,6 +19,7 @@
     # tui 工具
     tui = {
       yazi.enable = true;
+      lix.enable = true;
     };
     archive.default = "ouch";
 

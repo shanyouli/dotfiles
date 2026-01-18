@@ -3,6 +3,7 @@
   modules = {
     tui = {
       yazi.enable = true;
+      lix.enable = true;
     };
     app = {
       qbittorrent = {
