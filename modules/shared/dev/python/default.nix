@@ -148,13 +148,17 @@ in
           };
         };
       };
-      home.packages = with pkgs; [
-        ruff
-        # ruff-lsp
-        # pyright
-        basedpyright
-        pipenv
-      ];
+      home = {
+        configFile."python" = {
+          source = "${my.dotfiles.config}/python";
+          recursive = true;
+        };
+        packages = with pkgs; [
+          ruff
+          basedpyright
+          pipenv
+        ];
+      };
     }
     (mkIf
       (builtins.elem cfg.manager [
