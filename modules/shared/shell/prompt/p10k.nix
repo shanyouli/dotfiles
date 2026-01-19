@@ -14,7 +14,7 @@ in
     modules.shell.zsh.rcInit = mkOrder 200 ''
       zinit ice depth=1
       zinit light romkatv/powerlevel10k
-      if [[ "$INSIDE_EMACS" != 'vterm' ]]; then
+      if [[ "$INSIDE_EMACS" != 'vterm' ]] && [[ -z $EAT_SHELL_INTEGRATION_DIR ]]; then
         _source $ZDOTDIR/p10conf/default.zsh
       else
         _source $ZDOTDIR/p10conf/vterm.zsh

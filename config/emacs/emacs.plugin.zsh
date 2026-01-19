@@ -37,8 +37,8 @@ function doom() {
 }
 
 # clear scrollback
-if [ -n $INSIDE_EMACS ]; then
-    ISABLE_AUTO_TITLE="true"
+if [[ -n $INSIDE_EMACS ]]; then
+    DISABLE_AUTO_TITLE="true"
     if [[ "$INSIDE_EMACS" == 'vterm' ]]; then
 
         _source $EMACS_VTERM_PATH/etc/emacs-vterm-zsh.sh
@@ -71,10 +71,9 @@ if [ -n $INSIDE_EMACS ]; then
         }
         autoload -U add-zsh-hook
         add-zsh-hook -Uz chpwd (){ vterm_set_directory }
-        # if (( $+commands[fzf] )) ; then
-        #     bindkey -M viins '^r' fzf-history-widget
-        # fi
     fi
+elif [[ -n "$EAT_SHELL_INTEGRATION_DIR" ]]
+     source "$EAT_SHELL_INTEGRATION_DIR/zsh"
 fi
 
 function emacsclient() {
