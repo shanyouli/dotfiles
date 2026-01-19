@@ -157,7 +157,8 @@ in
           (ripgrep.override { withPCRE2 = true; })
           #
           curl
-          pkgs.cached-nix-shell # Better nix-shell
+          # Better nix-shell
+          pkgs.cached-nix-shell
         ];
         etc = {
           home-manager.source = "${inputs.home-manager}";

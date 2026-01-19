@@ -14,7 +14,7 @@ in
 {
   options.modules.tui.lix = {
     enable = mkEnableOption "Whether to use lix";
-    package = mkOpt' types.package pkgs.lixPackageSets.stable.lix "lix package";
+    package = mkPackageOption pkgs.lixPackageSets.stable "lix" { };
   };
   config = mkIf cfg.enable {
     nix.package = mkForce cfg.package;
@@ -26,6 +26,7 @@ in
           nix-fast-build
           colmena
           ;
+        cached-nix-shell = prev.cached-nix-shell.override { nix = config.modules.tui.lix.package; };
       })
     ];
   };

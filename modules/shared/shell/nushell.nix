@@ -114,26 +114,38 @@ in
         })
         {
           "nushell/autoload/zz_config.nu".text = ''
-            ${optionalString cfm.carapace.enable (
-              let
-                carapace_path =
-                  if pkgs.stdenvNoCC.isDarwin then
-                    ''($env.HOME | path join "Library" "Application Support" "carapace" "bin" | path expand)''
-                  else
-                    ''($env.XDG_CONFIG_HOME | path join "carapace" "bin" | path expand)'';
-              in
-              ''
-                $env.PATH = ($env.PATH | split row (char esep) | prepend ${carapace_path})
-              ''
-            )}
-            ${concatStringsSep "\n" (map (x: "use ${x} *") cfg.cmpFiles)}
-            ${concatStringsSep "\n" (
-              mapAttrsToList (n: v: ''alias ${n} = ${v}'') (
-                filterAttrs (n: v: v != "" && n != "rm" && n != "rmi") config.modules.shell.aliases
-              )
-            )}
-            ${cfg.rcInit}
-            ${concatMapStringsSep "\n" (x: "use ${getBaseName x}.nu *") cfg.scriptFiles}
+             ${optionalString cfm.carapace.enable (
+               let
+                 carapace_path =
+                   if pkgs.stdenvNoCC.isDarwin then
+                     ''($env.HOME | path join "Library" "Application Support" "carapace" "bin" | path expand)''
+                   else
+                     ''($env.XDG_CONFIG_HOME | path join "carapace" "bin" | path expand)'';
+               in
+               ''
+                 $env.PATH = ($env.PATH | split row (char esep) | prepend ${carapace_path})
+               ''
+             )}
+             ${concatStringsSep "\n" (map (x: "use ${x} *") cfg.cmpFiles)}
+             ${concatStringsSep "\n" (
+               mapAttrsToList (n: v: ''alias ${n} = ${v}'') (
+                 filterAttrs (n: v: v != "" && n != "rm" && n != "rmi") config.modules.shell.aliases
+               )
+             )}
+             ${cfg.rcInit}
+             ${concatMapStringsSep "\n" (x: "use ${getBaseName x}.nu *") cfg.scriptFiles}
+            def --wrapped sd [...rest] {
+              let SD_LOCAL_PATH = $env.HOME | path join "Code" "Git" "sd"
+              if ([($SD_LOCAL_PATH | path exists),
+                ($SD_LOCAL_PATH | path join "uv.lock" | path exists),
+                (which "uv" | is-not-empty)
+                ] | all {}) {
+                cd $SD_LOCAL_PATH
+                uv run sd ...$rest
+              } else {
+                 ^sd ...$rest
+              }
+            }
           '';
         }
         (scriptHomeFunc cfg.scriptFiles)

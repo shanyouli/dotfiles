@@ -7,7 +7,6 @@
 {
   # user.name = "lyeli";
   nix = {
-    package = pkgs.unstable.nixVersions.stable;
     # maxJobs = 4;
     settings.cores = 4;
   };

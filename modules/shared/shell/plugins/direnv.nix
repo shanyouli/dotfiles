@@ -13,6 +13,7 @@ in
 {
   options.modules.shell.direnv = {
     enable = mkBoolOpt false;
+    package = mkPackageOption pkgs "nix-direnv" { };
     stdlib =
       with types;
       mkOpt' (attrsOf (oneOf [
@@ -26,7 +27,7 @@ in
     home = {
       packages = [
         pkgs.direnv
-        pkgs.nix-direnv
+        cfg.package
       ];
       programs.bash.initExtra = ''
         eval "$(direnv hook bash)"
@@ -35,7 +36,7 @@ in
         {
           "direnv/direnvrc".text = ''
             #!/usr/bin/env bash
-            source ${pkgs.unstable.nix-direnv}/share/nix-direnv/direnvrc
+            source ${cfg.package}/share/nix-direnv/direnvrc
             # Hum-readable directories @see https://github.com/direnv/direnv/wiki/Customizing-cache-location
             : "''${XDG_CACHE_HOME:="''${HOME}/.cache"}"
             declare -A direnv_layout_dirs
