@@ -133,9 +133,9 @@
 
     shell = {
       prompt.default = "oh-my-posh";
-      default = "fish";
+      default = "zsh";
       # fish.enable = true;
-      zsh.enable = true;
+      # zsh.enable = true;
       bash.enable = true;
       nushell.enable = true;
       carapace.enable = true;
@@ -155,7 +155,7 @@
       service.startup = true;
     };
     adb.enable = true;
-    ugrep.enable = true;
+    # ugrep.enable = true;
     gpg = {
       enable = true;
       cacheTTL = 360000;

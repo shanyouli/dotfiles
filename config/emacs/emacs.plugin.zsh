@@ -72,7 +72,7 @@ if [[ -n $INSIDE_EMACS ]]; then
         autoload -U add-zsh-hook
         add-zsh-hook -Uz chpwd (){ vterm_set_directory }
     fi
-elif [[ -n "$EAT_SHELL_INTEGRATION_DIR" ]]
+elif [[ -n "$EAT_SHELL_INTEGRATION_DIR" ]]; then
      source "$EAT_SHELL_INTEGRATION_DIR/zsh"
 fi
 
