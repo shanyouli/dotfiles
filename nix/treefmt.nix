@@ -26,8 +26,8 @@
             width = 100;
           };
           # python
-          ruff.enable = true;
-          ruff.check = true;
+          ruff-format.enable = true;
+          ruff-check.enable = true;
           # lua
           stylua.enable = true;
 
