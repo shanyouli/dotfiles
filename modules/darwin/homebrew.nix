@@ -112,7 +112,7 @@ in
           "wechat"
           "qq"
           "wpsoffice-cn" # "microsoft-office" , 手动安装
-          "mactex"
+          # "mactex" # 使用 texlive 取代
 
           # "displaperture" # screen 曲线图
           # "imageoptim" # 图片压缩

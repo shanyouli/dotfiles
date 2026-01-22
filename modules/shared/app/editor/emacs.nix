@@ -140,6 +140,7 @@ in
           pkgs.emacs-lsp-booster # emacs-lsp-booster , 更快的使用 lsp 服务
 
           (mkIf config.modules.gpg.enable pkgs.pinentry-emacs) # in emacs gnupg prompts
+          pkgs.texlive.combined.scheme-medium
         ];
         configFile."doom/config.init.el".text = ''
           ;;; config.init.el -*- lexical-binding: t; -*-
@@ -181,6 +182,8 @@ in
             rapidfuzz
             sexpdata # 0.0.3, or lsp-bridge
             watchdog
+
+            jupyter # jupyter
           ];
         shell = {
           env = {
