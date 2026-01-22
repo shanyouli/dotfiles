@@ -221,7 +221,7 @@ mapkey('ymr', "RSS订阅", function() {
 mapkey(",oc", "Org Capture", function() {
   location.href = 'org-protocol://capture?' +
     new URLSearchParams({
-      template: 'pn',
+      template: 'ip',
       url: window.location.href,
       title: document.title,
       body: window.getSelection(),
@@ -253,7 +253,7 @@ mapkey("op", "display password", function() {
 vmapkey("e", "Org Capture", function() {
   location.href = 'org-protocol://capture?' +
     new URLSearchParams({
-      template: 'pn',
+      template: 'ip',
       url: window.location.href,
       title: document.title,
       body: window.getSelection(),
