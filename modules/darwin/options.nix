@@ -16,6 +16,8 @@ with my;
   config = mkMerge [
     {
       programs.bash.enable = config.modules.shell.bash.enable;
+      # 不让 macos 启动发声
+      system.nvram.variables.StartupMute = "%01";
       user.packages =
         with pkgs.unstable.darwinapps;
         [
