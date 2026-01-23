@@ -145,6 +145,7 @@ in
           "charles" # "proxyman", 抓包
           "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
           # "background-music" # 和一些工具冲突，eg mpd， yesplaymusic
+          "finetune" # 另一款各个音量app 使用
 
           "postman"
           "rapidapi" # "httpie"
