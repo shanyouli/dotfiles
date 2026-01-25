@@ -96,6 +96,7 @@ in
           epkgs:
           [
             epkgs.emacsql
+            pkgs.unstable.emacsPackages.emacs-reader
             # epkgs.telega
             epkgs.vterm
             epkgs.pdf-tools
