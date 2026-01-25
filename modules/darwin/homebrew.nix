@@ -54,8 +54,8 @@ in
           HOMEBREW_API_DOMAIN=${domain}/homebrew-bottles/api
           HOMEBREW_BOTTLE_DOMAIN=${domain}/homebrew-bottles
           HOMEBREW_PIP_INDEX_URL=${domain}/pypi/web/simple
-          HOMEBREW_BREW_GIT_REMOTE=${domain}/${need_git}homebrew/brew.git
-          HOMEBREW_CORE_GIT_REMOTE=${domain}/${need_git}homebrew/homebrew-core.git
+          # HOMEBREW_BREW_GIT_REMOTE=${domain}/${need_git}homebrew/brew.git
+          # HOMEBREW_CORE_GIT_REMOTE=${domain}/${need_git}homebrew/homebrew-core.git
         '';
       }
     ))
