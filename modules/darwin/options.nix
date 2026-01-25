@@ -34,26 +34,13 @@ with my;
           })
         ];
       time.timeZone = mkDefault my.timezone;
-      modules = {
-        shell = {
-          aliases.emacs =
-            let
-              baseDir =
-                if config.modules.macos.app.way == "copy" then
-                  config.modules.macos.app.path
-                else
-                  "${config.modules.app.editor.emacs.pkg}/Applications";
-            in
-            optionalString config.modules.app.editor.emacs.enable "${baseDir}/Emacs.app/Contents/MacOS/Emacs";
-          nushell.rcInit = ''
-            # 修复macos上nushell自带的open和外部命令open的冲突
-            alias nuopen = open
-            alias open = ^open
-          '';
-        };
+      modules.shell.nushell.rcInit = ''
+        # 修复macos上nushell自带的open和外部命令open的冲突
+        alias nuopen = open
+        alias open = ^open
+      '';
 
-        gui.enable = mkDefault true;
-      };
+      modules.gui.enable = mkDefault true;
 
       system.activationScripts.postActivation.text = ''
         echo "System script executed after system activation"
@@ -70,11 +57,6 @@ with my;
       '';
       my = {
         system.init = {
-          removeNixApps = ''
-            if ("/Applications/Nix Apps" | path exists) {
-              ^rm -rf "/Applications/Nix Apps"
-            }
-          '';
           defaultShell = ''
             chsh -s /run/current-system/sw/bin/${config.modules.shell.default} ${config.user.name}
           '';

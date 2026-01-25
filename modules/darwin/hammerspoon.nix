@@ -52,6 +52,7 @@ in
           '';
           emacsClient = lib.optionalString config.modules.app.editor.emacs.enable ''
             emacsClient = "${config.modules.app.editor.emacs.pkg}/bin/emacsclient",
+            emacs = "${config.modules.macos.app.path}/Emacs.app/Contents/MacOS/Emacs",
           '';
         in
         ''
