@@ -1,4 +1,5 @@
 # 更多信息 see@https://github.com/LnL7/nix-darwin/issues/214#issuecomment-2050027696
+# see @https://github.com/nix-darwin/nix-darwin/raw/master/modules/system/applications.nix
 # 使用 nix-darwin 默认方式。
 {
   lib,
