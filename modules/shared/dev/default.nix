@@ -25,11 +25,17 @@ in
     toml.fmt = mkBoolOpt false;
     enWebReport = mkBoolOpt false;
     ai.enable = mkBoolOpt false;
+    json.enable = mkBoolOpt true;
   };
   config = mkMerge [
-    (mkIf cfg.toml.fmt { home.packages = [ pkgs.taplo ]; })
-    (mkIf cfg.enWebReport { home.packages = [ pkgs.allure ]; })
+    {
+      home.packages = [
+        (mkIf cfg.toml.fmt pkgs.taplo)
+        (mkIf cfg.enWebReport pkgs.allure)
+        (mkIf cfg.ai.enable pkgs.unstable.opencode)
+        (mkIf cfg.json.enable pkgs.vscode-json-languageserver)
+      ];
+    }
     (mkIf (cfg.lang != { }) { modules.dev.manager.default = mkDefault "mise"; })
-    (mkIf cfg.ai.enable { home.packages = [ pkgs.unstable.opencode ]; })
   ];
 }
