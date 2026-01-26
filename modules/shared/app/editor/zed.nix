@@ -11,10 +11,7 @@ let
   cfp = config.modules.app.editor;
   cfg = cfp.zed;
   rsyncbin =
-    if config.modules.tui.rsync.enable then
-      getExe config.modules.tui.rsync.package
-    else
-      getExe pkgs.rsync;
+    if config.modules.rsync.enable then getExe config.modules.rsync.package else getExe pkgs.rsync;
 in
 {
   options.modules.app.editor.zed = {
