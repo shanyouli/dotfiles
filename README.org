@@ -39,7 +39,6 @@ CLOSED: [2024-10-21 Mon 16:48]
 - State "DONE"       from "TODO"       [2024-10-21 Mon 16:48]
 :END:
 nushell 配置已经完成合并，待完善部分，使用 nushell 来获取 ~config.modules.shell.env~ 的值。
-** TODO 使用 wal 取代 themes 模块
 * 版本信息
 
 - [[https://github.com/hlissner/dotfiles][hlissner/dotfiles]]： 最初配置来源, 配置tag 为 ~archive/branch-2021-nix~ , 不支持 macos

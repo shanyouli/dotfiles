@@ -9,7 +9,6 @@ with lib;
 with my;
 let
   cfg = config.modules.tmux;
-  cft = config.modules.themes;
 in
 {
   options.modules.tmux = with types; {
@@ -32,7 +31,7 @@ in
       "tmux/extraInit" = {
         text =
           let
-            theme = optionalString (cft.default == "") ''
+            theme = ''
               set -g @tmux_power_theme 'gold'
               run-shell '${pkgs.tmuxPlugins.power-theme}/share/tmux-plugins/power/tmux-power.tmux'
             '';

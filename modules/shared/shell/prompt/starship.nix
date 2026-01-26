@@ -58,9 +58,7 @@ in
       programs.bash.initExtra = lib.optionalString cfm.bash.enable ''
         eval `starship init bash --print-full-init`
       '';
-      configFile."starship.toml" = mkIf ((cfg.settings != { }) && (config.modules.theme.default == "")) {
-        source = toTomlFile cfg.settings;
-      };
+      configFile."starship.toml" = mkIf (cfg.settings != { }) { source = toTomlFile cfg.settings; };
     };
     modules.shell = {
       prompt.starship.settings = {

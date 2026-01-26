@@ -22,7 +22,6 @@
       };
       tg.enable = true;
     };
-    themes.default = "wal";
     dev = {
       scheme.enable = true;
       go.enable = true;

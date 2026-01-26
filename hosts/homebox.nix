@@ -256,8 +256,6 @@
         border.enable = false;
       };
     };
-
-    themes.default = "wal";
   };
   system.stateVersion = lib.mkForce 5;
 }
