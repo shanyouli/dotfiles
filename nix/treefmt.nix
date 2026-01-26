@@ -39,7 +39,8 @@
           };
 
           # json
-          jsonfmt.enable = true;
+          # jsonfmt.enable = true;
+          prettier.enable = true;
           # justfile
           just.enable = true;
         };
