@@ -23,7 +23,8 @@ in
   };
   config = mkIf cfg.enable {
     homebrew.casks = [
-      "cherry-studio"
+      # "cherry-studio"
+      "warden"
     ]
     ++ optionals cfg.nextchat.enable [ "shanyouli/tap/nextchat" ]
     ++ optionals cfg.local.enable [ "ollama" ]
