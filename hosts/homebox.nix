@@ -51,12 +51,12 @@
       enable = true;
       stream.enable = true;
       music = {
-        default = "mpd";
+        default = "kew";
         netease.enable = true;
-        mpd.service.startup = true;
-        cmus.enable = true;
-        musikcube.enable = true;
-        mpd.default = "ncmpcpp";
+        # mpd.service.startup = true;
+        # kew.enable = true;
+        # musikcube.enable = true;
+        # mpd.default = "ncmpcpp";
       };
     };
     # media.music.mpd.ncmpcpp.enable = true;

@@ -132,6 +132,7 @@
         default = "mpd";
         netease.enable = true;
         mpd.service.startup = true;
+        kew.enable = true;
       };
     };
 

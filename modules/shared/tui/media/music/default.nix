@@ -13,6 +13,7 @@ let
     "netease"
     "mpd"
     "cmus"
+    "kew"
   ];
 in
 {
@@ -31,6 +32,7 @@ in
       mpd.enable = mkDefault (cfg.default == "mpd");
       cmus.enable = mkDefault (cfg.default == "cmus");
       musikcube.enable = mkDefault (cfg.default == "musikcube");
+      kew.enable = mkDefault (cfg.default == "kew");
     };
   };
 }
