@@ -23,7 +23,7 @@ in
       cfg.fmtPkg
       nix-init
       nurl # better nix-prefetch-xxx
-      pkgs.unstable.manix # support nix-darwin
+      unstable.manix # support nix-darwin
     ];
     home.configFile."nix-init/config.toml".text = ''
       maintainers = [ "${my.user}" ]

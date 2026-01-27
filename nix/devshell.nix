@@ -26,6 +26,7 @@
         packages = [
           pkgs.cachix
           pkgs.just
+          pkgs.nixd
         ];
         shellHook =
           ""

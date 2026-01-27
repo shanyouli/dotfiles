@@ -1,3 +1,8 @@
+# 具体配置参考
+# @see: https://zed.dev/docs/getting-started
+#       https://www.kevnu.com/zh/posts/zed-editor-configuration-guide-autosave-prettier-terminal-font-and-formatting-made-easy#%E5%AE%8C%E6%95%B4%E9%85%8D%E7%BD%AE
+#       https://northes.io/posts/editor/zed/
+#       https://linux.do/t/topic/185158
 {
   pkgs,
   lib,
