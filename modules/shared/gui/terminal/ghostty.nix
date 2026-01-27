@@ -1,3 +1,5 @@
+# 配置参考 https://zenn.dev/massa/articles/ghostty-usage#macos
+#          https://ghostty.org/docs
 {
   pkgs,
   lib,
