@@ -115,8 +115,8 @@
 
     # # gui
     gui = {
-      terminal.default = "kitty";
-      terminal.ghostty.enable = true;
+      terminal.default = "ghostty";
+      # terminal.ghostty.enable = true;
 
       localsend.enable = true; # 需要gui，局域网文件传输工具
 

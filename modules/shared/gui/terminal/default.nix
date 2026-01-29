@@ -13,6 +13,7 @@ let
     "kitty"
     "wezterm"
     "alacritty"
+    "ghostty"
   ];
 in
 {
@@ -34,5 +35,6 @@ in
     (mkIf (cfg.default == "kitty") { modules.gui.terminal.kitty.enable = true; })
     (mkIf (cfg.default == "wezterm") { modules.gui.terminal.wezterm.enable = true; })
     (mkIf (cfg.default == "alacritty") { modules.gui.terminal.alacritty.enable = true; })
+    (mkIf (cfg.default == "ghostty") { modules.gui.terminal.ghostty.enable = true; })
   ]);
 }
