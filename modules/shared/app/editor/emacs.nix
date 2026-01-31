@@ -96,7 +96,7 @@ in
           epkgs:
           [
             epkgs.emacsql
-            pkgs.unstable.emacsPackages.emacs-reader
+            pkgs.emacsPackages.emacs-reader
             # epkgs.telega
             epkgs.vterm
             epkgs.pdf-tools
@@ -151,7 +151,7 @@ in
           let
             rime-data-dir =
               if cfg.rime.ice.enable then
-                "${pkgs.unstable.rime-ice}/share/rime-data"
+                "${pkgs.rime-ice}/share/rime-data"
               else if config.modules.rime.enable then
                 "${config.modules.rime.dataPkg}/share/rime-data"
               else if pkgs.stdenvNoCC.hostPlatform.isDarwin then

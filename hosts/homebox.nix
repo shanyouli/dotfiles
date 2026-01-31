@@ -69,7 +69,7 @@
 
     proxy = {
       default = "sing-box";
-      sing-box.package = pkgs.unstable.sing-box;
+      sing-box.package = pkgs.sing-box;
       service = {
         enable = true;
         startup = false;
@@ -99,7 +99,7 @@
           enable = true;
           service.enable = false;
           rime.ice.enable = true;
-          package = pkgs.unstable.emacs;
+          package = pkgs.emacs;
         };
 
         default = "nvim";
@@ -107,7 +107,7 @@
         nvim.enGui = false; # GUI 编辑工具为emacs
         vscode.enable = true;
         zed = {
-          # package = pkgs.unstable.zed-editor;
+          # package = pkgs.zed-editor;
           enable = true;
         };
       };
@@ -123,7 +123,7 @@
       browser.default = "firefox";
       # browser.firefox.extensions = lib.mkForce [];
       browser.fallback = "chrome";
-      # browser.fallback = pkgs.unstable.darwinapps.vivaldi;
+      # browser.fallback = pkgs.darwinapps.vivaldi;
       media = {
         flameshot.enable = true;
         music.netease.enable = false;

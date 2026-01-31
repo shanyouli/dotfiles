@@ -38,7 +38,7 @@ in
     {
       modules.shell.fish.plugins = [
         pkgs.fishPlugins.foreign-env
-        pkgs.unstable.fishPlugins.fisher
+        pkgs.fishPlugins.fisher
         pkgs.fishPlugins.done
         # NOTE: 某些补全使用 autopair 存在 bug
         # pkgs.fishPlugins.autopair

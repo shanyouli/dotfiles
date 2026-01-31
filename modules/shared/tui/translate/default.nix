@@ -38,6 +38,6 @@ in
       # awk 编写的 google 翻译工具
       home.packages = [ pkgs.translate-shell ];
     })
-    (mkIf cfg.deeplx.enable { home.packages = [ pkgs.unstable.deeplx ]; })
+    (mkIf cfg.deeplx.enable { home.packages = [ pkgs.deeplx ]; })
   ]);
 }

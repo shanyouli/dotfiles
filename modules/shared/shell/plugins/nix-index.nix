@@ -10,7 +10,7 @@ with my;
 let
   cfm = config.modules;
   cfg = cfm.shell.nix-index;
-  cfgpkg = pkgs.unstable.nix-index;
+  cfgpkg = pkgs.nix-index;
 in
 {
   options.modules.shell.nix-index = {

@@ -41,7 +41,7 @@ in
     flex.enable = mkBoolOpt true;
     package = mkOption {
       type = with types; nullOr package;
-      default = if pkgs.stdenvNoCC.isLinux then pkgs.firefox else pkgs.unstable.darwinapps.firefox;
+      default = if pkgs.stdenvNoCC.isLinux then pkgs.firefox else pkgs.darwinapps.firefox;
       description = "The Firefox package to use. ";
     };
     finalPackage = mkOption {
@@ -84,7 +84,7 @@ in
       gopass.browsers = [ "firefox" ];
       gui.browser.firefox = {
         extensions = mkDefault (
-          with pkgs.unstable.firefox-addons;
+          with pkgs.firefox-addons;
           [
             (mkIf config.modules.gopass.enable browserpass-ce)
             noscript
@@ -132,7 +132,7 @@ in
             text = cfg.userContent;
           };
           "${profilePath}/user.js".text = ''
-            ${lib.optionalString cfg.flex.enable (builtins.readFile "${pkgs.unstable.flexfox}/user.js")}
+            ${lib.optionalString cfg.flex.enable (builtins.readFile "${pkgs.flexfox}/user.js")}
             ${builtins.readFile "${my.dotfiles.config}/firefox/user.js"}
             ${cfg.extraConfig}
           '';
@@ -165,7 +165,7 @@ in
         }
         (mkIf cfg.flex.enable {
           "${profilePath}/chrome/" = {
-            source = "${pkgs.unstable.flexfox}/chrome";
+            source = "${pkgs.flexfox}/chrome";
             recursive = true;
           };
         })
@@ -178,12 +178,12 @@ in
         })
         {
           "${profilePath}/chrome/utils" = {
-            source = "${pkgs.unstable.userChromeJS}/utils";
+            source = "${pkgs.userChromeJS}/utils";
             recursive = true;
           };
-          "${profilePath}/chrome/userChrome.js".source = "${pkgs.unstable.userChromeJS}/userChrome.js";
+          "${profilePath}/chrome/userChrome.js".source = "${pkgs.userChromeJS}/userChrome.js";
           "${profilePath}/chrome/userChromeJS" = {
-            source = "${pkgs.unstable.userChromeJS}/userChromeJS";
+            source = "${pkgs.userChromeJS}/userChromeJS";
             recursive = true;
           };
         }

@@ -15,5 +15,5 @@ in
   options.modules.media.music.netease = {
     enable = mkEnableOption "Whether to use netease music";
   };
-  config = mkIf cfg.enable { home.packages = [ pkgs.unstable.go-musicfox ]; };
+  config = mkIf cfg.enable { home.packages = [ pkgs.go-musicfox ]; };
 }

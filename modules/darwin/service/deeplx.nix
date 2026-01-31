@@ -12,7 +12,7 @@ let
   cfg = cfm.service.deeplx;
   cft = cfm.translate.deeplx;
   log_file = "${my.homedir}/Library/Logs/deeplx.log";
-  inherit (pkgs.unstable) deeplx;
+  inherit (pkgs) deeplx;
 in
 {
   options.modules.service.deeplx = {

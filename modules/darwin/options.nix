@@ -19,16 +19,16 @@ with my;
       # 不让 macos 启动发声
       system.nvram.variables.StartupMute = "%01";
       user.packages =
-        with pkgs.unstable.darwinapps;
+        with pkgs.darwinapps;
         [
           switchaudio-osx # broken
           # aerospace
-          pkgs.unstable.mkalias
+          pkgs.mkalias
           pkgs.terminal-notifier
         ]
         ++ optionals config.modules.app.editor.emacs.enable [
-          pkgs.unstable.darwinapps.pngpaste
-          (pkgs.unstable.darwinapps.emacsclient.override {
+          pkgs.darwinapps.pngpaste
+          (pkgs.darwinapps.emacsclient.override {
             emacsClientBin = "${config.modules.app.editor.emacs.pkg}/bin/emacsclient";
             withNotify = true;
           })

@@ -143,7 +143,7 @@
     };
     proxy = {
       default = "sing-box";
-      # proxy.sing-box.package = pkgs.unstable.sing-box;
+      # proxy.sing-box.package = pkgs.sing-box;
       service.enable = true;
     };
 

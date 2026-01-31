@@ -76,7 +76,7 @@ in
 
       fzf
       my-nix-script
-      pkgs.unstable.python3.pkgs.sd
+      pkgs.python3.pkgs.sd
       # nvd
       dix
     ];

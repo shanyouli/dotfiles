@@ -20,9 +20,9 @@ in
 
   config = mkIf cfg.enable {
     user.packages = [
-      pkgs.unstable.darwinapps.yabai-zsh-completions
+      pkgs.darwinapps.yabai-zsh-completions
     ]
-    ++ lib.optionals cfg.border.enable [ pkgs.unstable.darwinapps.borders ];
+    ++ lib.optionals cfg.border.enable [ pkgs.darwinapps.borders ];
     home.configFile."yabai" = {
       source = "${my.dotfiles.config}/yabai";
       recursive = true;

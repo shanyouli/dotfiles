@@ -11,7 +11,7 @@ let
   cfg = config.modules.macos.hammerspoon;
   cfmLua = config.modules.dev.lua;
   useDevLua = cfmLua.enable && ((versions.majorMinor cfmLua.package.version) == "5.4");
-  luaEnv = if useDevLua then cfmLua.finalPkg else pkgs.unstable.lua5_4.withPackages cfg.luaExtensions;
+  luaEnv = if useDevLua then cfmLua.finalPkg else pkgs.lua5_4.withPackages cfg.luaExtensions;
 in
 {
   options.modules.macos.hammerspoon = {

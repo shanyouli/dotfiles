@@ -179,7 +179,7 @@ in
         "zsh/cache/extra.zshrc".text = cfg.rcInit;
         "zsh/cache/extra.zshenv".text = cfg.envInit;
         "zsh/.zshrc".text = ''
-          source ${pkgs.unstable.zpmod}/share/zpmod/zpmod.plugin.zsh
+          source ${pkgs.zpmod}/share/zpmod/zpmod.plugin.zsh
           : ''${ZINIT_HOME:="''${XDG_DATA_HOME}/zinit/zinit.git"}
           ${lib.optionalString (!cfg.zinit.enable) ''
             [[ -d "''${ZINIT_HOME}" ]] || {

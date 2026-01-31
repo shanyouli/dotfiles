@@ -21,17 +21,17 @@ in
       pkgs.fantasque-sans-mono
       pkgs.lxgw-wenkai
       pkgs.unifont
-      # pkgs.unstable.sarasa-term
-      pkgs.unstable.maple-mono.NF
-      pkgs.unstable.maple-mono.NF-CN
+      # pkgs.sarasa-term
+      pkgs.maple-mono.NF
+      pkgs.maple-mono.NF-CN
       pkgs.nerd-fonts.fantasque-sans-mono
       pkgs.nerd-fonts.symbols-only
-      pkgs.unstable.pragmasevka
-      pkgs.unstable.pragmasevka-nerd
-      pkgs.unstable.pragmasevka-sans
-      pkgs.unstable.pragmasevka-sc-nf
-      pkgs.unstable.pragmasevka-sc
-      pkgs.unstable.pragmasevka-serif
+      pkgs.pragmasevka
+      pkgs.pragmasevka-nerd
+      pkgs.pragmasevka-sans
+      pkgs.pragmasevka-sc-nf
+      pkgs.pragmasevka-sc
+      pkgs.pragmasevka-serif
     ];
     # fonts = {
     #   # fontDir.enable = true;

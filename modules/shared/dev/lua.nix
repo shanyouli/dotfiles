@@ -48,7 +48,7 @@ in
             luarocks-nix
             (mkIf cfg.fennel.enable fennel)
           ];
-        package = pkgs.unstable.lua5_4;
+        package = pkgs.lua5_4;
         finalPkg = cfg.package.withPackages cfg.extraPkgs;
       };
       shell = {
@@ -78,7 +78,7 @@ in
         ]
         ++ optionals cfg.fennel.enable [
           fennel-ls
-          (mkIf (pkgs.unstable ? antifennel) pkgs.unstable.lua54Packages.antifennel)
+          (mkIf (pkgs ? antifennel) pkgs.lua54Packages.antifennel)
           fnlfmt
         ];
     };

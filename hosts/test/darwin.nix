@@ -61,7 +61,7 @@
     };
     proxy = {
       default = "sing-box";
-      sing-box.package = pkgs.unstable.sing-box;
+      sing-box.package = pkgs.sing-box;
       service.enable = true;
       configFile = "${my.homedir}/Nutstore Files/我的坚果云/clash/singbox.json";
     };
@@ -108,7 +108,7 @@
         default = "firefox";
         # firefox.extensions = lib.mkForce [];
         fallback = "chrome";
-        # fallback = pkgs.unstable.darwinapps.vivaldi;
+        # fallback = pkgs.darwinapps.vivaldi;
       };
     };
 

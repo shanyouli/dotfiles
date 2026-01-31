@@ -53,7 +53,7 @@ in
     home = {
       packages = [
         cfg.package
-        pkgs.unstable.bash-env-json
+        pkgs.bash-env-json
       ];
       configFile = mkMerge [
         (mkIf useCmpFn {

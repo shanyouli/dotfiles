@@ -30,7 +30,7 @@ in
       ];
     }
     (mkIf cfg.wrapper.enable {
-      user.packages = [ pkgs.unstable.darwinapps.dutis ];
+      user.packages = [ pkgs.darwinapps.dutis ];
       # If dutis is used, homebrew must be installed.It only supports apps in the /Applications directory.
     })
   ]);

@@ -26,7 +26,7 @@ in
       "launchpadder" # 排序 launchpad
     ];
     user.packages = [
-      pkgs.unstable.darwinapps.lporg # 自定义 launchpad 布局
+      pkgs.darwinapps.lporg # 自定义 launchpad 布局
     ];
   };
 }

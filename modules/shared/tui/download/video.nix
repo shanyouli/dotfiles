@@ -21,7 +21,7 @@ let
     # 更新执行程序
     copy_source() {
       local file1=$_dir/bbdown
-      local file2=${pkgs.unstable.bbdown}/lib/BBDown/BBDown
+      local file2=${pkgs.bbdown}/lib/BBDown/BBDown
       local hash2=$(get_shasum $file2)
       if [[ ! -f "$file1" || "$(get_shasum $file1)" != "$(get_shasum $file2)" ]]; then
          cp -rf $file2 $file1

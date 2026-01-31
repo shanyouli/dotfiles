@@ -86,10 +86,10 @@ in
           "ice";
     };
     dataPkg = mkOption {
-      default = pkgs.unstable.rime-ice;
+      default = pkgs.rime-ice;
       type = types.package;
-      apply =
-        p: if (cfg.method == "wanxiang") then pkgs.unstable.rime-wanxiang else pkgs.unstable.rime-ice;
+      apply = p: if (cfg.method == "wanxiang") then pkgs.rime-wanxiang else pkgs.rime-ice;
+
     };
     configDir = mkOption {
       type = types.nullOr types.path;

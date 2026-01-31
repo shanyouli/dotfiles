@@ -1,9 +1,4 @@
-{
-  inputs,
-  self,
-  lib,
-  ...
-}:
+{ inputs, self, ... }:
 {
   flake.overlays = rec {
     base = inputs.nurpkgs.overlays.default;
@@ -13,19 +8,7 @@
       unstable = import inputs.nixpkgs rec {
         inherit (prev) system;
         config.allowUnfree = true;
-        overlays = [
-          (lib.composeExtensions self.overlays.base (
-            _ffinal: _pprev: {
-              inherit (inputs.nurpkgs.packages.${prev.system})
-                emacs
-                nix-index
-                emacs-unstable
-                emacs-git
-                emacs-igc
-                ;
-            }
-          ))
-        ];
+        overlays = [ ];
       };
     };
   };
