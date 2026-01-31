@@ -762,7 +762,7 @@ function status() {
 
 document.getElementById("disableNotifications").onchange = function () {
   settings.disableNotifications = document.getElementById(
-    "disableNotifications"
+    "disableNotifications",
   ).checked;
   setCookie("disableNotification=" + settings.disableNotifications);
   const audio = document.getElementById("audio");

@@ -1,4 +1,4 @@
-name: 'system build'
+name: "system build"
 on:
   repository_dispatch:
     types: [Build-check]
@@ -6,18 +6,18 @@ on:
     branches:
       - master
     paths:
-      - 'hosts/tests/**/*.nix'
-      - 'parts/**/*.nix'
-      - 'flake.lock'
+      - "hosts/tests/**/*.nix"
+      - "parts/**/*.nix"
+      - "flake.lock"
 
   pull_request_target:
     branches:
       - master
     paths:
-      - 'parts/**.nix'
-      - 'modules/**.nix'
-      - 'hosts/**/*.nix'
-      - 'flake.lock'
+      - "parts/**.nix"
+      - "modules/**.nix"
+      - "hosts/**/*.nix"
+      - "flake.lock"
   # schedule:
   #   # run this daily at 8am UTC, or roughly 4am eastern
   #   - cron: '45 2 * * 6'
@@ -114,9 +114,9 @@ jobs:
             experimental-features = nix-command flakes
       - uses: cachix/cachix-action@v15
         with:
-          name: 'shanyouli'
-          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          name: "shanyouli"
+          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
       - name: Print CPU info
         run: |
           if command -v nproc >/dev/null ; then

@@ -20,10 +20,10 @@ const {
   iunmap,
   vunmap,
   RUNTIME,
-} = api
+} = api;
 
 // 设置默认的拨号键有asdfgqwertzxcvb
-Hints.characters = 'asdfgqwertzxcvb';
+Hints.characters = "asdfgqwertzxcvb";
 // 拨号键靠左对齐
 settings.hintAlign = "left";
 
@@ -45,79 +45,121 @@ settings.historyMUOrder = false;
 // 1.冲突修改
 //与浏览器冲突部分,个人认为它更好
 // 移除与浏览器的冲突 查看下载历史，历史记录
-unmap('<Ctrl-j>');
-iunmap('<Ctrl-j>');
-vunmap('<Ctrl-j>');
-unmap('<Ctrl-h>');
-iunmap('<Ctrl-h>');
-vunmap('<Ctrl-h>');
+unmap("<Ctrl-j>");
+iunmap("<Ctrl-j>");
+vunmap("<Ctrl-j>");
+unmap("<Ctrl-h>");
+iunmap("<Ctrl-h>");
+vunmap("<Ctrl-h>");
 
 settings.aceKeybindings = "vim";
 
 // remove 一些默认的搜索按键
-removeSearchAlias('b', 's');
-removeSearchAlias('w', 's');
-removeSearchAlias('h', 's');
-removeSearchAlias('d', 's');
-removeSearchAlias('e', 's');
+removeSearchAlias("b", "s");
+removeSearchAlias("w", "s");
+removeSearchAlias("h", "s");
+removeSearchAlias("d", "s");
+removeSearchAlias("e", "s");
 
 // devv 开发问题AI回答
 // d name, url, s, suggest-url, function back, only_this_site_key='o', url=
-addSearchAlias('d', 'devv', "https://devv.ai/search/", 's',null, null, 'o', {favion_url: 'https://devv.ai/favicon.ico', skipMaps: false} );
+addSearchAlias("d", "devv", "https://devv.ai/search/", "s", null, null, "o", {
+  favion_url: "https://devv.ai/favicon.ico",
+  skipMaps: false,
+});
 // anybt bt搜索
-addSearchAlias('D', "anybt", "https://anybt.eth.limo/#/search?q=", 's')
+addSearchAlias("D", "anybt", "https://anybt.eth.limo/#/search?q=", "s");
 
 // nixos-optional
-addSearchAlias('n', "nixos-optional", "https://search.nixos.org/options?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=", 's')
+addSearchAlias(
+  "n",
+  "nixos-optional",
+  "https://search.nixos.org/options?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=",
+  "s",
+);
 // bing
-addSearchAlias('b', 'bing', 'https://www.bing.com/search?setmkt=en-us&setlang=en-us&q=', 's', 'https://api.bing.com/osjson.aspx?query=', function(response) {
+addSearchAlias(
+  "b",
+  "bing",
+  "https://www.bing.com/search?setmkt=en-us&setlang=en-us&q=",
+  "s",
+  "https://api.bing.com/osjson.aspx?query=",
+  function (response) {
     var res = JSON.parse(response.text);
     return res[1];
-});
-addSearchAlias('B', 'baidu', 'https://www.baidu.com/s?wd=', 's', 'https://suggestion.baidu.com/su?cb=&wd=', function(response) {
+  },
+);
+addSearchAlias(
+  "B",
+  "baidu",
+  "https://www.baidu.com/s?wd=",
+  "s",
+  "https://suggestion.baidu.com/su?cb=&wd=",
+  function (response) {
     var res = response.text.match(/,s:\[("[^\]]+")]}/);
-    return res ? res[1].replace(/"/g, '').split(",") : [];
-});
+    return res ? res[1].replace(/"/g, "").split(",") : [];
+  },
+);
 
-addSearchAlias('w', 'wikipedia', 'https://en.wikipedia.org/wiki/', 's', 'https://en.wikipedia.org/w/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=40&search=', function(response) {
+addSearchAlias(
+  "w",
+  "wikipedia",
+  "https://en.wikipedia.org/wiki/",
+  "s",
+  "https://en.wikipedia.org/w/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=40&search=",
+  function (response) {
     return JSON.parse(response.text)[1];
-});
-addSearchAlias('G', 'github', 'https://github.com/search?q=', 's', 'https://api.github.com/search/repositories?order=desc&q=', function(response) {
-    var res = JSON.parse(response.text)['items'];
-    return res ? res.map(function(r){
-        return {
+  },
+);
+addSearchAlias(
+  "G",
+  "github",
+  "https://github.com/search?q=",
+  "s",
+  "https://api.github.com/search/repositories?order=desc&q=",
+  function (response) {
+    var res = JSON.parse(response.text)["items"];
+    return res
+      ? res.map(function (r) {
+          return {
             title: r.description,
-            url: r.html_url
-        };
-    }) : [];
-});
+            url: r.html_url,
+          };
+        })
+      : [];
+  },
+);
 
-mapkey('p', '#0进入PassThrough模式', function() {
+mapkey("p", "#0进入PassThrough模式", function () {
   api.Normal.passThrough(2000);
 });
 
-mapkey('ymo', '以org格式复制链接', () => {
+mapkey("ymo", "以org格式复制链接", () => {
   let url = document.URL;
   let title = document.title;
   let domain = document.domain;
   let message;
   if (domain === "github.com") {
-    let urlEnd = url.replace("https://github.,com", "")
+    let urlEnd = url.replace("https://github.,com", "");
     if (title.startsWith(urlEnd, "")) {
       title = urlEnd.replace("/", "--");
     }
   } else if (domain === "movie.douban.com") {
-    title = title.replace(" (豆瓣)","");
+    title = title.replace(" (豆瓣)", "");
     let score = "",
-        info = "";
+      info = "";
     try {
-      score = document.querySelector("div.rating_wrap:nth-child(1) > div:nth-child(2) > strong:nth-child(1)").textContent;
+      score = document.querySelector(
+        "div.rating_wrap:nth-child(1) > div:nth-child(2) > strong:nth-child(1)",
+      ).textContent;
     } catch (err) {
       console.log("There's no way to find out the ratings.");
     }
 
     try {
-      info = document.querySelector("#link-report-intra > span:nth-child(1)").textContent;
+      info = document.querySelector(
+        "#link-report-intra > span:nth-child(1)",
+      ).textContent;
       info = info.replaceAll(" ", "").replace("\n", "");
     } catch (err) {
       console.log("No video information was found");
@@ -128,19 +170,19 @@ mapkey('ymo', '以org格式复制链接', () => {
       "#+begin_quote",
       info,
       "#+end_quote",
-    ].join("\n")
+    ].join("\n");
   }
   if (message === undefined) {
-    message = `[[${url}][${title}]]`
+    message = `[[${url}][${title}]]`;
   }
-  Clipboard.write(message)
+  Clipboard.write(message);
 });
 
-mapkey('ymm', '以md格式复制链接', () => {
+mapkey("ymm", "以md格式复制链接", () => {
   let url = document.URL;
   let title = document.title;
   if (url.startsWith("https://github.com/")) {
-    let urlEnd = url.replace("https://github.com/", "")
+    let urlEnd = url.replace("https://github.com/", "");
     if (title.startsWith(urlEnd, "")) {
       title = urlEnd.replace("/", "--");
     } else {
@@ -149,17 +191,17 @@ mapkey('ymm', '以md格式复制链接', () => {
   } else {
     console.log(url);
   }
-  Clipboard.write(`[${title}](${url})`)
+  Clipboard.write(`[${title}](${url})`);
 });
 
-function  UrlExists(url){
-  var  http = new  XMLHttpRequest();
-  http.open('GET', url, false);
+function UrlExists(url) {
+  var http = new XMLHttpRequest();
+  http.open("GET", url, false);
   http.send();
-  return  http.status === 200;
+  return http.status === 200;
 }
 
-mapkey("ymf", "复制网站ico", function() {
+mapkey("ymf", "复制网站ico", function () {
   let a = 0;
   let b = document.getElementsByTagName("link");
   let c = "";
@@ -172,7 +214,7 @@ mapkey("ymf", "复制网站ico", function() {
     }
   }
   if ("" === c) {
-    let url = "http://"+ window.location.host + "/favicon.ico"
+    let url = "http://" + window.location.host + "/favicon.ico";
     if (UrlExists(url)) {
       c = url;
     }
@@ -182,111 +224,137 @@ mapkey("ymf", "复制网站ico", function() {
     console.log("Not Find favicon.ico");
     Front.showBanner("Not Find favicon.ico");
   } else {
-    Clipboard.write(c)
+    Clipboard.write(c);
   }
-})
+});
 
 mapkey("yy", "复制URL", () => {
   let url = document.URL;
   if (document.domain === "github.com") {
-    url = url.replace("\/blob\/", "\/raw\/")
+    url = url.replace("\/blob\/", "\/raw\/");
   }
-  Clipboard.write(url)
-})
+  Clipboard.write(url);
+});
 
-mapkey(',wv', "解除网页限制", function() {
+mapkey(",wv", "解除网页限制", function () {
   function t(e) {
-    e.stopPropagation()
-    e.stopImmediatePropagation && e.stopImmediatePropagation()
-  };
+    e.stopPropagation();
+    e.stopImmediatePropagation && e.stopImmediatePropagation();
+  }
 
-  document.querySelectorAll("*").forEach(e => {
-    "none" == window.getComputedStyle(e, null).getPropertyPriority("user-select") &&
+  document.querySelectorAll("*").forEach((e) => {
+    "none" ==
+      window.getComputedStyle(e, null).getPropertyPriority("user-select") &&
       e.style.setProperty("user-select", "text", "important");
   });
-  ["copy", "cut", "contextmenu", "selectstart", "mousedown", "mouseup", "mousemove", "keydown", "keypress", "keyup"].forEach(function(e) {
-    document.documentElement.addEventListener(e, t, { capture: !0 })
+  [
+    "copy",
+    "cut",
+    "contextmenu",
+    "selectstart",
+    "mousedown",
+    "mouseup",
+    "mousemove",
+    "keydown",
+    "keypress",
+    "keyup",
+  ].forEach(function (e) {
+    document.documentElement.addEventListener(e, t, { capture: !0 });
   });
-  Front.showBanner("解除当前网页复制限制")
-})
+  Front.showBanner("解除当前网页复制限制");
+});
 
-mapkey('ymr', "RSS订阅", function() {
-  if ((document.domain === "www.domp4.cc") || (document.domain == "www.mp4kan.com")) {
+mapkey("ymr", "RSS订阅", function () {
+  if (
+    document.domain === "www.domp4.cc" ||
+    document.domain == "www.mp4kan.com"
+  ) {
     let url = document.location.toString();
     let id = url.match(/([^\/]*)\.html/)[1];
-    Clipboard.write(`https://rsshub.app/domp4/detail/${id}`)
+    Clipboard.write(`https://rsshub.app/domp4/detail/${id}`);
   }
-})
+});
 
-mapkey(",oc", "Org Capture", function() {
-  location.href = 'org-protocol://capture?' +
+mapkey(",oc", "Org Capture", function () {
+  location.href =
+    "org-protocol://capture?" +
     new URLSearchParams({
-      template: 'ip',
+      template: "ip",
       url: window.location.href,
       title: document.title,
       body: window.getSelection(),
     });
-  Front.showBanner("org Captured!")
-})
+  Front.showBanner("org Captured!");
+});
 
 // 来源: https://update.greasyfork.org/scripts/487681/%E5%9B%BE%E7%89%87%E6%A0%B7%E5%BC%8F%E5%B1%8F%E8%94%BD%E5%99%A8.user.js
 // 暂时不显示图片，便于阅读
-mapkey(",tm", "Toggle images blocker", function() {
-  let style  = document.getElementById("my-image-blocker");
+mapkey(",tm", "Toggle images blocker", function () {
+  let style = document.getElementById("my-image-blocker");
   if (style) {
     style.remove();
   } else {
-    style = document.createElement('style');
+    style = document.createElement("style");
     style.id = "my-image-blocker";
     style.innerHTML = `img,[style*='height:'][style*='width:'] {display: none !important;visibility: hidden; opacity: 0; z-index: -999; width: 0; height: 0; pointer-events: none; position: absolute; left: -9999px; top: -9999px;}`;
     document.head.appendChild(style);
   }
-})
+});
 
 // [[https://notes.fe-mm.com/efficiency/bookmark-scripts][书签脚本 | 茂茂物语]]
-mapkey("op", "display password", function() {
-  document.querySelectorAll('input[type=password]'.forEach(function(dom) {
-    dom.setAttribute('type', 'text')
-  }))
-})
+mapkey("op", "display password", function () {
+  document.querySelectorAll(
+    "input[type=password]".forEach(function (dom) {
+      dom.setAttribute("type", "text");
+    }),
+  );
+});
 
-vmapkey("e", "Org Capture", function() {
-  location.href = 'org-protocol://capture?' +
+vmapkey("e", "Org Capture", function () {
+  location.href =
+    "org-protocol://capture?" +
     new URLSearchParams({
-      template: 'ip',
+      template: "ip",
       url: window.location.href,
       title: document.title,
       body: window.getSelection(),
     });
-  Front.showBanner("org Captured!")
-})
+  Front.showBanner("org Captured!");
+});
 // unmap("gg")
-mapkey("gg", "scrool head", function() {
-  document.scrollingElement.scrollIntoView({ behavior: 'smooth' })
-})
-mapkey("G", "移动到最下面", function() {
-  document.scrollingElement.scrollIntoView({ behavior: 'smooth', block: "end" })
-})
+mapkey("gg", "scrool head", function () {
+  document.scrollingElement.scrollIntoView({ behavior: "smooth" });
+});
+mapkey("G", "移动到最下面", function () {
+  document.scrollingElement.scrollIntoView({
+    behavior: "smooth",
+    block: "end",
+  });
+});
 // api.vmapkey('c', 'send to emacs', function(){
 //     javascript:location.href = 'org-protocol:///capture-html?template=w&url=' + encodeURIComponent(location.href) + '&title=' + encodeURIComponent(document.title || "[untitled page]") + '&body=' + encodeURIComponent(function () {var html = ""; if (typeof window.getSelection != "undefined") {var sel = window.getSelection(); if (sel.rangeCount) {var container = document.createElement("div"); for (var i = 0, len = sel.rangeCount; i < len; ++i) {container.appendChild(sel.getRangeAt(i).cloneContents());} html = container.innerHTML;}} else if (typeof document.selection != "undefined") {if (document.selection.type == "Text") {html = document.selection.createRange().htmlText;}} var relToAbs = function (href) {var a = document.createElement("a"); a.href = href; var abs = a.protocol + "//" + a.host + a.pathname + a.search + a.hash; a.remove(); return abs;}; var elementTypes = [['a', 'href'], ['img', 'src']]; var div = document.createElement('div'); div.innerHTML = html; elementTypes.map(function(elementType) {var elements = div.getElementsByTagName(elementType[0]); for (var i = 0; i < elements.length; i++) {elements[i].setAttribute(elementType[1], relToAbs(elements[i].getAttribute(elementType[1])));}}); return div.innerHTML;}());
 // });
 
 api.Front.registerInlineQuery({
-  url: function(q) {
+  url: function (q) {
     return `http://dict.youdao.com/w/eng/${q}/#keyfrom=dict2.index`;
   },
-  parseResult: function(res) {
+  parseResult: function (res) {
     var parser = new DOMParser();
     var doc = parser.parseFromString(res.text, "text/html");
     var collinsResult = doc.querySelector("#collinsResult");
     var authTransToggle = doc.querySelector("#authTransToggle");
     var examplesToggle = doc.querySelector("#examplesToggle");
     if (collinsResult) {
-      collinsResult.querySelectorAll("div>span.collinsOrder").forEach(function(span) {
-        span.nextElementSibling.prepend(span);
-      });
-      collinsResult.querySelectorAll("div.examples").forEach(function(div) {
-        div.innerHTML = div.innerHTML.replace(/<p/gi, "<span").replace(/<\/p>/gi, "</span>");
+      collinsResult
+        .querySelectorAll("div>span.collinsOrder")
+        .forEach(function (span) {
+          span.nextElementSibling.prepend(span);
+        });
+      collinsResult.querySelectorAll("div.examples").forEach(function (div) {
+        div.innerHTML = div.innerHTML
+          .replace(/<p/gi, "<span")
+          .replace(/<\/p>/gi, "</span>");
       });
       var exp = collinsResult.innerHTML;
       return exp;
@@ -296,7 +364,7 @@ api.Front.registerInlineQuery({
     } else if (examplesToggle) {
       return examplesToggle.innerHTML;
     }
-  }
+  },
 });
 
 // name: Rosé Pine Dawn

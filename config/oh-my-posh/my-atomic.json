@@ -323,9 +323,7 @@
           "foreground": "#e0f8ff",
           "type": "status",
           "style": "plain",
-          "foreground_templates": [
-            "{{ if gt .Code 0 }}#ef5350{{ end }}"
-          ]
+          "foreground_templates": ["{{ if gt .Code 0 }}#ef5350{{ end }}"]
         }
       ],
       "newline": true

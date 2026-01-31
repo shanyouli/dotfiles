@@ -21,8 +21,7 @@
 
 ![image](https://user-images.githubusercontent.com/44733677/156901101-65f4a25b-b68d-4ac2-8977-43c2d452acc4.png)
 
-
-## Thanks to 
+## Thanks to
 
 - [ThatOneCalculator](https://github.com/thatonecalculator)
 - [okaabe](https://github.com/okaabe)

@@ -1,45 +1,27 @@
 [
   {
     "key": "WHEEL_UP",
-    "command": [
-      "script-binding",
-      "file_browser/dynamic/scroll_up"
-    ]
+    "command": ["script-binding", "file_browser/dynamic/scroll_up"]
   },
   {
     "key": "WHEEL_DOWN",
-    "command": [
-      "script-binding",
-      "file_browser/dynamic/scroll_down"
-    ]
+    "command": ["script-binding", "file_browser/dynamic/scroll_down"]
   },
   {
     "key": "MBTN_LEFT",
-    "command": [
-      "script-binding",
-      "file_browser/dynamic/down_dir"
-    ]
+    "command": ["script-binding", "file_browser/dynamic/down_dir"]
   },
   {
     "key": "MBTN_RIGHT",
-    "command": [
-      "script-binding",
-      "file_browser/dynamic/up_dir"
-    ]
+    "command": ["script-binding", "file_browser/dynamic/up_dir"]
   },
   {
     "key": "MBTN_MID",
-    "command": [
-      "script-binding",
-      "file_browser/dynamic/play"
-    ]
+    "command": ["script-binding", "file_browser/dynamic/play"]
   },
   {
     "key": "KP1",
-    "command": [
-      "print-text",
-      "files: %n"
-    ],
+    "command": ["print-text", "files: %n"],
     "filter": "file",
     "multiselect": true,
     "multi-type": "concat",
@@ -47,10 +29,7 @@
   },
   {
     "key": "KP1",
-    "command": [
-      "print-text",
-      "directories: %n"
-    ],
+    "command": ["print-text", "directories: %n"],
     "filter": "dir",
     "multiselect": true,
     "multi-type": "concat",
@@ -58,105 +37,60 @@
   },
   {
     "key": "KP1",
-    "command": [
-      "print-text",
-      "%f"
-    ],
+    "command": ["print-text", "%f"],
     "passthrough": true,
     "name": "thing"
   },
   {
     "key": "KP2",
-    "command": [
-      "print-text",
-      "name: %n"
-    ],
+    "command": ["print-text", "name: %n"],
     "multiselect": true
   },
   {
     "key": "KP3",
-    "command": [
-      "print-text",
-      "open directory: %p"
-    ]
+    "command": ["print-text", "open directory: %p"]
   },
   {
     "key": "KP4",
-    "command": [
-      "print-text",
-      "directory name: %d"
-    ]
+    "command": ["print-text", "directory name: %d"]
   },
   {
     "key": "KP5",
-    "command": [
-      "print-text",
-      "escape the code: %%f"
-    ],
+    "command": ["print-text", "escape the code: %%f"],
     "multiselect": true
   },
   {
     "key": "KP6",
-    "command": [
-      "print-text",
-      "full filepath via concatenation: %p%n"
-    ],
+    "command": ["print-text", "full filepath via concatenation: %p%n"],
     "multiselect": true
   },
   {
     "key": "KP7",
-    "command": [
-      "print-text",
-      "quote/escape filepath: %F"
-    ],
+    "command": ["print-text", "quote/escape filepath: %F"],
     "multiselect": true
   },
   {
     "key": "KP8",
-    "command": [
-      "print-text",
-      "%r"
-    ]
+    "command": ["print-text", "%r"]
   },
   {
     "key": "Alt+DEL",
-    "command": [
-      "run",
-      "powershell",
-      "-command",
-      "rm",
-      "%F"
-    ],
+    "command": ["run", "powershell", "-command", "rm", "%F"],
     "filter": "file",
     "multiselect": true,
     "multi-type": "concat"
   },
   {
     "key": "Ctrl+ENTER",
-    "command": [
-      "run",
-      "powershell",
-      "-command",
-      "mpv.exe",
-      "%F"
-    ],
+    "command": ["run", "powershell", "-command", "mpv.exe", "%F"],
     "multiselect": true,
     "multi-type": "concat"
   },
   {
     "key": "Ctrl+c",
     "command": [
-      [
-        "run",
-        "powershell",
-        "-command",
-        "Set-Clipboard",
-        "%F"
-      ],
-      [
-        "print-text",
-        "copied filepath to clipboard"
-      ]
+      ["run", "powershell", "-command", "Set-Clipboard", "%F"],
+      ["print-text", "copied filepath to clipboard"]
     ],
     "multiselect": true,
     "delay": 0.3
@@ -291,61 +225,33 @@
         "script-binding",
         "file_browser/dynamic/reload"
       ],
-      [
-        "show-text",
-        "删除 %f"
-      ]
+      ["show-text", "删除 %f"]
     ],
     "multiselect": true,
     "multi-type": "repeat"
   },
   {
     "key": "F",
-    "command": [
-      "script-message",
-      "favourites/add_favourite",
-      "%f"
-    ]
+    "command": ["script-message", "favourites/add_favourite", "%f"]
   },
   {
     "key": "F",
-    "command": [
-      "script-message",
-      "favourites/remove_favourite",
-      "%f"
-    ],
+    "command": ["script-message", "favourites/remove_favourite", "%f"],
     "parser": "favourites"
   },
   {
     "key": "Ctrl+UP",
-    "command": [
-      [
-        "script-message",
-        "favourites/move_up",
-        "%f"
-      ]
-    ],
+    "command": [["script-message", "favourites/move_up", "%f"]],
     "parser": "favourites"
   },
   {
     "key": "Ctrl+DOWN",
-    "command": [
-      [
-        "script-message",
-        "favourites/move_down",
-        "%f"
-      ]
-    ],
+    "command": [["script-message", "favourites/move_down", "%f"]],
     "parser": "favourites"
   },
   {
     "key": "Ctrl+r",
-    "command": [
-      [
-        "script-message",
-        "winroot/import_root_drives"
-      ]
-    ],
+    "command": [["script-message", "winroot/import_root_drives"]],
     "parser": "root"
   }
 ]

@@ -42,16 +42,16 @@ create `file-browser-keybinds.json` or `script-modules/file-browser-addons/`.
 
 The following keybinds are set by default
 
-| Key         | Name                             | Description                                                                   |
-|-------------|----------------------------------|-------------------------------------------------------------------------------|
-| MENU        | browse-files                     | toggles the browser                                                           |
-| Ctrl+o      | open-browser                     | opens the browser                                                             |
-| Alt+o       | browse-directory/get-user-input  | opens a dialogue box to type in a directory - requires [mpv-user-input](#mpv-user-input) |
+| Key    | Name                            | Description                                                                              |
+| ------ | ------------------------------- | ---------------------------------------------------------------------------------------- |
+| MENU   | browse-files                    | toggles the browser                                                                      |
+| Ctrl+o | open-browser                    | opens the browser                                                                        |
+| Alt+o  | browse-directory/get-user-input | opens a dialogue box to type in a directory - requires [mpv-user-input](#mpv-user-input) |
 
 The following dynamic keybinds are only set while the browser is open:
 
 | Key         | Name          | Description                                                                   |
-|-------------|---------------|-------------------------------------------------------------------------------|
+| ----------- | ------------- | ----------------------------------------------------------------------------- |
 | ESC         | close         | closes the browser or clears the selection                                    |
 | ENTER       | play          | plays the currently selected file or folder                                   |
 | Shift+ENTER | play_append   | appends the current file or folder to the playlist                            |
@@ -74,7 +74,7 @@ The following dynamic keybinds are only set while the browser is open:
 When attempting to play or append a subtitle file the script will instead load the subtitle track into the existing video.
 
 The behaviour of the autoload keybind can be reversed with the `autoload` script-opt.
-By default the playlist will only be autoloaded if `Alt+ENTER` is used on a single file, however when the option is switched autoload will always be used on single files *unless* `Alt+ENTER` is used. Using autoload on a directory, or while appending an item, will not work.
+By default the playlist will only be autoloaded if `Alt+ENTER` is used on a single file, however when the option is switched autoload will always be used on single files _unless_ `Alt+ENTER` is used. Using autoload on a directory, or while appending an item, will not work.
 
 ## Root Directory
 

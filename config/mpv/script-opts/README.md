@@ -16,4 +16,3 @@ osc.conf
 stats.conf
 ytdl_hook.conf
 ```
-

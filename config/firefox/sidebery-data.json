@@ -329,12 +329,7 @@
   "contextMenu": {
     "tabs": [
       {
-        "opts": [
-          "undoRmTab",
-          "mute",
-          "reload",
-          "bookmark"
-        ]
+        "opts": ["undoRmTab", "mute", "reload", "bookmark"]
       },
       "separator-1",
       {
@@ -358,9 +353,7 @@
       },
       {
         "name": "%menu.tab.colorize_",
-        "opts": [
-          "colorizeTab"
-        ]
+        "opts": ["colorizeTab"]
       },
       "separator-2",
       "pin",
@@ -379,12 +372,7 @@
     ],
     "tabsPanel": [
       {
-        "opts": [
-          "undoRmTab",
-          "muteAllAudibleTabs",
-          "reloadTabs",
-          "discardTabs"
-        ]
+        "opts": ["undoRmTab", "muteAllAudibleTabs", "reloadTabs", "discardTabs"]
       },
       "separator-7",
       "selectAllTabs",

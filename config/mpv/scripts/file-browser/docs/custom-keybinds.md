@@ -6,27 +6,27 @@ This allows for a wide range of customised behaviour, such as loading additional
 The feature is disabled by default, but is enabled with the `custom_keybinds` script-opt.
 Keybinds are declared in the `~~/script-opts/file-browser-keybinds.json` file, the config takes the form of an array of json objects, with the following keys:
 
-| option        | required | default    | description                                                                                |
-|---------------|----------|------------|--------------------------------------------------------------------------------------------|
-| key           | yes      | -          | the key to bind the command to - same syntax as input.conf                                 |
-| command       | yes      | -          | json array of commands and arguments                                                       |
-| name          | no       | numeric id | name of the script-binding - see [modifying default keybinds](#modifying-default-keybinds) |
-| condition     | no       | -          | a Lua [expression](#expressions) - the keybind will only run if this evaluates to true     |
-| flags         | no       | -          | flags to send to the mpv add_keybind function - see [here](https://mpv.io/manual/master/#lua-scripting-[,flags]]\)) |
-| filter        | no       | -          | run the command on just a file (`file`) or folder (`dir`)                                  |
-| parser        | no       | -          | run the command only in directories provided by the specified parser.                      |
-| multiselect   | no       | `false`    | command is run on all selected items                                                       |
-| multi-type    | no       | `repeat`   | which multiselect mode to use - `repeat` or `concat`                                       |
-| delay         | no       | `0`        | time to wait between sending repeated multi commands                                       |
-| concat-string | no       | `' '` (space) | string to insert between items when concatenating multi commands                        |
-| passthrough   | no       | -          | force or ban passthrough behaviour - see [passthrough](#passthrough-keybinds)              |
+| option        | required | default       | description                                                                                                          |
+| ------------- | -------- | ------------- | -------------------------------------------------------------------------------------------------------------------- |
+| key           | yes      | -             | the key to bind the command to - same syntax as input.conf                                                           |
+| command       | yes      | -             | json array of commands and arguments                                                                                 |
+| name          | no       | numeric id    | name of the script-binding - see [modifying default keybinds](#modifying-default-keybinds)                           |
+| condition     | no       | -             | a Lua [expression](#expressions) - the keybind will only run if this evaluates to true                               |
+| flags         | no       | -             | flags to send to the mpv add_keybind function - see [here](<https://mpv.io/manual/master/#lua-scripting-[,flags]])>) |
+| filter        | no       | -             | run the command on just a file (`file`) or folder (`dir`)                                                            |
+| parser        | no       | -             | run the command only in directories provided by the specified parser.                                                |
+| multiselect   | no       | `false`       | command is run on all selected items                                                                                 |
+| multi-type    | no       | `repeat`      | which multiselect mode to use - `repeat` or `concat`                                                                 |
+| delay         | no       | `0`           | time to wait between sending repeated multi commands                                                                 |
+| concat-string | no       | `' '` (space) | string to insert between items when concatenating multi commands                                                     |
+| passthrough   | no       | -             | force or ban passthrough behaviour - see [passthrough](#passthrough-keybinds)                                        |
 
 Example:
 
 ```json
 {
-    "key": "KP1",
-    "command": ["print-text", "example"],
+  "key": "KP1",
+  "command": ["print-text", "example"]
 }
 ```
 
@@ -34,11 +34,11 @@ The command can also be an array of arrays, in order to send multiple commands a
 
 ```json
 {
-    "key": "KP2",
-    "command": [
-        ["print-text", "example2"],
-        ["show-text", "example2"]
-    ]
+  "key": "KP2",
+  "command": [
+    ["print-text", "example2"],
+    ["show-text", "example2"]
+  ]
 }
 ```
 
@@ -53,9 +53,9 @@ You can set the filter to match multiple parsers by separating the names with sp
 
 ```json
 {
-    "key": "KP2",
-    "command": [ ["print-text", "example3"] ],
-    "parser": "ftp file"
+  "key": "KP2",
+  "command": [["print-text", "example3"]],
+  "parser": "ftp file"
 }
 ```
 
@@ -64,9 +64,9 @@ In this case the the keybind would look like the following:
 
 ```json
 {
-    "key": "p",
-    "command": ["print-text", "spam-text"],
-    "flags": { "repeatable": true }
+  "key": "p",
+  "command": ["print-text", "spam-text"],
+  "flags": { "repeatable": true }
 }
 ```
 
@@ -74,18 +74,18 @@ In this case the the keybind would look like the following:
 
 The script will scan every string in the command for the special substitution strings, they are:
 
-| code   | description                                                         |
-|--------|---------------------------------------------------------------------|
-| `%%`   | escape code for `%`                                                 |
-| `%f`   | filepath of the selected item                                       |
-| `%n`   | filename of the selected item                                       |
-| `%p`   | currently open directory                                            |
-| `%q`   | currently open directory but preferring the directory label         |
-| `%d`   | name of the current directory (characters between the last two '/') |
-| `%r`   | name of the parser for the currently open directory                 |
-| `%x`   | number of items in the currently open directory                     |
-| `%i`   | the 1-based index of the selected item in the list                  |
-| `%j`   | the 1-based index of the item in a multiselection - returns 1 for single selections |
+| code | description                                                                         |
+| ---- | ----------------------------------------------------------------------------------- |
+| `%%` | escape code for `%`                                                                 |
+| `%f` | filepath of the selected item                                                       |
+| `%n` | filename of the selected item                                                       |
+| `%p` | currently open directory                                                            |
+| `%q` | currently open directory but preferring the directory label                         |
+| `%d` | name of the current directory (characters between the last two '/')                 |
+| `%r` | name of the parser for the currently open directory                                 |
+| `%x` | number of items in the currently open directory                                     |
+| `%i` | the 1-based index of the selected item in the list                                  |
+| `%j` | the 1-based index of the item in a multiselection - returns 1 for single selections |
 
 Additionally, using the uppercase forms of those codes will send the substituted string through the `string.format("%q", str)` function.
 This adds double quotes around the string and automatically escapes any characters which would break the string encapsulation.
@@ -96,9 +96,9 @@ Example of a command to add an audio track:
 
 ```json
 {
-    "key": "Ctrl+a",
-    "command": ["audio-add", "%f"],
-    "filter": "file"
+  "key": "Ctrl+a",
+  "command": ["audio-add", "%f"],
+  "filter": "file"
 }
 ```
 
@@ -148,22 +148,22 @@ For example to change the scroll buttons from the arrows to the scroll wheel:
 
 ```json
 [
-    {
-        "key": "WHEEL_UP",
-        "command": ["script-binding", "file_browser/dynamic/scroll_up"]
-    },
-    {
-        "key": "WHEEL_DOWN",
-        "command": ["script-binding", "file_browser/dynamic/scroll_down"]
-    },
-    {
-        "key": "UP",
-        "command": ["osd-auto", "add", "volume", "2"]
-    },
-    {
-        "key": "DOWN",
-        "command": ["osd-auto", "add", "volume", "-2"]
-    }
+  {
+    "key": "WHEEL_UP",
+    "command": ["script-binding", "file_browser/dynamic/scroll_up"]
+  },
+  {
+    "key": "WHEEL_DOWN",
+    "command": ["script-binding", "file_browser/dynamic/scroll_down"]
+  },
+  {
+    "key": "UP",
+    "command": ["osd-auto", "add", "volume", "2"]
+  },
+  {
+    "key": "DOWN",
+    "command": ["osd-auto", "add", "volume", "-2"]
+  }
 ]
 ```
 
@@ -183,16 +183,16 @@ the selected item is a matroska file:
 
 ```json
 [
-    {
-        "key": "KP1",
-        "command": ["print-text", "in my C:/ drive!"],
-        "condition": "(%P):find('C:/') == 1"
-    },
-    {
-        "key": "KP2",
-        "command": ["print-text", "Matroska File!"],
-        "condition": "fb.get_extension(%N) == 'mkv'"
-    }
+  {
+    "key": "KP1",
+    "command": ["print-text", "in my C:/ drive!"],
+    "condition": "(%P):find('C:/') == 1"
+  },
+  {
+    "key": "KP2",
+    "command": ["print-text", "Matroska File!"],
+    "condition": "fb.get_extension(%N) == 'mkv'"
+  }
 ]
 ```
 
@@ -216,9 +216,18 @@ Any `=>` string will be substituted for `script-message`.
 
 ```json
 {
-    "key": "KP1",
-    "command": ["script-message", "=>", "delay-command", "%j * 2", "=>", "evaluate-expressions", "print-text", "!{%j * 2}"],
-    "multiselect": true
+  "key": "KP1",
+  "command": [
+    "script-message",
+    "=>",
+    "delay-command",
+    "%j * 2",
+    "=>",
+    "evaluate-expressions",
+    "print-text",
+    "!{%j * 2}"
+  ],
+  "multiselect": true
 }
 ```
 
@@ -230,8 +239,14 @@ This example command will only run if the player is currently paused:
 
 ```json
 {
-    "key": "KP1",
-    "command": ["script-message", "conditional-command", "mp.get_property_bool('pause')", "print-text", "is paused"],
+  "key": "KP1",
+  "command": [
+    "script-message",
+    "conditional-command",
+    "mp.get_property_bool('pause')",
+    "print-text",
+    "is paused"
+  ]
 }
 ```
 
@@ -241,8 +256,14 @@ This example only runs if the currently selected item in the browser has a `.mkv
 
 ```json
 {
-    "key": "KP1",
-    "command": ["script-message", "conditional-command", "fb.get_extension(%N) == 'mkv'", "print-text", "a matroska file"],
+  "key": "KP1",
+  "command": [
+    "script-message",
+    "conditional-command",
+    "fb.get_extension(%N) == 'mkv'",
+    "print-text",
+    "a matroska file"
+  ]
 }
 ```
 
@@ -255,8 +276,8 @@ The following example will send the `print-text` command after 5 seconds:
 
 ```json
 {
-    "key": "KP1",
-    "command": ["script-message", "delay-command", "5", "print-text", "example"],
+  "key": "KP1",
+  "command": ["script-message", "delay-command", "5", "print-text", "example"]
 }
 ```
 
@@ -272,8 +293,13 @@ For example the following keybind will print 3 to the console:
 
 ```json
 {
-    "key": "KP1",
-    "command": ["script-message", "evaluate-expressions", "print-text", "!{1 + 2}"],
+  "key": "KP1",
+  "command": [
+    "script-message",
+    "evaluate-expressions",
+    "print-text",
+    "!{1 + 2}"
+  ]
 }
 ```
 
@@ -282,8 +308,13 @@ This example replaces all `/` characters in the path with `\`
 
 ```json
 {
-    "key": "KP1",
-    "command": ["script-message", "evaluate-expressions", "print-text", "!{ string.gsub(%F, '/', '\\\\') }"],
+  "key": "KP1",
+  "command": [
+    "script-message",
+    "evaluate-expressions",
+    "print-text",
+    "!{ string.gsub(%F, '/', '\\\\') }"
+  ]
 }
 ```
 
@@ -299,26 +330,28 @@ rename items in file-browser:
 
 ```json
 {
-    "key": "KP1",
-    "command": ["script-message", "run-statement",
-                    "assert(input, 'install mpv-user-input!')",
+  "key": "KP1",
+  "command": [
+    "script-message",
+    "run-statement",
+    "assert(input, 'install mpv-user-input!')",
 
-                    "local line, err = input.get_user_input_co({",
-                                            "id = 'rename-file',",
-                                            "source = 'custom-keybind',",
-                                            "request_text = 'rename file:',",
-                                            "queueable = true,",
-                                            "default_input = %N,",
-                                            "cursor_pos = #(%N) - #fb.get_extension(%N, '')",
-                                        "})",
+    "local line, err = input.get_user_input_co({",
+    "id = 'rename-file',",
+    "source = 'custom-keybind',",
+    "request_text = 'rename file:',",
+    "queueable = true,",
+    "default_input = %N,",
+    "cursor_pos = #(%N) - #fb.get_extension(%N, '')",
+    "})",
 
-                    "if not line then return end",
-                    "os.rename(%F, utils.join_path(%P, line))",
+    "if not line then return end",
+    "os.rename(%F, utils.join_path(%P, line))",
 
-                    "fb.rescan()"
-                ],
-    "parser": "file",
-    "multiselect": true
+    "fb.rescan()"
+  ],
+  "parser": "file",
+  "multiselect": true
 }
 ```
 

@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   max-width: 100%;
   background-color: #000000;
   color: var(--main-fg-color);
@@ -13,7 +13,9 @@ body {
   touch-action: manipulation;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   word-wrap: break-word;
 }
 
@@ -121,7 +123,9 @@ h4 {
   filter: brightness(30%);
 }
 
-.button .content, .button .content i, .icon-content i {
+.button .content,
+.button .content i,
+.icon-content i {
   text-align: center;
   vertical-align: middle;
   line-height: 150px;
@@ -196,7 +200,6 @@ table.prop-table td {
 .slidecontainer {
   width: 100%;
 }
-
 
 input[type="range"] {
   margin: auto;
@@ -397,7 +400,7 @@ td.playlist {
   text-align: center;
   font-size: 5.5vw;
   font-weight: bold;
-  width: 13%
+  width: 13%;
 }
 
 td.playlist:last-child {
@@ -405,11 +408,15 @@ td.playlist:last-child {
   border-top-right-radius: 6px;
 }
 
-td.playlist.active, td.playlist:last-child:hover, td.playlist:nth-child(3):hover {
+td.playlist.active,
+td.playlist:last-child:hover,
+td.playlist:nth-child(3):hover {
   filter: brightness(50%);
 }
 
-td.playlist.click, td.playlist:last-child:active, td.playlist:nth-child(3):active {
+td.playlist.click,
+td.playlist:last-child:active,
+td.playlist:nth-child(3):active {
   filter: brightness(30%);
 }
 
@@ -457,20 +464,23 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: var(--main-bg-color);
   opacity: 1; /* Firefox */
 }
 
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
   color: var(--main-bg-color);
 }
 
-::-ms-input-placeholder { /* Microsoft Edge */
+::-ms-input-placeholder {
+  /* Microsoft Edge */
   color: var(--main-bg-color);
 }
 
@@ -484,13 +494,15 @@ input[type=number] {
   overflow: scroll;
 }
 
-table#shortcuts-table, table#settings-table {
+table#shortcuts-table,
+table#settings-table {
   width: 100%;
   font-size: 4vmin;
-  border-spacing: 0 .75em;
+  border-spacing: 0 0.75em;
 }
 
-table#shortcuts-table td, table#settings-table td {
+table#shortcuts-table td,
+table#settings-table td {
   padding-left: 1em;
 }
 
@@ -513,15 +525,33 @@ table#settings-table tr {
   display: none;
 }
 
-.tgl, .tgl:after, .tgl:before, .tgl *, .tgl *:after, .tgl *:before, .tgl + .tgl-btn {
+.tgl,
+.tgl:after,
+.tgl:before,
+.tgl *,
+.tgl *:after,
+.tgl *:before,
+.tgl + .tgl-btn {
   box-sizing: border-box;
 }
 
-.tgl::-moz-selection, .tgl:after::-moz-selection, .tgl:before::-moz-selection, .tgl *::-moz-selection, .tgl *:after::-moz-selection, .tgl *:before::-moz-selection, .tgl + .tgl-btn::-moz-selection {
+.tgl::-moz-selection,
+.tgl:after::-moz-selection,
+.tgl:before::-moz-selection,
+.tgl *::-moz-selection,
+.tgl *:after::-moz-selection,
+.tgl *:before::-moz-selection,
+.tgl + .tgl-btn::-moz-selection {
   background: none;
 }
 
-.tgl::selection, .tgl:after::selection, .tgl:before::selection, .tgl *::selection, .tgl *:after::selection, .tgl *:before::selection, .tgl + .tgl-btn::selection {
+.tgl::selection,
+.tgl:after::selection,
+.tgl:before::selection,
+.tgl *::selection,
+.tgl *:after::selection,
+.tgl *:before::selection,
+.tgl + .tgl-btn::selection {
   background: none;
 }
 
@@ -533,12 +563,13 @@ table#settings-table tr {
   position: relative;
   cursor: pointer;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-.tgl + .tgl-btn:after, .tgl + .tgl-btn:before {
+.tgl + .tgl-btn:after,
+.tgl + .tgl-btn:before {
   position: relative;
   display: block;
   content: "";
@@ -575,7 +606,8 @@ table#settings-table tr {
   background: #9135bc;
 }
 
-.repo-link, .repo-link.i:active:hover {
+.repo-link,
+.repo-link.i:active:hover {
   font-size: 12vmin;
   color: var(--main-fg-color);
 }

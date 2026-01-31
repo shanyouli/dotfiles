@@ -1,59 +1,112 @@
 <html>
   <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="user-scalable=no">
-    <meta name="author" content="Fabio Ambauen">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no" />
+    <meta name="author" content="Fabio Ambauen" />
     <title>simple-mpv-webui</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="static/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="static/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="static/favicons/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="static/favicons/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="static/favicons/android-chrome-512x512.png">
-    <link rel="manifest" href="static/favicons/site.webmanifest" crossorigin="use-credentials">
-    <link rel="mask-icon" href="static/favicons/safari-pinned-tab.svg" color="#000000">
-    <link rel="shortcut icon" href="static/favicons/favicon.ico">
-    <meta name="msapplication-config" content="static/favicons/browserconfig.xml">
-    <meta name="theme-color" content="#000000">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" type="text/css" href="webui.css">
-    <link rel="stylesheet" href="static/fontawesome-free/css/all.min.css">
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="static/favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="static/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="static/favicons/favicon-16x16.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="static/favicons/android-chrome-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="static/favicons/android-chrome-512x512.png"
+    />
+    <link
+      rel="manifest"
+      href="static/favicons/site.webmanifest"
+      crossorigin="use-credentials"
+    />
+    <link
+      rel="mask-icon"
+      href="static/favicons/safari-pinned-tab.svg"
+      color="#000000"
+    />
+    <link rel="shortcut icon" href="static/favicons/favicon.ico" />
+    <meta
+      name="msapplication-config"
+      content="static/favicons/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#000000" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" type="text/css" href="webui.css" />
+    <link rel="stylesheet" href="static/fontawesome-free/css/all.min.css" />
   </head>
   <body>
     <div id="playlist-overlay" class="overlay">
       <table class="playlist-control">
         <tr>
           <td>
-              <div onClick="send('toggle_pause')" class="button unselectable green content icon-content playPauseButton playlist-controls">
-                <i class="fas fa-play"></i><i class="fas fa-pause"></i>
-              </div>
+            <div
+              onClick="send('toggle_pause')"
+              class="button unselectable green content icon-content playPauseButton playlist-controls"
+            >
+              <i class="fas fa-play"></i><i class="fas fa-pause"></i>
+            </div>
           </td>
           <td>
-              <div onClick="toggleOverlay('uri-loader-overlay')" class="button unselectable gray content icon-content playlist-controls">
-                <i class="fas fa-plus"></i>
-              </div>
+            <div
+              onClick="toggleOverlay('uri-loader-overlay')"
+              class="button unselectable gray content icon-content playlist-controls"
+            >
+              <i class="fas fa-plus"></i>
+            </div>
           </td>
           <td>
-              <div onClick="playlist_loop_cycle()" class="button unselectable blue content icon-content playlist-controls playlistLoopButton">
-                <i class="fas fa-redo-alt"></i>
-              </div>
+            <div
+              onClick="playlist_loop_cycle()"
+              class="button unselectable blue content icon-content playlist-controls playlistLoopButton"
+            >
+              <i class="fas fa-redo-alt"></i>
+            </div>
           </td>
           <td>
-              <div onClick="send('playlist_shuffle')" class="button unselectable blue content icon-content playlist-controls">
-                <i class="fas fa-random"></i>
-              </div>
+            <div
+              onClick="send('playlist_shuffle')"
+              class="button unselectable blue content icon-content playlist-controls"
+            >
+              <i class="fas fa-random"></i>
+            </div>
           </td>
           <td>
-              <div onClick="send('quit')" class="button unselectable violet content icon-content playlist-controls">
-                <i class="fas fa-power-off"></i>
-              </div>
+            <div
+              onClick="send('quit')"
+              class="button unselectable violet content icon-content playlist-controls"
+            >
+              <i class="fas fa-power-off"></i>
+            </div>
           </td>
           <td>
-              <div onClick="toggleOverlay('playlist-overlay')" class="button unselectable violet content icon-content playlist-controls">
-                <i class="fas fa-times-circle"></i>
-              </div>
+            <div
+              onClick="toggleOverlay('playlist-overlay')"
+              class="button unselectable violet content icon-content playlist-controls"
+            >
+              <i class="fas fa-times-circle"></i>
+            </div>
           </td>
         </tr>
       </table>
@@ -64,27 +117,50 @@
       <div onClick="toggleOverlay('settings-overlay')" class="overlay-top">
         <i class="far fa-times-circle"></i>
       </div>
-      <div onClick="toggleOverlay('shortcuts-overlay')" class="overlay-top keyboard-button">
+      <div
+        onClick="toggleOverlay('shortcuts-overlay')"
+        class="overlay-top keyboard-button"
+      >
         <i class="far fa-keyboard"></i>
       </div>
       <h4>Settings</h4>
       <table id="settings-table">
         <tr>
           <td>
-            <input class="tgl tgl-light" type="checkbox" value="1" id="disableNotifications" name="disableNotifications"/>
+            <input
+              class="tgl tgl-light"
+              type="checkbox"
+              value="1"
+              id="disableNotifications"
+              name="disableNotifications"
+            />
             <label class="tgl-btn" for="disableNotifications"></label>
           </td>
           <td>Disable usage of MediaSession API (notifications)</td>
         </tr>
         <tr>
           <td>
-            <input type="number" value="1" id="seekSeconds" name="seekSeconds"/>
+            <input
+              type="number"
+              value="1"
+              id="seekSeconds"
+              name="seekSeconds"
+            />
             <label for="seekSeconds"></label>
           </td>
-          <td>Amount of seconds to jump with <i class="fas fa-backward"></i> / <i class="fas fa-forward"></i></td>
+          <td>
+            Amount of seconds to jump with <i class="fas fa-backward"></i> /
+            <i class="fas fa-forward"></i>
+          </td>
         </tr>
       </table>
-      <a class="repo-link" href="https://github.com/open-dynaMIX/simple-mpv-webui" target="_blank" title="simple-mpv-webui on GitHub"><i class="fab fa-github"></i></a>
+      <a
+        class="repo-link"
+        href="https://github.com/open-dynaMIX/simple-mpv-webui"
+        target="_blank"
+        title="simple-mpv-webui on GitHub"
+        ><i class="fab fa-github"></i
+      ></a>
     </div>
 
     <div id="shortcuts-overlay" class="overlay">
@@ -105,18 +181,43 @@
       </div>
       <form onsubmit="uriLoader('append-play')" class="uri-loader-form">
         <label for="uri-loader-input">
-          <input type="text" id="uri-loader-input" placeholder="Enter URI" class="green">
+          <input
+            type="text"
+            id="uri-loader-input"
+            placeholder="Enter URI"
+            class="green"
+          />
         </label>
-        <div onClick="uriLoader('append-play')" class="button unselectable blue icon-content playlist-controls"><i class="fa fa-play-circle"></i></div>
-        <div onClick="uriLoader('append')" class="button unselectable blue icon-content playlist-controls"><i class="fa fa-plus-circle"></i></div>
+        <div
+          onClick="uriLoader('append-play')"
+          class="button unselectable blue icon-content playlist-controls"
+        >
+          <i class="fa fa-play-circle"></i>
+        </div>
+        <div
+          onClick="uriLoader('append')"
+          class="button unselectable blue icon-content playlist-controls"
+        >
+          <i class="fa fa-plus-circle"></i>
+        </div>
       </form>
     </div>
 
     <div class="burger">
-      <a href="#" onClick="toggleOverlay('playlist-overlay'); return false;" title="Show playlist"><i class="fas fa-list-ul"></i></a>
+      <a
+        href="#"
+        onClick="toggleOverlay('playlist-overlay'); return false;"
+        title="Show playlist"
+        ><i class="fas fa-list-ul"></i
+      ></a>
     </div>
     <div class="info">
-      <a href="#" onClick="toggleOverlay('settings-overlay'); return false;" title="Show settings"><i class="fas fa-cogs"></i></a>
+      <a
+        href="#"
+        onClick="toggleOverlay('settings-overlay'); return false;"
+        title="Show settings"
+        ><i class="fas fa-cogs"></i
+      ></a>
     </div>
     <h1 id="title">Title</h1>
     <h2 id="artist">Artist</h2>
@@ -152,9 +253,17 @@
     </div>
 
     <div class="slidecontainer">
-      <input type="range" min="0" max="0" value="0" step="any" class="slider" id="mediaPosition" list="chapters">
-      <datalist id="chapters">
-      </datalist>
+      <input
+        type="range"
+        min="0"
+        max="0"
+        value="0"
+        step="any"
+        class="slider"
+        id="mediaPosition"
+        list="chapters"
+      />
+      <datalist id="chapters"> </datalist>
       <div class="sliderInfoContainer">
         <div class="left" id="remaining"></div>
         <div class="sliderCenter" id="position"></div>
@@ -163,7 +272,15 @@
     </div>
 
     <div class="slidecontainer">
-      <input type="range" min="0" max="130" value="100" step=".1" class="slider" id="mediaVolume">
+      <input
+        type="range"
+        min="0"
+        max="130"
+        value="100"
+        step=".1"
+        class="slider"
+        id="mediaVolume"
+      />
       <div class="sliderInfoContainer sliderVolume">
         <div class="left sliderVolume"><i class="fas fa-volume-down"></i></div>
         <div class="sliderCenter" id="volume"></div>
@@ -171,107 +288,147 @@
       </div>
     </div>
 
-    <div onClick="send('toggle_pause')" class="button unselectable full-width green" title="Play/Pause (Space)">
+    <div
+      onClick="send('toggle_pause')"
+      class="button unselectable full-width green"
+      title="Play/Pause (Space)"
+    >
       <div class="content icon-content playPauseButton">
         <i class="fas fa-play"></i><i class="fas fa-pause"></i>
       </div>
     </div>
 
-    <div onClick="seek(-1)" class="button unselectable left blue" title="Seek back (ArrowLeft)">
+    <div
+      onClick="seek(-1)"
+      class="button unselectable left blue"
+      title="Seek back (ArrowLeft)"
+    >
       <div class="content icon-content">
         <i class="fas fa-backward"></i>
       </div>
     </div>
-    <div onClick="seek(1)" class="button unselectable right blue" title="Seek forward (ArrowRight)">
+    <div
+      onClick="seek(1)"
+      class="button unselectable right blue"
+      title="Seek forward (ArrowRight)"
+    >
       <div class="content icon-content">
         <i class="fas fa-forward"></i>
       </div>
     </div>
 
-    <div onClick="send('add_chapter', '-1')" class="button unselectable left blue chapter" title="Previous chapter">
+    <div
+      onClick="send('add_chapter', '-1')"
+      class="button unselectable left blue chapter"
+      title="Previous chapter"
+    >
       <div class="content icon-content">
         <i class="fas fa-step-backward"></i>
       </div>
     </div>
-    <div onClick="send('add_chapter', '1')" class="button unselectable right blue chapter" title="Next chapter">
+    <div
+      onClick="send('add_chapter', '1')"
+      class="button unselectable right blue chapter"
+      title="Next chapter"
+    >
       <div class="content icon-content">
         <i class="fas fa-step-forward"></i>
       </div>
     </div>
 
-    <div onClick="send('playlist_prev')" class="button unselectable left blue" title="Previous playlist (p)">
+    <div
+      onClick="send('playlist_prev')"
+      class="button unselectable left blue"
+      title="Previous playlist (p)"
+    >
       <div class="content icon-content">
         <i class="fas fa-fast-backward"></i>
       </div>
     </div>
-    <div onClick="send('playlist_next')" class="button unselectable right blue" title="Next playlist (n)">
+    <div
+      onClick="send('playlist_next')"
+      class="button unselectable right blue"
+      title="Next playlist (n)"
+    >
       <div class="content icon-content">
         <i class="fas fa-fast-forward"></i>
       </div>
     </div>
 
-    <div onClick="send('speed_adjust', '0.9091')" class="button unselectable button-x3 left blue" title="Slower playback speed ([)">
-      <div class="content text-content slant-left">
-        Slower
-      </div>
+    <div
+      onClick="send('speed_adjust', '0.9091')"
+      class="button unselectable button-x3 left blue"
+      title="Slower playback speed ([)"
+    >
+      <div class="content text-content slant-left">Slower</div>
     </div>
-    <div onClick="send('speed_set')" class="button unselectable button-x3 center blue" title="Normal playback speed (Backspace)">
-      <div class="content text-content">
-        Normal
-      </div>
+    <div
+      onClick="send('speed_set')"
+      class="button unselectable button-x3 center blue"
+      title="Normal playback speed (Backspace)"
+    >
+      <div class="content text-content">Normal</div>
     </div>
-    <div onClick="send('speed_adjust', '1.1')" class="button unselectable button-x3 right blue" title="Faster playback speed (])">
-      <div class="content text-content slant-right">
-        Faster
-      </div>
+    <div
+      onClick="send('speed_adjust', '1.1')"
+      class="button unselectable button-x3 right blue"
+      title="Faster playback speed (])"
+    >
+      <div class="content text-content slant-right">Faster</div>
     </div>
 
-    <div onClick="send('cycle_sub')" class="button unselectable left violet" title="Cycle subtitles (j)">
-      <div id="nextSub" class="content text-content">
-        Next sub
-      </div>
+    <div
+      onClick="send('cycle_sub')"
+      class="button unselectable left violet"
+      title="Cycle subtitles (j)"
+    >
+      <div id="nextSub" class="content text-content">Next sub</div>
     </div>
     <div onClick="send('cycle_audio')" class="button unselectable right violet">
-      <div id="nextAudio" class="content text-content">
-        Next audio
-      </div>
+      <div id="nextAudio" class="content text-content">Next audio</div>
     </div>
 
-    <div onClick="send('add_sub_delay', '-0.05')" class="button unselectable left yellow">
-      <div class="content text-content">
-        Sub delay -
-      </div>
+    <div
+      onClick="send('add_sub_delay', '-0.05')"
+      class="button unselectable left yellow"
+    >
+      <div class="content text-content">Sub delay -</div>
     </div>
-    <div onClick="send('add_sub_delay', '0.05')" class="button unselectable right yellow">
-      <div class="content text-content">
-        Sub delay +
-      </div>
-    </div>
-
-    <div onClick="send('add_audio_delay', '-0.05')" class="button unselectable left yellow">
-      <div class="content text-content">
-        Audio delay -
-      </div>
-    </div>
-    <div onClick="send('add_audio_delay', '0.05')" class="button unselectable right yellow">
-      <div class="content text-content">
-        Audio delay +
-      </div>
+    <div
+      onClick="send('add_sub_delay', '0.05')"
+      class="button unselectable right yellow"
+    >
+      <div class="content text-content">Sub delay +</div>
     </div>
 
-    <div onClick="send('fullscreen')" class="button unselectable left gray" title="Toggle fullscreen (f)">
-      <div id="fullscreenButton" class="content text-content">
-        Fullscreen
-      </div>
+    <div
+      onClick="send('add_audio_delay', '-0.05')"
+      class="button unselectable left yellow"
+    >
+      <div class="content text-content">Audio delay -</div>
     </div>
-    <div onClick="send('cycle_audio_device')" class="button unselectable right gray">
-      <div class="content text-content">
-        Audio device
-      </div>
+    <div
+      onClick="send('add_audio_delay', '0.05')"
+      class="button unselectable right yellow"
+    >
+      <div class="content text-content">Audio delay +</div>
+    </div>
+
+    <div
+      onClick="send('fullscreen')"
+      class="button unselectable left gray"
+      title="Toggle fullscreen (f)"
+    >
+      <div id="fullscreenButton" class="content text-content">Fullscreen</div>
+    </div>
+    <div
+      onClick="send('cycle_audio_device')"
+      class="button unselectable right gray"
+    >
+      <div class="content text-content">Audio device</div>
     </div>
 
     <audio id="audio" src="static/audio/silence.mp3" loop></audio>
-
   </body>
   <script src="webui.js"></script>
 </html>

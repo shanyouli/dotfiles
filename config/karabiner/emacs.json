@@ -7,9 +7,7 @@
         {
           "conditions": [
             {
-              "bundle_identifiers": [
-                "^org\\.gnu\\.Emacs$"
-              ],
+              "bundle_identifiers": ["^org\\.gnu\\.Emacs$"],
               "type": "frontmost_application_if"
             }
           ],
@@ -24,9 +22,7 @@
           "to_if_alone": [
             {
               "key_code": "backslash",
-              "modifiers": [
-                "left_control"
-              ]
+              "modifiers": ["left_control"]
             }
           ],
           "type": "basic"

@@ -5,40 +5,37 @@ Automatic subtitle synchronization script for [mpv](https://wiki.archlinux.org/i
 A demo can be viewed on <a target="_blank" href="https://www.youtube.com/watch?v=w1vwnUiF6Bc"><img src="https://user-images.githubusercontent.com/69171671/115097010-4bd13c80-9f17-11eb-83e9-2583658f73bc.png" width="80px"></a>
 
 Supported backends:
-* [ffsubsync](https://github.com/smacke/ffsubsync)
-* [alass](https://github.com/kaegi/alass)
+
+- [ffsubsync](https://github.com/smacke/ffsubsync)
+- [alass](https://github.com/kaegi/alass)
 
 ## Installation
 
 0. Make sure you have mpv v0.33 or higher installed.
-    ```
-    $ mpv --version
-    ```
+   ```
+   $ mpv --version
+   ```
 1. Install [FFmpeg](https://wiki.archlinux.org/index.php/FFmpeg):
-    ```
-    $ pacman -S ffmpeg
-    ```
-    Windows users have to manually install FFmpeg from [here](https://ffmpeg.zeranoe.com/builds/). 
+   ```
+   $ pacman -S ffmpeg
+   ```
+   Windows users have to manually install FFmpeg from [here](https://ffmpeg.zeranoe.com/builds/).
 2. Install your retiming program of choice,
-[ffsubsync](https://github.com/smacke/ffsubsync), [alass](https://github.com/kaegi/alass) or both:
-    ```
-    $ pip install ffsubsync
-    ```
-    ```
-    $ trizen -S alass-git # for Arch Linux users
-    ```
+   [ffsubsync](https://github.com/smacke/ffsubsync), [alass](https://github.com/kaegi/alass) or both:
+   `    $ pip install ffsubsync`
+   `    $ trizen -S alass-git # for Arch Linux users`
 
 3. Download the add-on and save it to your mpv scripts folder.
 
-    | GNU/Linux | Windows |
-    |---|---|
-    | `~/.config/mpv/scripts` | `%AppData%\mpv\scripts\` | 
-    
-    To do it in one command:
+   | GNU/Linux               | Windows                  |
+   | ----------------------- | ------------------------ |
+   | `~/.config/mpv/scripts` | `%AppData%\mpv\scripts\` |
 
-    ```
-    $ git clone 'https://github.com/Ajatt-Tools/autosubsync-mpv' ~/.config/mpv/scripts/autosubsync
-    ```
+   To do it in one command:
+
+   ```
+   $ git clone 'https://github.com/Ajatt-Tools/autosubsync-mpv' ~/.config/mpv/scripts/autosubsync
+   ```
 
 ## Configuration
 
@@ -46,9 +43,9 @@ You can skip this step if the add-on works out of the box.
 
 Create a config file:
 
-| GNU/Linux | Windows |
-|---|---|
-| `~/.config/mpv/script-opts/autosubsync.conf` | `%AppData%\mpv\script-opts\autosubsync.conf` | 
+| GNU/Linux                                    | Windows                                      |
+| -------------------------------------------- | -------------------------------------------- |
+| `~/.config/mpv/script-opts/autosubsync.conf` | `%AppData%\mpv\script-opts\autosubsync.conf` |
 
 Example config:
 
@@ -88,13 +85,13 @@ unload_old_sub=no
 
 ## Notes
 
-* On Windows, you need to use forward slashes or double backslashes for your path.
-For example, `"C:\\Users\\YourPath\\Scripts\\ffsubsync"`
-or `"C:/Users/YourPath/Scripts/ffsubsync"`,
-or it might not work.
+- On Windows, you need to use forward slashes or double backslashes for your path.
+  For example, `"C:\\Users\\YourPath\\Scripts\\ffsubsync"`
+  or `"C:/Users/YourPath/Scripts/ffsubsync"`,
+  or it might not work.
 
-* On GNU/Linux you can use `which ffsubsync` to find out where it is.
- 
+- On GNU/Linux you can use `which ffsubsync` to find out where it is.
+
 ## Usage
 
 When you have an out of sync sub, press `n` to synchronize it.
@@ -109,12 +106,12 @@ subs for your specific language are out of sync.
 
 Take into account that using this script has the
 same limitations as `ffsubsync`, so subtitles that have
-a lot of extra text or are meant for an entirely different 
+a lot of extra text or are meant for an entirely different
 version of the video might not sync properly. `alass` is supposed
 to handle some edge cases better, but I haven't fully tested it yet,
 obtaining similar results with both.
 
-Note that the script will create a new subtitle file, in the same folder 
+Note that the script will create a new subtitle file, in the same folder
 as the original, with the `_retimed` suffix at the end.
 
 ## Issues and feedback

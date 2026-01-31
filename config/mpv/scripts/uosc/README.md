@@ -9,26 +9,26 @@
 
 Features:
 
--   UI elements hide and show based on their proximity to cursor instead of every time mouse moves. This provides 100% control over when you see the UI and when you don't. Click on the preview above to see it in action.
--   When timeline is unused, it can minimize itself into a small discrete progress bar.
--   Build your own context menu with nesting support by editing your `input.conf` file.
--   Configurable controls bar.
--   Fast and efficient thumbnails with [thumbfast](https://github.com/po5/thumbfast) integration.
--   UIs for:
-    -   Selecting subtitle/audio/video track.
-    -   [Downloading subtitles](#download-subtitles) from [Open Subtitles](https://www.opensubtitles.com).
-    -   Loading external subtitles.
-    -   Selecting stream quality.
-    -   Quick directory and playlist navigation.
--   All menus are instantly searchable. Just start typing.
--   Mouse scroll wheel does multiple things depending on what is the cursor hovering over:
-    -   Timeline: seek by `timeline_step` seconds per scroll.
-    -   Volume bar: change volume by `volume_step` per scroll.
-    -   Speed bar: change speed by `speed_step` per scroll.
-    -   Just hovering video with no UI widget below cursor: your configured wheel bindings from `input.conf`.
--   Right click on volume or speed elements to reset them.
--   Transform chapters into timeline ranges (the red portion of the timeline in the preview).
--   And a lot of useful options and commands to bind keys to.
+- UI elements hide and show based on their proximity to cursor instead of every time mouse moves. This provides 100% control over when you see the UI and when you don't. Click on the preview above to see it in action.
+- When timeline is unused, it can minimize itself into a small discrete progress bar.
+- Build your own context menu with nesting support by editing your `input.conf` file.
+- Configurable controls bar.
+- Fast and efficient thumbnails with [thumbfast](https://github.com/po5/thumbfast) integration.
+- UIs for:
+  - Selecting subtitle/audio/video track.
+  - [Downloading subtitles](#download-subtitles) from [Open Subtitles](https://www.opensubtitles.com).
+  - Loading external subtitles.
+  - Selecting stream quality.
+  - Quick directory and playlist navigation.
+- All menus are instantly searchable. Just start typing.
+- Mouse scroll wheel does multiple things depending on what is the cursor hovering over:
+  - Timeline: seek by `timeline_step` seconds per scroll.
+  - Volume bar: change volume by `volume_step` per scroll.
+  - Speed bar: change speed by `speed_step` per scroll.
+  - Just hovering video with no UI widget below cursor: your configured wheel bindings from `input.conf`.
+- Right click on volume or speed elements to reset them.
+- Transform chapters into timeline ranges (the red portion of the timeline in the preview).
+- And a lot of useful options and commands to bind keys to.
 
 [Changelog](https://github.com/tomasklaen/uosc/releases).
 
@@ -36,73 +36,72 @@ Features:
 
 1. These commands will install or update **uosc** and place a default `uosc.conf` file into `script-opts` if it doesn't exist already.
 
-    ### Windows
+   ### Windows
 
-    _Optional, needed to run a remote script the first time if not enabled already:_
+   _Optional, needed to run a remote script the first time if not enabled already:_
 
-    ```powershell
-    Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
-    ```
+   ```powershell
+   Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+   ```
 
-    Run:
+   Run:
 
-    ```powershell
-    irm https://raw.githubusercontent.com/tomasklaen/uosc/HEAD/installers/windows.ps1 | iex
-    ```
+   ```powershell
+   irm https://raw.githubusercontent.com/tomasklaen/uosc/HEAD/installers/windows.ps1 | iex
+   ```
 
-    _**NOTE**: If this command is run in an mpv installation directory with `portable_config`, it'll install there instead of `AppData`._
+   _**NOTE**: If this command is run in an mpv installation directory with `portable_config`, it'll install there instead of `AppData`._
 
-    _**NOTE2**: The downloaded archive might trigger false positives in some antiviruses. This is explained in [FAQ below](#why-is-the-release-reported-as-malicious-by-some-antiviruses)._
+   _**NOTE2**: The downloaded archive might trigger false positives in some antiviruses. This is explained in [FAQ below](#why-is-the-release-reported-as-malicious-by-some-antiviruses)._
 
-    ### Linux & macOS
+   ### Linux & macOS
 
-    _Requires **curl** and **unzip**._
+   _Requires **curl** and **unzip**._
 
-    ```sh
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/tomasklaen/uosc/HEAD/installers/unix.sh)"
-    ```
+   ```sh
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/tomasklaen/uosc/HEAD/installers/unix.sh)"
+   ```
 
-    On Linux, we try to detect what package manager variant of the config location you're using, with precedent being:
+   On Linux, we try to detect what package manager variant of the config location you're using, with precedent being:
 
-    ```
-    ~/.var/app/io.mpv.Mpv     (flatpak)
-    ~/snap/mpv
-    ~/snap/mpv-wayland
-    ~/.config/mpv
-    ```
+   ```
+   ~/.var/app/io.mpv.Mpv     (flatpak)
+   ~/snap/mpv
+   ~/snap/mpv-wayland
+   ~/.config/mpv
+   ```
 
-    To install into any of these locations, make sure the ones above it don't exist.
+   To install into any of these locations, make sure the ones above it don't exist.
 
-    ### Manual
+   ### Manual
+   1. Download & extract [`uosc.zip`](https://github.com/tomasklaen/uosc/releases/latest/download/uosc.zip) into your mpv config directory. (_See the [documentation of mpv config locations](https://mpv.io/manual/master/#files)._)
 
-    1. Download & extract [`uosc.zip`](https://github.com/tomasklaen/uosc/releases/latest/download/uosc.zip) into your mpv config directory. (_See the [documentation of mpv config locations](https://mpv.io/manual/master/#files)._)
-
-    2. If you don't have it already, download & extract [`uosc.conf`](https://github.com/tomasklaen/uosc/releases/latest/download/uosc.conf) into `script-opts` inside your mpv config directory. It contains all of uosc options along with their default values and documentation.
+   2. If you don't have it already, download & extract [`uosc.conf`](https://github.com/tomasklaen/uosc/releases/latest/download/uosc.conf) into `script-opts` inside your mpv config directory. It contains all of uosc options along with their default values and documentation.
 
 2. **OPTIONAL**: `mpv.conf` tweaks to better integrate with **uosc**:
 
-    ```config
-    # uosc provides seeking & volume indicators (via flash-timeline and flash-volume commands)
-    # if you decide to use them, you don't need osd-bar
-    osd-bar=no
+   ```config
+   # uosc provides seeking & volume indicators (via flash-timeline and flash-volume commands)
+   # if you decide to use them, you don't need osd-bar
+   osd-bar=no
 
-    # uosc will draw its own window controls and border if you disable window border
-    border=no
-    ```
+   # uosc will draw its own window controls and border if you disable window border
+   border=no
+   ```
 
 3. **OPTIONAL**: To have thumbnails in timeline, install [thumbfast](https://github.com/po5/thumbfast). No other step necessary, **uosc** integrates with it seamlessly.
 
 4. **OPTIONAL**: If the UI feels sluggish/slow while playing video, you can remedy this _a bit_ by placing this in your `mpv.conf`:
 
-    ```config
-    video-sync=display-resample
-    ```
+   ```config
+   video-sync=display-resample
+   ```
 
-    Though this does come at the cost of a little bit higher CPU/GPU load.
+   Though this does come at the cost of a little bit higher CPU/GPU load.
 
-    #### What is going on?
+   #### What is going on?
 
-    **uosc** places performance as one of its top priorities, but it might feel a bit sluggish because during a video playback, the UI rendering frequency is chained to its frame rate. To test this, you can pause the video which will switch refresh rate to be closer or match the frequency of your monitor, and the UI should feel smoother. This is mpv limitation, and not much we can do about it on our side.
+   **uosc** places performance as one of its top priorities, but it might feel a bit sluggish because during a video playback, the UI rendering frequency is chained to its frame rate. To test this, you can pause the video which will switch refresh rate to be closer or match the frequency of your monitor, and the UI should feel smoother. This is mpv limitation, and not much we can do about it on our side.
 
 ## Options
 
@@ -114,20 +113,20 @@ To change the font, **uosc** respects the mpv's `osd-font` configuration.
 
 These bindings are active when any **uosc** menu is open (main menu, playlist, load/select subtitles,...):
 
--   `up`, `down` - Select previous/next item.
--   `left`, `right` - Back to parent menu or close, activate item.
--   `enter` - Activate item.
--   `esc` - Close menu.
--   `wheel_up`, `wheel_down` - Scroll menu.
--   `pgup`, `pgdwn`, `home`, `end` - Self explanatory.
--   `ctrl+f` or `\` - In case `menu_type_to_search` is disabled, these two trigger the menu search instead.
--   `ctrl+enter` - Submits a search in menus without instant search.
--   `ctrl+backspace` - Delete search query by word.
--   `shift+backspace` - Clear search query.
--   `ctrl+up/down` - Move selected item in menus that support it (playlist).
--   `del` - Delete selected item in menus that support it (playlist).
--   `shift+enter`, `shift+right` - Activate item without closing the menu.
--   `alt+enter`, `alt+click` - In file navigating menus, opens a directory in mpv instead of navigating to its contents.
+- `up`, `down` - Select previous/next item.
+- `left`, `right` - Back to parent menu or close, activate item.
+- `enter` - Activate item.
+- `esc` - Close menu.
+- `wheel_up`, `wheel_down` - Scroll menu.
+- `pgup`, `pgdwn`, `home`, `end` - Self explanatory.
+- `ctrl+f` or `\` - In case `menu_type_to_search` is disabled, these two trigger the menu search instead.
+- `ctrl+enter` - Submits a search in menus without instant search.
+- `ctrl+backspace` - Delete search query by word.
+- `shift+backspace` - Clear search query.
+- `ctrl+up/down` - Move selected item in menus that support it (playlist).
+- `del` - Delete selected item in menus that support it (playlist).
+- `shift+enter`, `shift+right` - Activate item without closing the menu.
+- `alt+enter`, `alt+click` - In file navigating menus, opens a directory in mpv instead of navigating to its contents.
 
 Click on a faded parent menu to go back to it.
 
@@ -225,7 +224,7 @@ For subtitles, the explorer only displays file types defined in `subtitle_types`
 
 A menu to search and download subtitles from [Open Subtitles](https://www.opensubtitles.com). It can also be opened by selecting the **Download** option in `subtitles` menu.
 
-We fetch results for languages defined in *uosc**'s `languages` option, which defaults to your mpv `slang` configuration.
+We fetch results for languages defined in \*uosc\*\*'s `languages` option, which defaults to your mpv `slang` configuration.
 
 We also hash the current file and send the hash to Open Subtitles so you can search even with empty query and if your file is known, you'll get subtitles exactly for it.
 
@@ -314,13 +313,13 @@ Updates uosc to the latest stable release right from the UI. Available in the "U
 
 Supported environments:
 
-| Env | Works | Note |
-|:---|:---:|---|
-| Windows | ✔️ | _Not tested on older PowerShell versions. You might need to `Set-ExecutionPolicy` from the install instructions and install with the terminal command first._ |
-| Linux (apt) | ✔️ | |
-| Linux (flatpak) | ✔️ | |
-| Linux (snap) | ❌ | We're not allowed to access commands like `curl` even if they're installed. (Or at least this is what I think the issue is.) |
-| MacOS | ❌ | `(23) Failed writing body` error, whatever that means. |
+| Env             | Works | Note                                                                                                                                                          |
+| :-------------- | :---: | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Windows         |  ✔️   | _Not tested on older PowerShell versions. You might need to `Set-ExecutionPolicy` from the install instructions and install with the terminal command first._ |
+| Linux (apt)     |  ✔️   |                                                                                                                                                               |
+| Linux (flatpak) |  ✔️   |                                                                                                                                                               |
+| Linux (snap)    |  ❌   | We're not allowed to access commands like `curl` even if they're installed. (Or at least this is what I think the issue is.)                                  |
+| MacOS           |  ❌   | `(23) Failed writing body` error, whatever that means.                                                                                                        |
 
 If you know about a solution to fix self-updater for any of the currently broken environments, please make an issue/PR and share it with us!
 
@@ -538,6 +537,7 @@ When `Command.value` is a string, it'll be passed to `mp.command(value)`. If it'
 While the menu is open this value will be available in `user-data/uosc/menu/type` and the `shared-script-properties` entry `uosc-menu-type`. If no type was provided, those will be set to `'undefined'`.
 
 `search_style` can be:
+
 - `on_demand` (_default_) - Search input pops up when user starts typing, or presses `/` or `ctrl+f`, depending on user configuration. It disappears on `shift+backspace`, or when input text is cleared.
 - `palette` - Search input is always visible and can't be disabled. In this mode, menu `title` is used as input placeholder when no text has been entered yet.
 - `disabled` - Menu can't be searched.
