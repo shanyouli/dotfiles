@@ -1,5 +1,6 @@
 # 配置参考 https://zenn.dev/massa/articles/ghostty-usage#macos
 #          https://ghostty.org/docs
+#          https://ghostty.org/docs/config/reference#mouse-hide-while-typing
 {
   pkgs,
   lib,
@@ -31,7 +32,8 @@ in
         (mkIf pkgs.stdenvNoCC.hostPlatform.isDarwin {
           macos-titlebar-style = "hidden";
           macos-window-shadow = false;
-          quit-after-last-window-closed = true; # 默认关闭最后一个窗口后退出应用
+          macos-option-as-alt = true;
+          quit-after-last-window-closed = false; # 默认关闭最后一个窗口后退出应用
         })
         {
           font-family = config.modules.gui.terminal.font.family;
@@ -59,8 +61,47 @@ in
           # 启动默认大小, 更具体大小推荐遵从窗口管理工具
           window-height = 33;
           window-width = 120;
+          # shell 交互启动
+          shell-integration-features = "cursor,sudo,ssh-terminfo,ssh-env";
+          mouse-hide-while-typing = true;
+          quick-terminal-size = "61.8%,50%"; # quick 窗口大小，macos 似乎不生效。
+
+          keybind = [
+            "global:cmd+enter=toggle_quick_terminal"
+            # new window panes
+            "ctrl+d>s=new_split:down"
+            "ctrl+d>v=new_split:right"
+            "ctrl+d>d=close_window"
+
+            # moving panes
+            "shift+arrow_right=goto_split:right"
+            "shift+arrow_left=goto_split:left"
+            "shift+arrow_up=goto_split:up"
+            "shift+arrow_down=goto_split:down"
+
+            # 让 当前split最大化
+            "ctrl+d>z=toggle_split_zoom"
+
+            # tab 操作
+            "ctrl+d>t=new_tab"
+            "ctrl+d>n=next_tab"
+            "ctrl+d>p=previous_tab"
+            "ctrl+d>c=close_tab"
+
+            # 刷新配置
+            "f5=reload_config"
+
+            # 字体关
+            "ctrl+equal=increase_font_size:1.1"
+            "ctrl+-=decrease_font_size:1.1"
+            "ctrl+0=reset_font_size"
+
+            # 复制网页
+            "ctrl+d>u=copy_url_to_clipboard"
+          ];
         }
       ];
+      clearDefaultKeybinds = true;
     };
   };
 }

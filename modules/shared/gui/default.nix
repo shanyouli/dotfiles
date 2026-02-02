@@ -17,21 +17,21 @@ in
     fonts = mkOpt' (types.listOf types.package) [ ] "font install";
   };
   config = mkIf cfg.enable {
-    modules.gui.fonts = [
-      pkgs.fantasque-sans-mono
-      pkgs.lxgw-wenkai
-      pkgs.unifont
-      # pkgs.sarasa-term
-      pkgs.maple-mono.NF
-      pkgs.maple-mono.NF-CN
-      pkgs.nerd-fonts.fantasque-sans-mono
-      pkgs.nerd-fonts.symbols-only
-      pkgs.pragmasevka
-      pkgs.pragmasevka-nerd
-      pkgs.pragmasevka-sans
-      pkgs.pragmasevka-sc-nf
-      pkgs.pragmasevka-sc
-      pkgs.pragmasevka-serif
+    modules.gui.fonts = with pkgs; [
+      fantasque-sans-mono
+      lxgw-wenkai
+      unifont
+      sarasa-term
+      # unable.maple-mono.NF
+      # unable.maple-mono.NF-CN
+      nerd-fonts.fantasque-sans-mono
+      nerd-fonts.symbols-only
+      pragmasevka
+      pragmasevka-nerd
+      pragmasevka-sans
+      pragmasevka-sc-nf
+      pragmasevka-sc
+      pragmasevka-serif
     ];
     # fonts = {
     #   # fontDir.enable = true;
