@@ -34,6 +34,13 @@ in
           macos-window-shadow = false;
           macos-option-as-alt = true;
           quit-after-last-window-closed = false; # 默认关闭最后一个窗口后退出应用
+          # macos-titlebar-style = tabs;
+          # keybind = [
+
+          #   "super+c=copy_to_clipboard"
+          #   "super+v="
+          #   "super+a="
+          # ];
         })
         {
           font-family = config.modules.gui.terminal.font.family;
@@ -54,7 +61,9 @@ in
           confirm-close-surface = false; # 退出后不要出现确认弹窗
 
           auto-update = "off"; # 关闭自动更新, check, download,
-          copy-on-select = true; # 选择即复制
+          copy-on-select = true; # 选择即复制, clipboard
+          clipboard-read = "allow";
+          clipboard-write = "allow";
 
           # 主题配置"
           theme = "light:Rose Pine Dawn,dark:Rose Pine";
@@ -64,7 +73,7 @@ in
           # shell 交互启动
           shell-integration-features = "cursor,sudo,ssh-terminfo,ssh-env";
           mouse-hide-while-typing = true;
-          quick-terminal-size = "61.8%,50%"; # quick 窗口大小，macos 似乎不生效。
+          quick-terminal-size = "48%,70%"; # quick 窗口大小，macos 似乎不生效。
 
           keybind = [
             "global:cmd+enter=toggle_quick_terminal"
@@ -101,7 +110,7 @@ in
           ];
         }
       ];
-      clearDefaultKeybinds = true;
+      # clearDefaultKeybinds = true;
     };
   };
 }

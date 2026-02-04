@@ -100,7 +100,6 @@ in
           "raycast" # 取代 spotlight
           # "stats" # 状态显示, 目前无法显示温度。
           "macs-fan-control" # 用来控制 fan 的工具
-          # "forkgram-telegram"
           "easydict" # 翻译软件
           "jetbrains-toolbox"
           # "syncthing" 同步
@@ -153,22 +152,9 @@ in
 
           "paragon-ntfs"
 
-          # "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
-          # "sequel-ace" # mysql
-          # "navicat-premium"
-
-          # "maccy" # clip 剪切薄，使用raycast取代
-          # "visual-studio-code" # other editors nix 管理
-          # "command-x" # Cut files, need upgrade
           "logseq" # 笔记工具
 
-          "markedit" # markdown 编辑器
-
           # "windterm" # 比较好用的 ssh 客户端，可以使用 vscode 的 ssh 插件取代
-          # "doll" # 在 menubar 上显示 消息提示
-          # "zed" # 还是没有 vscode 好用
-          # "qutebrowser" # 浏览器
-          "zen"
 
           "shanyouli/tap/upic" # or "picgo"
 
@@ -183,6 +169,24 @@ in
           "shanyouli/tap/mountmate" # U 盘挂载管理工具
 
           "macpacker" # zip 文件预览
+
+          ## 一些其他推荐应用
+          ## 数据库
+          # "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
+          # "sequel-ace" # mysql
+          # "navicat-premium"
+
+          # "maccy" # clip 剪切薄，使用raycast取代
+          # "visual-studio-code" # other editors nix 管理
+          # "zed" # 又一款编辑工具，使用 nix 管理
+          # "markedit" # markdown 编辑器
+
+          "command-x" # Cut files, need upgrade
+
+          ## 浏览器
+          # "qutebrowser" #
+          # "zen"
+
         ]
         ++ optionals config.modules.adb.enable [
           # # 使用第三方工具取代openmtp，MacDroid.app

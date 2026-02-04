@@ -192,6 +192,10 @@ in
     modules.gui.browser.firefox.extraConfig = lib.optionalString cfg.flex.enable ''
       user_pref("uc.flex.allow-addons-to-change-toolbar-color", true);
       user_pref("uc.flex.enable-colored-bookmarks-folder-icons", 1);
+      /*美化 firefox 的 scrollbar */
+      user_pref("widget.non-native-theme.win.scrollbar.use-system-size", false);
+      user_pref("widget.non-native-theme.scrollbar.size.override", 5);
+      user_pref("widget.non-native-theme.scrollbar.style", 3);
     '';
   };
 }

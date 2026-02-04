@@ -23,7 +23,7 @@ in
       enableBashIntegration = true;
       enableNushellIntegration = true;
       settings = {
-        manager = {
+        magr = {
           show_hidden = true;
           sort_dir_first = true;
         };

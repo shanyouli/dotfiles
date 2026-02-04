@@ -114,17 +114,26 @@ def setup_runtime():
     readline.parse_and_bind(pattern)
 
     # 历史
-    hist_file = (
+    # 1. 移除末尾的 .as_posix()，保持其为 Path 对象
+    hist_path = (
         Path(os.environ.get("XDG_CACHE_HOME", "~/.cache"))
         .expanduser()
         .joinpath("python_history")
-        .as_posix()
     )
+
     try:
-        if hist_file.exists():
-            readline.read_history_file(str(hist_file))
-        atexit.register(readline.write_history_file, str(hist_file))
+        # 2. 确保父目录存在（如果 ~/.cache 不存在，创建它）
+        hist_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # 3. 现在可以正确使用 .exists()
+        if hist_path.exists():
+            readline.read_history_file(str(hist_path))
+
+        # 4. 注册退出时保存
+        atexit.register(readline.write_history_file, str(hist_path))
     except Exception:
+        # 调试建议：开发阶段可以打印 e 看看具体的权限错误等
+        # print(f"History Error: {e}")
         pass
 
     # 注入辅助
