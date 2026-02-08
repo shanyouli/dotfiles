@@ -16,11 +16,19 @@ in
 {
   options.modules.macos.hammerspoon = {
     enable = mkBoolOpt false;
-
     luaExtensions = mkOption {
       default = _self: [ ];
       example = literalExpression "ps: [ps.lyaml]";
       type = selectorFunction;
+    };
+    cmd = mkOption {
+      default = { };
+      type = types.attrsOf types.str;
+      example = literalExpression ''
+        {
+          emacscmd = "/bin/emacs";
+        }
+      '';
     };
   };
 
@@ -47,13 +55,6 @@ in
             package.path = table.concat(paths, ";")
             package.cpath = table.concat(cpaths, ";")
           '';
-          yabaiCmd = lib.optionalString config.modules.service.yabai.enable ''
-            yabaicmd="${config.modules.service.yabai.package}/bin/yabai",
-          '';
-          emacsClient = lib.optionalString config.modules.app.editor.emacs.enable ''
-            emacsClient = "${config.modules.app.editor.emacs.pkg}/bin/emacsclient",
-            emacs = "${config.modules.macos.app.path}/Emacs.app/Contents/MacOS/Emacs",
-          '';
         in
         ''
           ${luaPaths}
@@ -64,8 +65,9 @@ in
           local fennel = require("fennel")
           table.insert(package.loaders or package.searchers, fennel.searcher)
           return {
-            ${yabaiCmd}
-            ${emacsClient}
+            ${concatStringsSep ",\n" (
+              mapAttrsToList (n: v: ''${n} = "${v}"'') (filterAttrs (_n: v: v != "") cfg.cmd)
+            )}
           }
         '';
       my.user.init.InitHammerspoon = {

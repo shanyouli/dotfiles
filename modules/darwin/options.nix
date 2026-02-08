@@ -45,8 +45,6 @@ with my;
       system.activationScripts.postActivation.text = ''
         echo "System script executed after system activation"
         ${config.my.system.script}
-        # 防止 CursorUIViewService 无响应，而停止使用它
-        defaults write /Library/Preferences/FeatureFlags/Domain/UIKit.plist redesigned_text_cursor -dict-add Enabled -NO
         echo "User script excuted after system activation"
         sudo -u ${config.user.name} --set-home ${config.my.user.script}
         # 使用 nvd 取代
@@ -59,6 +57,10 @@ with my;
         system.init = {
           defaultShell = ''
             chsh -s /run/current-system/sw/bin/${config.modules.shell.default} ${config.user.name}
+          '';
+          mutils = ''
+            # 防止 CursorUIViewService 无响应，而停止使用它
+            defaults write /Library/Preferences/FeatureFlags/Domain/UIKit.plist redesigned_text_cursor -dict-add Enabled -NO
           '';
         };
         user = {
@@ -115,6 +117,12 @@ with my;
       environment.etc."sudoers.d/clash".source = sudoNotPass (
         lib.getExe config.modules.proxy.clash.package
       );
+    })
+    (mkIf config.modules.app.editor.emacs.enable {
+      modules.macos.hammerspoon.cmd = {
+        emacs = "${config.modules.macos.app.path}/Emacs.app/Contents/MacOS/Emacs";
+        emacsClient = "${config.modules.app.editor.emacs.pkg}/bin/emacsclient";
+      };
     })
   ];
 }

@@ -252,10 +252,12 @@
       enable = true;
     };
     service = {
-      battery.enable = false;
+      battery.enable = false; # use aldente
       yabai = {
         enable = true;
+        package = null;
         border.enable = false;
+        keep.enable = false;
       };
     };
   };

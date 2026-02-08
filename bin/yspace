@@ -1,0 +1,135 @@
+#!/usr/bin/env nu
+# yspace --Intelligent macOS Space management using Nushell + yabai
+
+# Logging powered by std log
+use std log
+use std assert
+
+assert not (which yabai | is-empty) "Please install yabai"
+
+# -------- yabai query helpers ----------
+def yabai-spaces [] {
+  ^yabai -m query --spaces | from json
+}
+
+def yabai-displays [] {
+  ^yabai -m query --displays | from json
+}
+
+def yabai-display-space [dindex: int ] {
+  ^yabai -m query --spaces --display $dindex | from json
+}
+
+# ----------------------- label normalization
+def normalize-labels [labels] {
+  match ($labels | describe) {
+    "int" => { 1..$labels | each { |it|  $"No.($it | into string)" }}
+
+    "list<string>" => { $labels }
+    _ => {error make { msg: "labels must be int or list<string>" } }
+  }
+}
+
+# macsOS will always keep one Space per display.
+def reset-spaces [] {
+  log info "Resetting non-fullscreen Spaces."
+  let spaces = yabai-spaces | group-by display
+  for row in ($spaces | transpose display spaces) {
+    let display = $row.display
+    let $sid = $row.spaces | sort-by index -r | get id
+    for i in ($sid | skip 1) {
+      log info $"Destroy space id=($i)"
+      let cspace = yabai-spaces | where id == $i
+      if ($cspace | get is-native-fullscreen) == false {
+        ^yabai -m space --destroy (cspace.index)
+      }
+    }
+  }
+}
+
+
+# smart ensure logic
+# non-destructive fill based on existing space layout
+# Also removes duplicate space labels beforehand
+def clear-space-labels [] {
+  log info "Clear space labels."
+  let spaces = yabai-spaces | where label != ""
+  if ($spaces | is-not-empty ) {
+    $spaces | sort-by index -r | each { |s|
+      log debug $"clear lable space index=($s.index)"
+      ^yabai -m space $s.index --label ""
+    }
+  }
+}
+
+# creat and set label on space
+def ensure-spaces [labels: list<string>] {
+  log info "Ensuring Spaces layout."
+
+  let displays = yabai-displays
+  let display_count = $displays | length
+
+  let spaces = yabai-spaces | where is-native-fullscreen == false
+  let grouped = $spaces | group-by display
+
+  $labels | enumerate | each {|item|
+    let label = $item.item
+    let idx = $item.index
+    let display = ($displays | get ($idx mod $display_count))
+    log info $"($display)"
+    let did = $display.index
+
+    let existing = ($grouped | get -o ($did | into string) | default [])
+    let required_index = $idx // $display_count
+    if ($existing | length) <= $required_index {
+      log info $"Create space on display=($did)"
+      ^yabai -m space --create $did
+    }
+
+    let target = yabai-spaces | where display == $did and is-native-fullscreen == false
+                                  | sort-by index | get $required_index
+    log debug $"Label space index=($target.index) label=($label)"
+    ^yabai -m space $target.index --label $label
+  }
+}
+
+
+# ---- core entry -----
+def setup-spaces [labels: any, --force (-f)] {
+  let labels = normalize-labels  $labels
+  if $force {
+    reset-spaces
+  }
+  clear-space-labels
+  log info $"($labels | str join ',')"
+  ensure-spaces $labels
+}
+
+# ---- script main -----
+# CLI:
+#   yspace 6 --force
+#   yspace web code chat other --debug
+#   yspace web code chat other --quiet
+
+def main [
+  ...labels
+  --force (-f)
+  --debug
+  --quiet
+] {
+  # 🚨 互斥 flag 校验
+  if ($debug and $quiet) {
+    error make {
+      msg: "--debug and --quiet cannot be used together"
+    }
+  }
+
+  if $debug { log log-level  | get DEBUG | log set-level $in }
+
+  if $quiet { log log-level  | get ERROR | log set-level $in }
+  if ($labels | length) == 1 {
+    setup-spaces ($labels | first) --force=$force
+  } else {
+    setup-spaces $labels  --force=$force
+  }
+}
