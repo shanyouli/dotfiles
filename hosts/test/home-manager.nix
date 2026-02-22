@@ -56,6 +56,7 @@
         node.enable = true;
         bun.enable = true;
       };
+      zig.enable = true;
     };
 
     gui = {

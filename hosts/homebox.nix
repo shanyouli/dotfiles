@@ -211,6 +211,7 @@
       rust.enable = true;
       scheme.enable = true;
       ai.enable = true;
+      zig.enable = true;
     };
 
     rime.method = "wanxiang";
