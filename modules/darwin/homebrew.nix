@@ -180,13 +180,13 @@ in
           # "visual-studio-code" # other editors nix 管理
           # "zed" # 又一款编辑工具，使用 nix 管理
           # "markedit" # markdown 编辑器
-
+          "coteditor"
           "command-x" # Cut files, need upgrade
 
           ## 浏览器
           # "qutebrowser" #
           # "zen"
-
+          "shanyouli/tap/bilibili-video-downloader"
         ]
         ++ optionals config.modules.adb.enable [
           # # 使用第三方工具取代openmtp，MacDroid.app

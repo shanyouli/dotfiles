@@ -10,7 +10,7 @@
     # maxJobs = 4;
     settings.cores = 4;
   };
-  user.packages = [ pkgs.librewolf ];
+  user.packages = [ pkgs.unstable.librewolf ];
   user.uid = 501; # uid macos 创建的用户 默认 uid 为 501
   # modules.macos.brew.enable = false;
   modules = {

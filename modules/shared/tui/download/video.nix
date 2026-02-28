@@ -41,7 +41,7 @@ in
   };
   config = mkIf cfg.enable {
     home.packages = [
-      pkgs.unstable.yt-dlp
+      pkgs.yt-dlp
       # pkgs.unstable.yutto # 使用 pipx 安装
       pkgs.unstable.lux
       pkgs.fav
