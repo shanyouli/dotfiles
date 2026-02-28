@@ -91,11 +91,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771605598,
-        "narHash": "sha256-qRpPy61fgu6z4JdyFMxEgQ68eU3b8BERDIG9J9pW92g=",
+        "lastModified": 1772210521,
+        "narHash": "sha256-Fapwf/ZkD/pjVb+pYKiEdYwyQwbq+C9QvCErnodiRIs=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "def7029460cf6dd1309fc56402b08dd56a2af9c6",
+        "rev": "4ff1f19463049779f7b38b379ed62429f149deea",
         "type": "github"
       },
       "original": {
@@ -327,11 +327,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771130777,
-        "narHash": "sha256-UIKOwG0D9XVIJfNWg6+gENAvQP+7LO46eO0Jpe+ItJ0=",
+        "lastModified": 1771734689,
+        "narHash": "sha256-/phvMgr1yutyAMjKnZlxkVplzxHiz60i4rc+gKzpwhg=",
         "owner": "Mic92",
         "repo": "nix-index-database",
-        "rev": "efec7aaad8d43f8e5194df46a007456093c40f88",
+        "rev": "8f590b832326ab9699444f3a48240595954a4b10",
         "type": "github"
       },
       "original": {
@@ -467,11 +467,11 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1772082373,
-        "narHash": "sha256-wySf8a6hvuqgFdwvvzPPTARBCMLDz7WFAufGkllD1M4=",
+        "lastModified": 1772173633,
+        "narHash": "sha256-MOH58F4AIbCkh6qlQcwMycyk5SWvsqnS/TCfnqDlpj4=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "26eaeac4e409d7b5a6bf6f90a2a2dc223c78d915",
+        "rev": "c0f3d81a7ddbc2b1332be0d8481a672b4f6004d6",
         "type": "github"
       },
       "original": {
@@ -542,11 +542,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771626252,
-        "narHash": "sha256-wsdraq2YqJ41vqloHfyU87yCOo1Qsed2dGAJDIUA0NQ=",
+        "lastModified": 1772230233,
+        "narHash": "sha256-6C7/lZ5kGK5t7IDxnhUqur/fNqMd27nbHQTeZ2P7pGM=",
         "owner": "shanyouli",
         "repo": "nur-packages",
-        "rev": "999f7b37266029ff7cffdc6999a3fb7d389c9fc3",
+        "rev": "d5aea17d180b82cadef647b4722bfffaffbd8cfc",
         "type": "github"
       },
       "original": {
@@ -572,11 +572,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1765698311,
-        "narHash": "sha256-78sPqekEDJiol2YD3Hx2zHu5E4AtrbNrUKi0032HMHo=",
+        "lastModified": 1771980182,
+        "narHash": "sha256-i29I87WQV+500KOw1rnPxvWQHR7XEIZaED4wWFzDaT0=",
         "owner": "berberman",
         "repo": "nvfetcher",
-        "rev": "dbae9626c46b93d9fd6b85c8b292939ae569c4fc",
+        "rev": "203b8a4d99bd3c92ebfe29055f728499267b3353",
         "type": "github"
       },
       "original": {
