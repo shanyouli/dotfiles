@@ -33,8 +33,8 @@ in
         $env.POSH_THEME = $env.DOTFILES | path join "config" "oh-my-posh" "posh2k.omp.yaml"
         oh-my-posh init nu --config $env.POSH_THEME
       '';
-      zsh.rcInit = lib.optionalString cfp.zsh.enable ''_cache ${formatFn "zsh"}'';
-      fish.rcInit = optionalString cfp.fish.enable ''_cache ${formatFn "fish"}'';
+      zsh.rcInit = lib.optionalString cfp.zsh.enable "_cache ${formatFn "zsh"}";
+      fish.rcInit = optionalString cfp.fish.enable "_cache ${formatFn "fish"}";
     };
   };
 }

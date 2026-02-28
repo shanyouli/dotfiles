@@ -254,7 +254,7 @@ in
     (mkIf (treesit-list != null) {
       modules.app.editor.nvim = {
         plugins = [ pkgs.vimPlugins.nvim-treesitter ];
-        rc = ''_G.nix.treesit = true'';
+        rc = "_G.nix.treesit = true";
         lazy.spec = ''
           -- treesitter handled by my.neovim.treesitterParsers, put this line at the end of spec to clear ensure_installed
           {

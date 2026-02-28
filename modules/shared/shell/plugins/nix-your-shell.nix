@@ -20,9 +20,9 @@ in
   config = mkIf cfg.enable {
     home.packages = [ cfgpkg ];
     modules.shell = {
-      zsh.rcInit = mkOrder 50 ''_cache -v ${cfgpkg.version} nix-your-shell zsh'';
+      zsh.rcInit = mkOrder 50 "_cache -v ${cfgpkg.version} nix-your-shell zsh";
       nushell.cacheCmd = [ "${cfgpkg}/bin/nix-your-shell nu" ];
-      fish.rcInit = mkOrder 50 ''_cache -v${cfgpkg.version} nix-your-shell fish'';
+      fish.rcInit = mkOrder 50 "_cache -v${cfgpkg.version} nix-your-shell fish";
     };
     home.programs.bash.initExtra = ''
       nix-your-shell bash | source /dev/stdin

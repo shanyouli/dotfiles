@@ -25,7 +25,7 @@ in
       inherit (cfg) package;
       enable = true;
       historySize = 100000;
-      historyFile = ''''${XDG_CACHE_HOME:-~/.cache}/bash_history'';
+      historyFile = "\${XDG_CACHE_HOME:-~/.cache}/bash_history";
       historyFileSize = 1000000;
       historyControl = [
         "ignorespace"

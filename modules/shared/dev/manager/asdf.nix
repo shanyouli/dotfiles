@@ -96,7 +96,7 @@ in
                     fi
                   ''
                 else
-                  ''source ${cfg.package}/etc/profile.d/asdf-prepare.sh'';
+                  "source ${cfg.package}/etc/profile.d/asdf-prepare.sh";
             in
             mkBefore text;
         };
@@ -140,7 +140,7 @@ in
               mapAttrsToList (n: v: ''
                 log debug "Using asdf to manage versions of ${n}"
                 ${asdf_install_plugin_fn n}
-                ${lib.optionalString ((builtins.typeOf v) != "bool" || (!v)) ''${asdf_install_plugin_ver_fn n v}''}
+                ${lib.optionalString ((builtins.typeOf v) != "bool" || (!v)) "${asdf_install_plugin_ver_fn n v}"}
               '') final_need_plugins
             );
           in

@@ -128,7 +128,7 @@ in
              )}
              ${concatStringsSep "\n" (map (x: "use ${x} *") cfg.cmpFiles)}
              ${concatStringsSep "\n" (
-               mapAttrsToList (n: v: ''alias ${n} = ${v}'') (
+               mapAttrsToList (n: v: "alias ${n} = ${v}") (
                  filterAttrs (n: v: v != "" && n != "rm" && n != "rmi") config.modules.shell.aliases
                )
              )}

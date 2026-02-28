@@ -70,10 +70,10 @@ in
       app.editor.vscode.extensions = [ pkgs.unstable.vscode-extensions.mkhl.direnv ];
       shell = {
         zsh = {
-          rcInit = ''_cache -v ${pkgs.direnv.version} direnv hook zsh'';
+          rcInit = "_cache -v ${pkgs.direnv.version} direnv hook zsh";
           pluginFiles = [ "direnv" ];
         };
-        fish.rcInit = ''_cache -v${pkgs.direnv.version} direnv hook fish'';
+        fish.rcInit = "_cache -v${pkgs.direnv.version} direnv hook fish";
         nushell.rcInit = ''
           $env.config = ($env | default {} config).config
           $env.config = ($env.config | default {} hooks)

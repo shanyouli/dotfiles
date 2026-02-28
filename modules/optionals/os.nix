@@ -133,7 +133,7 @@ in
                   mapAttrsToList (n: v: ''export ${n}="${v}"'') (removeAttrs config.env [ "PATH" ])
                 ))
                 pathLine
-                (optionalString (config.nix.envVars != { }) ''unset all_proxy http_proxy https_proxy'')
+                (optionalString (config.nix.envVars != { }) "unset all_proxy http_proxy https_proxy")
               ]
             )
           );

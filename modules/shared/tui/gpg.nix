@@ -18,7 +18,7 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     {
-      env.GNUPGHOME = ''''${XDG_CONFIG_HOME:-$HOME/.config}/gnupg'';
+      env.GNUPGHOME = "\${XDG_CONFIG_HOME:-$HOME/.config}/gnupg";
       home.programs.gpg = {
         package = pkgs.gnupg;
         enable = true;

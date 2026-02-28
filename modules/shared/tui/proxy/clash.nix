@@ -22,7 +22,7 @@ in
         cfp.configFile
       else
         "${config.home.configDir}/clash-meta/clash.yaml"
-    ) ''clash 配置文件保存位置'';
+    ) "clash 配置文件保存位置";
     package = mkPackageOption pkgs "mihomo" { };
   };
   config = mkIf cfg.enable (mkMerge [

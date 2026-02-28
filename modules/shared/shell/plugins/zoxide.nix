@@ -32,7 +32,7 @@ in
         '';
         cmpTable."__zoxide_zi" = "zoxide_completer";
       };
-      fish.rcInit = ''_cache -v${cfg.package.version} zoxide init fish --cmd cd'';
+      fish.rcInit = "_cache -v${cfg.package.version} zoxide init fish --cmd cd";
     };
     home.programs.bash.initExtra = ''
       eval "$(zoxide init --cmd cd bash)"

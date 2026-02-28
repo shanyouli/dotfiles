@@ -22,7 +22,7 @@ in
         cfp.configFile
       else
         "${config.home.configDir}/sing-box/config.json"
-    ) ''sing-box 配置文件保存位置'';
+    ) "sing-box 配置文件保存位置";
     package = mkPackageOption pkgs "sing-box" { };
   };
   config = mkIf cfg.enable (mkMerge [

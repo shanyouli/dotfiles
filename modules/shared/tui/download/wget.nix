@@ -65,7 +65,7 @@ in
       modules.shell.aliases.wget = "${cfbin} --hsts-file ${config.home.cacheDir}/wget-hsts";
     }
     (mkIf (cfg.settings != { }) {
-      env.WGETRC = ''''${XDG_CONFIG_HOME:-~/.config}/wget/wgetrc'';
+      env.WGETRC = "\${XDG_CONFIG_HOME:-~/.config}/wget/wgetrc";
       home.configFile."wget/wgetrc".text = toWgetConfig cfg.settings;
     })
   ]);

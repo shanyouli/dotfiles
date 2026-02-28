@@ -84,7 +84,7 @@ in
                 false
               ]
             then
-              ''''
+              ""
             else
               concatStrings (map base_fn cfp.versions);
         in

@@ -55,7 +55,7 @@ in
       home.packages = [ pkgs.go ];
       modules.shell = {
         fish.prevInit = "set -gx PATH (string replace -r '://bin:' '' $GOPATH)/bin $PATH";
-        zsh.prevInit = ''export PATH=''${GOPATH//://bin:}/bin:$PATH'';
+        zsh.prevInit = "export PATH=\${GOPATH//://bin:}/bin:$PATH";
       };
       env = {
         GOPATH = "$XDG_DATA_HOME/go";

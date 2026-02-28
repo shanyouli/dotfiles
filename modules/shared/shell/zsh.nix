@@ -62,8 +62,8 @@ in
   };
   config = mkIf cfg.enable {
     env = {
-      ZDOTDIR = ''''${XDG_CONFIG_HOME:-~/.config}/zsh'';
-      ZSH_CACHE = ''''${XDG_CACHE_HOME:-~/.config}/zsh'';
+      ZDOTDIR = "\${XDG_CONFIG_HOME:-~/.config}/zsh";
+      ZSH_CACHE = "\${XDG_CACHE_HOME:-~/.config}/zsh";
     };
 
     modules.shell = {
@@ -76,11 +76,11 @@ in
               n: v:
               (
                 if (strings.toUpper "${n}") == "PATH" then
-                  ''export path=(${concatMapStringsSep " " builtins.toString v} $path)''
+                  "export path=(${concatMapStringsSep " " builtins.toString v} $path)"
                 else
                   (
                     if builtins.isList v then
-                      ''export ${n}=${concatMapStringsSep ":" builtins.toString v}''${n:+:}''${n}''
+                      "export ${n}=${concatMapStringsSep ":" builtins.toString v}\${n:+:}\${n}"
                     else
                       ''export ${n}="${v}"''
                   )

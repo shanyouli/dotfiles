@@ -31,7 +31,7 @@ in
       cmd = mkOpt' types.str "" "默认proxy 启动命令，一般不需要自定义";
     };
 
-    configFile = mkOpt' types.str "" ''proxy 配置文件'';
+    configFile = mkOpt' types.str "" "proxy 配置文件";
   };
   config = mkIf (cfg.default != "") {
     modules = {
