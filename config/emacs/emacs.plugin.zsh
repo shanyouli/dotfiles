@@ -96,3 +96,5 @@ function emacsclient() {
 alias ec=emacsclient
 alias ecn="emacsclient -nw"
 alias ecc="emacsclient -n -c"
+
+ecalc() { emacs -Q --batch --eval "(princ (concat (calc-eval \"${*}\") \"\\n\"))" }
