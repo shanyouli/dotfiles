@@ -23,6 +23,7 @@ in
       (mkIf (cfg.enGui && stdenvNoCC.isLinux) github-desktop)
       # 更快的克隆速度。
       gitoxide
+      gitu
     ];
     home.programs.git = {
       enable = true;
