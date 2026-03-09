@@ -1,0 +1,65 @@
+#!/usr/bin/env nu
+
+use std log
+
+# 判断目录是否为 Git 仓库.
+def is-git-repo [dir_path: string = ""]: nothing -> bool {
+  try {
+    let target = $dir_path | path expand
+    log debug $" test ($target) 是否为 git 仓库"
+    (git -C $target rev-parse --is-inside-work-tree | str trim) == "true"
+  } catch {
+    false
+  }
+}
+
+def main [
+  branch: string = "main", # 将要推送的分支
+  --remote(-r): string = "origin", # 默认远程仓库对应的 orign
+  --dir(-d): string = "", # 是否使用当前目录
+  --debug, # 是否输出详细日志。
+  --focus(-f) # 是否强制删除临时分支
+] {
+  if $debug {
+    log set-level 10
+  }
+  mut target_dir = $dir | path expand
+  if (not (is-git-repo $target_dir)) {
+    log error $"当前路径 ($target_dir) 不是一个 git 仓库。"
+    exit 1
+  }
+  cd $target_dir
+  let current_branch = (git branch --show-current | str trim)
+  let temp_branch = $"sync-temp-(date now | format date '%H%M%S')"
+  try {
+    # 切换到临时分支
+    log debug $"准备创建临时隔离分支 ($temp_branch)..."
+    git checkout -b $temp_branch
+    # 远程更新并尝试变更 rebase
+    log debug $"正在从 ($remote)/($branch) 拉去自动..."
+    let pull_result = (do -i { git pull --rebase $remote $branch } | complete)
+    if ($pull_result.exit_code != 0) and ($focus != true) {
+      if $focus {
+         log warning $"检测到合并冲突！强制删除临时分支 ($temp_branch)。"
+         git checkout $current_branch
+         git branch -D $temp_branch
+      } else {
+        log warning $"检测到合并冲突！已切换到手动模式。"
+        log warning $">>> 你的原始分支未被改动 ($current_branch)."
+        log warning $">>> 请在当前分支 ($temp_branch) 解决冲突后执行:"
+        log warning $"   git add . ; git rebase --continue ; git push ($remote) ($branch)"
+        log warning $"处理结束后，别忘记切回主分支并删除此临时分支。"
+      }
+      exit 1
+    }
+
+    log debug $"正在推送远程 ($branch)"
+    git push $remote $"($temp_branch):($branch)"
+    log debug $"推送成功"
+
+    git checkout $current_branch
+    if (git branch | lines | any {|it| $it =~ $temp_branch }) {
+      git branch -D $temp_branch
+    }
+  } catch { |err| log error $err.msg }
+}
