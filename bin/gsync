@@ -14,7 +14,7 @@ def is-git-repo [dir_path: string = ""]: nothing -> bool {
 }
 
 def main [
-  branch: string = "main", # 将要推送的分支
+  branch: string = "", # 将要推送的分支
   --remote(-r): string = "origin", # 默认远程仓库对应的 orign
   --dir(-d): string = "", # 是否使用当前目录
   --debug, # 是否输出详细日志。
@@ -31,6 +31,9 @@ def main [
   cd $target_dir
   let current_branch = (git branch --show-current | str trim)
   let temp_branch = $"sync-temp-(date now | format date '%H%M%S')"
+  let branch = if ($branch | is-empty) {
+    if ($current_branch in ["master", "main"]) { $current_branch } else { "main" }
+  } else { $branch }
   try {
     # 切换到临时分支
     log debug $"准备创建临时隔离分支 ($temp_branch)..."
