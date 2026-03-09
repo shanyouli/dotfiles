@@ -43,8 +43,10 @@ def main [
   url: string = "", # 克隆链接
   dir_path: string = "",
   --force(-f), # 是否删除 本地 tag
+  --debug(-d),
   --remote(-r), # 是否不获取远程最新 commit
 ] {
+  if $debug { log set-level 10 }
   mut target_dir = ""
   if ($url != "") {
     let _name = (is-git-url $url)
