@@ -53,14 +53,8 @@ module doom {
 }
 
 export def --wrapped emacsclient [...rest] {
-  mut base_name = "emacs"
-  if ((sys host | get name) == "Darwin") {
-    $base_name = "Emacs"
-  }
-  mut sock_file = (lsof -c $base_name | grep main | tr -s " " | cut -d' ' -f8)
-  if ($sock_file | is-empty) {
-    $sock_file = (lsof -c $base_name | grep server | tr -s " " | cut -d' ' -f8)
-  }
+  let base_name =   if ((sys host | get name) == "Darwin") { "Emacs" } else { "emacs" }
+  let sock_file = lsof -c Emacs | detect columns --guess | where NAME =~ 'server|/main' | get NAME | first
   if ($sock_file | is-empty) {
     ^emacsclient ...$rest
   } else {

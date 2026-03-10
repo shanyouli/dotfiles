@@ -99,6 +99,7 @@ in
             pkgs.emacsPackages.emacs-reader
             # epkgs.telega
             epkgs.vterm
+            epkgs.eat
             epkgs.pdf-tools
             epkgs.saveplace-pdf-view
 
