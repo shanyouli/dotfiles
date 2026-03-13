@@ -220,7 +220,6 @@ in
         brews = [
           # "mysql"
           "mist-cli"
-          "p7zip" # "Rpc3 依赖工具"
           "mole"
         ];
         masApps = mkMerge [
