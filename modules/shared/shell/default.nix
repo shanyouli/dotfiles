@@ -27,7 +27,7 @@ let
 
     meta = with lib; {
       description = "my scripts bin";
-      homepage = "https://github.com/shanyouli/system";
+      homepage = "https://github.com/shanyouli/dotfiles";
       license = licenses.mit;
       maintainers = with maintainers; [ shanyouli ];
       platforms = platforms.all;

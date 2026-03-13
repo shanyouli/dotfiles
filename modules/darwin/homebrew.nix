@@ -119,7 +119,7 @@ in
           # "imazing" # 手机备份管理
           (mkIf (!config.modules.gui.media.flameshot.enable) "shottr") # 截图
           "betterdisplay" # 其他替代工具
-          "shanyouli/tap/stillcolor"
+          # "shanyouli/tap/stillcolor"
           # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
           "maczip" # 压缩解压GUI or "keka"
           # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
@@ -130,7 +130,8 @@ in
           #
           # finder 插件
           "syntax-highlight"
-          "qlmarkdown"
+          "qlmarkdown" # markdown
+          "macpacker" # zip 文件预览
 
           # "playcover-community" # 侧载工具
 
@@ -161,19 +162,18 @@ in
           "shanyouli/tap/quickrecorder" # 录屏
           "shanyouli/tap/tmexclude"
 
-          "shanyouli/tap/vimmotion" # 使用 vim 全局操作
+          # "shanyouli/tap/vimmotion" # 使用 vim 全局操作
           "shanyouli/tap/airbattery" # 设备电量显示
 
           "bbackupp" # ios 备份工具 #
 
           "shanyouli/tap/mountmate" # U 盘挂载管理工具
 
-          "macpacker" # zip 文件预览
-
           ## 一些其他推荐应用
           ## 数据库
           # "arctype" # 数据库mysql, postgres,SQLite等，.medis2 redis, # TablePlus
           # "sequel-ace" # mysql
+          "tablepro"
           # "navicat-premium"
 
           # "maccy" # clip 剪切薄，使用raycast取代
