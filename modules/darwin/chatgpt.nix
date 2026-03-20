@@ -25,6 +25,8 @@ in
     homebrew.casks = [
       # "cherry-studio"
       "warden"
+      "chatgpt" # chatgpt 客户端
+      "opencode-desktop" # opencode 桌面版
     ]
     ++ optionals cfg.nextchat.enable [ "shanyouli/tap/nextchat" ]
     ++ optionals cfg.local.enable [ "ollama" ]
