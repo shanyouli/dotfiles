@@ -13,7 +13,7 @@ in
 {
   options.modules.shell.direnv = {
     enable = mkBoolOpt false;
-    package = mkPackageOption pkgs "nix-direnv" { };
+    package = mkPackageOption pkgs.unstable "direnv" { };
     stdlib =
       with types;
       mkOpt' (attrsOf (oneOf [
@@ -26,7 +26,7 @@ in
   config = mkIf cfg.enable {
     home = {
       packages = [
-        pkgs.direnv
+        pkgs.nix-direnv
         cfg.package
       ];
       programs.bash.initExtra = ''
@@ -36,7 +36,7 @@ in
         {
           "direnv/direnvrc".text = ''
             #!/usr/bin/env bash
-            source ${cfg.package}/share/nix-direnv/direnvrc
+            source ${pkgs.nix-direnv}/share/nix-direnv/direnvrc
             # Hum-readable directories @see https://github.com/direnv/direnv/wiki/Customizing-cache-location
             : "''${XDG_CACHE_HOME:="''${HOME}/.cache"}"
             declare -A direnv_layout_dirs
@@ -70,10 +70,10 @@ in
       app.editor.vscode.extensions = [ pkgs.unstable.vscode-extensions.mkhl.direnv ];
       shell = {
         zsh = {
-          rcInit = "_cache -v ${pkgs.direnv.version} direnv hook zsh";
+          rcInit = "_cache -v ${cfg.package.version} direnv hook zsh";
           pluginFiles = [ "direnv" ];
         };
-        fish.rcInit = "_cache -v${pkgs.direnv.version} direnv hook fish";
+        fish.rcInit = "_cache -v${cfg.package.version} direnv hook fish";
         nushell.rcInit = ''
           $env.config = ($env | default {} config).config
           $env.config = ($env.config | default {} hooks)
