@@ -13,7 +13,7 @@ in
 {
   options.modules.shell.direnv = {
     enable = mkBoolOpt false;
-    package = mkPackageOption pkgs.unstable "direnv" { };
+    package = mkPackageOption pkgs "direnv" { };
     stdlib =
       with types;
       mkOpt' (attrsOf (oneOf [
