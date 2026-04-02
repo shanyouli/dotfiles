@@ -33,6 +33,7 @@ in
         cfg.node.package
         pnpm
         typescript-language-server
+        pkgs.typescript
         stylelint
         js-beautify
       ];
