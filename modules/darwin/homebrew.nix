@@ -208,7 +208,6 @@ in
         # ]
         # ++ optionals (config.modules.gui.enable && (config.modules.proxy.default != "")) [
         # 使用 macos 商店的工具取代它
-        #   # "shanyouli/tap/clash-verge"
         #   # (mkIf (config.modules.proxy.default == "sing-box") "sfm")
         # ]
         ++ optionals cfg.gui.enable [
