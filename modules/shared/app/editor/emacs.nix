@@ -114,6 +114,8 @@ in
             #     ]))
             epkgs.treesit-grammars.with-all-grammars
             epkgs.elvish-mode
+
+            pkgs.emacsPackages.emt
           ]
           ++ optionals cfg.rime.enable [ epkgs.rime ]
           ++ optionals config.modules.just.enable [
@@ -165,6 +167,9 @@ in
             (setq rime-librime-root "${pkgs.librime}")
             (setq rime-share-data-dir "${rime-data-dir}")
             (setq rime-user-data-dir "${my.homedir}/${cfg.rime.dir}")
+            ${lib.optionalString pkgs.stdenvNoCC.hostPlatform.isLinux ''
+              (setq emt-lib-path "${pkgs.ewt-rs}lib/libewt.so")
+            ''}
           ''
         )
         + ''

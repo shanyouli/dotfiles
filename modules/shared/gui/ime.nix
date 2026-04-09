@@ -140,6 +140,7 @@ in
         "${cemacs.rime.dir}/rime_ice.custom.yaml".text = ''
           patch:
             translator/spelling_hints: 0
+            "switches/@3/reset": 0
         '';
       };
     })
