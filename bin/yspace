@@ -36,12 +36,14 @@ def reset-spaces [] {
   let spaces = yabai-spaces | group-by display
   for row in ($spaces | transpose display spaces) {
     let display = $row.display
-    let $sid = $row.spaces | sort-by index -r | get id
+    let $sid = $row.spaces | sort-by index | get id
     for i in ($sid | skip 1) {
       log info $"Destroy space id=($i)"
       let cspace = yabai-spaces | where id == $i
-      if ($cspace | get is-native-fullscreen) == false {
-        ^yabai -m space --destroy (cspace.index)
+      log debug $"space[($i)] native-fullscreen ($cspace | get is-native-fullscreen | last)"
+      if ($cspace | get is-native-fullscreen | last) == false {
+        log debug $"Destory space id=[($i)] success"
+        ^yabai -m space --destroy ($cspace | get index | last)
       }
     }
   }
@@ -65,7 +67,7 @@ def clear-space-labels [] {
 # creat and set label on space
 def ensure-spaces [labels: list<string>] {
   log info "Ensuring Spaces layout."
-
+  log info $"labels: ($labels)"
   let displays = yabai-displays
   let display_count = $displays | length
 
