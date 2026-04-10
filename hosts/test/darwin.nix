@@ -191,7 +191,6 @@
       enable = true;
       docker.enable = true;
       arc.enable = true;
-      karabiner.enable = true;
       safari.enable = true;
       music = {
         lx.enable = true;
@@ -211,8 +210,9 @@
       ui.ice.enable = true;
     };
     service = {
-      battery.enable = false;
+      battery.enable = true;
       yabai.enable = true;
+      karabiner.enable = true;
     };
   };
   system.stateVersion = lib.mkForce 5;

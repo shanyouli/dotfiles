@@ -220,7 +220,6 @@
       enable = true;
       docker.enable = true;
       # arc.enable = true;
-      karabiner.enable = true;
       safari.enable = true;
       # relaunchApp.enable = true;
       # music.lx.enable = true;
@@ -254,6 +253,10 @@
     };
     service = {
       battery.enable = false; # use aldente
+      karabiner = {
+        enable = true;
+        package = null;
+      };
       yabai = {
         enable = true;
         package = pkgs.unstable.yabai;
