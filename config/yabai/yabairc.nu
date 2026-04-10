@@ -16,48 +16,6 @@ if (which borders | is-not-empty) {
   }
 }
 
-# 调试日志
-# yabai -m config debug_output on
-
-# 窗口间距设置
-yabai -m config bottom_padding 5
-yabai -m config left_padding 5
-yabai -m config right_padding 5
-yabai -m config top_padding 5
-
-# 自动平衡所有窗口始终占据相同的空间
-yabai -m config auto_balance off
-# 如果禁用自动平衡，此项属性定义的是新窗口占用的空间量。0.5意为旧窗口占用50%
-yabai -m config split_ratio 0.50
-
-yabai -m config mouse_action1 move
-yabai -m config mouse_action2 resize
-# 焦点跟随鼠标 默认off: 关闭  autoraise:自动提升 autofocus: 自动对焦
-yabai -m config focus_follows_mouse off
-# 设置鼠标是否跟随当前活动窗口 默认 off: 关闭 on: 开启
-yabai -m config mouse_follows_focus on
-# 鼠标修饰键 意思就是按着这个键就可以使用鼠标单独修改窗口大小了
-yabai -m config mouse_modifier fn
-
-# NOTE: 被移除浮动窗口问题在顶部
-# yabai -m config window_topmost off
-# 修改窗口阴影 on: 打开 off: 关闭 float: 只显示浮动窗口的阴影
-yabai -m config window_shadow float
-
-# 窗口透明度设置
-yabai -m config window_opacity on
-# 配置活动窗口不透明度
-yabai -m config active_window_opacity 0.98
-yabai -m config normal_window_opacity 0.9
-yabai -m config window_opacity_duration 0.0
-
-# 在所有显示器上的每个空间顶部添加 0 填充 底部添加 0 填充
-yabai -m config external_bar all:0:0
-# 默认layout
-yabai -m config layout bsp
-yabai -m config window_placement second_child
-yabai -m config window_gap 4
-
 # Do not manage windows with certain titles eg. Copying files or moving to bin
 yabai -m rule --add title="(Copy|Bin|About This Mac|Info)" manage=off
 # Do not manage some apps which are not resizable
@@ -81,11 +39,11 @@ yabai -m rule --add app="^([Mm]pv|IINA|VidHub|BaiduNetdisk)$" opacity=1
 
 yabai -m rule --add title="Picture-in-Picture" opacity=1 manage=off
 
-if ("/Apoplications/Hammerspoon.app" | path exists) {
+if ("/Applications/Hammerspoon.app" | path exists) {
   if (ps | where name == "Hammerspoon" | is-empty) {
     ^open -a /Applications/Hammerspoon.app
   }
-  yabai -m rule --add app="^Hammerspoon$" manage=off sticky=on opacity 1
+  yabai -m rule --add app="^Hammerspoon$" manage=off sticky=on opacity=1
 }
 
 

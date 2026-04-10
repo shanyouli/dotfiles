@@ -256,7 +256,7 @@
       battery.enable = false; # use aldente
       yabai = {
         enable = true;
-        package = null;
+        package = pkgs.unstable.yabai;
         border.enable = false;
         keep.enable = false;
       };
