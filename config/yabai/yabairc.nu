@@ -196,5 +196,5 @@ def setup-spaces [labels: any, --force (-f)] {
   ensure-spaces $labels
 }
 
-# 配置 spaces
-setup-spaces ["main", "web", ["edit", "stack"], ["other", "float"]] -f
+# 配置 spaces, 不要强制使用 --force
+setup-spaces ["main", "web", ["edit", "stack"], ["other", "float"]]

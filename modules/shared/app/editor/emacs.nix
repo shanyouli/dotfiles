@@ -114,10 +114,19 @@ in
             #     ]))
             epkgs.treesit-grammars.with-all-grammars
             epkgs.elvish-mode
-
             pkgs.emacsPackages.emt
           ]
-          ++ optionals cfg.rime.enable [ epkgs.rime ]
+          ++ optionals cfg.rime.enable [
+            (epkgs.liberime.overrideAttrs (old: {
+              buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.librime ];
+              preBuild = (old.preBuild or "") + ''
+                make CC=$CC SUFFIX=${pkgs.stdenv.hostPlatform.extensions.sharedLibrary}
+              '';
+              postInstall = (old.postInstall or "") + ''
+                install -m444 -t $out/share/emacs/site-lisp/elpa/liberime-* src/liberime-core${pkgs.stdenv.hostPlatform.extensions.sharedLibrary}
+              '';
+            }))
+          ]
           ++ optionals config.modules.just.enable [
             epkgs.just-mode
             epkgs.justl
@@ -149,6 +158,9 @@ in
         configFile."doom/config.init.el".text = ''
           ;;; config.init.el -*- lexical-binding: t; -*-
           (setq lsp-bridge-python-command "${config.modules.python.finalPkg}/bin/python3")
+          ${lib.optionalString pkgs.stdenvNoCC.hostPlatform.isLinux ''
+            (setq emt-lib-path "${pkgs.ewt-rs}lib/libewt.so")
+          ''}
         ''
         + optionalString cfg.rime.enable (
           let
@@ -163,13 +175,8 @@ in
                 "${pkgs.rime-data}/share/rime-data";
           in
           ''
-            (setq rime-emacs-module-header-root "${cfg.package}/include")
-            (setq rime-librime-root "${pkgs.librime}")
-            (setq rime-share-data-dir "${rime-data-dir}")
-            (setq rime-user-data-dir "${my.homedir}/${cfg.rime.dir}")
-            ${lib.optionalString pkgs.stdenvNoCC.hostPlatform.isLinux ''
-              (setq emt-lib-path "${pkgs.ewt-rs}lib/libewt.so")
-            ''}
+            (setq liberime-shared-data-dir "${rime-data-dir}")
+            (setq liberime-user-data-dir "${my.homedir}/${cfg.rime.dir}")
           ''
         )
         + ''
