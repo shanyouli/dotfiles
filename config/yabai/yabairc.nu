@@ -198,3 +198,9 @@ def setup-spaces [labels: any, --force (-f)] {
 
 # 配置 spaces, 不要强制使用 --force
 setup-spaces ["main", "web", ["edit", "stack"], ["other", "float"]]
+
+# 基于 space 的相关 rule 配置
+yabai -m rule --add app='^(Arc|Google Chrome|Firefox|Zen Browser|LibreWolf)$' space=^web
+yabai -m rule --add app='^(Ghostty|kitty|Iterm2|Wrap)' title='!FloatTerm' space=^edit
+yabai -m rule --add app='^(AppClear|Activity Monitor|Telegram|Petrichor)$' space=^other
+yabai -m rule --add app='^(Zed|Visual Studio Code|IntelliJ IDEA|PyCharm)$' space=^edit
