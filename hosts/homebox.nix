@@ -93,7 +93,7 @@
       };
       tg = {
         enable = true;
-        package = pkgs.ayugram-desktop;
+        package = null;
       };
       editor = {
         emacs = {
