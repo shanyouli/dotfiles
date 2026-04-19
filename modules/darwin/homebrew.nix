@@ -216,7 +216,9 @@ in
           # (mkIf (config.modules.proxy.default == "clash") "shanyouli/tap/gui-for-clash")
           "clash-verge-rev"
         ]
-        ++ optionals (config.modules.app.tg.enable && (cfg.modules.app.tg.package == null)) [ "telegram" ];
+        ++ optionals (config.modules.app.tg.enable && (config.modules.app.tg.package == null)) [
+          "telegram"
+        ];
         brews = [
           # "mysql"
           "mist-cli"
