@@ -27,7 +27,8 @@ in
       # "warden"
       "chatgpt" # chatgpt 客户端
       "cc-switch" # codex 切换
-      "gemini"
+      "google-gemini"
+      "codex-app"
       "opencode-desktop" # opencode 桌面版
     ]
     ++ optionals cfg.nextchat.enable [ "shanyouli/tap/nextchat" ]

@@ -32,8 +32,12 @@ in
       home.packages = [
         (mkIf cfg.toml.fmt pkgs.taplo)
         (mkIf cfg.enWebReport pkgs.allure)
-        (mkIf cfg.ai.enable pkgs.unstable.opencode)
+
         (mkIf cfg.json.enable pkgs.vscode-json-languageserver)
+      ]
+      ++ lib.optionals cfg.ai.enable [
+        pkgs.unstable.opencode # opencode 出品的工具
+        pkgs.unstable.gemini-cli # google 出品
       ];
     }
     (mkIf (cfg.lang != { }) { modules.dev.manager.default = mkDefault "mise"; })

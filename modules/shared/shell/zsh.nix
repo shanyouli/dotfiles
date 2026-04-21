@@ -107,7 +107,7 @@ in
             FZF_CTRL_T_COMMAND="fd -H -I --type f"
             FZF_CTRL_T_OPTS="--preview 'bat --color=always --plain --line-range=:200 {}'"
             FZF_ALT_C_COMMAND="fd -H -I --type d -E '.git*'"
-            FZF_ALT_C_OPTS="--preview 'eza -T -L 2 {} | head -2000'"
+            FZF_ALT_C_OPTS="--preview 'eza -t -d 2 {} | head -2000'"
             # FZF_CTRL_R_OPTS=""
             # source ${pkgs.fzf}/share/fzf/completion.zsh
             # source ${pkgs.fzf}/share/fzf/key-bindings.zsh

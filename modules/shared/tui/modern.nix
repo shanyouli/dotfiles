@@ -23,10 +23,10 @@ in
     home.packages = with pkgs; [
       bottom # htop,top 替代工具
       fd # find
-      eza # ls, tree
+      lla # ls, tree # or eza
       bat # cat
       duf # df
-      dua # gdu # du
+      # dua # gdu # du  # 使用  lla 取代
       procs # ps(procps) 的替代工具
       # delta # diff
       xh # curl
@@ -36,7 +36,7 @@ in
       aliases = {
         df = "duf";
         cat = "bat -p"; # or bat -pp
-        du = "dua";
+        dud = "lla -S --include-dirs";
         htop = "btm --basic --mem_as_value";
       };
       zsh.pluginFiles = [ "exa" ];
