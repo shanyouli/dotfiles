@@ -168,6 +168,7 @@
       enable = true;
       enGui = false; # 使用网页管理 github
     };
+    jujustu.enable = true;
     gopass = {
       enable = true;
       enGui = false;

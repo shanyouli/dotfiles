@@ -1,6 +1,0 @@
-#!/usr/bin/env cached-nix-shell
-#! nix-shell -i nu -p fastfetch nushell
-
-def --wrapped main [ ...rest] {
-  ^fastfetch ...$rest
-}

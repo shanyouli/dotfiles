@@ -162,6 +162,7 @@
       enable = true;
       cacheTTL = 360000;
     };
+    jujustu.enable = true;
     git = {
       enable = true;
       enGui = false; # 使用网页管理 github
