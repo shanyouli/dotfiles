@@ -47,7 +47,7 @@ in
     cmpFn = mkOpt' types.lines "" "补全函数";
     cmpTable = with types; mkOpt' (attrsOf str) { } "补全列表";
     scriptFiles = with types; mkOpt' (listOf (either str path)) [ ] "nushell scripts";
-    package = mkPackageOption pkgs.unstable "nushell" { };
+    package = mkPackageOption pkgs "nushell" { };
   };
   config = mkIf cfg.enable {
     home = {
