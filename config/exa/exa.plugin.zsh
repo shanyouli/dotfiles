@@ -1,5 +1,4 @@
 alias l="lla --git --sort-dirs-first --time-style=long-iso"
-alias ls='l -lbF' # list, size, type
 alias lsi='l --icons'
 alias ll='ls -la'              # long, all
 alias llm='ll --sort=date' # list, long, sort by modification date

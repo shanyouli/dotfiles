@@ -108,7 +108,7 @@
         nvim.enGui = false; # GUI 编辑工具为emacs
         vscode.enable = true;
         zed = {
-          # package = pkgs.zed-editor;
+          package = pkgs.unstable.zed-editor;
           enable = true;
         };
       };
