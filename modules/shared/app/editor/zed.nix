@@ -21,7 +21,10 @@ in
 {
   options.modules.app.editor.zed = {
     enable = mkEnableOption "Whether to use zed editor";
-    package = mkPackageOption pkgs "zed-editor" { };
+    package = mkPackageOption pkgs "zed-editor" {
+      nullable = true;
+      extraDescription = "If this value is null, homebrew will be used for management.";
+    };
   };
   config = mkIf cfg.enable {
     home.programs.zed-editor = {

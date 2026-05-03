@@ -5,7 +5,6 @@
   lib,
   config,
   my,
-  pkgs,
   ...
 }:
 with lib;
@@ -23,10 +22,10 @@ in
     homebrew.casks = [
       # "onyx" # 系统配置修改 GUI 工具
       cfgPkg
-      "launchpadder" # 排序 launchpad
+      # "launchpadder" # 排序 launchpad
     ];
     user.packages = [
-      pkgs.darwinapps.lporg # 自定义 launchpad 布局
+      # pkgs.darwinapps.lporg # 自定义 launchpad 布局
     ];
   };
 }

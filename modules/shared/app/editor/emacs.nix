@@ -16,6 +16,13 @@ let
     # epkgs.overrideScope' cfg.overrides;
     epkgs.overrideScope cfg.overrides;
   inherit (emacsPackages) emacsWithPackages;
+  rimeDataPkg =
+    if cfg.rime.method == "frost" then
+      pkgs.rime-frost
+    else if cfg.method == "wanxiang" then
+      pkgs.rime-wanxiang
+    else
+      pkgs.rime-ice;
 in
 {
   options.modules.app.editor.emacs = {
@@ -27,9 +34,9 @@ in
       keep = mkBoolOpt true;
     };
     rime = {
-      ice.enable = mkBoolOpt false; # 目前由于性能原因，不推荐使用万象拼音。
       enable = mkBoolOpt config.modules.rime.enable;
       dir = mkOpt' types.str ".local/share/emacs-rime" "emacs-rime build 缓存内容文件";
+      method = mkOpt' types.str config.modules.rime.method "emacs rime method";
     };
 
     doom = {
@@ -165,10 +172,10 @@ in
         + optionalString cfg.rime.enable (
           let
             rime-data-dir =
-              if cfg.rime.ice.enable then
-                "${pkgs.rime-ice}/share/rime-data"
-              else if config.modules.rime.enable then
+              if cfg.rime.method == config.modules.rime.method && config.modules.rime.enable then
                 "${config.modules.rime.dataPkg}/share/rime-data"
+              else if cfg.rime.method != "" then
+                "${rimeDataPkg}/share/rime-data"
               else if pkgs.stdenvNoCC.hostPlatform.isDarwin then
                 "/Library/Input Methods/Squirrel.app/Contents/SharedSupport"
               else

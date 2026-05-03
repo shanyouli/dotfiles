@@ -38,6 +38,7 @@ in
       ++ lib.optionals cfg.ai.enable [
         pkgs.unstable.opencode # opencode 出品的工具
         pkgs.unstable.gemini-cli # google 出品
+        pkgs.unstable.codex
       ];
     }
     (mkIf (cfg.lang != { }) { modules.dev.manager.default = mkDefault "mise"; })

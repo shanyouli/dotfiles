@@ -91,6 +91,7 @@
         # nvim.enable = true;
         nvim.enGui = false; # GUI 编辑工具为emacs
         vscode.enable = true;
+        zed.enable = true;
       };
     };
     # gui
@@ -185,7 +186,7 @@
       enWebReport = true;
       rust.enable = true;
     };
-
+    rime.enable = true;
     # macos
     macos = {
       enable = true;
@@ -201,7 +202,6 @@
       read.enable = true;
       games.enable = true;
       hammerspoon.enable = true;
-      rime.enable = true;
       brew.mirror = "tuna";
       duti.enable = true;
       netdriver.enable = true;

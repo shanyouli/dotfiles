@@ -99,7 +99,6 @@
         emacs = {
           enable = true;
           service.enable = false;
-          rime.ice.enable = true;
           package = pkgs.emacs;
         };
 
@@ -108,7 +107,8 @@
         nvim.enGui = false; # GUI 编辑工具为emacs
         vscode.enable = true;
         zed = {
-          package = pkgs.unstable.zed-editor;
+          # package = pkgs.unstable.zed-editor;
+          package = null;
           enable = true;
         };
       };
@@ -214,8 +214,10 @@
       ai.enable = true;
       zig.enable = true;
     };
-
-    rime.method = "wanxiang";
+    rime = {
+      enable = true;
+      method = "frost";
+    };
     # macos
     macos = {
       enable = true;
@@ -229,7 +231,6 @@
 
       games.enable = true;
       hammerspoon.enable = true;
-      rime.enable = true;
       brew.mirror = "sust";
       duti.enable = true;
       netdriver.enable = true;

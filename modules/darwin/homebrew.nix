@@ -123,7 +123,7 @@ in
           # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
           "maczip" # 压缩解压GUI or "keka"
           # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
-          "findergo" # 快捷方式，在finder中打开终端
+          # "findergo" # 快捷方式，在finder中打开终端
           "zotero" # 文献管理
 
           # "warp" # next terminal, 不太好用
@@ -177,10 +177,7 @@ in
           # "navicat-premium"
 
           # "maccy" # clip 剪切薄，使用raycast取代
-          # "visual-studio-code" # other editors nix 管理
-          # "zed" # 又一款编辑工具，使用 nix 管理
-          # "markedit" # markdown 编辑器
-          "coteditor"
+          "lite-edit" # "coteditor"
           "command-x" # Cut files, need upgrade
 
           ## 浏览器
@@ -214,8 +211,12 @@ in
           # "applite"
           (mkIf (config.modules.proxy.default == "sing-box") "shanyouli/tap/gui-for-singbox")
           # (mkIf (config.modules.proxy.default == "clash") "shanyouli/tap/gui-for-clash")
-          "clash-verge-rev"
+          "shanyouli/tap/clashbar"
+          # "clash-verge-rev"
         ]
+        ++ optionals (
+          config.modules.app.editor.zed.enable && (config.modules.app.editor.zed.package == null)
+        ) [ "zed" ]
         ++ optionals (config.modules.app.tg.enable && (config.modules.app.tg.package == null)) [
           "telegram"
         ];

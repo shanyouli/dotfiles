@@ -29,7 +29,7 @@ in
       "cc-switch" # codex 切换
       "google-gemini"
       "codex-app"
-      "opencode-desktop" # opencode 桌面版
+      # "opencode-desktop" # opencode 桌面版
     ]
     ++ optionals cfg.nextchat.enable [ "shanyouli/tap/nextchat" ]
     ++ optionals cfg.local.enable [ "ollama" ]
