@@ -184,6 +184,7 @@ in
           # "qutebrowser" #
           # "zen"
           "shanyouli/tap/bilibili-video-downloader"
+          "shanyouli/tap/mrrss"
         ]
         ++ optionals config.modules.adb.enable [
           # # 使用第三方工具取代openmtp，MacDroid.app
