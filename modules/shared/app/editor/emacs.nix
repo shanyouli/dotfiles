@@ -96,6 +96,7 @@ in
   config = mkIf cfg.enable (mkMerge [
     {
       modules.app.editor.emacs = {
+        overrides = _self: _super: { unstable = pkgs.unstable.emacsPackages; };
         doom.confInit = ''
           ;; (setq mydotfile "/etc/nixos")
         '';
@@ -103,7 +104,6 @@ in
           epkgs:
           [
             epkgs.emacsql
-            pkgs.emacsPackages.emacs-reader
             # epkgs.telega
             epkgs.vterm
             epkgs.eat
@@ -121,18 +121,22 @@ in
             #     ]))
             epkgs.treesit-grammars.with-all-grammars
             epkgs.elvish-mode
-            pkgs.emacsPackages.emt
+            #
+            epkgs.emt
+            epkgs.emacs-reader
           ]
           ++ optionals cfg.rime.enable [
-            (epkgs.liberime.overrideAttrs (old: {
-              buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.librime ];
-              preBuild = (old.preBuild or "") + ''
-                make CC=$CC SUFFIX=${pkgs.stdenv.hostPlatform.extensions.sharedLibrary}
-              '';
-              postInstall = (old.postInstall or "") + ''
-                install -m444 -t $out/share/emacs/site-lisp/elpa/liberime-* src/liberime-core${pkgs.stdenv.hostPlatform.extensions.sharedLibrary}
+            # epkgs.unstable.rimel
+            ((epkgs.unstable.rimel.override { inherit (epkgs.unstable) liberime; }).overrideAttrs (oldAttrs: {
+              # 在构建环境中，将 $HOME 指向一个可写入的临时目录
+              buildPhase = ''
+                export HOME="$TMPDIR"
+                runHook preBuild
+                ${oldAttrs.buildPhase or ""}
+                runHook postBuild
               '';
             }))
+            # epkgs.unstable.liberime
           ]
           ++ optionals config.modules.just.enable [
             epkgs.just-mode
