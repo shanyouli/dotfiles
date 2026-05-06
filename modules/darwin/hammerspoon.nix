@@ -38,38 +38,14 @@ in
       homebrew.brews = [ "blueutil" ];
       # 使用 hammerspoon 来管理 如何打开 url
       # user.packages = [pkgs.defaultbrowser];
-      home.configFile."hammerspoon/nixpath.lua".text =
-        let
-          luaPaths = ''
-            -- 使用nix中安装的lua环境
-            local paths = {
-              package.path,
-              "${luaEnv}" .. "/share/lua/5.4/?.lua",
-              "${luaEnv}" .. "/share/lua/5.4/?/init.lua",
-            }
-            local cpaths = {
-              package.cpath,
-              "${luaEnv}" .. "/lib/lua/5.4/?.dylib",
-              "${luaEnv}" .. "/lib/lua/5.4/?.so",
-            }
-            package.path = table.concat(paths, ";")
-            package.cpath = table.concat(cpaths, ";")
-          '';
-        in
-        ''
-          ${luaPaths}
-          ${optionalString useDevLua ''
-            package.path = package.path .. ";${config.home.dataDir}/luarocks/share/lua/5.4/?.lua;${config.home.dataDir}/share/lua/5.4/?/init.lua"
-            package.cpath = package.cpath .. ";${config.home.dataDir}/luarocks/lib/lua/5.4/?.so;${config.home.dataDir}/luarocks/lib/lua/5.4/?.dylib"
-          ''}
-          local fennel = require("fennel")
-          table.insert(package.loaders or package.searchers, fennel.searcher)
-          return {
-            ${concatStringsSep ",\n" (
-              mapAttrsToList (n: v: ''${n} = "${v}"'') (filterAttrs (_n: v: v != "") cfg.cmd)
-            )}
-          }
-        '';
+      home.configFile."hammerspoon/nixpath.lua".text = ''
+        return {
+          prefixes = {"${luaEnv}"},
+          ${concatStringsSep ",\n" (
+            mapAttrsToList (n: v: ''${n} = "${v}"'') (filterAttrs (_n: v: v != "") cfg.cmd)
+          )}
+        }
+      '';
       my.user.init.InitHammerspoon = {
         desc = "change hammerspoon config Dir";
         text = ''
