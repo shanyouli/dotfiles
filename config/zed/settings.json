@@ -8,9 +8,29 @@
 // command palette
 // @see https://github.com/Nexseer/zed-config/raw/main/README_CN.md#%E5%9B%9Bai-%E4%BD%BF%E7%94%A8-
 {
+  "collaboration_panel": {
+    "button": false
+  },
+  "git_panel": {
+    "file_icons": true,
+    "tree_view": true,
+    "dock": "left"
+  },
+  "project_panel": {
+    "hide_gitignore": true,
+    "dock": "left"
+  },
+  "agent_servers": {
+    "claude-acp": {
+      "type": "registry"
+    },
+    "gemini": {
+      "type": "registry"
+    }
+  },
   "title_bar": {
     // Whether to show the branch icon beside branch switcher in the titlebar.
-    "show_branch_icon": false,
+    "show_branch_status_icon": false,
     // Whether to show the branch name button in the titlebar.
     "show_branch_name": true,
     // Whether to show the project host and name in the titlebar.
@@ -36,6 +56,8 @@
   },
   "auto_update": false,
   "agent": {
+    "sidebar_side": "right",
+    "dock": "right",
     "default_model": {
       "provider": "zed.dev",
       "model": "claude-3-5-sonnet-latest"
@@ -102,6 +124,7 @@
   ],
   "outline_panel": {
     // 大纲面板
+    "dock": "left",
     "button": true // 是否显示按钮
   },
 
