@@ -134,7 +134,10 @@
     };
 
     shell = {
-      prompt.default = "oh-my-posh";
+      prompt = {
+        default = "starship";
+        zsh.enable = true;
+      };
       default = "zsh";
       # fish.enable = true;
       # zsh.enable = true;

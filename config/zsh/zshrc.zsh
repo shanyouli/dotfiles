@@ -69,7 +69,13 @@ zstyle ':fzf-tab:complete:_zlua:*' query-string input
 zstyle ':fzf-tab:complete:kill:argument-rest' fzf-preview 'ps --pid=$word -o cmd --no-headers -w -w'
 zstyle ':fzf-tab:complete:kill:argument-rest' fzf-flags '--preview-window=down:3:wrap'
 zstyle ':fzf-tab:complete:kill:*' popup-pad 0 3
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lla --color=always $realpath'
+if (( $+commands[eza] )) ; then
+    zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza --color=always $realpath'
+elif (( $+commands[lla] )) ; then
+    zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lla $realpath'
+else
+    zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always $realpath'
+fi
 zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
 zstyle ":fzf-tab:*" fzf-flags --color=bg+:23
 # zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
@@ -119,7 +125,7 @@ done
 
 # https://github.com/Aloxaf/fzf-tab/issues/176
 # fzf-tab 补全会导致ffmpeg -i <按tab> 崩溃
-_zice "0c" atpull'!git rest --hard' \
+_zice "0c" atpull'!git reset --hard' \
     atclone"sed -i '/^ *COLUMNS=500 /s/COLUMNS=500 //' fzf-tab.zsh" \
     nocompile blockf Aloxaf/fzf-tab
 
