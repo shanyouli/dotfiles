@@ -185,6 +185,8 @@ in
           # "zen"
           "shanyouli/tap/bilibili-video-downloader"
           "shanyouli/tap/mrrss"
+
+          "glide-browser"
         ]
         ++ optionals config.modules.adb.enable [
           # # 使用第三方工具取代openmtp，MacDroid.app
