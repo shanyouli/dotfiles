@@ -182,7 +182,9 @@
         node.enable = true;
         bun.enable = true;
       };
-      toml.fmt = true;
+      fmt = {
+        toml.enable = true;
+      };
       enWebReport = true;
       rust.enable = true;
     };

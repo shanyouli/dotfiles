@@ -39,14 +39,6 @@ yabai -m rule --add app="^([Mm]pv|IINA|VidHub|BaiduNetdisk)$" opacity=1
 
 yabai -m rule --add title="Picture-in-Picture" opacity=1 manage=off
 
-if ("/Applications/Hammerspoon.app" | path exists) {
-  if (ps | where name == "Hammerspoon" | is-empty) {
-    ^open -a /Applications/Hammerspoon.app
-  }
-  yabai -m rule --add app="^Hammerspoon$" manage=off sticky=on opacity=1
-}
-
-
 # 不需要自动聚焦，
 # yabai -m signal --add event=window_destroyed \
 #     action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
@@ -204,3 +196,10 @@ yabai -m rule --add app='^(Arc|Google Chrome|Firefox|Zen Browser|LibreWolf)$' sp
 yabai -m rule --add app='^(Ghostty|kitty|Iterm2|Wrap)' title='!FloatTerm' space=^edit
 yabai -m rule --add app='^(AppClear|Activity Monitor|Telegram|Petrichor|bilibili-video-downloader)$' space=^other
 yabai -m rule --add app='^(Zed|Visual Studio Code|IntelliJ IDEA|PyCharm|ChatGPT|Codex)$' space=^edit
+
+if ("/Applications/Hammerspoon.app" | path exists) {
+  if (ps | where name == "Hammerspoon" | is-empty) {
+    ^open -a /Applications/Hammerspoon.app
+  }
+  yabai -m rule --add app="^Hammerspoon$" manage=off sticky=on opacity=1
+}

@@ -15,12 +15,10 @@ in
   options.modules.dev.nix = {
     enable = mkEnableOption "Whether to Nix Language";
     lspPkg = mkPackageOption pkgs "nil" { };
-    fmtPkg = mkPackageOption pkgs "nixfmt-rfc-style" { };
   };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       cfg.lspPkg
-      cfg.fmtPkg
       nix-init
       nurl # better nix-prefetch-xxx
       manix # support nix-darwin

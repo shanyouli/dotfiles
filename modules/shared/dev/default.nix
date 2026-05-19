@@ -22,7 +22,6 @@ in
       ]);
       default = { };
     };
-    toml.fmt = mkBoolOpt false;
     enWebReport = mkBoolOpt false;
     ai.enable = mkBoolOpt false;
     json.enable = mkBoolOpt true;
@@ -30,16 +29,18 @@ in
   config = mkMerge [
     {
       home.packages = [
-        (mkIf cfg.toml.fmt pkgs.taplo)
         (mkIf cfg.enWebReport pkgs.allure)
-
         (mkIf cfg.json.enable pkgs.vscode-json-languageserver)
       ]
-      ++ lib.optionals cfg.ai.enable [
-        pkgs.unstable.opencode # opencode 出品的工具
-        pkgs.unstable.gemini-cli # google 出品
-        pkgs.unstable.codex
-      ];
+      ++ lib.optionals cfg.ai.enable (
+        with pkgs.unstable;
+        [
+          opencode # opencode 出品的工具
+          gemini-cli # google 出品
+          codex
+          claude-code
+        ]
+      );
     }
     (mkIf (cfg.lang != { }) { modules.dev.manager.default = mkDefault "mise"; })
   ];

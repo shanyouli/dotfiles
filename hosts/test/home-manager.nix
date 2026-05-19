@@ -42,16 +42,19 @@
       python = {
         enable = true;
         versions = [
+          "3.14"
+          "3.13"
           "3.12"
-          "3.10"
-          "3.11"
         ];
-        global = "3.11";
-        venv = "rye";
+        global = "3.12";
+        venv = "uv";
         poetry.enable = true;
-        uv.enable = true;
       };
       ai.enable = true;
+      fmt = {
+        toml.enable = true;
+        iome.enable = true;
+      };
       js = {
         node.enable = true;
         bun.enable = true;

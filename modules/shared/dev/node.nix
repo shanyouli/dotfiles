@@ -34,8 +34,8 @@ in
         pnpm
         typescript-language-server
         pkgs.typescript
-        stylelint
-        js-beautify
+        stylelint # CSS linter
+        js-beautify # format js-beautify
       ];
       home.configFile."npm/config".text = ''
         cache=${npm_config_cache}

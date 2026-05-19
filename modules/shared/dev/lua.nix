@@ -72,14 +72,12 @@ in
         with pkgs;
         [
           cfg.finalPkg
-          stylua # fmt
           lua-language-server # lsp
           selene # a fast modern lua linter. 比 luacheck 更好
         ]
         ++ optionals cfg.fennel.enable [
           fennel-ls
           (mkIf (pkgs ? antifennel) pkgs.lua54Packages.antifennel)
-          fnlfmt
         ];
     };
     my.user.init.setLua = ''

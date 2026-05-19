@@ -154,9 +154,9 @@ in
           recursive = true;
         };
         packages = with pkgs; [
-          ruff
           basedpyright
           pipenv
+          ty
         ];
       };
     }
