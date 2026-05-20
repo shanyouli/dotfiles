@@ -10,30 +10,6 @@ with my;
 let
   cfp = config.modules.download;
   cfg = cfp.video;
-  bbdown = pkgs.writeScriptBin "bbdown" ''
-    #!${pkgs.stdenv.shell}
-    # 配置缓存目录
-    _dir=''${XDG_CACHE_HOME:-$HOME/.cache}/bbdown
-    # 目录如果不存在则创建它
-    mkdir -p $_dir
-    # 获取hash 值
-    get_shasum() { shasum $1 | cut -d" " -f1 ; }
-    # 更新执行程序
-    copy_source() {
-      local file1=$_dir/bbdown
-      local file2=${pkgs.bbdown}/lib/BBDown/BBDown
-      local hash2=$(get_shasum $file2)
-      if [[ ! -f "$file1" || "$(get_shasum $file1)" != "$(get_shasum $file2)" ]]; then
-         cp -rf $file2 $file1
-      fi
-    }
-    copy_source
-    which ffmpeg >/dev/null || {
-      echo "ffmpeg is not installed"
-      exit 1
-    }
-    exec -a "$0" "$_dir/bbdown"  "$@"
-  '';
 in
 {
   options.modules.download.video = {
@@ -45,7 +21,6 @@ in
       # pkgs.unstable.yutto # 使用 pipx 安装
       pkgs.unstable.lux
       pkgs.fav
-      bbdown
     ]; # yutto 下载bilibili
     home.configFile."yt-dlp/config".text = ''
       # 下载默认保存目录
