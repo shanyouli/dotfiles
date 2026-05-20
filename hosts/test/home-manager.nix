@@ -53,7 +53,7 @@
       ai.enable = true;
       fmt = {
         toml.enable = true;
-        iome.enable = true;
+        biome.enable = true;
       };
       js = {
         node.enable = true;
