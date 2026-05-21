@@ -48,19 +48,13 @@ in
     (mkIf cfg.pipx.enable (
       let
         cmdp = config.modules.dev.python;
-        use_rye_p = (cmdp.manager == "rye") && cmdp.rye.manager;
         global_python_path =
           if cmdp.enable && (cmdp.global != "") then
             (
-              if use_rye_p then
-                "rye toolchain list --format json"
+              if config.modules.dev.manager.default == "asdf" then
+                "asdf where python ${cmdp.global}"
               else
-                (
-                  if config.modules.dev.manager.default == "asdf" then
-                    "asdf where python ${cmdp.global}"
-                  else
-                    (if config.modules.dev.manager.default == "mise" then "mise where python@${cmdp.global}" else "")
-                )
+                (if config.modules.dev.manager.default == "mise" then "mise where python@${cmdp.global}" else "")
             )
           else
             "";
@@ -68,12 +62,7 @@ in
           pipx() {
             local _is_pipx_default=$PIPX_DEFAULT_PYTHON
             if [[ -z $_is_pipx_default ]]; then
-              ${lib.optionalString use_rye_p ''
-                export PIPX_DEFAULT_PYTHON="$(readlink -f $(${global_python_path} | jq -r '[.[] | select(.name | contains("${cmdp.global}"))].[0].path'))"
-              ''}
-              ${lib.optionalString (!use_rye_p) ''
-                export PIPX_DEFAULT_PYTHON="$(readlink -f $(${global_python_path})/bin/python)"
-              ''}
+              export PIPX_DEFAULT_PYTHON="$(readlink -f $(${global_python_path})/bin/python)"
             fi
             command pipx "$@"
             if [[ -z $_is_pipx_default ]]; then
@@ -89,12 +78,7 @@ in
           nushell.rcInit = lib.optionalString (global_python_path != "") ''
             export def --wrapped pipx [...rest: string] {
                 if ($env | get -o PIPX_DEFAULT_PYTHON | is-empty) {
-                    ${lib.optionalString use_rye_p ''
-                      let pipx_default_python = (${global_python_path} | from json | where ($it.name | str contains "${cmdp.global}") | get path | first | readlink -f $in)
-                    ''}
-                    ${lib.optionalString (!use_rye_p) ''
-                      let pipx_default_python = ([( ${global_python_path} ), "bin", "python" ] | path join | readlink -f $in)
-                    ''}
+                    let pipx_default_python = ([( ${global_python_path} ), "bin", "python" ] | path join | readlink -f $in)
                     with-env {PIPX_DEFAULT_PYTHON: $pipx_default_python } {
                         ^pipx ...$rest
                     }

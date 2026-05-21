@@ -11,14 +11,12 @@ let
   cfm = config.modules;
   cfg = cfm.dev.python;
   managers = [
-    "rye"
     "uv"
     "mise"
     "asdf"
   ];
   venvs = [
     "poetry"
-    "rye"
     "uv"
   ];
 in
@@ -27,7 +25,6 @@ in
     enable = mkEnableOption "Whether to python";
     # 如果使用 asdf 管理版本。versions 的值需要符合：`asdf list all python` 的结果
     # 如果使用 mise 管理版本的值需要符合 `mise ls-remote python` 的结果
-    # 如果使用 rye 管理版本，versions 需要符合 `rye toolchain list --include-downloadable` 的结果
     # 如果使用 uv 管理版本， versions 需要符合 'uv python list --all-versions' 的结果。
     versions = mkOpt' (oneOf [
       str
@@ -79,10 +76,6 @@ in
       modules = {
         dev.python = {
           poetry.enable = mkDefault (cfg.venv == "poetry");
-          rye = {
-            enable = mkDefault (cfg.venv == "rye");
-            manager = mkDefault (cfg.manager == "rye");
-          };
           uv = {
             enable = mkDefault (cfg.venv == "uv");
             manager = mkDefault (cfg.manager == "uv");

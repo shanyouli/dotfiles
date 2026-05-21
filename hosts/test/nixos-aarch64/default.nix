@@ -97,8 +97,6 @@
       #   enable = true;
       #   versions = ["3.12" "3.10" "3.11"];
       #   global = "3.11";
-      #   manager = "rye";
-      #   rye.manager = true;
       #   poetry.enable = true;
       # };
       # node.enable = true;

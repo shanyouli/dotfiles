@@ -164,7 +164,6 @@
           "3.11"
         ];
         global = "3.11";
-        venv = "rye";
       };
 
       nix.enable = true;
