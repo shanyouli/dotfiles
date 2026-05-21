@@ -196,6 +196,7 @@ yabai -m rule --add app='^(Arc|Google Chrome|Firefox|Zen Browser|LibreWolf)$' sp
 yabai -m rule --add app='^(Ghostty|kitty|Iterm2|Wrap)' title='!FloatTerm' space=^edit
 yabai -m rule --add app='^(AppClear|Activity Monitor|Telegram|Petrichor|bilibili-video-downloader)$' space=^other
 yabai -m rule --add app='^(Zed|Visual Studio Code|IntelliJ IDEA|PyCharm|ChatGPT|Codex)$' space=^edit
+yabai -m rule --add app='^([eE]macs)$' title='^EmacsClient.*$' manage=off grid=4:4:1:0:2:2
 
 if ("/Applications/Hammerspoon.app" | path exists) {
   if (ps | where name == "Hammerspoon" | is-empty) {
