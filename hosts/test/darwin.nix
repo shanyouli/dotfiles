@@ -177,10 +177,7 @@
       };
       lua.enable = true;
       cc.enable = true;
-      js = {
-        node.enable = true;
-        bun.enable = true;
-      };
+      js.enable = true;
       fmt = {
         toml.enable = true;
       };

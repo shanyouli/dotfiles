@@ -28,6 +28,7 @@ rec {
       type = types.bool;
       example = true;
     };
+  mkBoolOpt' = default: description: mkOpt' types.bool default description;
   mkStrOpt =
     default:
     mkOption {

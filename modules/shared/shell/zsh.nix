@@ -74,19 +74,17 @@ in
           ${concatStringsSep "\n" (
             mapAttrsToList (
               n: v:
-              (
-                if (strings.toUpper "${n}") == "PATH" then
-                  "export path=(${concatMapStringsSep " " builtins.toString v} $path)"
+              optionalString (n != "PATH") (
+                if builtins.isList v then
+                  "export ${n}=${concatMapStringsSep ":" builtins.toString v}\${n:+:}\${n}"
                 else
-                  (
-                    if builtins.isList v then
-                      "export ${n}=${concatMapStringsSep ":" builtins.toString v}\${n:+:}\${n}"
-                    else
-                      ''export ${n}="${v}"''
-                  )
+                  ''export ${n}="${v}"''
               )
             ) cfp.env
           )}
+          ${optionalString (cfp.env ? "PATH") ''
+            export path=(${concatMapStringsSep " " builtins.toString cfp.env.PATH} $path)
+          ''}
           ${optionalString (cfg.envFiles != [ ]) ''
             for i in "$ZDOTDIR/env/"*.env.zsh; do
               source $i

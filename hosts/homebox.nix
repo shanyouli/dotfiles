@@ -206,8 +206,9 @@
       lua.enable = true;
       cc.enable = true;
       js = {
-        node.enable = true;
-        bun.enable = true;
+        enable = true;
+        node.env = "bun";
+        manager.name = "aube";
       };
       fmt = {
         toml.enable = true;

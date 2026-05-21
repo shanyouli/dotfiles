@@ -55,10 +55,7 @@
         toml.enable = true;
         biome.enable = true;
       };
-      js = {
-        node.enable = true;
-        bun.enable = true;
-      };
+      js.enable = true;
       zig.enable = true;
     };
 
