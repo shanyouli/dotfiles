@@ -23,6 +23,6 @@ in
       pkgs.payload-dumper-go
       pkgs.scrcpy
     ];
-    modules.shell.env.ANDROID_USER_HOME = "${config.home.fakeDir}/.android";
+    modules.shell.env.ANDROID_USER_HOME = "\${XDG_FAKE_HOME:-~/.local/user}/.android";
   };
 }

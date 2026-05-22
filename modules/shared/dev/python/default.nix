@@ -131,9 +131,9 @@ in
         };
         shell = {
           env = {
-            PYLINTHOME = "${config.home.dataDir}/pylint";
-            PYLINTRC = "${config.home.configDir}/pylint/pylintrc";
-            IPYTHONDIR = "${config.home.configDir}/ipython";
+            PYLINTHOME = "$XDG_DATA_HOME/pylint";
+            PYLINTRC = "$XDG_CONFIG_HOME/pylint/pylintrc";
+            IPYTHONDIR = "$XDG_CONFIG_HOME/ipython";
           };
           aliases = {
             ipy = "ipython --no-banner";

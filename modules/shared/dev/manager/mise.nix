@@ -83,7 +83,7 @@ in
           ${cfg.extInit}
         '';
       shell = {
-        env.MISE_CACHE_DIR = "${config.home.cacheDir}/mise";
+        env.MISE_CACHE_DIR = "$XDG_CACHE_HOME/mise";
         zsh.rcInit = "_cache -v ${cfg.package.version} mise activate zsh";
         direnv.stdlib.mise = optionalNull cfm.shell.direnv.enable pkgs.writeScript "use_mise" ''
           #!/usr/bin/env sh

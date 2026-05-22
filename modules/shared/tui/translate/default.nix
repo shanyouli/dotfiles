@@ -29,9 +29,9 @@ in
       # 使用 sdcv 本地翻译工具
       home.packages = with pkgs; [ sdcv ] ++ optionals stdenvNoCC.isx86_64 [ libretranslate ];
       modules.shell.env = {
-        STARDICT_DATA_DIR = "${config.home.dataDir}/stardict";
+        STARDICT_DATA_DIR = "$XDG_DATA_HOME/stardict";
         SDCV_HISTSIZE = "100000";
-        SDCV_HISTFILE = "${config.home.cacheDir}/sdcv_history";
+        SDCV_HISTFILE = "$XDG_CACHE_HOM/sdcv_history";
       };
     })
     (mkIf cfg.remote.enable {

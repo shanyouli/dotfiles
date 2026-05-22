@@ -23,7 +23,7 @@ in
   config = mkIf cfg.enable {
     modules.shell = {
       env = {
-        RUSTUP_HOME = rustup_dir;
+        RUSTUP_HOME = "$XDG_DATA_HOME/rustup";
         CARGO_HOME =
           let
             cargoConfig = ''
