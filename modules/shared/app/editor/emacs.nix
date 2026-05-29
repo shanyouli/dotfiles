@@ -187,7 +187,7 @@ in
           in
           ''
             (setq liberime-shared-data-dir "${rime-data-dir}")
-            (setq liberime-user-data-dir "${my.homedir}/${cfg.rime.dir}")
+            (setq liberime-user-data-dir "${config.home.homeDirectory}/${cfg.rime.dir}")
           ''
         )
         + ''
@@ -195,7 +195,7 @@ in
         '';
       };
       my.user.extra = optionalString cfg.rime.enable ''
-        log debug "If you updated the emacs-rime input method, delete ${my.homedir}/${cfg.rime.dir}/build."
+        log debug "If you updated the emacs-rime input method, delete ${config.home.homeDirectory}/${cfg.rime.dir}/build."
       '';
       modules = {
         python.extraPkgs =

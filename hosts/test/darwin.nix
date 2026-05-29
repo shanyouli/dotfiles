@@ -63,7 +63,7 @@
       default = "sing-box";
       sing-box.package = pkgs.sing-box;
       service.enable = true;
-      configFile = "${my.homedir}/Nutstore Files/我的坚果云/clash/singbox.json";
+      configFile = "${my.paths.homedir}/Nutstore Files/我的坚果云/clash/singbox.json";
     };
 
     alist = {

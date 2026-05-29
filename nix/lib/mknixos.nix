@@ -32,7 +32,7 @@ in
               import mypkgs (
                 lib.recursiveUpdate {
                   inherit system;
-                  overlays = [ self.overlay.default ] ++ overlays;
+                  overlays = [ self.overlay ] ++ overlays;
                   config.allowUnfree = true;
                 } { inherit config; }
               )

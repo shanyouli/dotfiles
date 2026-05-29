@@ -71,7 +71,7 @@ in
           $nginx_dir | path join "conf.d" "default.conf" | ln -sf "${defaultConfig}" $in
 
           let nginx_conf = $nginx_dir | path join "conf" "nginx.conf"
-          let default_nginx_conf = "${my.dotfiles.config}" | path join "nginx" "nginx.conf"
+          let default_nginx_conf = "${my.paths.dotfiles.config}" | path join "nginx" "nginx.conf"
           if ($default_nginx_conf | path exists) {
             log debug $"Link nginx.conf"
             if (($nginx_conf | path exists) and (not (($nginx_conf | path type) == "symlink"))) {

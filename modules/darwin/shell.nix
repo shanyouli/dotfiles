@@ -32,7 +32,7 @@ let
       echo "export __BASE_NIX_DARWIN_PATH;" >> $out
     ''
   );
-  fix_path = writeNuScript' {
+  fix_path = my.nu.writeNuScript' {
     name = "fix_PATH";
     text = ''
       def main [s1: string, s2: string ]: nothing -> string {
@@ -65,7 +65,7 @@ in
             fn =
               s:
               let
-                lastsuffix = removePrefix my.homedir s;
+                lastsuffix = removePrefix config.home.homeDirectory s;
                 prefix = if s == lastsuffix then s else "$HOME${lastsuffix}";
               in
               "${prefix}/nix/profile";

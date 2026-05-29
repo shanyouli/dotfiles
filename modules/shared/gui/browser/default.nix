@@ -134,7 +134,7 @@ in
       '';
       my.user.init.init-surfingkeys = ''
         let nginx_work_dir = "${config.modules.nginx.workDir}" | path join "www"
-        let sufingkeys_js = "${my.dotfiles.config}" | path join "firefox/surfingkeys.js"
+        let sufingkeys_js = "${my.paths.dotfiles.config}" | path join "firefox/surfingkeys.js"
         mkdir $nginx_work_dir
         if ( $nginx_work_dir | path join "surfingkeys.js" | path exists) {
           mv ($nginx_work_dir | path join "surfingkeys.js") ($nginx_work_dir | path join "surfingkeys.js.backup")

@@ -11,34 +11,43 @@ let
     ;
 
   # mapModules gets special treatment because it's needed early!
-  inherit (attrs) attrsToList mergeAttrs';
+  inherit (attrs) mergeAttrs';
   inherit (modules) mapModules;
   attrs = import ./attrs.nix { inherit lib; };
   modules = import ./modules.nix { inherit lib attrs; };
 
-  /*
-    Given an attrset of nix module partials, returns it as a sorted list of
-    NameValuePairs according to its callPackage-style dependencies from the
-    rest of the list.
-
-    sortLibsByDeps :: AttrSet -> [ AttrSet ... ]
-
-    Example:
-      sortLibsByDeps { libA = { libB, ... }: {}; libB = { ... }: { [...] }; }
-      => [ { libB = {...}: [...]; } { libA = { libB, ...}: [...]; } ]
-  */
-  sortLibsByDeps = modules: modules;
-
-  # TODO
-  # let
-  #   dependsOn = a: b:
-  #     elem a (attrByPath b [] deps);
-  #   maybeSortedAttrs = toposort dependsOn (diskoLib.deviceList devices);
-  # in
-  #   if (hasAttr "cycle" maybeSortedAttrs) then
-  #     abort "detected a cycle in your disk setup: ${maybeSortedAttrs.cycle}"
-  #   else
-  #     maybeSortedAttrs.result;
+  # 显式维护加载顺序，避免依赖 attrset 字典序。新增 lib 模块时，如果需要
+  # 使用其他模块导出的参数，应放在依赖之后。
+  libModules = [
+    {
+      name = "attrs";
+      value = import ./attrs.nix;
+    }
+    {
+      name = "modules";
+      value = import ./modules.nix;
+    }
+    {
+      name = "options";
+      value = import ./options.nix;
+    }
+    {
+      name = "utils";
+      value = import ./utils.nix;
+    }
+    {
+      name = "mkdarwin";
+      value = import ./mkdarwin.nix;
+    }
+    {
+      name = "mkhome";
+      value = import ./mkhome.nix;
+    }
+    {
+      name = "mknixos";
+      value = import ./mknixos.nix;
+    }
+  ];
 
   # I embrace the callPackage pattern for lib/*.nix modules. I.e. Their
   # arguments are dynamically passed as they are loaded, drawn from a running
@@ -46,30 +55,14 @@ let
   # module and the whole set altogether).
   libConcat = a: b: a // { ${b.name} = b.value (intersectAttrs (functionArgs b.value) a); };
 in
-# FIXME: Lexicographical loading can cause race conditions. Sort them?
-# libModules = sortLibsByDeps (mapModules ./. import);
-# libs = foldl libConcat { inherit lib inputs; self = libs; } (attrsToList libModules);
-# my = makeExtensible (self:
-#   with self;
-#     mapModules ./.
-#     (file: import file {inherit self lib inputs attrs;}));
-# libs = lib.extend (_self: _super: {
-#   my = my.extend (_sself: ssuper: foldr (a: b: a // b) {} (attrValues ssuper));
-#   inherit (inputs.home-manager.lib) hm;
-# });
-# libs = mapModules ./. (file: import file {inherit lib inputs attrs;});
 {
-  # perSystem._module.args.lib = mys;
-
-  # flake.my = libs // (mergeAttrs' (attrValues libs));
   flake = {
     lib =
       let
-        libModules = sortLibsByDeps (mapModules ./. import);
         libs = foldl libConcat {
           inherit lib inputs;
           self = libs;
-        } (attrsToList libModules);
+        } libModules;
       in
       libs // (mergeAttrs' (attrValues libs));
     my =

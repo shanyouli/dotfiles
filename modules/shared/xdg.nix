@@ -13,7 +13,7 @@ with my;
   # ~/.nix-channels -> $XDG_DATA_HOME/nix/channels
   nix.settings.use-xdg-base-directories = true;
   env = {
-    DOTFILES = my.dotfiles.dir;
+    DOTFILES = my.paths.dotfiles.dir;
     NIXPKGS_ALLOW_UNFREE = "1";
 
     # Conform more programs to XDG conventions. The rest are handled by their

@@ -55,7 +55,7 @@ in
         (mkIf cfg.enGui qtpass)
       ];
       env.PASSWORD_STORE_DIR = "${config.home.dataDir}/password-store";
-      modules.shell.nushell.cmpFiles = [ "${my.dotfiles.config}/gopass/gopass-completions.nu" ];
+      modules.shell.nushell.cmpFiles = [ "${my.paths.dotfiles.config}/gopass/gopass-completions.nu" ];
     }
     (mkIf (cfg.browsers != [ ]) {
       home.file =
@@ -107,9 +107,9 @@ in
             else if x == "arc" then
               [
                 {
-                  "${my.homedir}/Library/Application Support/Arc/User Data/policies/managed/${jsonFile}".source =
+                  "${config.home.homeDirectory}/Library/Application Support/Arc/User Data/policies/managed/${jsonFile}".source =
                     "${pkgs.browserpass}/lib/browserpass/policies/chromium/${jsonFile}";
-                  "${my.homedir}/Library/Application Support/Arc/User Data/NativeMessagingHosts/$(jsonFile)".source =
+                  "${config.home.homeDirectory}/Library/Application Support/Arc/User Data/NativeMessagingHosts/$(jsonFile)".source =
                     "${pkgs.browserpass}/lib/browserpass/hosts/chromiu/${jsonFile}";
                 }
               ]

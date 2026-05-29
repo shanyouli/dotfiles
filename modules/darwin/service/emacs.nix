@@ -20,7 +20,7 @@ in
     launchd.user.agents.emacs = {
       serviceConfig = {
         RunAtLoad = cft.service.startup;
-        StandardOutPath = "${my.homedir}/Library/Logs/emacs-daemon.log";
+        StandardOutPath = "${config.home.homeDirectory}/Library/Logs/emacs-daemon.log";
         KeepAlive = cft.service.keep;
         EnvironmentVariables = {
           PATH = "${emacsPkg}/bin:${config.modules.service.path}";

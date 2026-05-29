@@ -29,7 +29,7 @@ in
     {
 
       home.configFile."karabiner/assets/complex_modifications" = {
-        source = "${my.dotfiles.config}/karabiner";
+        source = "${my.paths.dotfiles.config}/karabiner";
         recursive = true;
       };
     }

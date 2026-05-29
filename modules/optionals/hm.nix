@@ -16,8 +16,8 @@ with my;
       home = {
         stateVersion = "24.05";
         enableNixpkgsReleaseCheck = false; # ignore nixpkgs and state
-        username = my.user;
-        homeDirectory = my.homedir;
+        username = my.vars.user;
+        homeDirectory = my.paths.homedir;
         sessionVariables = {
           XDG_BIN_HOME = config.home.binDir;
           XDG_FAKE_HOME = config.home.fakeDir;
@@ -105,7 +105,7 @@ with my;
           ++ (builtins.filter (
             x: !((hasPrefix "nixpkgs=" x) || (hasPrefix "nixpkgs-unstable=" x) || (hasPrefix "home-manager=" x))
           ) nixPathInputs)
-          ++ [ "dotfiles=${my.dotfiles.dir}" ];
+          ++ [ "dotfiles=${my.paths.dotfiles.dir}" ];
         };
     }
   ];

@@ -8,7 +8,7 @@
 with lib;
 with my;
 let
-  inherit (my) homedir;
+  inherit (my.paths) homedir;
   makeNuScript =
     name: x:
     let
@@ -100,7 +100,7 @@ let
       nushell =
         if config.modules.shell.nushell.enable then config.modules.shell.nushell.package else pkgs.nushell;
     in
-    writeNuScript' { inherit name text nushell; };
+    my.nu.writeNuScript' { inherit name text nushell; };
 in
 {
   options = with types; {
@@ -185,7 +185,7 @@ in
         let
           users = [
             "root"
-            my.user
+            my.vars.user
             "@admin"
             "@wheel"
           ];

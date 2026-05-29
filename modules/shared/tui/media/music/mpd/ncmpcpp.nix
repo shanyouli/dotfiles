@@ -21,7 +21,7 @@ in
     home.configFile."ncmpcpp/config".text =
       let
         ncmpcpp_dir = "${config.home.cacheDir}/ncmpcpp";
-        lyrics_dir = "${my.homedir}/Music/LyricsX";
+        lyrics_dir = "${config.home.homeDirectory}/Music/LyricsX";
       in
       ''
         mpd_music_dir = ${config.modules.media.music.directory}
@@ -29,7 +29,7 @@ in
         ncmpcpp_directory = ${ncmpcpp_dir}
         mpd_port = "${toString cfp.port}"
 
-        ${builtins.readFile "${my.dotfiles.config}/ncmpcpp/config"}
+        ${builtins.readFile "${my.paths.dotfiles.config}/ncmpcpp/config"}
 
         ${cfg.config}
       '';

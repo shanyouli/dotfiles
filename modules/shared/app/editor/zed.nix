@@ -34,7 +34,7 @@ in
       # extraPackages = [];
     };
     my.user.init.SyncZed = ''
-      ${rsyncbin} -avz --chmod=D2755,F744 ${my.dotfiles.config}/zed/ "${config.home.configDir}/zed/"
+      ${rsyncbin} -avz --chmod=D2755,F744 ${my.paths.dotfiles.config}/zed/ "${config.home.configDir}/zed/"
     '';
   };
 }

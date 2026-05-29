@@ -24,7 +24,7 @@ in
       apply = s: if builtins.elem s music_list then s else "";
       description = "default music manager";
     };
-    directory = mkOpt' types.path "${my.homedir}/Music" "Music Directory";
+    directory = mkOpt' types.path "${config.home.homeDirectory}/Music" "Music Directory";
   };
   config = mkIf (cfg.default != "") {
     modules.media.music = {

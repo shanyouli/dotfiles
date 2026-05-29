@@ -25,7 +25,7 @@ in
 
     home.configFile = {
       "tmux" = {
-        source = "${my.dotfiles.config}/tmux";
+        source = "${my.paths.dotfiles.config}/tmux";
         recursive = true;
       };
       "tmux/extraInit" = {

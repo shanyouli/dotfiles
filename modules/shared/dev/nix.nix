@@ -24,7 +24,7 @@ in
       manix # support nix-darwin
     ];
     home.configFile."nix-init/config.toml".text = ''
-      maintainers = [ "${my.user}" ]
+      maintainers = [ "${my.vars.user}" ]
       nixpkgs = "<nixpkgs>"
     '';
     modules.app.editor.emacs.doom.confInit = ''

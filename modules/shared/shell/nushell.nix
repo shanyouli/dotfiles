@@ -30,9 +30,9 @@ let
             if hasPrefix "/" vl then
               x
             else if hasInfix "/" vl then
-              "${my.dotfiles.config}/${vl}"
+              "${my.paths.dotfiles.config}/${vl}"
             else
-              "${my.dotfiles.config}/${vl}/${vl}.script.nu";
+              "${my.paths.dotfiles.config}/${vl}/${vl}.script.nu";
         }) l
       )
     );
@@ -156,7 +156,7 @@ in
         appnameFn = s: lib.head (lib.splitString " " s);
       in
       ''
-        ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${my.dotfiles.config}/nushell/ ${config.home.configDir}/nushell/
+        ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${my.paths.dotfiles.config}/nushell/ ${config.home.configDir}/nushell/
         let nu_sources = "${config.home.configDir}" | path join "nushell" "autoload"
         if (not ($nu_sources | path exists)) {
           ^mkdir -p $nu_sources -m 755

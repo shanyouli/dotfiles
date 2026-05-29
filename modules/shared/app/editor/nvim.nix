@@ -115,7 +115,7 @@ in
     {
       env.MANPAGER = "nvim +Man!";
       my.user.init.SyncNvim = ''
-        ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${my.dotfiles.config}/nvim/ ${config.home.configDir}/nvim/
+        ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${my.paths.dotfiles.config}/nvim/ ${config.home.configDir}/nvim/
       '';
       home = {
         configFile."nvim/nix.lua".text = ''

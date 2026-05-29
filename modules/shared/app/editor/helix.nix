@@ -94,12 +94,14 @@ in
       configFile =
         let
           settings = {
-            "helix/config.toml" = mkIf (cfg.settings != { }) { source = toTomlFile cfg.settings; };
-            "helix/languages.toml" = mkIf (cfg.languages != { }) { source = toTomlFile cfg.languages; };
+            "helix/config.toml" = mkIf (cfg.settings != { }) { source = my.pkg.writeTomlFile cfg.settings; };
+            "helix/languages.toml" = mkIf (cfg.languages != { }) {
+              source = my.pkg.writeTomlFile cfg.languages;
+            };
             "helix/ignore" = mkIf (cfg.ignores != [ ]) { text = concatStringsSep "\n" cfg.ignores + "\n"; };
           };
           themes = mapAttrs' (
-            n: v: nameValuePair "helix/themes/${n}.toml" { source = toTomlFile v; }
+            n: v: nameValuePair "helix/themes/${n}.toml" { source = my.pkg.writeTomlFile v; }
           ) cfg.themes;
         in
         settings // themes;

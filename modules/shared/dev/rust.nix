@@ -10,7 +10,7 @@ with my;
 let
   cfm = config.modules;
   cfg = cfm.dev.rust;
-  homeDir = my.homedir;
+  homeDir = config.home.homeDirectory;
   rustup_dir = "${homeDir}/.local/share/rustup";
   package = pkgs.rustup;
 in

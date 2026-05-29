@@ -75,10 +75,10 @@ in
       lnav # tailspin # 支持高亮的语法查看工具
 
       fzf
-      my-nix-script
       pkgs.python3.pkgs.sd
       # nvd
       dix
+      age
     ];
     env.PATH = [ "$XDG_BIN_HOME" ];
 

@@ -8,7 +8,7 @@
       ...
     }:
     let
-      my = lib.makeExtensible (
+      myModules = lib.makeExtensible (
         _:
         self.my.mapModules ./. (
           f:
@@ -22,7 +22,16 @@
           }
         )
       );
-      mylib = self.my // (my.extend (_final: prev: lib.foldr (a: b: a // b) { } (lib.attrValues prev)));
+      myFlat = myModules.extend (_final: prev: lib.foldr (a: b: a // b) { } (lib.attrValues prev));
+      mylib =
+        self.my
+        // myFlat
+        // {
+          vars = myFlat.vars or { };
+          paths = myFlat.paths or { };
+          pkg = myFlat.pkg or { };
+          nu = myFlat.nu or { };
+        };
     in
     {
       _module.args.my = mylib;

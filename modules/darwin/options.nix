@@ -33,7 +33,7 @@ with my;
             withNotify = true;
           })
         ];
-      time.timeZone = mkDefault my.timezone;
+      time.timeZone = mkDefault my.vars.timezone;
       modules.shell.nushell.rcInit = ''
         # 修复macos上nushell自带的open和外部命令open的冲突
         alias nuopen = open
@@ -78,7 +78,7 @@ with my;
               enable = !config.macos.relaunchApp.enable;
               text = ''
                 let mac_loginFile = [
-                  "${my.homedir}",
+                  "${config.home.homeDirectory}",
                   "Library",
                   "Preferences"
                   "ByHost",
@@ -109,12 +109,12 @@ with my;
       modules.service.env.PASSWORD_STORE_DIR = config.env.PASSWORD_STORE_DIR;
     })
     (mkIf config.modules.proxy.sing-box.enable {
-      environment.etc."sudoers.d/singbox".source = sudoNotPass (
+      environment.etc."sudoers.d/singbox".source = my.pkg.sudoNotPass (
         lib.getExe config.modules.proxy.sing-box.package
       );
     })
     (mkIf config.modules.proxy.sing-box.enable {
-      environment.etc."sudoers.d/clash".source = sudoNotPass (
+      environment.etc."sudoers.d/clash".source = my.pkg.sudoNotPass (
         lib.getExe config.modules.proxy.clash.package
       );
     })

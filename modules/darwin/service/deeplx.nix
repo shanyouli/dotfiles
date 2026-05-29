@@ -11,7 +11,7 @@ let
   cfm = config.modules;
   cfg = cfm.service.deeplx;
   cft = cfm.translate.deeplx;
-  log_file = "${my.homedir}/Library/Logs/deeplx.log";
+  log_file = "${config.home.homeDirectory}/Library/Logs/deeplx.log";
   inherit (pkgs) deeplx;
 in
 {

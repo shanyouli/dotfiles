@@ -25,7 +25,7 @@ let
       "lyeli"
     else
       envUser;
-  homedir = if self.my.isDarwin system then "/Users/${name}" else "/home/${name}";
+  homeDir = if self.my.isDarwin system then "/Users/${name}" else "/home/${name}";
 
   dotDefault =
     let
@@ -36,25 +36,38 @@ let
         "/etc/dotfiles"
         "/mnt/etc/nixos"
         "/etc/nixos"
-        "${homedir}/.config/dotfiles"
-        "${homedir}/.dotfiles"
-        "${homedir}/.nixpkgs"
+        "${homeDir}/.config/dotfiles"
+        "${homeDir}/.dotfiles"
+        "${homeDir}/.nixpkgs"
       ];
     in
     removePrefix "/mnt" (findFirst pathExists defaultPath dotfilesList);
 in
 rec {
-  inherit homedir;
-  user = name;
-  fullName = "Shanyou Li";
-  useremail = "shanyouli6@gmail.com";
-  website = "https://shanyouli.github.io";
-  timezone = "Asia/Shanghai";
-
-  dotfiles = {
-    dir = dotDefault;
-    config = "${dotDefault}/config";
-    bin = "${dotDefault}/bin";
-    modules = "${dotDefault}/modules";
+  vars = {
+    user = name;
+    fullName = "Shanyou Li";
+    useremail = "shanyouli6@gmail.com";
+    website = "https://shanyouli.github.io";
+    timezone = "Asia/Shanghai";
   };
+
+  paths = {
+    homedir = homeDir;
+    dotfiles = {
+      dir = dotDefault;
+      config = "${dotDefault}/config";
+      bin = "${dotDefault}/bin";
+      modules = "${dotDefault}/modules";
+    };
+  };
+
+  inherit (vars)
+    user
+    fullName
+    useremail
+    website
+    timezone
+    ;
+  inherit (paths) homedir dotfiles;
 }

@@ -29,7 +29,7 @@ in
   config = mkIf cfg.enable (mkMerge [
     {
       modules.nh = {
-        flake = mkDefault my.dotfiles.dir;
+        flake = mkDefault my.paths.dotfiles.dir;
       };
       env = mkMerge [
         (mkIf config.home.useos { NH_OS_FLAKE = cfg.flake; })

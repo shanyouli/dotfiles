@@ -38,6 +38,7 @@ in
           opencode # opencode 出品的工具
           gemini-cli # google 出品
           codex
+          codex-acp
           pi-coding-agent # pi 极简单的 agent 工具，类似 opencode
           claude-code
           pkgs.jcode

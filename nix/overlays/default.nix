@@ -6,7 +6,7 @@
 
     default = _final: prev: rec {
       unstable = import inputs.nixpkgs rec {
-        inherit (prev) system;
+        inherit (prev.stdenv.hostPlatform) system;
         config.allowUnfree = true;
         overlays = [ ];
       };

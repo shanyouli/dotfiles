@@ -74,7 +74,7 @@
         enable = true;
         startup = false;
       };
-      configFile = "${my.homedir}/Nutstore Files/我的坚果云/代理相关/singbox.json";
+      configFile = "${my.paths.homedir}/Nutstore Files/我的坚果云/代理相关/singbox.json";
     };
 
     alist = {

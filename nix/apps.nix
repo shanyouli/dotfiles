@@ -41,7 +41,7 @@
             ])
           ) allInputs;
         in
-        my.writeNuScriptBin "update-flake" ''
+        my.nu.writeNuScriptBin "update-flake" ''
           use std log
           log info $"The execution file path is ($env.FILE_PWD)/update-flake"
           # nix flake update inputs
@@ -60,7 +60,7 @@
             }
           }
         '';
-      apps.buildci.program = my.writeNuScriptBin "buildCI" ''
+      apps.buildci.program = my.nu.writeNuScriptBin "buildCI" ''
         use std log
         log info $"The script file path is ($env.CURRENT_FILE)"
         let uname_info = uname

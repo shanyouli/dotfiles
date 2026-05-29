@@ -26,13 +26,13 @@ in
           let
             isUpPkgs = !(builtins.isNull nixpkgs);
             mypkgs =
-              if isUpPkgs then nixpkgs else (if pkgs.stdaenvNoCC.isDarwin then darwin-stable else nixos-stable);
+              if isUpPkgs then nixpkgs else (if pkgs.stdenvNoCC.isDarwin then darwin-stable else nixos-stable);
           in
           if (isUpPkgs || config != { }) then
             import mypkgs (
               lib.recursiveUpdate {
                 inherit system;
-                overlays = [ self.overlay.default ] ++ overlays;
+                overlays = [ self.overlay ] ++ overlays;
                 config.allowUnfree = true;
               } { inherit config; }
             )

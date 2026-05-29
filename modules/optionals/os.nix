@@ -10,8 +10,8 @@
 with lib;
 with my;
 let
-  name = my.user;
-  inherit (my) homedir;
+  name = my.vars.user;
+  inherit (my.paths) homedir;
 in
 {
   imports = [ ./common.nix ];
@@ -19,9 +19,12 @@ in
     # user = mkOpt attrs {};
     user = mkOption { type = options.users.users.type.nestedTypes.elemType; };
     home = {
+      homeDirectory = mkOpt' path homedir "Primary home directory";
       file = mkOpt' attrs { } "Files to place directly in $HOME";
       packages = mkOpt' (listOf package) [ ] "home-manager packages alias";
-      profileBinDir = mkOpt' path "${homedir}/.nix-profile/bin" "home-manager profile-directory bin";
+      profileBinDir =
+        mkOpt' path "${config.home.homeDirectory}/.nix-profile/bin"
+          "home-manager profile-directory bin";
       activation = mkOpt' attrs { } "home-manager activation script";
 
       profileDirectory = mkOpt' path "" "";
@@ -34,7 +37,7 @@ in
         {
           inherit name;
           description = "The primary user account";
-          home = homedir;
+          home = config.home.homeDirectory;
           uid = mkDefault 1000;
         }
         (mkIf pkgs.stdenvNoCC.isLinux {
@@ -206,7 +209,7 @@ in
           ++ (builtins.filter (
             x: !((hasPrefix "nixpkgs=" x) || (hasPrefix "nixpkgs-unstable=" x) || (hasPrefix "home-manager=" x))
           ) nixPathInputs)
-          ++ [ "dotfiles=${my.dotfiles.dir}" ];
+          ++ [ "dotfiles=${my.paths.dotfiles.dir}" ];
         };
 
       user.shell =

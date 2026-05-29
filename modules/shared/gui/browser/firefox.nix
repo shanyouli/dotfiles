@@ -133,7 +133,7 @@ in
           };
           "${profilePath}/user.js".text = ''
             ${lib.optionalString cfg.flex.enable (builtins.readFile "${pkgs.flexfox}/user.js")}
-            ${builtins.readFile "${my.dotfiles.config}/firefox/user.js"}
+            ${builtins.readFile "${my.paths.dotfiles.config}/firefox/user.js"}
             ${cfg.extraConfig}
           '';
           "${profilePath}/extensions" =
@@ -174,7 +174,7 @@ in
             let
               name = if pkgs.stdenvNoCC.isDarwin then "userChrome-darwin.css" else "userChrome-linux.css";
             in
-            "${my.dotfiles.config}/firefox/chrome/${name}";
+            "${my.paths.dotfiles.config}/firefox/chrome/${name}";
         })
         {
           "${profilePath}/chrome/utils" = {

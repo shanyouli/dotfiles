@@ -1,3 +1,15 @@
-* Variables
+* my
 
-进行 nix 配置时的公共变量。
+~nix/my~ 提供带 ~system~ / ~pkgs~ 上下文的辅助接口，主要给模块层通过 ~my~ 使用。
+
+** 命名空间
+
+- ~my.vars~: 用户、邮箱、时区、站点等稳定变量。
+- ~my.paths~: ~homedir~、~dotfiles.dir~、~dotfiles.config~ 等路径。
+- ~my.pkg~: 依赖 ~pkgs~ 的 helper，例如 ~mkHomePkg~、~writeJsonFile~、~writeTomlFile~、~sudoNotPass~。
+- ~my.nu~: nushell 脚本生成 helper，例如 ~writeNuScriptBin~。
+
+** 兼容策略
+
+当前仍保留扁平导出，例如 ~my.user~、~my.homedir~、~my.dotfiles~、~my.writeNuScriptBin~。
+新代码优先使用命名空间形式；旧调用逐步迁移，不一次性重写全仓库。

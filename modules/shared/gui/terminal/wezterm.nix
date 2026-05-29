@@ -17,7 +17,7 @@ in
   config = mkIf cfg.enable {
     home.packages = [ pkgs.wezterm ];
     home.configFile."wezterm" = {
-      source = "${my.dotfiles.config}/wezterm";
+      source = "${my.paths.dotfiles.config}/wezterm";
       recursive = true;
     };
   };

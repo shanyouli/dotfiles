@@ -11,7 +11,7 @@ let
   cfp = config.modules.shell;
   cfg = cfp.zsh;
   getLastFunction = str: last (splitString "/" str);
-  configDir = my.dotfiles.config;
+  configDir = my.paths.dotfiles.config;
   plFn =
     ext: l:
     (
@@ -171,7 +171,7 @@ in
     home = {
       packages = [ cfg.package ];
       configFile = {
-        "zsh".source = "${my.dotfiles.config}/zsh";
+        "zsh".source = "${my.paths.dotfiles.config}/zsh";
         "zsh".recursive = true;
         "zsh/cache/prev.zshrc".text = cfg.prevInit;
         "zsh/cache/extra.zshrc".text = cfg.rcInit;

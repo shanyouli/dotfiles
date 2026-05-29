@@ -67,7 +67,7 @@ in
     enable = mkEnableOption "Whether to use rime";
     backup = {
       enable = mkEnableOption "Whether to sync rime Data";
-      dir = mkOpt' types.path "${my.homedir}/Code/Sync/rime" "rime 词库同步文件";
+      dir = mkOpt' types.path "${config.home.homeDirectory}/Code/Sync/rime" "rime 词库同步文件";
       id = mkOpt' types.str kernel-name "rime 同步 id";
     };
     method = mkOption {
@@ -112,9 +112,9 @@ in
     (mkIf pkgs.stdenvNoCC.hostPlatform.isDarwin {
       home.file."${userDir}/squirrel.custom.yaml".source =
         if cfg.method == "ice" then
-          "${my.dotfiles.config}/rime/squirrel.custom.yaml"
+          "${my.paths.dotfiles.config}/rime/squirrel.custom.yaml"
         else
-          "${my.dotfiles.config}/rime/squirrel.wanxiang.custom.yaml";
+          "${my.paths.dotfiles.config}/rime/squirrel.wanxiang.custom.yaml";
     })
     (mkIf (cfg.configDir == null && cfg.method == "wanxiang") {
       home.file = {
@@ -195,10 +195,10 @@ in
           }
         }
         log debug $"Init system input method rime backup dir"
-        rime-init-backup ("${my.homedir}" | path join "${userDir}") "${cfg.backup.id}"
+        rime-init-backup ("${config.home.homeDirectory}" | path join "${userDir}") "${cfg.backup.id}"
         ${optionalString useEmacs ''
           log debug $"Init emacs-rime backup dir"
-          rime-init-backup ("${my.homedir}" | path join "${cemacs.rime.dir}") "emacs"
+          rime-init-backup ("${config.home.homeDirectory}" | path join "${cemacs.rime.dir}") "emacs"
         ''}
         log debug $"If the rime input method is updated and the input method does not work, delete the cache file for the pair to build and rebuild it."
       '';

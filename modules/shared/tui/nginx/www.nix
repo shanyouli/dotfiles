@@ -126,7 +126,7 @@ in
     home.file = {
       ".cache/startpage" = {
         recursive = true;
-        source = "${my.dotfiles.config}/startpage";
+        source = "${my.paths.dotfiles.config}/startpage";
       };
       ".cache/startpage/index.html".source = cfghtml;
     };

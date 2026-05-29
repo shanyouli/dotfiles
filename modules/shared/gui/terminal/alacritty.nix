@@ -37,7 +37,7 @@ in
     home.packages = [ cfgPkg ];
     home.configFile = {
       "alacritty" = {
-        source = "${my.dotfiles.config}/alacritty";
+        source = "${my.paths.dotfiles.config}/alacritty";
         recursive = true;
       };
       # TODO: 更多可选配置

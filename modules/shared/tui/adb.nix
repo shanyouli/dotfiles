@@ -10,7 +10,7 @@ with lib;
 with my;
 let
   cfg = config.modules.adb;
-  package = mkHomePkg pkgs.android-tools config.home.fakeDir;
+  package = my.pkg.mkHomePkg pkgs.android-tools config.home.fakeDir;
 in
 {
   options.modules.adb = {

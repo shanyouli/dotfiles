@@ -32,7 +32,7 @@ in
       modules.shell.zsh.prevInit = ''
         MYCLI_HISTFILE="${config.home.cacheDir}/mycli/mycli.history"
       '';
-      home.configFile."mycli/myclirc".source = "${my.dotfiles.config}/mycli/myclirc";
+      home.configFile."mycli/myclirc".source = "${my.paths.dotfiles.config}/mycli/myclirc";
     })
     (mkIf cfg.dblab.enable {
       # NOTE: nixpkgs-25.11 dblab darwin build error

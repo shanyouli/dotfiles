@@ -26,7 +26,7 @@ in
     '';
     home.configFile = {
       "kitty" = {
-        source = "${my.dotfiles.config}/kitty";
+        source = "${my.paths.dotfiles.config}/kitty";
         recursive = true;
       };
       "kitty/add.conf".text = ''

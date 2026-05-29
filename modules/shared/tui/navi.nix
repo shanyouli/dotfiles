@@ -28,6 +28,6 @@ in
     home.programs.bash.initExtra = ''
       eval `navi widget bash`
     '';
-    modules.shell.env.NAVI_PATH = "${my.dotfiles.config}/navi/cheats:${dataDir}";
+    modules.shell.env.NAVI_PATH = "${my.paths.dotfiles.config}/navi/cheats:${dataDir}";
   };
 }

@@ -143,7 +143,7 @@ in
       };
       home = {
         configFile."python" = {
-          source = "${my.dotfiles.config}/python";
+          source = "${my.paths.dotfiles.config}/python";
           recursive = true;
         };
         packages = with pkgs; [

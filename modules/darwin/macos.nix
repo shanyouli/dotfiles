@@ -28,7 +28,7 @@ in
       };
       modules.shell.zsh.pluginFiles = [ "macos" ];
       system = {
-        primaryUser = mkDefault my.user;
+        primaryUser = mkDefault my.vars.user;
         defaults = {
           # ".GlobalPreferences".com.apple.sound.beep.sound = "Funk";
           LaunchServices.LSQuarantine = false;

@@ -30,7 +30,7 @@ in
   config = mkMerge [
     {
       modules.service.path =
-        builtins.replaceStrings [ "$USER" "$HOME" ] [ config.user.name my.homedir ]
+        builtins.replaceStrings [ "$USER" "$HOME" ] [ config.user.name config.home.homeDirectory ]
           config.environment.systemPath;
     }
     (mkIf (cfg.env != [ ]) {
