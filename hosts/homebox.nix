@@ -17,6 +17,7 @@
 
     # tui 工具
     tui = {
+      m.enable = true;
       yazi.enable = true;
       lix.enable = true;
     };

@@ -4,6 +4,7 @@
     tui = {
       yazi.enable = true;
       lix.enable = true;
+      m.enable = true;
     };
     app = {
       qbittorrent = {

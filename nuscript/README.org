@@ -1,0 +1,49 @@
+#+TITLE: m - Nushell Plugin Framework for Homebrew
+#+OPTIONS: toc:1 num:nil
+
+* 简介
+~m~ 是一个基于 [[https://www.nushell.sh/][Nushell]] 的轻量插件框架。
+当前聚焦 ~brew~ 插件：把 Homebrew 常用命令包装为更适合管道处理的结构化输出（table/record）。
+
+* 亮点
+- 统一入口：~m <plugin> <command> [args]~
+- 插件自动导出：执行 ~nu scripts/gen.nu~ 生成 ~generated.nu~
+- 常用 Homebrew 查询增强：~list/outdated/info/deps/services/search~
+
+* 运行要求
+- Nushell (nu)
+- Homebrew (brew)
+
+* 快速开始
+#+begin_src sh
+# 在仓库根目录
+nu scripts/gen.nu
+nu mod.nu brew list
+nu mod.nu brew outdated
+nu mod.nu brew services list
+#+end_src
+
+可选：在 Nushell 中配置别名
+#+begin_src nu
+alias m = nu /path/to/this/repo/mod.nu
+#+end_src
+
+* 常用命令
+#+begin_src sh
+m brew                    # 查看可用子命令
+m brew list               # 已安装 formula/cask
+m brew outdated           # 可升级项目
+m brew deps tree wget     # 依赖树
+m brew info wget          # 包信息
+m brew search nginx       # 搜索
+m brew services list      # 服务状态
+#+end_src
+
+* 插件扩展
+1. 新建目录 ~plugins/foo/~
+2. 添加 ~plugins/foo/mod.nu~（和可选子命令文件）
+3. 执行 ~nu scripts/gen.nu~
+4. 运行 ~nu mod.nu foo~
+
+* License
+本项目使用 MIT 许可证，详见 ~LICENSE~。
