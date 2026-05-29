@@ -189,7 +189,7 @@ function update_all()
 		end
 	end
 
-	for i, info in ipairs(config) do
+	for _, info in ipairs(config) do
 		print("updating", (info.git:match("([^/]+)%.git$") or info.git) .. "...")
 		if not update(info) then
 			msg.error("FAILED")

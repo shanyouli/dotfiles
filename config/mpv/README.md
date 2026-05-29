@@ -1,50 +1,183 @@
-## MPV config ([English branch](https://github.com/dyphire/mpv-config/tree/eng))
+# mpv
 
-### 项目介绍
+这是精简版 mpv 配置，目标是提供普通播放器应有的基础体验：
 
-本项目为 windows 下 [mpv](https://github.com/mpv-player/mpv) 播放器的配置文件，应放入`mpv.exe`所在目录的`portable_config`文件夹内，
+- 播放、暂停、退出、全屏、音量、进度跳转、逐帧、章节和播放列表切换。
+- 自动加载同目录常见字幕和外部音轨。
+- 退出时保存播放进度。
+- 基础字幕样式、OSD、截图和常规视频缩放质量设置。
+- 保留少量第三方脚本：uosc、自动加载、文件浏览、播放列表/轨道/章节菜单、最近播放/书签、网络视频预留、字幕行、去黑边、变速、动图和切片。
+- 默认启用一个轻量 shader：`shaders/adaptive-sharpen.glsl`。
+- 同时在配置中保留一个未启用的高质量备用方案：`shaders/FSRCNNX_x2_8-0-4-1_LineArt.glsl` + `adaptive-sharpen.glsl`。
 
-或 mpv 配置默认路径`%APPDATA%/mpv/`下，这种方式全局生效。
+## shader
 
-使用`portable_config`时会覆盖全局配置方案。
+当前默认方案：
 
-PS：自行编辑配置文件时，注意编码格式应为 UTF-8，换行符为 Unix，否则 MPV 可能无法识别
+- `scale=spline36`
+- `cscale=spline36`
+- `glsl-shaders="~~/shaders/adaptive-sharpen.glsl"`
 
-**mpv 整合包下载**：[Releases](https://github.com/dyphire/mpv-config/releases)
+这个方案追求“尽量通用 + 尽量低性能开销”，适合作为全局默认配置。
 
-### mpv 客户端
+配置中还保留了一个默认不启用的备用方案：
 
-- 目前 mpv 没有官方发布的客户端，官网上有放一些推荐的第三方编译版：[https://mpv.io/installation](https://mpv.io/installation)
-  - windows 上推荐使用 shinchiro 版： [shinchiro_mpv](https://github.com/shinchiro/mpv-winbuild-cmake/releases) ![releases](https://img.shields.io/github/v/release/shinchiro/mpv-winbuild-cmake)
-  - 每日构建版：[zhongfly_mpv](https://github.com/zhongfly/mpv-winbuild) [![releases](https://img.shields.io/github/v/release/zhongfly/mpv-winbuild)](https://github.com/zhongfly/mpv-winbuild/releases)
-  - 基于个人修改版 [mpv](https://github.com/dyphire/mpv/tree/patch) 构建版：[dyphire_mpv](https://github.com/dyphire/mpv-winbuild) [![releases](https://img.shields.io/github/v/release/dyphire/mpv-winbuild)](https://github.com/dyphire/mpv-winbuild/releases)
-    - [修改版 mpv 相关说明](https://github.com/dyphire/mpv-config/discussions/7)
-- 目前比较成熟的 mpv/libmpv 前端推荐： [mpv.net](https://github.com/mpvnet-player/mpv.net) [![mpv.net](https://flat.badgen.net/github/last-commit/mpvnet-player/mpv.net?scale=1.0&cache=1800)](https://github.com/mpvnet-player/mpv.net) [![releases](https://img.shields.io/github/v/release/mpvnet-player/mpv.net)](https://github.com/mpvnet-player/mpv.net/releases)
-  - 个人 mpv.net 配置文件参考：https://github.com/dyphire/mpv-config/tree/mpvnet
-- 浏览器调用 mpv 播放的方法推荐
-  - [mpv-handler](https://github.com/akiirui/mpv-handler) 配合脚本 [play-with-mpv](https://greasyfork.org/zh-CN/scripts/416271-play-with-mpv)
-  - [Play-With-MPV](https://github.com/LuckyPuppy514/Play-With-MPV)
+- `glsl-shaders="~~/shaders/FSRCNNX_x2_8-0-4-1_LineArt.glsl"`
+- `glsl-shaders-append="~~/shaders/adaptive-sharpen.glsl"`
 
-### 脚本着色器说明
+这个方案更适合动画、低分辨率片源和大幅放大场景，但 GPU 开销更高。
 
-本项目使用的 mpv 脚本及功能介绍详见 wiki 内容： [脚本说明-wiki](https://github.com/dyphire/mpv-config/wiki/脚本说明)
+下载后请将 shader 文件保存到以下路径：
 
-本项目涉及的着色器见 mpv.conf 中相关内容
+- `~~/shaders/adaptive-sharpen.glsl`
+- `~~/shaders/FSRCNNX_x2_8-0-4-1_LineArt.glsl`
 
-### 预览
+播放时按 `U` 可以切换当前 sharpen shader，按 `Ctrl+U` 清空 shader。
 
-![image-20231103224421000](https://cdn.jsdelivr.net/gh/dyphire/PicGo/img/2023/11/03/image-20231103224421000.png)
+## 快捷按键
 
-![image-20231103224540075](https://cdn.jsdelivr.net/gh/dyphire/PicGo/img/2023/11/03/image-20231103224540075.png)
+以下为当前配置中已经启用的 mpv 快捷键整理。
 
-![image-20231103224557019](https://cdn.jsdelivr.net/gh/dyphire/PicGo/img/2023/11/03/image-20231103224557019.png)
+### 基础播放
 
-| 拼音搜索（支持首字母）                                                                         | 字幕下载                                                                                       |
-| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| ![image](https://cdn.jsdelivr.net/gh/dyphire/PicGo/img/2023/11/03/image-20231103224614449.png) | ![image](https://cdn.jsdelivr.net/gh/dyphire/PicGo/img/2023/11/03/image-20231103224721066.png) |
+| 按键                           | 功能           |
+| ------------------------------ | -------------- |
+| `Space` / 鼠标左键             | 播放 / 暂停    |
+| `PlayPause` / `Play` / `Pause` | 播放 / 暂停    |
+| `q`                            | 退出播放       |
+| `Q`                            | 退出并保存进度 |
+| `Esc`                          | 退出全屏       |
+| `Enter` / `f`                  | 切换全屏       |
+| `m`                            | 静音           |
 
-### 参考
+### 进度与逐帧
 
-- [hooke007 配置手册](https://hooke007.github.io/mpv-lazy/mpv.html)
-- [mpv 原版官方的开发版手册（英文）](https://mpv.io/manual/master/)
-- [mpv 官方文档的汉化版-hooke007](https://github.com/hooke007/mpv_doc-CN)
+| 按键                         | 功能                 |
+| ---------------------------- | -------------------- |
+| `Right` / `Left`             | 快进 / 后退 5 秒     |
+| `Up` / `Down`                | 快进 / 后退 60 秒    |
+| `Shift+Right` / `Shift+Left` | 精确快进 / 后退 1 秒 |
+| `.`                          | 前进一帧             |
+| `,`                          | 后退一帧             |
+| `Forward` / `Rewind`         | 快进 / 后退 30 秒    |
+
+### 音量与速度
+
+| 按键            | 功能                     |
+| --------------- | ------------------------ |
+| 鼠标滚轮上 / 下 | 音量 `+2` / `-2`         |
+| `0` / `9`       | 音量 `+5` / `-5`         |
+| `]` / `[`       | 播放速度 `+0.1` / `-0.1` |
+| `Backspace`     | 恢复正常速度 `1.0x`      |
+
+### 章节与播放列表
+
+| 按键            | 功能                    |
+| --------------- | ----------------------- |
+| `PgUp` / `PgDn` | 下一章 / 上一章         |
+| `>` / `<`       | 下一项 / 上一项播放列表 |
+| `Next` / `Prev` | 下一项 / 上一项播放列表 |
+
+### 字幕控制
+
+| 按键              | 功能                     |
+| ----------------- | ------------------------ |
+| `j`               | 切换字幕轨               |
+| `v`               | 显示 / 隐藏字幕          |
+| `z` / `x`         | 字幕提前 / 延后 `0.1` 秒 |
+| `r` / `t`         | 上移 / 下移字幕位置      |
+| `Shift+Backspace` | 重置字幕位置、缩放和延迟 |
+| `Ctrl+f`          | 打开字幕行列表           |
+
+### 音轨控制
+
+| 按键                | 功能                     |
+| ------------------- | ------------------------ |
+| `y`                 | 切换音轨                 |
+| `Ctrl+,` / `Ctrl+.` | 音频提前 / 延后 `0.1` 秒 |
+| `;`                 | 重置音频延迟             |
+| `F10`               | 打开音轨列表             |
+
+### 画面调整
+
+| 按键             | 功能                                      |
+| ---------------- | ----------------------------------------- |
+| `A`              | 切换画面比例 `16:9 / 4:3 / 2.35:1 / 自动` |
+| `d`              | 开关隔行扫描处理                          |
+| `D`              | 开关 deband                               |
+| `1` / `2`        | 对比度 `-1` / `+1`                        |
+| `3` / `4`        | 亮度 `-1` / `+1`                          |
+| `5` / `6`        | Gamma `-1` / `+1`                         |
+| `7` / `8`        | 饱和度 `-1` / `+1`                        |
+| `Ctrl+Backspace` | 重置对比度、亮度、Gamma、饱和度、色相     |
+| `C`              | 切换动态去黑边                            |
+
+### Shader 与画质菜单
+
+| 按键     | 功能                         |
+| -------- | ---------------------------- |
+| `U`      | 切换 `adaptive-sharpen.glsl` |
+| `Ctrl+U` | 清空当前 shader              |
+| `Ctrl+F` | 打开视频清晰度 / 格式菜单    |
+| `Alt+F`  | 打开音频格式菜单             |
+| `Alt+Y`  | 打开 YouTube 下载菜单        |
+
+### 截图与信息显示
+
+| 按键     | 功能                 |
+| -------- | -------------------- |
+| `s`      | 截图并包含字幕       |
+| `S`      | 仅截视频画面         |
+| `Ctrl+s` | 截取窗口             |
+| `i`      | 显示统计信息         |
+| `I`      | 切换统计信息常驻显示 |
+| `O`      | 切换 OSD 级别        |
+
+### 文件、历史、书签与列表菜单
+
+| 按键     | 功能                    |
+| -------- | ----------------------- |
+| `o`      | 打开文件                |
+| `Tab`    | 打开文件浏览器          |
+| `` ` ``  | 打开最近播放列表        |
+| `Ctrl+L` | 播放最近一次文件        |
+| `N`      | 打开书签列表            |
+| `Ctrl+n` | 保存当前书签            |
+| `F5`     | 打开播放列表            |
+| `F6`     | 打开音频输出设备列表    |
+| `F7`     | 打开版本（edition）列表 |
+| `F8`     | 打开章节列表            |
+| `F9`     | 打开视频轨列表          |
+| `F11`    | 打开字幕轨列表          |
+
+### 动图与切片工具
+
+| 按键     | 功能             |
+| -------- | ---------------- |
+| `w`      | 记录动图开始时间 |
+| `W`      | 记录动图结束时间 |
+| `Ctrl+w` | 生成动图         |
+| `Ctrl+W` | 生成带字幕动图   |
+| `Alt+c`  | 标记切片位置     |
+| `Alt+a`  | 导出音频切片     |
+| `Alt+C`  | 清除切片标记     |
+
+### 复制当前信息到剪贴板
+
+| 按键         | 功能             |
+| ------------ | ---------------- |
+| `Ctrl+Alt+t` | 复制当前播放时间 |
+| `Ctrl+Alt+p` | 复制当前文件路径 |
+| `Ctrl+Alt+s` | 复制当前字幕文本 |
+
+### 媒体键
+
+| 按键             | 功能     |
+| ---------------- | -------- |
+| `Power` / `Stop` | 退出播放 |
+
+### 说明
+
+- 上述内容整理自当前目录下的 `input.conf`。
+- 少数按键依赖已安装的脚本，例如 `uosc`、`file_browser`、`recentmenu`、`simplebookmark`、`playlistmanager`、`quality_menu`、`youtube_download`、`dynamic_crop`、`slicing_copy`、`mpv_animated` 等。
+- 如果某个脚本不存在，对应按键会无效果，但不会影响其他基础快捷键。

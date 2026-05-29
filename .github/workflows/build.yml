@@ -6,18 +6,21 @@ on:
     branches:
       - master
     paths:
-      - "hosts/tests/**/*.nix"
-      - "parts/**/*.nix"
+      - "flake.nix"
       - "flake.lock"
+      - "hosts/**/*.nix"
+      - "modules/**/*.nix"
+      - "nix/**/*.nix"
 
   pull_request_target:
     branches:
       - master
     paths:
-      - "parts/**.nix"
-      - "modules/**.nix"
-      - "hosts/**/*.nix"
+      - "flake.nix"
       - "flake.lock"
+      - "hosts/**/*.nix"
+      - "modules/**/*.nix"
+      - "nix/**/*.nix"
   # schedule:
   #   # run this daily at 8am UTC, or roughly 4am eastern
   #   - cron: '45 2 * * 6'
