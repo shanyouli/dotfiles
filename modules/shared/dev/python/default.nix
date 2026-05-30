@@ -155,7 +155,7 @@ in
     }
     (mkIf
       (builtins.elem cfg.manager [
-        "misc"
+        "mise"
         "asdf"
       ])
       {
