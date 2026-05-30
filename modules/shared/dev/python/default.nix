@@ -19,6 +19,36 @@ let
     "poetry"
     "uv"
   ];
+  versionsConfigured =
+    !(builtins.elem cfg.versions [
+      null
+      false
+      true
+      [ ]
+    ]);
+  usesDevManager =
+    builtins.elem cfg.manager [
+      "mise"
+      "asdf"
+    ]
+    || (cfg.manager == "" && cfg.venv != "uv" && versionsConfigured);
+  devManager =
+    if
+      builtins.elem cfg.manager [
+        "mise"
+        "asdf"
+      ]
+    then
+      cfg.manager
+    else
+      cfm.dev.manager.default;
+  effectiveManager =
+    if cfg.manager != "" then
+      cfg.manager
+    else if builtins.elem cfg.venv managers then
+      cfg.venv
+    else
+      cfm.dev.manager.default;
 in
 {
   options.modules.dev.python = with types; {
@@ -38,7 +68,7 @@ in
       apply =
         s:
         if builtins.isString cfg.versions then
-          cf.versions
+          cfg.versions
         else if
           (builtins.elem cfg.versions [
             null
@@ -63,22 +93,18 @@ in
       description = "python versions management tool.";
       type = str;
       default = "";
-      apply =
-        s:
-        if builtins.elem s managers then
-          s
-        else
-          (if builtins.elem cfg.venv managers then cfg.venv else cfm.dev.manager.default);
+      apply = s: if builtins.elem s managers then s else "";
     };
   };
   config = mkIf cfg.enable (mkMerge [
     {
       modules = {
+        dev.lang = mkIf usesDevManager { python = cfg.versions; };
         dev.python = {
           poetry.enable = mkDefault (cfg.venv == "poetry");
           uv = {
             enable = mkDefault (cfg.venv == "uv");
-            manager = mkDefault (cfg.manager == "uv");
+            manager = mkDefault (effectiveManager == "uv");
           };
         };
         python.extraPkgs =
@@ -153,36 +179,30 @@ in
         ];
       };
     }
-    (mkIf
-      (builtins.elem cfg.manager [
-        "mise"
-        "asdf"
-      ])
-      {
-        modules.dev = {
-          lang.python = cfg.versions;
-          manager.extInit = lib.optionalString (cfg.global != "") ''
-            ${lib.optionalString (config.modules.dev.manager.default == "asdf") (
-              let
-                asdfbin = "${config.modules.dev.manager.asdf.package}/bin/asdf";
-              in
-              ''
-                log info "python global version ${cfg.global}"
-                ${asdfbin} global python ${cfg.global}
-              ''
-            )}
-            ${lib.optionalString (config.modules.dev.manager.default == "mise") (
-              let
-                misebin = "${config.modules.dev.manager.mise.package}/bin/mise";
-              in
-              ''
-                log info "python global version ${cfg.global}"
-                ${misebin} global -q python@${cfg.global}
-              ''
-            )}
-          '';
-        };
-      }
-    )
+    (mkIf usesDevManager {
+      modules.dev = {
+        manager.default = mkDefault devManager;
+        manager.extInit = lib.optionalString (cfg.global != "") ''
+          ${lib.optionalString (devManager == "asdf") (
+            let
+              asdfbin = "${config.modules.dev.manager.asdf.package}/bin/asdf";
+            in
+            ''
+              log info "python global version ${cfg.global}"
+              ${asdfbin} global python ${cfg.global}
+            ''
+          )}
+          ${lib.optionalString (devManager == "mise") (
+            let
+              misebin = "${config.modules.dev.manager.mise.package}/bin/mise";
+            in
+            ''
+              log info "python global version ${cfg.global}"
+              ${misebin} global -q python@${cfg.global}
+            ''
+          )}
+        '';
+      };
+    })
   ]);
 }
