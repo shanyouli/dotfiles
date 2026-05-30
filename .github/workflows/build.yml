@@ -115,7 +115,7 @@ jobs:
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
-      - uses: cachix/cachix-action@v15
+      - uses: cachix/cachix-action@v17
         with:
           name: "shanyouli"
           signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
