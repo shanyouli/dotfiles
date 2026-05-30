@@ -17,7 +17,7 @@ in
   };
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      nodePackages.bash-language-server
+      bash-language-server
       shellcheck
     ];
   };
