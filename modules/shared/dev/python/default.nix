@@ -41,14 +41,16 @@ let
     then
       cfg.manager
     else
-      cfm.dev.manager.default;
+      "mise";
   effectiveManager =
     if cfg.manager != "" then
       cfg.manager
     else if builtins.elem cfg.venv managers then
       cfg.venv
+    else if usesDevManager then
+      devManager
     else
-      cfm.dev.manager.default;
+      "";
 in
 {
   options.modules.dev.python = with types; {
