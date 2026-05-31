@@ -29,7 +29,6 @@
 
               echo "link $target flake"
               ${pkgs.just}/bin/just init "$target"
-              ${pkgs.git}/bin/git update-index --skip-worktree flake.nix flake.lock
 
               if [ "$#" -gt 0 ]; then
                 echo "update $target inputs: $*"

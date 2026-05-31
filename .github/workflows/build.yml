@@ -119,7 +119,6 @@ jobs:
         run: |
           set -euo pipefail
           nix run nixpkgs#just -- init
-          git update-index --skip-worktree flake.nix flake.lock
       - uses: cachix/cachix-action@v17
         with:
           name: "shanyouli"

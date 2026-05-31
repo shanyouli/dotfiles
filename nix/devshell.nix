@@ -63,7 +63,6 @@
               cp "$hook_source" "$FLAKE_ROOT/.git/hooks/$hook"
               chmod +x "$FLAKE_ROOT/.git/hooks/$hook"
             done
-            git update-index --skip-worktree flake.nix flake.lock
           fi
         '';
       };
