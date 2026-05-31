@@ -134,7 +134,7 @@ jobs:
           fi
       - name: Run Flake Checks
         run: |
-          nix flake check --show-trace --impure
+          nix flake check --no-write-lock-file --show-trace --impure
         timeout-minutes: 240
   merge-to-master:
     needs:
