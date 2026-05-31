@@ -1,6 +1,11 @@
 { lib, pkgs, ... }:
 let
-  inherit (lib) removeAttrs optionals optionalString;
+  inherit (lib)
+    removeAttrs
+    optionals
+    optionalString
+    toList
+    ;
 in
 rec {
   pkg = rec {
@@ -14,7 +19,7 @@ rec {
         _nativeBuildInputs = [
           pkgs.makeWrapper
         ]
-        ++ optionals (args_ ? nativeBuildInputs) args_.nativeBuildInputs;
+        ++ optionals (args_ ? nativeBuildInputs) (toList args_.nativeBuildInputs);
         paths = [ package ] ++ optionals (args_ ? paths) args_.paths;
         postBuild = ''
           if [[ -d $out/bin ]]; then

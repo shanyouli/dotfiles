@@ -1,4 +1,4 @@
-{ inputs, self, ... }:
+{ self, ... }:
 {
   perSystem =
     {
@@ -10,52 +10,74 @@
     {
       apps.update.program =
         let
-          allInputs = builtins.attrNames inputs;
-          filterFn =
-            v:
-            let
-              filterList =
-                if pkgs.stdenvNoCC.isDarwin then
-                  [
-                    "self"
-                    "home-manager"
-                  ]
-                else
-                  [
-                    "self"
-                    "home-manager"
-                  ];
-            in
-            builtins.filter (x: !(builtins.elem x filterList)) v;
-          stableInputs = filterFn allInputs;
-          baseInputs = builtins.filter (
-            x:
-            !(builtins.elem x [
-              "darwin"
-              "nixpkgs-stable"
-              "self"
-            ])
-          ) allInputs;
+          updateScript = pkgs.writeShellScriptBin "update-flake" ''
+            set -euo pipefail
+
+            stable_day=false
+            if ${pkgs.python3}/bin/python3 - <<'PY'
+            from datetime import datetime, timedelta, timezone
+            today = datetime.now(timezone.utc).date()
+            raise SystemExit(0 if today.weekday() == 5 and (today + timedelta(days=7)).month != today.month else 1)
+            PY
+            then
+              stable_day=true
+            fi
+
+            update_inputs() {
+              local target="$1"
+              shift
+
+              echo "link $target flake"
+              ${pkgs.just}/bin/just init "$target"
+              ${pkgs.git}/bin/git update-index --skip-worktree flake.nix flake.lock
+
+              if [ "$#" -gt 0 ]; then
+                echo "update $target inputs: $*"
+                nix flake update "$@"
+              fi
+            }
+
+            update_inputs linux \
+              nixpkgs \
+              flake-parts \
+              flake-utils \
+              flake-compat \
+              nurpkgs \
+              treefmt-nix \
+              git-hooks-nix
+
+            update_inputs darwin \
+              nixpkgs \
+              flake-parts \
+              flake-utils \
+              flake-compat \
+              nurpkgs \
+              treefmt-nix \
+              git-hooks-nix \
+              mac-app-util
+
+            if [ "$stable_day" = true ]; then
+              update_inputs linux nixpkgs-stable home-manager
+              update_inputs darwin nixpkgs-stable home-manager darwin
+            else
+              echo "skip stable inputs; today is not the last Saturday of the month"
+            fi
+
+            ${pkgs.git}/bin/git add \
+              flake/linux/flake.nix \
+              flake/linux/flake.lock \
+              flake/darwin/flake.nix \
+              flake/darwin/flake.lock
+
+            if ${pkgs.git}/bin/git diff --cached --quiet; then
+              echo "no flake input changes"
+              exit 0
+            fi
+
+            ${pkgs.git}/bin/git commit -m "build(deps): update flake inputs"
+          '';
         in
-        my.nu.writeNuScriptBin "update-flake" ''
-          use std log
-          log info $"The execution file path is ($env.FILE_PWD)/update-flake"
-          # nix flake update inputs
-          def main [--all(-a), --stable(-s)] {
-            if $all {
-              log info "update all flake inputs."
-              ^nix flake update --commit-lock-file
-              return 0
-            }
-            if $stable {
-              log info $"(ansi blue_bold)>>>(ansi reset) update (ansi blue_bold)${pkgs.lib.concatStringsSep " " stableInputs}(ansi reset)"
-              ^nix flake update ${pkgs.lib.concatStringsSep " " stableInputs} --commit-lock-file
-            } else {
-              log info $"(ansi blue_bold)>>>(ansi reset) update (ansi blue_bold)${pkgs.lib.concatStringsSep " " baseInputs}(ansi reset)"
-              ^nix flake update ${pkgs.lib.concatStringsSep " " baseInputs} --commit-lock-file
-            }
-          }
-        '';
+        "${updateScript}/bin/update-flake";
       apps.buildci.program = my.nu.writeNuScriptBin "buildCI" ''
         use std log
         log info $"The script file path is ($env.CURRENT_FILE)"

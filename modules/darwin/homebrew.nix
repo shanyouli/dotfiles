@@ -64,7 +64,7 @@ in
       # see @https://docs.brew.sh/Shell-Completion#configuring-completions-in-fish
       programs.fish.interactiveShellInit =
         let
-          homebrew-home = removeSuffix "/bin" config.homebrew.brewPrefix;
+          homebrew-home = config.homebrew.prefix;
         in
         ''
           if test -d "${homebrew-home}/share/fish/completions"
@@ -84,14 +84,13 @@ in
         };
         global = {
           brewfile = true;
-          lockfiles = true;
           autoUpdate = false;
         };
-        brewPrefix =
+        prefix =
           let
             inherit (pkgs.stdenvNoCC) isAarch64 isAarch32;
           in
-          if isAarch64 || isAarch32 then "/opt/homebrew/bin" else "/usr/local/bin";
+          if isAarch64 || isAarch32 then "/opt/homebrew" else "/usr/local";
         taps = [
           "buo/cask-upgrade"
           "shanyouli/tap"

@@ -137,6 +137,8 @@ in
           defaultEditor = true;
           viAlias = true;
           vimAlias = true;
+          withPython3 = true;
+          withRuby = true;
           extraWrapperArgs = with pkgs; [
             # LIBRARY_PATH is used by gcc before compilation to search directories
             # containing static and shared libraries that need to be linked to your program.

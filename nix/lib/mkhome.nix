@@ -21,14 +21,11 @@ in
         my,
         ...
       }:
-      let
-        stableNixpkgs = my.nixpkgsStable system;
-      in
       home-manager.lib.homeManagerConfiguration {
         pkgs =
           let
             isUpPkgs = !(builtins.isNull nixpkgs);
-            mypkgs = if isUpPkgs then nixpkgs else stableNixpkgs;
+            mypkgs = if isUpPkgs then nixpkgs else inputs.nixpkgs-stable;
           in
           if (isUpPkgs || config != { }) then
             import mypkgs (

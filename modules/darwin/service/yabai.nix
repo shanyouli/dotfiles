@@ -13,7 +13,8 @@ with lib;
 with my;
 let
   cfg = config.modules.service.yabai;
-  cfgBinPath = if (cfg.package == null) then config.homebrew.brewPrefix else "${cfg.package}/bin";
+  cfgBinPath =
+    if (cfg.package == null) then "${config.homebrew.prefix}/bin" else "${cfg.package}/bin";
   nushellBin =
     if config.modules.shell.nushell.enable then
       "${config.modules.shell.nushell.package}/bin/nu"
@@ -111,8 +112,8 @@ in
         };
       };
       system.activationScripts.postAsctivation.text = ''
-        if [ -f "${config.homebrew.brewPrefix}/yabai" ]; then
-          echo "$(whoami) ALL=(root) NOPASSWD: sha256:$(shasum -a 256 ${config.homebrew.brewPrefix}/yabai | cut -d " " -f 1) ${config.homebrew.brewPrefix}/yabai --load-sa" | tee /etc/sudoers.d/yabai
+        if [ -f "${config.homebrew.prefix}/bin/yabai" ]; then
+          echo "$(whoami) ALL=(root) NOPASSWD: sha256:$(shasum -a 256 ${config.homebrew.prefix}/bin/yabai | cut -d " " -f 1) ${config.homebrew.prefix}/bin/yabai --load-sa" | tee /etc/sudoers.d/yabai
         fi
       '';
       home.configFile."yabai/yabairc".text = ''

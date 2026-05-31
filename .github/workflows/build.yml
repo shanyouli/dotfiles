@@ -6,8 +6,8 @@ on:
     branches:
       - master
     paths:
-      - "flake.nix"
-      - "flake.lock"
+      - "flake/**/*.nix"
+      - "flake/**/flake.lock"
       - "hosts/**/*.nix"
       - "modules/**/*.nix"
       - "nix/**/*.nix"
@@ -16,8 +16,8 @@ on:
     branches:
       - master
     paths:
-      - "flake.nix"
-      - "flake.lock"
+      - "flake/**/*.nix"
+      - "flake/**/flake.lock"
       - "hosts/**/*.nix"
       - "modules/**/*.nix"
       - "nix/**/*.nix"
@@ -111,6 +111,11 @@ jobs:
           git fetch
           git checkout ${MY_TARGET_BRANCH}
           echo "Working on ${MY_TARGET_BRANCH} branch"
+      - name: Link platform flake
+        run: |
+          set -euo pipefail
+          nix run nixpkgs#just -- init
+          git update-index --skip-worktree flake.nix flake.lock
       - uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |

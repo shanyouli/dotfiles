@@ -32,16 +32,29 @@ jobs:
           git config --local user.email "flakebot@users.noreply.github.com"
           git config --local user.name "flakebot"
           git checkout -B flakebot
-      - name: Update and commit lockfile
-        # run: nix flake update --commit-lock-file
-        run: nix run -v --impure .#update
+      - name: Update flake inputs
+        id: update
+        run: |
+          set -euo pipefail
+          before_commit="$(git rev-parse HEAD)"
+          nix run nixpkgs#just -- init linux
+          nix run -v --impure .#update
+          after_commit="$(git rev-parse HEAD)"
+          if [[ "$before_commit" == "$after_commit" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No flake input changes."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Push changes
+        if: steps.update.outputs.changed == 'true'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: flakebot
           force: true
       - name: pull-request-action
+        if: steps.update.outputs.changed == 'true'
         uses: vsoch/pull-request-action@1.1.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -53,6 +66,7 @@ jobs:
           PULL_REQUEST_UPDATE: true
           PULL_REQUEST_TITLE: "Update Flake Inputs"
       - name: Trigger second workflow
+        if: steps.update.outputs.changed == 'true'
         run: |
           curl -X POST \
           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \

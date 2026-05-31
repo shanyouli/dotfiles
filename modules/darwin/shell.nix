@@ -14,8 +14,8 @@ let
         builtins.filter (x: x != "/nix/var/nix/profiles/default") config.environment.profiles
       );
       printOuts = optionalString config.modules.macos.brew.enable ''
-        if [[ -x ${config.homebrew.brewPrefix}/brew ]]; then
-          eval "$(${config.homebrew.brewPrefix}/brew shellenv bash)"
+        if [[ -x ${config.homebrew.prefix}/bin/brew ]]; then
+          eval "$(${config.homebrew.prefix}/bin/brew shellenv bash)"
         fi
       '';
     in
@@ -89,7 +89,7 @@ in
           )
           (mkIf config.modules.macos.brew.enable (
             let
-              prefix = removeSuffix "/bin" config.homebrew.brewPrefix;
+              prefix = config.homebrew.prefix;
             in
             ''
               export HOMEBREW_PREFIX=${prefix}
