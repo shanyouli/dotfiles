@@ -61,7 +61,7 @@ with my;
         stateHome = mkAliasDefinitions options.home.stateDir;
       };
 
-      services = mkAliasDefinitions options.home.services;
+      services = mkAliasDefinitions options.home.hmServices;
     }
     (mkIf config.modules.gui.enable { home.packages = config.modules.gui.fonts; })
     {

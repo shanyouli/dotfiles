@@ -84,7 +84,7 @@ in
             stateHome = mkAliasDefinitions options.home.stateDir;
           };
           programs = mkAliasDefinitions options.home.programs;
-          services = mkAliasDefinitions options.home.services;
+          services = mkAliasDefinitions options.home.hmServices;
           home.enableNixpkgsReleaseCheck = false;
         };
       };
