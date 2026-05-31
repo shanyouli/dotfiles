@@ -111,15 +111,15 @@ jobs:
           git fetch
           git checkout ${MY_TARGET_BRANCH}
           echo "Working on ${MY_TARGET_BRANCH} branch"
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
       - name: Link platform flake
         run: |
           set -euo pipefail
           nix run nixpkgs#just -- init
           git update-index --skip-worktree flake.nix flake.lock
-      - uses: cachix/install-nix-action@v31
-        with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
       - uses: cachix/cachix-action@v17
         with:
           name: "shanyouli"
