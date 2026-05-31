@@ -1,8 +1,9 @@
-{ lib, ... }:
+{ inputs, lib, ... }:
 with lib;
 with builtins;
 rec {
   isDarwin = system: builtins.elem system lib.platforms.darwin;
+  nixpkgsStable = _system: inputs.nixpkgs-stable;
 
   relativeToRoot = lib.path.append ../../.;
 

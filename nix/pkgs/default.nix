@@ -10,9 +10,7 @@
     {
       _module.args.pkgs =
         let
-          inherit (inputs) darwin-stable nixos-stable;
-          inherit (self) my;
-          mypkgs = if my.isDarwin system then darwin-stable else nixos-stable;
+          mypkgs = self.my.nixpkgsStable system;
         in
         import mypkgs {
           inherit system;

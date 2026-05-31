@@ -1,6 +1,6 @@
 { inputs, lib, ... }:
 let
-  inherit (inputs) darwin-stable nixos-stable home-manager;
+  inherit (inputs) home-manager;
 in
 {
   mkhome =
@@ -21,12 +21,14 @@ in
         my,
         ...
       }:
+      let
+        stableNixpkgs = my.nixpkgsStable system;
+      in
       home-manager.lib.homeManagerConfiguration {
         pkgs =
           let
             isUpPkgs = !(builtins.isNull nixpkgs);
-            mypkgs =
-              if isUpPkgs then nixpkgs else (if pkgs.stdenvNoCC.isDarwin then darwin-stable else nixos-stable);
+            mypkgs = if isUpPkgs then nixpkgs else stableNixpkgs;
           in
           if (isUpPkgs || config != { }) then
             import mypkgs (

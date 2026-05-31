@@ -17,14 +17,11 @@
               filterList =
                 if pkgs.stdenvNoCC.isDarwin then
                   [
-                    "nixos-stable"
                     "self"
                     "home-manager"
                   ]
                 else
                   [
-                    "darwin"
-                    "darwin-stable"
                     "self"
                     "home-manager"
                   ];
@@ -34,9 +31,8 @@
           baseInputs = builtins.filter (
             x:
             !(builtins.elem x [
-              "nixos-stable"
               "darwin"
-              "darwin-stable"
+              "nixpkgs-stable"
               "self"
             ])
           ) allInputs;
@@ -83,7 +79,11 @@
         ]
         # ${self} ==> .;
         def "test flake type" [] {
-          ["linux", "home", "darwin"]
+          if $systemos == "darwin" {
+            ["darwin", "home"]
+          } else {
+            ["linux", "home"]
+          }
         }
         def "test subcmd" [] {
           ["test", "build", "switch"]

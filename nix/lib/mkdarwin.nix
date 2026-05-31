@@ -1,6 +1,6 @@
 { inputs, lib, ... }:
 let
-  inherit (inputs) darwin-stable home-manager darwin;
+  inherit (inputs) home-manager darwin;
 in
 {
   mkdarwin =
@@ -21,12 +21,15 @@ in
         my,
         ...
       }:
+      let
+        stableNixpkgs = my.nixpkgsStable system;
+      in
       darwin.lib.darwinSystem (
         let
           usePkgs =
             let
               isUpPkgs = !(builtins.isNull nixpkgs);
-              mypkgs = if isUpPkgs then nixpkgs else darwin-stable;
+              mypkgs = if isUpPkgs then nixpkgs else stableNixpkgs;
             in
             if (isUpPkgs || config != { }) then
               import mypkgs (

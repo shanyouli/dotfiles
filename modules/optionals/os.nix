@@ -166,8 +166,7 @@ in
         etc = {
           home-manager.source = "${inputs.home-manager}";
           nixpkgs-unstable.source = "${inputs.nixpkgs}";
-          nixpkgs.source =
-            if pkgs.stdenvNoCC.isDarwin then "${inputs.darwin-stable}" else "${inputs.nixos-stable}";
+          nixpkgs.source = "${inputs.nixpkgs-stable}";
         };
         # list of acceptable shells in /etc/shells
         shells =
@@ -180,11 +179,7 @@ in
       };
       nix =
         let
-          filterFn =
-            if pkgs.stdenvNoCC.isLinux then
-              (n: _: n != "self" && n != "darwin-stable")
-            else
-              (n: _: n != "self" && n != "nixos-stable");
+          filterFn = n: _: n != "self";
           filteredInputs = filterAttrs filterFn inputs;
           nixPathInputs = mapAttrsToList (
             n: v:

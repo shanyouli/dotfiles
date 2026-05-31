@@ -1,6 +1,6 @@
 { inputs, lib, ... }:
 let
-  inherit (inputs) nixos-stable home-manager;
+  inherit (inputs) home-manager;
 in
 {
   mknixos =
@@ -21,12 +21,15 @@ in
         my,
         ...
       }:
-      nixos-stable.lib.nixosSystem (
+      let
+        stableNixpkgs = my.nixpkgsStable system;
+      in
+      stableNixpkgs.lib.nixosSystem (
         let
           usePkgs =
             let
               isUpPkgs = !(builtins.isNull nixpkgs);
-              mypkgs = if isUpPkgs then nixpkgs else nixos-stable;
+              mypkgs = if isUpPkgs then nixpkgs else stableNixpkgs;
             in
             if (isUpPkgs || config != { }) then
               import mypkgs (

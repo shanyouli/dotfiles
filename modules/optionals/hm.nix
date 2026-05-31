@@ -71,16 +71,11 @@ with my;
       xdg.configFile = {
         "nixpath/home-manager".source = inputs.home-manager;
         "nixpath/nixpkgs-unstable".source = inputs.nixpkgs;
-        "nixpath/nixpkgs".source =
-          if pkgs.stdenvNoCC.isDarwin then inputs.darwin-stable else inputs.nixos-stable;
+        "nixpath/nixpkgs".source = inputs.nixpkgs-stable;
       };
       nix =
         let
-          filterFn =
-            if pkgs.stdenvNoCC.isLinux then
-              (n: _: n != "self" && n != "darwin-stable")
-            else
-              (n: _: n != "self" && n != "nixos-stable");
+          filterFn = n: _: n != "self";
           filteredInputs = filterAttrs filterFn inputs;
           nixPathInputs = mapAttrsToList (
             n: v:
