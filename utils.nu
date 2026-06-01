@@ -141,9 +141,9 @@ export def --env init [target: string = "auto"] {
     let flake_root = $"./flake/($resolved)"
 
     log t $"Link root flake for ($resolved)"
-    ^ln -sf $"($flake_root)/flake.nix" ./flake.nix
-    ^ln -sf $"($flake_root)/flake.lock" ./flake.lock
-    log info $"linked ($flake_root)/{flake.nix,flake.lock} -> ./"
+    ^ln -f $"($flake_root)/flake.nix" ./flake.nix
+    ^ln -f $"($flake_root)/flake.lock" ./flake.lock
+    log info $"hard linked ($flake_root)/{flake.nix,flake.lock} -> ./"
     log t -e $"Link root flake for ($resolved)"
 
     end-log "just init"
