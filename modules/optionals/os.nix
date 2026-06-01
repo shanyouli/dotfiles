@@ -61,7 +61,9 @@ in
         extraSpecialArgs = { inherit inputs; };
         useGlobalPkgs = true;
         useUserPackages = true;
-        backupFileExtension = "backup";
+        backupCommand = ''
+          sh -c 'src="$1"; dst="$src.backup-$(date +%Y%m%d%H%M%S)"; cp -a "$src" "$dst"' _ "$1"
+        '';
         users.${config.user.name} = {
           home = {
             file = mkAliasDefinitions options.home.file;
@@ -84,7 +86,7 @@ in
             stateHome = mkAliasDefinitions options.home.stateDir;
           };
           programs = mkAliasDefinitions options.home.programs;
-          services = mkAliasDefinitions options.home.services;
+          services = mkAliasDefinitions options.home.hmServices;
           home.enableNixpkgsReleaseCheck = false;
         };
       };

@@ -89,7 +89,7 @@ in
           '';
         };
         home = {
-          packages = [ pkgs.pipx ];
+          packages = [ pkgs.python3Packages.pipx ];
           programs.bash.initExtra = lib.optionalString (global_python_path != "") pipx_function_text;
         };
         # nushell.cmpFiles = ["${my.paths.dotfiles.config}/pipx/pipx-completions.nu"];

@@ -25,7 +25,7 @@ in
   options.modules.service.yabai = {
     enable = mkBoolOpt false;
     border.enable = mkBoolOpt cfg.enable;
-    package = mkPackageOption pkgs.unstable "yabai" {
+    package = mkPackageOption pkgs "yabai" {
       nullable = true;
       extraDescription = "Set modules.services.yabai.package to null on platforms where yabai is not available or marked broken";
     };

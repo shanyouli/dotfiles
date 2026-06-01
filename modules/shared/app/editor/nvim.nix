@@ -1,7 +1,3 @@
-# 根据 [AstroNvim](https://astronvim.com/) 整理配置
-# 参考: https://github.com/azuwis/nix-config/blob/0d9ebcc82acf886ae013f822ec6ea3fcf03bb218/common/neovim/home.nix#L60
-#       https://github.com/azuwis/nix-config/blob/0d9ebcc82acf886ae013f822ec6ea3fcf03bb218/common/lazyvim/base/default.nix#L1
-#       https://github.com/LazyVim/LazyVim/discussions/1972
 {
   pkgs,
   lib,
@@ -13,277 +9,351 @@ with lib;
 with my;
 let
   cfg = config.modules.app.editor.nvim;
+
+  pluginSpecs = [
+    {
+      repo = "folke/lazy.nvim";
+      pkg = pkgs.vimPlugins.lazy-nvim;
+    }
+    {
+      repo = "AstroNvim/astrocore";
+      pkg = pkgs.vimPlugins.astrocore;
+    }
+    {
+      repo = "AstroNvim/astrolsp";
+      pkg = pkgs.vimPlugins.astrolsp;
+    }
+    {
+      repo = "AstroNvim/astroui";
+      pkg = pkgs.vimPlugins.astroui;
+    }
+    {
+      repo = "AstroNvim/astrotheme";
+      pkg = pkgs.vimPlugins.astrotheme;
+    }
+    {
+      repo = "MunifTanjim/nui.nvim";
+      pkg = pkgs.vimPlugins.nui-nvim;
+    }
+    {
+      repo = "folke/snacks.nvim";
+      pkg = pkgs.vimPlugins.snacks-nvim;
+    }
+    {
+      repo = "folke/todo-comments.nvim";
+      pkg = pkgs.vimPlugins.todo-comments-nvim;
+    }
+    {
+      repo = "folke/which-key.nvim";
+      pkg = pkgs.vimPlugins.which-key-nvim;
+    }
+    {
+      repo = "folke/lazydev.nvim";
+      pkg = pkgs.vimPlugins.lazydev-nvim;
+    }
+    {
+      repo = "nvim-lua/plenary.nvim";
+      pkg = pkgs.vimPlugins.plenary-nvim;
+    }
+    {
+      repo = "nvim-tree/nvim-web-devicons";
+      pkg = pkgs.vimPlugins.nvim-web-devicons;
+    }
+    {
+      repo = "echasnovski/mini.statusline";
+      pkg = pkgs.vimPlugins.mini-statusline;
+    }
+    {
+      repo = "nvim-neo-tree/neo-tree.nvim";
+      pkg = pkgs.vimPlugins.neo-tree-nvim;
+    }
+    {
+      repo = "nvimdev/dashboard-nvim";
+      pkg = pkgs.vimPlugins.dashboard-nvim;
+    }
+    {
+      repo = "rcarriga/nvim-notify";
+      pkg = pkgs.vimPlugins.nvim-notify;
+    }
+    {
+      repo = "rebelot/heirline.nvim";
+      pkg = pkgs.vimPlugins.heirline-nvim;
+    }
+    {
+      repo = "lukas-reineke/indent-blankline.nvim";
+      pkg = pkgs.vimPlugins.indent-blankline-nvim;
+    }
+    {
+      repo = "folke/noice.nvim";
+      pkg = pkgs.vimPlugins.noice-nvim;
+    }
+    {
+      repo = "stevearc/resession.nvim";
+      pkg = pkgs.vimPlugins.resession-nvim;
+    }
+    {
+      repo = "kevinhwang91/nvim-ufo";
+      pkg = pkgs.vimPlugins.nvim-ufo;
+    }
+    {
+      repo = "kevinhwang91/promise-async";
+      pkg = pkgs.vimPlugins.promise-async;
+    }
+    {
+      repo = "max397574/better-escape.nvim";
+      pkg = pkgs.vimPlugins.better-escape-nvim;
+    }
+    {
+      repo = "RRethy/vim-illuminate";
+      pkg = pkgs.vimPlugins.vim-illuminate;
+    }
+    {
+      repo = "andweeb/presence.nvim";
+      pkg = pkgs.vimPlugins.presence-nvim;
+    }
+    {
+      repo = "ray-x/lsp_signature.nvim";
+      pkg = pkgs.vimPlugins.lsp_signature-nvim;
+    }
+    {
+      repo = "lewis6991/gitsigns.nvim";
+      pkg = pkgs.vimPlugins.gitsigns-nvim;
+    }
+    {
+      repo = "EdenEast/nightfox.nvim";
+      pkg = pkgs.vimPlugins.nightfox-nvim;
+    }
+    {
+      repo = "nvim-tree/nvim-tree.lua";
+      pkg = pkgs.vimPlugins.nvim-tree-lua;
+    }
+    {
+      repo = "nvim-treesitter/nvim-treesitter";
+      pkg = pkgs.vimPlugins.nvim-treesitter;
+    }
+    {
+      repo = "akinsho/bufferline.nvim";
+      pkg = pkgs.vimPlugins.bufferline-nvim;
+    }
+    {
+      repo = "onsails/lspkind.nvim";
+      pkg = pkgs.vimPlugins.lspkind-nvim;
+    }
+    {
+      repo = "saghen/blink.cmp";
+      pkg = pkgs.vimPlugins.blink-cmp;
+    }
+    {
+      repo = "rafamadriz/friendly-snippets";
+      pkg = pkgs.vimPlugins.friendly-snippets;
+    }
+    {
+      repo = "L3MON4D3/LuaSnip";
+      pkg = pkgs.vimPlugins.luasnip;
+    }
+    {
+      repo = "windwp/nvim-autopairs";
+      pkg = pkgs.vimPlugins.nvim-autopairs;
+    }
+    {
+      repo = "williamboman/mason.nvim";
+      pkg = pkgs.vimPlugins.mason-nvim;
+    }
+    {
+      repo = "williamboman/mason-lspconfig.nvim";
+      pkg = pkgs.vimPlugins.mason-lspconfig-nvim;
+    }
+    {
+      repo = "jay-babu/mason-nvim-dap.nvim";
+      pkg = pkgs.vimPlugins.mason-nvim-dap-nvim;
+    }
+    {
+      repo = "jay-babu/mason-null-ls.nvim";
+      pkg = pkgs.vimPlugins.mason-null-ls-nvim;
+    }
+    {
+      repo = "WhoIsSethDaniel/mason-tool-installer.nvim";
+      pkg = pkgs.vimPlugins.mason-tool-installer-nvim;
+    }
+    {
+      repo = "neovim/nvim-lspconfig";
+      pkg = pkgs.vimPlugins.nvim-lspconfig;
+    }
+    {
+      repo = "stevearc/conform.nvim";
+      pkg = pkgs.vimPlugins.conform-nvim;
+    }
+    {
+      repo = "mfussenegger/nvim-lint";
+      pkg = pkgs.vimPlugins.nvim-lint;
+    }
+    {
+      repo = "nvimtools/none-ls.nvim";
+      pkg = pkgs.vimPlugins.none-ls-nvim;
+    }
+    {
+      repo = "nvim-telescope/telescope.nvim";
+      pkg = pkgs.vimPlugins.telescope-nvim;
+    }
+    {
+      repo = "nvim-telescope/telescope-fzf-native.nvim";
+      pkg = pkgs.vimPlugins.telescope-fzf-native-nvim;
+    }
+    {
+      repo = "numToStr/Comment.nvim";
+      pkg = pkgs.vimPlugins.comment-nvim;
+    }
+  ];
+
+  pluginPairs = map (spec: {
+    name = last (splitString "/" spec.repo);
+    path = spec.pkg;
+  }) pluginSpecs;
+
   pluginsOptionType =
-    let
-      inherit (types)
-        listOf
-        oneOf
-        package
-        str
-        submodule
-        ;
-    in
+    with types;
     listOf (oneOf [
       package
       (submodule {
         options = {
           name = mkOption { type = str; };
-          path = mkOption { type = packages; };
+          path = mkOption { type = package; };
         };
       })
     ]);
-  treesit-list =
+
+  treesitPackage =
     let
-      inherit (pkgs.vimPlugins) nvim-treesitter-parsers nvim-treesitter;
       inherit (builtins)
-        isString
-        isList
-        filter
-        elem
         attrNames
+        filter
+        isList
+        isString
         ;
+      inherit (pkgs.vimPlugins) nvim-treesitter nvim-treesitter-parsers;
     in
     if isString cfg.treesit then
-      (
-        if cfg.treesit == "all" then
-          # nvim-treesitter.withAllGrammars
-          # NOTE: nvim-treesitter.withAllGrammars 中的 nu parser 目前存在问题，date: 2025.03.19
-          #      org parser 和 norg parser 存在冲突，在 nvim 中推荐使用 norg parser。
-          #      所以暂时不使用全部的 treesit
-          (
-            let
-              ignore-list = [ "org" ];
-              all-treesit = attrNames (
-                lib.filterAttrs (name: v: (!(elem name ignore-list) && lib.isDerivation v)) nvim-treesitter-parsers
-              );
-            in
-            nvim-treesitter.withPlugins (plugins: attrVals all-treesit plugins)
-          )
-        else if nvim-treesitter-parsers ? cfg.treesit then
-          nvim-treesitter.withPlugins (plugins: attrVals [ cfg.treesit ] plugins)
-        else
-          null
-      )
-    else if isList cfg.treesit then
-      (
+      if cfg.treesit == "all" then
         let
-          parserStrings = filter isString cfg.treesit;
-          parserPackages = filter isDerivation cfg.treesit;
+          ignore-list = [ "org" ];
+          all-treesit = attrNames (
+            lib.filterAttrs (
+              name: value: (!(elem name ignore-list) && lib.isDerivation value)
+            ) nvim-treesitter-parsers
+          );
         in
-        nvim-treesitter.withPlugins (plugins: (attrVals parserStrings plugins) ++ parserPackages)
-      )
+        nvim-treesitter.withPlugins (plugins: attrVals all-treesit plugins)
+      else if builtins.hasAttr cfg.treesit nvim-treesitter-parsers then
+        nvim-treesitter.withPlugins (plugins: attrVals [ cfg.treesit ] plugins)
+      else
+        null
+    else if isList cfg.treesit then
+      let
+        parserStrings = filter isString cfg.treesit;
+        parserPackages = filter isDerivation cfg.treesit;
+      in
+      nvim-treesitter.withPlugins (plugins: (attrVals parserStrings plugins) ++ parserPackages)
     else
       null;
+
+  finalPlugins =
+    (map (spec: spec.pkg) pluginSpecs)
+    ++ optional (treesitPackage != null) treesitPackage
+    ++ cfg.plugins;
+  lazyPluginFarm = pkgs.linkFarm "nvim-lazy-plugins" pluginPairs;
 in
 {
-  options = with lib; {
-    modules.app.editor.nvim = {
-      enable = mkEnableOption "Whether to enable nvim module";
-      enGui = mkBoolOpt config.modules.gui.enable;
-      plugins = mkOption {
-        type = pluginsOptionType;
-        default = [ ];
-      };
-      lsp = with types; mkOpt' (listOf str) [ ] "nvim 安装的 lsp 服务";
-
-      # NOTE: 如果你希望使用 nixpkgs 中自带的 nvim 插件，lazy.enable 选项必须为 true;
-      lazy.enable = mkBoolOpt true;
-      lazy.spec = mkOption {
-        type = types.lines;
-        default = "";
-      };
-      # NOTE: 是否使用 nix 管理 treesit（语法高亮树）
-      treesit = mkOption {
-        default = null;
-        type =
-          with types;
-          oneOf [
-            (nullOr str)
-            (listOf (oneOf [
-              str
-              package
-            ]))
-          ];
-      };
-      rc = mkOpt' types.lines "" ''
-        nvim configurations
-      '';
+  options.modules.app.editor.nvim = with types; {
+    enable = mkEnableOption "Whether to enable nvim module";
+    enGui = mkBoolOpt config.modules.gui.enable;
+    plugins = mkOption {
+      type = pluginsOptionType;
+      default = [ ];
+    };
+    treesit = mkOption {
+      default = "all";
+      type = oneOf [
+        (nullOr str)
+        (listOf (oneOf [
+          str
+          package
+        ]))
+      ];
+      description = "优先使用 nixpkgs 提供的 treesitter parser。";
     };
   };
-  # 使用lazyvim为基本配置: https://github.com/LazyVim/starter
-  config = mkIf cfg.enable (mkMerge [
-    {
-      env.MANPAGER = "nvim +Man!";
-      my.user.init.SyncNvim = ''
-        ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${my.paths.dotfiles.config}/nvim/ ${config.home.configDir}/nvim/
-      '';
-      home = {
-        configFile."nvim/nix.lua".text = ''
-           -- -*- mode: lua; -*-
-           _G.use_nix = true;
-           _G.nix = {}
-          -- 额外的自定义配置
-          ${cfg.rc}
-        '';
-        # @https://discourse.nixos.org/t/stuck-writing-my-first-package/19022/4
-        packages = [
-          # https://github.com/NixOS/nixpkgs/pull/352727
-          (mkIf cfg.enGui pkgs.neovide)
-          pkgs.glow
-        ];
-        programs.neovim = {
-          enable = true;
-          package = pkgs.neovim-unwrapped;
-          defaultEditor = true;
-          viAlias = true;
-          vimAlias = true;
-          withPython3 = true;
-          withRuby = true;
-          extraWrapperArgs = with pkgs; [
-            # LIBRARY_PATH is used by gcc before compilation to search directories
-            # containing static and shared libraries that need to be linked to your program.
-            "--suffix"
-            "LIBRARY_PATH"
-            ":"
-            "${lib.makeLibraryPath [
-              stdenv.cc.cc
-              zlib
-            ]}"
 
-            # PKG_CONFIG_PATH is used by pkg-config before compilation to search directories
-            # containing .pc files that describe the libraries that need to be linked to your program.
-            "--suffix"
-            "PKG_CONFIG_PATH"
-            ":"
-            "${lib.makeSearchPathOutput "dev" "lib/pkgconfig" [
-              stdenv.cc.cc
-              zlib
-            ]}"
-          ];
-          # NOTE: These plugins will not be used by astronvim by default!
-          # We should install packages that will compile locally or download FHS binaries via Nix!
-          # and use lazy.nvim's `dir` option to specify the package directory in nix store.
-          # so that these plugins can work on NixOS.
-          #
-          # related project:
-          #  https://github.com/b-src/lazy-nix-helper.nvim
-          inherit (cfg) plugins;
-        };
-      };
-    }
-    (mkIf cfg.lazy.enable {
-      modules.app.editor.nvim = {
-        plugins = with pkgs.vimPlugins; [
-          # search all the plugins using https://search.nixos.org/packages
-          telescope-fzf-native-nvim
-          astrotheme
-          lazy-nvim
-        ];
-        rc = mkOrder 10000 (
-          let
-            mkEntryFromDrv =
-              drv:
-              if isDerivation drv then
-                {
-                  name = "${lib.getName drv}";
-                  path = drv;
-                }
-              else
-                drv;
-            # (lib.subtractLists cfg.excludePlugins cfg.plugins ++ cfg.extraPlugins)
-            lazyPath = pkgs.linkFarm "lazy-plugins" (builtins.map mkEntryFromDrv cfg.plugins);
-          in
-          ''
-            -- 使用 nix 包管理器管理 lazy-nvim 插件
-            _G.nix.lazy = true
-            require("lazy").setup({
-              {
-                "AstroNvim/AstroNvim",
-                version = "^4", -- Remove version tracking to elect for nighly AstroNvim
-                import = "astronvim.plugins",
-                opts = { -- AstroNvim options must be set here with the `import` key
-                  mapleader = " ", -- This ensures the leader key must be configured before Lazy is set up
-                  maplocalleader = ",", -- This ensures the localleader key must be configured before Lazy is set up
-                  icons_enabled = true, -- Set to false to disable icons (if no Nerd Font is available)
-                  pin_plugins = nil, -- Default will pin plugins when tracking `version` of AstroNvim, set to true/false to override
-                },
-              },
-              { import = "community" },
-              { import = "plugins" },
-            },
-            {
-              ui = { backdrop = 100 },
-              install = { colorscheme = { "astrotheme" } },
-              check = {
-                order = false,
-              },
-              performance = {
-                rtp = {
-                  -- disable some rtp plugins, add more to your liking
-                  disabled_plugins = {
-                    "gzip",
-                    "netrwPlugin",
-                    "tarPlugin",
-                    "tohtml",
-                    "zipPlugin",
-                  },
-                },
-              },
-              defaults = {
-                lazy = true,
-              },
-              dev = {
-                path = "${lazyPath}",
-                patterns = { "" },
-                fallback = true,
-              },
-              rocks = {
-                enabled = false,
-              },
-              spec = {
-                -- The following configs are needed for fixing lazyvim on nix
-                -- force enable telescope-fzf-native.nvim
-                { "nvim-telescope/telescope-fzf-native.nvim", dev = true,},
-                {"AstroNvim/astrotheme", dev = true },
-                -- 导入相关配置
-                ${cfg.lazy.spec}
-              },
-            })
-          ''
-        );
-      };
-    })
-    (mkIf (treesit-list != null) {
-      modules.app.editor.nvim = {
-        plugins = [ pkgs.vimPlugins.nvim-treesitter ];
-        rc = "_G.nix.treesit = true";
-        lazy.spec = ''
-          -- treesitter handled by my.neovim.treesitterParsers, put this line at the end of spec to clear ensure_installed
-          {
-            "nvim-treesitter/nvim-treesitter",
-            dev = true,
-            opts = function(_, opts)
-              opts.ensure_installed = {}
-              opts.parser_install_dir = "${config.home.configDir}/nvim/parser"
-            end
+  config = mkIf cfg.enable {
+    env.MANPAGER = "nvim +Man!";
+
+    my.user.init.SyncNvim = ''
+      ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${my.paths.dotfiles.config}/nvim/ ${config.home.configDir}/nvim/
+    '';
+
+    home = {
+      configFile."nvim/nix.lua".text = ''
+        _G.use_nix = true
+        _G.nix = {
+          lazy_plugin_dir = ${builtins.toJSON "${lazyPluginFarm}"},
+          treesitter_parser_dir = ${
+            if treesitPackage == null then "nil" else builtins.toJSON "${config.home.configDir}/nvim/parser"
           },
-        '';
-      };
-      home.configFile."nvim/parser" = {
+        }
+      '';
+
+      configFile."nvim/parser" = mkIf (treesitPackage != null) {
         source =
           let
             parsers = pkgs.symlinkJoin {
               name = "treesitter-parsers";
-              paths = treesit-list.dependencies;
+              paths = treesitPackage.dependencies;
             };
           in
           "${parsers}/parser";
         recursive = true;
       };
-      # modules.app.editor.nvim.rc = ''
-      #   _G.nix.treesitSoPath = "${config.home.dataDir}/nvim-treesit-parsers"
-      #   vim.opt.runtimepath:prepend("${config.home.dataDir}/nvim-treesit-parsers/parser")
-      # '';
-    })
-  ]);
+
+      packages = [
+        (mkIf cfg.enGui pkgs.neovide)
+        pkgs.glow # markdown tui
+        pkgs.tree-sitter
+        (mkIf (!config.modules.dev.nix.enable) pkgs.nil)
+      ]
+      ++ optionals (!config.modules.dev.lua.enable) [
+        pkgs.lua-language-server
+        pkgs.stylua
+      ]
+      ++ optionals (!config.modules.dev.bash.enable) [
+        pkgs.shfmt
+        pkgs.shellcheck
+      ];
+
+      programs.neovim = {
+        enable = true;
+        package = pkgs.neovim-unwrapped;
+        defaultEditor = true;
+        viAlias = true;
+        vimAlias = true;
+        withPython3 = true;
+        withRuby = true;
+        plugins = finalPlugins;
+        extraWrapperArgs = with pkgs; [
+          "--suffix"
+          "LIBRARY_PATH"
+          ":"
+          "${lib.makeLibraryPath [
+            stdenv.cc.cc
+            zlib
+          ]}"
+          "--suffix"
+          "PKG_CONFIG_PATH"
+          ":"
+          "${lib.makeSearchPathOutput "dev" "lib/pkgconfig" [
+            stdenv.cc.cc
+            zlib
+          ]}"
+        ];
+      };
+    };
+  };
 }

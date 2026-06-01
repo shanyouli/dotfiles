@@ -23,7 +23,7 @@ in
     zsh = mkBoolOpt false;
     bash = mkBoolOpt false;
     nushell = mkBoolOpt true;
-    package = mkPackageOption pkgs.unstable "carapace" { };
+    package = mkPackageOption pkgs "carapace" { };
   };
   config = mkIf cfg.enable {
     home.packages = [ cfg.package ];

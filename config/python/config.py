@@ -151,8 +151,8 @@ def setup_runtime():
     else:
         from pprint import pprint
 
-        sys.displayhook = (
-            lambda v: [pprint(v), setattr(sys.modules["builtins"], "_", v)]
+        sys.displayhook = lambda v: (
+            [pprint(v), setattr(sys.modules["builtins"], "_", v)]
             if v is not None
             else None
         )
@@ -168,7 +168,9 @@ if __name__ == "__main__":
         "P",
         (),
         {
-            "__str__": lambda s: f"{C.GRA}[{time.strftime('%H:%M:%S')}]{C.RST} {C.YEL}🐍{C.RST} {C.GRN}❯{C.RST} "
+            "__str__": lambda s: (
+                f"{C.GRA}[{time.strftime('%H:%M:%S')}]{C.RST} {C.YEL}🐍{C.RST} {C.GRN}❯{C.RST} "
+            )
         },
     )()
     sys.ps2 = f"{C.RED}.. {C.RST}"

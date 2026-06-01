@@ -67,7 +67,7 @@ in
       ];
     };
     modules = {
-      app.editor.vscode.extensions = [ pkgs.unstable.vscode-extensions.mkhl.direnv ];
+      app.editor.vscode.extensions = [ pkgs.vscode-extensions.mkhl.direnv ];
       shell = {
         zsh = {
           rcInit = "_cache -v ${cfg.package.version} direnv hook zsh";

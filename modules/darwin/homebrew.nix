@@ -80,7 +80,7 @@ in
         onActivation = {
           autoUpdate = false;
           cleanup = "zap";
-          # extraFlags = [ "--verbose"];
+          extraFlags = [ "--force-cleanup" ];
         };
         global = {
           brewfile = true;

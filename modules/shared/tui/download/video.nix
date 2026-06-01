@@ -18,8 +18,8 @@ in
   config = mkIf cfg.enable {
     home.packages = [
       pkgs.yt-dlp
-      # pkgs.unstable.yutto # 使用 pipx 安装
-      pkgs.unstable.lux
+      # pkgs.yutto # 使用 pipx 安装
+      pkgs.lux
       pkgs.fav
     ]; # yutto 下载bilibili
     home.configFile."yt-dlp/config".text = ''

@@ -105,7 +105,7 @@ in
       };
     };
     home = {
-      packages = [ cfg.finalPackage ] ++ optionals cfg.dev.enable [ pkgs.unstable.geckodriver ];
+      packages = [ cfg.finalPackage ] ++ optionals cfg.dev.enable [ pkgs.geckodriver ];
       file = mkMerge [
         {
           "${cfgConfDir}/profiles.ini".text = ''

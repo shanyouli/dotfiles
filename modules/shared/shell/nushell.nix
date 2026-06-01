@@ -183,10 +183,7 @@ in
           };
         };
       };
-      nvim.lsp = [ "nushell" ];
-      vscode.extensions = with pkgs.unstable.vscode-extensions; [
-        thenuprojectcontributors.vscode-nushell-lang
-      ];
+      vscode.extensions = with pkgs.vscode-extensions; [ thenuprojectcontributors.vscode-nushell-lang ];
     };
   };
 }

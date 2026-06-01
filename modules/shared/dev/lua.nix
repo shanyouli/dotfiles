@@ -41,7 +41,6 @@ in
   };
   config = mkIf cfg.enable {
     modules = {
-      app.editor.nvim.lsp = [ "lua_ls" ];
       dev.lua = {
         extraPkgs =
           ps: with ps; [

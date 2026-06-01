@@ -18,5 +18,5 @@ in
   options.modules.media.music.mpd.rmpc = {
     enable = mkEnableOption "Whether to use rmpc";
   };
-  config = mkIf cfg.enable { home.packages = [ pkgs.unstable.rmpc ]; };
+  config = mkIf cfg.enable { home.packages = [ pkgs.rmpc ]; };
 }

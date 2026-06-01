@@ -5,6 +5,11 @@ default:
 init target="auto":
     case "{{ target }}" in auto) target=$([ "$(uname -s)" = "Darwin" ] && echo darwin || echo linux) ;; darwin|linux) target="{{ target }}" ;; *) echo "usage: just init [darwin|linux]" >&2; exit 2 ;; esac; flake_root="./flake/$target"; ln -f "$flake_root/flake.nix" ./flake.nix; ln -f "$flake_root/flake.lock" ./flake.lock; echo "linked $flake_root/{flake.nix,flake.lock} -> ./"
 
+reset-flake-root:
+    printf '%s\n' 'throw "Please run `just init [darwin|linux]` first."' > flake.nix
+    : > flake.lock
+    echo "reset flake.nix and flake.lock to default placeholders"
+
 # nvfetcher update package src
 @src PKG:
     echo "update src: {{ PKG }}"

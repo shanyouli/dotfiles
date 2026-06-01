@@ -15,7 +15,7 @@ in
   options.modules.dev.python.uv = {
     enable = mkEnableOption "Whether to use uv";
     manager = mkBoolOpt cfg.enable; # 为 true时，使用 uv 管理 python 版本.
-    package = mkPackageOption pkgs.unstable "uv" { };
+    package = mkPackageOption pkgs "uv" { };
   };
   config = mkIf cfg.enable (mkMerge [
     { home.packages = [ cfg.package ]; }

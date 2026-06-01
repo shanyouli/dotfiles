@@ -35,7 +35,7 @@ in
     }
     (mkIf pkgs.stdenvNoCC.isLinux {
       home.packages = [ pkgs.tomb ];
-      home.services.gpg-agent = {
+      home.hmServices.gpg-agent = {
         enable = true;
         defaultCacheTtl = cfg.cacheTTL;
         defaultCacheTtlSsh = cfg.cacheTTL;

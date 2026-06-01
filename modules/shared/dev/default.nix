@@ -33,7 +33,7 @@ in
         (mkIf cfg.json.enable pkgs.vscode-json-languageserver)
       ]
       ++ lib.optionals cfg.ai.enable (
-        with pkgs.unstable;
+        with pkgs;
         [
           opencode # opencode 出品的工具
           gemini-cli # google 出品

@@ -268,7 +268,7 @@
       };
       yabai = {
         enable = true;
-        package = pkgs.unstable.yabai;
+        package = pkgs.yabai;
         border.enable = false;
         keep.enable = false;
       };

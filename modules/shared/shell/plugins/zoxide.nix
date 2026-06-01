@@ -14,7 +14,7 @@ in
 {
   options.modules.shell.zoxide = {
     enable = mkEnableOption "Whether to use zoxide";
-    package = mkPackageOption pkgs.unstable "zoxide" { };
+    package = mkPackageOption pkgs "zoxide" { };
   };
   config = mkIf cfg.enable {
     home.packages = [ cfg.package ];

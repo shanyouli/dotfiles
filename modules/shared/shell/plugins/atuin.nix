@@ -11,7 +11,7 @@ with my;
 let
   cfm = config.modules;
   cfg = cfm.shell.atuin;
-  package = pkgs.unstable.atuin;
+  package = pkgs.atuin;
 in
 {
   options.modules.shell.atuin = {

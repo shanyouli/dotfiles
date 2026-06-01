@@ -126,16 +126,16 @@ in
             epkgs.emacs-reader
           ]
           ++ optionals cfg.rime.enable [
-            # epkgs.unstable.rimel
-            ((epkgs.unstable.rimel.override { inherit (epkgs.unstable) liberime; }).overrideAttrs (oldAttrs: {
-              # 在构建环境中，将 $HOME 指向一个可写入的临时目录
-              buildPhase = ''
-                export HOME="$TMPDIR"
-                runHook preBuild
-                ${oldAttrs.buildPhase or ""}
-                runHook postBuild
-              '';
-            }))
+            epkgs.rimel
+            # ((epkgs.rimel.override { inherit (epkgs.unstable) liberime; }).overrideAttrs (oldAttrs: {
+            #   # 在构建环境中，将 $HOME 指向一个可写入的临时目录
+            #   buildPhase = ''
+            #     export HOME="$TMPDIR"
+            #     runHook preBuild
+            #     ${oldAttrs.buildPhase or ""}
+            #     runHook postBuild
+            #   '';
+            # }))
             # epkgs.unstable.liberime
           ]
           ++ optionals config.modules.just.enable [

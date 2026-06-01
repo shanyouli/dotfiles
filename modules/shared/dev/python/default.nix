@@ -123,7 +123,6 @@ in
             pylint-venv
           ];
         app.editor = {
-          nvim.lsp = [ "basedpyright" ];
           helix = {
             # extraPackages = with pkgs; [];
             languages = {

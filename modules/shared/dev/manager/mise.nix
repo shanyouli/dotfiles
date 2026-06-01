@@ -24,7 +24,7 @@ in
       ]);
       default = { };
     };
-    package = mkPackageOption pkgs.unstable "mise" { };
+    package = mkPackageOption pkgs "mise" { };
     text = mkOpt' lines "" "init mise script";
     prevInit = mkOpt' lines "" "prev mise env";
     extInit = mkOpt' lines "" "extra mise Init";

@@ -17,7 +17,7 @@ in
     extensions = mkOpt' (types.listOf types.package) [ ] "VScode extensions";
   };
   config = mkIf cfg.enable {
-    modules.app.editor.vscode.extensions = with pkgs.unstable.vscode-extensions; [
+    modules.app.editor.vscode.extensions = with pkgs.vscode-extensions; [
       vscodevim.vim
       jnoortheen.nix-ide
       formulahendry.code-runner
