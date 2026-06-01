@@ -26,7 +26,7 @@
         packages = [
           pkgs.cachix
           pkgs.just
-          pkgs.nixd
+          pkgs.nil
         ];
         shellHook = ''
           FLAKE_ROOT=$(${lib.getExe pkgs.git} rev-parse --show-toplevel)
@@ -54,17 +54,7 @@
             echo "treefmt-nix: Created symlink successfully"
           fi
         ''
-        + lib.optionalString (inputs ? git-hooks-nix) config.pre-commit.settings.installationScript
-        + ''
-          git config --local --unset core.hooksPath >/dev/null 2>&1 || true
-          hook_source="$FLAKE_ROOT/bin/git-hook-flake-root-link"
-          if [ -x "$hook_source" ]; then
-            for hook in post-commit post-checkout post-merge; do
-              cp "$hook_source" "$FLAKE_ROOT/.git/hooks/$hook"
-              chmod +x "$FLAKE_ROOT/.git/hooks/$hook"
-            done
-          fi
-        '';
+        + lib.optionalString (inputs ? git-hooks-nix) config.pre-commit.settings.installationScript;
       };
     };
 }

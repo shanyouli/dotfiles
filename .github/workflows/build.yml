@@ -115,10 +115,10 @@ jobs:
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
-      - name: Link platform flake
-        run: |
-          set -euo pipefail
-          nix run nixpkgs#just -- init
+      - name: Setup Nushell
+        uses: hustcer/setup-nu@v3
+      - name: Setup just
+        uses: extractions/setup-just@v3
       - uses: cachix/cachix-action@v17
         with:
           name: "shanyouli"
@@ -133,7 +133,7 @@ jobs:
           fi
       - name: Run Flake Checks
         run: |
-          nix flake check --no-write-lock-file --show-trace --impure
+          just check
         timeout-minutes: 240
   merge-to-master:
     needs:

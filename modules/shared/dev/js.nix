@@ -88,11 +88,17 @@ in
         AUBE_GLOBAL_BIN_DIR = "$XDG_DATA_HOME/aube/bin";
         PATH = [
           (mkIf (cfg.manager.name == "pnpm") "$XDG_DATA_HOME/pnpm/bin")
-          (mkIf (cfg.manager.name == "deno") "$DENO_INSTALL_ROOT/bin")
           (mkIf (cfg.manager.name == "yarn") "$YARN_GLOBAL_FOLDER/bin")
-          (mkIf (cfg.manager.name == "bun") "$BUN_INSTALL/bin")
           (mkIf (cfg.manager.name == "npm") "$XDG_CACHE_HOME/npm/bin")
           (mkIf (cfg.manager.name == "aube") "$AUBE_GLOBAL_BIN_DIR")
+          (mkIf (builtin.elem "bun" [
+            cfg.manager.name
+            cfg.node.env
+          ]) "$BUN_INSTALL/bin")
+          (mkIf (builtin.elem "deno" [
+            cfg.manager.name
+            cfg.node.env
+          ]) "$DENO_INSTALL_ROOT/bin")
         ];
       };
     }

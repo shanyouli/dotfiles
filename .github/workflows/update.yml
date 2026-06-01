@@ -27,6 +27,10 @@ jobs:
           # FIXME: https://github.com/NixOS/nix/issues/9889
           extra_nix_config: |
             experimental-features = nix-command flakes configurable-impure-env auto-allocate-uids
+      - name: Setup Nushell
+        uses: hustcer/setup-nu@v3
+      - name: Setup just
+        uses: extractions/setup-just@v3
       - name: Prepare flakebot branch
         run: |
           git config --local user.email "flakebot@users.noreply.github.com"
@@ -37,8 +41,7 @@ jobs:
         run: |
           set -euo pipefail
           before_commit="$(git rev-parse HEAD)"
-          nix run nixpkgs#just -- init linux
-          nix run -v --impure .#update
+          just update-flake-inputs linux
           after_commit="$(git rev-parse HEAD)"
           if [[ "$before_commit" == "$after_commit" ]]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
