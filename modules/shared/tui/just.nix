@@ -16,6 +16,13 @@ in
 {
   options.modules.just = {
     enable = mkEnableOption "Whether to use just";
+    package = mkPackageOption pkgs "just" { };
   };
-  config = mkIf cfg.enable { home.packages = [ pkgs.just ]; };
+  config = mkIf cfg.enable {
+    home.packages = [
+      cfg.package
+      pkgs.just-lsp
+      pkgs.just-formatter
+    ];
+  };
 }
