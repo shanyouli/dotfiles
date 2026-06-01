@@ -201,6 +201,10 @@ yabai -m rule --add app='^([eE]macs)$' title='^EmacsClient.*$' manage=off grid=4
 if ("/Applications/Hammerspoon.app" | path exists) {
   if (ps | where name == "Hammerspoon" | is-empty) {
     ^open -a /Applications/Hammerspoon.app
+  } else {
+    if (which hs | is-not-empty) {
+      ^hs -c 'pcall(function() require("modules.yabai").actions["re-register"]() end); return true'
+    }
   }
   yabai -m rule --add app="^Hammerspoon$" manage=off sticky=on opacity=1
 }
