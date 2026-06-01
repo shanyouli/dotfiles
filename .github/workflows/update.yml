@@ -41,7 +41,7 @@ jobs:
         run: |
           set -euo pipefail
           before_commit="$(git rev-parse HEAD)"
-          just update-flake-inputs linux
+          just ci update
           after_commit="$(git rev-parse HEAD)"
           if [[ "$before_commit" == "$after_commit" ]]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
