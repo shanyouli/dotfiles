@@ -10,6 +10,14 @@ with my;
 let
   cfg = config.modules.app.editor.nvim;
 
+  parserRevision =
+    dep:
+    let
+      depName = dep.name or (builtins.baseNameOf (toString dep));
+      revMatch = builtins.match ".*\\+rev=([^+]+)$" depName;
+    in
+    if revMatch != null then builtins.head revMatch else dep.version or depName;
+
   pluginSpecs = [
     {
       repo = "folke/lazy.nvim";
@@ -261,6 +269,36 @@ let
     ++ optional (treesitPackage != null) treesitPackage
     ++ cfg.plugins;
   lazyPluginFarm = pkgs.linkFarm "nvim-lazy-plugins" pluginPairs;
+  treesitSitePackage =
+    if treesitPackage == null then
+      null
+    else
+      pkgs.runCommandLocal "nvim-treesitter-site" { } ''
+        mkdir -p "$out/parser" "$out/parser-info"
+
+        if [ -d "${treesitPackage}/queries" ]; then
+          ln -s "${treesitPackage}/queries" "$out/queries"
+        fi
+
+        ${lib.concatMapStringsSep "\n" (
+          dep:
+          let
+            revision = parserRevision dep;
+            parserDir = "${dep}/parser";
+          in
+          ''
+            if [ -d "${parserDir}" ]; then
+              for parser in "${parserDir}"/*.so; do
+                [ -e "$parser" ] || continue
+                name=$(basename "$parser")
+                lang=''${name%.so}
+                ln -sf "$parser" "$out/parser/$name"
+                printf '%s\n' '${revision}' > "$out/parser-info/$lang.revision"
+              done
+            fi
+          ''
+        ) treesitPackage.dependencies}
+      '';
 in
 {
   options.modules.app.editor.nvim = with types; {
@@ -295,21 +333,14 @@ in
         _G.use_nix = true
         _G.nix = {
           lazy_plugin_dir = ${builtins.toJSON "${lazyPluginFarm}"},
-          treesitter_parser_dir = ${
-            if treesitPackage == null then "nil" else builtins.toJSON "${config.home.configDir}/nvim/parser"
+          treesitter_install_dir = ${
+            if treesitPackage == null then "nil" else builtins.toJSON "${config.home.dataDir}/nvim/site"
           },
         }
       '';
 
-      configFile."nvim/parser" = mkIf (treesitPackage != null) {
-        source =
-          let
-            parsers = pkgs.symlinkJoin {
-              name = "treesitter-parsers";
-              paths = treesitPackage.dependencies;
-            };
-          in
-          "${parsers}/parser";
+      dataFile."nvim/site" = mkIf (treesitSitePackage != null) {
+        source = treesitSitePackage;
         recursive = true;
       };
 
