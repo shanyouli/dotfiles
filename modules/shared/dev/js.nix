@@ -91,11 +91,11 @@ in
           (mkIf (cfg.manager.name == "yarn") "$YARN_GLOBAL_FOLDER/bin")
           (mkIf (cfg.manager.name == "npm") "$XDG_CACHE_HOME/npm/bin")
           (mkIf (cfg.manager.name == "aube") "$AUBE_GLOBAL_BIN_DIR")
-          (mkIf (builtin.elem "bun" [
+          (mkIf (builtins.elem "bun" [
             cfg.manager.name
             cfg.node.env
           ]) "$BUN_INSTALL/bin")
-          (mkIf (builtin.elem "deno" [
+          (mkIf (builtins.elem "deno" [
             cfg.manager.name
             cfg.node.env
           ]) "$DENO_INSTALL_ROOT/bin")
