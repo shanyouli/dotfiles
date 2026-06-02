@@ -1,32 +1,39 @@
+#!/usr/bin/env nu
 use std log
 
 # Print a section banner with BEGIN/END markers.
 export def --env tip [--end (-e), ...msg] {
     let log_level = log log-level | get INFO
+    let log_format = "%ANSI_START%%MSG%%ANSI_STOP%"
     let term_col = term size | get columns
     let msg_str = $msg | str join " "
 
     if $end {
-        let line = $" ($msg_str), END " | fill --alignment c --character "-" --width $term_col
-        log custom -a (ansi blue_dimmed) $line "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
+        let line = $" ($msg_str), END "
+            | fill --alignment c --character "-" --width $term_col
+        log custom -a (ansi blue_dimmed) $line $log_format $log_level
     } else {
-        let line = $" ($msg_str), BEGIN " | fill --alignment c --character "-" --width $term_col
-        log custom -a (ansi blue_bold) $line "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
+        let line = $" ($msg_str), BEGIN "
+            | fill --alignment c --character "-" --width $term_col
+        log custom -a (ansi blue_bold) $line $log_format $log_level
     }
 }
 
 # Print a subsection banner with stronger separators.
 export def --env "log t" [--end (-e), ...msg] {
     let log_level = log log-level | get INFO
+    let log_format = "%ANSI_START%%MSG%%ANSI_STOP%"
     let term_col = term size | get columns
     let msg_str = $msg | str join " "
 
     if $end {
-        let line = $" ($msg_str), END " | fill --alignment c --character "=" --width $term_col
-        log custom -a (ansi blue_dimmed) $line "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
+        let line = $" ($msg_str), END "
+            | fill --alignment c --character "=" --width $term_col
+        log custom -a (ansi blue_dimmed) $line $log_format $log_level
     } else {
-        let line = $" ($msg_str), BEGIN " | fill --alignment c --character "=" --width $term_col
-        log custom -a (ansi blue_bold) $line "%ANSI_START%%MSG%%ANSI_STOP%" $log_level
+        let line = $" ($msg_str), BEGIN "
+            | fill --alignment c --character "=" --width $term_col
+        log custom -a (ansi blue_bold) $line $log_format $log_level
     }
 }
 
@@ -61,9 +68,13 @@ export def detect-arch [] {
     }
 }
 
-# Resolve the current root flake symlink target name from flake.nix hard link/symlink.
+# Resolve the current root flake target from `flake.nix`.
 export def current-root-target [] {
-    if ("flake.darwinConfigurations" in (^rg -n "flake\\.darwinConfigurations" flake.nix | complete | get stdout)) {
+    let match = do {
+        ^rg -q "flake\\.darwinConfigurations" flake.nix
+    } | complete
+
+    if $match.exit_code == 0 {
         "darwin"
     } else {
         "linux"
@@ -91,11 +102,8 @@ export def days-until-next-month [] {
 
 # Decide whether stable inputs should be updated this week.
 export def should-update-stable-inputs [] {
-    let today = date now
-    let weekday = ($today | format date "%u" | into int)
     let remaining_days = days-until-next-month
-
-    $weekday == 6 and $remaining_days <= 7
+    $remaining_days <= 7
 }
 
 # Build the default host name from user, arch and current target.
@@ -111,7 +119,11 @@ export def resolve-target [target: string = "auto"] {
         "auto" => (detect-target)
         "darwin" => "darwin"
         "linux" => "linux"
-        _ => (error make { msg: "usage: target must be one of auto|darwin|linux" })
+        _ => (
+            error make {
+                msg: "usage: target must be one of auto|darwin|linux"
+            }
+        )
     }
 }
 
@@ -129,7 +141,11 @@ export def resolve-flake-attr [flake_type?: string] {
             "darwin" => "darwinConfigurations"
             "linux" => "nixosConfigurations"
             "home" => "homeConfigurations"
-            _ => (error make { msg: "type must be one of darwin|linux|home" })
+            _ => (
+                error make {
+                    msg: "type must be one of darwin|linux|home"
+                }
+            )
         }
     }
 }
@@ -152,9 +168,10 @@ export def --env init [target: string = "auto"] {
 # Restore placeholder root flake files.
 export def --env reset-flake-root [] {
     init-log "just reset-flake-root"
+    let placeholder = 'throw "Please run `just init [darwin|linux]` first."'
 
     log t "Reset root flake placeholders"
-    'throw "Please run `just init [darwin|linux]` first."' | save --force flake.nix
+    $placeholder | save --force flake.nix
     "" | save --force flake.lock
     log info "reset flake.nix and flake.lock to default placeholders"
     log t -e "Reset root flake placeholders"
@@ -214,7 +231,10 @@ export def --env with-root-flake [closure: closure, target: string = "auto"] {
 }
 
 # Run a closure in CI mode and keep skip-worktree disabled afterwards.
-export def --env with-ci-root-flake [closure: closure, target: string = "auto"] {
+export def --env with-ci-root-flake [
+    closure: closure
+    target: string = "auto"
+] {
     let resolved = resolve-target $target
     log info $"ci mode: leave skip-worktree disabled for ($resolved)"
     root-flake-open $resolved
@@ -228,7 +248,7 @@ export def --env run-nix [...args] {
     end-log "just nix"
 }
 
-# Return the attribute path used by `nix flake metadata` for current root inputs.
+# Return the current root flake input names from metadata.
 export def current-input-names [] {
     ^nix flake metadata --json
     | from json
@@ -237,29 +257,12 @@ export def current-input-names [] {
     | sort
 }
 
-# Return common update inputs for one target flake.
+# Return the non-stable root inputs for one target flake.
 export def common-update-inputs [target: string] {
-    match (resolve-target $target) {
-        "linux" => [
-            "nixpkgs"
-            "flake-parts"
-            "flake-utils"
-            "flake-compat"
-            "nurpkgs"
-            "treefmt-nix"
-            "git-hooks-nix"
-        ]
-        "darwin" => [
-            "nixpkgs"
-            "flake-parts"
-            "flake-utils"
-            "flake-compat"
-            "nurpkgs"
-            "treefmt-nix"
-            "git-hooks-nix"
-            "mac-app-util"
-        ]
-    }
+    let stable_inputs = stable-update-inputs (resolve-target $target)
+
+    current-input-names
+    | where {|input| $input not-in $stable_inputs }
 }
 
 # Return stable update inputs for one target flake.
@@ -274,6 +277,41 @@ export def stable-update-inputs [target: string] {
             "home-manager"
             "darwin"
         ]
+    }
+}
+
+def stable-update-context [] {
+    {
+        remaining_days: (days-until-next-month)
+        weekday: (date now | format date "%u")
+    }
+}
+
+def log-stable-update [] {
+    let msg = [
+        "update stable inputs:"
+        "within 7 days of the next month"
+    ] | str join " "
+
+    log info $msg
+}
+
+def log-skip-stable [] {
+    let status = stable-update-context
+    let msg = [
+        "skip stable inputs;"
+        $"weekday=($status.weekday),"
+        $"days-until-next-month=($status.remaining_days)"
+    ] | str join " "
+
+    log info $msg
+}
+
+def resolve-update-inputs [...inputs] {
+    if (($inputs | length) == 1 and ($inputs | first) == "all") {
+        current-input-names
+    } else {
+        $inputs
     }
 }
 
@@ -297,39 +335,40 @@ export def --env update-root-flake [] {
         update-current-root-inputs ...(common-update-inputs $target)
 
         if (should-update-stable-inputs) {
-            log info "update stable inputs: now is within 7 days of next month and today is Saturday"
+            log-stable-update
             update-current-root-inputs ...(stable-update-inputs $target)
         } else {
-            let remaining_days = days-until-next-month
-            let weekday = (date now | format date "%u")
-            log info $"skip stable inputs; weekday=($weekday), days-until-next-month=($remaining_days)"
+            log-skip-stable
         }
     }
 
     end-log "just update"
 }
 
-# Update selected inputs for the current root flake, or all root inputs when requested.
+# Update selected inputs for the current root flake.
 export def --env update-root-inputs [...inputs] {
-    init-log "just update-inputs"
+    init-log "just update"
 
     with-root-flake { ||
-        let actual_inputs = if (($inputs | length) == 1 and ($inputs | first) == "all") {
-            current-input-names
-        } else {
-            $inputs
-        }
-
+        let actual_inputs = resolve-update-inputs ...$inputs
         update-current-root-inputs ...$actual_inputs
     }
 
-    end-log "just update-inputs"
+    end-log "just update"
 }
 
 # Stage both target flake files that are intended to be versioned.
 export def --env stage-flake-input-files [] {
     log t "Stage flake input files"
-    ^git add flake/linux/flake.nix flake/linux/flake.lock flake/darwin/flake.nix flake/darwin/flake.lock
+
+    let files = [
+        flake/linux/flake.nix
+        flake/linux/flake.lock
+        flake/darwin/flake.nix
+        flake/darwin/flake.lock
+    ]
+
+    ^git add ...$files
     log t -e "Stage flake input files"
 }
 
@@ -368,15 +407,13 @@ export def --env ci-update-flake-inputs [] {
         update-current-root-inputs ...(common-update-inputs darwin)
 
         if (should-update-stable-inputs) {
-            log info "update stable inputs: now is within 7 days of next month and today is Saturday"
+            log-stable-update
             init linux
             update-current-root-inputs ...(stable-update-inputs linux)
             init darwin
             update-current-root-inputs ...(stable-update-inputs darwin)
         } else {
-            let remaining_days = days-until-next-month
-            let weekday = (date now | format date "%u")
-            log info $"skip stable inputs; weekday=($weekday), days-until-next-month=($remaining_days)"
+            log-skip-stable
         }
 
         stage-flake-input-files
@@ -398,6 +435,50 @@ export def --env run-flake-check [] {
 # Run CI flake checks and allow lock refreshes.
 export def run-flake-check-in-session [] {
     ^nix flake check --show-trace --impure
+}
+
+def home-manager-run-base [] {
+    [
+        "run"
+        "-v"
+        "--experimental-features"
+        "nix-command flakes"
+        "--extra-substituters"
+        "https://shanyouli.cachix.org"
+        "--impure"
+        "github:nix-community/home-manager"
+        "--no-write-lock-file"
+        "--"
+    ]
+}
+
+def run-home-manager [action: string, flake_ref: string] {
+    let args = (home-manager-run-base) ++ [
+            $action
+            "--flake"
+            $flake_ref
+            "-b"
+            "backup"
+            "--show-trace"
+        ]
+
+    ^nix ...$args
+}
+
+def os-build-ref [flake_attr: string, host: string] {
+    $".#($flake_attr).($host).config.system.build.toplevel"
+}
+
+def --wrapped run-nix-build-command [...args] {
+    ^nix build ...$args
+}
+
+def --wrapped run-nixos-rebuild [...args] {
+    ^./result/sw/bin/nixos-rebuild ...$args
+}
+
+def --wrapped run-darwin-rebuild [...args] {
+    ^./result/sw/bin/darwin-rebuild ...$args
 }
 
 # Run CI flake checks, then commit lock updates when they appear.
@@ -435,30 +516,38 @@ export def --env build-ci [
 
     let flake_attr = resolve-flake-attr $type
     let system_target = detect-target
+    let resolved_host = $host | default (default-host)
 
     log t "Resolve execution context"
-    log info $"system=($system_target), host=($host | default (default-host)), flakeAttr=($flake_attr)"
+    let context_msg = [
+        $"system=($system_target),"
+        $"host=($resolved_host),"
+        $"flakeAttr=($flake_attr)"
+    ] | str join " "
+    log info $context_msg
     log t -e "Resolve execution context"
 
     if $subcmd == "test" {
         if $flake_attr == "homeConfigurations" {
-            ^nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake ".#test" -b backup --show-trace
+            run-home-manager build ".#test"
         } else {
             let platform = $"(detect-arch)-($system_target)"
-            ^nix build $".#($flake_attr).test@($platform).config.system.build.toplevel" ...$common_options ...$rest
+            let flake_ref = os-build-ref $flake_attr $"test@($platform)"
+            let args = [ $flake_ref ] ++ $common_options ++ $rest
+            run-nix-build-command ...$args
         }
 
         end-log $"buildCI ($subcmd)"
         return
     }
 
-    let target_host = if $host == null { default-host } else { $host }
-
     if $subcmd == "build" {
         if $flake_attr == "homeConfigurations" {
-            ^nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- build --flake $".#($target_host)" -b backup --show-trace
+            run-home-manager build $".#($resolved_host)"
         } else {
-            ^nix build $".#($flake_attr).($target_host).config.system.build.toplevel" ...$common_options ...$rest
+            let flake_ref = os-build-ref $flake_attr $resolved_host
+            let args = [ $flake_ref ] ++ $common_options ++ $rest
+            run-nix-build-command ...$args
         }
 
         end-log $"buildCI ($subcmd)"
@@ -467,16 +556,39 @@ export def --env build-ci [
 
     if $subcmd == "switch" {
         if $flake_attr == "homeConfigurations" {
-            ^nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- switch --flake $".#($target_host)" -b backup --show-trace
+            run-home-manager switch $".#($resolved_host)"
         } else {
-            let flake_ref = $".#($flake_attr).($target_host).config.system.build.toplevel"
+            let flake_ref = os-build-ref $flake_attr $resolved_host
             log info $"build flake ref: ($flake_ref)"
-            ^nix build -v --experimental-features "nix-command flakes" $flake_ref ...$common_options ...$rest
+
+            let build_args = [
+                "-v"
+                "--experimental-features"
+                "nix-command flakes"
+                $flake_ref
+            ] ++ $common_options ++ $rest
+
+            run-nix-build-command ...$build_args
+
+            let switch_args = [
+                "switch"
+                "--flake"
+                $".#($resolved_host)"
+                "--impure"
+            ]
 
             match $flake_attr {
-                "darwinConfigurations" => { ^./result/sw/bin/darwin-rebuild switch --flake $".#($target_host)" --impure }
-                "nixosConfigurations" => { ^./result/sw/bin/nixos-rebuild switch --flake $".#($target_host)" --impure }
-                _ => (error make { msg: $"unsupported flake attr for switch: ($flake_attr)" })
+                "darwinConfigurations" => {
+                    run-darwin-rebuild ...$switch_args
+                }
+                "nixosConfigurations" => {
+                    run-nixos-rebuild ...$switch_args
+                }
+                _ => (
+                    error make {
+                        msg: $"unsupported flake attr for switch: ($flake_attr)"
+                    }
+                )
             }
         }
 
@@ -503,10 +615,21 @@ export def --env run-build-ci [
 export def nixos-switch [name: string, mode: string = "default"] {
     print $"nixos-switch '($name)' in '($mode)' mode..."
     if $mode == "debug" {
-        ^nix build $".#nixosConfigurations.($name).config.system.build.toplevel" --show-trace --verbose
-        ^./result/sw/bin/nixos-rebuild switch --flake $".#($name)" --impure --show-trace --verbose
+        let flake_ref = os-build-ref "nixosConfigurations" $name
+        run-nix-build-command $flake_ref --show-trace --verbose
+
+        let args = [
+            "switch"
+            "--flake"
+            $".#($name)"
+            "--impure"
+            "--show-trace"
+            "--verbose"
+        ]
+
+        run-nixos-rebuild ...$args
     } else {
-        ^./result/sw/bin/nixos-rebuild switch --flake $".#($name)" --impure
+        run-nixos-rebuild switch --flake $".#($name)" --impure
     }
 }
 
@@ -514,10 +637,25 @@ export def nixos-switch [name: string, mode: string = "default"] {
 export def darwin-build [name: string, mode: string = "default"] {
     print $"darwin-build '($name)' in '($mode)' mode..."
     let target = $".#darwinConfigurations.($name).system"
+
     if $mode == "debug" {
-        ^nix build $target --extra-experimental-features "nix-command flakes" --show-trace --verbose
+        let args = [
+            $target
+            "--extra-experimental-features"
+            "nix-command flakes"
+            "--show-trace"
+            "--verbose"
+        ]
+
+        run-nix-build-command ...$args
     } else {
-        ^nix build $target --extra-experimental-features "nix-command flakes"
+        let args = [
+            $target
+            "--extra-experimental-features"
+            "nix-command flakes"
+        ]
+
+        run-nix-build-command ...$args
     }
 }
 
@@ -525,18 +663,27 @@ export def darwin-build [name: string, mode: string = "default"] {
 export def darwin-switch [name: string, mode: string = "default"] {
     print $"darwin-switch '($name)' in '($mode)' mode..."
     if $mode == "debug" {
-        ^./result/sw/bin/darwin-rebuild switch --flake $".#($name)" --impure --show-trace --verbose
+        let args = [
+            "switch"
+            "--flake"
+            $".#($name)"
+            "--impure"
+            "--show-trace"
+            "--verbose"
+        ]
+
+        run-darwin-rebuild ...$args
     } else {
-        ^./result/sw/bin/darwin-rebuild switch --flake $".#($name)" --impure
+        run-darwin-rebuild switch --flake $".#($name)" --impure
     }
 }
 
 # Roll back the previously built Darwin generation.
 export def darwin-rollback [] {
-    ^./result/sw/bin/darwin-rebuild --rollback
+    run-darwin-rebuild --rollback
 }
 
 # Switch a Home Manager configuration by host name.
 export def home-switch [name: string] {
-    ^nix run -v --experimental-features "nix-command flakes" --extra-substituters https://shanyouli.cachix.org --impure github:nix-community/home-manager --no-write-lock-file -- switch --flake $".#($name)" -b backup --show-trace
+    run-home-manager switch $".#($name)"
 }

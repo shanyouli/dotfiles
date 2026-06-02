@@ -159,16 +159,13 @@ test type="":
         run-build-ci test --type "{{ type }}"
     }
 
-# Update the current root flake following the normal and stable input rules.
+# Update the current root flake, or selected inputs when arguments are provided.
 [group('nix')]
-update:
+update *inputs='':
     #!/usr/bin/env nu
     use {{ utils_nu }} *
-    update-root-flake
-
-# Update selected root-flake inputs, or all root inputs when passed `all`.
-[group('nix')]
-update-inputs +inputs:
-    #!/usr/bin/env nu
-    use {{ utils_nu }} *
-    update-root-inputs ...$inputs
+    if ($inputs | is-empty) {
+        update-root-flake
+    } else {
+        update-root-inputs ...$inputs
+    }
