@@ -470,7 +470,11 @@ def os-build-ref [flake_attr: string, host: string] {
 }
 
 def --wrapped run-nix-build-command [...args] {
-    ^nix build ...$args
+    if (which nom | is-empty) {
+        ^nix build ...$args
+    } else {
+        ^nom build ...$args
+    }
 }
 
 def --wrapped run-nixos-rebuild [...args] {

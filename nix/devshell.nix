@@ -27,6 +27,7 @@
           pkgs.cachix
           pkgs.just
           pkgs.nil
+          pkgs.nix-output-monitor
         ];
         shellHook = ''
           FLAKE_ROOT=$(${lib.getExe pkgs.git} rev-parse --show-toplevel)
