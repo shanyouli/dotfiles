@@ -169,3 +169,18 @@ update *inputs='':
     } else {
         update-root-inputs ...$inputs
     }
+
+# direnv reload
+[group('common')]
+reload:
+    #!/usr/bin/env nu
+    use {{ utils_nu }} *
+    with-root-flake {||
+      init
+      nix-direnv-reload
+    }
+
+# format project
+[group('common')]
+fmt:
+    pre-commit run  --all-files
