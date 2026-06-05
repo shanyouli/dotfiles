@@ -1,88 +1,88 @@
 [
-  {
-    "git": "https://github.com/po5/evafast",
-    "whitelist": "%.lua$",
-    "dest": "~~/scripts"
-  },
-  {
-    "git": "https://github.com/dyphire/mpv-scripts",
-    "branch": "main",
-    "whitelist": "chapter%-list%.lua$|mpv%-animated%.lua$|track%-list%.lua$",
-    "dest": "~~/scripts"
-  },
-  {
-    "git": "https://github.com/dyphire/mpv-playlistmanager",
-    "branch": "dev",
-    "whitelist": "playlistmanager%.lua$",
-    "dest": "~~/scripts"
-  },
-  {
-    "git": "https://github.com/dyphire/mpv-clipboard",
-    "branch": "dev",
-    "whitelist": "%.lua$",
-    "dest": "~~/scripts"
-  },
-  {
-    "git": "https://github.com/dyphire/Eisa01_mpv-scripts",
-    "branch": "dev",
-    "whitelist": "simplebookmark%.lua$",
-    "dest": "~~/scripts"
-  },
-  {
-    "git": "https://github.com/dyphire/autosubsync-mpv",
-    "branch": "v0.33_CM",
-    "whitelist": "readme%.md$|%.lua$",
-    "dest": "~~/scripts/autosubsync"
-  },
-  {
-    "git": "https://github.com/christoph-heinrich/mpv-quality-menu",
-    "whitelist": "quality%-menu%.lua$",
-    "dest": "~~/scripts"
-  },
-  {
-    "git": "https://github.com/christoph-heinrich/mpv-subtitle-lines",
-    "whitelist": "subtitle%-lines%.lua$",
-    "dest": "~~/scripts"
-  },
-  {
-    "git": "https://github.com/cvzi/mpv-youtube-download",
-    "branch": "main",
-    "whitelist": "%.lua$",
-    "dest": "~~/scripts"
-  },
-  {
-    "git": "https://codeberg.org/jouni/mpv_sponsorblock_minimal",
-    "whitelist": "sponsorblock_minimal%.lua$",
-    "dest": "~~/scripts"
-  },
-  {
-    "git": "https://github.com/CogentRedTester/mpv-file-browser",
-    "whitelist": "main%.lua$|readme%.md$|doc|modules",
-    "dest": "~~/scripts/file-browser"
-  },
-  {
-    "git": "https://github.com/CogentRedTester/mpv-sub-select",
-    "whitelist": "sub%-select%.lua$",
-    "dest": "~~/scripts"
-  },
-  {
-    "git": "https://github.com/CogentRedTester/mpv-user-input",
-    "whitelist": "user%-input%.lua$",
-    "dest": "~~/scripts"
-  },
-  {
-    "git": "https://github.com/CogentRedTester/mpv-user-input",
-    "whitelist": "user%-input%-module%.lua$",
-    "dest": "~~/script-modules"
-  },
-  {
-    "git": "https://github.com/CogentRedTester/mpv-scroll-list",
-    "whitelist": "scroll%-list%.lua$",
-    "dest": "~~/script-modules"
-  },
-  {
-    "git": "https://github.com/CogentRedTester/mpv-file-browser",
-    "whitelist": "favourites%.lua$|find%.lua$|home%-label%.lua$|url%-decode%.lua$|windir%.lua$|winroot%.lua$",
-    "dest": "~~/script-modules/file-browser-addons"
-  }
+	{
+		"git": "https://github.com/po5/evafast",
+		"whitelist": "%.lua$",
+		"dest": "~~/scripts"
+	},
+	{
+		"git": "https://github.com/dyphire/mpv-scripts",
+		"branch": "main",
+		"whitelist": "chapter%-list%.lua$|mpv%-animated%.lua$|track%-list%.lua$",
+		"dest": "~~/scripts"
+	},
+	{
+		"git": "https://github.com/dyphire/mpv-playlistmanager",
+		"branch": "dev",
+		"whitelist": "playlistmanager%.lua$",
+		"dest": "~~/scripts"
+	},
+	{
+		"git": "https://github.com/dyphire/mpv-clipboard",
+		"branch": "dev",
+		"whitelist": "%.lua$",
+		"dest": "~~/scripts"
+	},
+	{
+		"git": "https://github.com/dyphire/Eisa01_mpv-scripts",
+		"branch": "dev",
+		"whitelist": "simplebookmark%.lua$",
+		"dest": "~~/scripts"
+	},
+	{
+		"git": "https://github.com/dyphire/autosubsync-mpv",
+		"branch": "v0.33_CM",
+		"whitelist": "readme%.md$|%.lua$",
+		"dest": "~~/scripts/autosubsync"
+	},
+	{
+		"git": "https://github.com/christoph-heinrich/mpv-quality-menu",
+		"whitelist": "quality%-menu%.lua$",
+		"dest": "~~/scripts"
+	},
+	{
+		"git": "https://github.com/christoph-heinrich/mpv-subtitle-lines",
+		"whitelist": "subtitle%-lines%.lua$",
+		"dest": "~~/scripts"
+	},
+	{
+		"git": "https://github.com/cvzi/mpv-youtube-download",
+		"branch": "main",
+		"whitelist": "%.lua$",
+		"dest": "~~/scripts"
+	},
+	{
+		"git": "https://codeberg.org/jouni/mpv_sponsorblock_minimal",
+		"whitelist": "sponsorblock_minimal%.lua$",
+		"dest": "~~/scripts"
+	},
+	{
+		"git": "https://github.com/CogentRedTester/mpv-file-browser",
+		"whitelist": "main%.lua$|readme%.md$|doc|modules",
+		"dest": "~~/scripts/file-browser"
+	},
+	{
+		"git": "https://github.com/CogentRedTester/mpv-sub-select",
+		"whitelist": "sub%-select%.lua$",
+		"dest": "~~/scripts"
+	},
+	{
+		"git": "https://github.com/CogentRedTester/mpv-user-input",
+		"whitelist": "user%-input%.lua$",
+		"dest": "~~/scripts"
+	},
+	{
+		"git": "https://github.com/CogentRedTester/mpv-user-input",
+		"whitelist": "user%-input%-module%.lua$",
+		"dest": "~~/script-modules"
+	},
+	{
+		"git": "https://github.com/CogentRedTester/mpv-scroll-list",
+		"whitelist": "scroll%-list%.lua$",
+		"dest": "~~/script-modules"
+	},
+	{
+		"git": "https://github.com/CogentRedTester/mpv-file-browser",
+		"whitelist": "favourites%.lua$|find%.lua$|home%-label%.lua$|url%-decode%.lua$|windir%.lua$|winroot%.lua$",
+		"dest": "~~/script-modules/file-browser-addons"
+	}
 ]
