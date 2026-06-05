@@ -18,16 +18,14 @@ in
   };
   config = mkIf cfg.enable {
     modules.gui.fonts = with pkgs; [
-      fantasque-sans-mono
       lxgw-wenkai
       unifont
       sarasa-term
       # unable.maple-mono.NF
       # unable.maple-mono.NF-CN
-      nerd-fonts.fantasque-sans-mono
+      nerd-fonts.fantasque-sans-mono # fantasque-sans-mono
       nerd-fonts.symbols-only
-      pragmasevka
-      pragmasevka-nerd
+      pragmasevka-nerd # pragmasevka
       pragmasevka-sans
       pragmasevka-sc-nf
       pragmasevka-sc
