@@ -176,7 +176,6 @@ reload:
     #!/usr/bin/env nu
     use {{ utils_nu }} *
     with-root-flake {||
-      init
       nix-direnv-reload
     }
 
