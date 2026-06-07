@@ -20,6 +20,69 @@ let
   cfm = config.modules.shell;
   cfg = cfm.nushell;
   getBaseName = str: builtins.head (lib.splitString "." (lib.last (lib.splitString "/" str)));
+  escapeNuJson = v: "(\"${lib.escape [ "\"" "\\" ] (builtins.toJSON v)}\" | from json)";
+  parseBashLikeSegments =
+    value:
+    let
+      match = builtins.match ''^([^$]*)(\$\{[A-Za-z_][A-Za-z0-9_]*:-[^}]*\}|\$[A-Za-z_][A-Za-z0-9_]*)(.*)$'' value;
+    in
+    if match == null then
+      lib.optional (value != "") (escapeNuJson value)
+    else
+      let
+        prefix = builtins.elemAt match 0;
+        token = builtins.elemAt match 1;
+        suffix = builtins.elemAt match 2;
+        defaultMatch = builtins.match ''^\$\{([A-Za-z_][A-Za-z0-9_]*):-([^}]*)\}$'' token;
+        simpleMatch = builtins.match ''^\$([A-Za-z_][A-Za-z0-9_]*)$'' token;
+        tokenExpr =
+          if defaultMatch != null then
+            let
+              name = builtins.elemAt defaultMatch 0;
+              fallback = builtins.elemAt defaultMatch 1;
+            in
+            "(($env | get -o ${name}) | default ${escapeNuJson fallback})"
+          else if simpleMatch != null then
+            let
+              name = builtins.elemAt simpleMatch 0;
+            in
+            ''(($env | get -o ${name}) | default "")''
+          else
+            throw "unsupported bash-like token: ${token}";
+      in
+      (lib.optional (prefix != "") (escapeNuJson prefix))
+      ++ [ tokenExpr ]
+      ++ parseBashLikeSegments suffix;
+  renderNuStringExpr =
+    value:
+    let
+      segments = parseBashLikeSegments value;
+    in
+    if segments == [ ] then
+      escapeNuJson ""
+    else if builtins.length segments == 1 then
+      builtins.head segments
+    else
+      "(${lib.concatStringsSep " + " segments})";
+  renderNuEnvExpr =
+    value:
+    if builtins.isList value then
+      "[ ${lib.concatStringsSep " " (map renderNuEnvExpr value)} ]"
+    else
+      renderNuStringExpr (toString value);
+  shellEnvVarsInit =
+    let
+      plainEnv = lib.removeAttrs cfm.env [ "PATH" ];
+      plainLines = lib.mapAttrsToList (name: value: "  ${name}: ${renderNuEnvExpr value}") plainEnv;
+    in
+    lib.optionalString (plainLines != [ ]) ''
+      load-env {
+      ${lib.concatStringsSep "\n" plainLines}
+      }
+    '';
+  shellPathInit = lib.optionalString (cfm.env ? PATH) ''
+    $env.PATH = ${renderNuEnvExpr cfm.env.PATH} ++ ($env.PATH | default [])
+  '';
   scriptHomeFunc =
     l:
     concatMapAttrs (n: v: { "nushell/scripts/${n}.nu".source = v; }) (
@@ -114,6 +177,8 @@ in
         })
         {
           "nushell/autoload/zz_config.nu".text = ''
+             ${shellEnvVarsInit}
+             ${shellPathInit}
              ${optionalString cfm.carapace.enable (
                let
                  carapace_path =
@@ -123,7 +188,7 @@ in
                      ''($env.XDG_CONFIG_HOME | path join "carapace" "bin" | path expand)'';
                in
                ''
-                 $env.PATH = ($env.PATH | split row (char esep) | prepend ${carapace_path})
+                 $env.PATH = ($env.PATH | default [] | prepend ${carapace_path})
                ''
              )}
              ${concatStringsSep "\n" (map (x: "use ${x} *") cfg.cmpFiles)}

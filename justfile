@@ -25,7 +25,7 @@ _root-flake-disable:
 @nix *args='':
     #!/usr/bin/env nu
     use {{ utils_nu }} *
-    run-nix ...$args
+    run-nix {{ args }}
 
 # Run CI-only commands that keep root skip-worktree disabled.
 [positional-arguments]
@@ -164,6 +164,7 @@ test type="":
 update *inputs='':
     #!/usr/bin/env nu
     use {{ utils_nu }} *
+    let inputs = [{{ inputs }}]
     if ($inputs | is-empty) {
         update-root-flake
     } else {
