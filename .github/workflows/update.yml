@@ -30,7 +30,7 @@ jobs:
       - name: Setup Nushell
         uses: hustcer/setup-nu@v3
       - name: Setup just
-        uses: extractions/setup-just@v3
+        uses: extractions/setup-just@v4
       - name: Prepare flakebot branch
         run: |
           git config --local user.email "flakebot@users.noreply.github.com"
