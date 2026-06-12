@@ -16,14 +16,20 @@ let
     pname = "m";
     version = "0.1.0";
     src = my.relativeToRoot "nuscript";
-    nativeBuildInputs = [ pkgs.makeWrapper ];
-    buildInputs = [ nushell ];
+    nativeBuildInputs = [
+      pkgs.makeWrapper
+      nushell
+    ];
 
     installPhase = ''
       mkdir -p $out/share/m
       cp -r . $out/share/m
+
+      ${nushell}/bin/nu $out/share/m/scripts/gen.nu
+
       mkdir -p $out/bin
-      makeWrapper ${nushell}/bin/nu $out/bin/m --add-flags "$out/share/m/mod.nu"
+      makeWrapper ${nushell}/bin/nu $out/bin/m \
+        --add-flags "$out/share/m/mod.nu"
     '';
 
     meta = with lib; {
