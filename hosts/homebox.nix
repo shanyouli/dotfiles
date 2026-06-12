@@ -173,6 +173,7 @@
     gopass = {
       enable = true;
       enGui = false;
+      browsers = [ "glide" ];
     };
     trash.enable = true;
     just.enable = true;

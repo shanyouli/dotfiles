@@ -12,10 +12,11 @@ let
   cfg = cfm.browser;
   browsers = [
     "firefox"
+    "glide"
+    "librewolf"
     "chrome"
     "chromium"
     "brave"
-    "librewolf"
     "vivaldi"
   ];
 in
@@ -71,6 +72,13 @@ in
                 if pkgs.stdenv.hostPlatform.isDarwin then "Library/Application Support/Mozilla" else ".mozilla"
               else if n == "librewolf" then
                 if pkgs.stdenv.hostPlatform.isDarwin then "Library/Application Support/LibreWolf" else ".librewolf"
+              else if n == "glide" then
+                # see @https://github.com/glide-browser/glide/discussions/261
+                # see @https://github.com/glide-browser/glide/discussions/68
+                if pkgs.stdenv.hostPlatform.isDarwin then
+                  "Library/Application Support/Glide Browser"
+                else
+                  ".glide-browser"
               else if n == "vivaldi" then
                 if pkgs.stdenv.hostPlatform.isDarwin then
                   "Library/Application Support/Vivaldi"

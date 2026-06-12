@@ -33,10 +33,11 @@ in
       let
         browsers = [
           "firefox"
+          "librewolf"
+          "glide"
           "chrome"
           "chromium"
           "brave"
-          "librewolf"
           "vivaldi"
           "arc"
         ];
@@ -66,6 +67,7 @@ in
             builtins.elem n [
               "firefox"
               "librewolf"
+              "glide"
             ];
           nativeHostsName =
             n:
