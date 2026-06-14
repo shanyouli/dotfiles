@@ -24,7 +24,7 @@ let
   parseBashLikeSegments =
     value:
     let
-      numatch = builtins.match ''^([^$]*)(\$\{[A-Za-z_][A-Za-z0-9_]*:-[^}]*\}|\$[A-Za-z_][A-Za-z0-9_]*)(.*)$'' value;
+      numatch = builtins.match "^([^$]*)([$][{][A-Za-z_][A-Za-z0-9_]*:-[^}]*[}]|[$][A-Za-z_][A-Za-z0-9_]*)(.*)$" value;
     in
     if numatch == null then
       lib.optional (value != "") (escapeNuJson value)
@@ -33,8 +33,8 @@ let
         prefix = builtins.elemAt numatch 0;
         token = builtins.elemAt numatch 1;
         suffix = builtins.elemAt numatch 2;
-        defaultMatch = builtins.match ''^\$\{([A-Za-z_][A-Za-z0-9_]*):-([^}]*)\}$'' token;
-        simpleMatch = builtins.match ''^\$([A-Za-z_][A-Za-z0-9_]*)$'' token;
+        defaultMatch = builtins.match "^[$][{]([A-Za-z_][A-Za-z0-9_]*):-([^}]*)[}]$" token;
+        simpleMatch = builtins.match "^[$]([A-Za-z_][A-Za-z0-9_]*)$" token;
         tokenExpr =
           if defaultMatch != null then
             let
