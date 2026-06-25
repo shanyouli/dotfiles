@@ -23,12 +23,12 @@ in
   };
   config = mkIf cfg.enable {
     homebrew.casks = [
+      # "warden"
       "cherry-studio"
       "cc-switch" # codex 切换
       "chatgpt" # chatgpt 客户端
-      "codex-app"
-      # "warden"
-      # "google-gemini"
+      # 使用了这么长时间，我更喜欢使用命令行
+      # "codex-app" # "google-gemini"
       # "opencode-desktop" # opencode 桌面版
     ]
     ++ optionals cfg.nextchat.enable [ "shanyouli/tap/nextchat" ]
