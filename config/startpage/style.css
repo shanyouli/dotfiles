@@ -1,72 +1,90 @@
+/*
+ * Startpage 样式
+ *
+ * 主色调使用浏览器主题默认色彩（CSS 系统色值），
+ * 自动适配亮色/暗色主题。
+ * 装饰性阴影色保持独立的 Rosé Pine 风格点缀。
+ */
+
 :root {
 	--font: "Cartograph CF", monospace;
-	--bgcolor: #1f1d2e;
-	--linkcolor: #e0def4;
+	--card-bg: ButtonFace;
+	--link-hover: AccentColor;
+
+	/* 卡片阴影 */
+	--shadow-card: 2px 2px 8px rgb(0 0 0 / 0.4);
+
+	/*
+   * 时间装饰阴影（Rosé Pine 风格）
+   * 仅在暗色主题下生效，亮色下淡化以避免刺眼。
+   */
+	--time-shadow-dark:
+		-5px 5px 0px #eb6f92, -10px 10px #f6c177, -15px 15px 0px #c3a5e6,
+		-20px 20px 0px #31748f;
+	--time-shadow-light:
+		-5px 5px 0px rgb(235 111 146 / 0.3),
+		-10px 10px rgb(246 193 119 / 0.3),
+		-15px 15px 0px rgb(195 165 230 / 0.3),
+		-20px 20px 0px rgb(49 116 143 / 0.3);
 }
 
-/*-----------------------------------------------------------*/
-input {
-	height: inherit;
-	width: 500px;
-	background: #26233a;
-	color: #ebbcba;
-	font-family: "Cartograph CF", monospace;
-	line-height: 1.8em;
-	box-shadow: 1px 1px 3px #000000;
-	border: none;
-	text-align: center;
-	border-radius: 8px;
-	outline: none;
-	padding: 7px 14px;
-	font-size: 18;
-	grid-column: 1 / -1;
-	margin: 0px 0px 30px 0px;
+/* 亮色主题调整 */
+@media (prefers-color-scheme: light) {
+	:root {
+		--shadow-card: 0px 0px 0px rgb(0 0 0 / 0.1);
+	}
 }
 
-select {
+/* 输入框/选择/按钮公用 */
+input,
+select,
+button {
 	height: inherit;
-	width: 150px;
-	background: #26233a;
-	color: #ebbcba;
-	font-family: "Cartograph CF", monospace;
+	background: ButtonFace;
+	font-family: var(--font);
 	line-height: 1.8em;
-	box-shadow: 1px 1px 3px #000000;
 	border: none;
 	text-align: center;
 	border-radius: 8px;
 	outline: none;
 	padding: 7px 14px;
 	font-size: 18px;
-	margin: 0px 10px 30px 0px;
+}
+
+input,
+select {
+	color: CanvasText;
 }
 
 button {
-	height: inherit;
-	background: #26233a;
-	color: #ebbcba;
-	font-family: "Cartograph CF", monospace;
-	line-height: 1.8em;
-	box-shadow: 1px 1px 3px #000000;
-	border: none;
-	text-align: center;
-	border-radius: 8px;
-	outline: none;
-	padding: 7px 14px;
-	font-size: 18px;
+	color: ButtonText;
 	cursor: pointer;
 	transition: background 0.3s ease;
 }
 
-button:hover {
-	background: #3b375a;
+input {
+	width: 500px;
+	color: CanvasText;
+	box-shadow: 1px 1px 3px rgb(0 0 0 / 0.3);
+	margin: 0px 0px 30px 0px;
 }
 
+select {
+	width: 150px;
+	box-shadow: 1px 1px 3px rgb(0 0 0 / 0.3);
+	margin: 0px 10px 30px 0px;
+}
+
+button:hover,
+button:focus-visible {
+	background: AccentColor;
+	color: AccentColorText;
+}
+
+/* 页面背景 */
 body {
-	/*
-	background-image: url('../background/bg.jpg');
-	background-repeat : no-repeat;
-*/
-	background-color: #191724;
+	background-color: Canvas;
+	color: CanvasText;
 	background-size: cover;
 }
 
@@ -78,16 +96,16 @@ body {
 	text-align: center;
 }
 
+/* 链接卡片 */
 .link {
 	display: inline-block;
 	margin: 1%;
-	height: 185px;
 	width: 140px;
 	text-align: left;
-	padding-left: 3%;
-	background-color: var(--bgcolor);
+	padding: 3% 0 3% 3%;
+	background-color: var(--card-bg);
 	border-radius: 8px;
-	box-shadow: 2px 2px 8px #000000;
+	box-shadow: var(--shadow-card);
 }
 
 .box {
@@ -103,7 +121,7 @@ a {
 	display: block;
 	line-height: 2.4em;
 	font-family: var(--font);
-	color: var(--linkcolor);
+	color: CanvasText;
 	font-size: 1rem;
 	text-decoration: none;
 	outline: none;
@@ -111,17 +129,25 @@ a {
 }
 
 a:hover {
-	color: #9ccfd8;
+	color: var(--link-hover);
 }
 
+/* 时间显示 */
 .time {
 	font-family: "Cartograph CF", monospace;
 	font-size: 5.5rem;
 	margin: 50px 0px 50px 0px;
-	color: var(--linkcolor);
-	text-shadow:
-		-5px 5px 0px #eb6f92,
-		-10px 10px #f6c177,
-		-15px 15px 0px #c3a5e6,
-		-20px 20px 0px #31748f;
+	color: CanvasText;
+}
+
+@media (prefers-color-scheme: dark) {
+	.time {
+		text-shadow: var(--time-shadow-dark);
+	}
+}
+
+@media (prefers-color-scheme: light) {
+	.time {
+		text-shadow: var(--time-shadow-light);
+	}
 }

@@ -179,9 +179,12 @@ in
     home.file = {
       ".cache/startpage" = {
         recursive = true;
-        source = "${my.paths.dotfiles.config}/startpage";
+        source = pkgs.runCommand "startpage" { } ''
+          cp -r ${my.paths.dotfiles.config}/startpage $out
+          chmod +w $out
+          cp -f ${cfghtml} $out/index.html
+        '';
       };
-      ".cache/startpage/index.html".source = cfghtml;
     };
   };
 }
