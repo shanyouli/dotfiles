@@ -35,13 +35,13 @@ in
       ++ lib.optionals cfg.ai.enable (
         with pkgs;
         [
-          opencode # opencode 出品的工具
-          gemini-cli # google 出品
+          # opencode # opencode 出品的工具
+          # gemini-cli # google 出品
+          # pkgs.jcode
           codex
           codex-acp
           pi-coding-agent # pi 极简单的 agent 工具，类似 opencode
           claude-code
-          pkgs.jcode
           pkgs.cc-switch
         ]
       );
