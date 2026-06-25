@@ -19,7 +19,7 @@ if (which borders | is-not-empty) {
 # Do not manage windows with certain titles eg. Copying files or moving to bin
 yabai -m rule --add title="(Copy|Bin|About This Mac|Info)" manage=off
 # Do not manage some apps which are not resizable
-yabai -m rule --add app="^(Calculator|System Preferences|[sS]tats|[Jj]et[Bb]rains [Tt]ool[Bb]ox|系统设置|System Settings|Hearthstone|Battle.net|Clash for Window|Dash|Ryujinx|OpenMTP|Tencent Lemon|Android File Transfer|BaiduNetdisk|Finder|VOX|mpv|Easydict)$" manage=off
+yabai -m rule --add app="^(Calculator|CC Switch|System Preferences|[sS]tats|[Jj]et[Bb]rains [Tt]ool[Bb]ox|系统设置|System Settings|Hearthstone|Battle.net|Clash for Window|Dash|Ryujinx|OpenMTP|Tencent Lemon|Android File Transfer|BaiduNetdisk|Finder|VOX|mpv|Easydict)$" manage=off
 yabai -m rule --add app="^(Simple Live)$" manage=off sub-layer=above
 yabai -m rule --add title="^(.*[Cc]onsole|FloatTerm)$" manage=off
 # if [[ $(yabai -m query --displays | jq -rj '. | length') -gt 1  ]]; then
@@ -188,15 +188,22 @@ def setup-spaces [labels: any, --force (-f)] {
   ensure-spaces $labels
 }
 
+yabai -m rule --add app='^(Glide|Firefox)$' title='(父进程浏览器控制台|我的足迹)' manage='off' 
+
+
+
 # 配置 spaces, 不要强制使用 --force
 setup-spaces ["main", "web", ["edit", "stack"], ["other", "float"]]
 
+
 # 基于 space 的相关 rule 配置
-yabai -m rule --add app='^(Arc|Google Chrome|Firefox|Zen Browser|LibreWolf)$' space=^web
+yabai -m rule --add app='^(Arc|Google Chrome|Firefox|Zen Browser|LibreWolf|bilibili-video-downloader|Glide)$' space=^web
 yabai -m rule --add app='^(Ghostty|kitty|Iterm2|Wrap)' title='!FloatTerm' space=^edit
 yabai -m rule --add app='^(AppClear|Activity Monitor|Telegram|Petrichor|bilibili-video-downloader)$' space=^other
 yabai -m rule --add app='^(Zed|Visual Studio Code|IntelliJ IDEA|PyCharm|ChatGPT|Codex)$' space=^edit
 yabai -m rule --add app='^([eE]macs)$' title='^EmacsClient.*$' manage=off grid=4:4:1:0:2:2
+
+yabai -m signal --add event=window_created app='^(Glide|Firefox)$' title='(父进程浏览器控制台|我的足迹)' action='yabai -m window $YABAI_WINDOW_ID --space recent'
 
 if ("/Applications/Hammerspoon.app" | path exists) {
   if (ps | where name == "Hammerspoon" | is-empty) {
