@@ -10,119 +10,172 @@ with my;
 let
   cfp = config.modules.nginx;
   cfg = cfp.www;
-  cfghtml = pkgs.writeText "index.html" ''
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>Home</title>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" type="text/css" href="style.css" />
-        <link rel="shortcut icon" href="favicon.png" />
-      </head>
-      <body>
-        <div class="everything">
-          <div id="time" class="time"></div>
-          <form id="search-form" method="GET">
-            <select id="search-engine" name="engine">
-              <option value="https://www.bing.com/search">Bing</option>
-              <option value="https://www.google.com/search">Google</option>
-              <option value="https://www.baidu.com/s" selected>Baidu</option>
-              <option value="https://metaso.cn/">秘塔 AI</option>
-            </select>
-            <input
-              autofocus
-              name="q"
-              class="search"
-              type="search"
-              id="search-bar-input"
-              placeholder="Search..."
-            />
-            <button type="submit">Search</button>
-          </form>
-          <!-- <form action="https://bing.com/search" method="GET">
-               <input
-               autofocus
-               name="q"
-               class="search"
-               type="search"
-               id="search-bar-input"
-               placeholder=""
-               />
-               </form> -->
-          <div class="box">
-            <div class="link">
-              <ul>
-                <li><a href="https://github.com">github</a></li>
-                <li><a href="https://linux.do">Linux.Do</a></li>
-                <li><a href="https://emacs-china.org">Emacs China</a></li>
-                <li><a href="https://miniflux.shanyouli.gq">RSS</a></li>
-                <li><a href="https://bm.shanyouli.gq">Bookmark</a></li>
-              </ul>
-            </div>
-            <div class="link">
-              <ul>
-                <li><a href="https://youtube.com">youtube</a></li>
-                <li><a href="https://bilibili.com">bilibili</a></li>
-                <li><a href="https://soupian.pro/">搜片</a></li>
-              </ul>
-            </div>
-            <div class="link">
-              <ul>
-                ${optionalString config.modules.proxy.service.enable ''<li><a href="http://127.0.0.1/proxy/">Proxy UI</a></li>''}
-                ${optionalString config.modules.alist.service.enable ''<li><a href="http://127.0.0.1/alist">Alist</a></li>''}
-                ${optionalString config.modules.download.aria2.service.enable ''<li><a href="http://127.0.0.1/aria2">Aria2</a></li>''}
-                ${optionalString config.modules.app.qbittorrent.service.enable ''<li><a href="http://127.0.0.1/qt">Qbittorrent UI</a></li>''}
-              </ul>
-            </div>
-            <!-- Feel free to add more divs here -->
-          </div>
-        </div>
-        <script>
-          function updateClock() {
-            let date = new Date();
-            let hours = date.getHours();
-            let minutes = date.getMinutes();
-            let ampm = hours >= 12 ? "pm" : "am";
-            hours = hours % 12;
-            hours = hours ? hours : 12;
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            let time = hours + ":" + minutes + " " + ampm;
-            document.getElementById("time").innerHTML = time;
-            setTimeout(updateClock, 1000);
-          };
-          function searchBox() {
-            document.getElementById('search-form').addEventListener('submit', function(event) {
-              event.preventDefault();
-              const form = event.target;
-              const selectedEngine = form.engine.value;
-              const query = form.q.value;
-              let url;
-              if (selectedEngine === 'https://www.baidu.com/s') {
-                url = `''${selectedEngine}?wd=''${encodeURIComponent(query)}`;
-              } else {
-                url = `''${selectedEngine}?q=''${encodeURIComponent(query)}`;
-              }
-              window.location.href = url;
-            })
-          };
-          window.onload = function() {
-            document.getElementById('search-bar-input').focus();
-            updateClock();
-            searchBox();
-          };
-        </script>
-      </body>
-    </html>
-  '';
+
+  /*
+    -----------------------------------------------------------------------
+    搜索引擎列表
+
+    每个元素：
+      name     - 显示名称
+      url      - 搜索 URL（不含参数）
+      default  - 是否默认选中（最多一项为 true）
+    -----------------------------------------------------------------------
+  */
+  searchEngines = [
+    {
+      name = "Bing";
+      url = "https://www.bing.com/search";
+      default = false;
+    }
+    {
+      name = "Google";
+      url = "https://www.google.com/search";
+      default = false;
+    }
+    {
+      name = "Baidu";
+      url = "https://www.baidu.com/s";
+      default = true;
+    }
+    {
+      name = "秘塔 AI";
+      url = "https://metaso.cn/";
+      default = false;
+    }
+  ];
+
+  /**
+    生成 <option> 列表字符串
+  */
+  searchEngineOptions = lib.concatStringsSep "\n          " (
+    map (
+      e: "<option value=\"${e.url}\"${lib.optionalString e.default " selected"}>${e.name}</option>"
+    ) searchEngines
+  );
+
+  /*
+    -----------------------------------------------------------------------
+    链接组 — 数据驱动所有 <div class="link"> 区块
+
+    每个元素：
+      name     - 链接显示的文本
+      url      - 目标 URL
+      enable?  - 可选条件开关（默认 true）
+    -----------------------------------------------------------------------
+  */
+  linkGroup1 = [
+    {
+      name = "github";
+      url = "https://github.com";
+    }
+    {
+      name = "Linux.Do";
+      url = "https://linux.do";
+    }
+    {
+      name = "Emacs China";
+      url = "https://emacs-china.org";
+    }
+    {
+      name = "RSS";
+      url = "https://miniflux.shanyouli.gq";
+    }
+    {
+      name = "Bookmark";
+      url = "https://bm.shanyouli.gq";
+    }
+  ];
+
+  linkGroup2 = [
+    {
+      name = "YouTube";
+      url = "https://www.youtube.com";
+    }
+    {
+      name = "Bilibili";
+      url = "https://www.bilibili.com";
+    }
+    {
+      name = "搜片";
+      url = "https://soupian.pro/";
+    }
+  ];
+
+  linkGroup3 = [
+    {
+      name = "Proxy UI";
+      url = "http://127.0.0.1/proxy/";
+      enable = config.modules.proxy.service.enable;
+    }
+    {
+      name = "Alist";
+      url = "http://127.0.0.1/alist";
+      enable = config.modules.alist.service.enable;
+    }
+    {
+      name = "Aria2";
+      url = "http://127.0.0.1/aria2";
+      enable = config.modules.download.aria2.service.enable;
+    }
+    {
+      name = "Qbittorrent UI";
+      url = "http://127.0.0.1/qt";
+      enable = config.modules.app.qbittorrent.service.enable;
+    }
+  ];
+
+  /**
+    将一个链接组渲染为 <div class="link"><ul>…</ul></div> 片段。
+    自动跳过 enable = false 的条目。
+  */
+  renderLinkGroup =
+    group:
+    let
+      items = lib.concatStringsSep "\n            " (
+        map (link: "<li><a href=\"${link.url}\">${link.name}</a></li>") (filter (x: x.enable or true) group)
+      );
+    in
+    ''
+      <div class="link">
+        <ul>${if items == "" then "" else "\n            " + items + "\n          "}</ul>
+      </div>
+    '';
+
+  /**
+    将所有链接组拼接为一个 HTML 字符串
+  */
+  linkGroupsString = lib.concatStringsSep "\n        " (
+    map renderLinkGroup [
+      linkGroup1
+      linkGroup2
+      linkGroup3
+    ]
+  );
+
+  /*
+    -----------------------------------------------------------------------
+    模板 → 最终 HTML
+    -----------------------------------------------------------------------
+  */
+  template = builtins.readFile "${my.paths.dotfiles.config}/startpage/index.html";
+
+  cfghtml = pkgs.writeText "index.html" (
+    lib.replaceStrings
+      [ "__SEARCH_ENGINES__" "__LINK_GROUPS__" ]
+      [ searchEngineOptions linkGroupsString ]
+      template
+  );
 in
 {
   options.modules.nginx.www = {
     enable = mkEnableOption "Whether to use startpage";
   };
+
   config = mkIf cfg.enable {
     modules.gui.browser.firefox.extraConfig = ''
       user_pref("browser.startup.homepage", "http://127.0.0.1");
     '';
+
     home.file = {
       ".cache/startpage" = {
         recursive = true;

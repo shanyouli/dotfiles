@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="shortcut icon" href="favicon.png" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="everything">
+      <div id="time" class="time"></div>
+      <form id="search-form" method="GET">
+        <select id="search-engine" name="engine">
+          __SEARCH_ENGINES__
+        </select>
+        <input
+          autofocus
+          name="q"
+          class="search"
+          type="search"
+          id="search-bar-input"
+          placeholder="Search..."
+        />
+        <button type="submit">Search</button>
+      </form>
+      <div class="box">
+        __LINK_GROUPS__
+      </div>
+    </div>
+  </body>
+</html>
