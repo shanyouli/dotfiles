@@ -19,7 +19,7 @@ if (which borders | is-not-empty) {
 # Do not manage windows with certain titles eg. Copying files or moving to bin
 yabai -m rule --add title="(Copy|Bin|About This Mac|Info)" manage=off
 # Do not manage some apps which are not resizable
-yabai -m rule --add app="^(Calculator|CC Switch|System Preferences|[sS]tats|[Jj]et[Bb]rains [Tt]ool[Bb]ox|系统设置|System Settings|Hearthstone|Battle.net|Clash for Window|Dash|Ryujinx|OpenMTP|Tencent Lemon|Android File Transfer|BaiduNetdisk|Finder|VOX|mpv|Easydict)$" manage=off
+yabai -m rule --add app="^(LocalSend|Calculator|CC Switch|System Preferences|[sS]tats|[Jj]et[Bb]rains [Tt]ool[Bb]ox|系统设置|System Settings|Hearthstone|Battle.net|Clash for Window|Dash|Ryujinx|OpenMTP|Tencent Lemon|Android File Transfer|BaiduNetdisk|Finder|VOX|mpv|Easydict)$" manage=off
 yabai -m rule --add app="^(Simple Live)$" manage=off sub-layer=above
 yabai -m rule --add title="^(.*[Cc]onsole|FloatTerm)$" manage=off
 # if [[ $(yabai -m query --displays | jq -rj '. | length') -gt 1  ]]; then

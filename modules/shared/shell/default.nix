@@ -78,7 +78,7 @@ in
       pkgs.python3.pkgs.sd
       # nvd
       dix
-      age
+      # age
     ];
     env.PATH = [ "$XDG_BIN_HOME" ];
 
