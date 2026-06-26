@@ -41,8 +41,8 @@ function initSearchBox() {
 }
 
 /** 页面加载完成后执行初始化 */
-window.onload = () => {
+document.addEventListener("DOMContentLoaded", () => {
 	document.getElementById("search-bar-input").focus();
 	updateClock();
 	initSearchBox();
-};
+});
