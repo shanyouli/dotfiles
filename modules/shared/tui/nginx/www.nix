@@ -18,28 +18,29 @@ let
     每个元素：
       name     - 显示名称
       url      - 搜索 URL（不含参数）
+      param    - 搜索参数名（如 wd、q、question）
       default  - 是否默认选中（最多一项为 true）
     -----------------------------------------------------------------------
   */
   searchEngines = [
     {
       name = "Bing";
-      url = "https://www.bing.com/search";
+      url = "https://www.bing.com/search?q=";
       default = false;
     }
     {
       name = "Google";
-      url = "https://www.google.com/search";
+      url = "https://www.google.com/search?q=";
       default = false;
     }
     {
       name = "Baidu";
-      url = "https://www.baidu.com/s";
+      url = "https://www.baidu.com/s?wd=";
       default = true;
     }
     {
       name = "秘塔 AI";
-      url = "https://metaso.cn/";
+      url = "https://metaso.cn/?question=";
       default = false;
     }
   ];

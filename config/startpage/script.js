@@ -26,23 +26,17 @@ function updateClock() {
  * 为 #search-form 绑定 submit 事件监听器。
  * 阻止表单默认提交，根据选择的搜索引擎重定向到对应搜索 URL。
  *
- * 搜索引擎 URL 格式:
- * - 百度：?wd={query}
- * - 其它：?q={query}
+ * 搜索引擎 URL 由 <option value> 决定（含参数名，如 ?wd=），
+ * script 仅负责拼接并编码用户输入。
  */
 function initSearchBox() {
 	document.getElementById("search-form").addEventListener("submit", (event) => {
 		event.preventDefault();
 		const form = event.target;
-		const selectedEngine = form.engine.value;
+		const engine = form.engine.value;
 		const query = form.q.value;
 
-		const url =
-			selectedEngine === "https://www.baidu.com/s"
-				? `${selectedEngine}?wd=${encodeURIComponent(query)}`
-				: `${selectedEngine}?q=${encodeURIComponent(query)}`;
-
-		window.location.href = url;
+		window.location.href = `${engine}${encodeURIComponent(query)}`;
 	});
 }
 
