@@ -13,9 +13,7 @@ in
 {
   options = with lib; {
     modules.macos = {
-      enable = mkEnableOption ''
-        Whether to enable macos module
-      '';
+      enable = mkBoolOpt true;
     };
   };
 

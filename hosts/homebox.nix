@@ -228,7 +228,6 @@
     };
     # macos
     macos = {
-      enable = true;
       docker.enable = true;
       # arc.enable = true;
       safari.enable = true;

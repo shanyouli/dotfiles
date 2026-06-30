@@ -27,7 +27,7 @@ in
     border.enable = mkBoolOpt cfg.enable;
     package = mkPackageOption pkgs "yabai" {
       nullable = true;
-      extraDescription = "Set modules.services.yabai.package to null on platforms where yabai is not available or marked broken";
+      extraDescription = "Set modules.service.yabai.package to null on platforms where yabai is not available or marked broken";
     };
     startup.enable = mkBoolOpt cfg.enable;
     keep.enable = mkBoolOpt cfg.enable;

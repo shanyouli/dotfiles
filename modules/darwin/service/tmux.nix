@@ -8,12 +8,12 @@
 with lib;
 with my;
 let
-  cfp = config.modules.services;
+  cfp = config.modules.service;
   cfg = cfp.tmux;
   cft = config.modules.tmux;
 in
 {
-  options.modules.services.tmux = {
+  options.modules.service.tmux = {
     enable = mkBoolOpt cft.service.enable;
   };
   config = mkIf cfg.enable {
