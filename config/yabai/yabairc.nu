@@ -203,8 +203,7 @@ yabai -m rule --add app='^(AppClear|Activity Monitor|Telegram|Petrichor|bilibili
 yabai -m rule --add app='^(Zed|Visual Studio Code|IntelliJ IDEA|PyCharm|ChatGPT|Codex)$' space=^edit
 yabai -m rule --add app='^([eE]macs)$' title='^EmacsClient.*$' manage=off grid=4:4:1:0:2:2
 
-yabai -m signal --add event=window_created app='^(Glide|Firefox)$' title='(父进程浏览器控制台|我的足迹)' action='yabai -m window $YABAI_WINDOW_ID --space recent'
-
+yabai -m signal --add event=window_created app='^(Glide|Firefox)$' title='(父进程浏览器控制台|我的足迹)' action='yabai -m window $YABAI_WINDOW_ID --space mouse'
 if ("/Applications/Hammerspoon.app" | path exists) {
   if (ps | where name == "Hammerspoon" | is-empty) {
     ^open -a /Applications/Hammerspoon.app
