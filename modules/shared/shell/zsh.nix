@@ -95,9 +95,7 @@ in
           ZINIT[COMPINIT_OPTS]="-C"
         '';
         prevInit = mkOrder 100 (
-          ''
-            source ${pkgs.grc}/etc/grc.zsh
-          ''
+          ""
           + lib.optionalString (!config.modules.modern.enable) ''
             # FZF 配置
             FZF_DEFAULT_COMMAND="fd -H -I --type f"

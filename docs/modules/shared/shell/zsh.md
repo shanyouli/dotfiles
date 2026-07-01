@@ -36,7 +36,6 @@
 
 ### prevInit 内容
 
-- source grc 着色脚本
 - 未启用 modern 工具时: 配置 FZF 默认命令
 - 未启用 vivid 时: 加载 `trapd00r/LS_COLORS` 插件
 

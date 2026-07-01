@@ -56,7 +56,6 @@ in
   config = {
     home.packages = with pkgs; [
       my-nix-script
-      grc
       httrack # 网页抓取
       cachix # nix cache
       hugo # 我的blog工具
