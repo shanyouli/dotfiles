@@ -158,7 +158,17 @@ let
     模板 → 最终 HTML
     -----------------------------------------------------------------------
   */
-  template = builtins.readFile "${my.paths.dotfiles.config}/startpage/index.html";
+  # Reference config/startpage as a Nix path (not the "${my.paths.dotfiles.config}/startpage"
+  # string interpolation). A path carries a string context, so the flake copies
+  # it into the store as a real derivation input; that makes the files reachable
+  # from inside the build sandbox. The string form loses its context and is
+  # invisible to the sandbox, which is exactly why the previous `cp`-based
+  # runCommand failed in CI while working locally (sandbox disabled, /etc/dotfiles
+  # present). The config below links each asset individually so every input stays
+  # a properly tracked store path.
+  startpageDir = ../../../../config/startpage;
+
+  template = builtins.readFile (startpageDir + "/index.html");
 
   cfghtml = pkgs.writeText "index.html" (
     lib.replaceStrings
@@ -178,14 +188,20 @@ in
     '';
 
     home.file = {
-      ".cache/startpage" = {
-        recursive = true;
-        source = pkgs.runCommand "startpage" { } ''
-          cp -r ${my.paths.dotfiles.config}/startpage $out
-          chmod +w $out
-          cp -f ${cfghtml} $out/index.html
-        '';
-      };
+      # Link each startpage asset individually via Home Manager instead of
+      # copying the whole directory with runCommand. Each `source` is a Nix
+      # path (or a store derivation, for index.html) and therefore carries a
+      # string context, so the flake copies it into the store as a tracked
+      # derivation input and Home Manager symlinks it into ~/.cache/startpage.
+      # This works inside the build sandbox; a bare
+      # "${my.paths.dotfiles.config}/startpage" string interpolation loses its
+      # context and is unreachable from the sandbox (the cause of the CI
+      # failure). readme.md is a docs-only file with no runtime use, so it is
+      # not linked.
+      ".cache/startpage/index.html".source = cfghtml;
+      ".cache/startpage/style.css".source = startpageDir + "/style.css";
+      ".cache/startpage/script.js".source = startpageDir + "/script.js";
+      ".cache/startpage/favicon.png".source = startpageDir + "/favicon.png";
     };
   };
 }
