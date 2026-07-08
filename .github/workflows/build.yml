@@ -122,6 +122,8 @@ jobs:
             experimental-features = nix-command flakes
       - name: Setup Nushell
         uses: hustcer/setup-nu@v3
+        with:
+          version: "0.112.2"
       - name: Setup just
         uses: extractions/setup-just@v4
       - uses: cachix/cachix-action@v17
