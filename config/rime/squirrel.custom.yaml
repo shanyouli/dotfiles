@@ -1,4 +1,14 @@
 patch:
+  app_options:
+    com.google.Chrome:
+      # 規避 https://github.com/rime/squirrel/issues/435
+      inline: true
+    ru.keepcoder.Telegram:
+      # 規避 https://github.com/rime/squirrel/issues/475
+      inline: true
+    org.gnu.Emacs:
+      ascii_mode: true
+      no_inline: true
   "style/color_scheme": mac_light
   "style/color_scheme_dark": mac_dark
   "style/text_orientation": horizontal # vertical
