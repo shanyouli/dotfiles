@@ -1,6 +1,7 @@
 { self, ... }:
 let
   inherit (self.my) relativeToRoot mapModulesRec';
+  sharedMD = mapModulesRec' (relativeToRoot "modules/shared") import;
 in
 {
   flake = {
@@ -38,8 +39,8 @@ in
             imports = [
               base
               owner
-              self.homeModules.common
-            ];
+            ]
+            ++ sharedMD;
           };
       };
     darwinModules =
@@ -61,7 +62,7 @@ in
         default =
           { ... }:
           {
-            imports = basemodule ++ ownermodule;
+            imports = basemodule ++ ownermodule ++ sharedMD;
           };
       };
   };

@@ -54,7 +54,6 @@ else
                 networking.hostName = name;
               })
               home-manager.darwinModules.home-manager
-              self.homeModules.common
               self.darwinModules.default
             ]
             ++ lib.optionals (name == "localhost") [ (my.relativeToRoot "hosts/test/darwin.nix") ]
