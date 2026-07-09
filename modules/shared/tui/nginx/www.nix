@@ -166,7 +166,7 @@ let
   # runCommand failed in CI while working locally (sandbox disabled, /etc/dotfiles
   # present). The config below links each asset individually so every input stays
   # a properly tracked store path.
-  startpageDir = ../../../../config/startpage;
+  startpageDir = "${my.paths.dotfiles.config}/startpage";
 
   template = builtins.readFile (startpageDir + "/index.html");
 
