@@ -9,7 +9,7 @@
         in
         osConfig."test@${system}".config.system.build.toplevel;
       # homecheck = self.legacyPackages.${system}.homeConfigurations.test.activationPackage;
-      homecheck = self.homeConfigurations.test.activationPackage;
+      homecheck = self.homeConfigurations."test@${system}".activationPackage;
     in
     {
       checks = {
