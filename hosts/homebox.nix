@@ -99,7 +99,7 @@
         emacs = {
           enable = true;
           service.enable = false;
-          package = pkgs.emacs;
+          package = pkgs.emacs-unstable;
         };
 
         default = "nvim";
@@ -142,7 +142,10 @@
       # fish.enable = true;
       # zsh.enable = true;
       bash.enable = true;
-      nushell.enable = true;
+      nushell = {
+        enable = true;
+        package = pkgs.unstable.nushell;
+      };
       carapace.enable = true;
       nix-your-shell.enable = true;
       zsh.zinit.enable = true;

@@ -20,6 +20,11 @@ def show-help [base: string] {
 
 export def --wrapped main [...args] {
     const base = (path self | path dirname)
+    # Normalize --wrapped rest args to list<string>. In nushell 0.113 the rest
+    # params are list<glob>, which makes string-only commands (str starts-with)
+    # fail with nu::shell::only_supports_this_input_type and may expand globs
+    # when forwarded to external commands.
+    let args = ($args | each { |a| $a | into string })
     if ($args | length) == 0 or ($args.0 | str starts-with "-") {
         show-help $base
         return

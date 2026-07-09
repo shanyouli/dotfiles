@@ -92,8 +92,14 @@ in
           in
           if isAarch64 || isAarch32 then "/opt/homebrew" else "/usr/local";
         taps = [
-          "buo/cask-upgrade"
-          "shanyouli/tap"
+          {
+            name = "buo/cask-upgrade";
+            trusted = true;
+          }
+          {
+            name = "shanyouli/tap";
+            trusted = true;
+          }
         ];
         casks = [
           "raycast" # 取代 spotlight

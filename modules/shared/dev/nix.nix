@@ -21,7 +21,7 @@ in
       cfg.lspPkg
       nix-init
       nurl # better nix-prefetch-xxx
-      manix # support nix-darwin
+      # manix # support nix-darwin
     ];
     home.configFile."nix-init/config.toml".text = ''
       maintainers = [ "${my.vars.user}" ]
