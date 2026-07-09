@@ -121,9 +121,11 @@
 
 排除项：`hosts/**/hardware-*.nix`、`*.gpg`、`*.lock`、`orbstack.nix`
 
-### home-modules.nix — HM 模块聚合
+### flake-modules.nix — Flake 模块聚合
 
-定义 `flake.homeModules`：
+统一定义 `flake.nixosModules`、`flake.darwinModules`、`flake.homeModules`。
+
+**homeModules**：
 
 | 名称 | 包含模块 |
 |------|----------|
@@ -131,12 +133,10 @@
 | `common` | `modules/shared/` 递归导入 |
 | `default` | base + common |
 
-### os-modules.nix — OS 模块聚合
-
-定义 `flake.darwinModules` 和 `flake.nixosModules`：
+**darwinModules / nixosModules**：
 
 | 名称 | Darwin | NixOS |
 |------|--------|-------|
 | `base` | `optionals/os.nix` | `optionals/os.nix` |
 | `owner` | `modules/darwin/` 递归 | `modules/nixos/` 递归 |
-| `default` | base + owner | base + owner + homeModules.common |
+| `default` | base + owner + shared | base + owner + shared |

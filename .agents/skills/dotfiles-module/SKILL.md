@@ -21,8 +21,8 @@ allowed-tools: ["Read", "Edit", "Write", "Bash", "Glob", "Grep"]
 | `shared` | `modules/shared/{app,dev,gui,shell,tui}/` + `xdg.nix` | 跨平台，经 Home Manager 生效 | 绝大多数用户工具/语言/TUI/GUI 模块 |
 | `darwin` / `nixos` | `modules/darwin/`、`modules/nixos/` | 平台专用 | 仅在某平台才存在的功能（darwin 的 homebrew/launchd、nixos 的 systemd 等） |
 
-加载关系（见 `nix/home-modules.nix`、`nix/os-modules.nix`）：
-- `homeModules.common` = `optionals/hm.nix` + 全量 `shared/*`（`mapModulesRec'`）
+加载关系（见 `nix/flake-modules.nix`）：
+- `homeModules.common` = 全量 `shared/*`（`mapModulesRec'`）
 - `darwinModules.default` = `optionals/os.nix` + 全量 `darwin/*`
 - `nixosModules.default` = `optionals/os.nix` + 全量 `nixos/*` + `homeModules.common`
 

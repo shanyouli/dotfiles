@@ -35,8 +35,7 @@
 │   ├── checks.nix         # CI 检查（OS+Home 构建验证）
 │   ├── devshell.nix       # 开发 shell
 │   ├── git-hooks.nix      # pre-commit hooks
-│   ├── home-modules.nix   # Home Manager 模块聚合
-│   ├── os-modules.nix     # OS 模块聚合（NixOS + Darwin）
+│   ├── flake-modules.nix  # Flake 模块聚合（NixOS + Darwin + Home Manager）
 │   └── treefmt.nix        # 格式化配置
 ├── modules/               # 配置模块（核心）
 │   ├── optionals/         # 基础选项层（跨 OS/Home 共用）

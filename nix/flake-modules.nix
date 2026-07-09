@@ -27,7 +27,6 @@ in
           {
             imports = commonMD;
           };
-        # owner = hardware ++ common; # 暂时没有使用 hardware 模块
         owner =
           { ... }:
           {
@@ -63,6 +62,27 @@ in
           { ... }:
           {
             imports = basemodule ++ ownermodule ++ sharedMD;
+          };
+      };
+    homeModules =
+      let
+        basemodule = [ (relativeToRoot "modules/optionals/hm.nix") ];
+      in
+      {
+        base =
+          { ... }:
+          {
+            imports = basemodule;
+          };
+        common =
+          { ... }:
+          {
+            imports = sharedMD;
+          };
+        default =
+          { ... }:
+          {
+            imports = basemodule ++ sharedMD;
           };
       };
   };
