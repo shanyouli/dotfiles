@@ -24,8 +24,24 @@ in
 {
   imports = (modules "${root}/nix") ++ [ inputs.home-manager.flakeModules.home-manager ];
   flake.homeConfigurations = {
-    test = self.my.mkhome {
-      inherit system withSystem self;
+    "test@aarch64-darwin" = self.my.mkhome {
+      inherit withSystem self;
+      system = "aarch64-darwin";
+      overlays = [ self.overlays.python ];
+    };
+    "test@x86_64-darwin" = self.my.mkhome {
+      inherit withSystem self;
+      system = "x86_64-darwin";
+      overlays = [ self.overlays.python ];
+    };
+    "test@x86_64-linux" = self.my.mkhome {
+      inherit withSystem self;
+      system = "x86_64-linux";
+      overlays = [ self.overlays.python ];
+    };
+    "test@aarch64-linux" = self.my.mkhome {
+      inherit withSystem self;
+      system = "aarch64-linux";
       overlays = [ self.overlays.python ];
     };
   };
