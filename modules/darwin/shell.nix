@@ -57,6 +57,9 @@ let
 in
 {
   config = {
+    user.packages = [
+      pkgs.darwinapps.openwith # better dutils, Manage macOS "Open With" defaults from the terminal.
+    ];
     environment = mkMerge [
       {
         # NOTE: use $HOME replace ${config.home.stateDir}

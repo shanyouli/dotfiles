@@ -242,7 +242,7 @@
       games.enable = true;
       hammerspoon.enable = true;
       brew.mirror = "sust";
-      duti.enable = true;
+      duti.enable = false; # use openwith command
       netdriver.enable = true;
       chat = {
         enable = true;
