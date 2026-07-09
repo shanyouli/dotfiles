@@ -12,6 +12,32 @@
 2. [[https://learnxinyminutes.com/docs/nix/][Learn nix in Y Minutes]]： 让你了解 nix的基本语法
 3. [[https://nixos-and-flakes.thiscute.world/zh/][NixOS 与 Flakes | 主页]]： 推荐的入门工具
 4. [[https://ianthehenry.com/posts/how-to-learn-nix/][How to Learn Nix]]: 一个系列讲述如何学习 nix 的
+* 架构
+
+基于 Nix Flakes + flake-parts 模块化框架，同时支持 macOS（nix-darwin）、NixOS
+和独立 Home Manager 三种部署模式。
+
+模块分层（详见 [[./docs/architecture.md][架构概览]]）：
+- ~modules/optionals/~ :: 基础选项层，定义跨平台通用 option
+- ~modules/shared/~ :: 跨平台共享模块（Shell、编辑器、开发语言、GUI/TUI 工具）
+- ~modules/darwin/~ :: macOS 专用（homebrew、launchd 服务、Hammerspoon）
+- ~modules/nixos/~ :: NixOS 专用
+- ~modules/hardware/~ :: 硬件配置
+
+全新模块会被自动发现加载，无需手动注册 import。
+
+* 文档
+
+完整文档在 [[./docs/][docs/]] 目录，每个 ~.nix~ 模块对应一份 ~.md~ 文档（共 143 份）。
+
+| 主题 | 入口 |
+|------|------|
+| 架构概览 | [[./docs/architecture.md][architecture]] |
+| nix/ 构建层 | [[./docs/nix-modules.md][nix-modules]] |
+| 主机配置 | [[./docs/hosts.md][hosts]] |
+| Nushell 初始化 | [[./docs/nushell-init.md][nushell-init]] |
+| 模块文档索引 | [[./docs/][docs/README]] |
+
 * 安装教程
 
 ** 非 nixos 安装 nix 脚本
@@ -28,10 +54,10 @@ nix run #.init-os -- switch
 
 * TODOS:
 ** TODO 添加加密
-
-** TODO fish 配置
-
-** TODO xdg 优化
+** DONE fish 配置
+CLOSED: [2024-12-01 Sun 00:00]
+** DONE xdg 优化
+CLOSED: [2024-12-01 Sun 00:00]
 
 ** DONE 集成 nushell 配置
 CLOSED: [2024-10-21 Mon 16:48]
