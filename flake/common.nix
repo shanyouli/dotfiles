@@ -22,14 +22,20 @@ let
   modules = path: mapAttrsToList (name: _: "${path}/${name}") (filterFn path);
 in
 {
-  imports = modules "${root}/nix";
-
-  perSystem =
-    { system, ... }:
-    {
-      legacyPackages.homeConfigurations.test = self.my.mkhome {
-        inherit system withSystem self;
-        overlays = [ self.overlays.python ];
-      };
+  imports = (modules "${root}/nix") ++ [ inputs.home-manager.flakeModules.home-manager ];
+  flake.homeConfigurations = {
+    test = self.my.mkhome {
+      inherit system withSystem self;
+      overlays = [ self.overlays.python ];
     };
+  };
+  # perSystem =
+  #   { system, ... }:
+  #   {
+
+  #     legacyPackages.homeConfigurations.test = self.my.mkhome {
+  #       inherit system withSystem self;
+  #       overlays = [ self.overlays.python ];
+  #     };
+  #   };
 }

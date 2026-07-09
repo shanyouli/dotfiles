@@ -8,7 +8,8 @@
           osConfig = if pkgs.stdenvNoCC.isDarwin then self.darwinConfigurations else self.nixosConfigurations;
         in
         osConfig."test@${system}".config.system.build.toplevel;
-      homecheck = self.legacyPackages.${system}.homeConfigurations.test.activationPackage;
+      # homecheck = self.legacyPackages.${system}.homeConfigurations.test.activationPackage;
+      homecheck = self.homeConfigurations.test.activationPackage;
     in
     {
       checks = {
