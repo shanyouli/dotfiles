@@ -24,14 +24,6 @@ in
         enable = true;
         homedir = "${config.home.configDir}/gnupg";
       };
-      modules.shell.zsh.rcInit = ''
-        GPG_TTY=$(tty)
-        export GPG_TTY
-      '';
-      home.programs.bash.initExtra = ''
-        GPG_TTY=$(tty)
-        export GPG_TTY
-      '';
     }
     (mkIf pkgs.stdenvNoCC.isLinux {
       home.packages = [ pkgs.tomb ];
