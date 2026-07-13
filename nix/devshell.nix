@@ -27,6 +27,7 @@
           pkgs.cachix
           pkgs.just
           pkgs.nil
+          pkgs.nushell
           pkgs.nix-output-monitor
         ];
         shellHook = ''
