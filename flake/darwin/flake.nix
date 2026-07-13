@@ -51,6 +51,63 @@
     inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } (
       { withSystem, self, ... }:
+      let
+        inherit (inputs) home-manager darwin nixpkgs-stable;
+        lib = inputs.nixpkgs.lib;
+
+        # mkdarwin builds a nix-darwin system configuration. It is inlined
+        # here (rather than selected at runtime via a platform guard) so the
+        # darwin flake always exposes it regardless of evaluation order.
+        mkdarwin =
+          {
+            name ? "localhost",
+            system ? "aarch64-darwin",
+            nixpkgs ? null,
+            overlays ? [ ],
+            config ? { },
+            modules ? [ ],
+          }:
+          withSystem system (
+            {
+              pkgs,
+              system,
+              my,
+              ...
+            }:
+            darwin.lib.darwinSystem (
+              let
+                usePkgs = my.mkUsePkgs {
+                  inherit
+                    system
+                    self
+                    overlays
+                    config
+                    nixpkgs
+                    pkgs
+                    ;
+                  defaultNixpkgs = nixpkgs-stable;
+                };
+              in
+              {
+                specialArgs = {
+                  inherit self my;
+                  inherit (self) inputs;
+                };
+                modules = [
+                  (_: {
+                    nixpkgs.pkgs = usePkgs;
+                    nixpkgs.overlays = overlays;
+                    networking.hostName = name;
+                  })
+                  home-manager.darwinModules.home-manager
+                  self.darwinModules.default
+                ]
+                ++ lib.optionals (name == "localhost") [ (my.relativeToRoot "hosts/test/darwin.nix") ]
+                ++ modules;
+              }
+            )
+          );
+      in
       {
         systems = [
           "aarch64-darwin"
@@ -60,19 +117,16 @@
         imports = [ ./flake/common.nix ];
 
         flake.darwinConfigurations = {
-          "test@aarch64-darwin" = self.my.mkdarwin {
+          "test@aarch64-darwin" = mkdarwin {
             system = "aarch64-darwin";
-            inherit withSystem self;
             overlays = [ self.overlays.python ];
           };
-          "test@x86_64-darwin" = self.my.mkdarwin {
-            inherit withSystem self;
+          "test@x86_64-darwin" = mkdarwin {
             system = "x86_64-darwin";
             overlays = [ self.overlays.python ];
           };
-          "lyeli@aarch64-darwin" = self.my.mkdarwin {
+          "lyeli@aarch64-darwin" = mkdarwin {
             system = "aarch64-darwin";
-            inherit withSystem self;
             overlays = [ self.overlays.python ];
             name = "home-box";
             modules = [ (self.my.relativeToRoot "hosts/homebox.nix") ];

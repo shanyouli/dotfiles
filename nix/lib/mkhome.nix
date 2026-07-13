@@ -1,8 +1,38 @@
 { inputs, lib, ... }:
 let
   inherit (inputs) home-manager;
+
+  # mkUsePkgs is the shared nixpkgs-instance resolver for host factories.
+  # When an explicit nixpkgs or config is supplied, re-import on demand;
+  # otherwise reuse the perSystem-injected pkgs.
+  mkUsePkgs =
+    {
+      system,
+      self,
+      pkgs,
+      overlays ? [ ],
+      config ? { },
+      nixpkgs ? null,
+      defaultNixpkgs,
+    }:
+    let
+      isUpPkgs = !(builtins.isNull nixpkgs);
+      mypkgs = if isUpPkgs then nixpkgs else defaultNixpkgs;
+    in
+    if (isUpPkgs || config != { }) then
+      import mypkgs (
+        lib.recursiveUpdate {
+          inherit system;
+          overlays = [ self.overlay ] ++ overlays;
+          config.allowUnfree = true;
+        } { inherit config; }
+      )
+    else
+      pkgs;
 in
 {
+  inherit mkUsePkgs;
+
   mkhome =
     {
       withSystem,
@@ -22,21 +52,17 @@ in
         ...
       }:
       home-manager.lib.homeManagerConfiguration {
-        pkgs =
-          let
-            isUpPkgs = !(builtins.isNull nixpkgs);
-            mypkgs = if isUpPkgs then nixpkgs else inputs.nixpkgs-stable;
-          in
-          if (isUpPkgs || config != { }) then
-            import mypkgs (
-              lib.recursiveUpdate {
-                inherit system;
-                overlays = [ self.overlay ] ++ overlays;
-                config.allowUnfree = true;
-              } { inherit config; }
-            )
-          else
-            pkgs;
+        pkgs = my.mkUsePkgs {
+          inherit
+            system
+            self
+            overlays
+            config
+            nixpkgs
+            pkgs
+            ;
+          defaultNixpkgs = inputs.nixpkgs-stable;
+        };
         extraSpecialArgs = {
           inherit self my;
           inherit (self) inputs;
