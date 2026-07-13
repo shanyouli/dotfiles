@@ -13,6 +13,15 @@ def is-git-repo [dir_path: string]: nothing -> bool {
   }
 }
 
+# 判断仓库当前是否处于 rebase 进行中状态（真冲突的可靠依据）。
+# `git rev-parse --git-path` 会给出对应 rebase 状态目录的路径，
+# 仅当该目录真实存在时才表示 rebase 正在进行。
+def is-rebase-in-progress []: nothing -> bool {
+  let merge = (^git rev-parse --git-path rebase-merge | str trim)
+  let apply = (^git rev-parse --git-path rebase-apply | str trim)
+  [($merge | path exists) ($apply | path exists)] | any {|it| $it }
+}
+
 # Sync local changes to remote branch through a temporary branch.
 # Usage:
 #   m git sync [branch] [-r origin] [-d /path/to/repo] [--debug] [--focus]
@@ -44,35 +53,83 @@ export def main [
   }
 
   try {
-    log debug $"准备创建临时隔离分支 ($temp_branch)..."
-    ^git checkout -b $temp_branch
+    # 先同步远端引用，判断是否真的需要对本地提交做 rebase 整合。
+    # 当远端相对当前 HEAD 没有尚未整合的提交时，无需 rebase 也无需临时隔离分支，
+    # 直接以 HEAD:$target_branch 快进推送即可；这样可避免把脏工作区、远端分支缺失
+    # 等非冲突失败误判成冲突，也省去临时分支的切换/删除开销。
+    let remote_ref = $"($remote)/($target_branch)"
+    let _fetch = (do -i { ^git fetch $remote $target_branch } | complete)
+    let remote_ref_ok = (try { (^git rev-parse --verify --quiet $remote_ref | str trim | is-not-empty) } catch { false })
+    let incoming = if (not $remote_ref_ok) { 0 } else {
+      (try { (^git rev-list --count $"HEAD..($remote_ref)" | str trim | into int) } catch { 0 })
+    }
 
-    log debug $"正在从 ($remote)/($target_branch) 拉取并 rebase..."
-    let pull_result = (do -i { ^git pull --rebase $remote $target_branch } | complete)
+    let push_result = if ($incoming > 0) {
+      # 远端有新提交，需 rebase 整合：用临时分支隔离可能的冲突。
+      log debug $"准备创建临时隔离分支 ($temp_branch)..."
+      ^git checkout -b $temp_branch
 
-    if ($pull_result.exit_code != 0) {
-      if $focus {
-        log warning $"检测到冲突！强制删除临时分支 ($temp_branch)。"
+      log debug $"远端有 ($incoming) 个新提交，正在从 ($remote_ref) 拉取并 rebase..."
+      let pull_result = (do -i { ^git pull --rebase $remote $target_branch } | complete)
+
+      if ($pull_result.exit_code != 0) {
+        # 仅当 rebase 真正处于冲突态时才进入冲突处理，防止误报
+        if (is-rebase-in-progress) {
+          if $focus {
+            log warning $"检测到冲突！已回滚 rebase 并删除临时分支 ($temp_branch)。"
+            ^git rebase --abort
+            ^git checkout $current_branch
+            ^git branch -D $temp_branch
+          } else {
+            log warning "检测到冲突！已切换到手动模式。"
+            log warning $"你的原始分支未被改动: ($current_branch)"
+            log warning $"请在当前分支 ($temp_branch) 解决冲突后执行:"
+            log warning $"  git add . && git rebase --continue && git push ($remote) ($target_branch)"
+            log warning "处理完成后，记得切回原分支并删除临时分支。"
+          }
+          exit 1
+        }
+
+        # 非 rebase 冲突的其它失败（如工作区脏、认证/网络错误等）：
+        # 如实打印 git 原始报错，并干净回滚到原分支。
+        log error "git pull --rebase 失败（并非冲突），原始输出如下："
+        print -e $pull_result.stderr
         ^git checkout $current_branch
         ^git branch -D $temp_branch
-      } else {
-        log warning "检测到冲突！已切换到手动模式。"
-        log warning $"你的原始分支未被改动: ($current_branch)"
-        log warning $"请在当前分支 ($temp_branch) 解决冲突后执行:"
-        log warning $"  git add . && git rebase --continue && git push ($remote) ($target_branch)"
-        log warning "处理完成后，记得切回原分支并删除临时分支。"
+        exit 1
+      }
+
+      log debug $"正在推送到远程分支 ($target_branch)..."
+      do -i { ^git push $remote $"($temp_branch):($target_branch)" } | complete
+    } else {
+      # 远端无新提交：跳过临时分支与 rebase，直接快进推送。
+      log debug $"远端相对本地无新增提交，跳过 rebase，直接推送 ($remote_ref)。"
+      log debug $"正在推送到远程分支 ($target_branch)..."
+      do -i { ^git push $remote $"HEAD:($target_branch)" } | complete
+    }
+
+    if ($push_result.exit_code != 0) {
+      log error "推送失败，原始输出如下："
+      print -e $push_result.stderr
+      # 仅当走 rebase 路径时才可能处于临时分支上，需要回滚并清理。
+      if ($incoming > 0) {
+        ^git checkout $current_branch
+        let branch_lines = (^git branch | lines)
+        if ($branch_lines | any {|it| ($it | str contains $temp_branch) }) {
+          ^git branch -D $temp_branch
+        }
       }
       exit 1
     }
-
-    log debug $"正在推送到远程分支 ($target_branch)..."
-    ^git push $remote $"($temp_branch):($target_branch)"
     log debug "推送成功"
 
-    ^git checkout $current_branch
-    let branch_lines = (^git branch | lines)
-    if ($branch_lines | any {|it| ($it | str contains $temp_branch) }) {
-      ^git branch -D $temp_branch
+    # 仅当走 rebase 路径时才在临时分支上，需切回原分支并删除临时分支。
+    if ($incoming > 0) {
+      ^git checkout $current_branch
+      let branch_lines = (^git branch | lines)
+      if ($branch_lines | any {|it| ($it | str contains $temp_branch) }) {
+        ^git branch -D $temp_branch
+      }
     }
   } catch {|err|
     log error $err.msg
