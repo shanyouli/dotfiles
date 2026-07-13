@@ -72,6 +72,7 @@ in
           window-width = 120;
           # shell 交互启动
           shell-integration-features = "cursor,sudo,ssh-terminfo,ssh-env";
+          shell-integration = "detect";
           mouse-hide-while-typing = true;
           quick-terminal-size = "48%,70%"; # quick 窗口大小，macos 似乎不生效。
 
