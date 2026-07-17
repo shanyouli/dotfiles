@@ -110,6 +110,7 @@ in
             epkgs.pdf-tools
             epkgs.saveplace-pdf-view
 
+            epkgs.unstable.ghostel
             epkgs.puni
             epkgs.ef-themes
             epkgs.rainbow-mode
