@@ -23,7 +23,7 @@ use alias-tips.nu
 
 def vish []: string -> any {
   let local_autoload_dir = $nu.default_config_dir | path join "autoload"
-  let local_file = $local_autoload_dir | paht join "zz_local.nu"
+  let local_file = $local_autoload_dir | path join "zz_local.nu"
   if (not ($local_autoload_dir | path exists)) {
     mkdir $local_autoload_dir
   }

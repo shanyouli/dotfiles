@@ -41,7 +41,7 @@ $env.ENV_CONVERSIONS = {
     "Path": {
         from_string: { |s|
             $s | split row (char esep)
-               | uniqe
+               | uniq
                | path expand --no-symlink
                | where  (zpfx-filter-fn $it)
                | where (nix-store-filter-fn $it)

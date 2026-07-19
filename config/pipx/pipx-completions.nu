@@ -4,7 +4,7 @@ def "nu-complete pipx packages" [] {
     ^pipx list --short | lines --skip-empty | parse '{name} {version}' | get name
 }
 
-def "nu-complete pipx env" [] noting -> list<string> {
+def "nu-complete pipx env" []: nothing -> list<string> {
     ["PIPX_HOME" "PIPX_BIN_DIR" "PIPX_MAN_DIR" "PIPX_SHARED_LIBS" "PIPX_LOCAL_VENVS"
      "PIPX_LOG_DIR" "PIPX_TRASH_DIR" "PIPX_VENV_CACHEDIR" "PIPX_DEFAULT_PYTHON" "USE_EMOJI"]
 }

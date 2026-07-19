@@ -1,9 +1,9 @@
 #!/usr/bin/env nu
 
 def is_true [ name: string ] {
-  let lower_name = ($name | str downcase)
-  let os_name = ((sys).host.name | str downcase)
-  let arch_type = ((uname).machine | str downcase)
+  let lower_name = ($name | str lowercase)
+  let os_name = ((sys).host.name | str lowercase)
+  let arch_type = ((uname).machine | str lowercase)
   ($lower_name | str contains $arch_type ) and ($lower_name | str contains $os_name)
 }
 
@@ -15,7 +15,7 @@ def setup [] {
       # http get $i.browser_download_url | save $i.name
       wget $i.browser_download_url -O $i.name
       if ( $i.name | str ends-with 'zip') {
-        if ((sys).host.name | str downcase) == "darwin" {
+        if ((sys).host.name | str lowercase) == "darwin" {
           ditto -V -x -k -- $i.name .
         } else {
           unzip $i.name

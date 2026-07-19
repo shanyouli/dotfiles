@@ -1,9 +1,9 @@
 #!/usr/bin/env nu
 # yspace --Intelligent macOS Space management using Nushell + yabai
 
-# Logging powered by std log
-use std log
-use std assert
+# Logging powered by std/log
+use std/log
+use std/assert
 
 assert not (which yabai | is-empty) "Please install yabai"
 

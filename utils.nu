@@ -1,5 +1,5 @@
 #!/usr/bin/env nu
-use std log
+use std/log
 # Print a section banner with BEGIN/END markers.
 export def --env tip [--end(-e), ...msg] {
     let log_level = log log-level | get INFO
@@ -39,7 +39,7 @@ export def --env init-log [name: string] {
 export def --env end-log [name: string] { tip -e $"Init ($name)" }
 # Return the current OS target used by root flake switching.
 export def detect-target [] {
-    if ((uname | get operating-system | str downcase) == "darwin") {
+    if ((uname | get operating-system | str lowercase) == "darwin") {
         "darwin"
     } else {
         "linux"
@@ -47,7 +47,7 @@ export def detect-target [] {
 }
 # Return the normalized architecture used in flake host names.
 export def detect-arch [] {
-    if ((uname | get machine | str downcase) == "arm64") {
+    if ((uname | get machine | str lowercase) == "arm64") {
         "aarch64"
     } else {
         "x86_64"
