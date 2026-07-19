@@ -109,20 +109,13 @@
           );
       in
       {
-        systems = [
-          "aarch64-darwin"
-          "x86_64-darwin"
-        ];
+        systems = [ "aarch64-darwin" ];
 
         imports = [ ./flake/common.nix ];
 
         flake.darwinConfigurations = {
           "test@aarch64-darwin" = mkdarwin {
             system = "aarch64-darwin";
-            overlays = [ self.overlays.python ];
-          };
-          "test@x86_64-darwin" = mkdarwin {
-            system = "x86_64-darwin";
             overlays = [ self.overlays.python ];
           };
           "lyeli@aarch64-darwin" = mkdarwin {

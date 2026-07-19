@@ -24,7 +24,7 @@
 | `environment.etc."darwin".source` | `${inputs.darwin}` | darwin 输入引用 |
 | `environment.systemPackages` | `[findutils]` | 系统级包 |
 | `system.stateVersion` | `4` | darwin 状态版本 |
-| `nix.extraOptions` | `extra-platforms = x86_64-darwin aarch64-darwin` | 支持双架构 |
+| `nix.extraOptions` | `extra-platforms = aarch64-darwin` | 仅支持 Apple Silicon |
 | `documentation.*.enable` | 全部 true | 启用 doc/info/man |
 | `system.activationScripts.postActivation` | `activateSettings -u` | 激活后重载系统设置 |
 

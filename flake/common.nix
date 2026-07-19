@@ -29,11 +29,6 @@ in
       system = "aarch64-darwin";
       overlays = [ self.overlays.python ];
     };
-    "test@x86_64-darwin" = self.my.mkhome {
-      inherit withSystem self;
-      system = "x86_64-darwin";
-      overlays = [ self.overlays.python ];
-    };
     "test@x86_64-linux" = self.my.mkhome {
       inherit withSystem self;
       system = "x86_64-linux";
