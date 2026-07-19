@@ -1,4 +1,4 @@
-use std log
+use std/log
 
 # Ensure Homebrew is installed and available in PATH.
 export def assert-brew [] {

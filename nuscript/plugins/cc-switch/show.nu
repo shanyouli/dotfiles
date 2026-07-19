@@ -249,7 +249,7 @@ export def main [
   --type(-t),
   --models(-m)
 ] {
-  mut result = null
+  mut result: any = null
   let target_app = (if ($app | is-empty) { "all" } else { $app })
 
   if ($target_app != "all") {

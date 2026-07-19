@@ -1,4 +1,4 @@
-use std log
+use std/log
 export use generated.nu *
 
 def get-plugin-list [base: string] {

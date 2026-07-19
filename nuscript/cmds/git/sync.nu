@@ -1,6 +1,6 @@
 #!/usr/bin/env nu
 
-use std log
+use std/log
 
 # Check whether a path is a Git repository.
 def is-git-repo [dir_path: string]: nothing -> bool {

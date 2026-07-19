@@ -1,5 +1,5 @@
 #!/usr/bin/env nu
-use std log
+use std/log
 
 # 判断目录是否为 Git 仓库
 def is-git-repo [dir_path: string = ""]: nothing -> bool {

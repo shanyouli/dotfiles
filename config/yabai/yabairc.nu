@@ -1,6 +1,6 @@
 #!/usr/bin/env nu
 
-use std log
+use std/log
 
 sudo yabai --load-sa
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
@@ -140,17 +140,21 @@ def ensure-spaces [labels: list<any>] {
   let updated_spaces = yabai-spaces | where is-native-fullscreen == false
 
   for item in ($labels | enumerate) {
-    mut label = null
-    mut layout = null
+    # Nushell 0.114+：mut 初始化为 null 会锁定为 nothing，需显式 any
+    mut label: any = null
+    mut layout: any = null
     match ($item.item | describe) {
-      "string" => { $label =  $item.item }
+      "string" => { $label = $item.item }
       $t if $t =~ "^list" => {
         $label = $item.item | first
         $layout = $item.item | last
       }
       $t if $t =~ "^record" => {
         $label = $item.item | get label
-        $layout = $item.item | get layout
+        $layout = $item.item | get -o layout | default null
+      }
+      _ => {
+        error make { msg: $"unsupported space label item type: ($item.item | describe)" }
       }
     }
 

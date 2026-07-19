@@ -41,7 +41,7 @@ let
           ${x.text}
         '') (sortFn (filter (x: x.enable) dict-list));
       text = ''
-        use std log
+        use std/log
         $env.NU_LOG_FORMAT = "%ANSI_START%%LEVEL%: %MSG%%ANSI_STOP%"
         let log_level = log log-level | get INFO
         let term_col = term size | get columns

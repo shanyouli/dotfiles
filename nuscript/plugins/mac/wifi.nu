@@ -1,4 +1,4 @@
-use std log
+use std/log
 use utils.nu [assert-macos]
 
 # Toggle Wi-Fi between DHCP and Static IP.

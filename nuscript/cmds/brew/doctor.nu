@@ -1,4 +1,4 @@
-use std log
+use std/log
 use utils.nu [assert-brew]
 # Check your system for potential problems.
 # Usage: brew doctor

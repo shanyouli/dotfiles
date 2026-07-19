@@ -1,4 +1,4 @@
-use std log
+use std/log
 
 # ----------------------------------------
 # System check: Ensure running on macOS

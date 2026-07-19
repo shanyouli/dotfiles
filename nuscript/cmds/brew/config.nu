@@ -1,5 +1,5 @@
 #!/usr/bin/env nu
-use std log
+use std/log
 use utils.nu [assert-brew]
 
 # Show Homebrew and system configuration info useful for debugging.
