@@ -30,7 +30,7 @@ jobs:
       - name: Setup Nushell
         uses: hustcer/setup-nu@v3
         with:
-          version: "0.112.2"
+          version: "0.114.1"
       - name: Setup just
         uses: extractions/setup-just@v4
       - name: Prepare flakebot branch
