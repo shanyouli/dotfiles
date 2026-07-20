@@ -39,6 +39,10 @@ in
       # Disable the password requirement for it so that a service can do so without user interaction.
       environment.etc."sudoers.d/yabai-load-sa".source =
         my.pkg.sudoNotPass "${cfg.package}/bin/yabai --load-sa";
+      launchd.user.agents.yabai.serviceConfig = {
+        KeepAlive = mkForce cfg.keep.enable;
+        RunAtLoad = mkForce cfg.startup.enable;
+      };
       services.yabai = {
         enable = true;
         inherit (cfg) package;
