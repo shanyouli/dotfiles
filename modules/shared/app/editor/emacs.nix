@@ -114,30 +114,16 @@ in
             epkgs.ef-themes
             epkgs.rainbow-mode
             epkgs.noflet
-            # (epkgs.treesit-grammars.with-grammars
-            #   (grammars:
-            #     with grammars; [
-            #       tree-sitter-bash
-            #     ]))
+
+            # NOTE: 使用指定的 treesit
+            # (epkgs.treesit-grammars.with-grammars (grammars: with grammars; [ tree-sitter-bash ]))
             epkgs.treesit-grammars.with-all-grammars
             epkgs.elvish-mode
             #
             epkgs.emt
             epkgs.emacs-reader
           ]
-          ++ optionals cfg.rime.enable [
-            epkgs.rimel
-            # ((epkgs.rimel.override { inherit (epkgs.unstable) liberime; }).overrideAttrs (oldAttrs: {
-            #   # 在构建环境中，将 $HOME 指向一个可写入的临时目录
-            #   buildPhase = ''
-            #     export HOME="$TMPDIR"
-            #     runHook preBuild
-            #     ${oldAttrs.buildPhase or ""}
-            #     runHook postBuild
-            #   '';
-            # }))
-            # epkgs.unstable.liberime
-          ]
+          ++ optionals cfg.rime.enable [ epkgs.rimel ]
           ++ optionals config.modules.just.enable [
             epkgs.just-mode
             epkgs.justl
