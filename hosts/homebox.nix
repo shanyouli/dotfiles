@@ -232,6 +232,7 @@
     # macos
     macos = {
       docker.enable = true;
+      clear.enable = true;
       # arc.enable = true;
       safari.enable = true;
       # relaunchApp.enable = true;

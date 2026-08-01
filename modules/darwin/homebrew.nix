@@ -144,9 +144,6 @@ in
 
           "pictureview" # 看图
 
-          "tencent-lemon" # 文件清理 or ""clean-me""
-          "pearcleaner" # app 卸载工具 or "appcleaner"
-
           "charles" # "proxyman", 抓包
           "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
           # "background-music" # 和一些工具冲突，eg mpd， yesplaymusic
@@ -219,8 +216,7 @@ in
           # "applite"
           (mkIf (config.modules.proxy.default == "sing-box") "shanyouli/tap/gui-for-singbox")
           # (mkIf (config.modules.proxy.default == "clash") "shanyouli/tap/gui-for-clash")
-          "shanyouli/tap/clashbar"
-          # "clash-verge-rev"
+          "shanyouli/tap/clashbar" # "clash-verge-rev"
         ]
         ++ optionals (
           config.modules.app.editor.zed.enable && (config.modules.app.editor.zed.package == null)
