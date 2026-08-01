@@ -105,12 +105,11 @@ in
           [
             epkgs.emacsql
             # epkgs.telega
-            epkgs.vterm
             epkgs.eat
             epkgs.pdf-tools
             epkgs.saveplace-pdf-view
 
-            epkgs.unstable.ghostel
+            epkgs.unstable.ghostel # epkgs.vterm
             epkgs.puni
             epkgs.ef-themes
             epkgs.rainbow-mode
