@@ -39,6 +39,7 @@ in
       method = mkOpt' types.str config.modules.rime.method "emacs rime method";
     };
 
+    ghostel.enable = mkBoolOpt true;
     doom = {
       enable = mkBoolOpt true;
       fromSSH = mkBoolOpt false;
@@ -109,7 +110,6 @@ in
             epkgs.pdf-tools
             epkgs.saveplace-pdf-view
 
-            epkgs.unstable.ghostel # epkgs.vterm
             epkgs.puni
             epkgs.ef-themes
             epkgs.rainbow-mode
@@ -128,7 +128,8 @@ in
             epkgs.just-mode
             epkgs.justl
           ]
-          ++ optionals config.modules.shell.nushell.enable [ epkgs.nushell-ts-mode ];
+          ++ optionals config.modules.shell.nushell.enable [ epkgs.nushell-ts-mode ]
+          ++ optionals cfg.ghostel.enable [ epkgs.unstable.ghostel ];
         pkg = emacsWithPackages cfg.extraPkgs;
       };
     }
@@ -206,5 +207,18 @@ in
         };
       };
     }
+    (mkIf cfg.ghostel.enable {
+      modules.shell = {
+        zsh.rcInit = ''
+          [[ "''${''${INSIDE_EMACS-}%%,*}" = 'ghostel' ]] && source "$EMACS_GHOSTEL_PATH/etc/shell/ghostel.zsh"
+        '';
+        bash.rcInit = ''
+          [[ "''${INSIDE_EMACS%%,*}" = 'ghostel' ]] && source "$EMACS_GHOSTEL_PATH/etc/shell/ghostel.bash"
+        '';
+        fish.rcInit = ''
+          string match -qr '^ghostel(,|$)' -- "$INSIDE_EMACS"; and source "$EMACS_GHOSTEL_PATH/etc/shell/ghostel.fish"
+        '';
+      };
+    })
   ]);
 }
