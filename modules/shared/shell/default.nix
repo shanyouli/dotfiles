@@ -78,6 +78,7 @@ in
       # nvd
       dix
       # age
+      pkgs.unstable.herdr
     ];
     env.PATH = [ "$XDG_BIN_HOME" ];
 
