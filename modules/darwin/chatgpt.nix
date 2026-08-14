@@ -14,7 +14,6 @@ in
   options.modules.macos.chat = {
     enable = mkEnableOption "Whether to use chatgpt";
     local.enable = mkBoolOpt cfg.enable;
-    nextchat.enable = mkBoolOpt cfg.enable;
     snapbox.enable = mkOption {
       type = types.bool;
       default = cfg.enable;
@@ -23,15 +22,12 @@ in
   };
   config = mkIf cfg.enable {
     homebrew.casks = [
-      # "warden"
-      "cherry-studio"
+      "shanyouli/tap/aqbot" # "cherry-studio" or  # "warden"
       "cc-switch" # codex 切换
       "chatgpt" # chatgpt 客户端
       # 使用了这么长时间，我更喜欢使用命令行
-      # "codex-app" # "google-gemini"
-      # "opencode-desktop" # opencode 桌面版
+      # "codex-app" # "opencode-desktop" # opencode 桌面版
     ]
-    ++ optionals cfg.nextchat.enable [ "shanyouli/tap/nextchat" ]
     ++ optionals cfg.local.enable [ "ollama" ]
     ++ optionals cfg.snapbox.enable [ "shanyouli/tap/snapbox" ];
     my.user.extra = optionalString cfg.local.enable (
