@@ -1,5 +1,4 @@
-{ inputs, self, ... }:
-{
+{ inputs, self, ... }: {
   flake.overlays = rec {
     base = inputs.nurpkgs.overlays.default;
     python = import ./python.nix;

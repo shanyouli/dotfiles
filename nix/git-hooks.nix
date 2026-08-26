@@ -1,12 +1,10 @@
-{ inputs, ... }:
-{
+{ inputs, ... }: {
   imports = [ inputs.git-hooks-nix.flakeModule ];
-  perSystem =
-    { pkgs, ... }:
-    {
-      pre-commit = {
-        check.enable = true;
-        settings.hooks = {
+  perSystem = { pkgs, ... }: {
+    pre-commit = {
+      check.enable = true;
+      settings = {
+        hooks = {
           block-root-flake-files = {
             enable = true;
             name = "block root flake files";
@@ -33,6 +31,8 @@
             language = "system";
           };
         };
+        package = pkgs.prek;
       };
     };
+  };
 }

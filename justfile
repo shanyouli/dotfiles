@@ -183,4 +183,9 @@ reload:
 # format project
 [group('common')]
 fmt:
-    pre-commit run  --all-files
+    #!/usr/bin/env nu
+    if (which pre-commit | is-not-empty ) {
+      pre-commit run  --all-files
+    } else {
+      prek run --all-files
+    }
