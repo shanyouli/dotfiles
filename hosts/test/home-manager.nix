@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   modules = {
     tui = {
       yazi.enable = true;
