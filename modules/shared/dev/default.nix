@@ -31,21 +31,25 @@ in
       home.packages = [
         (mkIf cfg.enWebReport pkgs.allure)
         (mkIf cfg.json.enable pkgs.vscode-json-languageserver)
-      ]
-      ++ lib.optionals cfg.ai.enable (
-        with pkgs;
-        [
-          # opencode # opencode 出品的工具
-          # gemini-cli # google 出品
-          # pkgs.jcode
-          codex
-          codex-acp
-          pi-coding-agent # pi 极简单的 agent 工具，类似 opencode
-          claude-code
-          # pkgs.cc-switch # 更推荐使用 桌面版本的 cc-switch 管理
-        ]
-      );
+      ];
     }
     (mkIf (cfg.lang != { }) { modules.dev.manager.default = mkDefault "mise"; })
+    (mkIf cfg.ai.enable {
+      home.packages = with pkgs; [
+        # opencode # opencode 出品的工具
+        # gemini-cli # google 出品
+        # pkgs.jcode
+        codex
+        codex-acp
+        pi-coding-agent # pi 极简单的 agent 工具，类似 opencode
+        claude-code
+        # pkgs.cc-switch # 更推荐使用 桌面版本的 cc-switch 管理
+      ];
+      modules.shell.env = {
+        PI_TELEMETRY = "0";
+        PI_OFFLINE = "1";
+        PI_SKIP_VERSION_CHECK = "1";
+      };
+    })
   ];
 }
