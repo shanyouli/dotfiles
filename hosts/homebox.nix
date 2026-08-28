@@ -121,9 +121,9 @@
 
       localsend.enable = true; # 需要gui，局域网文件传输工具
 
-      browser.default = "firefox";
+      browser.default = "chrome"; # firefox
       # browser.firefox.extensions = lib.mkForce [];
-      browser.fallback = "chrome";
+      # browser.fallback = "chrome";
       # browser.fallback = pkgs.darwinapps.vivaldi;
       media = {
         flameshot.enable = true;
