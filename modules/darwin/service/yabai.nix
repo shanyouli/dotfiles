@@ -42,6 +42,7 @@ in
       launchd.user.agents.yabai.serviceConfig = {
         KeepAlive = mkForce cfg.keep.enable;
         RunAtLoad = mkForce cfg.startup.enable;
+        EnvironmentVariables.PATH = lib.mkForce "${cfgBinPath}:${config.modules.service.path}";
       };
       services.yabai = {
         enable = true;
@@ -90,9 +91,9 @@ in
         extraConfig = ''
           sudo ${cfg.package}/bin/yabai --load-sa
           yabai -m signal --add event=dock_did_restart action="sudo ${cfg.package}/bin/yabai --load-sa"
-          ${config.home.configDir}/yabai/yabairc.nu
+          ${nushellBin} "${config.home.configDir}/yabai/yabairc.nu"
           [[ -f "${config.home.configDir}/yabai/yabairc.extra.nu" ]] && {
-            ${config.home.configDir}/yabai/yabairc.extra.nu
+            ${nushellBin} "${config.home.configDir}/yabai/yabairc.extra.nu"
           }
         '';
       };
@@ -114,7 +115,7 @@ in
           ];
           KeepAlive = cfg.keep.enable;
           RunAtLoad = cfg.startup.enable;
-          EnvironmentVariables.PATH = "${cfgBinPath}:${config.modules.service.path}";
+          EnvironmentVariables.PATH = lib.mkForce "${cfgBinPath}:${config.modules.service.path}";
         };
       };
       system.activationScripts.postAsctivation.text = ''
@@ -149,7 +150,7 @@ in
         yabai -m signal --add event=dock_did_restart action="sudo ${cfg.package}/bin/yabai --load-sa"
 
         ${nushellBin} "${config.home.configDir}/yabai/yabairc.nu"
-        [[ -f "${config.home.configDir}/yabai/yabairc.extra.nu" ] && {
+        [[ -f "${config.home.configDir}/yabai/yabairc.extra.nu" ]] && {
            ${nushellBin} "${config.home.configDir}/yabai/yabairc.extra.nu"
         }
       '';
