@@ -88,9 +88,11 @@ in
           window_gap = 4;
         };
         extraConfig = ''
-          ${nushellBin} "${config.home.configDir}/yabai/yabairc.nu"
-          [[ -f "${config.home.configDir}/yabai/yabairc.extra.nu" ] && {
-            ${nushellBin} "${config.home.configDir}/yabai/yabairc.extra.nu"
+          sudo ${cfg.package}/bin/yabai --load-sa
+          yabai -m signal --add event=dock_did_restart action="sudo ${cfg.package}/bin/yabai --load-sa"
+          ${config.home.configDir}/yabai/yabairc.nu
+          [[ -f "${config.home.configDir}/yabai/yabairc.extra.nu" ]] && {
+            ${config.home.configDir}/yabai/yabairc.extra.nu
           }
         '';
       };
@@ -143,6 +145,9 @@ in
         yabai -m config layout bsp
         yabai -m config window_placement second_child
         yabai -m config window_gap 4
+        sudo yabai --load-sa
+        yabai -m signal --add event=dock_did_restart action="sudo ${cfg.package}/bin/yabai --load-sa"
+
         ${nushellBin} "${config.home.configDir}/yabai/yabairc.nu"
         [[ -f "${config.home.configDir}/yabai/yabairc.extra.nu" ] && {
            ${nushellBin} "${config.home.configDir}/yabai/yabairc.extra.nu"

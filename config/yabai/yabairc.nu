@@ -2,9 +2,6 @@
 
 use std/log
 
-sudo yabai --load-sa
-yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
-
 if (which borders | is-not-empty) {
   let borders_info = ps | where name == "borders"
   if ($borders_info | is-not-empty) {
@@ -64,20 +61,19 @@ def yabai-displays [] {
   ^yabai -m query --displays | from json
 }
 
-def yabai-display-space [dindex: int ] {
-  ^yabai -m query --spaces --display $dindex | from json
-}
-
 # ----------------------- label normalization
 def normalize-labels [labels] {
   match ($labels | describe) {
-    "int" => { 1..$labels | each { |it|  $"No.($it | into string)" }}
+    "int" => {
+      if $labels <= 0 { return [] }
+      1..$labels | each { |it|  $"No.($it | into string)" }
+    }
     $t if $t =~ "^list" => { $labels }
     _ => {error make { msg: "labels must be int or list<string>" } }
   }
 }
 
-# macsOS will always keep one Space per display.
+# macOS will always keep one Space per display.
 def reset-spaces [] {
   log info "Resetting non-fullscreen Spaces."
   let spaces = yabai-spaces | group-by display
@@ -87,10 +83,18 @@ def reset-spaces [] {
     for i in ($sid | skip 1) {
       log info $"Destroy space id=($i)"
       let cspace = yabai-spaces | where id == $i
-      log debug $"space[($i)] native-fullscreen ($cspace | get is-native-fullscreen | last)"
       if ($cspace | get is-native-fullscreen | last) == false {
-        log debug $"Destory space id=[($i)] success"
-        ^yabai -m space --destroy ($cspace | get index | last)
+        let result = try {
+          ^yabai -m space --destroy ($cspace | get index | last)
+          { ok: true }
+        } catch { |e|
+          { ok: false, msg: $e.msg }
+        }
+        if $result.ok {
+          log debug $"Destroyed space id=($i)"
+        } else {
+          log warning $"Failed to destroy space id=($i): ($result.msg)"
+        }
       }
     }
   }
@@ -103,15 +107,17 @@ def reset-spaces [] {
 def clear-space-labels [] {
   log info "Clear space labels."
   let spaces = yabai-spaces | where label != ""
+  let n = $spaces | length
   if ($spaces | is-not-empty ) {
     $spaces | sort-by index -r | each { |s|
-      log debug $"clear lable space index=($s.index)"
-      ^yabai -m space $s.index --label ""
+      log debug $"clear label space index=($s.index)"
+      try { ^yabai -m space $s.index --label "" }
     }
   }
+  log info $"Cleared ($n) space label\(s\)."
 }
 
-# creat and set label on space
+# create and set label on space
 def ensure-spaces [labels: list<any>] {
   log info "Ensuring Spaces layout."
 
@@ -130,8 +136,18 @@ def ensure-spaces [labels: list<any>] {
     if $actual_count < $expected_count {
       let diff = $expected_count - $actual_count
       log info $"Display ($did) need ($diff) more space\(s\). Creating..."
-      for i in 1..$diff {
-        ^yabai -m space --create $did
+      # NOTE: yabai -m space --create 在部分 macOS 版本下即使 SA 已加载也会失败
+      # （报错或静默返回 0 但未实际创建 space），见 https://github.com/koekeishiya/yabai/issues/2821
+      # 此处仅捕获执行失败，静默失败由下方越界防御兜底。
+      for _ in 0..<($diff) {
+        let result = try {
+          ^yabai -m space --create $did | complete
+        } catch { |e|
+          { exit_code: -1, stderr: $e.msg }
+        }
+        if $result.exit_code != 0 {
+          log warning $"yabai -m space --create failed on display ($did): ($result.stderr)"
+        }
       }
     }
   }
@@ -139,6 +155,8 @@ def ensure-spaces [labels: list<any>] {
   # 此时空间已经全部创建完毕，重新获取最新的空间列表进行索引绑定
   let updated_spaces = yabai-spaces | where is-native-fullscreen == false
 
+  mut labeled = 0
+  mut skipped = 0
   for item in ($labels | enumerate) {
     # Nushell 0.114+：mut 初始化为 null 会锁定为 nothing，需显式 any
     mut label: any = null
@@ -164,20 +182,28 @@ def ensure-spaces [labels: list<any>] {
     let did = $display.index
     let required_index_on_display = ($idx // $display_count)
 
-    # 从更新后的列表中精准提取目标
-    let target = ($updated_spaces
+    let spaces_on_display = ($updated_spaces
                   | where display == $did
-                  | sort-by index
-                  | get $required_index_on_display)
+                  | sort-by index)
+    # 防御：space 不足时跳过而非越界崩溃
+    if $required_index_on_display >= ($spaces_on_display | length) {
+      log warning $"Skipping label '($label)': only ($spaces_on_display | length) spaces on display ($did), need index ($required_index_on_display)"
+      $skipped += 1
+      continue
+    }
+    let target = $spaces_on_display | get $required_index_on_display
     if ($layout == null) {
       log info $"Labeling space \(index: ($target.index)\) on display ($did) as '($label)'"
       ^yabai -m space $target.index --label $label
+      $labeled += 1
     } else {
       log info $"Labeling space \(index: ($target.index)\) on display ($did) as '($label)'"
       log info $"Layout space \(index: ($target.index)\) on display ($did) as '($layout)'"
       ^yabai -m space $target.index --label $label --layout $layout
+      $labeled += 1
     }
   }
+  log info $"Set ($labeled) label\(s\), skipped ($skipped)."
 }
 
 
@@ -188,7 +214,14 @@ def setup-spaces [labels: any, --force (-f)] {
     reset-spaces
   }
   clear-space-labels
-  log info $"($labels | str join ',')"
+  let display_labels = $labels | each { |it|
+    match ($it | describe) {
+      "string" => { $it }
+      $t if $t =~ "^list" => { $"($it | first)\(($it | last)\)" }
+      _ => { $it | into string }
+    }
+  }
+  log info $"Labels: ($display_labels | str join ', ')"
   ensure-spaces $labels
 }
 
