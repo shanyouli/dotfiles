@@ -123,9 +123,8 @@ in
           # "licecap" # GIF kap
           # "imazing" # 手机备份管理
           (mkIf (!config.modules.gui.media.flameshot.enable) "shottr") # 截图
-          "betterdisplay" # 其他替代工具
-          # "shanyouli/tap/stillcolor"
-          # "monitorcontrol" # 亮度控制和音量控制, 使用 hammerspoon取代
+
+          "crisp" # 开源的 "betterdisplay"  "monitorcontrol"替代方案
           "maczip" # 压缩解压GUI or "keka"
           # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
           # "findergo" # 快捷方式，在finder中打开终端
@@ -146,8 +145,8 @@ in
 
           "charles" # "proxyman", 抓包
           "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
-          # "background-music" # 和一些工具冲突，eg mpd， yesplaymusic
-          "finetune" # 另一款各个音量app 使用
+
+          "finetune" # 另一款各个音量app 使用 # "background-music" # 和一些工具冲突，eg mpd， yesplaymusic
 
           "postman"
           "rapidapi" # "httpie"

@@ -43,6 +43,7 @@ in
         codex-acp
         pi-coding-agent # pi 极简单的 agent 工具，类似 opencode
         claude-code
+        rtk
         # pkgs.cc-switch # 更推荐使用 桌面版本的 cc-switch 管理
       ];
       modules.shell.env = {
