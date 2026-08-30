@@ -158,10 +158,10 @@
     };
 
     navi.enable = true;
-    tmux = {
-      enable = true;
-      service.startup = true;
-    };
+    # tmux = {
+    #   enable = false;
+    #   service.startup = false;
+    # };
     adb.enable = true;
     # ugrep.enable = true;
     gpg = {
