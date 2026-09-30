@@ -26,7 +26,7 @@ in
       "cc-switch" # codex 切换
       "chatgpt" # chatgpt 客户端
       # 使用了这么长时间，我更喜欢使用命令行
-      # "codex-app" # "opencode-desktop" # opencode 桌面版
+      # "opencode-desktop" # opencode 桌面版
     ]
     ++ optionals cfg.local.enable [ "ollama" ]
     ++ optionals cfg.snapbox.enable [ "shanyouli/tap/snapbox" ];
