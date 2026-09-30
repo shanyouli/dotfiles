@@ -20,6 +20,7 @@ in
       github-cli
       git-crypt
       # pre-commit # git 提交前自检, 使用 pipx安装
+      prek
       (mkIf (cfg.enGui && stdenvNoCC.isLinux) github-desktop)
       # 更快的克隆速度。
       gitu
