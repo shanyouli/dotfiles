@@ -56,7 +56,7 @@ export def main [
   if $default {
     $sql_info = ($sql_info | where is_current | select app_type name | rename app name)
     if ($app | is-not-empty) {
-      $sql_info = ($sql_info | where app_type == $app | first)
+      $sql_info = ($sql_info | where app == $app | first)
     }
   } else if ($app | is-not-empty) {
     $sql_info = ($sql_info | where app_type == $app)

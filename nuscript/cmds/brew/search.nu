@@ -30,8 +30,8 @@ def search-desc-casks [terms: any] {
 
 # search all
 def search-all [desc: bool, terms: any] {
-  mut formulae = null
-  mut casks = null
+  mut formulae: any = null
+  mut casks: any = null
   if ($desc) {
     $formulae = search-desc-formulae $terms
     $casks = search-desc-casks $terms
