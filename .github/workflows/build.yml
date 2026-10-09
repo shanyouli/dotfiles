@@ -138,11 +138,35 @@ jobs:
           else
             echo "Cores: $(nix shell nixpkgs#coreutils-full -c nproc) , Arch: $(uname -p)"
           fi
-      - name: Run Flake Checks
+      - name: Prepare root flake
+        run: just _root-flake-enable
+      - name: "Check: treefmt (formatting)"
+        run: |
+          SYSTEM="$(nix eval --impure --raw --expr builtins.currentSystem)"
+          echo "Building checks.${SYSTEM}.treefmt"
+          set -o pipefail
+          nix build ".#checks.${SYSTEM}.treefmt" --no-write-lock-file --print-build-logs 2>&1 | tee check-treefmt.log
+        timeout-minutes: 10
+      - name: "Check: home (test home-manager)"
+        run: |
+          SYSTEM="$(nix eval --impure --raw --expr builtins.currentSystem)"
+          echo "Building checks.${SYSTEM}.home"
+          set -o pipefail
+          nix build ".#checks.${SYSTEM}.home" --no-write-lock-file --print-build-logs 2>&1 | tee check-home.log
+        timeout-minutes: 240
+      - name: "Check: os (test host toplevel)"
+        run: |
+          SYSTEM="$(nix eval --impure --raw --expr builtins.currentSystem)"
+          echo "Building checks.${SYSTEM}.os"
+          set -o pipefail
+          nix build ".#checks.${SYSTEM}.os" --no-write-lock-file --print-build-logs 2>&1 | tee check-os.log
+        timeout-minutes: 240
+      - name: Flake check (eval + lock update)
         id: check
         run: |
+          set -o pipefail
           before_commit="$(git rev-parse HEAD)"
-          just ci check
+          just ci check 2>&1 | tee ci-check.log
           after_commit="$(git rev-parse HEAD)"
           if [[ "$before_commit" == "$after_commit" ]]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -159,6 +183,47 @@ jobs:
           git fetch origin "${MY_TARGET_BRANCH}"
           git rebase "origin/${MY_TARGET_BRANCH}"
           git push origin "HEAD:${MY_TARGET_BRANCH}"
+      - name: Summarize failure
+        if: failure()
+        run: |
+          logs=()
+          for f in check-treefmt.log check-home.log check-os.log ci-check.log; do
+            [[ -s "$f" ]] && logs+=("$f")
+          done
+          if [[ ${#logs[@]} -eq 0 ]]; then
+            echo "::error title=CI failed::no captured check logs found"
+            exit 0
+          fi
+          EXTRACT="$(grep -h -E 'error:|Reason:|final link failed|refers to overlapping' "${logs[@]}" \
+            | grep -vE 'libgpg-error|Test-Fatal|Exception-Class|failed to complete successfully|is not installed' \
+            | sed 's/^[[:space:]]*//' | head -30 || true)"
+          if [[ -n "$EXTRACT" ]]; then
+            FIRST_ERROR="$(echo "$EXTRACT" | grep -m1 'error:' | cut -c1-200)"
+            echo "::error title=Flake check failed::${FIRST_ERROR:-unknown error}"
+            {
+              echo "### ❌ Flake check 失败摘要"
+              echo ""
+              for log in "${logs[@]}"; do
+                echo "- 来源: \`${log}\`"
+              done
+              echo ""
+              echo '```'
+              echo "$EXTRACT"
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            LAST_LOG="${logs[${#logs[@]}-1]}"
+            echo "::error title=Flake check failed::no error lines matched, see tail of ${LAST_LOG}"
+            {
+              echo "### ❌ Flake check 失败摘要（未匹配到 error 行，回退显示日志尾部）"
+              echo ""
+              echo "- 来源: \`${LAST_LOG}\`"
+              echo ""
+              echo '```'
+              tail -n 50 "$LAST_LOG"
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
   merge-to-master:
     needs:
       - use_branch
