@@ -102,7 +102,7 @@ in
           }
         ];
         casks = [
-          "raycast" # 取代 spotlight
+          "tinycast" # or "raycast" # 取代 spotlight
           # "stats" # 状态显示, 目前无法显示温度。
           "macs-fan-control" # 用来控制 fan 的工具
           "easydict" # 翻译软件
