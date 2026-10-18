@@ -27,7 +27,6 @@ in
             builtins.elem s [
               "bun"
               "node"
-              "deno"
             ]
           then
             s
@@ -45,7 +44,6 @@ in
           s:
           if
             builtins.elem s [
-              "deno"
               "bun"
               "npm"
               "pnpm"
@@ -75,9 +73,6 @@ in
         NPM_CONFIG_INIT_MODULE = "$XDG_CONFIG_HOME/npm/config/npm-init.js";
         NPM_CONFIG_CACHE = "$XDG_CACHE_HOME/npm";
         NPM_CONFIG_TMP = "$XDG_RUNTIME_DIR/npm";
-        # DENO 也支持 XDG ，但还是建议设置
-        DENO_DIR = "$XDG_CACHE_HOME/deno";
-        DENO_INSTALL_ROOT = "$XDG_DATA_HOME/deno";
         # @see https://github.com/oven-sh/bun/issues/1678#issuecomment-1714380418
         # 用来设置 global 包按照目录，和缓存目录
         BUN_INSTALL = "$XDG_DATA_HOME/bun";
@@ -95,10 +90,6 @@ in
             cfg.manager.name
             cfg.node.env
           ]) "$BUN_INSTALL/bin")
-          (mkIf (builtins.elem "deno" [
-            cfg.manager.name
-            cfg.node.env
-          ]) "$DENO_INSTALL_ROOT/bin")
         ];
       };
     }
