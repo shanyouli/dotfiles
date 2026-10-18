@@ -82,7 +82,7 @@ zstyle ":fzf-tab:*" fzf-flags --color=bg+:23
 zstyle ':fzf-tab:*' switch-group ',' '.'
 zstyle ":completion:*:git-checkout:*" sort false
 zstyle ':completion:*' file-sort modification
-zstyle ':completion:*:lla' sort false
+zstyle ':completion:*:eza' sort false
 zstyle ':completion:files' sort false
 
 # ==== 加载插件 ====
