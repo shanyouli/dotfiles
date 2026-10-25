@@ -230,10 +230,10 @@ in
         ];
         masApps = mkMerge [
           (mkIf (config.modules.gui.enable && (config.modules.proxy.default != "")) {
-            karing = 6472431552; # 美区账号登录，一个兼容 clash-meta 的 sing-box vpn 工具
+            # karing = 6472431552; # 美区账号登录，一个兼容 clash-meta 的 sing-box vpn 工具
           })
           {
-            "Amphetamine" = 937984704; # 咖啡因，防止系统休眠
+            # "Amphetamine" = 937984704; # 咖啡因，防止系统休眠
             "text-scaner" = 1452523807; # 文本扫描
             "pipad-calc" = 1482575592; # 高颜值的计算器
             # "vidhub" = 1659622164; # 视频管理,需要网速足够好
