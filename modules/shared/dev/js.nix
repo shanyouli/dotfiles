@@ -110,5 +110,13 @@ in
         pkgs.typescript-language-server
       ];
     })
+    (mkIf (cfg.manager.name == "aube") {
+      home.packages = [ pkgs.aubeshim ];
+      modules.shell = {
+        zsh.rcInit = mkOrder 1000 "_cache -v ${pkgs.aubeshim.version} aubeshim activate zsh";
+        fish.rcInit = mkOrder 1000 "_cache -v ${pkgs.aubeshim.version} aubeshim activate fish";
+        # nushell.cacheCmd = mkOrder 1000 ["${pkgs.aubeshim}/bin/aubeshim activate nushell" ];
+      };
+    })
   ]);
 }
