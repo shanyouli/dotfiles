@@ -69,8 +69,7 @@
     };
 
     proxy = {
-      default = "sing-box";
-      sing-box.package = pkgs.sing-box;
+      default = "clash";
       service = {
         enable = true;
         startup = false;
