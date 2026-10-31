@@ -2,8 +2,8 @@ name: Auto Update Flake Inputs
 
 on:
   schedule:
-    # run this daily at 8am UTC, or roughly 4am eastern
-    - cron: "30 2 * * 6"
+    # run every Saturday at 21:00 UTC = Saturday 05:00 Beijing time (UTC+8)
+    - cron: "0 21 * * 6"
   # Allows you to run this workflow manually from the Actions tab
   # push:
   #   branches:
