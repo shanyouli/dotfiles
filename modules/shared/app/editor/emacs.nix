@@ -118,10 +118,18 @@ in
             # NOTE: 使用指定的 treesit
             # (epkgs.treesit-grammars.with-grammars (grammars: with grammars; [ tree-sitter-bash ]))
             epkgs.treesit-grammars.with-all-grammars
-            epkgs.elvish-mode
             #
             epkgs.emt
             epkgs.emacs-reader
+            # etaf
+            epkgs.etaf-ui
+            epkgs.etaf-posframe
+            epkgs.etaf
+            epkgs.etaf-db
+            epkgs.ebox
+            epkgs.ecss
+            epkgs.ekp
+            epkgs.elog
           ]
           ++ optionals cfg.rime.enable [ epkgs.rimel ]
           ++ optionals config.modules.just.enable [

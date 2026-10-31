@@ -20,11 +20,13 @@ in
     modules.gui.fonts = with pkgs; [
       lxgw-wenkai
       unifont
-      sarasa-term
-      # unable.maple-mono.NF
-      # unable.maple-mono.NF-CN
+      # sarasa-term
       nerd-fonts.fantasque-sans-mono # fantasque-sans-mono
       nerd-fonts.symbols-only
+      maple-mono-vf
+      maple-mono-nf-vf
+      maple-mono-cn-vf
+      maple-mono-nf-cn-vf
       pragmasevka-nerd # pragmasevka
       pragmasevka-sans
       pragmasevka-sc-nf

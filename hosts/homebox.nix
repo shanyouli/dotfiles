@@ -271,7 +271,7 @@
       };
       yabai = {
         enable = true;
-        package = pkgs.yabai;
+        package = pkgs.darwinapps.yabai;
         border.enable = false;
         keep.enable = false;
       };
