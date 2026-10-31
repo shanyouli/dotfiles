@@ -33,7 +33,9 @@ in
       };
       env = mkMerge [
         (mkIf config.home.useos { NH_OS_FLAKE = cfg.flake; })
-        (mkIf (!config.home.useos) { NH_HOME_FLAKE = cfg.flake; })
+        (mkIf (!config.home.useos) (
+          if pkgs.stdenvNoCC.isLinux then { NH_HOME_FLAKE = cfg.flake; } else { NH_DARWIN_FLAKE = cfg.flake; }
+        ))
       ];
     }
     (mkIf (!config.home.useos) { home.packages = [ cfg.package ]; })
