@@ -504,11 +504,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793430965,
-        "narHash": "sha256-5HSm9iyMGcXI8r3IrN1G3pUz6CDRmLDCuZFqFvshvk0=",
+        "lastModified": 1793441190,
+        "narHash": "sha256-UZvhEeiUlPhXSqWlivCAFVf0eB3zWF3tk+93480zv+k=",
         "owner": "shanyouli",
         "repo": "nur-packages",
-        "rev": "a65804c2a71dc040142066c74ca96a9df4a24718",
+        "rev": "0a065280eddb42cf435d7f2c06ffcc7dc9dcb8c7",
         "type": "github"
       },
       "original": {
