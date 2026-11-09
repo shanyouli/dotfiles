@@ -103,6 +103,7 @@ in
         ];
         casks = [
           "tinycast" # or "raycast" # 取代 spotlight
+
           # "stats" # 状态显示, 目前无法显示温度。
           "macs-fan-control" # 用来控制 fan 的工具
           "easydict" # 翻译软件
@@ -116,6 +117,7 @@ in
           "wechat"
           "qq"
           "wpsoffice-cn" # "microsoft-office" , 手动安装
+
           # "mactex" # 使用 texlive 取代
 
           # "displaperture" # screen 曲线图
@@ -125,8 +127,9 @@ in
           (mkIf (!config.modules.gui.media.flameshot.enable) "shottr") # 截图
 
           "crisp" # 开源的 "betterdisplay"  "monitorcontrol"替代方案
+
           "maczip" # 压缩解压GUI or "keka"
-          # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
+
           # "findergo" # 快捷方式，在finder中打开终端
           "zotero" # 文献管理
 
@@ -144,7 +147,9 @@ in
           "pictureview" # 看图
 
           "charles" # "proxyman", 抓包
+
           "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
+          "shanyouli/tap/macapk" # 安装 android 包
 
           "finetune" # 另一款各个音量app 使用 # "background-music" # 和一些工具冲突，eg mpd， yesplaymusic
 
@@ -161,6 +166,7 @@ in
           "shanyouli/tap/upic" # or "picgo"
 
           "shanyouli/tap/quickrecorder" # 录屏
+
           "shanyouli/tap/tmexclude"
 
           # "shanyouli/tap/vimmotion" # 使用 vim 全局操作
@@ -185,6 +191,8 @@ in
           # "qutebrowser" #
           # "zen"
           "shanyouli/tap/bilibili-video-downloader"
+
+          # "fluent-reader" # RSS 阅读工具 or "netnewswire", 改用rss插件
           "shanyouli/tap/mrrss"
 
           "glide-browser"
