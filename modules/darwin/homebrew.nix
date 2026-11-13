@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   lib,
   my,
@@ -17,6 +18,13 @@ let
   };
 in
 {
+  # 托管 homebrew 本体：钉死 brew 版本、自动接管已有安装（README "Existing Homebrew Installation"）
+  # 注：包声明（casks/brews/masApps）仍由下方 homebrew.* 负责；
+  #     taps 在 nix-homebrew.taps（提供只读 store 快照）与 homebrew.taps（让 bundle
+  #     cleanup 不 untap）两处成对声明，新增 tap 时两边都要加；
+  #     刻意不 pin homebrew-core/cask，保留 API 模式让包元数据自动更新
+  imports = [ inputs.nix-homebrew.darwinModules.nix-homebrew ];
+
   options.modules.macos.brew = {
     enable = mkBoolOpt true;
     gui.enable = mkBoolOpt true; # homebrew GUI 显示工具
@@ -74,9 +82,39 @@ in
             set -p fish_complete_path ${homebrew-home}/share/fish/vendor_completions.d
           end
         '';
+      # brew 本体与 taps 均由 nix-homebrew 托管（若此前用官方脚本安装，首次激活会由
+      # autoMigrate 接管）：
+      # - 升级 brew 走 `nix flake update nix-homebrew`，不再随 brew 自更新漂移
+      # - taps 升级走 `nix flake update homebrew-tap-*`；mutableTaps = false 后
+      #   `brew tap` 不再可用，Taps 目录整体指向 store（只读）
+      # - 若上游 pin 的 brew-src 带 regression 导致 switch 失败，在本仓库 flake 中
+      #   override nix-homebrew 的 brew-src input 指向修复版本
+      # - HOMEBREW_NO_AUTO_UPDATE / AUTO_UPDATE_SECS 保留，语义变为只抑制包元数据
+      #   （formula/cask 索引）自动更新，brew 自身版本与 taps 由 Nix 决定
+      # - 不声明 homebrew/homebrew-core：保留 API 模式，HOMEBREW_API_DOMAIN 镜像对
+      #   formula/cask 元数据继续生效，且元数据可自动更新；若声明 core，
+      #   nix-homebrew 会设 HOMEBREW_NO_INSTALL_FROM_API=1 并改用 pinned 本地 core
+      nix-homebrew = {
+        enable = true;
+        user = my.vars.user;
+        # 自动迁移官方脚本安装的 /opt/homebrew，无需先卸载
+        autoMigrate = true;
+        # 完全声明式 taps：禁止命令式 `brew tap`
+        mutableTaps = false;
+        # key 为 Library/Taps 下的目录名（owner/homebrew-repo）
+        taps = {
+          "buo/homebrew-cask-upgrade" = inputs.homebrew-tap-buo;
+          "shanyouli/homebrew-tap" = inputs.homebrew-tap-shanyouli;
+        };
+        # 非官方 tap 需显式信任（Homebrew 5 起强制）
+        trust.taps = [
+          "buo/cask-upgrade"
+          "shanyouli/tap"
+        ];
+      };
       # NOTE: update homebrew activation script
       homebrew = {
-        enable = true; # 你需要手动安装homebrew
+        enable = true;
         onActivation = {
           autoUpdate = false;
           cleanup = "zap";
@@ -91,6 +129,10 @@ in
             inherit (pkgs.stdenvNoCC) isAarch64 isAarch32;
           in
           if isAarch64 || isAarch32 then "/opt/homebrew" else "/usr/local";
+        # taps 必须同时在此声明：nix-darwin 以 `brew bundle --force-cleanup` 激活，
+        # 其 cleanup 会把「已安装但 Brewfile 未声明」的 tap 交给 `brew untap`，
+        # 而 Taps 已是只读 store 软链，会报 Permission denied。
+        # 声明后 bundle 侧会因 Tap#installed? 直接跳过（不会 clone 只读目录）。
         taps = [
           {
             name = "buo/cask-upgrade";
@@ -148,9 +190,10 @@ in
 
           "charles" # "proxyman", 抓包
 
-          "genymotion" # android 模拟工具 # "utm" # 开源虚拟工具
-          "shanyouli/tap/macapk" # 安装 android 包
+          "shanyouli/tap/macapk" # 安装 android 包, 一个比 “genymotion” 更好的替换工具
 
+          # "utm" # 开源虚拟工具 不如 "pd"
+          #
           "finetune" # 另一款各个音量app 使用 # "background-music" # 和一些工具冲突，eg mpd， yesplaymusic
 
           "postman"
