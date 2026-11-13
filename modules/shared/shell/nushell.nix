@@ -159,8 +159,6 @@ in
                    nu => $fish_completer
                    # fish completes commits and branch names in a nicer way
                    git => $fish_completer
-                   # carapace doesn't have completions for asdf
-                   asdf => $fish_completer
                    ${optionalString (!cfm.carapace.enable) "_ => $fish_completer"}
                  ''}
                  ${optionalString cfm.carapace.enable "_ => $carapace_completer"}

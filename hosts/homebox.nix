@@ -185,7 +185,7 @@
     dev = {
       bash.enable = true;
       go.enable = true;
-      manager.mise.package = pkgs.unstable.mise;
+      manager.package = pkgs.unstable.mise;
       python = {
         enable = true;
         versions = [

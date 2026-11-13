@@ -32,7 +32,7 @@ in
       apply =
         s:
         if builtins.isString cfg.versions then
-          cf.versions
+          cfg.versions
         else if (builtins.isList cfg.versions) && ((builtins.length cfg.versions) > 0) then
           (if (builtins.elem s cfg.versions) then s else builtins.head cfg.versions)
         else
@@ -65,26 +65,7 @@ in
       modules = {
         dev = {
           lang.go = cfg.versions;
-          manager.extInit = lib.optionalString (cfg.global != "") ''
-            ${lib.optionalString (config.modules.dev.manager.default == "asdf") (
-              let
-                asdfbin = "${config.modules.dev.manager.asdf.package}/bin/asdf";
-              in
-              ''
-                log info "go global version ${cfg.global}"
-                ${asdfbin} global go ${cfg.global}
-              ''
-            )}
-            ${lib.optionalString (config.modules.dev.manager.default == "mise") (
-              let
-                misebin = "${config.modules.dev.manager.mise.package}/bin/mise";
-              in
-              ''
-                log info "go version version ${cfg.global}"
-                ${misebin} global -q go@${cfg.global}
-              ''
-            )}
-          '';
+          manager.global.go = mkIf (cfg.global != "") cfg.global;
         };
       };
     })

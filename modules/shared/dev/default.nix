@@ -33,7 +33,6 @@ in
         (mkIf cfg.json.enable pkgs.vscode-json-languageserver)
       ];
     }
-    (mkIf (cfg.lang != { }) { modules.dev.manager.default = mkDefault "mise"; })
     (mkIf cfg.ai.enable {
       home.packages = with pkgs; [
         # opencode # opencode 出品的工具

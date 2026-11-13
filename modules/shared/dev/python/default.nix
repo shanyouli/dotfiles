@@ -13,7 +13,6 @@ let
   managers = [
     "uv"
     "mise"
-    "asdf"
   ];
   venvs = [
     "poetry"
@@ -27,21 +26,8 @@ let
       [ ]
     ]);
   usesDevManager =
-    builtins.elem cfg.manager [
-      "mise"
-      "asdf"
-    ]
-    || (cfg.manager == "" && cfg.venv != "uv" && versionsConfigured);
-  devManager =
-    if
-      builtins.elem cfg.manager [
-        "mise"
-        "asdf"
-      ]
-    then
-      cfg.manager
-    else
-      "mise";
+    cfg.manager == "mise" || (cfg.manager == "" && cfg.venv != "uv" && versionsConfigured);
+  devManager = "mise";
   effectiveManager =
     if cfg.manager != "" then
       cfg.manager
@@ -55,14 +41,13 @@ in
 {
   options.modules.dev.python = with types; {
     enable = mkEnableOption "Whether to python";
-    # 如果使用 asdf 管理版本。versions 的值需要符合：`asdf list all python` 的结果
     # 如果使用 mise 管理版本的值需要符合 `mise ls-remote python` 的结果
     # 如果使用 uv 管理版本， versions 需要符合 'uv python list --all-versions' 的结果。
     versions = mkOpt' (oneOf [
       str
       (nullOr bool)
       (listOf (nullOr str))
-    ]) [ ] "Use asdf install python version";
+    ]) [ ] "Use mise install python version";
     global = mkOption {
       description = "python default version";
       type = str;
@@ -182,27 +167,7 @@ in
     }
     (mkIf usesDevManager {
       modules.dev = {
-        manager.default = mkDefault devManager;
-        manager.extInit = lib.optionalString (cfg.global != "") ''
-          ${lib.optionalString (devManager == "asdf") (
-            let
-              asdfbin = "${config.modules.dev.manager.asdf.package}/bin/asdf";
-            in
-            ''
-              log info "python global version ${cfg.global}"
-              ${asdfbin} global python ${cfg.global}
-            ''
-          )}
-          ${lib.optionalString (devManager == "mise") (
-            let
-              misebin = "${config.modules.dev.manager.mise.package}/bin/mise";
-            in
-            ''
-              log info "python global version ${cfg.global}"
-              ${misebin} global -q python@${cfg.global}
-            ''
-          )}
-        '';
+        manager.global.python = mkIf (cfg.global != "") cfg.global;
       };
     })
   ]);

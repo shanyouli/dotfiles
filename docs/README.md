@@ -97,7 +97,7 @@ docs/
 | [shared/dev/rust](modules/shared/dev/rust.md) | Rust (rustup) |
 | [shared/dev/go](modules/shared/dev/go.md) | Go |
 | [shared/dev/js](modules/shared/dev/js.md) | JavaScript/TypeScript |
-| [shared/dev/manager/default](modules/shared/dev/manager/default.md) | 版本管理器入口 (asdf/mise) |
+| [shared/dev/manager](modules/shared/dev/manager.md) | 语言版本管理器 (mise) |
 
 ### Shell
 

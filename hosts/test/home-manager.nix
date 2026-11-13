@@ -25,7 +25,6 @@
     dev = {
       scheme.enable = true;
       go.enable = true;
-      manager.default = "mise";
       bash.enable = true;
       cc.enable = true;
       java = {

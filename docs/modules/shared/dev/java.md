@@ -8,7 +8,7 @@
 | 选项 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `enable` | bool | false |  |
-| `versions` | oneOf | [ ] | Use asdf to install java version |
+| `versions` | oneOf | [ ] | Use mise to install java version |
 | `global` | str | "" | java default version |
 
 ## 条件分支

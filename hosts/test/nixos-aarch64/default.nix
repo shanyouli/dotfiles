@@ -81,7 +81,6 @@
       };
     };
     dev = {
-      manager.default = "mise";
       # bash.enable = true;
       # cc.enable = true;
       # java = {

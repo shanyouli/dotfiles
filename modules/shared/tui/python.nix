@@ -49,15 +49,7 @@ in
       let
         cmdp = config.modules.dev.python;
         global_python_path =
-          if cmdp.enable && (cmdp.global != "") then
-            (
-              if config.modules.dev.manager.default == "asdf" then
-                "asdf where python ${cmdp.global}"
-              else
-                (if config.modules.dev.manager.default == "mise" then "mise where python@${cmdp.global}" else "")
-            )
-          else
-            "";
+          if cmdp.enable && (cmdp.global != "") then "mise where python@${cmdp.global}" else "";
         pipx_function_text = ''
           pipx() {
             local _is_pipx_default=$PIPX_DEFAULT_PYTHON
