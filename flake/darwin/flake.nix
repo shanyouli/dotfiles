@@ -44,7 +44,22 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
-    mac-app-util.url = "github:hraban/mac-app-util";
+    # 托管 homebrew 本体（钉死版本、自动迁移既有安装）；包声明仍走 nix-darwin 的 homebrew.*
+    # 注：该项目只声明 brew-src 一个 input，不涉及 nixpkgs，因此无需 follows
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
+    # nix-homebrew 声明式 taps（flake = false：当作仓库快照，不当作 flake）
+    # key 名对应 Library/Taps 下的目录名，格式为 owner/homebrew-<repo>
+    # 注：刻意不声明 homebrew-core / homebrew-cask，保留 API 模式让 formula/cask
+    #     元数据自动更新（否则会触发 HOMEBREW_NO_INSTALL_FROM_API=1 并被 pin 死）
+    homebrew-tap-buo = {
+      url = "github:buo/homebrew-cask-upgrade";
+      flake = false;
+    };
+    homebrew-tap-shanyouli = {
+      url = "github:shanyouli/homebrew-tap";
+      flake = false;
+    };
   };
 
   outputs =
