@@ -8,8 +8,8 @@
 | 选项 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `enable` | bool | Whether to Go Language | 是否启用 |
-| `versions` | oneOf | [ ] | Use dev-manager to install go version |
-| `global` | str | "" | Go default version |
+| `versions` | oneOf | [ ] | Use mise to manage go version |
+| `global` | str | "" | Go default version（不在 `versions` 中会直接报错） |
 
 ## 条件分支
 

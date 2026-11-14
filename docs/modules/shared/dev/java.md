@@ -9,7 +9,7 @@
 |------|------|--------|------|
 | `enable` | bool | false |  |
 | `versions` | oneOf | [ ] | Use mise to install java version |
-| `global` | str | "" | java default version |
+| `global` | str | "" | java default version（不在 `versions` 中会直接报错） |
 
 ## 条件分支
 

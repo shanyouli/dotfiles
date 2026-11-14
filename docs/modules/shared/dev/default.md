@@ -1,7 +1,7 @@
 # shared → dev → default
 
 **源文件**: `modules/shared/dev/default.nix`  
-**选项前缀**: `config.ai`
+**选项前缀**: `config.modules.dev`
 
 ## 选项
 

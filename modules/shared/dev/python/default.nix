@@ -65,10 +65,12 @@ in
           ])
         then
           ""
+        else if s == "" then
+          ""
         else if builtins.elem s cfg.versions then
           s
         else
-          "";
+          throw "modules.dev.python.global = \"${s}\" 不在 modules.dev.python.versions 中";
     };
     venv = mkOption {
       description = "python virtual environment management tool.";

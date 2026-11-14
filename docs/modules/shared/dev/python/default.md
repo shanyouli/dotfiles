@@ -11,7 +11,7 @@
 |------|------|--------|------|
 | `enable` | bool | — | 是否启用 Python 开发 |
 | `versions` | `oneOf [str (nullOr bool) (listOf (nullOr str))]` | `[]` | Python 版本（交给 mise 时仅写入全局配置，需自行 `mise install`） |
-| `global` | str | `""` | 全局默认 Python 版本 |
+| `global` | str | `""` | 全局默认 Python 版本（不在 `versions` 中会直接报错） |
 | `venv` | str | `"poetry"` | 虚拟环境工具，仅接受 `poetry` 或 `uv` |
 | `manager` | str | `""` | 版本管理器，仅接受 `uv` 或 `mise` |
 

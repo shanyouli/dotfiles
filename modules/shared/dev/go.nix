@@ -15,7 +15,7 @@ in
   options.modules.dev.go = {
     enable = mkEnableOption "Whether to Go Language";
     versions = mkOption {
-      description = "Use dev-manager to install go version";
+      description = "Use mise to manage go version";
       type =
         with types;
         oneOf [
@@ -34,7 +34,12 @@ in
         if builtins.isString cfg.versions then
           cfg.versions
         else if (builtins.isList cfg.versions) && ((builtins.length cfg.versions) > 0) then
-          (if (builtins.elem s cfg.versions) then s else builtins.head cfg.versions)
+          if s == "" then
+            builtins.head cfg.versions
+          else if builtins.elem s cfg.versions then
+            s
+          else
+            throw "modules.dev.go.global = \"${s}\" 不在 modules.dev.go.versions 中"
         else
           "";
     };
