@@ -8,18 +8,18 @@
  * 每秒递归调用自身以实现持续更新。
  */
 function updateClock() {
-	const date = new Date();
-	let hours = date.getHours();
-	let minutes = date.getMinutes();
-	const ampm = hours >= 12 ? "pm" : "am";
+  const date = new Date();
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  const ampm = hours >= 12 ? "pm" : "am";
 
-	hours = hours % 12;
-	hours = hours ? hours : 12;
-	minutes = minutes < 10 ? "0" + minutes : minutes;
-	const time = hours + ":" + minutes + " " + ampm;
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  const time = hours + ":" + minutes + " " + ampm;
 
-	document.getElementById("time").innerHTML = time;
-	setTimeout(updateClock, 1000);
+  document.getElementById("time").innerHTML = time;
+  setTimeout(updateClock, 1000);
 }
 
 /**
@@ -30,19 +30,19 @@ function updateClock() {
  * script 仅负责拼接并编码用户输入。
  */
 function initSearchBox() {
-	document.getElementById("search-form").addEventListener("submit", (event) => {
-		event.preventDefault();
-		const form = event.target;
-		const engine = form.engine.value;
-		const query = form.q.value;
+  document.getElementById("search-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const engine = form.engine.value;
+    const query = form.q.value;
 
-		window.location.href = `${engine}${encodeURIComponent(query)}`;
-	});
+    window.location.href = `${engine}${encodeURIComponent(query)}`;
+  });
 }
 
 /** 页面加载完成后执行初始化 */
 document.addEventListener("DOMContentLoaded", () => {
-	document.getElementById("search-bar-input").focus();
-	updateClock();
-	initSearchBox();
+  document.getElementById("search-bar-input").focus();
+  updateClock();
+  initSearchBox();
 });
