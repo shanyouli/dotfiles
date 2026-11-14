@@ -216,7 +216,6 @@
       };
       fmt = {
         toml.enable = true;
-        biome.enable = true;
       };
       enWebReport = true;
       rust.enable = true;

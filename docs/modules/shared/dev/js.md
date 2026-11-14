@@ -9,6 +9,10 @@
 |------|------|--------|------|
 | `enable` | bool | Whether to use javascript. | 是否启用 |
 | `ts.enable` | bool |  cfg.enable "Whether to use typeScript. |  |
+| `fmt.enable` | bool | cfg.enable | 是否用 oxfmt 格式化 js/ts/json/jsonc/css |
+| `fmt.package` | package | `pkgs.oxfmt` | — |
+| `lint.enable` | bool | cfg.enable | 是否用 oxlint 检查 js/ts |
+| `lint.package` | package | `pkgs.oxlint` | — |
 | `enable` | bool |  cfg.enable "Node |  |
 | `env` | types.str | "" | Node default run env. |
 | `package` | package | — | `—` |
@@ -23,5 +27,5 @@
 
 ## 配置行为
 
-**安装包**: `CSS`
+**安装包**: `stylelint`（CSS 检查）、`oxfmt`（js/ts/json/css 格式化）、`oxlint`（js/ts 检查）
 

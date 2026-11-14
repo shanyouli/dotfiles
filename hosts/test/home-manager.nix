@@ -52,7 +52,6 @@
       ai.enable = true;
       fmt = {
         toml.enable = true;
-        biome.enable = true;
       };
       js.enable = true;
       zig.enable = true;

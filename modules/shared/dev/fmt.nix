@@ -15,10 +15,6 @@ in
 {
   options.modules.dev.fmt = {
     toml.enable = mkEnableOption "Whether to enable format toml";
-    biome.enable = mkEnableOption ''
-      Whether to use biome format jsonc, json, ts, js, css, html.
-      @see https://www.biomejs.cn/internals/language-support
-    '';
     js-beautify.enable = mkEnableOption ''
       Whether or not to format js files with js-beautify
     '';
@@ -40,17 +36,6 @@ in
       };
     }
     (mkIf cfg.toml.enable { home.packages = [ pkgs.taplo ]; })
-    (mkIf cfg.biome.enable {
-      home.packages = [ pkgs.biome ];
-      modules.shell.env.BIOME_CONFIG_PATH = "$XDG_CONFIG_HOME/biome/biome.jsonc";
-      home.configFile."biome/biome.jsonc".text = builtins.toJSON {
-        "$schema" = "${pkgs.biome}/share/schema.json";
-        formatter = {
-          indentStyle = "space";
-          lineWidth = 100;
-        };
-      };
-    })
     (mkIf cfg.bash.enable { home.packages = [ pkgs.shfmt ]; })
     (mkIf cfg.lua.enable { home.packages = [ pkgs.stylua ]; })
     (mkIf cfg.fennel.enable { home.packages = [ pkgs.fnlfmt ]; })

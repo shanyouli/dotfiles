@@ -12,7 +12,6 @@ markdown see@https://github.com/rvben/rumdl
 | 选项 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `toml.enable` | bool | Whether to enable format toml | 是否启用 |
-| `biome.enable` | bool | — | 是否启用 |
 | `js-beautify.enable` | bool | — | 是否启用 |
 | `python.enable` | bool | Whether or not to format python with ruff | 是否启用 |
 | `bash.enable` | bool | Whether to format bash file by shfmt | 是否启用 |
@@ -23,5 +22,5 @@ markdown see@https://github.com/rvben/rumdl
 
 ## 配置行为
 
-**Shell 环境变量**: `BIOME_CONFIG_PATH`="$XDG_CONFIG_HOME/biome/biome.jsonc"
+仅安装对应工具包；js/ts/json/css 的格式化与检查见 [js 模块](./js.md)（oxfmt / oxlint / stylelint）。
 

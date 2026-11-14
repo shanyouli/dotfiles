@@ -116,7 +116,7 @@
 | stylua | Lua | — |
 | shellcheck | Bash | — |
 | shfmt | Bash | 4 空格缩进 |
-| biome | JS/JSON/CSS | `check --write` 模式，行宽 88（JS 100），含 Firefox CSS 和 Zed JSON 的特殊 override |
+| oxfmt | JS/TS/JSON/CSS | 仅格式化（oxc 出品，替代 biome），includes 收窄到 js/ts/json/jsonc/css，行宽用默认 100 |
 | just | Justfile | — |
 
 排除项：`hosts/**/hardware-*.nix`、`*.gpg`、`*.lock`、`orbstack.nix`
