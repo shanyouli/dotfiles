@@ -43,13 +43,10 @@
         cmus.enable = true;
         musikcube.enable = true;
       };
-
-      # 比较后选择
-      # media.music.ncmpcpp.enable = true;
     };
     services.media.mpd = {
-      service.startup = true;
       default = "ncmpcpp";
+      service.startup = false;
     };
     services.nginx = {
       enable = true;
@@ -59,7 +56,9 @@
     services.proxy = {
       default = "sing-box";
       sing-box.package = pkgs.sing-box;
+      clash.enable = true;
       service.enable = true;
+      service.startup = false;
       configFile = "${my.paths.homedir}/Nutstore Files/我的坚果云/clash/singbox.json";
     };
 
@@ -86,14 +85,24 @@
       default = "nvim";
       # nvim.enable = true;
       nvim.enGui = false; # GUI 编辑工具为emacs
+      helix.enable = true;
       vscode.enable = true;
       zed.enable = true;
     };
     # gui（前台 GUI 应用）
     media.music.gtk.netease.enable = false;
+    media.music.kew.enable = true;
+    media.music.ncmpcpp.enable = true;
+    media.music.rmpc.enable = true;
     media.flameshot.enable = true;
     media.video.default = "mpv";
-    shell.terminal.default = "kitty";
+    media.video.vlc.enable = true;
+    shell.terminal = {
+      default = "kitty";
+      ghostty.enable = true;
+      wezterm.enable = true;
+      alacritty.enable = true;
+    };
 
     network.localsend.enable = true; # 需要gui，局域网文件传输工具
     network.browser = {
@@ -107,6 +116,7 @@
       prompt.default = "oh-my-posh";
       default = "zsh";
       bash.enable = true;
+      fish.enable = true;
       nix-your-shell.enable = true;
       zsh.zinit.enable = true;
 
@@ -121,9 +131,11 @@
     };
 
     tools.navi.enable = true;
+    tools.fastfetch.enable = true;
+    network.tg.enable = true;
     shell.tmux = {
       enable = true;
-      service.startup = true;
+      service.startup = false;
     };
     tools.adb.enable = true;
     tools.ugrep.enable = true;
@@ -154,6 +166,7 @@
           "3.11"
         ];
         global = "3.11";
+        poetry.enable = true;
       };
 
       nix.enable = true;
@@ -168,8 +181,22 @@
       lua.enable = true;
       cc.enable = true;
       js.enable = true;
+      go.enable = true;
+      scheme.enable = true;
+      zig.enable = true;
+      jujutsu.enable = true;
+      nh.enable = true;
+      lix.enable = true;
+      ai.enable = true;
       fmt = {
         toml.enable = true;
+        python.enable = true;
+        bash.enable = true;
+        lua.enable = true;
+        fennel.enable = true;
+        nix.enable = true;
+        markdown.enable = true;
+        js-beautify.enable = true;
       };
       enWebReport = true;
       rust.enable = true;
@@ -186,6 +213,7 @@
         lx.enable = true;
         apprhyme.enable = true;
         spotube.enable = true;
+        fifo.enable = true;
       };
       network = {
         safari.enable = true;
@@ -197,6 +225,7 @@
         hammerspoon.enable = true;
         duti.enable = true;
         chat.enable = true;
+        clear.enable = true;
         ui.ice.enable = true;
       };
     };
@@ -204,6 +233,7 @@
     services.battery.enable = true;
     services.yabai.enable = true;
     services.karabiner.enable = true;
+    services.syncthing.enable = true;
   };
   system.stateVersion = lib.mkForce 5;
 }

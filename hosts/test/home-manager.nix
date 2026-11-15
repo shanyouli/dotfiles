@@ -48,6 +48,13 @@
       ai.enable = true;
       fmt = {
         toml.enable = true;
+        python.enable = true;
+        bash.enable = true;
+        lua.enable = true;
+        fennel.enable = true;
+        nix.enable = true;
+        markdown.enable = true;
+        js-beautify.enable = true;
       };
       js.enable = true;
       zig.enable = true;
@@ -61,9 +68,20 @@
       chrome.enable = pkgs.stdenv.hostPlatform.isDarwin || pkgs.stdenv.hostPlatform.isx86_64;
     };
     media = {
+      enable = true;
+      stream.enable = true;
       flameshot.enable = true;
 
-      music.gtk.netease.enable = true;
+      music = {
+        default = "mpd";
+        netease.enable = true;
+        kew.enable = true;
+        cmus.enable = true;
+        musikcube.enable = true;
+        ncmpcpp.enable = true;
+        rmpc.enable = true;
+        gtk.netease.enable = true;
+      };
       video = {
         default = "mpv";
         vlc.enable = true;
@@ -115,26 +133,21 @@
       enable = true;
       service.startup = false;
     };
-    media = {
-      enable = true;
-      stream.enable = true;
-      music = {
-        default = "mpd";
-        netease.enable = true;
-        kew.enable = true;
-      };
-    };
-    services.media.mpd.service.startup = true;
+    services.media.mpd.service.startup = false;
 
     dev.nh.enable = true; # nh 不支持 --impure
     services.nginx = {
       enable = true;
+      workDir = "/opt/nginx";
       www.enable = true;
+      service.startup = false;
     };
     services.proxy = {
       default = "sing-box";
       # services.proxy.sing-box.package = pkgs.sing-box;
+      clash.enable = true;
       service.enable = true;
+      service.startup = false;
     };
 
     services.files.alist = {
@@ -143,9 +156,11 @@
     };
     files.rsync.enable = true;
     tools.navi.enable = true;
+    tools.fastfetch.enable = true;
+    tools.modern.enable = true;
     shell.tmux = {
       enable = true;
-      service.startup = true;
+      service.startup = false;
     };
     tools.adb.enable = true;
     tools.ugrep.enable = true;

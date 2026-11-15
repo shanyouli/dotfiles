@@ -67,6 +67,8 @@
   # environment.noXlibs = false;
 
   # modules config
+  # 无头容器（OrbStack/LXD）：GUI 类模块（fonts/browser/terminal/media GUI/tg/rime 等）
+  # 无显示服务不可用，故只启用 CLI/TUI 与服务域。
   modules = {
     network.qbittorrent = {
       enable = true;
@@ -74,59 +76,60 @@
     };
     editor = {
       default = "nvim";
-      # helix.enable = true;
-      # emacs.enable = true;
-      # vscode.enable = true;
+      helix.enable = true;
+      emacs.enable = true;
     };
     dev = {
-      # bash.enable = true;
-      # cc.enable = true;
-      # java = {
-      #   enable = true;
-      #   versions = ["oracle-21.0.1" "liberica-8u392+9"];
-      #   global = "oracle-21.0.1";
-      # };
-      # lua.enable = true;
-      # nix.enable = true;
-      # rust.enable = true;
-      # python = {
-      #   enable = true;
-      #   versions = ["3.12" "3.10" "3.11"];
-      #   global = "3.11";
-      #   poetry.enable = true;
-      # };
-      # node.enable = true;
+      bash.enable = true;
+      cc.enable = true;
+      java = {
+        enable = true;
+        versions = [
+          "oracle-21.0.1"
+          "liberica-8u392+9"
+        ];
+        global = "oracle-21.0.1";
+      };
+      lua.enable = true;
+      nix.enable = true;
+      rust.enable = true;
+      python = {
+        enable = true;
+        versions = [
+          "3.12"
+          "3.10"
+          "3.11"
+        ];
+        global = "3.11";
+        poetry.enable = true;
+      };
+      js.enable = true;
+      go.enable = true;
+      scheme.enable = true;
+      zig.enable = true;
+      jujutsu.enable = true;
+      nh.enable = true;
+      lix.enable = true;
+      ai.enable = true;
+      fmt = {
+        toml.enable = true;
+        python.enable = true;
+        bash.enable = true;
+        lua.enable = true;
+        fennel.enable = true;
+        nix.enable = true;
+        markdown.enable = true;
+        js-beautify.enable = true;
+      };
     };
-
-    # gui = {
-    #   enable = true;
-    #   localsend.enable = true;
-
-    #   browser = {
-    #     default = "firefox";
-    #     chrome.enable = true;
-    #   };
-    #   media = {
-    #     flameshot.enable = true;
-
-    #     music.netease.enable = true;
-    #     video = {
-    #       default = "mpv";
-    #       vlc.enable = true;
-    #     };
-    #   };
-    #   terminal = {
-    #     default = "kitty";
-    #     wezterm.enable = true;
-    #     alacritty.enable = true;
-    #   };
-    # };
-
-    # rime.enable = true;
 
     shell = {
       default = "zsh";
-      # bash.enable = true; # 2024-09-11 添加 bash 配置
+      bash.enable = true;
+      fish.enable = true;
+      nushell.enable = true;
+      carapace.enable = true;
+      direnv.enable = true;
 
       prompt.default = "oh-my-posh";
       nix-your-shell.enable = true;
@@ -136,76 +139,90 @@
       zoxide.enable = true;
       atuin.enable = true;
       nix-index.enable = true;
-      # direnv.enable = true;
-
-      # nushell.enable = true;
-      # carapace.enable = true;
     };
 
-    files.archive.default = "ouch";
-    # translate = {
-    #   enable = true;
-    #   deeplx = {
-    #     enable = false;
-    #     service.startup = false;
-    #   };
-    # };
-    # download = {
-    #   enable = true;
-    #   aria2 = {
-    #             aria2p = !pkgs.stdenvNoCC.hostPlatform.isDarwin;
-    #     service.startup = false;
-    #   };
-    # };
-    # db = {
-    #   enable = true;
-    #   mysql = {
-    #     enable = true;
-    #     service.startup = false;
-    #   };
-    # };
-    # media = {
-    #   enable = true;
-    #   stream.enable = true;
-    #   music = {
-    #     default = "mpd";
-    #     netease.enable = true;
-    #     mpd.service.startup = true;
-    #   };
-    # };
-
-    # nginx.enable = true;
-    services.proxy = {
-      default = "sing-box";
-      # services.proxy.sing-box.package = pkgs.sing-box;
-      service.enable = true;
+    files = {
+      archive.default = "ouch";
+      rsync.enable = true;
+      trash.enable = true;
+      yazi.enable = true;
     };
 
-    services.files.alist = {
-      enable = false;
-      service.startup = false;
+    tools = {
+      navi.enable = true;
+      adb.enable = true;
+      ugrep.enable = true;
+      db.enable = true;
+      modern.enable = true;
+      fastfetch.enable = true;
+      translate = {
+        enable = true;
+        deeplx = {
+          enable = false;
+          service.startup = false;
+        };
+      };
     };
-    files.rsync.enable = true;
-    # navi.enable = true;
+
+    media = {
+      enable = true;
+      stream.enable = true;
+      music = {
+        default = "mpd";
+        cmus.enable = true;
+        kew.enable = true;
+        musikcube.enable = true;
+        ncmpcpp.enable = true;
+      };
+    };
+    services = {
+      db.mysql = {
+        enable = true;
+        service.startup = false;
+      };
+      download.aria2 = {
+        enable = true;
+        service.startup = false;
+      };
+      media.mpd = {
+        default = "ncmpcpp";
+        service.startup = false;
+      };
+      nginx = {
+        enable = true;
+        workDir = "/opt/nginx";
+        www.enable = true;
+        service.startup = false;
+      };
+      proxy = {
+        default = "sing-box";
+        clash.enable = true;
+        service.enable = true;
+        service.startup = false;
+      };
+      files.alist = {
+        enable = false;
+        service.startup = false;
+      };
+    };
+
     shell.tmux = {
       enable = true;
-      service.startup = true;
+      service.startup = false;
     };
-    # adb.enable = true;
-    # ugrep.enable = true;
+
     security.gpg = {
       enable = true;
       cacheTTL = 360000;
-    };
-    dev.git = {
-      enable = true;
-      enGui = false; # 使用网页管理 github
     };
     security.gopass = {
       enable = true;
       enGui = false;
     };
-    files.trash.enable = true;
+    dev.git = {
+      enable = true;
+      enGui = false; # 使用网页管理 github
+    };
     dev.just.enable = true;
   };
 }
