@@ -7,8 +7,7 @@
 with lib;
 with my;
 let
-  cfp = config.modules.macos;
-  cfg = cfp.network.safari;
+  cfg = config.modules.macos.network.safari;
 in
 {
   options.modules.macos.network.safari = {

@@ -11,8 +11,7 @@
 with lib;
 with my;
 let
-  cfp = config.modules.macos;
-  cfg = cfp.tools.app;
+  cfg = config.modules.macos.tools.app;
 in
 {
   options.modules.macos.tools.app = {
@@ -29,7 +28,7 @@ in
   };
   config = {
     modules = {
-      macos.app = {
+      macos.tools.app = {
         path =
           if cfg.user.enable then "${homedir}/Applications/${cfg.name}" else "/Applications/${cfg.name}";
         linkDir = pkgs.buildEnv {

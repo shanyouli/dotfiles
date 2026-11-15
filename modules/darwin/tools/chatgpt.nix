@@ -7,8 +7,7 @@
 with lib;
 with my;
 let
-  cfp = config.modules.macos;
-  cfg = cfp.tools.chat;
+  cfg = config.modules.macos.tools.chat;
 in
 {
   options.modules.macos.tools.chat = {

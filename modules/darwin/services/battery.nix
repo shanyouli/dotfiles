@@ -8,7 +8,7 @@
 with lib;
 with my;
 let
-  cfg = config.modules.macos.services.battery;
+  cfg = config.modules.services.battery;
   batter-script = pkgs.writeScriptBin "battery-service" ''
     #!${pkgs.stdenv.shell}
     low=${toString cfg.minPower}
@@ -36,7 +36,7 @@ let
   '';
 in
 {
-  options.modules.macos.services.battery = {
+  options.modules.services.battery = {
     enable = mkBoolOpt false;
     maxPower = mkOpt (types.ints.between 0 100) 75;
     minPower = mkOpt (types.ints.between 0 100) 65;

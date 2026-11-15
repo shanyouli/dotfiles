@@ -33,14 +33,23 @@ allowed-tools: ["Read", "Edit", "Write", "Bash", "Glob", "Grep"]
 | 模块位置 | option 命名空间 | 示例 |
 |----------|----------------|------|
 | `modules/shared/<域>/<x>.nix` | `modules.<域>.<x>` | `modules.editor.emacs`、`modules.network.browser.firefox`、`modules.services.proxy.clash` |
-| `modules/darwin/<域>/<x>.nix` | `modules.macos.<域>.<x>` | `modules.macos.tools.rime`、`modules.macos.dev.nh` |
-| `modules/darwin/services/<x>.nix` | `modules.macos.services.<x>` | `modules.macos.services.nginx` |
+| `modules/darwin/<域>/<x>.nix`（`dev/ media/ network/ tools/`） | `modules.macos.<域>.<x>` | `modules.macos.tools.rime`、`modules.macos.tools.app` |
+| `modules/darwin/services/<x>.nix`（跟随 shared `service.enable`） | `modules.macos.services.<x>` | `modules.macos.services.nginx` |
+| `modules/darwin/services/<x>.nix`（**macOS 独有服务**） | `modules.services.<x>` | `modules.services.yabai` |
 | `modules/darwin/{macos,homebrew,core,options,shell}.nix` | 系统层留在根，命名空间不变 | `modules.macos`、`modules.macos.brew` |
 | `modules/nixos/<x>.nix` | 视模块而定，通常 `modules.<x>` 或 `services.<x>` | — |
 
+**`modules.macos.*` 的语义是「对 `modules.*` 某些行为的兼容设置」**：
+
+- **非 service 域（`dev/ media/ network/ tools/`）一律带 `macos` 层**，即 `modules.macos.<域>.<x>`。
+  即使 shared 当前没有同名模块（如 `modules.macos.tools.app`），也保留这个位置：将来 shared 里补上
+  `modules.tools.app` 时，darwin 侧不用再改命名空间，直接变成兼容层（`enable` 默认值改为取自 shared）。
+- **service 层分两种**：跟随 shared `service.enable` 的（式2）用 `modules.macos.services.<x>`；
+  macOS 独有、shared 无对应物的服务（`battery`/`karabiner`/`yabai`）去掉 `macos` 层，用 `modules.services.<x>`。
+
 注意：**目录名是 `darwin/`，但 option 命名空间是 `modules.macos.*`**，这是历史约定，不要混用。darwin 的域目录（`dev/ media/ network/ tools/`）镜像 shared 的域划分，命名空间必须带域层级；服务层统一收在 `services/`（**不要再套一层 `macos/`**，`darwin` 已经表达了同一含义）。
 
-**命名空间分工**：darwin service 层用 `modules.macos.services.<x>`，shared 用 `modules.services.<x>`（复数）。**禁止**再出现单数 `modules.service.<x>`。
+**禁止**再出现单数 `modules.service.<x>`。
 
 ## 2. enable 默认值三式（核心约定）
 
@@ -65,10 +74,15 @@ options.modules.macos.services.<name>.enable =
 ### 式3 — darwin 独有功能，shared 无对应（独立开关，默认 false）
 
 ```nix
+# 非 service 域：仍带 macos 层（留给将来 shared 出现同名文件时做兼容）
 options.modules.macos.<域>.<name>.enable =
   mkEnableOption "Whether to ...";
+
+# macOS 独有 service：去掉 macos 层
+options.modules.services.<name>.enable =
+  mkEnableOption "Whether to ...";
 ```
-默认 false，不跟随。例：`modules/darwin/tools/{chatgpt,duti,games,hammerspoon,read,ui,app}.nix`、`modules/darwin/dev/{docker,wine}.nix`、`modules/darwin/network/{arc,safari,netdisk}.nix`；service 层的 `services/{battery,karabiner,yabai}.nix`。
+默认 false，不跟随。例：`modules/darwin/tools/{chatgpt,duti,games,hammerspoon,read,ui,app}.nix` → `modules.macos.tools.*`；`modules/darwin/dev/{docker,wine}.nix` → `modules.macos.dev.*`；`modules/darwin/network/{safari,netdisk}.nix` → `modules.macos.network.*`；service 层的 `services/{battery,karabiner,yabai}.nix` → `modules.services.*`。
 
 ### 平台核心层例外
 
@@ -259,7 +273,7 @@ in
 with lib;
 with my;
 let
-  cfg = config.modules.macos.<域>.<name>;
+  cfg = config.modules.macos.<域>.<name>;   # macOS 独有 service 则用 config.modules.services.<name>
 in
 {
   options.modules.macos.<域>.<name> = {
@@ -296,7 +310,9 @@ in
 
 ## 8. 常见错误清单（自检）
 
-- [ ] darwin service 层写成 `modules.service.<x>` 或 `modules.services.<x>` → 改 `modules.macos.services.<x>`
+- [ ] darwin service 层写成 `modules.service.<x>` → 跟随 shared 的改 `modules.macos.services.<x>`，macOS 独有服务改 `modules.services.<x>`
+- [ ] service 层 macOS 独有服务写成 `modules.macos.services.<x>` → 去掉 `macos` 层，改 `modules.services.<x>`
+- [ ] 非 service 域写成 `modules.<域>.<x>`（漏了 `macos` 层）→ 补成 `modules.macos.<域>.<x>`，留给将来 shared 同名文件做兼容
 - [ ] darwin 模块目录带域但命名空间没带（`modules/darwin/<域>/<x>.nix` 里写 `modules.macos.<x>`）→ 补成 `modules.macos.<域>.<x>`
 - [ ] darwin macos 层用了 `modules.darwin.<x>` → 改 `modules.macos.<x>`
 - [ ] darwin 模块有 shared 对应物却用 `mkEnableOption`（式3）而非跟随 → 按式1/式2 改
@@ -314,7 +330,8 @@ in
 | shared 带 service 子开关 | `modules/shared/services/files/alist.nix`、`modules/shared/editor/emacs.nix` |
 | darwin 式1（跟随 shared） | `modules/darwin/tools/rime.nix`、`modules/darwin/dev/nh.nix` |
 | darwin 式2（跟随 service.enable） | `modules/darwin/services/nginx.nix`、`modules/darwin/services/emacs.nix` |
-| darwin 式3（独立开关） | `modules/darwin/dev/docker.nix`、`modules/darwin/network/safari.nix` |
+| darwin 式3（独立开关、shared 无对应） | `modules/darwin/dev/docker.nix`（`modules.macos.dev.docker`）、`modules/darwin/network/safari.nix`（`modules.macos.network.safari`） |
+| darwin 式3 服务层（macOS 独有服务） | `modules/darwin/services/yabai.nix`（`modules.services.yabai`） |
 | 域级聚合 default.nix（声明域 option） | `modules/shared/shell/default.nix`、`modules/shared/dev/default.nix` |
 
 ## 10. 边界：本 skill 不覆盖

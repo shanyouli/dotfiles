@@ -7,8 +7,7 @@
 with lib;
 with my;
 let
-  cfp = config.modules.macos;
-  cfg = cfp.network.netdriver;
+  cfg = config.modules.macos.network.netdriver;
 in
 {
   options.modules.macos.network.netdriver = {

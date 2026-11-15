@@ -8,8 +8,7 @@
 with lib;
 with my;
 let
-  cfm = config.modules;
-  cfg = cfm.macos.tools.duti;
+  cfg = config.modules.macos.tools.duti;
 in
 {
   options.modules.macos.tools.duti = {

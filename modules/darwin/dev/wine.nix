@@ -7,8 +7,7 @@
 with lib;
 with my;
 let
-  cfp = config.modules.macos;
-  cfg = cfp.dev.wine;
+  cfg = config.modules.macos.dev.wine;
   package = if cfg.crossover.enable then "crossover" else "whisky";
 in
 {

@@ -7,8 +7,7 @@
 with lib;
 with my;
 let
-  cfm = config.modules;
-  cfg = cfm.macos.dev.docker;
+  cfg = config.modules.macos.dev.docker;
 in
 {
   options.modules.macos.dev.docker = {

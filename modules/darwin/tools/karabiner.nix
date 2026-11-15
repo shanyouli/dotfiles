@@ -7,8 +7,7 @@
 with lib;
 with my;
 let
-  cfm = config.modules;
-  cfg = cfm.macos.tools.karabiner;
+  cfg = config.modules.macos.tools.karabiner;
 in
 {
   options.modules.macos.tools.karabiner = {

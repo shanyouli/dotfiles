@@ -7,8 +7,7 @@
 with lib;
 with my;
 let
-  cfp = config.modules.macos;
-  cfg = cfp.tools.read;
+  cfg = config.modules.macos.tools.read;
 in
 {
   options.modules.macos.tools.read = {

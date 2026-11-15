@@ -1,7 +1,7 @@
 # darwin → services → karabiner
 
 **源文件**: `modules/darwin/services/karabiner.nix`  
-**选项前缀**: `config.modules.macos.services.karabiner`
+**选项前缀**: `config.modules.services.karabiner`
 
 ## 概述
 

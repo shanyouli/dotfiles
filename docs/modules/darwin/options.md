@@ -130,8 +130,11 @@ options.modules.macos.services.<name>.enable =
   mkBoolOpt config.modules.<domain>.<name>.service.enable;
 
 # 式3 — darwin 独有功能，shared 无对应（独立开关，默认 false）
+# 非 service 域仍带 macos 层；macOS 独有 service 才去掉
 options.modules.macos.<域>.<name>.enable =
   mkEnableOption "Whether to ...";
+# 以上换成 service 层时：
+# options.modules.services.<name>.enable = mkEnableOption "Whether to ...";
 ```
 
 关键区分：
@@ -141,8 +144,11 @@ options.modules.macos.<域>.<name>.enable =
 
 ### 命名空间规则
 
-- darwin macos 层：`modules.macos.<域>.<name>`（域为 `dev`/`media`/`network`/`tools`）
-- darwin service 层：`modules.macos.services.<name>`；shared 侧是 `modules.services.<name>`（复数），两者一一对应，不要再出现单数 `modules.service`
+- **非 service 域（`dev/ media/ network/ tools/`）一律带 `macos` 层**：`modules.macos.<域>.<name>`。
+  即使 shared 当前没有同名模块（如 `modules.macos.tools.app`），也保留这个位置：
+  将来 shared 补上 `modules.tools.app` 时，它就是兼容层，`enable` 默认值改为取自 shared。
+- **service 层分两种**：跟随 shared `service.enable` 的用 `modules.macos.services.<name>`；
+  macOS 独有、shared 无对应物的服务（`battery`/`karabiner`/`yabai`）去掉 `macos` 层，用 `modules.services.<name>`。
 - 平台核心层（`macos.nix`）默认 `enable = true`，代表 macOS 专用系统偏好默认启用。
 
 ### 现状对照表
@@ -161,17 +167,34 @@ options.modules.macos.<域>.<name>.enable =
 | proxy | `modules.proxy.service.enable` | ✓ | 式2 |
 | qbittorrent | `modules.app.qbittorrent.service.enable` | ✓ | 式2 |
 | tmux | `modules.tmux.service.enable` | ✓ | 式2 |
-| battery | 硬编码 `false` | 无 | 式3 |
-| karabiner | `mkEnableOption` | 无 | 式3 |
-| yabai | 硬编码 `false` | 无 | 式3 |
 
-**类 A — darwin macos 层 `modules.macos.<x>.enable`**
+后三个（`battery`/`karabiner`/`yabai`）shared 无对应物，因此不属于兼容层，命名空间是
+`modules.services.<name>` 而非 `modules.macos.services.<name>`。
+
+**类 A — 兼容层 `modules.macos.<域>.<x>.enable`（默认值取自 shared）**
 
 | darwin 模块 | 默认值来源 | 约定 |
 |---|---|---|
-| rime | `config.modules.rime.enable` | 式1（范本） |
-| nh | `modules.nh.enable` | 式1 |
-| video | `default != ""` 判断 | 语义合理（默认播放器，非开关） |
-| music | `default != ""` 判断 | 语义合理（默认播放器，非开关） |
+| rime | `config.modules.tools.rime.enable` | 式1（范本） |
+| nh | `modules.dev.nh.enable` | 式1 |
+| video | `modules.media.video.default != ""` 判断 | 语义合理（默认播放器，非开关） |
+| music | `modules.media.music.default != ""` 判断 | 语义合理（默认播放器，非开关） |
 | macos | `true`（平台核心层默认启用） | — |
-| 其余 macos 子模块 | `mkEnableOption` 默认 false | 式3 |
+
+**类 C — macOS 独有但仍在 `modules.macos.<域>.<x>`（式3，非 service 域）**
+
+shared 暂时没有同名模块，但保留 `macos` 层作为将来的兼容位。
+
+| darwin 模块 | 命名空间 | 默认值来源 |
+|---|---|---|
+| docker、wine | `modules.macos.dev.*` | `mkEnableOption` |
+| app、clear、duti、games、hammerspoon、read、ui | `modules.macos.tools.*` | `mkEnableOption` / `mkBoolOpt false` |
+| chat（chatgpt）、karabiner | `modules.macos.tools.*` | `mkEnableOption` |
+| safari、netdriver（netdisk） | `modules.macos.network.*` | `mkEnableOption` |
+
+**类 D — macOS 独有 service，去掉 `macos` 层（`modules.services.<x>`）**
+
+| darwin 模块 | 命名空间 | 默认值来源 |
+|---|---|---|
+| battery、yabai | `modules.services.*` | `mkBoolOpt false` |
+| karabiner | `modules.services.*` | `mkEnableOption` |

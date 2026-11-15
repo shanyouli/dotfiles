@@ -218,52 +218,55 @@
       enable = true;
       method = "frost";
     };
-    # macos
+    # macos：非 service 域的 darwin 模块统一带 macos 层（后续 shared 出现同名文件时即为兼容层）
     macos = {
-      docker.enable = true;
-      clear.enable = true;
-      # arc.enable = true;
-      safari.enable = true;
-      # relaunchApp.enable = true;
-      # music.lx.enable = true;
-      # music.apprhyme.enable = true;
-      # music.spotube.enable = true;
-
-      games.enable = true;
-      hammerspoon.enable = true;
       brew.mirror = "sust";
-      duti.enable = false; # use openwith command
-      netdriver.enable = true;
-      chat = {
-        enable = true;
-        snapbox.enable = false;
-        local.enable = lib.mkForce false;
+      # relaunchApp.enable = true;
+      dev = {
+        docker.enable = true;
+        wine = {
+          enable = true;
+          crossover.enable = true;
+        };
       };
-      # ui = {
-      #   ice.enable = true;
-      # };
-      wine = {
-        enable = true;
-        crossover.enable = true;
+      network = {
+        safari.enable = true;
+        netdriver.enable = true;
       };
-      read.enable = true;
+      tools = {
+        clear.enable = true;
+        games.enable = true;
+        hammerspoon.enable = true;
+        duti.enable = false; # use openwith command
+        read.enable = true;
+        chat = {
+          enable = true;
+          snapbox.enable = false;
+          local.enable = lib.mkForce false;
+        };
+        # ui.ice.enable = true;
+      };
+      # media.music 相关暂未启用（兼容层：options 默认值取自 shared）
+      # media.music.lx.enable = true;
+      # media.music.apprhyme.enable = true;
+      # media.music.spotube.enable = true;
+    };
+
+    # macOS 独有的 service 去掉 macos 层
+    services.battery.enable = false; # use aldente
+    services.karabiner = {
+      enable = true;
+      package = null;
+    };
+    services.yabai = {
+      enable = true;
+      package = pkgs.darwinapps.yabai;
+      border.enable = false;
+      keep.enable = false;
     };
 
     dev.nh = {
       enable = true;
-    };
-    service = {
-      battery.enable = false; # use aldente
-      karabiner = {
-        enable = true;
-        package = null;
-      };
-      yabai = {
-        enable = true;
-        package = pkgs.darwinapps.yabai;
-        border.enable = false;
-        keep.enable = false;
-      };
     };
   };
   system.stateVersion = lib.mkForce 5;

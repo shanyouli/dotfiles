@@ -1,7 +1,7 @@
 # darwin → services → yabai
 
 **源文件**: `modules/darwin/services/yabai.nix`  
-**选项前缀**: `config.modules.macos.services.yabai`
+**选项前缀**: `config.modules.services.yabai`
 
 ## 概述
 

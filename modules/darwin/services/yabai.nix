@@ -12,7 +12,7 @@
 with lib;
 with my;
 let
-  cfg = config.modules.macos.services.yabai;
+  cfg = config.modules.services.yabai;
   cfgBinPath =
     if (cfg.package == null) then "${config.homebrew.prefix}/bin" else "${cfg.package}/bin";
   nushellBin =
@@ -22,12 +22,12 @@ let
       "${pkgs.nushell}/bin/nu";
 in
 {
-  options.modules.macos.services.yabai = {
+  options.modules.services.yabai = {
     enable = mkBoolOpt false;
     border.enable = mkBoolOpt cfg.enable;
     package = mkPackageOption pkgs "yabai" {
       nullable = true;
-      extraDescription = "Set modules.macos.services.yabai.package to null on platforms where yabai is not available or marked broken";
+      extraDescription = "Set modules.services.yabai.package to null on platforms where yabai is not available or marked broken";
     };
     startup.enable = mkBoolOpt cfg.enable;
     keep.enable = mkBoolOpt cfg.enable;

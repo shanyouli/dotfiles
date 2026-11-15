@@ -10,8 +10,7 @@
 with lib;
 with my;
 let
-  cfp = config.modules.macos;
-  cfg = cfp.tools.ui;
+  cfg = config.modules.macos.tools.ui;
   cfgPkg = if cfg.ice.enable then "jordanbaird-ice" else "hiddenbar"; # or "dozer";
 in
 {

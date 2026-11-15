@@ -1,7 +1,7 @@
 # darwin → services → battery
 
 **源文件**: `modules/darwin/services/battery.nix`  
-**选项前缀**: `config.modules.macos.services.battery`
+**选项前缀**: `config.modules.services.battery`
 
 ## 选项
 

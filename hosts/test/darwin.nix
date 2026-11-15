@@ -90,12 +90,9 @@
       zed.enable = true;
     };
     # gui（前台 GUI 应用）
-    media = {
-      music.gtk.netease.enable = false;
-      flameshot.enable = true;
-
-      video.default = "mpv";
-    };
+    media.music.gtk.netease.enable = false;
+    media.flameshot.enable = true;
+    media.video.default = "mpv";
     shell.terminal.default = "kitty";
 
     network.localsend.enable = true; # 需要gui，局域网文件传输工具
@@ -178,32 +175,35 @@
       rust.enable = true;
     };
     tools.rime.enable = true;
-    # macos
+    # macos：非 service 域的 darwin 模块统一带 macos 层（后续 shared 出现同名文件时即为兼容层）
     macos = {
-      docker.enable = true;
-      arc.enable = true;
-      safari.enable = true;
-      music = {
+      brew.mirror = "tuna";
+      dev = {
+        docker.enable = true;
+        wine.enable = true;
+      };
+      media.music = {
         lx.enable = true;
         apprhyme.enable = true;
         spotube.enable = true;
       };
-
-      read.enable = true;
-      games.enable = true;
-      hammerspoon.enable = true;
-      brew.mirror = "tuna";
-      duti.enable = true;
-      netdriver.enable = true;
-      chat.enable = true;
-      wine.enable = true;
-      ui.ice.enable = true;
+      network = {
+        safari.enable = true;
+        netdriver.enable = true;
+      };
+      tools = {
+        read.enable = true;
+        games.enable = true;
+        hammerspoon.enable = true;
+        duti.enable = true;
+        chat.enable = true;
+        ui.ice.enable = true;
+      };
     };
-    service = {
-      battery.enable = true;
-      yabai.enable = true;
-      karabiner.enable = true;
-    };
+    # macOS 独有的 service 去掉 macos 层
+    services.battery.enable = true;
+    services.yabai.enable = true;
+    services.karabiner.enable = true;
   };
   system.stateVersion = lib.mkForce 5;
 }

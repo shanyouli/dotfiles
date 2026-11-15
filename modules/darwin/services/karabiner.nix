@@ -9,11 +9,10 @@
 with lib;
 with my;
 let
-  cfp = config.modules.macos.services;
-  cfg = cfp.karabiner;
+  cfg = config.modules.services.karabiner;
 in
 {
-  options.modules.macos.services.karabiner = {
+  options.modules.services.karabiner = {
     enable = mkEnableOption "Whether to use karabiner-elements";
     package = mkPackageOption pkgs "karabiner-elements" { nullable = true; };
   };
