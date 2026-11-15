@@ -7,6 +7,10 @@
 with lib;
 let
   cfg = config.services.syncthing;
+  # launchd 的 StandardOutPath/StandardErrorPath 必须是绝对路径，
+  # 因此在使用处把 ~ 展开成 config.home.homeDirectory；
+  # option 本身保持与具体用户无关的写法。
+  launchdLogDir = builtins.replaceStrings [ "~" ] [ config.home.homeDirectory ] cfg.logDir;
 in
 {
   options = {
@@ -18,16 +22,16 @@ in
       };
 
       homeDir = mkOption {
-        type = types.nullOr types.path;
+        type = types.str;
         default = "~";
-        example = "/Users/lyeli";
+        example = "~";
         description = ''
           the base location for the syncthing folder
         '';
       };
 
       logDir = mkOption {
-        type = types.nullOr types.path;
+        type = types.str;
         default = "~/Library/Logs";
         example = "~/Library/Logs";
         description = ''
@@ -46,8 +50,8 @@ in
         KeepAlive = true;
         LowPriorityIO = true;
         ProcessType = "Background";
-        StandardOutPath = "${cfg.logDir}/Syncthing.log";
-        StandardErrorPath = "${cfg.logDir}/Syncthing-Errors.log";
+        StandardOutPath = "${launchdLogDir}/Syncthing.log";
+        StandardErrorPath = "${launchdLogDir}/Syncthing-Errors.log";
         EnvironmentVariables = {
           NIX_PATH = "nixpkgs=" + toString pkgs.path;
           STNORESTART = "1";
