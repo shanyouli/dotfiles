@@ -26,20 +26,21 @@ allowed-tools: ["Read", "Edit", "Write", "Bash", "Glob", "Grep"]
 - `darwinModules.default` = `optionals/os.nix` + 全量 `darwin/*`
 - `nixosModules.default` = `optionals/os.nix` + 全量 `nixos/*` + `homeModules.common`
 
-**关键推论**：新增一个 `modules/shared/<域>/foo.nix` 会被自动加载进所有主机的 Home Manager；新增 `modules/darwin/foo.nix` 会被自动加载进所有 darwin 主机。无需手动注册 import。
+**关键推论**：新增一个 `modules/shared/<域>/foo.nix` 会被自动加载进所有主机的 Home Manager；新增 `modules/darwin/<域>/foo.nix` 或 `modules/darwin/macos/services/foo.nix` 会被自动加载进所有 darwin 主机。无需手动注册 import，域目录也不需要建 `default.nix`（`macos/services/default.nix` 例外，它声明服务根的 `path`/`env`）。
 
 ## 1. option 命名空间硬性规则
 
 | 模块位置 | option 命名空间 | 示例 |
 |----------|----------------|------|
 | `modules/shared/<域>/<x>.nix` | `modules.<域>.<x>` | `modules.editor.emacs`、`modules.network.browser.firefox`、`modules.services.proxy.clash` |
-| `modules/darwin/<x>.nix` | `modules.macos.<x>` | `modules.macos.rime` |
-| `modules/darwin/service/<x>.nix` | `modules.service.<x>`（**单数 service**） | `modules.service.nginx` |
+| `modules/darwin/<域>/<x>.nix` | `modules.macos.<域>.<x>` | `modules.macos.tools.rime`、`modules.macos.dev.nh` |
+| `modules/darwin/macos/services/<x>.nix` | `modules.macos.services.<x>` | `modules.macos.services.nginx` |
+| `modules/darwin/{macos,homebrew,core,options,shell}.nix` | 系统层留在根，命名空间不变 | `modules.macos`、`modules.macos.brew` |
 | `modules/nixos/<x>.nix` | 视模块而定，通常 `modules.<x>` 或 `services.<x>` | — |
 
-注意：**目录名是 `darwin/`，但 option 命名空间是 `modules.macos.*`**，这是历史约定，不要混用。
+注意：**目录名是 `darwin/`，但 option 命名空间是 `modules.macos.*`**，这是历史约定，不要混用。darwin 的域目录（`dev/ media/ network/ tools/`）镜像 shared 的域划分，命名空间必须带域层级；服务层统一收在 `macos/services/`。
 
-**禁止**：`modules.services`（复数）。darwin service 层统一单数 `modules.service.<x>`。
+**命名空间分工**：darwin service 层用 `modules.macos.services.<x>`，shared 用 `modules.services.<x>`（复数）。**禁止**再出现单数 `modules.service.<x>`。
 
 ## 2. enable 默认值三式（核心约定）
 
@@ -48,26 +49,26 @@ darwin 模块的 `enable` 默认值依据"是否有 shared 对应物"分流。**
 ### 式1 — darwin macos 层，shared 有同名模块（跟随 enable）
 
 ```nix
-options.modules.macos.<name>.enable =
+options.modules.macos.<域>.<name>.enable =
   mkBoolOpt config.modules.<name>.enable;
 ```
-默认值取自 shared 同名模块，与 shared 同开同关。例：`modules/darwin/rime.nix`、`modules/darwin/nh.nix`。
+默认值取自 shared 同名模块，与 shared 同开同关。例：`modules/darwin/tools/rime.nix`、`modules/darwin/dev/nh.nix`。
 
 ### 式2 — darwin service 层，shared 有对应模块的 service 子开关（跟随 service.enable）
 
 ```nix
-options.modules.service.<name>.enable =
+options.modules.macos.services.<name>.enable =
   mkBoolOpt config.modules.<domain>.<name>.service.enable;
 ```
-默认值取自 shared 对应模块的 `service.enable` 子开关。例：`modules/darwin/service/{alist,aria2,deeplx,emacs,mpd,mysql,nginx,proxy,qbittorrent,tmux}.nix`。
+默认值取自 shared 对应模块的 `service.enable` 子开关。例：`modules/darwin/macos/services/{alist,aria2,deeplx,emacs,mpd,mysql,nginx,proxy,qbittorrent,tmux}.nix`。
 
 ### 式3 — darwin 独有功能，shared 无对应（独立开关，默认 false）
 
 ```nix
-options.modules.macos.<name>.enable =
+options.modules.macos.<域>.<name>.enable =
   mkEnableOption "Whether to ...";
 ```
-默认 false，不跟随。例：`modules/darwin/{chat,docker,duti,games,hammerspoon,arc,read,safari,ui,wine,netdisk,app}.nix`；service 层的 `battery`、`karabiner`、`yabai`。
+默认 false，不跟随。例：`modules/darwin/tools/{chatgpt,duti,games,hammerspoon,read,ui,app}.nix`、`modules/darwin/dev/{docker,wine}.nix`、`modules/darwin/network/{arc,safari,netdisk}.nix`；service 层的 `macos/services/{battery,karabiner,yabai}.nix`。
 
 ### 平台核心层例外
 
@@ -200,10 +201,10 @@ in
 with lib;
 with my;
 let
-  cfg = config.modules.macos.<name>;
+  cfg = config.modules.macos.<域>.<name>;
 in
 {
-  options.modules.macos.<name> = {
+  options.modules.macos.<域>.<name> = {
     enable = mkBoolOpt config.modules.<name>.enable;
   };
 
@@ -226,11 +227,11 @@ in
 with lib;
 with my;
 let
-  cfg = config.modules.service.<name>;
+  cfg = config.modules.macos.services.<name>;
   cft = config.modules.<domain>.<name>;   # shared 侧引用
 in
 {
-  options.modules.service.<name> = {
+  options.modules.macos.services.<name> = {
     enable = mkBoolOpt cft.service.enable;
   };
 
@@ -240,7 +241,7 @@ in
         ProgramArguments = [ /* ${cft.package}/bin/<name> ... */ ];
         RunAtLoad = cft.service.startup;
       };
-      path = [ config.modules.service.path ];
+      path = [ config.modules.macos.services.path ];
     };
   };
 }
@@ -258,10 +259,10 @@ in
 with lib;
 with my;
 let
-  cfg = config.modules.macos.<name>;
+  cfg = config.modules.macos.<域>.<name>;
 in
 {
-  options.modules.macos.<name> = {
+  options.modules.macos.<域>.<name> = {
     enable = mkEnableOption "Whether to <do something>";
   };
 
@@ -295,7 +296,8 @@ in
 
 ## 8. 常见错误清单（自检）
 
-- [ ] darwin service 用了 `modules.services`（复数）→ 改 `modules.service`
+- [ ] darwin service 层写成 `modules.service.<x>` 或 `modules.services.<x>` → 改 `modules.macos.services.<x>`
+- [ ] darwin 模块目录带域但命名空间没带（`modules/darwin/<域>/<x>.nix` 里写 `modules.macos.<x>`）→ 补成 `modules.macos.<域>.<x>`
 - [ ] darwin macos 层用了 `modules.darwin.<x>` → 改 `modules.macos.<x>`
 - [ ] darwin 模块有 shared 对应物却用 `mkEnableOption`（式3）而非跟随 → 按式1/式2 改
 - [ ] shared 模块声明了 `service` 子开关但默认值硬编码而非 `mkBoolOpt cfg.enable` → 改 `mkBoolOpt cfg.enable`
@@ -310,9 +312,9 @@ in
 |------|----------|
 | shared 普通模块 | `modules/shared/dev/just.nix` |
 | shared 带 service 子开关 | `modules/shared/services/files/alist.nix`、`modules/shared/editor/emacs.nix` |
-| darwin 式1（跟随 shared） | `modules/darwin/rime.nix`、`modules/darwin/nh.nix` |
-| darwin 式2（跟随 service.enable） | `modules/darwin/service/nginx.nix`、`modules/darwin/service/emacs.nix` |
-| darwin 式3（独立开关） | `modules/darwin/docker.nix`、`modules/darwin/safari.nix` |
+| darwin 式1（跟随 shared） | `modules/darwin/tools/rime.nix`、`modules/darwin/dev/nh.nix` |
+| darwin 式2（跟随 service.enable） | `modules/darwin/macos/services/nginx.nix`、`modules/darwin/macos/services/emacs.nix` |
+| darwin 式3（独立开关） | `modules/darwin/dev/docker.nix`、`modules/darwin/network/safari.nix` |
 | 域级聚合 default.nix（声明域 option） | `modules/shared/shell/default.nix`、`modules/shared/dev/default.nix` |
 
 ## 10. 边界：本 skill 不覆盖

@@ -104,9 +104,11 @@ with my;
         };
       };
     }
-    (mkIf config.modules.security.gpg.enable { modules.service.env.GNUPGHOME = config.env.GNUPGHOME; })
+    (mkIf config.modules.security.gpg.enable {
+      modules.macos.services.env.GNUPGHOME = config.env.GNUPGHOME;
+    })
     (mkIf config.modules.security.gopass.enable {
-      modules.service.env.PASSWORD_STORE_DIR = config.env.PASSWORD_STORE_DIR;
+      modules.macos.services.env.PASSWORD_STORE_DIR = config.env.PASSWORD_STORE_DIR;
     })
     (mkIf config.modules.services.proxy.sing-box.enable {
       environment.etc."sudoers.d/singbox".source = my.pkg.sudoNotPass (
@@ -119,8 +121,8 @@ with my;
       );
     })
     (mkIf config.modules.editor.emacs.enable {
-      modules.macos.hammerspoon.cmd = {
-        emacs = "${config.modules.macos.app.path}/Emacs.app/Contents/MacOS/Emacs";
+      modules.macos.tools.hammerspoon.cmd = {
+        emacs = "${config.modules.macos.tools.app.path}/Emacs.app/Contents/MacOS/Emacs";
         emacsClient = "${config.modules.editor.emacs.pkg}/bin/emacsclient";
       };
     })
