@@ -45,6 +45,7 @@ rec {
 
     writeJsonFile = attrs: (pkgs.formats.json { }).generate "prettyJSON" attrs;
     writeTomlFile = attrs: (pkgs.formats.toml { }).generate "prettyTOML" attrs;
+    writeYamlFile = attrs: (pkgs.formats.yaml { }).generate "prettyYAML" attrs;
 
     sudoNotPass =
       cmd:
@@ -69,4 +70,7 @@ rec {
 
   # toTomlFile :: (attrs -> tomlFile)
   toTomlFile = pkg.writeTomlFile;
+
+  # toYamlFile :: (attrs -> yamlFile)
+  toYamlFile = pkg.writeYamlFile;
 }

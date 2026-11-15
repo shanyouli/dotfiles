@@ -1,4 +1,3 @@
-# custom 配置方法参考 see @https://github.com/amzxyz/rime_wanxiang_pro/blob/main/custom/custom%E6%96%87%E4%BB%B6%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.md
 {
   pkgs,
   lib,
@@ -26,41 +25,108 @@ let
     .${kernel-name};
   cemacs = cfp.editor.emacs;
   useEmacs = cemacs.enable && cemacs.rime.enable;
-  default_custom_fn = n: ''
+
+  # rime 的 *.custom.yaml 内容都是 { patch = <patch 体>; }，这里统一渲染成 YAML 文件
+  custom-yaml =
     patch:
-      "menu/page_size": ${n}
-      "ascii_composer/switch_key/Shift_L": commit_code
-      "switcher/hotkeys":
-        - F4
-        - Control+grave
-  '';
-  default_ice_custom = default_custom_fn "9";
-  default_wanxiang_custom = default_custom_fn "6";
-  wanxiang-custom = ''
-    patch:
-      speller/algebra:
-        __patch:
-          - wanxiang_algebra:/base/全拼
-  '';
-  wanxiang-pro = ''
-    patch:
-      speller/algebra:
-        __patch:
-          - wanxiang_algebra:/pro/全拼
-          - wanxiang_algebra:/pro/间接辅助
-  '';
-  wanxiang-mixedcode = ''
-    patch:
-      speller/algebra:
-        __include: wanxiang_algebra:/mixed/通用派生规则
-        __patch: wanxiang_algebra:/mixed/全拼
-  '';
-  wanxiang-reverse = ''
-    patch:
-      speller/algebra:
-        __include: wanxiang_algebra:/reverse/全拼
-        __patch: wanxiang_algebra:/reverse/hspzn
-  '';
+    let
+      x = { inherit patch; };
+    in
+    toYamlFile x;
+
+  # ----- 默认值：各方案的 *.custom.yaml patch 体（可被 modules.tools.rime.patch.* 覆盖） -----
+  # 通用 patch：候选数、左 Shift 直接上屏、方案选单热键
+  default-patch = page-size: {
+    "menu/page_size" = page-size;
+    "ascii_composer/switch_key/Shift_L" = "commit_code";
+    "switcher/hotkeys" = [
+      "F4"
+      "Control+grave"
+    ];
+  };
+
+  # ----- 默认值：Squirrel 皮肤（可被 modules.tools.rime.squirrel.* 覆盖） -----
+  # 配色参考 https://ssnhd.com/2022/01/11/rime-skin/
+  # 排版公共字段
+  layout = {
+    candidate_format = "%c %@ "; # 用 1/6 em 空格 U+2005 来控制编号 %c 和候选词 %@ 前后的空间
+    corner_radius = 5; # 窗口圆角
+    hilited_corner_radius = 5; # 高亮圆角
+    line_spacing = 10; # 行间距(适用于竖排)
+    border_height = 4; # 窗口上下高度，大于圆角半径才生效
+    border_width = 4; # 窗口左右宽度，大于圆角半径才生效
+    font_face = "PingFangSC"; # 候选词字体
+    font_point = 16; # 候选字大小
+    label_font_point = 13; # 候选编号大小
+  };
+  # mac_blue 没有高亮圆角与窗口留白
+  compact-layout = builtins.removeAttrs layout [
+    "hilited_corner_radius"
+    "border_height"
+    "border_width"
+  ];
+  # 与配色方案无关的固定文字颜色
+  text-colors = {
+    label_color = 0 x999999; # 预选栏编号颜色
+    comment_text_color = 0 x999999; # 拼音等提示文字颜色
+    hilited_text_color = 0 x999999; # 高亮拼音 (需要开启内嵌编码)
+    hilited_candidate_text_color = 0 xFFFFFF; # 第一候选项文字颜色
+    hilited_candidate_label_color = 0 xFFFFFF; # 第一候选项编号颜色
+    hilited_comment_text_color = 0 x999999; # 注解文字高亮
+  };
+  mk-scheme = base: extra: base // text-colors // extra;
+  schemes = {
+    mac_light = mk-scheme layout {
+      name = "Mac浅色";
+      text_color = 0 x424242; # 拼音行文字颜色
+      back_color = 0 xFFFFFF; # 候选条背景色
+      border_color = 0 xFFFFFF; # 边框色
+      candidate_text_color = 0 x3c3c3c; # 预选项文字颜色
+      hilited_back_color = 0 xD75A00; # 第一候选项背景色
+    };
+    mac_dark = mk-scheme layout {
+      name = "Mac深色";
+      text_color = 0 x424242; # 拼音行文字颜色
+      back_color = 0 x252a2e; # 候选条背景色
+      border_color = 0 x050505; # 边框色
+      candidate_text_color = 0 xe9e9ea; # 预选项文字颜色
+      hilited_back_color = 0 xD75A00; # 第一候选项背景色
+    };
+    mac_blue = mk-scheme compact-layout {
+      name = "Mac浅蓝";
+      text_color = 0 x424242; # 拼音行文字颜色
+      back_color = 0 xFFFFFF; # 候选条背景色
+      border_color = 0 xFFFFFF; # 边框色
+      candidate_text_color = 0 x3c3c3c; # 预选项文字颜色
+      hilited_back_color = 0 xF8AA4D; # 第一候选项背景色
+    };
+  };
+  app-options = {
+    "com.google.Chrome".inline = true; # 規避 https://github.com/rime/squirrel/issues/435
+    "ru.keepcoder.Telegram".inline = true; # 規避 https://github.com/rime/squirrel/issues/475
+    "org.gnu.Emacs" = {
+      ascii_mode = true;
+      no_inline = true;
+    };
+  };
+  style = {
+    "style/color_scheme" = "mac_light";
+    "style/color_scheme_dark" = "mac_dark";
+    "style/text_orientation" = "horizontal"; # vertical
+    "style/candidate_list_layout" = "linear"; # 拼音位于： 候选框 false | 行内 true
+  };
+  # ice：三套配色，每套单独声明横排
+  squirrel-ice = style // {
+    app_options = app-options;
+    "preset_color_schemes/+" = builtins.mapAttrs (
+      _: v: v // { text_orientation = "horizontal"; }
+    ) schemes;
+  };
+  # wanxiang：与 ice 同一套配色，但不含 mac_blue，也没有配色级 text_orientation
+  squirrel-wanxiang = style // {
+    app_options = app-options;
+    "preset_color_schemes/+" = builtins.removeAttrs schemes [ "mac_blue" ];
+  };
 in
 {
   options.modules.tools.rime = {
@@ -106,63 +172,98 @@ in
       '';
     };
     octagram = mkEnableOption "是否支持语言模型";
+
+    # 各 *.custom.yaml 的 patch 体；custom 文件用法参考
+    # https://github.com/amzxyz/rime_wanxiang_pro/blob/main/custom/custom%E6%96%87%E4%BB%B6%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.md
+    patch = {
+      default = {
+        ice = mkOpt' types.attrs (default-patch 9) "ice 的 default.custom.yaml patch 体";
+        wanxiang = mkOpt' types.attrs (default-patch 6) "wanxiang 的 default.custom.yaml patch 体";
+        frost = mkOpt' types.attrs (
+          default-patch 8
+          // {
+            schema_list = [
+              { schema = "rime_frost"; }
+              { schema = "rime_frost_double_pinyin_flypy"; }
+            ];
+          }
+        ) "frost 的 default.custom.yaml patch 体（仅 emacs-rime 使用）";
+      };
+      wanxiang = {
+        base = mkOpt' types.attrs {
+          "speller/algebra".__patch = [ "wanxiang_algebra:/base/全拼" ];
+        } "wanxiang.custom.yaml patch 体";
+        pro = mkOpt' types.attrs {
+          "speller/algebra".__patch = [
+            "wanxiang_algebra:/pro/全拼"
+            "wanxiang_algebra:/pro/间接辅助"
+          ];
+        } "wanxiang_pro.custom.yaml patch 体";
+        mixedcode = mkOpt' types.attrs {
+          "speller/algebra" = {
+            __include = "wanxiang_algebra:/mixed/通用派生规则";
+            __patch = "wanxiang_algebra:/mixed/全拼";
+          };
+        } "wanxiang_mixedcode.custom.yaml patch 体";
+        reverse = mkOpt' types.attrs {
+          "speller/algebra" = {
+            __include = "wanxiang_algebra:/reverse/全拼";
+            __patch = "wanxiang_algebra:/reverse/hspzn";
+          };
+        } "wanxiang_reverse.custom.yaml patch 体";
+      };
+      # rime-ice 显示拼音问题：https://github.com/iDvel/rime-ice/issues/431
+      emacsIce = mkOpt' types.attrs {
+        "translator/spelling_hints" = 0;
+        "switches/@4/reset" = 0;
+      } "emacs-rime 下 rime_ice.custom.yaml patch 体";
+    };
+
+    squirrel = {
+      ice = mkOpt' types.attrs squirrel-ice "ice 方案的 squirrel.custom.yaml patch 体";
+      wanxiang = mkOpt' types.attrs squirrel-wanxiang "wanxiang 方案的 squirrel.custom.yaml patch 体";
+    };
   };
   config = mkIf cfg.enable (mkMerge [
     (mkIf (cfg.method == "wanxiang") { modules.tools.rime.octagram = mkForce true; })
     (mkIf pkgs.stdenvNoCC.hostPlatform.isDarwin {
-      home.file."${userDir}/squirrel.custom.yaml".source =
-        if cfg.method == "ice" then
-          "${my.paths.dotfiles.config}/rime/squirrel.custom.yaml"
-        else
-          "${my.paths.dotfiles.config}/rime/squirrel.wanxiang.custom.yaml";
+      home.file."${userDir}/squirrel.custom.yaml".source = custom-yaml (
+        if cfg.method == "ice" then cfg.squirrel.ice else cfg.squirrel.wanxiang
+      );
     })
     (mkIf (cfg.configDir == null && cfg.method == "wanxiang") {
       home.file = {
-        "${userDir}/default.custom.yaml".text = default_wanxiang_custom;
-        "${userDir}/wanxiang.custom.yaml".text = wanxiang-custom;
-        "${userDir}/wanxiang_mixedcode.custom.yaml".text = wanxiang-mixedcode;
-        "${userDir}/wanxiang_reverse.custom.yaml".text = wanxiang-reverse;
-        "${userDir}/wanxiang_pro.custom.yaml".text = wanxiang-pro;
+        "${userDir}/default.custom.yaml".source = custom-yaml cfg.patch.default.wanxiang;
+        "${userDir}/wanxiang.custom.yaml".source = custom-yaml cfg.patch.wanxiang.base;
+        "${userDir}/wanxiang_mixedcode.custom.yaml".source = custom-yaml cfg.patch.wanxiang.mixedcode;
+        "${userDir}/wanxiang_reverse.custom.yaml".source = custom-yaml cfg.patch.wanxiang.reverse;
+        "${userDir}/wanxiang_pro.custom.yaml".source = custom-yaml cfg.patch.wanxiang.pro;
       };
     })
     (mkIf (useEmacs && cemacs.rime.method == "wanxiang") {
       home.file = {
         "${cemacs.rime.dir}/cn_dicts/corrections.dict.yaml".source =
           "${cfg.dataPkg}/share/rime-data/cn_dicts/corrections.dict.yaml";
-        "${cemacs.rime.dir}/default.custom.yaml".text = default_wanxiang_custom;
-        "${cemacs.rime.dir}/wanxiang.custom.yaml".text = wanxiang-custom;
-        "${cemacs.rime.dir}/wanxiang_mixedcode.custom.yaml".text = wanxiang-mixedcode;
-        "${cemacs.rime.dir}/wanxiang_reverse.custom.yaml".text = wanxiang-reverse;
-        "${cemacs.rime.dir}/wanxiang_pro.custom.yaml".text = wanxiang-pro;
+        "${cemacs.rime.dir}/default.custom.yaml".source = custom-yaml cfg.patch.default.wanxiang;
+        "${cemacs.rime.dir}/wanxiang.custom.yaml".source = custom-yaml cfg.patch.wanxiang.base;
+        "${cemacs.rime.dir}/wanxiang_mixedcode.custom.yaml".source =
+          custom-yaml cfg.patch.wanxiang.mixedcode;
+        "${cemacs.rime.dir}/wanxiang_reverse.custom.yaml".source = custom-yaml cfg.patch.wanxiang.reverse;
+        "${cemacs.rime.dir}/wanxiang_pro.custom.yaml".source = custom-yaml cfg.patch.wanxiang.pro;
       };
     })
     (mkIf (cfg.configDir == null && cfg.method == "ice") {
-      home.file."${userDir}/default.custom.yaml".text = default_ice_custom;
+      home.file."${userDir}/default.custom.yaml".source = custom-yaml cfg.patch.default.ice;
     })
     (mkIf (cfg.configDir == null && useEmacs && cemacs.rime.method == "frost") {
       home.file = {
-        "${cemacs.rime.dir}/default.custom.yaml".text = ''
-          patch:
-            "menu/page_size": 8
-            "ascii_composer/switch_key/Shift_L": commit_code
-            "switcher/hotkeys":
-              - F4
-              - Control+grave
-            schema_list:
-              - schema: rime_frost
-              - schema: rime_frost_double_pinyin_flypy
-        '';
+        "${cemacs.rime.dir}/default.custom.yaml".source = custom-yaml cfg.patch.default.frost;
       };
     })
     (mkIf (cfg.configDir == null && useEmacs && cemacs.rime.method == "ice") {
       home.file = {
-        "${cemacs.rime.dir}/default.custom.yaml".text = default_ice_custom;
-        # FIXME: 显示拼音问题解决方法: https://github.com/iDvel/rime-ice/issues/431
-        "${cemacs.rime.dir}/rime_ice.custom.yaml".text = ''
-          patch:
-            translator/spelling_hints: 0
-            "switches/@4/reset": 0
-        '';
+        "${cemacs.rime.dir}/default.custom.yaml".source = custom-yaml cfg.patch.default.ice;
+        "${cemacs.rime.dir}/rime_ice.custom.yaml".source = custom-yaml cfg.patch.emacsIce;
       };
     })
     (mkIf (pkgs.stdenvNoCC.hostPlatform.isDarwin || (!config.home.useos)) {

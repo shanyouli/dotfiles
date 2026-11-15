@@ -1,9 +1,13 @@
-# shared → gui → ime
+# shared → tools → rime
 
-**源文件**: `modules/shared/gui/ime.nix`
-**选项前缀**: `config.modules.rime`
+**源文件**: `modules/shared/tools/rime.nix`
+**选项前缀**: `config.modules.tools.rime`
 
 > 跨平台 Rime 输入法配置，支持 ice / wanxiang / frost 三种输入方案，并提供 macOS（Squirrel）、Linux（fcitx5）、Emacs 三端集成与词库同步备份。
+>
+> 所有 `*.custom.yaml` 不再手写：patch 体是模块选项（`patch.*` / `squirrel.*`），构建时用 `pkgs.formats.yaml`（`my.toYamlFile`）渲染成 `{ patch = <patch 体>; }` 形式的 YAML，即
+> `home.file."<dir>/x.custom.yaml".source = custom-yaml cfg.patch.x;`。
+> 键序按字母序输出，十六进制颜色写成 Nix 整数字面量（`0x424242`）。想改皮肤或 patch 就覆盖对应选项，不要直接编辑生成结果。
 
 ## 选项
 
@@ -17,6 +21,19 @@
 | `backup.enable` | bool | `false` | 是否启用词库同步备份 |
 | `backup.dir` | path | `~/Code/Sync/rime` | 同步目标目录 |
 | `backup.id` | str | 平台内核名（`darwin`/`linux`） | 同步 ID |
+| `patch.default.ice` | attrs | page_size 9 | `default.custom.yaml` 的 patch 体 |
+| `patch.default.wanxiang` | attrs | page_size 6 | 同上，wanxiang 方案 |
+| `patch.default.frost` | attrs | page_size 8 + `schema_list` | 同上，仅 emacs-rime 使用 |
+| `patch.wanxiang.base` | attrs | `wanxiang_algebra:/base/全拼` | `wanxiang.custom.yaml` 的 patch 体 |
+| `patch.wanxiang.pro` | attrs | `/pro/全拼` + `/pro/间接辅助` | `wanxiang_pro.custom.yaml` 的 patch 体 |
+| `patch.wanxiang.mixedcode` | attrs | `/mixed/通用派生规则` + `/mixed/全拼` | `wanxiang_mixedcode.custom.yaml` 的 patch 体 |
+| `patch.wanxiang.reverse` | attrs | `/reverse/全拼` + `/reverse/hspzn` | `wanxiang_reverse.custom.yaml` 的 patch 体 |
+| `patch.emacsIce` | attrs | `spelling_hints = 0` | emacs-rime 下 `rime_ice.custom.yaml` 的 patch 体 |
+| `squirrel.ice` | attrs | mac_light / mac_dark / mac_blue | ice 方案的 `squirrel.custom.yaml` patch 体 |
+| `squirrel.wanxiang` | attrs | mac_light / mac_dark | wanxiang 方案的 `squirrel.custom.yaml` patch 体 |
+
+> `attrs` 类选项按属性合并，可只覆盖单个键，例：
+> `modules.tools.rime.patch.default.ice."menu/page_size" = 10;`
 
 ## 平台路径
 
@@ -85,4 +102,4 @@
 ## 部署行为
 
 - macOS 或独立 HM（`!home.useos`）下，将 `dataPkg` 的 rime-data 以递归 source 部署到用户目录，变更时触发重载命令。
-- macOS 下额外根据 `method` 部署 `squirrel.custom.yaml`（ice / wanxiang 两种皮肤文件）。
+- macOS 下额外根据 `method` 部署 `squirrel.custom.yaml`（ice / wanxiang 两套皮肤，即选项 `squirrel.ice` / `squirrel.wanxiang`）。
