@@ -8,7 +8,7 @@ with lib;
 with my;
 let
   cfg = config.modules.macos.video;
-  mpvcfg = config.modules.gui.media.video;
+  mpvcfg = config.modules.media.video;
 in
 {
   options.modules.macos.video = {
@@ -22,7 +22,7 @@ in
       # "shanyouli/tap/compressO" # 主要用来读出参数，实验的
       "shanyouli/tap/piliplus" # bilibil
     ]
-    ++ optionals (config.modules.media.stream.enable && config.modules.gui.enable) [
+    ++ optionals (config.modules.media.stream.enable && config.modules.fonts.enable) [
       # "iina+" # 使用 simplelive 取代
       # "shanyouli/tap/simple-live" , 不提供安装包了
     ];

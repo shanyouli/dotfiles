@@ -10,7 +10,7 @@ with my;
 let
   cfp = config.modules.service;
   cfg = cfp.tmux;
-  cft = config.modules.tmux;
+  cft = config.modules.shell.tmux;
 in
 {
   options.modules.service.tmux = {

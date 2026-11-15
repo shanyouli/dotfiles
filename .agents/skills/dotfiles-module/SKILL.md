@@ -18,7 +18,7 @@ allowed-tools: ["Read", "Edit", "Write", "Bash", "Glob", "Grep"]
 | 层 | 目录 | 作用域 | 何时编写 |
 |----|------|--------|----------|
 | `optionals` | `modules/optionals/` | 跨 OS/Home 共享基础设施 option（`common.nix` / `hm.nix` / `os.nix`） | 仅当需要新增全仓库级基础 option（env / home.* / user / my.* 等） |
-| `shared` | `modules/shared/{app,dev,gui,shell,tui}/` + `xdg.nix` | 跨平台，经 Home Manager 生效 | 绝大多数用户工具/语言/TUI/GUI 模块 |
+| `shared` | `modules/shared/{dev,shell,services,security,media,network,files,tools}/` + `xdg.nix` + `fonts.nix` | 跨平台，经 Home Manager 生效 | 绝大多数用户工具/语言/服务/媒体/网络模块 |
 | `darwin` / `nixos` | `modules/darwin/`、`modules/nixos/` | 平台专用 | 仅在某平台才存在的功能（darwin 的 homebrew/launchd、nixos 的 systemd 等） |
 
 加载关系（见 `nix/flake-modules.nix`）：
@@ -26,14 +26,13 @@ allowed-tools: ["Read", "Edit", "Write", "Bash", "Glob", "Grep"]
 - `darwinModules.default` = `optionals/os.nix` + 全量 `darwin/*`
 - `nixosModules.default` = `optionals/os.nix` + 全量 `nixos/*` + `homeModules.common`
 
-**关键推论**：新增一个 `modules/shared/tui/foo.nix` 会被自动加载进所有主机的 Home Manager；新增 `modules/darwin/foo.nix` 会被自动加载进所有 darwin 主机。无需手动注册 import。
+**关键推论**：新增一个 `modules/shared/<域>/foo.nix` 会被自动加载进所有主机的 Home Manager；新增 `modules/darwin/foo.nix` 会被自动加载进所有 darwin 主机。无需手动注册 import。
 
 ## 1. option 命名空间硬性规则
 
 | 模块位置 | option 命名空间 | 示例 |
 |----------|----------------|------|
-| `modules/shared/tui/<x>.nix` | `modules.<x>` | `modules.tmux` |
-| `modules/shared/<域>/<x>.nix` | `modules.<域>.<x>` | `modules.app.editor.emacs`、`modules.gui.browser.firefox` |
+| `modules/shared/<域>/<x>.nix` | `modules.<域>.<x>` | `modules.editor.emacs`、`modules.network.browser.firefox`、`modules.services.proxy.clash` |
 | `modules/darwin/<x>.nix` | `modules.macos.<x>` | `modules.macos.rime` |
 | `modules/darwin/service/<x>.nix` | `modules.service.<x>`（**单数 service**） | `modules.service.nginx` |
 | `modules/nixos/<x>.nix` | 视模块而定，通常 `modules.<x>` 或 `services.<x>` | — |
@@ -102,7 +101,7 @@ options.modules.macos.<name>.enable =
 
 ## 4. shared service 子开关模式
 
-当一个 shared 模块在 darwin 侧需要 launchd 守护进程时，shared 模块本身应声明 `service` 子开关，供式2跟随。模板（参考 `modules/shared/tui/alist.nix`、`modules/shared/app/editor/emacs.nix`）：
+当一个 shared 模块在 darwin 侧需要 launchd 守护进程时，shared 模块本身应声明 `service` 子开关，供式2跟随。模板（参考 `modules/shared/services/files/alist.nix`、`modules/shared/editor/emacs.nix`）：
 
 ```nix
 options.modules.<x> = {
@@ -309,12 +308,12 @@ in
 
 | 场景 | 参考文件 |
 |------|----------|
-| shared 普通模块 | `modules/shared/tui/just.nix` |
-| shared 带 service 子开关 | `modules/shared/tui/alist.nix`、`modules/shared/app/editor/emacs.nix` |
+| shared 普通模块 | `modules/shared/dev/just.nix` |
+| shared 带 service 子开关 | `modules/shared/services/files/alist.nix`、`modules/shared/editor/emacs.nix` |
 | darwin 式1（跟随 shared） | `modules/darwin/rime.nix`、`modules/darwin/nh.nix` |
 | darwin 式2（跟随 service.enable） | `modules/darwin/service/nginx.nix`、`modules/darwin/service/emacs.nix` |
 | darwin 式3（独立开关） | `modules/darwin/docker.nix`、`modules/darwin/safari.nix` |
-| 域级聚合 default.nix（声明域 option） | `modules/shared/shell/default.nix`、`modules/shared/gui/default.nix` |
+| 域级聚合 default.nix（声明域 option） | `modules/shared/shell/default.nix`、`modules/shared/dev/default.nix` |
 
 ## 10. 边界：本 skill 不覆盖
 

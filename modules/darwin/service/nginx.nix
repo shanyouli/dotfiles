@@ -9,7 +9,7 @@ with my;
 let
   cfg = config.modules.service.nginx;
   cfm = config.modules;
-  cfb = cfm.nginx;
+  cfb = cfm.services.nginx;
   work_dir = cfb.workDir;
 in
 {

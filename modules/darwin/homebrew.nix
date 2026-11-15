@@ -166,7 +166,7 @@ in
           # "imageoptim" # 图片压缩
           # "licecap" # GIF kap
           # "imazing" # 手机备份管理
-          (mkIf (!config.modules.gui.media.flameshot.enable) "shottr") # 截图
+          (mkIf (!config.modules.media.flameshot.enable) "shottr") # 截图
 
           "crisp" # 开源的 "betterdisplay"  "monitorcontrol"替代方案
 
@@ -240,7 +240,7 @@ in
 
           "glide-browser"
         ]
-        ++ optionals config.modules.adb.enable [
+        ++ optionals config.modules.tools.adb.enable [
           # # 使用第三方工具取代openmtp，MacDroid.app
           # "openmtp" # 目前不是很稳定
           # “macdroid” # 付费app，使用adb传输，稳定性存疑
@@ -248,30 +248,30 @@ in
           # "commander-one" # 速度可以，大文件也稳定，需要付费
           # "whoozle-android-file-transfer" # 速度一般，稳定
         ]
-        ++ optionals config.modules.gopass.enable [ "ente-auth" ]
+        ++ optionals config.modules.security.gopass.enable [ "ente-auth" ]
         ++ optionals (
-          config.modules.gui.browser.chrome.enable && config.modules.gui.browser.chrome.useBrew
+          config.modules.network.browser.chrome.enable && config.modules.network.browser.chrome.useBrew
         ) [ "google-chrome" ]
-        ++ optionals (config.modules.git.enable && config.modules.git.enGui) [
+        ++ optionals (config.modules.dev.git.enable && config.modules.dev.git.enGui) [
           "github" # github客户端
         ]
-        # ++ optionals (config.modules.app.editor.nvim.enGui && config.modules.app.editor.nvim.enable) [
+        # ++ optionals (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) [
         #   "shanyouli/tap/neovide-pure"
         # ]
-        # ++ optionals (config.modules.gui.enable && (config.modules.proxy.default != "")) [
+        # ++ optionals (config.modules.fonts.enable && (config.modules.services.proxy.default != "")) [
         # 使用 macos 商店的工具取代它
-        #   # (mkIf (config.modules.proxy.default == "sing-box") "sfm")
+        #   # (mkIf (config.modules.services.proxy.default == "sing-box") "sfm")
         # ]
         ++ optionals cfg.gui.enable [
           # "applite"
-          (mkIf (config.modules.proxy.default == "sing-box") "shanyouli/tap/gui-for-singbox")
-          # (mkIf (config.modules.proxy.default == "clash") "shanyouli/tap/gui-for-clash")
+          (mkIf (config.modules.services.proxy.default == "sing-box") "shanyouli/tap/gui-for-singbox")
+          # (mkIf (config.modules.services.proxy.default == "clash") "shanyouli/tap/gui-for-clash")
           "shanyouli/tap/clashbar" # "clash-verge-rev"
         ]
-        ++ optionals (
-          config.modules.app.editor.zed.enable && (config.modules.app.editor.zed.package == null)
-        ) [ "zed" ]
-        ++ optionals (config.modules.app.tg.enable && (config.modules.app.tg.package == null)) [
+        ++ optionals (config.modules.editor.zed.enable && (config.modules.editor.zed.package == null)) [
+          "zed"
+        ]
+        ++ optionals (config.modules.network.tg.enable && (config.modules.network.tg.package == null)) [
           "telegram"
         ];
         brews = [
@@ -280,7 +280,7 @@ in
           "mole"
         ];
         masApps = mkMerge [
-          (mkIf (config.modules.gui.enable && (config.modules.proxy.default != "")) {
+          (mkIf (config.modules.fonts.enable && (config.modules.services.proxy.default != "")) {
             # karing = 6472431552; # 美区账号登录，一个兼容 clash-meta 的 sing-box vpn 工具
           })
           {

@@ -8,7 +8,7 @@ with lib;
 with my;
 let
   cfg = config.modules.service.alist;
-  cft = config.modules.alist;
+  cft = config.modules.services.files.alist;
 in
 {
   options.modules.service.alist = {

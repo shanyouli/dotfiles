@@ -9,8 +9,8 @@ with my;
 let
   cfm = config.modules;
   cfg = cfm.service.emacs;
-  cft = config.modules.app.editor.emacs;
-  emacsPkg = config.modules.app.editor.emacs.pkg;
+  cft = config.modules.editor.emacs;
+  emacsPkg = config.modules.editor.emacs.pkg;
 in
 {
   options.modules.service.emacs = {

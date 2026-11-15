@@ -28,7 +28,7 @@ in
         gdb
         clang
       ];
-    modules.app.editor.vscode.extensions =
+    modules.editor.vscode.extensions =
       with pkgs.vscode-extensions;
       let
         cpp =

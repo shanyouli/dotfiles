@@ -65,7 +65,7 @@ with my;
 
       services = mkAliasDefinitions options.home.hmServices;
     }
-    (mkIf config.modules.gui.enable { home.packages = config.modules.gui.fonts; })
+    (mkIf config.modules.fonts.enable { home.packages = config.modules.fonts.packages; })
     {
       home.file = mapAttrs' (k: v: nameValuePair "${config.home.fakeDir}/${k}" v) config.home.fakeFile;
     }

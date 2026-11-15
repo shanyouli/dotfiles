@@ -9,7 +9,7 @@ with my;
 let
   cfm = config.modules;
   cfg = cfm.service.mysql;
-  cft = cfm.db.mysql;
+  cft = cfm.services.db.mysql;
 in
 {
   options.modules.service.mysql = {

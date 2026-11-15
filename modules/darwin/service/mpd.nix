@@ -9,7 +9,7 @@ with my;
 let
   cfm = config.modules;
   cfg = cfm.service.mpd;
-  cft = cfm.media.music.mpd;
+  cft = cfm.services.media.mpd;
   mpdCmd = "${config.home.profileBinDir}/mpd";
 in
 {

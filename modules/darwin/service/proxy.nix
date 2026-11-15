@@ -8,7 +8,7 @@ with lib;
 with my;
 let
   cfg = config.modules.service.proxy;
-  cft = config.modules.proxy;
+  cft = config.modules.services.proxy;
 in
 {
   options.modules.service.proxy = {

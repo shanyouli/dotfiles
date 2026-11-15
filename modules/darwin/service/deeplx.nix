@@ -10,7 +10,7 @@ with my;
 let
   cfm = config.modules;
   cfg = cfm.service.deeplx;
-  cft = cfm.translate.deeplx;
+  cft = cfm.tools.translate.deeplx;
   log_file = "${config.home.homeDirectory}/Library/Logs/deeplx.log";
   inherit (pkgs) deeplx;
 in

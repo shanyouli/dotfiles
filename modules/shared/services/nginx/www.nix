@@ -1,0 +1,207 @@
+{
+  pkgs,
+  lib,
+  config,
+  my,
+  ...
+}:
+with lib;
+with my;
+let
+  cfp = config.modules.services.nginx;
+  cfg = cfp.www;
+
+  /*
+    -----------------------------------------------------------------------
+    搜索引擎列表
+
+    每个元素：
+      name     - 显示名称
+      url      - 搜索 URL（不含参数）
+      param    - 搜索参数名（如 wd、q、question）
+      default  - 是否默认选中（最多一项为 true）
+    -----------------------------------------------------------------------
+  */
+  searchEngines = [
+    {
+      name = "Bing";
+      url = "https://www.bing.com/search?q=";
+      default = false;
+    }
+    {
+      name = "Google";
+      url = "https://www.google.com/search?q=";
+      default = false;
+    }
+    {
+      name = "Baidu";
+      url = "https://www.baidu.com/s?wd=";
+      default = true;
+    }
+    {
+      name = "秘塔 AI";
+      url = "https://metaso.cn/?question=";
+      default = false;
+    }
+  ];
+
+  /**
+    生成 <option> 列表字符串
+  */
+  searchEngineOptions = lib.concatStringsSep "\n          " (
+    map (
+      e: "<option value=\"${e.url}\"${lib.optionalString e.default " selected"}>${e.name}</option>"
+    ) searchEngines
+  );
+
+  /*
+    -----------------------------------------------------------------------
+    链接组 — 数据驱动所有 <div class="link"> 区块
+
+    每个元素：
+      name     - 链接显示的文本
+      url      - 目标 URL
+      enable?  - 可选条件开关（默认 true）
+    -----------------------------------------------------------------------
+  */
+  linkGroup1 = [
+    {
+      name = "github";
+      url = "https://github.com";
+    }
+    {
+      name = "Linux.Do";
+      url = "https://linux.do";
+    }
+    {
+      name = "Emacs China";
+      url = "https://emacs-china.org";
+    }
+    {
+      name = "RSS";
+      url = "https://miniflux.shanyouli.gq";
+    }
+    {
+      name = "Bookmark";
+      url = "https://bm.shanyouli.gq";
+    }
+  ];
+
+  linkGroup2 = [
+    {
+      name = "YouTube";
+      url = "https://www.youtube.com";
+    }
+    {
+      name = "Bilibili";
+      url = "https://www.bilibili.com";
+    }
+    {
+      name = "搜片";
+      url = "https://soupian.pro/";
+    }
+  ];
+
+  linkGroup3 = [
+    {
+      name = "Proxy UI";
+      url = "http://127.0.0.1/proxy/";
+      enable = config.modules.services.proxy.service.enable;
+    }
+    {
+      name = "Alist";
+      url = "http://127.0.0.1/alist";
+      enable = config.modules.services.files.alist.service.enable;
+    }
+    {
+      name = "Aria2";
+      url = "http://127.0.0.1/aria2";
+      enable = config.modules.services.download.aria2.service.enable;
+    }
+    {
+      name = "Qbittorrent UI";
+      url = "http://127.0.0.1/qt";
+      enable = config.modules.network.qbittorrent.service.enable;
+    }
+  ];
+
+  /**
+    将一个链接组渲染为 <div class="link"><ul>…</ul></div> 片段。
+    自动跳过 enable = false 的条目。
+  */
+  renderLinkGroup =
+    group:
+    let
+      items = lib.concatStringsSep "\n            " (
+        map (link: "<li><a href=\"${link.url}\">${link.name}</a></li>") (filter (x: x.enable or true) group)
+      );
+    in
+    ''
+      <div class="link">
+        <ul>${if items == "" then "" else "\n            " + items + "\n          "}</ul>
+      </div>
+    '';
+
+  /**
+    将所有链接组拼接为一个 HTML 字符串
+  */
+  linkGroupsString = lib.concatStringsSep "\n        " (
+    map renderLinkGroup [
+      linkGroup1
+      linkGroup2
+      linkGroup3
+    ]
+  );
+
+  /*
+    -----------------------------------------------------------------------
+    模板 → 最终 HTML
+    -----------------------------------------------------------------------
+  */
+  # Reference config/startpage as a Nix path (not the "${my.paths.dotfiles.config}/startpage"
+  # string interpolation). A path carries a string context, so the flake copies
+  # it into the store as a real derivation input; that makes the files reachable
+  # from inside the build sandbox. The string form loses its context and is
+  # invisible to the sandbox, which is exactly why the previous `cp`-based
+  # runCommand failed in CI while working locally (sandbox disabled, /etc/dotfiles
+  # present). The config below links each asset individually so every input stays
+  # a properly tracked store path.
+  startpageDir = "${my.paths.dotfiles.config}/startpage";
+
+  template = builtins.readFile (startpageDir + "/index.html");
+
+  cfghtml = pkgs.writeText "index.html" (
+    lib.replaceStrings
+      [ "__SEARCH_ENGINES__" "__LINK_GROUPS__" ]
+      [ searchEngineOptions linkGroupsString ]
+      template
+  );
+in
+{
+  options.modules.services.nginx.www = {
+    enable = mkEnableOption "Whether to use startpage";
+  };
+
+  config = mkIf cfg.enable {
+    modules.network.browser.firefox.extraConfig = ''
+      user_pref("browser.startup.homepage", "http://127.0.0.1");
+    '';
+
+    home.file = {
+      # Link each startpage asset individually via Home Manager instead of
+      # copying the whole directory with runCommand. Each `source` is a Nix
+      # path (or a store derivation, for index.html) and therefore carries a
+      # string context, so the flake copies it into the store as a tracked
+      # derivation input and Home Manager symlinks it into ~/.cache/startpage.
+      # This works inside the build sandbox; a bare
+      # "${my.paths.dotfiles.config}/startpage" string interpolation loses its
+      # context and is unreachable from the sandbox (the cause of the CI
+      # failure). readme.md is a docs-only file with no runtime use, so it is
+      # not linked.
+      ".cache/startpage/index.html".source = cfghtml;
+      ".cache/startpage/style.css".source = startpageDir + "/style.css";
+      ".cache/startpage/script.js".source = startpageDir + "/script.js";
+      ".cache/startpage/favicon.png".source = startpageDir + "/favicon.png";
+    };
+  };
+}

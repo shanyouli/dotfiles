@@ -13,31 +13,26 @@
   modules = {
     # shared
 
-    # tui 工具
-    tui = {
-      yazi.enable = true;
-    };
-    archive.default = "ouch";
-    translate = {
+    # 原 tui 工具已按功能域拆散
+    files.yazi.enable = true;
+    files.archive.default = "ouch";
+    tools.translate = {
       enable = true;
       deeplx = {
         enable = false;
         service.startup = false;
       };
     };
-    download = {
-      aria2 = {
-        service.startup = false;
-        aria2p = !pkgs.stdenvNoCC.hostPlatform.isDarwin;
-      };
+    services.download.aria2 = {
+      service.startup = false;
+      aria2p = false;
+    };
+    tools.db = {
       enable = true;
     };
-    db = {
+    services.db.mysql = {
       enable = true;
-      mysql = {
-        enable = true;
-        service.startup = false;
-      };
+      service.startup = false;
     };
     media = {
       enable = true;
@@ -45,72 +40,70 @@
       music = {
         default = "mpd";
         netease.enable = true;
-        mpd.service.startup = true;
         cmus.enable = true;
         musikcube.enable = true;
-        mpd.default = "ncmpcpp";
       };
 
       # 比较后选择
-      # media.music.mpd.ncmpcpp.enable = true;
+      # media.music.ncmpcpp.enable = true;
     };
-    nginx = {
+    services.media.mpd = {
+      service.startup = true;
+      default = "ncmpcpp";
+    };
+    services.nginx = {
       enable = true;
       workDir = "/opt/nginx";
       www.enable = true;
     };
-    proxy = {
+    services.proxy = {
       default = "sing-box";
       sing-box.package = pkgs.sing-box;
       service.enable = true;
       configFile = "${my.paths.homedir}/Nutstore Files/我的坚果云/clash/singbox.json";
     };
 
-    alist = {
+    services.files.alist = {
       enable = false;
       service.startup = false;
     };
 
-    rsync.enable = true;
-    # app
-    app = {
-      qbittorrent = {
-        enGui = false;
-        service = {
-          startup = false;
-          enable = true;
-        };
-      };
-      editor = {
-        emacs = {
-          enable = true;
-          service.enable = true;
-        };
-
-        default = "nvim";
-        # nvim.enable = true;
-        nvim.enGui = false; # GUI 编辑工具为emacs
-        vscode.enable = true;
-        zed.enable = true;
+    files.rsync.enable = true;
+    # app（前台应用）
+    network.qbittorrent = {
+      enGui = false;
+      service = {
+        startup = false;
+        enable = true;
       };
     };
-    # gui
-    gui = {
-      media = {
-        music.netease.enable = false;
-        flameshot.enable = true;
-
-        video.default = "mpv";
+    editor = {
+      emacs = {
+        enable = true;
+        service.enable = true;
       };
-      terminal.default = "kitty";
 
-      localsend.enable = true; # 需要gui，局域网文件传输工具
-      browser = {
-        default = "firefox";
-        # firefox.extensions = lib.mkForce [];
-        fallback = "chrome";
-        # fallback = pkgs.darwinapps.vivaldi;
-      };
+      default = "nvim";
+      # nvim.enable = true;
+      nvim.enGui = false; # GUI 编辑工具为emacs
+      vscode.enable = true;
+      zed.enable = true;
+    };
+    # gui（前台 GUI 应用）
+    media = {
+      music.gtk.netease.enable = false;
+      flameshot.enable = true;
+
+      video.default = "mpv";
+    };
+    shell.terminal.default = "kitty";
+
+    network.localsend.enable = true; # 需要gui，局域网文件传输工具
+    network.browser = {
+      default = "firefox";
+      # firefox.extensions = lib.mkForce [];
+      fallback = "chrome";
+      # fallback = pkgs.darwinapps.vivaldi;
     };
 
     shell = {
@@ -130,29 +123,29 @@
       carapace.enable = true;
     };
 
-    navi.enable = true;
-    tmux = {
+    tools.navi.enable = true;
+    shell.tmux = {
       enable = true;
       service.startup = true;
     };
-    adb.enable = true;
-    ugrep.enable = true;
-    gpg = {
+    tools.adb.enable = true;
+    tools.ugrep.enable = true;
+    security.gpg = {
       enable = true;
       cacheTTL = 360000;
     };
-    git = {
+    dev.git = {
       enable = true;
       enGui = false; # 使用网页管理 github
     };
-    gopass = {
+    security.gopass = {
       enable = true;
       enGui = false;
     };
-    trash.enable = true;
-    just.enable = true;
+    files.trash.enable = true;
+    dev.just.enable = true;
 
-    modern.enable = true;
+    tools.modern.enable = true;
 
     dev = {
       bash.enable = true;
@@ -184,7 +177,7 @@
       enWebReport = true;
       rust.enable = true;
     };
-    rime.enable = true;
+    tools.rime.enable = true;
     # macos
     macos = {
       docker.enable = true;

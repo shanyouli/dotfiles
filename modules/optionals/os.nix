@@ -145,7 +145,7 @@ in
         variables = config.modules.xdg.value;
       };
     }
-    (mkIf config.modules.gui.enable { fonts.packages = config.modules.gui.fonts; })
+    (mkIf config.modules.fonts.enable { fonts.packages = config.modules.fonts.packages; })
     {
       environment = {
         systemPackages = with pkgs; [

@@ -9,7 +9,7 @@ with my;
 let
   cfp = config.modules.macos;
   cfg = cfp.nh;
-  cfs = config.modules.nh;
+  cfs = config.modules.dev.nh;
 in
 {
   options.modules.macos.nh = {

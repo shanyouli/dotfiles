@@ -16,6 +16,6 @@ in
   };
   config = mkIf cfg.enable {
     homebrew.casks = [ "arc" ];
-    modules.gopass.browsers = [ "arc" ];
+    modules.security.gopass.browsers = [ "arc" ];
   };
 }

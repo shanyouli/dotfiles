@@ -8,7 +8,7 @@ with lib;
 with my;
 let
   cfm = config.modules;
-  capp = cfm.app.qbittorrent;
+  capp = cfm.network.qbittorrent;
   cfg = cfm.service.qbittorrent;
 in
 {

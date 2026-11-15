@@ -1,27 +1,23 @@
 { pkgs, ... }: {
   modules = {
-    tui = {
-      yazi.enable = true;
-      lix.enable = true;
-      m.enable = true;
+    files.yazi.enable = true;
+    dev.lix.enable = true;
+    shell.m.enable = true;
+    network.qbittorrent = {
+      enable = true;
+      enGui = true;
     };
-    app = {
-      qbittorrent = {
-        enable = true;
-        enGui = true;
+    editor = {
+      default = "nvim";
+      nvim = {
+        treesit = "all";
       };
-      editor = {
-        default = "nvim";
-        nvim = {
-          treesit = "all";
-        };
-        helix.enable = true;
-        emacs.enable = true;
-        vscode.enable = true;
-        zed.enable = true;
-      };
-      tg.enable = true;
+      helix.enable = true;
+      emacs.enable = true;
+      vscode.enable = true;
+      zed.enable = true;
     };
+    network.tg.enable = true;
     dev = {
       scheme.enable = true;
       go.enable = true;
@@ -57,32 +53,30 @@
       zig.enable = true;
     };
 
-    gui = {
-      enable = true;
-      localsend.enable = true;
+    fonts.enable = true;
+    network.localsend.enable = true;
 
-      browser = {
-        default = "firefox";
-        chrome.enable = pkgs.stdenv.hostPlatform.isDarwin || pkgs.stdenv.hostPlatform.isx86_64;
-      };
-      media = {
-        flameshot.enable = true;
+    network.browser = {
+      default = "firefox";
+      chrome.enable = pkgs.stdenv.hostPlatform.isDarwin || pkgs.stdenv.hostPlatform.isx86_64;
+    };
+    media = {
+      flameshot.enable = true;
 
-        music.netease.enable = true;
-        video = {
-          default = "mpv";
-          vlc.enable = true;
-        };
-      };
-      terminal = {
-        default = "kitty";
-        ghostty.enable = true;
-        wezterm.enable = true;
-        alacritty.enable = true;
+      music.gtk.netease.enable = true;
+      video = {
+        default = "mpv";
+        vlc.enable = true;
       };
     };
+    shell.terminal = {
+      default = "kitty";
+      ghostty.enable = true;
+      wezterm.enable = true;
+      alacritty.enable = true;
+    };
 
-    rime.enable = true;
+    tools.rime.enable = true;
 
     shell = {
       default = "zsh";
@@ -102,27 +96,24 @@
       carapace.enable = true;
     };
 
-    archive.default = "ouch";
-    translate = {
+    files.archive.default = "ouch";
+    tools.translate = {
       enable = true;
       deeplx = {
         enable = false;
         service.startup = false;
       };
     };
-    download = {
-      enable = true;
-      aria2 = {
-        aria2p = !pkgs.stdenvNoCC.hostPlatform.isDarwin;
-        service.startup = false;
-      };
+    services.download.aria2 = {
+      aria2p = !pkgs.stdenvNoCC.hostPlatform.isDarwin;
+      service.startup = false;
     };
-    db = {
+    tools.db = {
       enable = true;
-      mysql = {
-        enable = true;
-        service.startup = false;
-      };
+    };
+    services.db.mysql = {
+      enable = true;
+      service.startup = false;
     };
     media = {
       enable = true;
@@ -130,48 +121,48 @@
       music = {
         default = "mpd";
         netease.enable = true;
-        mpd.service.startup = true;
         kew.enable = true;
       };
     };
+    services.media.mpd.service.startup = true;
 
-    nh.enable = true; # nh 不支持 --impure
-    nginx = {
+    dev.nh.enable = true; # nh 不支持 --impure
+    services.nginx = {
       enable = true;
       www.enable = true;
     };
-    proxy = {
+    services.proxy = {
       default = "sing-box";
-      # proxy.sing-box.package = pkgs.sing-box;
+      # services.proxy.sing-box.package = pkgs.sing-box;
       service.enable = true;
     };
 
-    alist = {
+    services.files.alist = {
       enable = false;
       service.startup = false;
     };
-    rsync.enable = true;
-    navi.enable = true;
-    tmux = {
+    files.rsync.enable = true;
+    tools.navi.enable = true;
+    shell.tmux = {
       enable = true;
       service.startup = true;
     };
-    adb.enable = true;
-    ugrep.enable = true;
-    gpg = {
+    tools.adb.enable = true;
+    tools.ugrep.enable = true;
+    security.gpg = {
       enable = true;
       cacheTTL = 360000;
     };
-    git = {
+    dev.git = {
       enable = true;
       enGui = false; # 使用网页管理 github
     };
-    jujustu.enable = true;
-    gopass = {
+    dev.jujutsu.enable = true;
+    security.gopass = {
       enable = true;
       enGui = false;
     };
-    trash.enable = true;
-    just.enable = true;
+    files.trash.enable = true;
+    dev.just.enable = true;
   };
 }

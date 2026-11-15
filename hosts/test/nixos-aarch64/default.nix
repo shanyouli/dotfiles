@@ -68,17 +68,15 @@
 
   # modules config
   modules = {
-    app = {
-      qbittorrent = {
-        enable = true;
-        enGui = false;
-      };
-      editor = {
-        default = "nvim";
-        # helix.enable = true;
-        # emacs.enable = true;
-        # vscode.enable = true;
-      };
+    network.qbittorrent = {
+      enable = true;
+      enGui = false;
+    };
+    editor = {
+      default = "nvim";
+      # helix.enable = true;
+      # emacs.enable = true;
+      # vscode.enable = true;
     };
     dev = {
       # bash.enable = true;
@@ -144,7 +142,7 @@
       # carapace.enable = true;
     };
 
-    archive.default = "ouch";
+    files.archive.default = "ouch";
     # translate = {
     #   enable = true;
     #   deeplx = {
@@ -177,37 +175,37 @@
     # };
 
     # nginx.enable = true;
-    proxy = {
+    services.proxy = {
       default = "sing-box";
-      # proxy.sing-box.package = pkgs.sing-box;
+      # services.proxy.sing-box.package = pkgs.sing-box;
       service.enable = true;
     };
 
-    alist = {
+    services.files.alist = {
       enable = false;
       service.startup = false;
     };
-    rsync.enable = true;
+    files.rsync.enable = true;
     # navi.enable = true;
-    tmux = {
+    shell.tmux = {
       enable = true;
       service.startup = true;
     };
     # adb.enable = true;
     # ugrep.enable = true;
-    gpg = {
+    security.gpg = {
       enable = true;
       cacheTTL = 360000;
     };
-    git = {
+    dev.git = {
       enable = true;
       enGui = false; # 使用网页管理 github
     };
-    gopass = {
+    security.gopass = {
       enable = true;
       enGui = false;
     };
-    trash.enable = true;
-    just.enable = true;
+    files.trash.enable = true;
+    dev.just.enable = true;
   };
 }

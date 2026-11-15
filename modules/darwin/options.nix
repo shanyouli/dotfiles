@@ -26,10 +26,10 @@ with my;
           pkgs.mkalias
           pkgs.terminal-notifier
         ]
-        ++ optionals config.modules.app.editor.emacs.enable [
+        ++ optionals config.modules.editor.emacs.enable [
           pkgs.darwinapps.pngpaste
           (pkgs.darwinapps.emacsclient.override {
-            emacsClientBin = "${config.modules.app.editor.emacs.pkg}/bin/emacsclient";
+            emacsClientBin = "${config.modules.editor.emacs.pkg}/bin/emacsclient";
             withNotify = true;
           })
         ];
@@ -40,7 +40,7 @@ with my;
         alias open = ^open
       '';
 
-      modules.gui.enable = mkDefault true;
+      modules.fonts.enable = mkDefault true;
 
       system.activationScripts.postActivation.text = ''
         echo "System script executed after system activation"
@@ -104,24 +104,24 @@ with my;
         };
       };
     }
-    (mkIf config.modules.gpg.enable { modules.service.env.GNUPGHOME = config.env.GNUPGHOME; })
-    (mkIf config.modules.gopass.enable {
+    (mkIf config.modules.security.gpg.enable { modules.service.env.GNUPGHOME = config.env.GNUPGHOME; })
+    (mkIf config.modules.security.gopass.enable {
       modules.service.env.PASSWORD_STORE_DIR = config.env.PASSWORD_STORE_DIR;
     })
-    (mkIf config.modules.proxy.sing-box.enable {
+    (mkIf config.modules.services.proxy.sing-box.enable {
       environment.etc."sudoers.d/singbox".source = my.pkg.sudoNotPass (
-        lib.getExe config.modules.proxy.sing-box.package
+        lib.getExe config.modules.services.proxy.sing-box.package
       );
     })
-    (mkIf config.modules.proxy.sing-box.enable {
+    (mkIf config.modules.services.proxy.sing-box.enable {
       environment.etc."sudoers.d/clash".source = my.pkg.sudoNotPass (
-        lib.getExe config.modules.proxy.clash.package
+        lib.getExe config.modules.services.proxy.clash.package
       );
     })
-    (mkIf config.modules.app.editor.emacs.enable {
+    (mkIf config.modules.editor.emacs.enable {
       modules.macos.hammerspoon.cmd = {
         emacs = "${config.modules.macos.app.path}/Emacs.app/Contents/MacOS/Emacs";
-        emacsClient = "${config.modules.app.editor.emacs.pkg}/bin/emacsclient";
+        emacsClient = "${config.modules.editor.emacs.pkg}/bin/emacsclient";
       };
     })
   ];

@@ -1,0 +1,28 @@
+# see @https://github.com/casey/just/blob/master/README.%E4%B8%AD%E6%96%87.md
+# 本地快捷方法
+{
+  pkgs,
+  lib,
+  config,
+  my,
+  ...
+}:
+with lib;
+with my;
+let
+  cfm = config.modules;
+  cfg = cfm.dev.just;
+in
+{
+  options.modules.dev.just = {
+    enable = mkEnableOption "Whether to use just";
+    package = mkPackageOption pkgs "just" { };
+  };
+  config = mkIf cfg.enable {
+    home.packages = [
+      cfg.package
+      pkgs.just-lsp
+      pkgs.just-formatter
+    ];
+  };
+}

@@ -1,0 +1,28 @@
+# 安装 adb 工具， rom 解包工具， scrcpy 交互工具
+{
+  pkgs,
+  lib,
+  config,
+  my,
+  ...
+}:
+with lib;
+with my;
+let
+  cfg = config.modules.tools.adb;
+  package = my.pkg.mkHomePkg pkgs.android-tools config.home.fakeDir;
+in
+{
+  options.modules.tools.adb = {
+    enable = mkBoolOpt false;
+  };
+
+  config = mkIf cfg.enable {
+    home.packages = [
+      package
+      pkgs.payload-dumper-go
+      pkgs.scrcpy
+    ];
+    modules.shell.env.ANDROID_USER_HOME = "\${XDG_FAKE_HOME:-~/.local/user}/.android";
+  };
+}

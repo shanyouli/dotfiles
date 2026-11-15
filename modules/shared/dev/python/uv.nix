@@ -27,7 +27,7 @@ in
       #   }
       # ];
       modules = {
-        python.pipx.enable = mkDefault false;
+        dev.python.pipx.enable = mkDefault false;
         dev.manager.extInit = mkAfter (
           let
             cfb = lib.getExe cfg.package;

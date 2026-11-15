@@ -11,12 +11,12 @@ let
 in
 {
   options.modules.macos.rime = {
-    enable = mkBoolOpt config.modules.rime.enable;
+    enable = mkBoolOpt config.modules.tools.rime.enable;
   };
 
   config = mkIf cfg.enable {
     # 输入法
     homebrew.casks = [ "squirrel-app" ];
-    modules.rime.backup.enable = mkDefault true;
+    modules.tools.rime.backup.enable = mkDefault true;
   };
 }

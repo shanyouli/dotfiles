@@ -42,12 +42,17 @@
 │   ├── darwin/            # macOS 专用模块
 │   ├── nixos/             # NixOS 专用模块
 │   ├── hardware/          # 硬件配置
-│   └── shared/           # 跨平台共享模块
-│       ├── app/           #   应用（编辑器、Telegram、qBittorrent）
+│   └── shared/           # 跨平台共享模块（按功能域组织）
 │       ├── dev/           #   开发语言与工具链
-│       ├── gui/           #   GUI 应用（浏览器、终端、媒体）
-│       ├── shell/         #   Shell 与提示符
-│       ├── tui/           #   TUI 工具集
+│       ├── editor/        #   编辑器（emacs/nvim/vscode/zed/helix）
+│       ├── shell/         #   Shell、终端与提示符
+│       ├── services/      #   后台守护进程（proxy/nginx/db/mpd/aria2/alist）
+│       ├── security/      #   安全（gpg/gopass）
+│       ├── media/         #   媒体（播放、截图、下载）
+│       ├── network/       #   网络（浏览器、下载、通讯）
+│       ├── files/         #   文件（管理、归档、同步）
+│       ├── tools/         #   杂项 CLI 工具
+│       ├── fonts.nix      #   字体安装
 │       └── xdg.nix        #   XDG 目录规范
 ├── hosts/                 # 机器级配置
 │   ├── homebox.nix        #   主力 macOS 机器

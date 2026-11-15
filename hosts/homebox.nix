@@ -15,15 +15,13 @@
   modules = {
     # shared
 
-    # tui 工具
-    tui = {
-      m.enable = true;
-      yazi.enable = true;
-      lix.enable = true;
-    };
-    archive.default = "ouch";
+    # 原 tui 工具已按功能域拆散
+    shell.m.enable = true;
+    files.yazi.enable = true;
+    dev.lix.enable = true;
+    files.archive.default = "ouch";
 
-    translate = {
+    tools.translate = {
       enable = true;
       deeplx = {
         enable = false;
@@ -31,20 +29,17 @@
       };
     };
 
-    download = {
-      enable = true;
-      aria2 = {
-        aria2p = !pkgs.stdenvNoCC.hostPlatform.isDarwin;
-        service.startup = false;
-      };
+    services.download.aria2 = {
+      aria2p = !pkgs.stdenvNoCC.hostPlatform.isDarwin;
+      service.startup = false;
     };
 
-    db = {
+    tools.db = {
       enable = true;
-      mysql = {
-        enable = true;
-        service.startup = false;
-      };
+    };
+    services.db.mysql = {
+      enable = true;
+      service.startup = false;
     };
 
     # 比较后选择
@@ -60,15 +55,15 @@
         # mpd.default = "ncmpcpp";
       };
     };
-    # media.music.mpd.ncmpcpp.enable = true;
+    # media.music.ncmpcpp.enable = true;
 
-    nginx = {
+    services.nginx = {
       enable = true;
       workDir = "/opt/nginx";
       www.enable = true;
     };
 
-    proxy = {
+    services.proxy = {
       default = "clash";
       service = {
         enable = true;
@@ -77,60 +72,54 @@
       configFile = "${my.paths.homedir}/Nutstore Files/我的坚果云/代理相关/singbox.json";
     };
 
-    alist = {
+    services.files.alist = {
       enable = false;
       service.startup = false;
     };
 
-    rsync.enable = true;
-    # app
-    app = {
-      qbittorrent = {
-        enGui = false;
-        service.startup = false;
-        service.enable = true;
-      };
-      tg = {
+    files.rsync.enable = true;
+    # app（前台应用）
+    network.qbittorrent = {
+      enGui = false;
+      service.startup = false;
+      service.enable = true;
+    };
+    network.tg = {
+      enable = true;
+      package = null;
+    };
+    editor = {
+      emacs = {
         enable = true;
+        service.enable = false;
+        package = pkgs.emacs-unstable;
+      };
+
+      default = "nvim";
+      nvim.treesit = "all";
+      nvim.enGui = false; # GUI 编辑工具为emacs
+      vscode.enable = true;
+      zed = {
+        # package = pkgs.unstable.zed-editor;
         package = null;
-      };
-      editor = {
-        emacs = {
-          enable = true;
-          service.enable = false;
-          package = pkgs.emacs-unstable;
-        };
-
-        default = "nvim";
-        nvim.treesit = "all";
-        nvim.enGui = false; # GUI 编辑工具为emacs
-        vscode.enable = true;
-        zed = {
-          # package = pkgs.unstable.zed-editor;
-          package = null;
-          enable = true;
-        };
+        enable = true;
       };
     };
 
-    # # gui
-    gui = {
-      terminal.default = "ghostty";
-      # terminal.ghostty.enable = true;
+    # # gui（前台 GUI 应用）
+    shell.terminal.default = "ghostty";
+    # shell.terminal.ghostty.enable = true;
 
-      localsend.enable = true; # 需要gui，局域网文件传输工具
+    network.localsend.enable = true; # 需要gui，局域网文件传输工具
 
-      browser.default = "chrome"; # firefox
-      # browser.firefox.extensions = lib.mkForce [];
-      # browser.fallback = "chrome";
-      # browser.fallback = pkgs.darwinapps.vivaldi;
-      media = {
-        flameshot.enable = true;
-        music.netease.enable = false;
+    network.browser.default = "chrome"; # firefox
+    # network.browser.firefox.extensions = lib.mkForce [];
+    # network.browser.fallback = "chrome";
+    # network.browser.fallback = pkgs.darwinapps.vivaldi;
+    media.flameshot.enable = true;
+    media.music.gtk.netease.enable = false;
 
-        video.default = "mpv";
-      };
-    };
+    media.video.default = "mpv";
 
     shell = {
       prompt = {
@@ -156,31 +145,31 @@
       direnv.enable = true;
     };
 
-    navi.enable = true;
+    tools.navi.enable = true;
     # tmux = {
     #   enable = false;
     #   service.startup = false;
     # };
-    adb.enable = true;
+    tools.adb.enable = true;
     # ugrep.enable = true;
-    gpg = {
+    security.gpg = {
       enable = true;
       cacheTTL = 360000;
     };
-    jujustu.enable = true;
-    git = {
+    dev.jujutsu.enable = true;
+    dev.git = {
       enable = true;
       enGui = false; # 使用网页管理 github
     };
-    gopass = {
+    security.gopass = {
       enable = true;
       enGui = false;
       browsers = [ "glide" ];
     };
-    trash.enable = true;
-    just.enable = true;
+    files.trash.enable = true;
+    dev.just.enable = true;
 
-    modern.enable = true;
+    tools.modern.enable = true;
 
     dev = {
       bash.enable = true;
@@ -213,6 +202,8 @@
         enable = true;
         node.env = "bun";
         manager.name = "aube";
+        fmt.package = pkgs.unstable.oxfmt;
+        lint.package = pkgs.unstable.oxlint;
       };
       fmt = {
         toml.enable = true;
@@ -223,7 +214,7 @@
       ai.enable = true;
       zig.enable = true;
     };
-    rime = {
+    tools.rime = {
       enable = true;
       method = "frost";
     };
@@ -258,7 +249,7 @@
       read.enable = true;
     };
 
-    nh = {
+    dev.nh = {
       enable = true;
     };
     service = {

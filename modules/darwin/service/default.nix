@@ -40,7 +40,7 @@ in
         serviceConfig.ProgramArguments = [ "${envScript}/bin/launchdenv-service" ];
       };
     })
-    (mkIf config.modules.gpg.enable {
+    (mkIf config.modules.security.gpg.enable {
       programs.gnupg.agent.enable = true;
       launchd.user.agents.gnupg-agent.serviceConfig.EnvironmentVariables.GPUPGHOME = config.env.GNUPGHOME;
     })

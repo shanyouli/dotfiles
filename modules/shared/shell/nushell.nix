@@ -230,7 +230,7 @@ in
           ${s} | save -f ($nu_sources | path join (("${appnameFn s}" | path basename) + ".nu"))
         '') cfg.cacheCmd}
       '';
-    modules.app.editor = {
+    modules.editor = {
       helix = {
         languages = {
           language = [

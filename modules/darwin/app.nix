@@ -41,7 +41,7 @@ in
           pathsToLink = [ "/Applications" ];
         };
       };
-      shell.aliases.emacs = optionalString config.modules.app.editor.emacs.enable "${config.modules.macos.app.path}/Emacs.app/Contents/MacOS/Emacs";
+      shell.aliases.emacs = optionalString config.modules.editor.emacs.enable "${config.modules.macos.app.path}/Emacs.app/Contents/MacOS/Emacs";
     };
     my = {
       system.init.removeNixApps = ''
@@ -62,7 +62,10 @@ in
         LinkAppsPath =
           let
             syncbin =
-              if config.modules.rsync.enable then getExe config.modules.rsync.package else getexe pkgs.rsync;
+              if config.modules.files.rsync.enable then
+                getExe config.modules.files.rsync.package
+              else
+                getexe pkgs.rsync;
             runCmd =
               if cfg.temp.enable then
                 ''

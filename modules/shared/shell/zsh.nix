@@ -96,7 +96,7 @@ in
         '';
         prevInit = mkOrder 100 (
           ""
-          + lib.optionalString (!config.modules.modern.enable) ''
+          + lib.optionalString (!config.modules.tools.modern.enable) ''
             # FZF 配置
             FZF_DEFAULT_COMMAND="fd -H -I --type f"
             FZF_DEFAULT_OPTIONS="fd --height 50%"

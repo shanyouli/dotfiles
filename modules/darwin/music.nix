@@ -33,41 +33,39 @@ in
         "shanyouli/tap/petrichor"
         # "notunes" # 阻止 applemusic 自启动
       ]
-      ++ optionals config.modules.gui.media.music.netease.enable [ "yesplaymusic" ]
+      ++ optionals config.modules.media.music.gtk.netease.enable [ "yesplaymusic" ]
       ++ optionals cfg.lx.enable [ "lx-music" ]
       ++ optionals cfg.apprhyme.enable [ "shanyouli/tap/apprhyme" ]
       ++ optionals cfg.spotube.enable [ "shanyouli/tap/spotube" ];
       user.packages = [ (mkIf (pkgs.darwinapps ? nowplaying-cli) pkgs.darwinapps.nowplaying-cli) ];
     }
-    (mkIf scfg.mpd.enable {
-      modules.media.music.mpd = {
-        config = ''
+    (mkIf config.modules.services.media.mpd.enable {
+      modules.services.media.mpd.config = ''
+        audio_output {
+          type "osx"
+          name "CoreAudio"
+          mixer_type "software"
+          audio_buffer_size "8192"
+          buffer_before_play "25%"
+        }
+        ${lib.optionalString cfg.fifo.enable ''
+          # Visualizer
           audio_output {
-            type "osx"
-            name "CoreAudio"
-            mixer_type "software"
-            audio_buffer_size "8192"
-            buffer_before_play "25%"
+            type "fifo"
+            name "my_fifo"
+            path "${mpdfifo}"
+            format "44100:16:2"
           }
-          ${lib.optionalString cfg.fifo.enable ''
-            # Visualizer
-            audio_output {
-              type "fifo"
-              name "my_fifo"
-              path "${mpdfifo}"
-              format "44100:16:2"
-            }
-          ''}
-          # input
-          input {
-            enabled "no"
-            plugin "qobuz"
-          }
-        '';
-        ncmpcpp.config = lib.optionalString cfg.fifo.enable ''
-          visualizer_data_source = "${mpdfifo}"
-        '';
-      };
+        ''}
+        # input
+        input {
+          enabled "no"
+          plugin "qobuz"
+        }
+      '';
+      modules.media.music.ncmpcpp.config = lib.optionalString cfg.fifo.enable ''
+        visualizer_data_source = "${mpdfifo}"
+      '';
       my.user.init = {
         mpd = {
           desc = "初始化 mpd 配置。";
@@ -91,7 +89,7 @@ in
         };
         ncmpcpp = {
           desc = "初始化 ncmpcpp";
-          inherit (scfg.mpd.ncmpcpp) enable;
+          inherit (scfg.ncmpcpp) enable;
           text = ''
             let ncmpcpp_dir = "${config.home.cacheDir}" | path join "ncmpcpp"
             let lyrics_dir = "${config.home.homeDirectory}" | path join "Music" "LyricsX"

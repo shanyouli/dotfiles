@@ -9,7 +9,7 @@ with my;
 let
   cfp = config.modules.nixos;
   cfg = cfp.nh;
-  cfs = config.modules.nh;
+  cfs = config.modules.dev.nh;
 in
 {
   options.modules.nixos.nh = {
