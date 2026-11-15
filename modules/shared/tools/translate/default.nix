@@ -27,7 +27,8 @@ in
   config = mkIf cfg.enable (mkMerge [
     {
       home.packages = with pkgs; [
-        mtranserver
+        # mtranserver 的 meta.platforms 只有 x86_64-linux 与 aarch64-darwin
+        (mkIf (stdenvNoCC.isx86_64 || stdenvNoCC.isDarwin) mtranserver)
         # libretranslate 也许 mtranserver 更好
         # (mkIf stdenvNoCC.isx86_64 libretranslate)
         (mkIf cfg.deeplx.enable pkgs)

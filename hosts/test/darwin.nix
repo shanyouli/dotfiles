@@ -232,7 +232,10 @@
     services.battery.enable = true;
     services.yabai.enable = true;
     services.karabiner.enable = true;
-    services.syncthing.enable = true;
   };
+
+  # nix-darwin 原生选项，不在 modules.* 命名空间下
+  services.syncthing.enable = true;
+
   system.stateVersion = lib.mkForce 5;
 }
