@@ -34,7 +34,7 @@
 | **Shell** | 其他 | bash 和 nushell 均启用 |
 | **TUI** | tmux | 服务开机启动 |
 | **TUI** | git, gpg, gopass, jj, just, trash, adb | 全部启用 |
-| **开发** | Python | [3.14, 3.13, 3.11, 3.12]，global=3.12，venv=uv |
+| **开发** | Python | [3.14, 3.13, 3.11, 3.12]，global=3.12，版本管理与虚拟环境均用 uv |
 | **开发** | Java | oracle-21.0.1 + liberica-8，global=oracle-21.0.1 |
 | **开发** | Go, Lua, CC, Rust, Scheme, Zig | 全部启用 |
 | **开发** | JS | node.env=bun, manager=aube |

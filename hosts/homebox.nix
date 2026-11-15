@@ -184,7 +184,6 @@
           "3.12"
         ];
         global = "3.12";
-        venv = "uv";
       };
 
       nix.enable = true;

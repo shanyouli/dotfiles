@@ -42,8 +42,6 @@
           "3.12"
         ];
         global = "3.12";
-        venv = "uv";
-        poetry.enable = true;
       };
       ai.enable = true;
       fmt = {

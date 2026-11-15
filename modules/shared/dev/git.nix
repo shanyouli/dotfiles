@@ -19,7 +19,7 @@ in
     home.packages = with pkgs; [
       github-cli
       git-crypt
-      # pre-commit # git 提交前自检, 使用 pipx安装
+      # pre-commit # git 提交前自检, 改用 uv tool install pre-commit
       prek
       (mkIf (cfg.enGui && stdenvNoCC.isLinux) github-desktop)
       # 更快的克隆速度。

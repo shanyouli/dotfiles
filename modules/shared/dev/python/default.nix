@@ -14,29 +14,10 @@ let
     "uv"
     "mise"
   ];
-  venvs = [
-    "poetry"
-    "uv"
-  ];
-  versionsConfigured =
-    !(builtins.elem cfg.versions [
-      null
-      false
-      true
-      [ ]
-    ]);
-  usesDevManager =
-    cfg.manager == "mise" || (cfg.manager == "" && cfg.venv != "uv" && versionsConfigured);
-  devManager = "mise";
-  effectiveManager =
-    if cfg.manager != "" then
-      cfg.manager
-    else if builtins.elem cfg.venv managers then
-      cfg.venv
-    else if usesDevManager then
-      devManager
-    else
-      "";
+  # 版本管理器只有两种：uv（未指定时的默认）与 mise（需显式指定）；
+  # 虚拟环境与用户级工具安装固定走 uv。
+  usesDevManager = cfg.manager == "mise";
+  effectiveManager = if cfg.manager != "" then cfg.manager else "uv";
 in
 {
   options.modules.dev.python = with types; {
@@ -72,12 +53,6 @@ in
         else
           throw "modules.dev.python.global = \"${s}\" 不在 modules.dev.python.versions 中";
     };
-    venv = mkOption {
-      description = "python virtual environment management tool.";
-      type = str;
-      default = "poetry";
-      apply = s: if builtins.elem s venvs then s else "";
-    };
     manager = mkOption {
       description = "python versions management tool.";
       type = str;
@@ -91,7 +66,6 @@ in
       description = "Extra packages available to Python.";
     };
     finalPkg = mkPkgReadOpt "The Python include with packages";
-    pipx.enable = mkBoolOpt true;
   };
   config = mkMerge [
     (mkIf cfg.enable (mkMerge [
@@ -99,9 +73,9 @@ in
         modules = {
           dev.lang = mkIf usesDevManager { python = cfg.versions; };
           dev.python = {
-            poetry.enable = mkDefault (cfg.venv == "poetry");
             uv = {
-              enable = mkDefault (cfg.venv == "uv");
+              # 已在 mkIf cfg.enable 内，uv 跟随 python 启用；host 可显式覆盖。
+              enable = mkDefault true;
               manager = mkDefault (effectiveManager == "uv");
             };
           };
@@ -171,7 +145,6 @@ in
           };
           packages = with pkgs; [
             basedpyright
-            pipenv
             ty
           ];
         };
@@ -203,46 +176,5 @@ in
       };
       home.packages = [ cfg.finalPkg ];
     }
-    (mkIf cfg.pipx.enable (
-      let
-        cmdp = config.modules.dev.python;
-        global_python_path =
-          if cmdp.enable && (cmdp.global != "") then "mise where python@${cmdp.global}" else "";
-        pipx_function_text = ''
-          pipx() {
-            local _is_pipx_default=$PIPX_DEFAULT_PYTHON
-            if [[ -z $_is_pipx_default ]]; then
-              export PIPX_DEFAULT_PYTHON="$(readlink -f $(${global_python_path})/bin/python)"
-            fi
-            command pipx "$@"
-            if [[ -z $_is_pipx_default ]]; then
-              unset PIPX_DEFAULT_PYTHON
-            fi
-          };
-        '';
-      in
-      {
-        # A better python command line installation tool
-        modules.shell = {
-          zsh.rcInit = lib.optionalString (global_python_path != "") pipx_function_text;
-          nushell.rcInit = lib.optionalString (global_python_path != "") ''
-            export def --wrapped pipx [...rest: string] {
-                if ($env | get -o PIPX_DEFAULT_PYTHON | is-empty) {
-                    let pipx_default_python = ([( ${global_python_path} ), "bin", "python" ] | path join | readlink -f $in)
-                    with-env {PIPX_DEFAULT_PYTHON: $pipx_default_python } {
-                        ^pipx ...$rest
-                    }
-                } else {
-                    ^pipx ...$rest
-                }
-            }
-          '';
-        };
-        home = {
-          packages = [ pkgs.python3Packages.pipx ];
-          programs.bash.initExtra = lib.optionalString (global_python_path != "") pipx_function_text;
-        };
-      }
-    ))
   ];
 }

@@ -7,11 +7,6 @@ _final: prev:
         doCheck = false;
         doInstallCheck = false;
       });
-      pipx = pprev.pipx.overrideAttrs (_old: {
-        # pipx 1.8.0 在当前 Python/packaging 组合下的上游测试会失败。
-        doCheck = false;
-        doInstallCheck = false;
-      });
     };
   in
   rec {

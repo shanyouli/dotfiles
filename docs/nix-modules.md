@@ -66,7 +66,7 @@
 | 名称 | 文件 | 说明 |
 |------|------|------|
 | `base` | `overlays/default.nix` | 继承 NUR 仓库 overlay |
-| `python` | `overlays/python.nix` | Python 包覆盖：禁用 aria2p/pipx 的测试 |
+| `python` | `overlays/python.nix` | Python 包覆盖：禁用 aria2p 的测试 |
 | `default` | `overlays/default.nix` | 提供 `unstable` nixpkgs 引用 |
 
 ### pkgs/ — 全局包集初始化

@@ -20,14 +20,7 @@ in
   config = mkIf cfg.enable (mkMerge [
     { home.packages = [ cfg.package ]; }
     (mkIf cfg.manager {
-      # assertions = [
-      #   {
-      #     assertion = !cfp.rye.manager;
-      #     message = "Do not use rye and uv to manage python versions at the same time.";
-      #   }
-      # ];
       modules = {
-        dev.python.pipx.enable = mkDefault false;
         dev.manager.extInit = mkAfter (
           let
             cfb = lib.getExe cfg.package;

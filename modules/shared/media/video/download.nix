@@ -18,7 +18,7 @@ in
   config = mkIf cfg.enable {
     home.packages = [
       pkgs.yt-dlp
-      # pkgs.yutto # 使用 pipx 安装
+      # pkgs.yutto # 改用 uv tool install yutto
       pkgs.lux
       pkgs.fav
     ]; # yutto 下载bilibili

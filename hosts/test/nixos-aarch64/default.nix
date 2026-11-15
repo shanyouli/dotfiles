@@ -101,7 +101,6 @@
           "3.11"
         ];
         global = "3.11";
-        poetry.enable = true;
       };
       js.enable = true;
       go.enable = true;
