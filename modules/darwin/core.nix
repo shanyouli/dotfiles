@@ -25,7 +25,7 @@
             "/sbin/shutdown"
             "/sbin/reboot"
           ];
-          # ++ lib.optionals config.modules.macos.services.clash.enable [ "/usr/sbin/networksetup" ];
+          # ++ lib.optionals config.modules.services.proxy.clash.enable [ "/usr/sbin/networksetup" ];
           commandsString = builtins.concatStringsSep ", " commands;
         in
         ''

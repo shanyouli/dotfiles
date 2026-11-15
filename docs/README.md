@@ -24,7 +24,11 @@ docs/
 ├── modules/                    # 每模块一文档（镜像 modules/ 目录结构）
 │   ├── optionals/              # 基础选项层
 │   ├── darwin/                 # macOS 专用模块
-│   │   └── service/            #   launchd 服务
+│   │   ├── dev/                #   开发工具
+│   │   ├── media/              #   媒体
+│   │   ├── network/            #   网络
+│   │   ├── services/           #   launchd 服务
+│   │   └── tools/              #   系统工具
 │   ├── nixos/                  # NixOS 专用模块
 │   ├── hardware/               # 硬件配置
 │   └── shared/                 # 跨平台共享模块
@@ -73,9 +77,9 @@ docs/
 | [darwin/options](modules/darwin/options.md) | Darwin 入口（含 core + shell PATH 修复） |
 | [darwin/macos](modules/darwin/macos.md) | 系统偏好（Dock/Finder/Trackpad/防火墙） |
 | [darwin/homebrew](modules/darwin/homebrew.md) | Homebrew 配置与镜像源 |
-| [darwin/app](modules/darwin/app.md) | 应用统一管理（Nix 应用链接到统一目录） |
-| [darwin/hammerspoon](modules/darwin/hammerspoon.md) | Hammerspoon 窗口管理 |
-| [darwin/service/*](modules/darwin/service/default.md) | 14 个 launchd 服务 |
+| [darwin/tools/app](modules/darwin/tools/app.md) | 应用统一管理（Nix 应用链接到统一目录） |
+| [darwin/tools/hammerspoon](modules/darwin/tools/hammerspoon.md) | Hammerspoon 窗口管理 |
+| [darwin/services/*](modules/darwin/services/default.md) | 14 个 launchd 服务 |
 
 ### 编辑器
 
@@ -122,7 +126,7 @@ docs/
 | 文档 | 说明 |
 |------|------|
 | [shared/gui/ime](modules/shared/gui/ime.md) | Rime 输入法（ice/wanxiang/frost） |
-| [darwin/rime](modules/darwin/rime.md) | macOS Rime (Squirrel) |
+| [darwin/tools/rime](modules/darwin/tools/rime.md) | macOS Rime (Squirrel) |
 
 ### 浏览器
 

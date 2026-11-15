@@ -84,8 +84,8 @@ macOS 上 Nix 和系统 PATH 顺序冲突，此模块通过 Nushell 脚本 `fix_
 
 | 条件 | 配置 |
 |------|------|
-| `modules.gpg.enable` | 设置 `modules.service.env.GNUPGHOME` |
-| `modules.gopass.enable` | 设置 `modules.service.env.PASSWORD_STORE_DIR` |
+| `modules.gpg.enable` | 设置 `modules.macos.services.env.GNUPGHOME` |
+| `modules.gopass.enable` | 设置 `modules.macos.services.env.PASSWORD_STORE_DIR` |
 | `modules.proxy.sing-box.enable` | 生成 `/etc/sudoers.d/singbox` |
 | `modules.proxy.clash.enable` | 生成 `/etc/sudoers.d/clash` |
 | `modules.app.editor.emacs.enable` | 注入 Hammerspoon emacs/emacsClient 命令 |
@@ -122,15 +122,15 @@ darwin 模块的 `enable` 默认值依据"是否有 shared 对应物"分流为�
 
 ```nix
 # 式1 — darwin macos 层，shared 有同名模块（跟随 enable）
-options.modules.macos.<name>.enable =
+options.modules.macos.<域>.<name>.enable =
   mkBoolOpt config.modules.<name>.enable;
 
 # 式2 — darwin service 层，shared 有对应模块的 service 子开关（跟随 service.enable）
-options.modules.service.<name>.enable =
+options.modules.macos.services.<name>.enable =
   mkBoolOpt config.modules.<domain>.<name>.service.enable;
 
 # 式3 — darwin 独有功能，shared 无对应（独立开关，默认 false）
-options.modules.macos.<name>.enable =
+options.modules.macos.<域>.<name>.enable =
   mkEnableOption "Whether to ...";
 ```
 
@@ -141,13 +141,13 @@ options.modules.macos.<name>.enable =
 
 ### 命名空间规则
 
-- darwin macos 层：`modules.macos.<name>`
-- darwin service 层：`modules.service.<name>`（**单数**，禁止 `modules.services` 复数）
+- darwin macos 层：`modules.macos.<域>.<name>`（域为 `dev`/`media`/`network`/`tools`）
+- darwin service 层：`modules.macos.services.<name>`；shared 侧是 `modules.services.<name>`（复数），两者一一对应，不要再出现单数 `modules.service`
 - 平台核心层（`macos.nix`）默认 `enable = true`，代表 macOS 专用系统偏好默认启用。
 
 ### 现状对照表
 
-**类 B — darwin service 层 `modules.service.<x>.enable`**
+**类 B — darwin service 层 `modules.macos.services.<x>.enable`**
 
 | darwin service 模块 | 默认值来源 | shared 对应开关 | 约定 |
 |---|---|---|---|
