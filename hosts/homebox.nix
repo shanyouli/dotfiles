@@ -199,8 +199,6 @@
       cc.enable = true;
       js = {
         enable = true;
-        node.env = "bun";
-        manager.name = "aube";
         fmt.package = pkgs.unstable.oxfmt;
         lint.package = pkgs.unstable.oxlint;
       };

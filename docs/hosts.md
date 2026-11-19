@@ -37,7 +37,7 @@
 | **开发** | Python | [3.14, 3.13, 3.11, 3.12]，global=3.12，版本管理与虚拟环境均用 uv |
 | **开发** | Java | oracle-21.0.1 + liberica-8，global=oracle-21.0.1 |
 | **开发** | Go, Lua, CC, Rust, Scheme, Zig | 全部启用 |
-| **开发** | JS | node.env=bun, manager=aube |
+| **开发** | JS | node 最新 LTS + aube（aubeshim） |
 | **开发** | AI | 启用（codex, claude-code, pi 等） |
 | **输入法** | rime | method="frost" |
 | **macOS** | docker, safari, games, hammerspoon | 启用 |
