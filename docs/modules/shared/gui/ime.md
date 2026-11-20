@@ -5,9 +5,7 @@
 
 > 跨平台 Rime 输入法配置，支持 ice / wanxiang / frost 三种输入方案，并提供 macOS（Squirrel）、Linux（fcitx5）、Emacs 三端集成与词库同步备份。
 >
-> 所有 `*.custom.yaml` 不再手写：patch 体是模块选项（`patch.*` / `squirrel.*`），构建时用 `pkgs.formats.yaml`（`my.toYamlFile`）渲染成 `{ patch = <patch 体>; }` 形式的 YAML，即
-> `home.file."<dir>/x.custom.yaml".source = custom-yaml cfg.patch.x;`。
-> 键序按字母序输出，颜色写成十六进制字符串（`"0x424242"`；Nix 不支持 `0x` 整数字面量）。想改皮肤或 patch 就覆盖对应选项，不要直接编辑生成结果。
+> 模块将 `patch.*` 渲染为各个 `*.custom.yaml` 的 `patch`。鼠须管配色与应用设置见 [macOS Rime 模块](../../darwin/tools/rime.md)。
 
 ## 选项
 
@@ -29,11 +27,25 @@
 | `patch.wanxiang.mixedcode` | attrs | `/mixed/通用派生规则` + `/mixed/全拼` | `wanxiang_mixedcode.custom.yaml` 的 patch 体 |
 | `patch.wanxiang.reverse` | attrs | `/reverse/全拼` + `/reverse/hspzn` | `wanxiang_reverse.custom.yaml` 的 patch 体 |
 | `patch.emacsIce` | attrs | `spelling_hints = 0` | emacs-rime 下 `rime_ice.custom.yaml` 的 patch 体 |
-| `squirrel.ice` | attrs | mac_light / mac_dark / mac_blue | ice 方案的 `squirrel.custom.yaml` patch 体 |
-| `squirrel.wanxiang` | attrs | mac_light / mac_dark | wanxiang 方案的 `squirrel.custom.yaml` patch 体 |
 
-> `attrs` 类选项按属性合并，可只覆盖单个键，例：
-> `modules.tools.rime.patch.default.ice."menu/page_size" = 10;`
+### 覆盖候选数或输入规则
+
+```nix
+modules.tools.rime.patch.default.ice."menu/page_size" = 10;
+```
+
+这会修改 `default.custom.yaml` 中 `patch` 下的 `"menu/page_size"`，并保留默认热键和左 Shift 行为。
+
+`patch.wanxiang.*` 和 `patch.emacsIce` 的赋值会替换对应文件的完整 `patch`。例如调整万象混合输入方案时，要同时写出要保留的通用规则和要使用的拼写规则。
+
+```nix
+modules.tools.rime.patch.wanxiang.mixedcode = {
+  "speller/algebra" = {
+    __include = "wanxiang_algebra:/mixed/通用派生规则";
+    __patch = "wanxiang_algebra:/mixed/全拼";
+  };
+};
+```
 
 ## 平台路径
 
@@ -101,5 +113,5 @@
 
 ## 部署行为
 
-- macOS 或独立 HM（`!home.useos`）下，将 `dataPkg` 的 rime-data 以递归 source 部署到用户目录，变更时触发重载命令。
-- macOS 下额外根据 `method` 部署 `squirrel.custom.yaml`（ice / wanxiang 两套皮肤，即选项 `squirrel.ice` / `squirrel.wanxiang`）。
+- 独立 Linux Home Manager 将 `dataPkg` 的 rime-data 递归链接到用户目录，目录变更时重载 fcitx5。
+- macOS 由 nix-darwin 自动加载 [macOS Rime 模块](../../darwin/tools/rime.md)，管理词库部署与鼠须管重载。

@@ -17,12 +17,6 @@ let
       linux = ".local/share/fcitx5/rime";
     }
     .${kernel-name};
-  deploy-cmd =
-    {
-      darwin = "'/Library/Input Methods/Squirrel.app/Contents/MacOS/Squirrel' --reload";
-      linux = "fcitx-remote -r";
-    }
-    .${kernel-name};
   cemacs = cfp.editor.emacs;
   useEmacs = cemacs.enable && cemacs.rime.enable;
 
@@ -35,97 +29,25 @@ let
     toYamlFile x;
 
   # ----- 默认值：各方案的 *.custom.yaml patch 体（可被 modules.tools.rime.patch.* 覆盖） -----
-  # 通用 patch：候选数、左 Shift 直接上屏、方案选单热键
-  default-patch = page-size: {
-    "menu/page_size" = page-size;
+  default-patch = {
     "ascii_composer/switch_key/Shift_L" = "commit_code";
     "switcher/hotkeys" = [
       "F4"
       "Control+grave"
     ];
   };
-
-  # ----- 默认值：Squirrel 皮肤（可被 modules.tools.rime.squirrel.* 覆盖） -----
-  # 配色参考 https://ssnhd.com/2022/01/11/rime-skin/
-  # 排版公共字段
-  layout = {
-    candidate_format = "%c %@ "; # 用 1/6 em 空格 U+2005 来控制编号 %c 和候选词 %@ 前后的空间
-    corner_radius = 5; # 窗口圆角
-    hilited_corner_radius = 5; # 高亮圆角
-    line_spacing = 10; # 行间距(适用于竖排)
-    border_height = 4; # 窗口上下高度，大于圆角半径才生效
-    border_width = 4; # 窗口左右宽度，大于圆角半径才生效
-    font_face = "PingFangSC"; # 候选词字体
-    font_point = 16; # 候选字大小
-    label_font_point = 13; # 候选编号大小
+  ice-default-patch = default-patch // {
+    "menu/page_size" = 9;
   };
-  # mac_blue 没有高亮圆角与窗口留白
-  compact-layout = builtins.removeAttrs layout [
-    "hilited_corner_radius"
-    "border_height"
-    "border_width"
-  ];
-  # 与配色方案无关的固定文字颜色
-  text-colors = {
-    label_color = "0x999999"; # 预选栏编号颜色
-    comment_text_color = "0x999999"; # 拼音等提示文字颜色
-    hilited_text_color = "0x999999"; # 高亮拼音 (需要开启内嵌编码)
-    hilited_candidate_text_color = "0xFFFFFF"; # 第一候选项文字颜色
-    hilited_candidate_label_color = "0xFFFFFF"; # 第一候选项编号颜色
-    hilited_comment_text_color = "0x999999"; # 注解文字高亮
+  wanxiang-default-patch = default-patch // {
+    "menu/page_size" = 6;
   };
-  mk-scheme = base: extra: base // text-colors // extra;
-  schemes = {
-    mac_light = mk-scheme layout {
-      name = "Mac浅色";
-      text_color = "0x424242"; # 拼音行文字颜色
-      back_color = "0xFFFFFF"; # 候选条背景色
-      border_color = "0xFFFFFF"; # 边框色
-      candidate_text_color = "0x3c3c3c"; # 预选项文字颜色
-      hilited_back_color = "0xD75A00"; # 第一候选项背景色
-    };
-    mac_dark = mk-scheme layout {
-      name = "Mac深色";
-      text_color = "0x424242"; # 拼音行文字颜色
-      back_color = "0x252a2e"; # 候选条背景色
-      border_color = "0x050505"; # 边框色
-      candidate_text_color = "0xe9e9ea"; # 预选项文字颜色
-      hilited_back_color = "0xD75A00"; # 第一候选项背景色
-    };
-    mac_blue = mk-scheme compact-layout {
-      name = "Mac浅蓝";
-      text_color = "0x424242"; # 拼音行文字颜色
-      back_color = "0xFFFFFF"; # 候选条背景色
-      border_color = "0xFFFFFF"; # 边框色
-      candidate_text_color = "0x3c3c3c"; # 预选项文字颜色
-      hilited_back_color = "0xF8AA4D"; # 第一候选项背景色
-    };
-  };
-  app-options = {
-    "com.google.Chrome".inline = true; # 規避 https://github.com/rime/squirrel/issues/435
-    "ru.keepcoder.Telegram".inline = true; # 規避 https://github.com/rime/squirrel/issues/475
-    "org.gnu.Emacs" = {
-      ascii_mode = true;
-      no_inline = true;
-    };
-  };
-  style = {
-    "style/color_scheme" = "mac_light";
-    "style/color_scheme_dark" = "mac_dark";
-    "style/text_orientation" = "horizontal"; # vertical
-    "style/candidate_list_layout" = "linear"; # 拼音位于： 候选框 false | 行内 true
-  };
-  # ice：三套配色，每套单独声明横排
-  squirrel-ice = style // {
-    app_options = app-options;
-    "preset_color_schemes/+" = builtins.mapAttrs (
-      _: v: v // { text_orientation = "horizontal"; }
-    ) schemes;
-  };
-  # wanxiang：与 ice 同一套配色，但不含 mac_blue，也没有配色级 text_orientation
-  squirrel-wanxiang = style // {
-    app_options = app-options;
-    "preset_color_schemes/+" = builtins.removeAttrs schemes [ "mac_blue" ];
+  frost-default-patch = default-patch // {
+    "menu/page_size" = 8;
+    schema_list = [
+      { schema = "rime_frost"; }
+      { schema = "rime_frost_double_pinyin_flypy"; }
+    ];
   };
 in
 {
@@ -177,17 +99,24 @@ in
     # https://github.com/amzxyz/rime_wanxiang_pro/blob/main/custom/custom%E6%96%87%E4%BB%B6%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.md
     patch = {
       default = {
-        ice = mkOpt' types.attrs (default-patch 9) "ice 的 default.custom.yaml patch 体";
-        wanxiang = mkOpt' types.attrs (default-patch 6) "wanxiang 的 default.custom.yaml patch 体";
-        frost = mkOpt' types.attrs (
-          default-patch 8
-          // {
-            schema_list = [
-              { schema = "rime_frost"; }
-              { schema = "rime_frost_double_pinyin_flypy"; }
-            ];
-          }
-        ) "frost 的 default.custom.yaml patch 体（仅 emacs-rime 使用）";
+        ice = mkOption {
+          type = types.attrs;
+          default = { };
+          apply = recursiveUpdate ice-default-patch;
+          description = "ice 的 default.custom.yaml patch 覆盖项";
+        };
+        wanxiang = mkOption {
+          type = types.attrs;
+          default = { };
+          apply = recursiveUpdate wanxiang-default-patch;
+          description = "wanxiang 的 default.custom.yaml patch 覆盖项";
+        };
+        frost = mkOption {
+          type = types.attrs;
+          default = { };
+          apply = recursiveUpdate frost-default-patch;
+          description = "frost 的 default.custom.yaml patch 覆盖项（仅 emacs-rime 使用）";
+        };
       };
       wanxiang = {
         base = mkOpt' types.attrs {
@@ -218,19 +147,9 @@ in
         "switches/@4/reset" = 0;
       } "emacs-rime 下 rime_ice.custom.yaml patch 体";
     };
-
-    squirrel = {
-      ice = mkOpt' types.attrs squirrel-ice "ice 方案的 squirrel.custom.yaml patch 体";
-      wanxiang = mkOpt' types.attrs squirrel-wanxiang "wanxiang 方案的 squirrel.custom.yaml patch 体";
-    };
   };
   config = mkIf cfg.enable (mkMerge [
     (mkIf (cfg.method == "wanxiang") { modules.tools.rime.octagram = mkForce true; })
-    (mkIf pkgs.stdenvNoCC.hostPlatform.isDarwin {
-      home.file."${userDir}/squirrel.custom.yaml".source = custom-yaml (
-        if cfg.method == "ice" then cfg.squirrel.ice else cfg.squirrel.wanxiang
-      );
-    })
     (mkIf (cfg.configDir == null && cfg.method == "wanxiang") {
       home.file = {
         "${userDir}/default.custom.yaml".source = custom-yaml cfg.patch.default.wanxiang;
@@ -266,11 +185,11 @@ in
         "${cemacs.rime.dir}/rime_ice.custom.yaml".source = custom-yaml cfg.patch.emacsIce;
       };
     })
-    (mkIf (pkgs.stdenvNoCC.hostPlatform.isDarwin || (!config.home.useos)) {
+    (mkIf (pkgs.stdenvNoCC.hostPlatform.isLinux && !config.home.useos) {
       home.file.${userDir} = {
         source = "${cfg.dataPkg}/share/rime-data/";
         recursive = true;
-        onChange = deploy-cmd;
+        onChange = "fcitx-remote -r";
       };
     })
     (mkIf cfg.backup.enable {
