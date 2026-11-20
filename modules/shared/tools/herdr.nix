@@ -17,6 +17,11 @@ in
     enable = mkBoolOpt' false "是否启用 herdr。";
     package = mkOpt' types.package pkgs.unstable.herdr "使用的 herdr 软件包。";
     settings = mkOpt' tomlFormat.type { } "生成 herdr/config.toml 的配置。";
+    integrations = mkOpt' (types.listOf (types.strMatching "[a-z][a-z0-9-]*")) [
+      "pi"
+      "claude"
+      "codex"
+    ] "用户激活时初始化的 Herdr Agent 集成；空列表禁用初始化。";
     service = {
       enable = mkBoolOpt' cfg.enable "是否启用 herdr 后台服务。";
       startup = mkBoolOpt' false "是否在登录时自动启动 herdr 服务。";
@@ -27,6 +32,15 @@ in
     home.packages = [ cfg.package ];
     home.configFile."herdr/config.toml".source = tomlFormat.generate "herdr-config.toml" cfg.settings;
     env.HERDR_CONFIG_PATH = "${config.home.configDir}/herdr/config.toml";
+
+    my.user.init.initHerdrIntegrations = {
+      enable = cfg.integrations != [ ];
+      desc = "初始化 Herdr Agent 集成。";
+      text = ''
+        use ${./herdr-integrations.nu} init-herdr-integrations
+        init-herdr-integrations "${cfg.package}/bin/herdr" ${builtins.toJSON cfg.integrations}
+      '';
+    };
 
     modules.tools.herdr.settings = {
       onboarding = mkDefault false;
@@ -39,6 +53,7 @@ in
         kitty_graphics = mkDefault true;
       };
       ui = {
+        prompt_new_tab_name = mkDefault false;
         agent_panel_sort = mkDefault "spaces";
         show_agent_labels_on_pane_borders = mkDefault true;
         toast.delivery = mkDefault "system";
@@ -50,6 +65,22 @@ in
         manifest_check = mkDefault false;
       };
       keys.prefix = mkDefault "ctrl+c";
+      keys.focus_pane_left = mkDefault [
+        "prefix+h"
+        "prefix+left"
+      ];
+      keys.focus_pane_down = mkDefault [
+        "prefix+j"
+        "prefix+down"
+      ];
+      keys.focus_pane_up = mkDefault [
+        "prefix+k"
+        "prefix+up"
+      ];
+      keys.focus_pane_right = mkDefault [
+        "prefix+l"
+        "prefix+right"
+      ];
       keys.switch_tab = mkDefault [
         "prefix+1..9"
         "alt+1..9"

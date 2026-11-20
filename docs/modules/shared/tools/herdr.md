@@ -15,6 +15,7 @@ macOS 后台服务沿用 tmux 的分层方式，由 `modules/darwin/services/her
 | `enable` | bool | false | 是否启用 herdr |
 | `package` | package | `pkgs.unstable.herdr` | 安装和服务使用同一软件包 |
 | `settings` | TOML 属性集 | 见下文 | 生成 `config.toml` 的配置，可按字段覆盖默认值 |
+| `integrations` | Agent 标识符列表 | `[ "pi" "claude" "codex" ]` | 激活时初始化的集成，空列表禁用；标识符使用小写字母、数字和连字符 |
 | `service.enable` | bool | 跟随 `enable` | 是否注册 macOS 后台服务 |
 | `service.startup` | bool | false | 是否在用户登录时自动启动服务 |
 
@@ -48,6 +49,49 @@ modules.tools.herdr = {
 
 前缀键默认与 tmux 的 `ctrl+c` 一致；例如可用 `settings.keys.prefix = "ctrl+b";` 改回 Herdr 默认值。
 
+## 标签与窗格快捷键
+
+`settings.ui.prompt_new_tab_name` 默认 `false`：使用 `ctrl+c` 再按 `c` 新建标签时，
+不再询问名称；没有自定义名称的标签使用 Herdr 原生数字标签 `1`、`2`、`3` 等。
+已有自定义名称不变，也仍可手动重命名；设置该值为 `true` 可恢复命名提示。
+
+窗格切换同时支持两组按键，均先按前缀 `ctrl+c`：
+
+| 方向 | 字母键 | 方向键 |
+|------|--------|--------|
+| 左 | `h` | `←` |
+| 下 | `j` | `↓` |
+| 上 | `k` | `↑` |
+| 右 | `l` | `→` |
+
+两组按键通过 `settings.keys.focus_pane_left/down/up/right` 的数组默认值配置。
+不按前缀的方向键仍交给当前窗格中的应用处理。
+
+## Agent 激活集成
+
+启用模块后，`my.user.init.initHerdrIntegrations` 在用户激活阶段调用
+`modules/shared/tools/herdr-integrations.nu`，使用 `package` 中的同一 Herdr 版本。
+先读取 `herdr integration status`，对目标列表里尚未安装或已过期的集成运行
+`herdr integration install <target>`，已报告 `current` 的目标跳过。
+默认处理仓库 AI 工具集中的 Pi、Claude Code 和 Codex，允许使用上游支持的其他目标标识符。
+
+可在 host 中缩小范围或关闭初始化：
+
+```nix
+modules.tools.herdr.integrations = [ "pi" ]; # 只初始化 Pi
+# modules.tools.herdr.integrations = [ ];    # 不执行集成初始化
+```
+
+扩展和 hook 由 Herdr 内置安装器合并，不由 Nix 覆盖 Agent 的可写配置。
+安装器继承激活环境中的 `PI_CODING_AGENT_DIR`、`CLAUDE_CONFIG_DIR`、`CODEX_HOME` 等目录设置。
+若目标工具尚未初始化、配置目录不存在或安装失败，则输出警告，继续处理其余目标，
+后续激活会重试；状态查询失败时警告并跳过本次初始化，不误报成功。
+模块不会安装 Agent 程序，不会自动创建无关 Agent 配置目录；关闭模块或清空列表也不会卸载已有集成。
+
+应用配置后，用 `herdr integration status` 检查集成状态，再重新启动或重新加载对应 Agent。
+Pi 集成提供状态与会话标识报告；各 Agent 的具体能力取决于 Herdr 上游实现。
+本模块只注册激活动作，编写配置时不会直接安装本机集成或重启现有会话。
+
 ## macOS 服务
 
 **源文件**: `modules/darwin/services/herdr.nix`  
@@ -73,4 +117,6 @@ modules.tools.herdr = {
 ## 上游参考
 
 - https://herdr.dev/tui/docs/configuration/
+- https://herdr.dev/tui/docs/config-reference/
+- https://herdr.dev/tui/docs/integrations/
 - https://herdr.dev/tui/docs/cli-reference/
