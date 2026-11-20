@@ -102,6 +102,7 @@
       modern.enable = true;
       fastfetch.enable = true;
       rime.enable = true;
+      herdr.enable = true;
       translate = {
         enable = true;
         deeplx = {

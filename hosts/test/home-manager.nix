@@ -162,6 +162,7 @@
     };
     tools.adb.enable = true;
     tools.ugrep.enable = true;
+    tools.herdr.enable = true;
     security.gpg = {
       enable = true;
       cacheTTL = 360000;

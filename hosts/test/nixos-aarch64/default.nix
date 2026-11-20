@@ -154,6 +154,7 @@
       db.enable = true;
       modern.enable = true;
       fastfetch.enable = true;
+      herdr.enable = true;
       translate = {
         enable = true;
         deeplx = {

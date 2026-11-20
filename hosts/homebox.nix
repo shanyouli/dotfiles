@@ -151,6 +151,7 @@
     #   service.startup = false;
     # };
     tools.adb.enable = true;
+    tools.herdr.enable = true;
     # ugrep.enable = true;
     security.gpg = {
       enable = true;
