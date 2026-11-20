@@ -56,15 +56,28 @@ in
         prompt_new_tab_name = mkDefault false;
         agent_panel_sort = mkDefault "spaces";
         show_agent_labels_on_pane_borders = mkDefault true;
+        status_indicators = mkDefault "symbols";
         toast.delivery = mkDefault "system";
       };
-      experimental.pane_history = mkDefault false;
+      experimental = {
+        pane_history = mkDefault false;
+        reveal_hidden_cursor_for_cjk_ime = mkDefault true;
+        cjk_ime_agents = mkDefault [
+          "pi"
+          "claude"
+          "codex"
+        ];
+        switch_ascii_input_source_in_prefix = mkDefault true;
+      };
       update = {
         channel = mkDefault "stable";
         version_check = mkDefault false;
         manifest_check = mkDefault false;
       };
       keys.prefix = mkDefault "ctrl+c";
+      keys.focus_agent = mkDefault "prefix+alt+1..9";
+      keys.switch_workspace = mkDefault "prefix+shift+1..9";
+      keys.last_pane = mkDefault "prefix+backtick";
       keys.focus_pane_left = mkDefault [
         "prefix+h"
         "prefix+left"

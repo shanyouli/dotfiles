@@ -25,7 +25,8 @@ macOS 后台服务沿用 tmux 的分层方式，由 `modules/darwin/services/her
 默认配置使用与 tmux 一致的 `ctrl+c` 前缀，并保留现有的终端主题、系统通知、
 按工作区排序的 Agent 面板和 `alt+1..9` 标签切换；
 关闭首次引导、窗格历史及版本和清单更新检查。新窗格默认使用 `modules.shell.default` 指定的 shell。
-Kitty 图片支持使用 `terminal.kitty_graphics` 配置。
+Kitty 图片支持使用 `terminal.kitty_graphics` 配置；Agent 状态默认用不同符号显示。
+`update.manifest_check` 继续保持 `false`，不自动获取远程 Agent 检测规则。
 
 配置文件由 Nix 管理。持久修改应写在 `settings` 中，而不是直接编辑生成文件或通过 Herdr 设置界面保存。
 首次应用前请备份现有 `config.toml`；如 Home Manager 提示路径冲突，需先处理旧文件。
@@ -49,6 +50,15 @@ modules.tools.herdr = {
 
 前缀键默认与 tmux 的 `ctrl+c` 一致；例如可用 `settings.keys.prefix = "ctrl+b";` 改回 Herdr 默认值。
 
+## 中文输入法
+
+默认开启上游实验性选项 `experimental.reveal_hidden_cursor_for_cjk_ime`，
+仅针对 `experimental.cjk_ime_agents = [ "pi" "claude" "codex" ]` 中的 Agent，
+在 macOS 上为隐藏光标的 Agent 窗格提供候选框定位锚点。
+`experimental.switch_ascii_input_source_in_prefix` 也默认开启：前缀操作期间临时切换到 ASCII 输入源，
+退出前缀模式后恢复；该功能依赖平台支持，在 Linux 上无作用。
+如不需要或遇到显示问题，可在 host 的 `settings.experimental` 中覆盖对应值为 `false`。
+
 ## 标签与窗格快捷键
 
 `settings.ui.prompt_new_tab_name` 默认 `false`：使用 `ctrl+c` 再按 `c` 新建标签时，
@@ -66,6 +76,17 @@ modules.tools.herdr = {
 
 两组按键通过 `settings.keys.focus_pane_left/down/up/right` 的数组默认值配置。
 不按前缀的方向键仍交给当前窗格中的应用处理。
+
+另有以下默认导航快捷键，同样先按 `ctrl+c`：
+
+| 动作 | 前缀后的按键 | 配置值 |
+|------|--------------|--------|
+| 跳转 Agent 1–9 | `Alt+1..9` | `keys.focus_agent = "prefix+alt+1..9"` |
+| 跳转工作区 1–9 | `Shift+1..9` | `keys.switch_workspace = "prefix+shift+1..9"` |
+| 返回上一个窗格 | 反引号 | `keys.last_pane = "prefix+backtick"` |
+
+保留原有 `prefix+Tab` 循环切换；涉及 Alt 的按键需要外层终端正确传递 Option/Alt。
+`settings.ui.status_indicators` 默认 `symbols`，可覆盖为 `dots` 恢复彩色圆点。
 
 ## Agent 激活集成
 
