@@ -67,38 +67,38 @@ let
   ];
   # 与配色方案无关的固定文字颜色
   text-colors = {
-    label_color = 0 x999999; # 预选栏编号颜色
-    comment_text_color = 0 x999999; # 拼音等提示文字颜色
-    hilited_text_color = 0 x999999; # 高亮拼音 (需要开启内嵌编码)
-    hilited_candidate_text_color = 0 xFFFFFF; # 第一候选项文字颜色
-    hilited_candidate_label_color = 0 xFFFFFF; # 第一候选项编号颜色
-    hilited_comment_text_color = 0 x999999; # 注解文字高亮
+    label_color = "0x999999"; # 预选栏编号颜色
+    comment_text_color = "0x999999"; # 拼音等提示文字颜色
+    hilited_text_color = "0x999999"; # 高亮拼音 (需要开启内嵌编码)
+    hilited_candidate_text_color = "0xFFFFFF"; # 第一候选项文字颜色
+    hilited_candidate_label_color = "0xFFFFFF"; # 第一候选项编号颜色
+    hilited_comment_text_color = "0x999999"; # 注解文字高亮
   };
   mk-scheme = base: extra: base // text-colors // extra;
   schemes = {
     mac_light = mk-scheme layout {
       name = "Mac浅色";
-      text_color = 0 x424242; # 拼音行文字颜色
-      back_color = 0 xFFFFFF; # 候选条背景色
-      border_color = 0 xFFFFFF; # 边框色
-      candidate_text_color = 0 x3c3c3c; # 预选项文字颜色
-      hilited_back_color = 0 xD75A00; # 第一候选项背景色
+      text_color = "0x424242"; # 拼音行文字颜色
+      back_color = "0xFFFFFF"; # 候选条背景色
+      border_color = "0xFFFFFF"; # 边框色
+      candidate_text_color = "0x3c3c3c"; # 预选项文字颜色
+      hilited_back_color = "0xD75A00"; # 第一候选项背景色
     };
     mac_dark = mk-scheme layout {
       name = "Mac深色";
-      text_color = 0 x424242; # 拼音行文字颜色
-      back_color = 0 x252a2e; # 候选条背景色
-      border_color = 0 x050505; # 边框色
-      candidate_text_color = 0 xe9e9ea; # 预选项文字颜色
-      hilited_back_color = 0 xD75A00; # 第一候选项背景色
+      text_color = "0x424242"; # 拼音行文字颜色
+      back_color = "0x252a2e"; # 候选条背景色
+      border_color = "0x050505"; # 边框色
+      candidate_text_color = "0xe9e9ea"; # 预选项文字颜色
+      hilited_back_color = "0xD75A00"; # 第一候选项背景色
     };
     mac_blue = mk-scheme compact-layout {
       name = "Mac浅蓝";
-      text_color = 0 x424242; # 拼音行文字颜色
-      back_color = 0 xFFFFFF; # 候选条背景色
-      border_color = 0 xFFFFFF; # 边框色
-      candidate_text_color = 0 x3c3c3c; # 预选项文字颜色
-      hilited_back_color = 0 xF8AA4D; # 第一候选项背景色
+      text_color = "0x424242"; # 拼音行文字颜色
+      back_color = "0xFFFFFF"; # 候选条背景色
+      border_color = "0xFFFFFF"; # 边框色
+      candidate_text_color = "0x3c3c3c"; # 预选项文字颜色
+      hilited_back_color = "0xF8AA4D"; # 第一候选项背景色
     };
   };
   app-options = {

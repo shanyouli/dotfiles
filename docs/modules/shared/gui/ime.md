@@ -7,7 +7,7 @@
 >
 > 所有 `*.custom.yaml` 不再手写：patch 体是模块选项（`patch.*` / `squirrel.*`），构建时用 `pkgs.formats.yaml`（`my.toYamlFile`）渲染成 `{ patch = <patch 体>; }` 形式的 YAML，即
 > `home.file."<dir>/x.custom.yaml".source = custom-yaml cfg.patch.x;`。
-> 键序按字母序输出，十六进制颜色写成 Nix 整数字面量（`0x424242`）。想改皮肤或 patch 就覆盖对应选项，不要直接编辑生成结果。
+> 键序按字母序输出，颜色写成十六进制字符串（`"0x424242"`；Nix 不支持 `0x` 整数字面量）。想改皮肤或 patch 就覆盖对应选项，不要直接编辑生成结果。
 
 ## 选项
 
