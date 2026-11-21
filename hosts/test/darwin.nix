@@ -133,13 +133,12 @@
     tools.navi.enable = true;
     tools.fastfetch.enable = true;
     network.tg.enable = true;
-    shell.tmux = {
-      enable = true;
-      service.startup = false;
+    shell.multiplexer = {
+      default = "herdr";
+      herdr.service.startup = false;
     };
     tools.adb.enable = true;
     tools.ugrep.enable = true;
-    tools.herdr.enable = true;
     security.gpg = {
       enable = true;
       cacheTTL = 360000;

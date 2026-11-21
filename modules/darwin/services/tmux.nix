@@ -10,7 +10,7 @@ with my;
 let
   cfp = config.modules.macos.services;
   cfg = cfp.tmux;
-  cft = config.modules.shell.tmux;
+  cft = config.modules.shell.multiplexer.tmux;
 in
 {
   options.modules.macos.services.tmux = {

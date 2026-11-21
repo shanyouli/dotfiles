@@ -8,10 +8,10 @@
 with lib;
 with my;
 let
-  cfg = config.modules.shell.tmux;
+  cfg = config.modules.shell.multiplexer.tmux;
 in
 {
-  options.modules.shell.tmux = with types; {
+  options.modules.shell.multiplexer.tmux = with types; {
     enable = mkBoolOpt false;
     rcFiles = mkOpt (listOf (either str path)) [ ];
     service.enable = mkBoolOpt cfg.enable;

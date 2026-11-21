@@ -146,12 +146,8 @@
     };
 
     tools.navi.enable = true;
-    # tmux = {
-    #   enable = false;
-    #   service.startup = false;
-    # };
+    shell.multiplexer.default = "herdr";
     tools.adb.enable = true;
-    tools.herdr.enable = true;
     # ugrep.enable = true;
     security.gpg = {
       enable = true;

@@ -8,7 +8,7 @@ with lib;
 with my;
 let
   cfg = config.modules.macos.services.herdr;
-  cft = config.modules.tools.herdr;
+  cft = config.modules.shell.multiplexer.herdr;
 in
 {
   options.modules.macos.services.herdr = {

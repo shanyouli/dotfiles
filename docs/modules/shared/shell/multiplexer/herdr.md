@@ -1,18 +1,20 @@
-# shared → tools → herdr
+# shared → shell → multiplexer → herdr
 
-**源文件**: `modules/shared/tools/herdr.nix`  
-**选项前缀**: `config.modules.tools.herdr`
+**源文件**: `modules/shared/shell/multiplexer/herdr.nix`  
+**选项前缀**: `config.modules.shell.multiplexer.herdr`
 
 ## 概述
 
 安装 herdr，并从 Nix 配置生成 `${config.home.configDir}/herdr/config.toml`。
 macOS 后台服务沿用 tmux 的分层方式，由 `modules/darwin/services/herdr.nix` 注册 launchd 用户代理。
 
+`default` 选择入口及显式覆盖规则见 [multiplexer](default.md)。不单独设置 `enable` 时，Herdr 是否启用跟随父级 `default` 选择。
+
 ## 选项
 
 | 选项 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
-| `enable` | bool | false | 是否启用 herdr |
+| `enable` | bool | 跟随父级选择，未选择时 false | 是否启用 herdr；显式设置可覆盖父级选择 |
 | `package` | package | `pkgs.unstable.herdr` | 安装和服务使用同一软件包 |
 | `settings` | TOML 属性集 | 见下文 | 生成 `config.toml` 的配置，可按字段覆盖默认值 |
 | `integrations` | Agent 标识符列表 | `[ "pi" "claude" "codex" ]` | 激活时初始化的集成，空列表禁用；标识符使用小写字母、数字和连字符 |
@@ -35,7 +37,7 @@ Kitty 图片支持使用 `terminal.kitty_graphics` 配置；Agent 状态默认�
 例如，在 host 中配置：
 
 ```nix
-modules.tools.herdr = {
+modules.shell.multiplexer.herdr = {
   enable = true;
   settings = {
     theme.name = "terminal";
@@ -90,8 +92,8 @@ modules.tools.herdr = {
 
 ## Agent 激活集成
 
-启用模块后，`my.user.init.initHerdrIntegrations` 在用户激活阶段调用
-`modules/shared/tools/herdr-integrations.nu`，使用 `package` 中的同一 Herdr 版本。
+启用模块后，`my.user.init.initHerdrIntegrations` 在用户激活阶段执行 Herdr Agent 集成初始化逻辑。
+逻辑内联在 Nix 模块生成的 Nushell 激活脚本中，不维护独立 `.nu` 文件，也不放入 `config/`。
 先读取 `herdr integration status`，对目标列表里尚未安装或已过期的集成运行
 `herdr integration install <target>`，已报告 `current` 的目标跳过。
 默认处理仓库 AI 工具集中的 Pi、Claude Code 和 Codex，允许使用上游支持的其他目标标识符。
@@ -99,8 +101,8 @@ modules.tools.herdr = {
 可在 host 中缩小范围或关闭初始化：
 
 ```nix
-modules.tools.herdr.integrations = [ "pi" ]; # 只初始化 Pi
-# modules.tools.herdr.integrations = [ ];    # 不执行集成初始化
+modules.shell.multiplexer.herdr.integrations = [ "pi" ]; # 只初始化 Pi
+# modules.shell.multiplexer.herdr.integrations = [ ];    # 不执行集成初始化
 ```
 
 扩展和 hook 由 Herdr 内置安装器合并，不由 Nix 覆盖 Agent 的可写配置。
@@ -115,8 +117,8 @@ Pi 集成提供状态与会话标识报告；各 Agent 的具体能力取决于 
 
 ## macOS 服务
 
-**源文件**: `modules/darwin/services/herdr.nix`  
-**兼容层开关**: `modules.macos.services.herdr.enable`，默认跟随 `modules.tools.herdr.service.enable`。
+**源文件**: `modules/darwin/services/herdr.nix`
+**兼容层开关**: `modules.macos.services.herdr.enable`，默认跟随 `modules.shell.multiplexer.herdr.service.enable`。
 
 服务以前台方式执行 `${package}/bin/herdr server`，由 launchd 管理进程，
 工作目录为用户主目录，并补充 Nix profile 的 PATH。

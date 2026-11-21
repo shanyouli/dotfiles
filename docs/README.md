@@ -41,7 +41,8 @@ docs/
 │       │   ├── media/video/    #     视频播放
 │       │   └── terminal/       #     终端模拟器
 │       ├── shell/              #   Shell
-│       │   ├── plugins/        #     插件
+│       │   ├── multiplexer/    #     终端复用器（tmux / Herdr）
+│       │   ├── plugins/        #     Shell 插件
 │       │   ├── prompt/         #     提示符
 │       │   └── zsh/            #     Zsh 子模块
 │       ├── tui/                #   TUI 工具
@@ -112,6 +113,9 @@ docs/
 | [shared/shell/nushell](modules/shared/shell/nushell.md) | Nushell |
 | [shared/shell/fish](modules/shared/shell/fish.md) | Fish |
 | [shared/shell/bash](modules/shared/shell/bash.md) | Bash |
+| [shared/shell/multiplexer/default](modules/shared/shell/multiplexer/default.md) | 默认终端复用器选择 |
+| [shared/shell/multiplexer/tmux](modules/shared/shell/multiplexer/tmux.md) | tmux |
+| [shared/shell/multiplexer/herdr](modules/shared/shell/multiplexer/herdr.md) | Herdr 终端复用器 |
 
 ### 代理
 

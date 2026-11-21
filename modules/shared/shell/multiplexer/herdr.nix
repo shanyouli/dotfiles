@@ -9,11 +9,11 @@
 with lib;
 with my;
 let
-  cfg = config.modules.tools.herdr;
+  cfg = config.modules.shell.multiplexer.herdr;
   tomlFormat = pkgs.formats.toml { };
 in
 {
-  options.modules.tools.herdr = {
+  options.modules.shell.multiplexer.herdr = {
     enable = mkBoolOpt' false "是否启用 herdr。";
     package = mkOpt' types.package pkgs.unstable.herdr "使用的 herdr 软件包。";
     settings = mkOpt' tomlFormat.type { } "生成 herdr/config.toml 的配置。";
@@ -37,12 +37,35 @@ in
       enable = cfg.integrations != [ ];
       desc = "初始化 Herdr Agent 集成。";
       text = ''
-        use ${./herdr-integrations.nu} init-herdr-integrations
+        # 初始化目标 Agent 的集成，跳过已更新项；失败时告警，不中断其余目标。
+        # herdr 为可执行文件路径，targets 为目标标识符列表；无返回值。
+        def init-herdr-integrations [herdr: path, targets: list<string>]: nothing -> nothing {
+          let status = (^$herdr integration status | complete)
+          if $status.exit_code != 0 {
+            log warning $"Herdr integration status failed: ($status.stderr | str trim)"
+            return
+          }
+
+          let statuses = ($status.stdout | str replace --all ' (experimental): ' ': ' | lines)
+          for target in $targets {
+            if ($statuses | any {|line| $line | str starts-with $"($target): current" }) {
+              continue
+            }
+
+            let result = (^$herdr integration install $target | complete)
+            if $result.exit_code == 0 {
+              log info $"Herdr integration ready: ($target)"
+            } else {
+              log warning $"Herdr integration install failed for ($target): ($result.stderr | str trim)"
+            }
+          }
+        }
+
         init-herdr-integrations "${cfg.package}/bin/herdr" ${builtins.toJSON cfg.integrations}
       '';
     };
 
-    modules.tools.herdr.settings = {
+    modules.shell.multiplexer.herdr.settings = {
       onboarding = mkDefault false;
       theme = {
         name = mkDefault "terminal";

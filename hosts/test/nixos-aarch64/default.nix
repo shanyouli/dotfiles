@@ -206,9 +206,9 @@
       };
     };
 
-    shell.tmux = {
-      enable = true;
-      service.startup = false;
+    shell.multiplexer = {
+      default = "tmux";
+      tmux.service.startup = false;
     };
 
     security.gpg = {

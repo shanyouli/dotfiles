@@ -7,5 +7,5 @@
 
 | 选项 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
-| `enable` | bool | cft.service.enable |  |
+| `enable` | bool | `modules.shell.multiplexer.tmux.service.enable` | 是否通过 launchd 管理 tmux 服务 |
 
