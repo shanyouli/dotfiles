@@ -195,7 +195,6 @@ in
                  filterAttrs (n: v: v != "" && n != "rm" && n != "rmi") config.modules.shell.aliases
                )
              )}
-             ${cfg.rcInit}
              ${concatMapStringsSep "\n" (x: "use ${getBaseName x}.nu *") cfg.scriptFiles}
             def --wrapped sd [...rest] {
               let SD_LOCAL_PATH = $env.HOME | path join "Code" "Git" "sd"
@@ -209,6 +208,7 @@ in
                  ^sd ...$rest
               }
             }
+            ${cfg.rcInit}
           '';
         }
         (scriptHomeFunc cfg.scriptFiles)

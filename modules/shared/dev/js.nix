@@ -49,8 +49,17 @@ in
         };
         zsh.rcInit = mkOrder 1000 "_cache -v ${pkgs.aubeshim.version} aubeshim activate zsh";
         fish.rcInit = mkOrder 1000 "_cache -v ${pkgs.aubeshim.version} aubeshim activate fish";
+        nushell.rcInit = mkOrder 1000 ''
+          # aubeshim adjust
+          let aubeshim_path = $env.HOME | path join ".local" "share" "aubeshim" "shims"
+          $env.PATH = $env.PATH | where {|x| $x != $aubeshim_path } | prepend $aubeshim_path
+        '';
         # nushell.cacheCmd = mkOrder 1000 ["${pkgs.aubeshim}/bin/aubeshim activate nushell" ];
       };
+      my.user.init.aubeshimeInit = ''
+        let aubeshim_path = $env.HOME | path join ".local" "share" "aubeshim" "shims"
+        ${pkgs.aubeshim}/bin/aubeshim install -force  --shim-dir $aubeshim_path
+      '';
     }
     (mkIf cfg.ts.enable {
       home.packages = [
