@@ -172,15 +172,9 @@ in
 
           "maczip" # 压缩解压GUI or "keka"
 
-          # "findergo" # 快捷方式，在finder中打开终端
           "zotero" # 文献管理
 
           # "warp" # next terminal, 不太好用
-          #
-          # finder 插件
-          "syntax-highlight"
-          "qlmarkdown" # markdown
-          "macpacker" # zip 文件预览
 
           # "playcover-community" # 侧载工具
 
@@ -227,7 +221,6 @@ in
           # "navicat-premium"
 
           # "maccy" # clip 剪切薄，使用raycast取代
-          "lite-edit" # "coteditor"
           "command-x" # Cut files, need upgrade
 
           ## 浏览器
@@ -255,9 +248,6 @@ in
         ++ optionals (config.modules.dev.git.enable && config.modules.dev.git.enGui) [
           "github" # github客户端
         ]
-        # ++ optionals (config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable) [
-        #   "shanyouli/tap/neovide-pure"
-        # ]
         # ++ optionals (config.modules.fonts.enable && (config.modules.services.proxy.default != "")) [
         # 使用 macos 商店的工具取代它
         #   # (mkIf (config.modules.services.proxy.default == "sing-box") "sfm")
@@ -267,9 +257,6 @@ in
           (mkIf (config.modules.services.proxy.default == "sing-box") "shanyouli/tap/gui-for-singbox")
           # (mkIf (config.modules.services.proxy.default == "clash") "shanyouli/tap/gui-for-clash")
           "shanyouli/tap/clashbar" # "clash-verge-rev"
-        ]
-        ++ optionals (config.modules.editor.zed.enable && (config.modules.editor.zed.package == null)) [
-          "zed"
         ]
         ++ optionals (config.modules.network.tg.enable && (config.modules.network.tg.package == null)) [
           "telegram"
