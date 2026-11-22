@@ -9,18 +9,21 @@ default:
     @just --list
 
 # Temporarily disable skip-worktree for root flake files.
+[extension(".nu")]
 _root-flake-enable target="auto":
     #!/usr/bin/env nu
     use {{ utils_nu }} *
     root-flake-enable {{ target }}
 
 # Re-enable skip-worktree for root flake files.
+[extension(".nu")]
 _root-flake-disable:
     #!/usr/bin/env nu
     use {{ utils_nu }} *
     root-flake-disable
 
 # Run an arbitrary nix command against the current root flake.
+[extension(".nu")]
 [positional-arguments]
 @nix *args='':
     #!/usr/bin/env nu
@@ -28,6 +31,7 @@ _root-flake-disable:
     run-nix {{ args }}
 
 # Run CI-only commands that keep root skip-worktree disabled.
+[extension(".nu")]
 [positional-arguments]
 ci subcmd='check' *args='':
     #!/usr/bin/env nu
@@ -39,6 +43,7 @@ ci subcmd='check' *args='':
     }
 
 # Link the root flake to one explicit target.
+[extension(".nu")]
 [group('nix')]
 init target="auto":
     #!/usr/bin/env nu
@@ -46,6 +51,7 @@ init target="auto":
     init {{ target }}
 
 # Restore placeholder root flake files.
+[extension(".nu")]
 [group('nix')]
 reset-flake-root:
     #!/usr/bin/env nu
@@ -79,6 +85,7 @@ nu-clean:
     rm -rf $"($env.HOME)/.config/nushell"
 
 # Build the test Home Manager configuration.
+[extension(".nu")]
 [group('home-manager')]
 home-build:
     #!/usr/bin/env nu
@@ -86,6 +93,7 @@ home-build:
     run-build-ci test --type home
 
 # Build the current OS host from the root flake.
+[extension(".nu")]
 [group('os')]
 build:
     #!/usr/bin/env nu
@@ -93,6 +101,7 @@ build:
     run-build-ci build
 
 # Switch the current OS host from the root flake.
+[extension(".nu")]
 [group('os')]
 switch:
     #!/usr/bin/env nu
@@ -100,6 +109,7 @@ switch:
     run-build-ci switch
 
 # Build the current Home Manager host from the root flake.
+[extension(".nu")]
 [group('os')]
 home:
     #!/usr/bin/env nu
@@ -107,6 +117,7 @@ home:
     run-build-ci build --type home
 
 # Switch a NixOS configuration by host name.
+[extension(".nu")]
 [group('os')]
 nixos-switch host mode="default":
     #!/usr/bin/env nu
@@ -114,6 +125,7 @@ nixos-switch host mode="default":
     nixos-switch "{{ host }}" "{{ mode }}"
 
 # Build a Darwin configuration by host name.
+[extension(".nu")]
 [group('os')]
 darwin-build host mode="default":
     #!/usr/bin/env nu
@@ -121,6 +133,7 @@ darwin-build host mode="default":
     darwin-build "{{ host }}" "{{ mode }}"
 
 # Switch a Darwin configuration by host name.
+[extension(".nu")]
 [group('os')]
 darwin-switch host mode="default":
     #!/usr/bin/env nu
@@ -128,6 +141,7 @@ darwin-switch host mode="default":
     darwin-switch "{{ host }}" "{{ mode }}"
 
 # Roll back the last Darwin generation.
+[extension(".nu")]
 [group('os')]
 darwin-rollback:
     #!/usr/bin/env nu
@@ -135,6 +149,7 @@ darwin-rollback:
     darwin-rollback
 
 # Switch a Home Manager configuration by host name.
+[extension(".nu")]
 [group('home-manager')]
 home-switch host:
     #!/usr/bin/env nu
@@ -142,6 +157,7 @@ home-switch host:
     home-switch "{{ host }}"
 
 # Run local flake checks without writing lock files.
+[extension(".nu")]
 [group('nix')]
 check:
     #!/usr/bin/env nu
@@ -149,6 +165,7 @@ check:
     run-flake-check
 
 # Build the test host for the current root target or a selected type.
+[extension(".nu")]
 [group('nix')]
 test type="":
     #!/usr/bin/env nu
@@ -160,6 +177,7 @@ test type="":
     }
 
 # Update the current root flake, or selected inputs when arguments are provided.
+[extension(".nu")]
 [group('nix')]
 update *inputs='':
     #!/usr/bin/env nu
@@ -170,8 +188,12 @@ update *inputs='':
     } else {
         update-root-inputs ...$inputs
     }
+    def main [] {
+
+    }
 
 # direnv reload
+[extension(".nu")]
 [group('common')]
 reload:
     #!/usr/bin/env nu
@@ -181,6 +203,7 @@ reload:
     }
 
 # format project
+[extension(".nu")]
 [group('common')]
 fmt:
     #!/usr/bin/env nu
