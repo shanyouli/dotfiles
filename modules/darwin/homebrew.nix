@@ -230,6 +230,10 @@ in
           "shanyouli/tap/mrrss"
 
           "glide-browser"
+
+          (mkIf (!config.modules.macos.tools.rime.enable) "shanyouli/tap/windinput")
+
+          (mkIf config.modules.security.gopass.enable "ente-auth")
         ]
         ++ optionals config.modules.tools.adb.enable [
           # # 使用第三方工具取代openmtp，MacDroid.app
@@ -239,7 +243,6 @@ in
           # "commander-one" # 速度可以，大文件也稳定，需要付费
           # "whoozle-android-file-transfer" # 速度一般，稳定
         ]
-        ++ optionals config.modules.security.gopass.enable [ "ente-auth" ]
         ++ optionals (
           config.modules.network.browser.chrome.enable && config.modules.network.browser.chrome.useBrew
         ) [ "google-chrome" ]

@@ -234,6 +234,7 @@
         hammerspoon.enable = true;
         duti.enable = false; # use openwith command
         read.enable = true;
+        rime.enable = false;
         chat = {
           enable = true;
           snapbox.enable = false;
