@@ -3,9 +3,10 @@
 **源文件**: `modules/shared/tools/rime.nix`
 **选项前缀**: `config.modules.tools.rime`
 
-> 跨平台 Rime 输入法配置，支持 ice / wanxiang / frost 三种输入方案，并提供 macOS（Squirrel）、Linux（fcitx5）、Emacs 三端集成与词库同步备份。
+> 跨平台 Rime 输入法配置，支持 ice / wanxiang / frost 三种输入方案，并提供系统输入法（macOS Squirrel / Linux fcitx5）与 Emacs 两端集成、词库同步备份。
 >
-> 模块将 `patch.*` 渲染为各个 `*.custom.yaml` 的 `patch`。鼠须管配色与应用设置见 [macOS Rime 模块](../../darwin/tools/rime.md)。
+> 模块将 `patch.*` 渲染为各个 `*.custom.yaml` 的 `patch`。系统输入法用户目录由平台模块通过 `server.dir` 提供：Linux 侧为 `~/.local/share/fcitx5/rime`，macOS 侧为 `~/Library/Rime` 且仅在 `modules.macos.tools.rime.enable = true` 时生效，配色与应用设置见 [macOS Rime 模块](../../darwin/tools/rime.md)。
+> Emacs 集成写入 `modules.editor.emacs.rime.dir`（默认 `~/.local/share/emacs-rime`），不随系统输入法开关变化。
 
 ## 选项
 
@@ -15,6 +16,7 @@
 | `method` | str | `"ice"` | 输入方案：`ice` / `wanxiang` / `frost`，其余值回退为 `ice` |
 | `dataPkg` | package | `pkgs.rime-ice` | 词库包，随 `method` 自动切换：wanxiang→`rime-wanxiang`、frost→`rime-frost` |
 | `configDir` | nullOr path | `null` | 自定义 rime-data 目录；`null` 时使用 `dataPkg` 并按 `method` 生成默认配置 |
+| `server.dir` | nullOr str | Linux：`.local/share/fcitx5/rime`；macOS：`null` | 系统输入法 rime 用户目录，由平台模块接管；`null` 表示本平台不托管该目录（不生成任何文件、不写 init 脚本） |
 | `octagram` | bool | `false` | 是否启用语言模型；`method = "wanxiang"` 时强制为 `true` |
 | `backup.enable` | bool | `false` | 是否启用词库同步备份 |
 | `backup.dir` | path | `~/Code/Sync/rime` | 同步目标目录 |
@@ -49,10 +51,13 @@ modules.tools.rime.patch.wanxiang.mixedcode = {
 
 ## 平台路径
 
-| 平台 | 用户目录 | 重载命令 |
-|------|----------|----------|
-| macOS | `Library/Rime` | `/Library/Input Methods/Squirrel.app/Contents/MacOS/Squirrel --reload` |
-| Linux | `.local/share/fcitx5/rime` | `fcitx-remote -r` |
+| 平台 | 用户目录 | 归属 | 重载命令 |
+|------|----------|------|----------|
+| macOS | `Library/Rime` | `modules.macos.tools.rime`（关闭时不写任何文件） | `/Library/Input Methods/Squirrel.app/Contents/MacOS/Squirrel --reload` |
+| Linux | `.local/share/fcitx5/rime` | `modules.tools.rime.server.dir` | `fcitx-remote -r` |
+| 任意平台（Emacs） | `.local/share/emacs-rime` | `modules.editor.emacs.rime.dir` | 由 Emacs 自身重载 |
+
+`server.dir` 决定共享模块往哪个系统目录写文件。macOS 上该值由 darwin 模块在 `modules.macos.tools.rime.enable` 为真时设为 `Library/Rime`；关闭 macOS Rime（例如改用 windinput）后它保持 `null`，`*.custom.yaml`、词库链接、备份初始化、`configDir` 同步与语言模型下载全部跳过。
 
 ## 输入方案
 
@@ -99,19 +104,21 @@ modules.tools.rime.patch.wanxiang.mixedcode = {
 
 ## 备份机制（`backup.enable`）
 
-注入 `my.user.init.InitRimeBackupDir` Nushell 脚本：
+注入 `my.user.init.InitRimeBackupDir` Nushell 脚本，脚本在 `server.dir != null` 或 Emacs 启用时生成：
 
-1. 创建 `backup.dir` 与用户 Rime 目录。
+1. 创建 `backup.dir` 与需要初始化的 rime 目录。
 2. 读写 `installation.yaml`，设置 `sync_dir = backup.dir`、`installation_id = backup.id`。
-3. Emacs 启用时，额外以 ID `emacs` 初始化 emacs-rime 目录。
+3. `server.dir` 非空时初始化系统输入法目录；Emacs 启用时额外以 ID `emacs` 初始化 emacs-rime 目录。
 
 ## 语言模型（Octagram）
 
-`octagram = true` 时注入 `my.user.init.InitRimeOctagram`：下载 `wanxiang-lts-zh-hans.gram` 到用户 Rime 目录（已存在则跳过，需手动删除以更新）。
+`octagram = true` 且 `server.dir != null` 时注入 `my.user.init.InitRimeOctagram`：下载 `wanxiang-lts-zh-hans.gram` 到系统 Rime 目录（已存在则跳过，需手动删除以更新）。
 
 下载源：`https://cnb.cool/Mintimate/rime/oh-my-rime/-/releases/download/latest/wanxiang-lts-zh-hans.gram`
 
 ## 部署行为
 
 - 独立 Linux Home Manager 将 `dataPkg` 的 rime-data 递归链接到用户目录，目录变更时重载 fcitx5。
+- 独立 Linux Home Manager 将 `dataPkg` 的 rime-data 递归链接到 `server.dir`（默认 `.local/share/fcitx5/rime`），目录变更时重载 fcitx5。
+- 本模块只负责跨平台部分；系统输入法用户目录（macOS `~/Library/Rime`）由各平台模块通过 `server.dir` 接管，因此 macOS 侧可以先关闭鼠须管而不影响 Emacs 集成。
 - macOS 由 nix-darwin 自动加载 [macOS Rime 模块](../../darwin/tools/rime.md)，管理词库部署与鼠须管重载。

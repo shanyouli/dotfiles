@@ -11,12 +11,10 @@ let
   cfp = config.modules;
   cfg = cfp.tools.rime;
   kernel-name = pkgs.stdenv.hostPlatform.parsed.kernel.name;
-  userDir =
-    {
-      darwin = "Library/Rime";
-      linux = ".local/share/fcitx5/rime";
-    }
-    .${kernel-name};
+  isLinux = pkgs.stdenvNoCC.hostPlatform.isLinux;
+  # 系统输入法（Squirrel / fcitx5）的 rime 用户目录，由平台模块提供；null 表示本平台不托管该目录
+  systemDir = cfg.server.dir;
+  linux-system-dir = ".local/share/fcitx5/rime";
   cemacs = cfp.editor.emacs;
   useEmacs = cemacs.enable && cemacs.rime.enable;
 
@@ -93,6 +91,9 @@ in
         rime-data config dir
       '';
     };
+    server.dir = mkOpt' (types.nullOr types.str) (
+      if isLinux then linux-system-dir else null
+    ) "系统输入法（Squirrel / fcitx5）的 rime 用户目录；由平台模块接管，null 表示本平台不托管（不生成该目录下任何文件）";
     octagram = mkEnableOption "是否支持语言模型";
 
     # 各 *.custom.yaml 的 patch 体；custom 文件用法参考
@@ -150,13 +151,13 @@ in
   };
   config = mkIf cfg.enable (mkMerge [
     (mkIf (cfg.method == "wanxiang") { modules.tools.rime.octagram = mkForce true; })
-    (mkIf (cfg.configDir == null && cfg.method == "wanxiang") {
+    (mkIf (systemDir != null && cfg.configDir == null && cfg.method == "wanxiang") {
       home.file = {
-        "${userDir}/default.custom.yaml".source = custom-yaml cfg.patch.default.wanxiang;
-        "${userDir}/wanxiang.custom.yaml".source = custom-yaml cfg.patch.wanxiang.base;
-        "${userDir}/wanxiang_mixedcode.custom.yaml".source = custom-yaml cfg.patch.wanxiang.mixedcode;
-        "${userDir}/wanxiang_reverse.custom.yaml".source = custom-yaml cfg.patch.wanxiang.reverse;
-        "${userDir}/wanxiang_pro.custom.yaml".source = custom-yaml cfg.patch.wanxiang.pro;
+        "${systemDir}/default.custom.yaml".source = custom-yaml cfg.patch.default.wanxiang;
+        "${systemDir}/wanxiang.custom.yaml".source = custom-yaml cfg.patch.wanxiang.base;
+        "${systemDir}/wanxiang_mixedcode.custom.yaml".source = custom-yaml cfg.patch.wanxiang.mixedcode;
+        "${systemDir}/wanxiang_reverse.custom.yaml".source = custom-yaml cfg.patch.wanxiang.reverse;
+        "${systemDir}/wanxiang_pro.custom.yaml".source = custom-yaml cfg.patch.wanxiang.pro;
       };
     })
     (mkIf (useEmacs && cemacs.rime.method == "wanxiang") {
@@ -171,8 +172,8 @@ in
         "${cemacs.rime.dir}/wanxiang_pro.custom.yaml".source = custom-yaml cfg.patch.wanxiang.pro;
       };
     })
-    (mkIf (cfg.configDir == null && cfg.method == "ice") {
-      home.file."${userDir}/default.custom.yaml".source = custom-yaml cfg.patch.default.ice;
+    (mkIf (systemDir != null && cfg.configDir == null && cfg.method == "ice") {
+      home.file."${systemDir}/default.custom.yaml".source = custom-yaml cfg.patch.default.ice;
     })
     (mkIf (cfg.configDir == null && useEmacs && cemacs.rime.method == "frost") {
       home.file = {
@@ -185,14 +186,14 @@ in
         "${cemacs.rime.dir}/rime_ice.custom.yaml".source = custom-yaml cfg.patch.emacsIce;
       };
     })
-    (mkIf (pkgs.stdenvNoCC.hostPlatform.isLinux && !config.home.useos) {
-      home.file.${userDir} = {
+    (mkIf (isLinux && systemDir != null && !config.home.useos) {
+      home.file.${systemDir} = {
         source = "${cfg.dataPkg}/share/rime-data/";
         recursive = true;
         onChange = "fcitx-remote -r";
       };
     })
-    (mkIf cfg.backup.enable {
+    (mkIf (cfg.backup.enable && (systemDir != null || useEmacs)) {
       my.user.init.InitRimeBackupDir = ''
         def rime-init-backup [rime_dir: string, rid: string] {
           let install_info_file = $rime_dir | path join "installation.yaml"
@@ -214,8 +215,10 @@ in
             {"sync_dir": $backup_dir, "installation_id": $rid} | save -f $install_info_file
           }
         }
-        log debug $"Init system input method rime backup dir"
-        rime-init-backup ("${config.home.homeDirectory}" | path join "${userDir}") "${cfg.backup.id}"
+        ${optionalString (systemDir != null) ''
+          log debug $"Init system input method rime backup dir"
+          rime-init-backup ("${config.home.homeDirectory}" | path join "${systemDir}") "${cfg.backup.id}"
+        ''}
         ${optionalString useEmacs ''
           log debug $"Init emacs-rime backup dir"
           rime-init-backup ("${config.home.homeDirectory}" | path join "${cemacs.rime.dir}") "emacs"
@@ -223,9 +226,9 @@ in
         log debug $"If the rime input method is updated and the input method does not work, delete the cache file for the pair to build and rebuild it."
       '';
     })
-    (mkIf (cfg.configDir != null) {
+    (mkIf (cfg.configDir != null && systemDir != null) {
       my.user.init.initRimeConfig = ''
-        let config_dir = $env.HOME | path join "${userDir}/"
+        let config_dir = $env.HOME | path join "${systemDir}/"
         if ("${cfg.configDir}" | path exists) {
           ${pkgs.rsync}/bin/rsync -avz --chmod=D2755,F744 ${cfg.configDir}/ $config_dir
         } else {
@@ -233,9 +236,9 @@ in
         }
       '';
     })
-    (mkIf cfg.octagram {
+    (mkIf (cfg.octagram && systemDir != null) {
       my.user.init.InitRimeOctagram = ''
-        let gram_file = $env.HOME | path join "${userDir}/wanxiang-lts-zh-hans.gram"
+        let gram_file = $env.HOME | path join "${systemDir}/wanxiang-lts-zh-hans.gram"
         if ( $gram_file | path exists) {
           log debug $"Models have been downloaded, if you need to update them, please delete them manually ($gram_file)"
         } else {

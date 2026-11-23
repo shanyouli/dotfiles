@@ -11,7 +11,11 @@
 | `enable` | bool | 跟随 `modules.tools.rime.enable` |
 | `patch.squirrel` | attrs | 生成 `~/Library/Rime/squirrel.custom.yaml` 的 `patch`，保留未覆盖的默认字段 |
 
-nix-darwin 自动加载这个模块。启用共享 Rime 时，模块将所选方案的词库部署到 `~/Library/Rime`；启用 `modules.macos.tools.rime` 时，生成鼠须管配置，并在词库目录变动时重载。nix-darwin 通过 Homebrew 安装鼠须管，并默认开启词库同步备份。
+本模块会向共享模块注入 `modules.tools.rime.server.dir = mkDefault "Library/Rime"`（仅在自身开启时），因此主机侧不需要也不应该手动设置该选项。
+
+nix-darwin 自动加载这个模块。**`~/Library/Rime` 下的全部内容都由 `modules.macos.tools.rime.enable` 控制**：开启时把共享模块的 `server.dir` 设为 `Library/Rime`，从而生成所选方案的 `*.custom.yaml`、将词库部署到 `~/Library/Rime`、初始化词库同步备份、按需下载语言模型，并在词库目录变动时重载鼠须管；关闭时不生成 `~/Library/Rime` 任何文件（适合改用其他输入法，例如 windinput）。nix-darwin 通过 Homebrew 安装鼠须管，并默认开启词库同步备份。
+
+Emacs 集成（`~/.local/share/emacs-rime`）由共享模块独立维护，不受本开关影响。
 
 ## 覆盖皮肤设置
 

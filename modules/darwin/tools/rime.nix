@@ -83,18 +83,16 @@ in
     };
   };
 
-  config = mkMerge [
-    (mkIf cfg.enable {
-      home.file."Library/Rime/squirrel.custom.yaml".source = toYamlFile { patch = cfg.patch.squirrel; };
-      homebrew.casks = [ "squirrel-app" ];
-      modules.tools.rime.backup.enable = mkDefault true;
-    })
-    (mkIf rime.enable {
-      home.file."Library/Rime" = {
-        source = "${rime.dataPkg}/share/rime-data/";
-        recursive = true;
-        onChange = optionalString cfg.enable reload;
-      };
-    })
-  ];
+  config = mkIf cfg.enable {
+    # macOS 侧系统 rime 目录（Squirrel）完全由本开关控制：关闭时不生成 ~/Library/Rime 下任何文件
+    modules.tools.rime.server.dir = mkDefault "Library/Rime";
+    home.file."Library/Rime" = {
+      source = "${rime.dataPkg}/share/rime-data/";
+      recursive = true;
+      onChange = reload;
+    };
+    home.file."Library/Rime/squirrel.custom.yaml".source = toYamlFile { patch = cfg.patch.squirrel; };
+    homebrew.casks = [ "squirrel-app" ];
+    modules.tools.rime.backup.enable = mkDefault true;
+  };
 }
