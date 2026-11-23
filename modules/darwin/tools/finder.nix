@@ -21,9 +21,9 @@ in
       (mkIf cfg.terminal.enable "findergo")
       (mkIf cfg.space.enable "shanyouli/tap/spacepreview")
       # 其它的 预览工具
-      "syntax-highlight"
-      "qlmarkdown" # markdown
-      "macpacker" # zip 文件预览
+      # "syntax-highlight"
+      # "qlmarkdown" # markdown
+      # "macpacker" # zip 文件预览
     ];
 
   };

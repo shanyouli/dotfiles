@@ -196,8 +196,6 @@ in
 
           "paragon-ntfs"
 
-          "logseq" # 笔记工具
-
           # "windterm" # 比较好用的 ssh 客户端，可以使用 vscode 的 ssh 插件取代
 
           "shanyouli/tap/upic" # or "picgo"

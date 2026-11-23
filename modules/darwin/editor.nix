@@ -8,7 +8,7 @@ with lib;
 with my;
 let
   cfp = config.modules.editor;
-  cfg = cfp.modules.macos.editor;
+  cfg = config.modules.macos.editor;
 in
 {
   options.modules.macos.editor = {
@@ -25,8 +25,8 @@ in
         config.modules.editor.nvim.enGui && config.modules.editor.nvim.enable
       ) "shanyouli/tap/neovide-pure")
     ]
-    ++ optional cfg.enable [
-      "shanyouli/tap/winc" # 取代 "lite-edit" "coteditor"
+    ++ optionals cfg.enable [
+      "shanyouli/tap/winc" # 或者 "lite-edit" "coteditor"
       "shanyouli/tap/nomo" # markdown 编写工具，可以媲美 typora
     ];
   };

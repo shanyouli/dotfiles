@@ -99,11 +99,11 @@
       nvim.treesit = "all";
       nvim.enGui = false; # GUI 编辑工具为emacs
       vscode.enable = true;
-      zed = {
-        # package = pkgs.unstable.zed-editor;
-        package = null;
-        enable = true;
-      };
+      # zed = {
+      #   # package = pkgs.unstable.zed-editor;
+      #   package = null;
+      #   enable = true;
+      # };
     };
 
     # # gui（前台 GUI 应用）
@@ -223,6 +223,7 @@
           crossover.enable = true;
         };
       };
+      editor.enable = true;
       network = {
         safari.enable = true;
         netdriver.enable = true;
@@ -238,6 +239,7 @@
           snapbox.enable = false;
           local.enable = lib.mkForce false;
         };
+        finder.enable = true;
         # ui.ice.enable = true;
       };
       # media.music 相关暂未启用（兼容层：options 默认值取自 shared）

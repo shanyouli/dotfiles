@@ -58,7 +58,7 @@ in
       };
       my.user.init.aubeshimeInit = ''
         let aubeshim_path = $env.HOME | path join ".local" "share" "aubeshim" "shims"
-        ${pkgs.aubeshim}/bin/aubeshim install -force  --shim-dir $aubeshim_path
+        ${pkgs.aubeshim}/bin/aubeshim install --force  --shim-dir $aubeshim_path
       '';
     }
     (mkIf cfg.ts.enable {
