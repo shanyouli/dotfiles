@@ -40,6 +40,7 @@ in
         htop = "btm --basic --mem_as_value";
       };
       zsh.pluginFiles = [ "exa" ];
+      zsh.cmpFiles = [ "lla/_lla" ];
     };
   };
 }

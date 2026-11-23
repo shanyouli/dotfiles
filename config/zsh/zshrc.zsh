@@ -41,8 +41,7 @@ function _zice {
 }
 
 # ============ 加载函数 ====
-fpath+=(${ZDOTDIR}/completions)
-fpath+=(${ZDOTDIR}/functions)
+fpath=(${ZDOTDIR}/completions ${ZDOTDIR}/functions $fpath)
 
 autoload -Uz ${ZDOTDIR}/functions/*(:t)
 autoload +X zman
