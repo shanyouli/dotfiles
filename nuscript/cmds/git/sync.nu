@@ -1,17 +1,7 @@
 #!/usr/bin/env nu
 
 use std/log
-
-# Check whether a path is a Git repository.
-def is-git-repo [dir_path: string]: nothing -> bool {
-  try {
-    let target = $dir_path | path expand
-    log debug $"test ($target) 是否为 git 仓库"
-    ((^git -C $target rev-parse --is-inside-work-tree | str trim) == "true")
-  } catch {
-    false
-  }
-}
+use ../../lib/git.nu [is-git-repo]
 
 # 判断仓库当前是否处于 rebase 进行中状态（真冲突的可靠依据）。
 # `git rev-parse --git-path` 会给出对应 rebase 状态目录的路径，
@@ -22,9 +12,7 @@ def is-rebase-in-progress []: nothing -> bool {
   [($merge | path exists) ($apply | path exists)] | any {|it| $it }
 }
 
-# Sync local changes to remote branch through a temporary branch.
-# Usage:
-#   m git sync [branch] [-r origin] [-d /path/to/repo] [--debug] [--focus]
+# Sync local changes to the remote branch through a temporary branch.
 export def main [
   branch: string = "", # target branch to sync into
   --remote(-r): string = "origin", # remote name

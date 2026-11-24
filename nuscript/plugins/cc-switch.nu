@@ -7,40 +7,18 @@ const db = ("~" | path join ".cc-switch" "cc-switch.db" | path expand)
 const detail_cols = [base_url, api_key, api_type]
 
 # Open the cc-switch SQLite database and fail fast when it is missing.
-#
-# Parameters:
-# - None.
-#
-# Returns:
-# - An opened SQLite database value.
-#
-# Exceptions:
-# - Raises an assertion error when the database file does not exist.
 def open-db [] {
   assert ($db | path exists) $"($db) does not exist. Please install and configure cc-switch first."
   open $db
 }
 
-# Fetch all supported application types from the database.
-#
-# Parameters:
-# - None.
-#
-# Returns:
-# - A list of application type names.
+# Fetch supported application types from the providers table.
 def get-support-apps [] {
   let db_read = (open-db)
   $db_read | query db "select app_type from providers group by app_type" | get -o app_type
 }
 
-# Fetch provider rows and decode their JSON settings.
-#
-# Parameters:
-# - app: Application type name.
-# - is_current: Whether to return only the current provider.
-#
-# Returns:
-# - A list of provider rows, or a single row when is_current is true.
+# Fetch provider rows for an app and decode their JSON settings.
 def get-infos [app: string, is_current?: bool = false] {
   let db_read = (open-db)
   let infos = ($db_read
@@ -57,13 +35,7 @@ def get-infos [app: string, is_current?: bool = false] {
   }
 }
 
-# Convert a codex provider row into a normalized display shape.
-#
-# Parameters:
-# - info: Provider row returned by get-infos.
-#
-# Returns:
-# - A record containing name, state, base_url, api_type, api_key, and model.
+# Normalize a codex provider row.
 def get-codex-help [info] {
   let cfg = ($info.info.config | from toml)
   let base_url = ($cfg
@@ -84,13 +56,7 @@ def get-codex-help [info] {
   }
 }
 
-# Convert a gemini provider row into a normalized display shape.
-#
-# Parameters:
-# - info: Provider row returned by get-infos.
-#
-# Returns:
-# - A normalized provider record.
+# Normalize a gemini provider row.
 def get-gemini-help [info] {
   let envs = ($info.info | get -o env | default {})
   {
@@ -103,13 +69,7 @@ def get-gemini-help [info] {
   }
 }
 
-# Convert a claude provider row into a normalized display shape.
-#
-# Parameters:
-# - info: Provider row returned by get-infos.
-#
-# Returns:
-# - A normalized provider record.
+# Normalize a claude provider row.
 def get-claude-help [info] {
   let envs = ($info.info | get -o env | default {})
   let model = ([
@@ -130,13 +90,7 @@ def get-claude-help [info] {
   }
 }
 
-# Convert an opencode provider row into a normalized display shape.
-#
-# Parameters:
-# - info: Provider row returned by get-infos.
-#
-# Returns:
-# - A normalized provider record.
+# Normalize an opencode provider row.
 def get-opencode-help [info] {
   let infos = $info.info
   let model = ($infos
@@ -162,14 +116,7 @@ def get-opencode-help [info] {
   }
 }
 
-# Normalize a provider record according to the target application type.
-#
-# Parameters:
-# - app: Application type name.
-# - info: Provider row returned by get-infos.
-#
-# Returns:
-# - A normalized provider record.
+# Normalize a provider row according to the target app type.
 def get-app-help [app: string, info: any] {
   match $app {
     codex => { get-codex-help $info }
@@ -183,15 +130,6 @@ def get-app-help [app: string, info: any] {
 }
 
 # Resolve one provider or a list of providers for display.
-#
-# Parameters:
-# - app: Application type name.
-# - name: Optional provider name.
-# - current: Whether to resolve only the current provider.
-# - col: Optional detail column to return directly.
-#
-# Returns:
-# - A normalized provider record, a list of records, or a scalar detail value.
 def get-app-info [app: string, name?: string, current?: bool = false, col?: string = ""] {
   mut result = (get-infos $app $current)
   let names = ($result | get name)
@@ -216,38 +154,57 @@ def get-app-info [app: string, name?: string, current?: bool = false, col?: stri
   }
 }
 
+# Show available cc-switch subcommands.
+export def main [] {
+  print "Available commands:"
+  print "    list"
+  print "    show"
+}
+
+# List configured providers for all apps or a single app.
+export def "main list" [
+  app?: string, # Application type to filter by
+  --default(-d), # Show only the current provider for each app
+  --raw(-r) = false, # Render plain text output
+  --json(-j) # Render JSON output
+] {
+  let app_types = get-support-apps
+  assert (($app | is-empty) or ($app in $app_types)) $"($app) is not supported. Supported apps: ($app_types | str join ', ')."
+
+  let db_read = (open-db)
+  mut sql_info = ($db_read | query db "SELECT app_type, name, is_current from providers" | update is_current {|row| $row.is_current == 1 })
+
+  if $default {
+    $sql_info = ($sql_info | where is_current | select app_type name | rename app name)
+    if ($app | is-not-empty) {
+      $sql_info = ($sql_info | where app == $app | first)
+    }
+  } else if ($app | is-not-empty) {
+    $sql_info = ($sql_info | where app_type == $app)
+  }
+
+  if $raw {
+    $sql_info | to text
+  } else if $json {
+    $sql_info | to json
+  } else {
+    $sql_info
+  }
+}
+
 # Show provider details for one app, one provider, or the current default.
-#
-# Parameters:
-# - app: Optional application type. When omitted, uses "all".
-# - provider: Optional provider name.
-# - --default/-d: Show the current provider only.
-# - --raw/-r: Reserved plain-text output flag.
-# - --json/-j: Reserved JSON output flag.
-# - --all/-a: Include API keys in the output.
-# - --copy/-c: Copy a selected scalar value to clipboard.
-# - --url/-u: Return only the base URL.
-# - --key/-k: Return only the API key.
-# - --type/-t: Return only the API type.
-# - --models/-m: Reserved compatibility flag.
-#
-# Returns:
-# - Provider records or selected scalar values depending on flags.
-#
-# Side effects:
-# - May copy a scalar value to the system clipboard.
-export def main [
-  app?: string,
-  provider?: string,
-  --default(-d),
-  --raw(-r) = false,
-  --json(-j),
-  --all(-a),
-  --copy(-c),
-  --url(-u),
-  --key(-k),
-  --type(-t),
-  --models(-m)
+export def "main show" [
+  app?: string, # Application type; "all" when omitted
+  provider?: string, # Provider name
+  --default(-d), # Show the current provider only
+  --raw(-r) = false, # Reserved plain-text output flag
+  --json(-j), # Reserved JSON output flag
+  --all(-a), # Include API keys in the output
+  --copy(-c), # Copy a selected scalar value to clipboard
+  --url(-u), # Return only the base URL
+  --key(-k), # Return only the API key
+  --type(-t), # Return only the API type
+  --models(-m) # Reserved compatibility flag
 ] {
   mut result: any = null
   let target_app = (if ($app | is-empty) { "all" } else { $app })

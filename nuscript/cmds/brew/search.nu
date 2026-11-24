@@ -42,14 +42,13 @@ def search-all [desc: bool, terms: any] {
   [$formulae, $casks] | str join (char newline)
 }
 
-# Perform a substring search of cask tokens and formula names for text. If text is flanked by slashes, it is interpreted as a regular expression.
-# Usage: brew search [terms] [--desc] [--formulae, -f] [--casks, -c]
-# Options:
-#    terms: Search terms
-#    --desc,-d: Search descriptions as well as titles
-#    --formulae,-f: search formulae
-#    --casks, -c: Search casks
-export def main [...terms: any, --desc, --formulae(-f), --casks(-c)] {
+# Search cask tokens and formula names. Text between slashes is a regex.
+export def main [
+  ...terms: any, # Search terms
+  --desc, # Search descriptions as well as titles
+  --formulae(-f), # Search formulae only
+  --casks(-c) # Search casks only
+] {
   assert-brew
   mut res: any = null;
   if ($desc and (not $formulae) and (not $casks)) {

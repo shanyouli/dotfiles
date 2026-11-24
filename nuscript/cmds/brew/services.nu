@@ -1,10 +1,12 @@
 use utils.nu [assert-brew]
 
-# List information about all managed services for the current use (or root.)
-# Usage: brew services
-export def main [subcommand: string, service?: string] {
+# List all managed services for the current user (or root).
+export def main [
+  subcommand: string, # brew services subcommand (e.g. list)
+  service?: string # Service name
+] {
   assert-brew
-  if ($subcommand == "list" or $subcommand == 'ls' or $subcommand == null) {
+  if ($subcommand == "list" or $subcommand == 'ls') {
     let services = ^brew services list --json
                    | from json
                    | sort-by name

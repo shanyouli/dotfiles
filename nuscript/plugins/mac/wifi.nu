@@ -2,9 +2,6 @@ use std/log
 use utils.nu [assert-macos]
 
 # Toggle Wi-Fi between DHCP and Static IP.
-#
-# If current configuration is DHCP, it switches to Static IP.
-# If current configuration is Static, it switches to DHCP.
 export def main [
   ip: string = "192.168.43.212", # Static IP address
   router: string = "192.168.43.1", # Router/Gateway address

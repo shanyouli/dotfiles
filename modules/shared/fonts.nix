@@ -24,7 +24,7 @@ in
       nerd-fonts.fantasque-sans-mono # fantasque-sans-mono
       nerd-fonts.symbols-only
       maple-mono-nf-vf # maple-mono-vf
-      maple-mono-nf-cn-vf # maple-mono-cn-vf
+      maple-mono-nf-cn-vf # maple-mono-cn-vf maple-mono-nf-cn-vf
       pragmasevka-nerd # pragmasevka
       pragmasevka-sans
       pragmasevka-serif

@@ -40,7 +40,7 @@ def software-list-format [s: string] {
 
 # macOS system software update
 export def main [
-  --list(-l), #"display list of available system updates"
+  --list(-l), # Display list of available updates
 ] {
   assert-macos
   let sys_str = (^softwareupdate --list | complete).stdout

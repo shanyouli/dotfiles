@@ -1,7 +1,6 @@
 use utils.nu [assert-brew]
 
-# list installed formulae that are not dependencies of another installed formula or cask.
-# Usage: brew leaves
+# List formulae not required as dependencies of any installed formula or cask.
 export def main [] {
   assert-brew
   let on_request = ^brew leaves --installed-on-request

@@ -47,11 +47,11 @@ def info-formula [formula: string, extended?: bool] {
   }
 }
 
-# Display a formula or cask's name and
-# Usage: brew info desc [formula|cask] [--cask|-c]
-# Options:
-#  --cask, -c: Display info for cask instead of formula
-export def desc [formula: string, --cask(-c)] {
+# Display a formula or cask's name and description.
+export def desc [
+  formula: string, # Formula or cask name
+  --cask(-c) # Display info for cask instead of formula
+] {
   let desc = if ($cask) {
     main --cask $formula
   } else {
@@ -68,9 +68,12 @@ export def formulae [] {
   return (^brew formulae | lines | parse '{name}')
 }
 
-# Display brief statistics for your homebrew installation. If a formula or cask is provided, show summary of information about it.
-# Usage: brew info [formula|cask] [--extended|-e] [--cask|-c]
-export def main [formula: string, --extended (-e), --cask(-c)] {
+# Show Homebrew installation statistics, or a summary for a formula/cask.
+export def main [
+  formula: string, # Formula or cask name
+  --extended(-e), # Show extended information
+  --cask(-c) # Display info for cask instead of formula
+] {
   assert-brew
   if ($cask) {
     info-cask $formula $extended

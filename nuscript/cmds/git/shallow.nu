@@ -1,28 +1,6 @@
 #!/usr/bin/env nu
 use std/log
-
-# 判断目录是否为 Git 仓库
-def is-git-repo [dir_path: string = ""]: nothing -> bool {
-  try {
-    let target = $dir_path | path expand
-    log debug $"正在测试目录 ($target) 是否为 git 仓库"
-    ((^git -C $target rev-parse --is-inside-work-tree | str trim) == "true")
-  } catch {
-    false
-  }
-}
-
-# 获取 Git 根目录
-def get-git-topdir [dir_path: string = ""]: nothing -> path {
-  let target = $dir_path | path expand
-  (^git -C $target rev-parse --show-toplevel | str trim | path expand)
-}
-
-# 获取当前 git 仓库的 git-dir 文件，一般为 .git
-def get-git-dir [dir_path: string = ""]: nothing -> path {
-  let target = $dir_path | path expand
-  $target | path join (^git -C $target rev-parse --git-dir | str trim)
-}
+use ../../lib/git.nu [is-git-repo get-git-topdir get-git-dir]
 
 # 计算 Git 元数据占用大小
 def du-git-repo [dir_path: string = ""]: nothing -> filesize {
@@ -41,6 +19,7 @@ def is-git-url [url: string]: nothing -> any {
   if ($parsed | is-empty) { null } else { $parsed.0.name }
 }
 
+# Shrink repository metadata via gc, repack, and branch cleanup.
 export def main [
   url: string = "", # 克隆链接或本地路径
   dir_path: string = "", # 本地目录（可选）

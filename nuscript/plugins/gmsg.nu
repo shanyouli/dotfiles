@@ -1,31 +1,10 @@
 #!/usr/bin/env nu
 
+use ../lib/git.nu [is-git-repo]
+use ../lib/process.nu [RESULT_WRITE_FAILED_CODE run-with-timeout]
+
 # 默认的 pi 执行超时秒数。
 const DEFAULT_TIMEOUT_SEC = 300
-
-# 终端动画的帧、提示文本与刷新节奏。
-const SPINNER_FRAMES = ["⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏"]
-const SPINNER_MESSAGE = "正在生成提交信息并提交…"
-const SPINNER_DELAY = 200ms
-const SPINNER_INTERVAL = 100ms
-
-# 剩余时间不大于该秒数时，倒计时改用告警色显示。
-const SPINNER_WARN_SEC = 30
-
-# job 内结果文件写入失败时使用的约定退出码，让主线程快速失败而不是误报超时。
-const RESULT_WRITE_FAILED_CODE = -2
-
-# 检查当前目录是否位于 Git 工作树中。
-#
-# 返回值：Git 返回 true 且命令执行成功时为 true，否则为 false。
-def is-git-worktree []: nothing -> bool {
-  try {
-    let result = (do -i { ^git rev-parse --is-inside-work-tree } | complete)
-    ($result.exit_code == 0 and (($result.stdout | str trim) == "true"))
-  } catch {
-    false
-  }
-}
 
 # 输出错误信息并以非零状态终止当前命令。
 #
@@ -34,31 +13,6 @@ def is-git-worktree []: nothing -> bool {
 def fail [message: string]: nothing -> nothing {
   print -e $message
   exit 1
-}
-
-# 在 stderr 上原地绘制一帧执行动画。
-#
-# 参数：frame_index - 当前动画帧下标，超出帧数时自动循环；
-#       remaining_sec - 距离超时的剩余秒数；total_sec - 本次超时总秒数。
-# 返回值：不返回；会覆盖当前终端行的内容。
-def render-spinner [frame_index: int, remaining_sec: int, total_sec: int] {
-  let frame_count = ($SPINNER_FRAMES | length)
-  let frame = ($SPINNER_FRAMES | get ($frame_index mod $frame_count))
-  # 剩余时间不足时用黄色提示，避免用户错过即将超时
-  let remaining_text = if $remaining_sec <= $SPINNER_WARN_SEC {
-    $"\u{1b}[33m剩余 ($remaining_sec)s\u{1b}[0m"
-  } else {
-    $"剩余 ($remaining_sec)s"
-  }
-  let countdown = $"($remaining_text) / ($total_sec)s"
-  print --stderr --raw --no-newline $"\u{1b}[2K\r($frame) ($SPINNER_MESSAGE) ($countdown)"
-}
-
-# 清除 stderr 上的执行动画。
-#
-# 返回值：不返回；会清空当前终端行并把光标移回行首。
-def clear-spinner [] {
-  print --stderr --raw --no-newline "\u{1b}[2K\r"
 }
 
 # 读取指定 commit 的 `git log -1 --oneline` 摘要。
@@ -102,139 +56,11 @@ def get-head-commit []: nothing -> any {
   }
 }
 
-# 在限时内后台运行 pi，并取回其退出码和 stderr。
-#
-# 用 job spawn 在后台执行 pi，stdout/stderr 重定向到临时文件避免常驻内存；
-# 主线程轮询结果文件直至完成或超时；stderr 连接终端时显示原地旋转动画
-# 与剩余秒数倒计时。
-# 超时后按 SIGTERM -> SIGKILL 的顺序清理 job 内的进程，避免孤儿进程。
-# 无论成功、失败还是异常，finally 都会清理动画、后台任务和临时目录。
-#
-# 参数：pi_args - 传给 pi 的参数列表；timeout_sec - 超时秒数。
-# 返回值：包含 code（pi 退出码，被信号终止时为负值；结果文件写入失败时为
-# RESULT_WRITE_FAILED_CODE）、timed_out 和 stderr（pi 的标准错误输出）的记录。
-def run-pi-with-timeout [pi_args: list<string>, timeout_sec: int] {
-  let tmp_dir = (mktemp -d -t gmsg-result.XXXXXX)
-  let result_file = ($tmp_dir | path join "result")
-  let stdout_file = ($tmp_dir | path join "stdout")
-  let stderr_file = ($tmp_dir | path join "stderr")
-  let started = (date now)
-
-  let job_id = (job spawn {
-    try {
-      try {
-        ^pi ...$pi_args o> $stdout_file e> $stderr_file
-        # 成功路径显式写 0：LAST_EXIT_CODE 在外部命令成功时不保证被刷新
-        0 | to nuon | save -f $"($result_file).tmp"
-      } catch {
-        # 非零退出、被信号终止或启动失败都会进入这里，
-        # LAST_EXIT_CODE 保留外部命令的实际退出码。
-        $env.LAST_EXIT_CODE? | default (-1) | to nuon | save -f $"($result_file).tmp"
-      }
-      mv $"($result_file).tmp" $result_file
-    } catch {
-      # 结果文件写入失败（如磁盘满）或与主线程清理竞态：
-      # 尽力写入约定失败码，让主线程快速失败而不是白等满超时。
-      try {
-        $RESULT_WRITE_FAILED_CODE | to nuon | save -f $"($result_file).tmp"
-        mv $"($result_file).tmp" $result_file
-      } catch {
-        # 临时目录已不存在等竞态，静默收尾，避免 job 错误冒泡
-      }
-    }
-  })
-
-  mut code: int = -1
-  mut timed_out = false
-  let spinner_enabled = (is-terminal --stderr)
-  mut spinner_visible = false
-  mut spinner_frame = 0
-
-  try {
-    loop {
-      if ($result_file | path exists) {
-        $code = (open --raw $result_file | into int)
-        break
-      }
-      let elapsed = (date now) - $started
-      let elapsed_sec = ($elapsed / 1sec)
-      if ($elapsed_sec >= $timeout_sec) {
-        $timed_out = true
-        # 先快照 pi 的整棵进程树再 SIGTERM：pi 被杀后其孤儿子进程的 ppid
-        # 会变成 1，事后无法再通过 ppid 定位，必须提前记录。
-        let pids = (job list | where id == $job_id | get pids? | default [] | flatten)
-        if ($pids | is-not-empty) {
-          mut tree = $pids
-          for _ in [1 2] {
-            let kids = (ps | where ppid in $tree | get pid? | default [] | flatten)
-            let new = ($kids | where { |p| not ($p in $tree) })
-            if ($new | is-empty) { break }
-            $tree = ($tree | append $new)
-          }
-          kill -q ...$pids
-          sleep 3sec
-          # 快照中仍存活的进程直接 SIGKILL
-          let alive = (ps | where pid in $tree | get pid? | default [] | flatten)
-          if ($alive | is-not-empty) {
-            kill -f -q ...$alive
-          }
-        }
-        # pi 被 SIGTERM 后 job 通常已自行退出并从列表移除，
-        # 直接 job kill 会抛 Job not found 并中断超时兜底流程。
-        if ($job_id in (job list | get id? | default [])) {
-          job kill $job_id
-        }
-        # 等待 job 线程退出，避免与临时目录清理竞态
-        mut waited = 0
-        while ($waited < 25) and ($job_id in (job list | get id? | default [])) {
-          sleep 200ms
-          $waited += 1
-        }
-        break
-      }
-
-      if $spinner_enabled {
-        # 向下取整后至少还剩 1 秒，超时判定在此之后才触发
-        let remaining_sec = ($timeout_sec - ($elapsed_sec | math floor))
-        if (not $spinner_visible) and ($elapsed >= $SPINNER_DELAY) {
-          render-spinner $spinner_frame $remaining_sec $timeout_sec
-          $spinner_visible = true
-        } else if $spinner_visible {
-          $spinner_frame = ($spinner_frame + 1) mod ($SPINNER_FRAMES | length)
-          render-spinner $spinner_frame $remaining_sec $timeout_sec
-        }
-      }
-
-      sleep $SPINNER_INTERVAL
-    }
-    let stderr = if ($stderr_file | path exists) { open --raw $stderr_file } else { "" }
-    { code: $code, timed_out: $timed_out, stderr: $stderr }
-  } finally {
-    # 无论成功、失败还是异常，都清理动画、后台任务和临时目录
-    if $spinner_enabled {
-      clear-spinner
-    }
-    try {
-      if ($job_id in (job list | get id? | default [])) {
-        job kill $job_id
-      }
-    } catch {
-      # job 可能刚好自行退出
-    }
-    rm -rf $tmp_dir
-  }
-}
-
 # 根据已暂存的文件生成提交信息并调用 pi。
-#
-# --model 与 --provider 必须成对传递；-t/--timeout 限制 pi 执行时长（秒）。
-# pi 执行期间会在终端显示旋转动画；通过 HEAD 是否变化判定是否生成了新提交，
-# 成功后显示新提交的 ID 和标题。超时被终止后若已生成新提交则视为提交成功，
-# 并透传 pi 被终止前的 stderr；否则提示切换模型。
 export def main [
-  --model(-m): string
-  --provider(-p): string
-  --timeout(-t): int = $DEFAULT_TIMEOUT_SEC
+  --model(-m): string, # 传给 pi 的模型名
+  --provider(-p): string, # 传给 pi 的 provider 名
+  --timeout(-t): int = $DEFAULT_TIMEOUT_SEC # pi 执行超时秒数
 ] {
   let has_model = ($model != null)
   let has_provider = ($provider != null)
@@ -247,7 +73,7 @@ export def main [
     fail "--timeout 必须 ≥ 1 秒。"
   }
 
-  if (not (is-git-worktree)) {
+  if (not (is-git-repo (pwd))) {
     fail "当前目录不在 Git 仓库中，无法执行 gmsg。"
   }
 
@@ -276,7 +102,7 @@ export def main [
     $pi_args = ($pi_args | append ["--model", $model, "--provider", $provider])
   }
 
-  let result = (run-pi-with-timeout $pi_args $timeout)
+  let result = (run-with-timeout (["pi" ...$pi_args]) $timeout "正在生成提交信息并提交…")
   let head_after = (get-head-commit)
 
   if (not $result.timed_out) {

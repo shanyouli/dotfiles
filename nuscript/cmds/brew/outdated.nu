@@ -1,7 +1,6 @@
 use utils.nu [assert-brew]
 
-# List installed casks and formulae that have on updated version available.
-# Usage: brew outdated
+# List installed casks and formulae with an updated version available.
 export def main [] {
   assert-brew
   let res = ^brew outdated --json --greedy | from json

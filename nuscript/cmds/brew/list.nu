@@ -1,10 +1,10 @@
 use utils.nu [assert-brew]
 
 # list all installed formulae and casks.
-# Usage: brew list [--extended (-e)]
-# Options:
-#    --extended(-e) Show extended information.
-export def main [--extended(-e), --raw(-r)] {
+export def main [
+  --extended(-e), # Show extended information
+  --raw(-r) # Output JSON instead of a table
+] {
   assert-brew
   let res = ^brew info --installed --json=v2 | from json
   let casks = $res.casks

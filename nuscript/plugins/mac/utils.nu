@@ -1,8 +1,6 @@
 use std/log
 
-# ----------------------------------------
-# System check: Ensure running on macOS
-# ----------------------------------------
+# Ensure running on macOS.
 export def assert-macos [] {
     let sys = (sys host | get name)
     if $sys != "macos" and $sys != "Darwin" {

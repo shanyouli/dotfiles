@@ -28,7 +28,7 @@ def "nu-complete brew" [] {
   $script_names | append ["update" "upgrade" "install" "uninstall" "reinstall"]
 }
 
-# my custom brew commands.
+# Custom Homebrew wrapper commands.
 export def --wrapped main [cmd?: string@"nu-complete brew", ...args] {
   assert-brew
   if ($cmd | is-empty) {

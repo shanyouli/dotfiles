@@ -7,7 +7,7 @@ def "nu-complete git" [] {
   [sync shallow status log diff checkout branch pull push fetch]
 }
 
-# Git custom commands
+# Custom Git wrapper commands.
 export def --wrapped main [cmd?: string@"nu-complete git", ...args] {
   assert-git
   if ($cmd | is-empty) {
